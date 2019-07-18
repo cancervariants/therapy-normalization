@@ -1,2 +1,2 @@
-# drug-term-normalization
+# therapy-term-normalization
 Services and guidelines for normalizing therapy terms
