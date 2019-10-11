@@ -1,2 +1,5 @@
 # Ignore xlsx temp file
 \~*
+
+# Ignore system files
+.DS_Store
