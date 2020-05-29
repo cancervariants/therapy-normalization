@@ -4,30 +4,35 @@ from typing import List
 
 
 @dataclass
-class Treatment:
-    """
-    A treatment used in the course of a :class:`Therapy`.
-    Implement in Therapy Normalizer Library?
-    """
-
-    pass
-
-
-@dataclass
-class Drug(Treatment):
-    """
-    A pharmacologic substance used to treat a :class:`Disease`.
-    Implement in Therapy Normalizer Library?
-    """
-
-    pass
-
-
-@dataclass
 class Therapy:
-    """
-    A therapy used in the treatment of a :class:`Disease`.
-    Implement in Therapy Normalizer Library?
-    """
+    """A procedure or substance used in the treatment of a disease."""
 
-    treatments: List[Treatment]
+    name: str
+    concept_identifier: str
+    aliases: List[str]
+
+
+@dataclass
+class Attribute:
+    """Wikidata statement describing an item."""
+
+    property: str
+    property_identifier: str
+    value: str
+    value_identifier: str
+
+
+@dataclass
+class Drug(Therapy):
+    """A pharmacologic substance used to treat a medical condition."""
+
+    attributes: List[Attribute]
+
+
+@dataclass
+class DrugGroup(Therapy):
+    """A grouping of drugs based on shared common attributes."""
+
+    description: str
+    type_identifier: str
+    drugs: List[Drug]
