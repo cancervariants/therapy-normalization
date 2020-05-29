@@ -142,3 +142,6 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# allow pytest override with pytest.ini
+pytest.ini
