@@ -25,6 +25,38 @@ class Base(ABC):
 class Wikidata(Base):
     """A normalizer using the Wikidata resource."""
 
+    SPARQL_QUERY = """
+SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
+  ?rxnorm ?drugbank ?altLabel WHERE {
+  ?item (wdt:P31/(wdt:P279*)) wd:Q12140.
+  OPTIONAL {
+    ?item skos:altLabel ?altLabel.
+    FILTER((LANG(?altLabel)) = "en")
+  }
+  OPTIONAL { ?item p:P231 ?wds1.
+             ?wds1 ps:P231 ?casRegistry.
+           }
+  OPTIONAL { ?item p:P662 ?wds2.
+             ?wds2 ps:P662 ?pubchemCompound.
+           }
+  OPTIONAL { ?item p:P2153 ?wds3.
+             ?wds3 ps:P2153 ?pubchemSubstance.
+           }
+  OPTIONAL { ?item p:P592 ?wds4.
+             ?wds4 ps:P592 ?chembl
+           }
+  OPTIONAL { ?item p:P3345 ?wds5.
+             ?wds5 ps:P3345 ?rxnorm.
+           }
+  OPTIONAL { ?item p:P715 ?wds6.
+             ?wds6 ps:P715 ?drugbank
+           }
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
+  }
+}
+"""
+
     def normalize(self, term):
         """Normalize term using Wikidata"""
         return None
