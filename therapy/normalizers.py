@@ -2,6 +2,7 @@
 from abc import ABC, abstractmethod
 from therapy import PROJECT_ROOT
 import json
+from collections import namedtuple
 
 
 class Base(ABC):
@@ -20,6 +21,11 @@ class Base(ABC):
     def normalize(self, term):
         """Normalize term to wikidata concept"""
         raise NotImplementedError
+
+    NormalizerResponse = namedtuple(
+        'NormalizerResponse',
+        ['input_term', 'normalized_label', 'aliases', 'match_type']
+    )
 
 
 class Wikidata(Base):
@@ -59,10 +65,36 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
 
     def normalize(self, term):
         """Normalize term using Wikidata"""
-        return None
+        if term in self._exact_index:
+            match_key = self._exact_index[term]
+            match_type = 'match'
+        elif term.lower() in self._lower_index:
+            match_key = self._lower_index[term.lower()]
+            match_type = 'case-insensitive-match'
+        else:
+            return self.NormalizerResponse(term, None, dict(), None)
+        if len(match_key) > 1:
+            return self.NormalizerResponse(term, None, dict(), 'ambiguous')
+        match = self._records[list(match_key)[0]]
+        return self.NormalizerResponse(
+            term, match['itemLabel'], match, match_type
+        )
 
     def _load_data(self, *args, **kwargs):
         with open(
             PROJECT_ROOT / 'data' / 'wikidata_medications.json', 'r'
         ) as f:
             self._data = json.load(f)
+        self._exact_index = dict()
+        self._lower_index = dict()
+        self._records = dict()
+        for record in self._data:
+            record_id = record['item'].split('/')[-1]
+            for k, v in record.items():
+                s = self._exact_index.setdefault(v, set())
+                s.add(record_id)
+                s = self._lower_index.setdefault(v.lower(), set())
+                s.add(record_id)
+                d = self._records.setdefault(record_id, dict())
+                s = d.setdefault(k, set())
+                s.add(v)

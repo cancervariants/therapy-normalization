@@ -1,6 +1,6 @@
 """Test that the therapy normalizer works as intended."""
 import pytest
-from therapy.normalizer import Wikidata
+from therapy.normalizers import Wikidata
 from therapy.models import Drug
 
 
