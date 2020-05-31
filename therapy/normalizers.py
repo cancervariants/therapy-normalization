@@ -3,6 +3,16 @@ from abc import ABC, abstractmethod
 from therapy import PROJECT_ROOT
 import json
 from collections import namedtuple
+from therapy.models import Drug
+
+IDENTIFIER_PREFIXES = {
+    'chemIDPlus': 'chemidplus',
+    'pubchemCompound': 'pubchem.compound',
+    'pubchemSubstance': 'pubchem.substance',
+    'chembl': 'chembl.compound',
+    'rxnorm': 'rxcui',
+    'drugbank': 'drugbank'
+}
 
 
 class Base(ABC):
@@ -24,7 +34,7 @@ class Base(ABC):
 
     NormalizerResponse = namedtuple(
         'NormalizerResponse',
-        ['input_term', 'normalized_label', 'aliases', 'match_type']
+        ['input_term', 'match_type', 'therapy_records']
     )
 
 
@@ -33,11 +43,11 @@ class Wikidata(Base):
 
     SPARQL_QUERY = """
 SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
-  ?rxnorm ?drugbank ?altLabel WHERE {
+  ?rxnorm ?drugbank ?alias WHERE {
   ?item (wdt:P31/(wdt:P279*)) wd:Q12140.
   OPTIONAL {
-    ?item skos:altLabel ?altLabel.
-    FILTER((LANG(?altLabel)) = "en")
+    ?item skos:altLabel ?alias.
+    FILTER((LANG(?alias)) = "en")
   }
   OPTIONAL { ?item p:P231 ?wds1.
              ?wds1 ps:P231 ?casRegistry.
@@ -66,18 +76,22 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
     def normalize(self, term):
         """Normalize term using Wikidata"""
         if term in self._exact_index:
-            match_key = self._exact_index[term]
+            match_keys = self._exact_index[term]
             match_type = 'match'
         elif term.lower() in self._lower_index:
-            match_key = self._lower_index[term.lower()]
+            match_keys = self._lower_index[term.lower()]
             match_type = 'case-insensitive-match'
         else:
-            return self.NormalizerResponse(term, None, dict(), None)
-        if len(match_key) > 1:
-            return self.NormalizerResponse(term, None, dict(), 'ambiguous')
-        match = self._records[list(match_key)[0]]
+            return self.NormalizerResponse(term, None, tuple())
+        if len(match_keys) > 1:
+            match_type = 'ambiguous'
+        therapy_records = list()
+        for match_key in match_keys:
+            match = self._records[match_key]
+            response_record = match['therapy']
+            therapy_records.append(response_record)
         return self.NormalizerResponse(
-            term, match['itemLabel'], match, match_type
+            term, match_type, tuple(therapy_records)
         )
 
     def _load_data(self, *args, **kwargs):
@@ -91,6 +105,12 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         for record in self._data:
             record_id = record['item'].split('/')[-1]
             for k, v in record.items():
+                if k == 'item':
+                    k = 'wikidata'
+                elif k == 'itemLabel':
+                    k = 'label'
+                elif k == 'therapy':
+                    raise ValueError
                 s = self._exact_index.setdefault(v, set())
                 s.add(record_id)
                 s = self._lower_index.setdefault(v.lower(), set())
@@ -98,3 +118,22 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                 d = self._records.setdefault(record_id, dict())
                 s = d.setdefault(k, set())
                 s.add(v)
+                if k not in IDENTIFIER_PREFIXES:
+                    continue
+                v = f'{IDENTIFIER_PREFIXES[k]}:{v}'
+                s = self._exact_index.setdefault(v, set())
+                s.add(record_id)
+                s = self._lower_index.setdefault(v.lower(), set())
+                s.add(record_id)
+                d = self._records[record_id]
+                s = d.setdefault('other_identifiers', set())
+                s.add(v)
+
+        for k, record in self._records.items():
+            params = {
+                'label': record['label'],
+                'concept_identifier': f"wikidata:{record['wikidata']}",
+                'aliases': list(record['alias']),
+                'other_identifiers': list(record['other_identifiers'])
+            }
+            self._records[k]['therapy'] = Drug(**params)

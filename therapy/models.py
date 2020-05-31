@@ -1,4 +1,4 @@
-"""data models for representing VICC normalized therapy records."""
+"""Data models for representing VICC normalized therapy records."""
 from typing import List
 from pydantic import BaseModel
 
@@ -24,7 +24,7 @@ class Therapy(BaseModel):
 class Drug(Therapy):
     """A pharmacologic substance used to treat a medical condition."""
 
-    antineoplastic: bool = False
+    fda_approved: bool = False
 
 
 class DrugGroup(Therapy):
