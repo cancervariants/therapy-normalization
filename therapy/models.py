@@ -28,7 +28,7 @@ class Drug(Therapy):
 
 
 class DrugGroup(Therapy):
-    """A grouping of drugs based on shared common attributes."""
+    """A grouping of drugs based on common pharmacological attributes."""
 
     description: str
     type_identifier: str

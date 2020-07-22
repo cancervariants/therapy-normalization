@@ -19,14 +19,16 @@ def cisplatin():
         'concept_identifier': 'wikidata:Q412415',
         'aliases': list(),
         'other_identifiers': list(),
-        'antineoplastic': True
     }
     return Drug(**params)
 
 
 def test_wikidata_normalize(cisplatin, wikidata):
     """Test that cisplatin term normalizes to correct drug concept."""
-    normalized_drug = wikidata.normalize('cisplatin')
+    normalizer_response = wikidata.normalize('cisplatin')
+    assert normalizer_response.match_type == 'match'
+    assert len(normalizer_response.therapy_records) == 1
+    normalized_drug = normalizer_response.therapy_records[0]
     assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.wikidata_identifier == cisplatin.wikidata_identifier
-    assert normalized_drug.antineoplastic == cisplatin.antineoplastic
+    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert normalized_drug.fda_approved == cisplatin.fda_approved

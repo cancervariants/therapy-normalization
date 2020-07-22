@@ -6,7 +6,7 @@ from collections import namedtuple
 from therapy.models import Drug
 
 IDENTIFIER_PREFIXES = {
-    'chemIDPlus': 'chemidplus',
+    'casRegistry': 'chemidplus',
     'pubchemCompound': 'pubchem.compound',
     'pubchemSubstance': 'pubchem.substance',
     'chembl': 'chembl.compound',
@@ -21,6 +21,9 @@ class Base(ABC):
     def __init__(self, *args, **kwargs):
         """Initialize the normalizer."""
         self._data = None
+        self._exact_index = dict()
+        self._lower_index = dict()
+        self._records = dict()
         self._load_data(*args, **kwargs)
 
     @abstractmethod
@@ -102,11 +105,14 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         self._exact_index = dict()
         self._lower_index = dict()
         self._records = dict()
+        i = 0
         for record in self._data:
+            i += 1
             record_id = record['item'].split('/')[-1]
             for k, v in record.items():
                 if k == 'item':
                     k = 'wikidata'
+                    v = record_id
                 elif k == 'itemLabel':
                     k = 'label'
                 elif k == 'therapy':
@@ -116,8 +122,11 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                 s = self._lower_index.setdefault(v.lower(), set())
                 s.add(record_id)
                 d = self._records.setdefault(record_id, dict())
-                s = d.setdefault(k, set())
-                s.add(v)
+                if k != 'wikidata':
+                    s = d.setdefault(k, set())
+                    s.add(v)
+                else:
+                    d[k] = v
                 if k not in IDENTIFIER_PREFIXES:
                     continue
                 v = f'{IDENTIFIER_PREFIXES[k]}:{v}'
@@ -130,10 +139,12 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                 s.add(v)
 
         for k, record in self._records.items():
+            assert len(record['label']) == 1
             params = {
-                'label': record['label'],
+                'label': list(record['label'])[0],
                 'concept_identifier': f"wikidata:{record['wikidata']}",
-                'aliases': list(record['alias']),
-                'other_identifiers': list(record['other_identifiers'])
+                'aliases': list(record.get('alias', set())),
+                'other_identifiers': list(record.get(
+                    'other_identifiers', set()))
             }
             self._records[k]['therapy'] = Drug(**params)
