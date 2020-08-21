@@ -1,5 +1,5 @@
 from typing import Optional
-
+from therapy.normalizers.query import normalize_query
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -12,5 +12,5 @@ def read_root():
 
 @app.get("/query/{q_string}")
 def read_query(q_string: str):
-    resp = {'query': q_string}
+    resp = normalize_query(q_string)
     return resp
