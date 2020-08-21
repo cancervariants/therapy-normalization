@@ -39,31 +39,29 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
 }
 """
 
-    def normalize(self, term):
+    def normalize(self, query):
         """Normalize term using Wikidata"""
-        if term in self._exact_index:
-            match_keys = self._exact_index[term]
-            match_type = 'match'
-        elif term.lower() in self._lower_index:
-            match_keys = self._lower_index[term.lower()]
-            match_type = 'case-insensitive-match'
+        if query in self._exact_index:
+            match_keys = self._exact_index[query]
+            match_type = MatchType.EXACT
+        elif query.lower() in self._lower_index:
+            match_keys = self._lower_index[query.lower()]
+            match_type = MatchType.CASE_INSENSITIVE
         else:
-            return self.NormalizerResponse(term, None, tuple())
-        if len(match_keys) > 1:
-            match_type = 'ambiguous'
-        therapy_records = list()
+            return self.NormalizerResponse(query, None, tuple())
+        records = list()
         for match_key in match_keys:
             match = self._records[match_key]
             response_record = match['therapy']
-            therapy_records.append(response_record)
+            records.append(response_record)
         return self.NormalizerResponse(
-            term, match_type, tuple(therapy_records)
+            query, match_type, tuple(records)
         )
 
     def _load_data(self, *args, **kwargs):
-        with open(
-            PROJECT_ROOT / 'data' / 'wikidata_medications.json', 'r'
-        ) as f:
+        wd_file = PROJECT_ROOT / 'data' / 'wikidata_medications.json'
+        assert wd_file.exists()  # TODO: Add a query method to update/recreate this
+        with open(wd_file, 'r') as f:
             self._data = json.load(f)
         self._exact_index = dict()
         self._lower_index = dict()
