@@ -1,5 +1,5 @@
 """Main application for FastAPI"""
-from therapy.normalizers.query import normalize_query
+from therapy.query import normalize
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -14,5 +14,5 @@ def read_root():
 @app.get("/query/{q_string}")
 def read_query(q_string: str):
     """Endpoint to return normalized responses for a the query"""
-    resp = normalize_query(q_string)
+    resp = normalize(q_string)
     return resp
