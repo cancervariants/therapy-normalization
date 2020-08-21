@@ -39,5 +39,7 @@ class Base(ABC):
 
 
 class MatchType:
+    """Define string constants for use in Match Type attributes"""
+
     EXACT = 'Exact'
     CASE_INSENSITIVE = 'Case-insensitive'

@@ -1,3 +1,4 @@
+"""This module provides the Wikidata normalizer"""
 from .base import Base, IDENTIFIER_PREFIXES, MatchType
 from therapy import PROJECT_ROOT
 import json
@@ -60,7 +61,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
 
     def _load_data(self, *args, **kwargs):
         wd_file = PROJECT_ROOT / 'data' / 'wikidata_medications.json'
-        assert wd_file.exists()  # TODO: Add a query method to update/recreate this
+        assert wd_file.exists()  # TODO: issue #7
         with open(wd_file, 'r') as f:
             self._data = json.load(f)
         self._exact_index = dict()
