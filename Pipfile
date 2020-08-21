@@ -18,6 +18,8 @@ twine = "*"
 jupyterlab = "*"
 civicpy = "*"
 thera-py = {editable = true, path = "."}
+fastapi = "*"
+uvicorn = "*"
 
 [requires]
 python_version = "3.8"
