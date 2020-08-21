@@ -1,17 +1,24 @@
 # Therapy Normalization
 Services and guidelines for normalizing drug (and non-drug therapy) terms
 
-## Running the tests
+## Developers
+Following are sections specifically for developers.
 
-### Unit tests
+### Installation
+For a development install, we recommend Pipenv. See the pipenv docs to install
+pipenv to your local environment.
+ 
+Once installed, from the project root dir, just run:
 
-Explain how to run the automated tests for this system
-
+```shell script
+pipenv sync
 ```
-python3 -m pytest
-```
 
-### And coding style tests
+### Data files
+For now, data files supporting the normalizers need to be obtained independently.
+See issue #7 for progress on updaters.
+
+### Init coding style tests
 
 Code style is managed by [flake8](https://github.com/PyCQA/flake8) and checked prior to commit.
 
@@ -29,3 +36,13 @@ Before first commit run:
 ```
 pre-commit install
 ```
+
+
+### Running unit tests
+
+Running unit tests is as easy as pytest.
+
+```
+pipenv run pytest
+```
+
