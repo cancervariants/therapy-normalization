@@ -47,3 +47,14 @@ Running unit tests is as easy as pytest.
 pipenv run pytest
 ```
 
+### Starting the therapy normalization service
+
+From the project root, run the following:
+
+```shell script
+ uvicorn main:app --reload
+```
+
+Next, view the OpenAPI docs on your local machine: 
+
+http://127.0.0.1:8000/docs
