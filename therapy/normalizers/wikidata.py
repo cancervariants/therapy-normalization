@@ -1,4 +1,4 @@
-from .base import Base, IDENTIFIER_PREFIXES
+from .base import Base, IDENTIFIER_PREFIXES, MatchType
 from therapy import PROJECT_ROOT
 import json
 from therapy.models import Drug

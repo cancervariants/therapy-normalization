@@ -28,11 +28,16 @@ class Base(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def normalize(self, term):
-        """Normalize term to wikidata concept"""
+    def normalize(self, query):
+        """Normalize query to resource concept"""
         raise NotImplementedError
 
     NormalizerResponse = namedtuple(
         'NormalizerResponse',
-        ['input_term', 'match_type', 'therapy_records']
+        ['query', 'match_type', 'records']
     )
+
+
+class MatchType:
+    EXACT = 'Exact'
+    CASE_INSENSITIVE = 'Case-insensitive'
