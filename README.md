@@ -1,7 +1,7 @@
 # Therapy Normalization
 Services and guidelines for normalizing drug (and non-drug therapy) terms
 
-## Developers
+## Developer instructions
 Following are sections include instructions specifically for developers.
 
 ### Installation
