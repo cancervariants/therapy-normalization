@@ -2,10 +2,10 @@
 Services and guidelines for normalizing drug (and non-drug therapy) terms
 
 ## Developers
-Following are sections specifically for developers.
+Following are sections include instructions specifically for developers.
 
 ### Installation
-For a development install, we recommend Pipenv. See the 
+For a development install, we recommend using Pipenv. See the 
 [pipenv docs](https://pipenv-fork.readthedocs.io/en/latest/#install-pipenv-today) 
 for direction on installing pipenv in your compute environment.
  
