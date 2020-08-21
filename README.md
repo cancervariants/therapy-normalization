@@ -5,8 +5,9 @@ Services and guidelines for normalizing drug (and non-drug therapy) terms
 Following are sections specifically for developers.
 
 ### Installation
-For a development install, we recommend Pipenv. See the pipenv docs to install
-pipenv to your local environment.
+For a development install, we recommend Pipenv. See the 
+[pipenv docs](https://pipenv-fork.readthedocs.io/en/latest/#install-pipenv-today) 
+for direction on installing pipenv in your compute environment.
  
 Once installed, from the project root dir, just run:
 
