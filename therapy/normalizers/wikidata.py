@@ -1,4 +1,4 @@
-"""This module provides the Wikidata normalizer"""
+"""This module defines the Wikidata normalizer"""
 from .base import Base, IDENTIFIER_PREFIXES, MatchType
 from therapy import PROJECT_ROOT
 import json
