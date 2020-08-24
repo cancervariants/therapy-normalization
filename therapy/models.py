@@ -24,7 +24,7 @@ class Therapy(BaseModel):
 class Drug(Therapy):
     """A pharmacologic substance used to treat a medical condition."""
 
-    fda_approved: bool = False
+    pass
 
 
 class DrugGroup(Therapy):

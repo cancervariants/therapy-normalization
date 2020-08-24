@@ -32,4 +32,3 @@ def test_wikidata_normalize(cisplatin, wikidata):
     normalized_drug = normalizer_response.records[0]
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_identifier == cisplatin.concept_identifier
-    assert normalized_drug.fda_approved == cisplatin.fda_approved
