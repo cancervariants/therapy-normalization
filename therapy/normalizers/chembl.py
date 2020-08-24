@@ -2,7 +2,11 @@
 from .base import Base
 from therapy import PROJECT_ROOT
 from ftplib import FTP
+import logging
 import sqlite3
+
+logger = logging.getLogger('therapy')
+logger.setLevel(logging.DEBUG)
 
 
 class ChEMBL(Base):
@@ -19,13 +23,17 @@ class ChEMBL(Base):
             self._download_chembl_27(wd_file)
         assert wd_file.exists()
         conn = sqlite3.connect(wd_file)
-        assert conn
+        self._conn = conn
         # TODO: parse file to create in-memory lookups
 
     @staticmethod
     def _download_chembl_27(filepath):
-        with FTP('ftp.ebi.ac.uk') as ftp:
-            ftp.login()
-            with open(filepath, 'wb') as fp:
-                ftp.cwd('pub/databases/chembl/ChEMBLdb/releases/chembl_27')
-                ftp.retrbinary('chembl_27_sqlite.tar.gz', fp.write)
+        logger.info('Downloading ChEMBL v27, this will take a few minutes.')
+        try:
+            with FTP('ftp.ebi.ac.uk') as ftp:
+                ftp.login()
+                with open(filepath, 'wb') as fp:
+                    ftp.cwd('pub/databases/chembl/ChEMBLdb/releases/chembl_27')
+                    ftp.retrbinary('chembl_27_sqlite.tar.gz', fp.write)
+        except TimeoutError:
+            logger.error('Connection to EBI FTP server timed out.')
