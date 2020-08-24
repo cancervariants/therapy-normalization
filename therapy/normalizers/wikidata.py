@@ -49,14 +49,14 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
             match_keys = self._lower_index[query.lower()]
             match_type = MatchType.CASE_INSENSITIVE
         else:
-            return self.NormalizerResponse(query, None, tuple())
+            return self.NormalizerResponse(None, tuple())
         records = list()
         for match_key in match_keys:
             match = self._records[match_key]
             response_record = match['therapy']
             records.append(response_record)
         return self.NormalizerResponse(
-            query, match_type, tuple(records)
+            match_type, tuple(records)
         )
 
     def _load_data(self, *args, **kwargs):

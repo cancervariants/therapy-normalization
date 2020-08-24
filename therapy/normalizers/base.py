@@ -17,10 +17,6 @@ class Base(ABC):
 
     def __init__(self, *args, **kwargs):
         """Initialize the normalizer."""
-        self._data = None
-        self._exact_index = dict()
-        self._lower_index = dict()
-        self._records = dict()
         self._load_data(*args, **kwargs)
 
     @abstractmethod
@@ -34,7 +30,7 @@ class Base(ABC):
 
     NormalizerResponse = namedtuple(
         'NormalizerResponse',
-        ['query', 'match_type', 'records']
+        ['match_type', 'records']
     )
 
 
