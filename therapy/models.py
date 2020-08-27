@@ -1,6 +1,7 @@
 """Data models for representing VICC normalized therapy records."""
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel
+from enum import IntEnum
 
 
 class Therapy(BaseModel):
@@ -21,10 +22,21 @@ class Therapy(BaseModel):
 #     value_identifier: str
 
 
+class PhaseEnum(IntEnum):
+    """An enumerated drug development phase type."""
+
+    preclinical = 0
+    phase_i_trials = 1
+    phase_ii_trials = 2
+    phase_iii_trials = 3
+    approved = 4
+
+
 class Drug(Therapy):
     """A pharmacologic substance used to treat a medical condition."""
 
-    pass
+    max_phase: Optional[PhaseEnum]
+    withdrawn: Optional[bool]
 
 
 class DrugGroup(Therapy):

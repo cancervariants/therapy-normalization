@@ -42,14 +42,20 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
 
     def normalize(self, query):
         """Normalize term using Wikidata"""
-        if query in self._exact_index:
-            match_keys = self._exact_index[query]
-            match_type = MatchType.EXACT
-        elif query.lower() in self._lower_index:
-            match_keys = self._lower_index[query.lower()]
-            match_type = MatchType.CASE_INSENSITIVE
+        if query in self._primary_index:
+            match_keys = self._primary_index[query]
+            match_type = MatchType.PRIMARY
+        elif query.lower() in self._lower_primary_index:
+            match_keys = self._lower_primary_index[query.lower()]
+            match_type = MatchType.CASE_INSENSITIVE_PRIMARY
+        elif query in self._alias_index:
+            match_keys = self._alias_index[query]
+            match_type = MatchType.ALIAS
+        elif query.lower() in self._lower_alias_index:
+            match_keys = self._lower_alias_index[query.lower()]
+            match_type = MatchType.CASE_INSENSITIVE_ALIAS
         else:
-            return self.NormalizerResponse(None, tuple())
+            return self.NormalizerResponse(MatchType.NO_MATCH, tuple())
         records = list()
         for match_key in match_keys:
             match = self._records[match_key]
@@ -64,14 +70,18 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         assert wd_file.exists()  # TODO: issue #7
         with open(wd_file, 'r') as f:
             self._data = json.load(f)
-        self._exact_index = dict()
-        self._lower_index = dict()
+        self._primary_index = dict()
+        self._lower_primary_index = dict()
+        self._alias_index = dict()
+        self._lower_alias_index = dict()
         self._records = dict()
         i = 0
         for record in self._data:
             i += 1
             record_id = record['item'].split('/')[-1]
             for k, v in record.items():
+                exact_index = self._primary_index
+                lower_index = self._lower_primary_index
                 if k == 'item':
                     k = 'wikidata'
                     v = record_id
@@ -79,9 +89,12 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                     k = 'label'
                 elif k == 'therapy':
                     raise ValueError
-                s = self._exact_index.setdefault(v, set())
+                elif k == 'alias':
+                    exact_index = self._alias_index
+                    lower_index = self._lower_alias_index
+                s = exact_index.setdefault(v, set())
                 s.add(record_id)
-                s = self._lower_index.setdefault(v.lower(), set())
+                s = lower_index.setdefault(v.lower(), set())
                 s.add(record_id)
                 d = self._records.setdefault(record_id, dict())
                 if k != 'wikidata':
@@ -92,9 +105,9 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                 if k not in IDENTIFIER_PREFIXES:
                     continue
                 v = f'{IDENTIFIER_PREFIXES[k]}:{v}'
-                s = self._exact_index.setdefault(v, set())
+                s = exact_index.setdefault(v, set())
                 s.add(record_id)
-                s = self._lower_index.setdefault(v.lower(), set())
+                s = lower_index.setdefault(v.lower(), set())
                 s.add(record_id)
                 d = self._records[record_id]
                 s = d.setdefault('other_identifiers', set())

@@ -6,7 +6,7 @@ IDENTIFIER_PREFIXES = {
     'casRegistry': 'chemidplus',
     'pubchemCompound': 'pubchem.compound',
     'pubchemSubstance': 'pubchem.substance',
-    'chembl': 'chembl.compound',
+    'chembl': 'chembl',
     'rxnorm': 'rxcui',
     'drugbank': 'drugbank'
 }
@@ -37,5 +37,9 @@ class Base(ABC):
 class MatchType:
     """Define string constants for use in Match Type attributes"""
 
-    EXACT = 'Exact'
-    CASE_INSENSITIVE = 'Case-insensitive'
+    PRIMARY = 100
+    CASE_INSENSITIVE_PRIMARY = 80
+    ALIAS = 60
+    CASE_INSENSITIVE_ALIAS = 40
+    FUZZY_MATCH = 20
+    NO_MATCH = 0

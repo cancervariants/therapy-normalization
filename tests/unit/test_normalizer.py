@@ -27,7 +27,7 @@ def cisplatin():
 def test_wikidata_normalize(cisplatin, wikidata):
     """Test that cisplatin term normalizes to correct drug concept."""
     normalizer_response = wikidata.normalize('cisplatin')
-    assert normalizer_response.match_type == MatchType.EXACT
+    assert normalizer_response.match_type == MatchType.PRIMARY
     assert len(normalizer_response.records) == 1
     normalized_drug = normalizer_response.records[0]
     assert normalized_drug.label == cisplatin.label
