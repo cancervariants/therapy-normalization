@@ -1,8 +1,9 @@
 """This module provides methods for handling queries"""
-from therapy.normalizers import Wikidata
+from therapy.normalizers import Wikidata, ChEMBL
 
 normalizers = [
     Wikidata(),
+    ChEMBL()
 ]
 
 

@@ -1,6 +1,7 @@
 """A base class for normalizing therapy terms."""
 from abc import ABC, abstractmethod
 from collections import namedtuple
+from enum import IntEnum
 
 IDENTIFIER_PREFIXES = {
     'casRegistry': 'chemidplus',
@@ -10,6 +11,17 @@ IDENTIFIER_PREFIXES = {
     'rxnorm': 'rxcui',
     'drugbank': 'drugbank'
 }
+
+
+class MatchType(IntEnum):
+    """Define string constants for use in Match Type attributes"""
+
+    PRIMARY = 100
+    CASE_INSENSITIVE_PRIMARY = 80
+    ALIAS = 60
+    CASE_INSENSITIVE_ALIAS = 40
+    FUZZY_MATCH = 20
+    NO_MATCH = 0
 
 
 class Base(ABC):
@@ -32,14 +44,3 @@ class Base(ABC):
         'NormalizerResponse',
         ['match_type', 'records']
     )
-
-
-class MatchType:
-    """Define string constants for use in Match Type attributes"""
-
-    PRIMARY = 100
-    CASE_INSENSITIVE_PRIMARY = 80
-    ALIAS = 60
-    CASE_INSENSITIVE_ALIAS = 40
-    FUZZY_MATCH = 20
-    NO_MATCH = 0
