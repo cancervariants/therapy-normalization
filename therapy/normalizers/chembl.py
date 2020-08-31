@@ -77,7 +77,7 @@ class ChEMBL(Base):
         molregno_list = [x[0] for x
                          in self._cursor.execute(command).fetchall()]
         records = [self._create_drug_record(molregno) for molregno
-                   in molregno_list]
+                   in list(set(molregno_list))]
         return records
 
     def _create_drug_record(self, molregno):
