@@ -109,6 +109,23 @@ class ChEMBL(Base):
         resp = self._cursor.execute(command).fetchall()
         synonyms = tuple(set([x[0] for x in resp]))
         kwargs['aliases'] = synonyms
+
+        command = f"""
+            SELECT product_id FROM formulations
+            WHERE molregno={molregno}
+        """
+        resp = self._cursor.execute(command).fetchall()
+        product_ids = ['"{}"'.format(product_id) for product_id in tuple(set([x[0] for x in resp]))]
+        if len(product_ids) > 0:
+            command = f"""
+                SELECT trade_name,product_id FROM products
+                WHERE product_id IN ({','.join(product_ids)})
+            """
+            resp = self._cursor.execute(command).fetchall()
+            trade_names = tuple(set([x[0] for x in resp]))
+            if len(trade_names) == 1:
+                kwargs['trade_name'] = trade_names[0]
+
         d = Drug(**kwargs)
         # create a Drug object from response
         return d
