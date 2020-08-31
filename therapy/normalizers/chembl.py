@@ -97,6 +97,11 @@ class ChEMBL(Base):
             'withdrawn': result[3],
             'other_identifiers': list()
         }
+        if result[1] is None:
+            kwargs['label'] = result[0]
+        else:
+            kwargs['label'] = result[1]
+
         command = f"""
             SELECT synonyms FROM molecule_synonyms
             WHERE molregno={molregno}
