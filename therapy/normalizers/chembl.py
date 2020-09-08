@@ -16,8 +16,8 @@ class ChEMBL(Base):
 
     def normalize(self, query):
         """Normalize term using ChEMBL."""
-        if query.startswith('chembl:'):
-            records = self._query_molecules(query.replace('chembl:', ''), 'molecule_dictionary',
+        if query.lower().startswith('chembl:'):
+            records = self._query_molecules(query.lower().replace('chembl:', ''), 'molecule_dictionary',
                                             'chembl_id')
         else:
             records = self._query_molecules(query, 'molecule_dictionary',
