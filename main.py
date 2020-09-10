@@ -1,6 +1,8 @@
 """Main application for FastAPI"""
 from therapy.query import normalize
 from fastapi import FastAPI
+import html
+from typing import Optional
 
 app = FastAPI()
 
@@ -11,8 +13,8 @@ def read_root():
     return {"Hello": "World"}
 
 
-@app.get("/query/{q_string}")
-def read_query(q_string: str):
-    """Endpoint to return normalized responses for a the query"""
-    resp = normalize(q_string)
+@app.get("/search")
+def read_query(q: Optional[str] = ''):
+    """Endpoint to return normalized responses for a query"""
+    resp = normalize(html.unescape(q))
     return resp

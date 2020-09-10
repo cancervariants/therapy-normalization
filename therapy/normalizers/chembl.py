@@ -16,9 +16,13 @@ class ChEMBL(Base):
 
     def normalize(self, query):
         """Normalize term using ChEMBL."""
+        if query == '':
+            return self.NormalizerResponse(MatchType.NO_MATCH, tuple())
         if query.lower().startswith('chembl:'):
-            records = self._query_molecules(query.lower().replace('chembl:', ''), 'molecule_dictionary',
-                                            'chembl_id')
+            records = self._query_molecules(
+                query.lower().replace('chembl:', ''),
+                'molecule_dictionary',
+                'chembl_id')
         else:
             records = self._query_molecules(query, 'molecule_dictionary',
                                             'chembl_id')
@@ -67,15 +71,17 @@ class ChEMBL(Base):
         if lower:
             command = f"""
                 SELECT molregno FROM {table}
-                WHERE {field}='{query}';
+                WHERE {field} = ?;
             """
+            params = [query]
         else:
             command = f"""
                 SELECT molregno FROM {table}
-                WHERE lower({field})='{query.lower()}';
+                WHERE lower({field}) = ?;
             """
+            params = [query.lower()]
         molregno_list = [x[0] for x
-                         in self._cursor.execute(command).fetchall()]
+                         in self._cursor.execute(command, params).fetchall()]
         records = [self._create_drug_record(molregno) for molregno
                    in list(set(molregno_list))]
         return records
@@ -110,7 +116,8 @@ class ChEMBL(Base):
             WHERE molregno={molregno}
         """
         resp = self._cursor.execute(command).fetchall()
-        product_ids = ['"{}"'.format(product_id) for product_id in tuple(set([x[0] for x in resp]))]
+        product_ids = ['"{}"'.format(product_id) for product_id in
+                       tuple(set([x[0] for x in resp]))]
         if len(product_ids) > 0:
             command = f"""
                 SELECT trade_name,product_id FROM products
