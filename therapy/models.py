@@ -38,6 +38,7 @@ class Drug(Therapy):
     max_phase: Optional[PhaseEnum]
     withdrawn: Optional[bool]
     trade_name: Optional[str]
+    label: Optional[str]
 
 
 class DrugGroup(Therapy):
