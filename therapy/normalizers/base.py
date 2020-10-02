@@ -17,6 +17,7 @@ class MatchType(IntEnum):
     """Define string constants for use in Match Type attributes"""
 
     PRIMARY = 100
+    NAMESPACE_CASE_INSENSITIVE = 95
     CASE_INSENSITIVE_PRIMARY = 80
     ALIAS = 60
     CASE_INSENSITIVE_ALIAS = 40
