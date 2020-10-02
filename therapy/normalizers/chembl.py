@@ -68,7 +68,7 @@ class ChEMBL(Base):
                                                'synonyms')
 
     def _query_molecules(self, query, table, field, lower=False):
-        if lower:
+        if not lower:
             command = f"""
                 SELECT molregno FROM {table}
                 WHERE {field} = ?;
