@@ -1,4 +1,4 @@
-"""Test that the therapy normalizer works as intended."""
+"""Test that the chEMBL therapy normalizer works as intended."""
 import pytest
 from therapy.normalizers import ChEMBL
 from therapy.models import Drug
@@ -7,7 +7,7 @@ from therapy.normalizers.base import MatchType
 
 @pytest.fixture(scope='module')
 def chembl():
-    """Create a Wikidata normalizer instance."""
+    """Create a chEMBL normalizer instance."""
     c = ChEMBL()
     return c
 
