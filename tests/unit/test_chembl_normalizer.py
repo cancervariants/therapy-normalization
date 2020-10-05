@@ -44,8 +44,8 @@ def test_case_sensitive_primary(cisplatin, chembl):
 
 
 def test_case_insensitive_primary(cisplatin, chembl):
-    """Test that cisplatin term normalizes to correct drug concept
-    as a PRIMARY match.
+    """Tests that cisplatin term normalizes to correct drug concept
+    as CASE_INSENSITIVE_PRIMARY, NAMESPACE_CASE_INSENSITIVE matches.
     """
     normalizer_response = chembl.normalize('cisplatin')
     assert normalizer_response.match_type == MatchType.CASE_INSENSITIVE_PRIMARY
