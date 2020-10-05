@@ -1,0 +1,1094 @@
+[
+    {
+        "alias": "CDDP",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "Cis-DDP",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "CIS-DDP",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "cis-diamminedichloroplatinum(II)",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "Platinol",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "Platinol-AQ",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "CDDP",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "Cis-DDP",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "CIS-DDP",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "cis-diamminedichloroplatinum(II)",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "Platinol",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "Platinol-AQ",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "Baypresol",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Becanta",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Becanta",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Dopamet",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Dopamet",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Dopamet\u00ae",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Dopamet\u00ae",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Dopamethyperpax",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Dopamethyperpax",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Dopatec",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Dopatec",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Dopegyt",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Dopegyt",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Grospisk",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Grospisk",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "AMD",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "AMD",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "(-)-a-methyldopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "(-)-a-methyldopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "(-)-alpha-methyldopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "(-)-alpha-methyldopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "(-)-methyldopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "(-)-methyldopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "(2S)-2-amino-3-(3,4-dihydroxyphenyl)-2-methylpropanoic acid",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "(2S)-2-amino-3-(3,4-dihydroxyphenyl)-2-methylpropanoic acid",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "(S)-(-)-a-methyldopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "(S)-(-)-a-methyldopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "(S)-(-)-alpha-Methyldopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Novo-Medopa Tab 125mg",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Novo-Medopa Tab 125mg",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Novo-Medopa Tab 250mg",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Novo-Medopa Tab 250mg",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Novo-Medopa Tab 500mg",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Novo-Medopa Tab 500mg",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Novomedopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Novomedopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Nu-medopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Nu-medopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Nu-Medopa Tab 125mg",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Nu-Medopa Tab 125mg",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Nu-Medopa Tab 250mg",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Nu-Medopa Tab 250mg",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Nu-Medopa Tab 500mg",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Nu-Medopa Tab 500mg",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Presinol",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Presinol",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Presolisin",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Presolisin",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Sedometil",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Sedometil",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Sembrina",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Sembrina",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "\u03b1-Methyl dopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "\u03b1-Methyl dopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "\u03b1-methyl-L-dopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "\u03b1-methyl-L-dopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Hyperpax",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Hyperpax",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "Hypolag",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "Hypolag",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "L-(-)-3-(3,4-Dihydroxyphenyl)-2-methyl-Alanine",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "L-(-)-3-(3,4-Dihydroxyphenyl)-2-methyl-Alanine",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "L-(-)-3-(3,4-Dihydroxyphenyl)-2-methylalanine",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "L-(-)-3-(3,4-Dihydroxyphenyl)-2-methylalanine",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "L-(-)-a-Methyl-a-methyl-Aldomin",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "L-(-)-a-Methyl-a-methyl-Aldomin",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "L-(-)-alpha-Methyl-alpha-methyl-Aldomin",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "L-(-)-alpha-Methyl-alpha-methyl-Aldomin",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "L-(-)-alpha-Methyl-beta-(3,4-dihydroxyphenyl)alanine",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "L-(-)-alpha-Methyl-beta-(3,4-dihydroxyphenyl)alanine",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "L-(a-MD)",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "L-(a-MD)",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "L-(alpha-Md)",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "L-(alpha-Md)",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "L-2-Amino-2-methyl-3-(3,4-dihydroxyphenyl)propionic acid",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "L-2-Amino-2-methyl-3-(3,4-dihydroxyphenyl)propionic acid",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "l-3-(3,4-Dihydroxyphenyl)-2-methylalanine",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "l-3-(3,4-Dihydroxyphenyl)-2-methylalanine",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "L-a-Methyl-(3, 4-dihydroxyphenyl)alanine",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "L-a-Methyl-(3, 4-dihydroxyphenyl)alanine",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "1545996"
+    },
+    {
+        "alias": "L-a-Methyldopa",
+        "casRegistry": "555-30-6",
+        "chembl": "CHEMBL459",
+        "drugbank": "00968",
+        "item": "http://www.wikidata.org/entity/Q412621",
+        "itemLabel": "methyldopa",
+        "pubchemCompound": "38853",
+        "rxnorm": "6876"
+    },
+    {
+        "alias": "CIFN",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "consensus interferon",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "IFN Alfacon-1",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "Interferon Consensus, Methionyl",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "methionyl interferon consensus",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "methionyl-interferon-consensus",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "rCon-IFN",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "Recombinant Consensus Interferon",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "Recombinant methionyl human consensus interferon",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "CIFN",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "consensus interferon",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "IFN Alfacon-1",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "Interferon Consensus, Methionyl",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "methionyl interferon consensus",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "methionyl-interferon-consensus",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "rCon-IFN",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "Recombinant Consensus Interferon",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "Recombinant methionyl human consensus interferon",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    }
+]

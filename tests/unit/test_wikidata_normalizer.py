@@ -1,5 +1,6 @@
 """Test that the therapy normalizer works as intended."""
 import pytest
+from therapy import PROJECT_ROOT
 from therapy.normalizers import Wikidata
 from therapy.models import Drug
 from therapy.normalizers.base import MatchType
@@ -8,7 +9,9 @@ from therapy.normalizers.base import MatchType
 @pytest.fixture(scope='module')
 def wikidata():
     """Create a Wikidata normalizer instance."""
-    w = Wikidata()
+    wd_file = PROJECT_ROOT / 'tests' / 'unit' / 'data' \
+        / 'wikidata_test_ver.json'
+    w = Wikidata(data_path=wd_file)
     return w
 
 
