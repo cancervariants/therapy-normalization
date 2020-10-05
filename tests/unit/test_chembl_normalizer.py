@@ -3,12 +3,14 @@ import pytest
 from therapy.normalizers import ChEMBL
 from therapy.models import Drug
 from therapy.normalizers.base import MatchType
+from therapy import PROJECT_ROOT
 
 
 @pytest.fixture(scope='module')
 def chembl():
     """Create a chEMBL normalizer instance."""
-    c = ChEMBL()
+    chembl_db = PROJECT_ROOT / 'test' / 'unit' / 'data' / 'chembl_27_test.db'
+    c = ChEMBL(data_path=chembl_db)
     return c
 
 
