@@ -16,13 +16,32 @@ class ChEMBL(Base):
 
     def normalize(self, query):
         """Normalize term using ChEMBL."""
+        query = query.strip()
         if query == '':
             return self.NormalizerResponse(MatchType.NO_MATCH, tuple())
         if query.lower().startswith('chembl:'):
+            namespace_case_match = query.startswith('chembl:')
+            q_string = query.split(':')[1]
             records = self._query_molecules(
-                query.lower().replace('chembl:', ''),
+                q_string,
                 'molecule_dictionary',
                 'chembl_id')
+            if records and namespace_case_match:
+                return self.NormalizerResponse(MatchType.PRIMARY, records)
+            elif records:
+                return self.NormalizerResponse(
+                    MatchType.NAMESPACE_CASE_INSENSITIVE, records
+                )
+            records = self._query_molecules(
+                q_string,
+                'molecule_dictionary',
+                'chembl_id',
+                lower=True
+            )
+            if records:
+                return self.NormalizerResponse(
+                    MatchType.CASE_INSENSITIVE_PRIMARY, records
+                )
         else:
             records = self._query_molecules(query, 'molecule_dictionary',
                                             'chembl_id')
@@ -68,7 +87,7 @@ class ChEMBL(Base):
                                                'synonyms')
 
     def _query_molecules(self, query, table, field, lower=False):
-        if lower:
+        if not lower:
             command = f"""
                 SELECT molregno FROM {table}
                 WHERE {field} = ?;
