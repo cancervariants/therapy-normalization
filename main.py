@@ -15,7 +15,9 @@ def read_root():
 
 @app.get("/search")
 def read_query(q: Optional[str] = '',
-               keyed: Optional[bool] = False):
+               keyed: Optional[bool] = False,
+               incl: Optional[str] = '',
+               excl: Optional[str] = ''):
     """Endpoint to return normalized responses for a query"""
-    resp = normalize(html.unescape(q), keyed=keyed)
+    resp = normalize(html.unescape(q), keyed=keyed, incl=incl, excl=excl)
     return resp
