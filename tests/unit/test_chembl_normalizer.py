@@ -150,3 +150,11 @@ def test_case_empty_query(chembl):
     normalizer_response = chembl.normalize('')
     assert normalizer_response.match_type == MatchType.NO_MATCH
     assert len(normalizer_response.records) == 0
+
+
+def test_license_info(cisplatin, chembl):
+    """Test that license info is present in meta field."""
+    normalizer_response = chembl.normalize('cisplatin')
+    assert normalizer_response.meta_.data_license == 'CC BY-SA 3.0'
+    assert normalizer_response.meta_.data_license_url == \
+           'https://creativecommons.org/licenses/by-sa/3.0/'

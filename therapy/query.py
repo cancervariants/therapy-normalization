@@ -67,7 +67,8 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
             results = normalizer.normalize(query_str)
             resp['normalizer_matches'][normalizer.__class__.__name__] = {
                 'match_type': results.match_type,
-                'records': results.records
+                'records': results.records,
+                'meta_': results.meta_._asdict(),
             }
     else:
         resp['normalizer_matches'] = list()
@@ -77,5 +78,6 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
                 'normalizer': normalizer.__class__.__name__,
                 'match_type': results.match_type,
                 'records': results.records,
+                'meta_': results.meta_._asdict(),
             })
     return resp

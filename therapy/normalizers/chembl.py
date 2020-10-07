@@ -1,5 +1,5 @@
 """This module defines the ChEMBL normalizer"""
-from .base import Base, MatchType
+from .base import Base, MatchType, Meta
 from therapy import PROJECT_ROOT
 from therapy.models import Drug
 from ftplib import FTP
@@ -14,11 +14,17 @@ logger.setLevel(logging.DEBUG)
 class ChEMBL(Base):
     """A normalizer using the ChEMBL resource."""
 
+    meta_ = Meta('CC BY-SA 3.0',
+                 'https://creativecommons.org/licenses/by-sa/3.0/')
+
+    def _build_response(self, match_type, records):
+        return self.NormalizerResponse(match_type, records, self.meta_)
+
     def normalize(self, query):
         """Normalize term using ChEMBL."""
         query = query.strip()
         if query == '':
-            return self.NormalizerResponse(MatchType.NO_MATCH, tuple())
+            return self._build_response(MatchType.NO_MATCH, tuple())
         if query.lower().startswith('chembl:'):
             namespace_case_match = query.startswith('chembl:')
             q_string = query.split(':')[1]
@@ -27,9 +33,9 @@ class ChEMBL(Base):
                 'molecule_dictionary',
                 'chembl_id')
             if records and namespace_case_match:
-                return self.NormalizerResponse(MatchType.PRIMARY, records)
+                return self._build_response(MatchType.PRIMARY, records)
             elif records:
-                return self.NormalizerResponse(
+                return self._build_response(
                     MatchType.NAMESPACE_CASE_INSENSITIVE, records
                 )
             records = self._query_molecules(
@@ -39,33 +45,38 @@ class ChEMBL(Base):
                 lower=True
             )
             if records:
-                return self.NormalizerResponse(
+                return self._build_response(
                     MatchType.CASE_INSENSITIVE_PRIMARY, records
                 )
         else:
             records = self._query_molecules(query, 'molecule_dictionary',
                                             'chembl_id')
         if records:
-            return self.NormalizerResponse(MatchType.PRIMARY, records)
+            return self._build_response(MatchType.PRIMARY, records)
         records = self._query_molecules(query, 'molecule_dictionary',
                                         'pref_name')
         if records:
-            return self.NormalizerResponse(MatchType.PRIMARY, records)
+            return self._build_response(MatchType.PRIMARY, records)
         records = self._query_molecules(query, 'molecule_dictionary',
                                         'pref_name', lower=True)
         if records:
-            return self.NormalizerResponse(MatchType.CASE_INSENSITIVE_PRIMARY,
-                                           records)
+            return self._build_response(MatchType.CASE_INSENSITIVE_PRIMARY,
+                                        records)
         records = self._query_molecules(query, 'molecule_synonyms',
                                         'synonyms')
         if records:
-            return self.NormalizerResponse(MatchType.ALIAS, records)
+            return self._build_response(MatchType.ALIAS, records)
         records = self._query_molecules(query, 'molecule_synonyms',
                                         'synonyms', lower=True)
         if records:
-            return self.NormalizerResponse(MatchType.CASE_INSENSITIVE_ALIAS,
-                                           records)
-        return self.NormalizerResponse(MatchType.NO_MATCH, tuple())
+            return self._build_response(MatchType.CASE_INSENSITIVE_ALIAS,
+                                        records)
+        return self._build_response(MatchType.NO_MATCH, tuple())
+
+    @property
+    def _meta_(self):
+        return Meta('CC BY-SA 3.0',
+                    'https://creativecommons.org/licenses/by-sa/3.0/')
 
     def _load_data(self, *args, **kwargs):
         if 'data_path' in kwargs:
