@@ -66,6 +66,16 @@ def test_query_specify_normalizers():
     assert 'Wikidata' not in matches
     assert 'ChEMBL' not in matches
 
+    # test case insensitive
+    resp = normalize('cisplatin', keyed=True, excl='ChEmBl')
+    matches = resp['normalizer_matches']
+    assert 'Wikidata' in matches
+    assert 'ChEMBL' not in matches
+    resp = normalize('cisplatin', keyed=True, incl='wIkIdAtA,cHeMbL')
+    matches = resp['normalizer_matches']
+    assert 'Wikidata' in matches
+    assert 'ChEMBL' in matches
+
     # test error on invalid normalizer names
     with pytest.raises(HTTPException):
         resp = normalize('cisplatin', keyed=True, incl='chambl')
