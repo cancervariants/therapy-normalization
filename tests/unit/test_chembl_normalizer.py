@@ -75,3 +75,11 @@ def test_case_insensitive_primary(cisplatin, chembl):
     normalized_drug = normalizer_response.records[0]
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+
+
+def test_license_info(cisplatin, chembl):
+    """Test that license info is present in meta field."""
+    normalizer_response = chembl.normalize('cisplatin')
+    assert normalizer_response._meta_.data_license == 'CC BY-SA 3.0'
+    assert normalizer_response._meta_.data_license_url == \
+           'https://creativecommons.org/licenses/by-sa/3.0/'

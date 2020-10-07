@@ -1,5 +1,5 @@
 """This module defines the ChEMBL normalizer"""
-from .base import Base, MatchType
+from .base import Base, MatchType, Meta
 from therapy import PROJECT_ROOT
 from therapy.models import Drug
 from ftplib import FTP
@@ -66,6 +66,11 @@ class ChEMBL(Base):
             return self.NormalizerResponse(MatchType.CASE_INSENSITIVE_ALIAS,
                                            records)
         return self.NormalizerResponse(MatchType.NO_MATCH, tuple())
+
+    @property
+    def _meta_(self):
+        return Meta('CC BY-SA 3.0',
+                    'https://creativecommons.org/licenses/by-sa/3.0/')
 
     def _load_data(self, *args, **kwargs):
         chembl_db = PROJECT_ROOT / 'data' / 'chembl_27' \

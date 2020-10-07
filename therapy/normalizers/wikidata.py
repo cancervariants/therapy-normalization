@@ -1,5 +1,5 @@
 """This module defines the Wikidata normalizer"""
-from .base import Base, IDENTIFIER_PREFIXES, MatchType
+from .base import Base, IDENTIFIER_PREFIXES, MatchType, Meta
 from therapy import PROJECT_ROOT
 import json
 from therapy.models import Drug
@@ -62,8 +62,13 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
             response_record = match['therapy']
             records.append(response_record)
         return self.NormalizerResponse(
-            match_type, tuple(records)
+            match_type, tuple(records), meta=self._meta_
         )
+
+    @property
+    def _meta_(self):
+        return Meta('CC0 1.0',
+                    'https://creativecommons.org/publicdomain/zero/1.0/')
 
     def _load_data(self, *args, **kwargs):
         wd_file = PROJECT_ROOT / 'data' / 'wikidata_medications.json'

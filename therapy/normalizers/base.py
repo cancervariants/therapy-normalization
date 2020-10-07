@@ -25,12 +25,21 @@ class MatchType(IntEnum):
     NO_MATCH = 0
 
 
+Meta = namedtuple(
+    'meta', ['data_license', 'data_license_url']
+)
+
+
 class Base(ABC):
     """The normalizer base class."""
 
     def __init__(self, *args, **kwargs):
         """Initialize the normalizer."""
         self._load_data(*args, **kwargs)
+
+    @abstractmethod
+    def _meta_(self, *args, **kwargs):
+        raise NotImplementedError
 
     @abstractmethod
     def _load_data(self, *args, **kwargs):
@@ -43,5 +52,5 @@ class Base(ABC):
 
     NormalizerResponse = namedtuple(
         'NormalizerResponse',
-        ['match_type', 'records']
+        ['match_type', 'records', 'meta']
     )

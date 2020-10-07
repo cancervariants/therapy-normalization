@@ -32,3 +32,11 @@ def test_wikidata_normalize(cisplatin, wikidata):
     normalized_drug = normalizer_response.records[0]
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+
+
+def test_license_info(cisplatin, wikidata):
+    """Test that license info is present in meta field."""
+    normalizer_response = wikidata.normalize('cisplatin')
+    assert normalizer_response._meta_.data_license == 'CC0 1.0'
+    assert normalizer_response._meta_.data_license_url == \
+           'https://creativecommons.org/publicdomain/zero/1.0/'
