@@ -9,15 +9,23 @@ normalizers = [
 
 
 def normalize(query_str, keyed='false', incl='', excl='', **params):
-    """Return normalized therapy objects given a query_str
+    """Fetch normalized therapy objects.
 
-    Param args
-       * keyed: bool - if true, return response as dict of normalizer
-         responses, otherwise, return as a list
-       * incl: str - string, to be split, of comma-separated normalizers to
-         include in response
-       * excl: str - string, to be split, of comma-separated normalizers to
-         exclude in response
+    Args:
+        query_str: query, a string, to search for
+        keyed: bool - if true, return response as dict keying normalizer names
+            to normalizer objects; otherwise, return list of normalizer objects
+        incl: str containing comma-separated names of normalizers to use. Will
+            exclude all other normalizers. Case-insensitive. Raises
+            HTTPException if both incl and excl args are provided, or if
+            invalid normalizer names are given.
+        excl: str containing comma-separated names of normalizers to exclude.
+            Will include all other normalizers. Case-insensitive. Raises
+            HTTPException if both incl and excl args are provided, or if
+            invalid normalizer names are given.
+
+    Returns:
+        Dict containing all matches found in normalizers.
     """
     resp = {
         'query': query_str,
