@@ -1,6 +1,5 @@
 """Test therapy querying method"""
-from therapy.query import normalize
-from fastapi import HTTPException
+from therapy.query import normalize, InvalidParameterException
 import pytest
 
 
@@ -77,14 +76,14 @@ def test_query_specify_normalizers():
     assert 'ChEMBL' in matches
 
     # test error on invalid normalizer names
-    with pytest.raises(HTTPException):
+    with pytest.raises(InvalidParameterException):
         resp = normalize('cisplatin', keyed=True, incl='chambl')
 
     # assert resp is error # TODO ??
-    with pytest.raises(HTTPException):
+    with pytest.raises(InvalidParameterException):
         resp = normalize('cisplatin', keyed=True, excl='wakidata')
 
     # test error for supplying both incl and excl args
-    with pytest.raises(HTTPException):
+    with pytest.raises(InvalidParameterException):
         resp = normalize('cisplatin', keyed=True, incl='chembl',
                          excl='wikidata')

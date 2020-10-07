@@ -1,11 +1,22 @@
 """This module provides methods for handling queries"""
 from therapy.normalizers import Wikidata, ChEMBL
-from fastapi import HTTPException
 
 normalizers = [
     Wikidata(),
     ChEMBL()
 ]
+
+
+class InvalidParameterException(Exception):
+    """Exception for invalid parameter args provided by the user"""
+
+    def __init__(self, message):
+        """Create new instance
+
+        Args:
+            message: string describing the nature of the error
+        """
+        super().__init__(message)
 
 
 def normalize(query_str, keyed='false', incl='', excl='', **params):
@@ -17,12 +28,12 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
             to normalizer objects; otherwise, return list of normalizer objects
         incl: str containing comma-separated names of normalizers to use. Will
             exclude all other normalizers. Case-insensitive. Raises
-            HTTPException if both incl and excl args are provided, or if
-            invalid normalizer names are given.
+            InvalidParameterException if both incl and excl args are provided,
+            or if invalid normalizer names are given.
         excl: str containing comma-separated names of normalizers to exclude.
             Will include all other normalizers. Case-insensitive. Raises
-            HTTPException if both incl and excl args are provided, or if
-            invalid normalizer names are given.
+            InvalidParameterException if both incl and excl args are provided,
+            or if invalid normalizer names are given.
 
     Returns:
         Dict containing all matches found in normalizers.
@@ -35,7 +46,7 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
         query_normalizers = normalizers[:]
     elif incl and excl:
         detail = "Cannot request both normalizer inclusions and exclusions"
-        raise HTTPException(status_code=422, detail=detail)
+        raise InvalidParameterException(detail)
     elif incl:
         req_normalizers = incl.lower().split(',')
         req_normalizers = [n.strip() for n in req_normalizers]
@@ -47,7 +58,7 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
                            in query_normalizers]
             invalid_names = set(req_normalizers).difference(valid_names)
             detail = f"Invalid normalizer name(s): {invalid_names}"
-            raise HTTPException(status_code=422, detail=detail)
+            raise InvalidParameterException(detail)
     else:
         req_exclusions = excl.lower().split(',')
         req_exclusions = [n.strip() for n in req_exclusions]
@@ -59,7 +70,7 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
                            in query_normalizers]
             invalid_names = set(req_exclusions).difference(valid_names)
             detail = f"Invalider normalizer name(s): {invalid_names}"
-            raise HTTPException(status_code=422, detail=detail)
+            raise InvalidParameterException(detail)
 
     if keyed:
         resp['normalizer_matches'] = dict()
