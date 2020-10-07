@@ -39,6 +39,8 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
   }
 }
 """
+    meta_ = Meta('CC0 1.0',
+                 'https://creativecommons.org/publicdomain/zero/1.0/')
 
     def normalize(self, query):
         """Normalize term using Wikidata"""
@@ -55,20 +57,16 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
             match_keys = self._lower_alias_index[query.lower()]
             match_type = MatchType.CASE_INSENSITIVE_ALIAS
         else:
-            return self.NormalizerResponse(MatchType.NO_MATCH, tuple())
+            return self.NormalizerResponse(MatchType.NO_MATCH, tuple(),
+                                           self.meta_)
         records = list()
         for match_key in match_keys:
             match = self._records[match_key]
             response_record = match['therapy']
             records.append(response_record)
         return self.NormalizerResponse(
-            match_type, tuple(records), meta=self._meta_
+            match_type, tuple(records), self.meta_
         )
-
-    @property
-    def _meta_(self):
-        return Meta('CC0 1.0',
-                    'https://creativecommons.org/publicdomain/zero/1.0/')
 
     def _load_data(self, *args, **kwargs):
         wd_file = PROJECT_ROOT / 'data' / 'wikidata_medications.json'
