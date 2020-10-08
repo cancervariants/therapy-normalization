@@ -42,6 +42,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
 
     def normalize(self, query):
         """Normalize term using Wikidata"""
+        query = query.strip()
         if query in self._primary_index:
             match_keys = self._primary_index[query]
             match_type = MatchType.PRIMARY

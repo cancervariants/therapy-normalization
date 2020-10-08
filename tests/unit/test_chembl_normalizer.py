@@ -75,3 +75,12 @@ def test_case_insensitive_primary(cisplatin, chembl):
     normalized_drug = normalizer_response.records[0]
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+
+
+def test_non_breaking_space(cisplatin, chembl):
+    """Test that leading and trailing whitespace are removed."""
+    normalizer_response = chembl.normalize('    \u0020\xa0CISPLATIN    \xa0')
+    assert normalizer_response.match_type == MatchType.PRIMARY
+
+    normalizer_response = chembl.normalize('\u0020\xa0\u00A0CISplatin\xa0 \t')
+    assert normalizer_response.match_type == MatchType.CASE_INSENSITIVE_PRIMARY

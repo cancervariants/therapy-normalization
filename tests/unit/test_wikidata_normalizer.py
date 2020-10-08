@@ -32,3 +32,12 @@ def test_wikidata_normalize(cisplatin, wikidata):
     normalized_drug = normalizer_response.records[0]
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+
+
+def test_non_breaking_space(cisplatin, wikidata):
+    """Test that leading and trailing whitespace are removed."""
+    normalizer_response = wikidata.normalize('    \u0020\xa0cisplatin\xa0 \t')
+    assert normalizer_response.match_type == MatchType.PRIMARY
+
+    normalizer_response = wikidata.normalize(' \xa0\u00A0CISplatin\xa0 \t')
+    assert normalizer_response.match_type == MatchType.CASE_INSENSITIVE_PRIMARY
