@@ -25,6 +25,11 @@ class MatchType(IntEnum):
     NO_MATCH = 0
 
 
+Meta = namedtuple(
+    'Meta', ['data_license', 'data_license_url']
+)
+
+
 class Base(ABC):
     """The normalizer base class."""
 
@@ -43,5 +48,5 @@ class Base(ABC):
 
     NormalizerResponse = namedtuple(
         'NormalizerResponse',
-        ['match_type', 'records']
+        ['match_type', 'records', 'meta_']
     )
