@@ -4,8 +4,10 @@ from collections import namedtuple
 from enum import IntEnum
 import logging
 import re
+from uvicorn.config import logger
 
-logger = logging.getLogger('therapy')
+logging.basicConfig(filename='therapy.log', level=logging.DEBUG)
+logger = logging.getLogger('therapy') # noqa
 logger.setLevel(logging.DEBUG)
 
 IDENTIFIER_PREFIXES = {
@@ -48,6 +50,7 @@ class Base(ABC):
 
     def _white_space_sanitization(self, query):
         query = query.strip()
+        logger.info(query)
         nbsp = re.search("\u0020|\xa0|\u00A0|&nbsp;", query)
         if nbsp:
             logger.warning('Query contains non breaking space characters.')
