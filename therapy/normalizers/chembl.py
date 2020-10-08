@@ -79,8 +79,11 @@ class ChEMBL(Base):
                     'https://creativecommons.org/licenses/by-sa/3.0/')
 
     def _load_data(self, *args, **kwargs):
-        chembl_db = PROJECT_ROOT / 'data' / 'chembl_27' \
-            / 'chembl_27_sqlite' / 'chembl_27.db'
+        if 'data_path' in kwargs:
+            chembl_db = kwargs['data_path']
+        else:
+            chembl_db = PROJECT_ROOT / 'data' / 'chembl_27' \
+                / 'chembl_27_sqlite' / 'chembl_27.db'
         if not chembl_db.exists():
             chembl_archive = PROJECT_ROOT / 'data' / 'chembl_27_sqlite.tar.gz'
             chembl_archive.parent.mkdir(exist_ok=True)

@@ -69,7 +69,10 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         )
 
     def _load_data(self, *args, **kwargs):
-        wd_file = PROJECT_ROOT / 'data' / 'wikidata_medications.json'
+        if 'data_path' in kwargs:
+            wd_file = kwargs['data_path']
+        else:
+            wd_file = PROJECT_ROOT / 'data' / 'wikidata_medications.json'
         assert wd_file.exists()  # TODO: issue #7
         with open(wd_file, 'r') as f:
             self._data = json.load(f)
