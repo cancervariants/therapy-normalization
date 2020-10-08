@@ -2,6 +2,11 @@
 from abc import ABC, abstractmethod
 from collections import namedtuple
 from enum import IntEnum
+import logging
+import re
+
+logger = logging.getLogger('therapy')
+logger.setLevel(logging.DEBUG)
 
 IDENTIFIER_PREFIXES = {
     'casRegistry': 'chemidplus',
@@ -40,6 +45,13 @@ class Base(ABC):
     def normalize(self, query):
         """Normalize query to resource concept"""
         raise NotImplementedError
+
+    def _white_space_sanitization(self, query):
+        query = query.strip()
+        nbsp = re.search("\u0020|\xa0|\u00A0|&nbsp;", query)
+        if nbsp:
+            logger.warning('Query contains non breaking space characters.')
+        return query
 
     NormalizerResponse = namedtuple(
         'NormalizerResponse',

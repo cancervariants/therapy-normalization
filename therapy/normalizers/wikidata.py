@@ -3,8 +3,6 @@ from .base import Base, IDENTIFIER_PREFIXES, MatchType
 from therapy import PROJECT_ROOT
 import json
 from therapy.models import Drug
-import re
-import logging
 
 
 class Wikidata(Base):
@@ -44,8 +42,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
 
     def normalize(self, query):
         """Normalize term using Wikidata"""
-        query = query.strip()
-        self._check_nbsp_characters(query)
+        query = self._white_space_sanitization(query)
         if query in self._primary_index:
             match_keys = self._primary_index[query]
             match_type = MatchType.PRIMARY
@@ -127,8 +124,3 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                     'other_identifiers', set()))
             }
             self._records[k]['therapy'] = Drug(**params)
-
-    def _check_nbsp_characters(self, query):
-        nbsp = re.search("\u0020|\xa0|\u00A0|&nbsp;", query)
-        if nbsp:
-            logging.warning('Query contains non breaking space characters.')

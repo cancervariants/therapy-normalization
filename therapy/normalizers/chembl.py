@@ -6,7 +6,6 @@ from ftplib import FTP
 import logging
 import sqlite3
 import tarfile
-import re
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -17,8 +16,7 @@ class ChEMBL(Base):
 
     def normalize(self, query):
         """Normalize term using ChEMBL."""
-        query = query.strip()
-        self._check_nbsp_characters(query)
+        query = self._white_space_sanitization(query)
         if query == '':
             return self.NormalizerResponse(MatchType.NO_MATCH, tuple())
         if query.lower().startswith('chembl:'):
@@ -87,11 +85,6 @@ class ChEMBL(Base):
                                                'pref_name')
         self._create_lower_index_if_not_exists('molecule_synonyms',
                                                'synonyms')
-
-    def _check_nbsp_characters(self, query):
-        nbsp = re.search("\u0020|\xa0|\u00A0|&nbsp;", query)
-        if nbsp:
-            logging.warning('Query contains non breaking space characters.')
 
     def _query_molecules(self, query, table, field, lower=False):
         if not lower:
