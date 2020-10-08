@@ -98,7 +98,7 @@ def test_case_insensitive_primary(cisplatin, chembl):
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_identifier == cisplatin.concept_identifier
 
-    
+
 def test_case_sensitive_alias(cisplatin, chembl):
     """Tests that alias term normalizes correctly"""
     normalizer_response = chembl.normalize('cis-diamminedichloroplatinum(II)')
@@ -151,7 +151,7 @@ def test_case_empty_query(chembl):
     assert normalizer_response.match_type == MatchType.NO_MATCH
     assert len(normalizer_response.records) == 0
 
-    
+
 def test_license_info(cisplatin, chembl):
     """Test that license info is present in meta field."""
     normalizer_response = chembl.normalize('cisplatin')
