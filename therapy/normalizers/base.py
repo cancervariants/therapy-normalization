@@ -49,6 +49,10 @@ class Base(ABC):
         raise NotImplementedError
 
     def _white_space_sanitization(self, query):
+        file = open("therapy.log", "r+")
+        file.truncate(0)
+        file.close()
+
         nbsp = re.search('\u0020|\xa0|\u00A0|&nbsp;', query)
         if nbsp:
             logger.warning(
