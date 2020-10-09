@@ -1,5 +1,5 @@
 """This module defines the Wikidata normalizer"""
-from .base import Base, IDENTIFIER_PREFIXES, MatchType
+from .base import Base, IDENTIFIER_PREFIXES, MatchType, Meta
 from therapy import PROJECT_ROOT
 import json
 from therapy.models import Drug
@@ -39,6 +39,8 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
   }
 }
 """
+    meta_ = Meta('CC0 1.0',
+                 'https://creativecommons.org/publicdomain/zero/1.0/')
 
     def normalize(self, query):
         """Normalize term using Wikidata"""
@@ -55,18 +57,22 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
             match_keys = self._lower_alias_index[query.lower()]
             match_type = MatchType.CASE_INSENSITIVE_ALIAS
         else:
-            return self.NormalizerResponse(MatchType.NO_MATCH, tuple())
+            return self.NormalizerResponse(MatchType.NO_MATCH, tuple(),
+                                           self.meta_)
         records = list()
         for match_key in match_keys:
             match = self._records[match_key]
             response_record = match['therapy']
             records.append(response_record)
         return self.NormalizerResponse(
-            match_type, tuple(records)
+            match_type, tuple(records), self.meta_
         )
 
     def _load_data(self, *args, **kwargs):
-        wd_file = PROJECT_ROOT / 'data' / 'wikidata_medications.json'
+        if 'data_path' in kwargs:
+            wd_file = kwargs['data_path']
+        else:
+            wd_file = PROJECT_ROOT / 'data' / 'wikidata_medications.json'
         assert wd_file.exists()  # TODO: issue #7
         with open(wd_file, 'r') as f:
             self._data = json.load(f)

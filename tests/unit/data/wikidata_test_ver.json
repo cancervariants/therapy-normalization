@@ -1,0 +1,284 @@
+[
+    {
+        "alias": "CDDP",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "Cis-DDP",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "CIS-DDP",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "cis-diamminedichloroplatinum(II)",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "Platinol",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "Platinol-AQ",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "CDDP",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "Cis-DDP",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "CIS-DDP",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "cis-diamminedichloroplatinum(II)",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "Platinol",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "Platinol-AQ",
+        "casRegistry": "15663-27-1",
+        "chembl": "CHEMBL11359",
+        "drugbank": "00515",
+        "item": "http://www.wikidata.org/entity/Q412415",
+        "itemLabel": "cisplatin",
+        "pubchemCompound": "5702198",
+        "rxnorm": "2555"
+    },
+    {
+        "alias": "CIFN",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "consensus interferon",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "IFN Alfacon-1",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "Interferon Consensus, Methionyl",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "methionyl interferon consensus",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "methionyl-interferon-consensus",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "rCon-IFN",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "Recombinant Consensus Interferon",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "Recombinant methionyl human consensus interferon",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "CIFN",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "consensus interferon",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "IFN Alfacon-1",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "Interferon Consensus, Methionyl",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "methionyl interferon consensus",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "methionyl-interferon-consensus",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "rCon-IFN",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "Recombinant Consensus Interferon",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    },
+    {
+        "alias": "Recombinant methionyl human consensus interferon",
+        "casRegistry": "118390-30-0",
+        "chembl": "CHEMBL1201557",
+        "drugbank": "00069",
+        "item": "http://www.wikidata.org/entity/Q15353101",
+        "itemLabel": "Interferon alfacon-1",
+        "rxnorm": "59744"
+    }
+]

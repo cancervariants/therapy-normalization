@@ -17,6 +17,7 @@ def normalize(query_str, **params):
         results = normalizer.normalize(query_str)
         resp['normalizer_matches'][normalizer.__class__.__name__] = {
             'match_type': results.match_type,
-            'records': results.records
+            'records': results.records,
+            'meta_': results.meta_._asdict(),
         }
     return resp
