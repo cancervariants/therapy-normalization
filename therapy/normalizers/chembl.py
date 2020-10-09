@@ -73,11 +73,6 @@ class ChEMBL(Base):
                                         records)
         return self._build_response(MatchType.NO_MATCH, tuple())
 
-    @property
-    def _meta_(self):
-        return Meta('CC BY-SA 3.0',
-                    'https://creativecommons.org/licenses/by-sa/3.0/')
-
     def _load_data(self, *args, **kwargs):
         if 'data_path' in kwargs:
             chembl_db = kwargs['data_path']
