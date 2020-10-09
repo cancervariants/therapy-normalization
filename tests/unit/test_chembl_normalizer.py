@@ -9,7 +9,7 @@ from therapy import PROJECT_ROOT
 @pytest.fixture(scope='module')
 def chembl():
     """Create a chEMBL normalizer instance."""
-    chembl_db = PROJECT_ROOT / 'test' / 'unit' / 'data' / 'chembl_27_test.db'
+    chembl_db = PROJECT_ROOT / 'tests' / 'unit' / 'data' / 'chembl_27_test.db'
     c = ChEMBL(data_path=chembl_db)
     return c
 
