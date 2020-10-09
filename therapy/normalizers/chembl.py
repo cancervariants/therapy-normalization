@@ -16,7 +16,7 @@ class ChEMBL(Base):
 
     def normalize(self, query):
         """Normalize term using ChEMBL."""
-        query = self._white_space_sanitization(query)
+        query = query.strip()
         if query == '':
             return self.NormalizerResponse(MatchType.NO_MATCH, tuple())
         if query.lower().startswith('chembl:'):
@@ -65,6 +65,7 @@ class ChEMBL(Base):
         if records:
             return self.NormalizerResponse(MatchType.CASE_INSENSITIVE_ALIAS,
                                            records)
+        self._white_space_sanitization(query)
         return self.NormalizerResponse(MatchType.NO_MATCH, tuple())
 
     def _load_data(self, *args, **kwargs):

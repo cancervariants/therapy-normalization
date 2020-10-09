@@ -42,7 +42,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
 
     def normalize(self, query):
         """Normalize term using Wikidata"""
-        query = self._white_space_sanitization(query)
+        query = query.strip()
         if query in self._primary_index:
             match_keys = self._primary_index[query]
             match_type = MatchType.PRIMARY
@@ -56,6 +56,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
             match_keys = self._lower_alias_index[query.lower()]
             match_type = MatchType.CASE_INSENSITIVE_ALIAS
         else:
+            self._white_space_sanitization(query)
             return self.NormalizerResponse(MatchType.NO_MATCH, tuple())
         records = list()
         for match_key in match_keys:

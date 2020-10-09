@@ -49,11 +49,11 @@ class Base(ABC):
         raise NotImplementedError
 
     def _white_space_sanitization(self, query):
-        query = query.strip()
-        logger.info(query)
-        nbsp = re.search("\u0020|\xa0|\u00A0|&nbsp;", query)
+        nbsp = re.search('\u0020|\xa0|\u00A0|&nbsp;', query)
         if nbsp:
-            logger.warning('Query contains non breaking space characters.')
+            logger.warning(
+                f'Query ({query}) contains non breaking space characters.'
+            )
         return query
 
     NormalizerResponse = namedtuple(

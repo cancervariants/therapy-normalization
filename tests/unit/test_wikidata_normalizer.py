@@ -45,4 +45,5 @@ def test_non_breaking_space(cisplatin, wikidata, caplog):
 
     normalizer_response = wikidata.normalize('\u0020CIS\u00A0platin\xa0')
     assert normalizer_response.match_type == MatchType.NO_MATCH
-    assert 'Query contains non breaking space characters.' in caplog.text
+    assert 'Query (CIS\u00A0platin) contains non breaking space characters.' \
+           in caplog.text
