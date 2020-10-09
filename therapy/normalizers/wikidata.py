@@ -56,7 +56,6 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
             match_keys = self._lower_alias_index[query.lower()]
             match_type = MatchType.CASE_INSENSITIVE_ALIAS
         else:
-            self._white_space_sanitization(query)
             return self.NormalizerResponse(MatchType.NO_MATCH, tuple())
         records = list()
         for match_key in match_keys:

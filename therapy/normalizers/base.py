@@ -2,15 +2,6 @@
 from abc import ABC, abstractmethod
 from collections import namedtuple
 from enum import IntEnum
-import logging
-import re
-from uvicorn.config import logger
-
-logging.basicConfig(filename='therapy.log', level=logging.DEBUG)
-logger = logging.getLogger('therapy') # noqa
-ch = logging.StreamHandler()
-ch.setFormatter(logging.Formatter('%(levelname)s: %(message)s'))
-logger.addHandler(ch)
 
 IDENTIFIER_PREFIXES = {
     'casRegistry': 'chemidplus',
@@ -49,17 +40,6 @@ class Base(ABC):
     def normalize(self, query):
         """Normalize query to resource concept"""
         raise NotImplementedError
-
-    def _white_space_sanitization(self, query):
-        file = open("therapy.log", "w+")
-        file.truncate(0)
-        file.close()
-
-        nbsp = re.search('\xa0|\u00A0|&nbsp;', query)
-        if nbsp:
-            logger.warning(
-                f'Query ({query}) contains non breaking space characters.'
-            )
 
     NormalizerResponse = namedtuple(
         'NormalizerResponse',

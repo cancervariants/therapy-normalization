@@ -65,7 +65,6 @@ class ChEMBL(Base):
         if records:
             return self.NormalizerResponse(MatchType.CASE_INSENSITIVE_ALIAS,
                                            records)
-        self._white_space_sanitization(query)
         return self.NormalizerResponse(MatchType.NO_MATCH, tuple())
 
     def _load_data(self, *args, **kwargs):
