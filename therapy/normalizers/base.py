@@ -8,6 +8,7 @@ from uvicorn.config import logger
 
 logging.basicConfig(filename='therapy.log', level=logging.DEBUG)
 logger = logging.getLogger('therapy') # noqa
+logger.addHandler(logging.StreamHandler())
 logger.setLevel(logging.DEBUG)
 
 IDENTIFIER_PREFIXES = {
