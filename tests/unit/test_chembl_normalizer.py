@@ -152,9 +152,12 @@ def test_case_empty_query(chembl):
     assert len(normalizer_response.records) == 0
 
 
-def test_license_info(cisplatin, chembl):
-    """Test that license info is present in meta field."""
+def test_meta_info(cisplatin, chembl):
+    """Test that the meta field is correct."""
     normalizer_response = chembl.normalize('cisplatin')
     assert normalizer_response.meta_.data_license == 'CC BY-SA 3.0'
     assert normalizer_response.meta_.data_license_url == \
            'https://creativecommons.org/licenses/by-sa/3.0/'
+    assert normalizer_response.meta_.version == '27'
+    assert normalizer_response.meta_.data_url == \
+           'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501

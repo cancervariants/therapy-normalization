@@ -10,7 +10,7 @@ from therapy.normalizers.base import MatchType
 def wikidata():
     """Create a Wikidata normalizer instance."""
     wd_file = PROJECT_ROOT / 'tests' / 'unit' / 'data' \
-        / 'wikidata_test_ver.json'
+        / 'wd_00000000.json'
     w = Wikidata(data_path=wd_file)
     return w
 
@@ -130,9 +130,11 @@ def test_case_empty_query(wikidata):
     assert len(normalizer_response.records) == 0
 
 
-def test_license_info(cisplatin, wikidata):
-    """Test that license info is present in meta field."""
+def test_meta_info(cisplatin, wikidata):
+    """Test that the meta field is correct."""
     normalizer_response = wikidata.normalize('cisplatin')
     assert normalizer_response.meta_.data_license == 'CC0 1.0'
     assert normalizer_response.meta_.data_license_url == \
            'https://creativecommons.org/publicdomain/zero/1.0/'
+    assert normalizer_response.meta_.version == '00000000'
+    assert normalizer_response.meta_.data_url is None

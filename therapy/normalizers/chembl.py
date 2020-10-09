@@ -14,8 +14,12 @@ logger.setLevel(logging.DEBUG)
 class ChEMBL(Base):
     """A normalizer using the ChEMBL resource."""
 
-    meta_ = Meta('CC BY-SA 3.0',
-                 'https://creativecommons.org/licenses/by-sa/3.0/')
+    meta_ = Meta(
+        'CC BY-SA 3.0',
+        'https://creativecommons.org/licenses/by-sa/3.0/',
+        '27',
+        'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501
+    )
 
     def _build_response(self, match_type, records):
         return self.NormalizerResponse(match_type, records, self.meta_)
