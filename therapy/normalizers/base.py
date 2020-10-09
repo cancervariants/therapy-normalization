@@ -55,7 +55,7 @@ class Base(ABC):
         file.truncate(0)
         file.close()
 
-        nbsp = re.search('\u0020|\xa0|\u00A0|&nbsp;', query)
+        nbsp = re.search('\xa0|\u00A0|&nbsp;', query)
         if nbsp:
             logger.warning(
                 f'Query ({query}) contains non breaking space characters.'

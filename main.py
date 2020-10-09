@@ -20,7 +20,7 @@ def read_query(q: Optional[str] = ''):
     """Endpoint to return normalized responses for a query"""
     resp = normalize(html.unescape(q))
 
-    nbsp = re.search('\u0020|\xa0|\u00A0|&nbsp;', q)
+    nbsp = re.search('\xa0|\u00A0|&nbsp;', q)
     if nbsp:
         return JSONResponse(
             {'WARNING': 'QUERY CONTAINS NON BREAKING SPACE CHARACTERS'}
