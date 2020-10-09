@@ -51,7 +51,7 @@ class Base(ABC):
         raise NotImplementedError
 
     def _white_space_sanitization(self, query):
-        file = open("therapy.log", "r+")
+        file = open("therapy.log", "w+")
         file.truncate(0)
         file.close()
 
