@@ -39,8 +39,17 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
   }
 }
 """
-    meta_ = Meta('CC0 1.0',
-                 'https://creativecommons.org/publicdomain/zero/1.0/')
+
+    def __init__(self, *args, **kwargs):
+        """Construct Wikidata object"""
+        super().__init__(*args, **kwargs)
+
+        self.meta_ = Meta(
+            'CC0 1.0',
+            'https://creativecommons.org/publicdomain/zero/1.0/',
+            self.version,
+            None
+        )
 
     def normalize(self, query):
         """Normalize term using Wikidata"""
@@ -71,11 +80,16 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
 
     def _load_data(self, *args, **kwargs):
         if 'data_path' in kwargs:
-            wd_file = kwargs['data_path']
+            latest_file = kwargs['data_path']
         else:
-            wd_file = PROJECT_ROOT / 'data' / 'wikidata_medications.json'
-        assert wd_file.exists()  # TODO: issue #7
-        with open(wd_file, 'r') as f:
+            wd = PROJECT_ROOT / 'data' / 'wikidata'
+            wd.mkdir(exist_ok=True, parents=True)
+            try:
+                latest_file = sorted(list(wd.iterdir()))[-1]
+            except TypeError:
+                raise FileNotFoundError  # TODO: Wikidata update function
+        self.version = latest_file.stem.split('_')[1]
+        with open(latest_file, 'r') as f:
             self._data = json.load(f)
         self._primary_index = dict()
         self._lower_primary_index = dict()

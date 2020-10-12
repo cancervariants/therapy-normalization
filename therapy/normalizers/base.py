@@ -26,7 +26,7 @@ class MatchType(IntEnum):
 
 
 Meta = namedtuple(
-    'Meta', ['data_license', 'data_license_url']
+    'Meta', ['data_license', 'data_license_url', 'version', 'data_url']
 )
 
 
