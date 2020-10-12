@@ -20,6 +20,7 @@ civicpy = "*"
 thera-py = {editable = true, path = "."}
 fastapi = "*"
 uvicorn = "*"
+sqlalchemy = "*"
 
 [requires]
 python_version = "3.8"

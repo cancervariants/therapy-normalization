@@ -1,7 +1,7 @@
 """Test that the chEMBL therapy normalizer works as intended."""
 import pytest
 from therapy.normalizers import ChEMBL
-from therapy.models import Drug
+from therapy.schemas import Drug
 from therapy.normalizers.base import MatchType
 from therapy import PROJECT_ROOT
 

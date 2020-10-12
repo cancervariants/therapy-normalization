@@ -2,7 +2,7 @@
 from .base import Base, IDENTIFIER_PREFIXES, MatchType, Meta
 from therapy import PROJECT_ROOT
 import json
-from therapy.models import Drug
+from therapy.schemas import Drug
 
 
 class Wikidata(Base):

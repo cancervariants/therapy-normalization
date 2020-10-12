@@ -2,7 +2,7 @@
 import pytest
 from therapy import PROJECT_ROOT
 from therapy.normalizers import Wikidata
-from therapy.models import Drug
+from therapy.schemas import Drug
 from therapy.normalizers.base import MatchType
 
 

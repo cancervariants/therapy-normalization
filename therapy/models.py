@@ -1,49 +1,38 @@
-"""Data models for representing VICC normalized therapy records."""
-from typing import List, Optional
-from pydantic import BaseModel
-from enum import IntEnum
+"""Define models"""
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from .database import Base
 
 
-class Therapy(BaseModel):
-    """A procedure or substance used in the treatment of a disease."""
+class Therapy(Base):
+    """Therapy table"""
 
-    label: str
-    concept_identifier: str
-    aliases: List[str]
-    other_identifiers: List[str]
+    __tablename__ = "therapies"
 
-
-# class Attribute(BaseModel):
-#     """Wikidata statement describing an item."""
-#
-#     property: str
-#     property_identifier: str
-#     value: str
-#     value_identifier: str
+    concept_id = Column(String, primary_key=True, index=True)
+    label = Column(String, index=True)
+    max_phase = Column(Integer)
+    withdrawn_flag = Column(Boolean)
+    trade_name = Column(String)
 
 
-class PhaseEnum(IntEnum):
-    """An enumerated drug development phase type."""
+class OtherIdentifier(Base):
+    """Other Identifier table"""
 
-    preclinical = 0
-    phase_i_trials = 1
-    phase_ii_trials = 2
-    phase_iii_trials = 3
-    approved = 4
+    __tablename__ = "other_identifiers"
 
-
-class Drug(Therapy):
-    """A pharmacologic substance used to treat a medical condition."""
-
-    max_phase: Optional[PhaseEnum]
-    withdrawn: Optional[bool]
-    trade_name: Optional[str]
-    label: Optional[str]
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    concept_id = Column(String, ForeignKey('therapies.concept_id'))
+    chembl_id = Column(String)
+    wikidata_id = Column(String)
+    ncit_id = Column(String)
+    drugbank_id = Column(String)
 
 
-class DrugGroup(Therapy):
-    """A grouping of drugs based on common pharmacological attributes."""
+class Alias(Base):
+    """Alias table"""
 
-    description: str
-    type_identifier: str
-    drugs: List[Drug]
+    __tablename__ = "aliases"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    alias = Column(String, index=True)
+    concept_id = Column(String, ForeignKey='therapies.concept_id')

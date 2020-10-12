@@ -1,7 +1,7 @@
 """This module defines the ChEMBL normalizer"""
 from .base import Base, MatchType, Meta
 from therapy import PROJECT_ROOT
-from therapy.models import Drug
+from therapy.schemas import Drug
 from ftplib import FTP
 import logging
 import sqlite3
