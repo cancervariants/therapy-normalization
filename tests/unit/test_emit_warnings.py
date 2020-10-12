@@ -8,17 +8,14 @@ def test_emit_warnings():
         'nbsp': 'Query contains non breaking space characters.'
     }
 
-    actual_warnings = emit_warnings('    \u0020\xa0CISPLATIN    \xa0')
+    actual_warnings = emit_warnings('CISPLATIN')
+    assert actual_warnings is None
+
+    actual_warnings = emit_warnings('CIS\u00A0platin')
     assert expected_warnings == actual_warnings
 
-    actual_warnings = emit_warnings('\u0020\xa0\u00A0CISplatin\xa0 \t')
+    actual_warnings = emit_warnings('CIS&nbsp;platin')
     assert expected_warnings == actual_warnings
 
-    actual_warnings = emit_warnings('\u0020CIS\u00A0platin\xa0')
-    assert expected_warnings == actual_warnings
-
-    actual_warnings = emit_warnings('\u0020CIS&nbsp;platin\xa0')
-    assert expected_warnings == actual_warnings
-
-    actual_warnings = emit_warnings('\u0020CIS\xa0platin\xa0')
+    actual_warnings = emit_warnings('CIS\xa0platin')
     assert expected_warnings == actual_warnings

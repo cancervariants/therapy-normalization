@@ -27,10 +27,10 @@ def normalize(query_str, **params):
 
 def emit_warnings(query_str):
     """Emit warnings if query contains non breaking space characters."""
-    warnings = dict()
+    warnings = None
     nbsp = re.search('\xa0|\u00A0|&nbsp;', query_str)
     if nbsp:
-        warnings['nbsp'] = 'Query contains non breaking space characters.'
+        warnings = {'nbsp': 'Query contains non breaking space characters.'}
         logger.warning(
             f'Query ({query_str}) contains non breaking space characters.'
         )
