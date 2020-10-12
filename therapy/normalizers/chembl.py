@@ -1,5 +1,5 @@
 """This module defines the ChEMBL normalizer"""
-from .base import Base, MatchType
+from .base import Base, MatchType, Meta
 from therapy import PROJECT_ROOT
 from therapy.models import Drug
 from ftplib import FTP
@@ -14,31 +14,75 @@ logger.setLevel(logging.DEBUG)
 class ChEMBL(Base):
     """A normalizer using the ChEMBL resource."""
 
+    meta_ = Meta(
+        'CC BY-SA 3.0',
+        'https://creativecommons.org/licenses/by-sa/3.0/',
+        '27',
+        'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501
+    )
+
+    def _build_response(self, match_type, records):
+        return self.NormalizerResponse(match_type, records, self.meta_)
+
     def normalize(self, query):
         """Normalize term using ChEMBL."""
+        query = query.strip()
+        if query == '':
+            return self._build_response(MatchType.NO_MATCH, tuple())
+        if query.lower().startswith('chembl:'):
+            namespace_case_match = query.startswith('chembl:')
+            q_string = query.split(':')[1]
+            records = self._query_molecules(
+                q_string,
+                'molecule_dictionary',
+                'chembl_id')
+            if records and namespace_case_match:
+                return self._build_response(MatchType.PRIMARY, records)
+            elif records:
+                return self._build_response(
+                    MatchType.NAMESPACE_CASE_INSENSITIVE, records
+                )
+            records = self._query_molecules(
+                q_string,
+                'molecule_dictionary',
+                'chembl_id',
+                lower=True
+            )
+            if records:
+                return self._build_response(
+                    MatchType.CASE_INSENSITIVE_PRIMARY, records
+                )
+        else:
+            records = self._query_molecules(query, 'molecule_dictionary',
+                                            'chembl_id')
+        if records:
+            return self._build_response(MatchType.PRIMARY, records)
         records = self._query_molecules(query, 'molecule_dictionary',
                                         'pref_name')
         if records:
-            return self.NormalizerResponse(MatchType.PRIMARY, records)
+            return self._build_response(MatchType.PRIMARY, records)
         records = self._query_molecules(query, 'molecule_dictionary',
                                         'pref_name', lower=True)
         if records:
-            return self.NormalizerResponse(MatchType.CASE_INSENSITIVE_PRIMARY,
-                                           records)
+            return self._build_response(MatchType.CASE_INSENSITIVE_PRIMARY,
+                                        records)
         records = self._query_molecules(query, 'molecule_synonyms',
                                         'synonyms')
         if records:
-            return self.NormalizerResponse(MatchType.ALIAS, records)
+            return self._build_response(MatchType.ALIAS, records)
         records = self._query_molecules(query, 'molecule_synonyms',
                                         'synonyms', lower=True)
         if records:
-            return self.NormalizerResponse(MatchType.CASE_INSENSITIVE_ALIAS,
-                                           records)
-        return self.NormalizerResponse(MatchType.NO_MATCH, tuple())
+            return self._build_response(MatchType.CASE_INSENSITIVE_ALIAS,
+                                        records)
+        return self._build_response(MatchType.NO_MATCH, tuple())
 
     def _load_data(self, *args, **kwargs):
-        chembl_db = PROJECT_ROOT / 'data' / 'chembl_27' \
-            / 'chembl_27_sqlite' / 'chembl_27.db'
+        if 'data_path' in kwargs:
+            chembl_db = kwargs['data_path']
+        else:
+            chembl_db = PROJECT_ROOT / 'data' / 'chembl_27' \
+                / 'chembl_27_sqlite' / 'chembl_27.db'
         if not chembl_db.exists():
             chembl_archive = PROJECT_ROOT / 'data' / 'chembl_27_sqlite.tar.gz'
             chembl_archive.parent.mkdir(exist_ok=True)
@@ -56,20 +100,22 @@ class ChEMBL(Base):
                                                'synonyms')
 
     def _query_molecules(self, query, table, field, lower=False):
-        if lower:
+        if not lower:
             command = f"""
                 SELECT molregno FROM {table}
-                WHERE {field}='{query}';
+                WHERE {field} = ?;
             """
+            params = [query]
         else:
             command = f"""
                 SELECT molregno FROM {table}
-                WHERE lower({field})='{query.lower()}';
+                WHERE lower({field}) = ?;
             """
+            params = [query.lower()]
         molregno_list = [x[0] for x
-                         in self._cursor.execute(command).fetchall()]
+                         in self._cursor.execute(command, params).fetchall()]
         records = [self._create_drug_record(molregno) for molregno
-                   in molregno_list]
+                   in list(set(molregno_list))]
         return records
 
     def _create_drug_record(self, molregno):
@@ -96,6 +142,24 @@ class ChEMBL(Base):
         resp = self._cursor.execute(command).fetchall()
         synonyms = tuple(set([x[0] for x in resp]))
         kwargs['aliases'] = synonyms
+
+        command = f"""
+            SELECT product_id FROM formulations
+            WHERE molregno={molregno}
+        """
+        resp = self._cursor.execute(command).fetchall()
+        product_ids = ['"{}"'.format(product_id) for product_id in
+                       tuple(set([x[0] for x in resp]))]
+        if len(product_ids) > 0:
+            command = f"""
+                SELECT trade_name,product_id FROM products
+                WHERE product_id IN ({','.join(product_ids)})
+            """
+            resp = self._cursor.execute(command).fetchall()
+            trade_names = tuple(set([x[0] for x in resp]))
+            if len(trade_names) == 1:
+                kwargs['trade_name'] = trade_names[0]
+
         d = Drug(**kwargs)
         # create a Drug object from response
         return d

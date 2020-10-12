@@ -17,11 +17,17 @@ class MatchType(IntEnum):
     """Define string constants for use in Match Type attributes"""
 
     PRIMARY = 100
+    NAMESPACE_CASE_INSENSITIVE = 95
     CASE_INSENSITIVE_PRIMARY = 80
     ALIAS = 60
     CASE_INSENSITIVE_ALIAS = 40
     FUZZY_MATCH = 20
     NO_MATCH = 0
+
+
+Meta = namedtuple(
+    'Meta', ['data_license', 'data_license_url', 'version', 'data_url']
+)
 
 
 class Base(ABC):
@@ -42,5 +48,5 @@ class Base(ABC):
 
     NormalizerResponse = namedtuple(
         'NormalizerResponse',
-        ['match_type', 'records']
+        ['match_type', 'records', 'meta_']
     )

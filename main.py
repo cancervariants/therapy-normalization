@@ -1,6 +1,8 @@
 """Main application for FastAPI"""
-from therapy.query import normalize
-from fastapi import FastAPI
+from therapy.query import normalize, InvalidParameterException
+from fastapi import FastAPI, HTTPException
+import html
+from typing import Optional
 
 app = FastAPI()
 
@@ -11,8 +13,14 @@ def read_root():
     return {"Hello": "World"}
 
 
-@app.get("/query/{q_string}")
-def read_query(q_string: str):
-    """Endpoint to return normalized responses for a the query"""
-    resp = normalize(q_string)
+@app.get("/search")
+def read_query(q: Optional[str] = '',
+               keyed: Optional[bool] = False,
+               incl: Optional[str] = '',
+               excl: Optional[str] = ''):
+    """Endpoint to return normalized responses for a query"""
+    try:
+        resp = normalize(html.unescape(q), keyed=keyed, incl=incl, excl=excl)
+    except InvalidParameterException as e:
+        raise HTTPException(status_code=422, detail=str(e))
     return resp
