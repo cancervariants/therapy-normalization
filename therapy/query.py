@@ -1,5 +1,7 @@
 """This module provides methods for handling queries"""
 from therapy.normalizers import Wikidata, ChEMBL
+import re
+from uvicorn.config import logger
 
 normalizers = [
     Wikidata(),
@@ -10,6 +12,7 @@ normalizers = [
 def normalize(query_str, **params):
     """Return normalized therapy objects given a query_str"""
     resp = {
+        'warnings': emit_warnings(query_str),
         'query': query_str,
         'normalizer_matches': dict()
     }
@@ -21,3 +24,15 @@ def normalize(query_str, **params):
             'meta_': results.meta_._asdict(),
         }
     return resp
+
+
+def emit_warnings(query_str):
+    """Emit warnings if query contains non breaking space characters."""
+    warnings = None
+    nbsp = re.search('\xa0|\u00A0|&nbsp;', query_str)
+    if nbsp:
+        warnings = {'nbsp': 'Query contains non breaking space characters.'}
+        logger.warning(
+            f'Query ({query_str}) contains non breaking space characters.'
+        )
+    return warnings
