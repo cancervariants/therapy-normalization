@@ -2,7 +2,7 @@
 from .base import Base, IDENTIFIER_PREFIXES
 from therapy import PROJECT_ROOT
 import json
-from therapy.schemas import Drug, MatchType, Meta
+from therapy.schemas import Drug
 
 
 class Wikidata(Base):
@@ -40,45 +40,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
 }
 """
 
-    def __init__(self, *args, **kwargs):
-        """Construct Wikidata object"""
-        super().__init__(*args, **kwargs)
-
-        self.meta_ = Meta(
-            'CC0 1.0',
-            'https://creativecommons.org/publicdomain/zero/1.0/',
-            self.version,
-            None
-        )
-
-    def normalize(self, query):
-        """Normalize term using Wikidata"""
-        query = query.strip()
-        if query in self._primary_index:
-            match_keys = self._primary_index[query]
-            match_type = MatchType.PRIMARY
-        elif query.lower() in self._lower_primary_index:
-            match_keys = self._lower_primary_index[query.lower()]
-            match_type = MatchType.CASE_INSENSITIVE_PRIMARY
-        elif query in self._alias_index:
-            match_keys = self._alias_index[query]
-            match_type = MatchType.ALIAS
-        elif query.lower() in self._lower_alias_index:
-            match_keys = self._lower_alias_index[query.lower()]
-            match_type = MatchType.CASE_INSENSITIVE_ALIAS
-        else:
-            return self.NormalizerResponse(MatchType.NO_MATCH, tuple(),
-                                           self.meta_)
-        records = list()
-        for match_key in match_keys:
-            match = self._records[match_key]
-            response_record = match['therapy']
-            records.append(response_record)
-        return self.NormalizerResponse(
-            match_type, tuple(records), self.meta_
-        )
-
-    def _load_data(self, *args, **kwargs):
+    def _extract_data(self, *args, **kwargs):
         if 'data_path' in kwargs:
             latest_file = kwargs['data_path']
         else:
