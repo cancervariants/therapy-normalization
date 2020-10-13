@@ -1,12 +1,8 @@
 """This module provides methods for handling queries"""
-from therapy.normalizers import Wikidata, ChEMBL
 import re
 from uvicorn.config import logger
 
-normalizers = [
-    Wikidata(),
-    ChEMBL()
-]
+normalizers = []
 
 
 class InvalidParameterException(Exception):

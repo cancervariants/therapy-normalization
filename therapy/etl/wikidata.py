@@ -1,8 +1,8 @@
 """This module defines the Wikidata normalizer"""
-from .base import Base, IDENTIFIER_PREFIXES, MatchType, Meta
+from .base import Base, IDENTIFIER_PREFIXES
 from therapy import PROJECT_ROOT
 import json
-from therapy.schemas import Drug
+from therapy.schemas import Drug, MatchType, Meta
 
 
 class Wikidata(Base):

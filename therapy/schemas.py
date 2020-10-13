@@ -2,6 +2,7 @@
 from typing import List, Optional
 from pydantic import BaseModel
 from enum import IntEnum
+from collections import namedtuple
 
 
 class Therapy(BaseModel):
@@ -16,15 +17,6 @@ class Therapy(BaseModel):
         """Enables orm_mode"""
 
         orm_mode = True
-
-
-# class Attribute(BaseModel):
-#     """Wikidata statement describing an item."""
-#
-#     property: str
-#     property_identifier: str
-#     value: str
-#     value_identifier: str
 
 
 class PhaseEnum(IntEnum):
@@ -57,3 +49,20 @@ class DrugGroup(Therapy):
     description: str
     type_identifier: str
     drugs: List[Drug]
+
+
+class MatchType(IntEnum):
+    """Define string constants for use in Match Type attributes"""
+
+    PRIMARY = 100
+    NAMESPACE_CASE_INSENSITIVE = 95
+    CASE_INSENSITIVE_PRIMARY = 80
+    ALIAS = 60
+    CASE_INSENSITIVE_ALIAS = 40
+    FUZZY_MATCH = 20
+    NO_MATCH = 0
+
+
+Meta = namedtuple(
+    'Meta', ['data_license', 'data_license_url', 'version', 'data_url']
+)
