@@ -5,6 +5,9 @@ from ftplib import FTP
 import logging
 import sqlite3
 import tarfile
+from therapy import database, models, schemas  # noqa: F401
+from therapy.database import Base as B  # noqa: F401
+from sqlalchemy import create_engine, event  # noqa: F401
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -29,64 +32,25 @@ class ChEMBL(Base):
         conn = sqlite3.connect(chembl_db, check_same_thread=False)
         self._conn = conn
         self._cursor = conn.cursor()
-        self._create_lower_index_if_not_exists('molecule_dictionary',
-                                               'pref_name')
-        self._create_lower_index_if_not_exists('molecule_synonyms',
-                                               'synonyms')
-
-    def _create_tables(self, *args, **kwargs):
-        # TODO: update sqlalchemy db
-        create_aliases_table = """
-                   CREATE TABLE IF NOT EXISTS aliases(
-                       id integer PRIMARY KEY AUTOINCREMENT,
-                       alias text,
-                       concept_id text
-                   );
-               """
-        self._t_cursor.execute(create_aliases_table)
-
-        create_therapies_table = """
-                           CREATE TABLE IF NOT EXISTS therapies(
-                               concept_id text,
-                               label text,
-                               max_phase text,
-                               withdrawn_flag integer,
-                               trade_name text,
-                               src_name text
-                           );
-                       """
-        self._t_cursor.execute(create_therapies_table)
-
-        create_other_identifiers_table = """
-                           CREATE TABLE IF NOT EXISTS other_identifiers(
-                               id integer PRIMARY KEY AUTOINCREMENT,
-                               concept_id text,
-                               chembl_id text,
-                               wikidata_id text,
-                               ncit_id text,
-                               drugbank_id text
-                           );
-                       """
-        self._t_cursor.execute(create_other_identifiers_table)
-        self._t_conn.commit()
 
     def _transform_data(self, *args, **kwargs):
-        copy_chembl_db = PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27.db'
-        attach_db = f"""
-            ATTACH DATABASE '{copy_chembl_db}' AS chembldb;
-        """
-        self._t_cursor.execute(attach_db)  # TODO: Use sqlalchemy db
+        @event.listens_for(database.engine, "connect")
+        def connect(engine, rec):
+            copy_chembl_db = PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27.db'
+            attach_db = f"""
+                       ATTACH DATABASE '{copy_chembl_db}' AS chembldb;
+                   """
+            engine.execute(attach_db)
+        database.engine.connect()
 
         get_molgrenos = """
-                    SELECT DISTINCT molregno FROM chembldb.molecule_dictionary;
+            SELECT DISTINCT molregno FROM chembldb.molecule_dictionary;
         """
-        distinct_molregnos = \
-            [x[0] for x in self._t_cursor.execute(get_molgrenos)]
 
-        self._create_tables()
+        distinct_molregnos = \
+            [x[0] for x in database.engine.execute(get_molgrenos)]
 
         for molregno in distinct_molregnos:
-            logger.warning(molregno)
             insert_alias = f"""
                 INSERT INTO aliases(alias, concept_id)
                 SELECT DISTINCT synonyms, chembl_id
@@ -95,7 +59,7 @@ class ChEMBL(Base):
                     ON molecule_dictionary.molregno=molecule_synonyms.molregno
                     WHERE molecule_dictionary.molregno={molregno};
             """
-            self._t_cursor.execute(insert_alias)
+            database.engine.execute(insert_alias)
 
             insert_therapy = f"""
                 INSERT INTO therapies(
@@ -115,7 +79,7 @@ class ChEMBL(Base):
                     ON formulations.product_id=products.product_id
                 WHERE molecule_dictionary.molregno={molregno};
             """
-            self._t_cursor.execute(insert_therapy)
+            database.engine.execute(insert_therapy)
 
             insert_other_identifier = f"""
                 INSERT INTO other_identifiers(concept_id, chembl_id)
@@ -123,34 +87,26 @@ class ChEMBL(Base):
                 FROM chembldb.molecule_dictionary
                 WHERE molecule_dictionary.molregno={molregno};
             """
-            self._t_cursor.execute(insert_other_identifier)
-            self._t_conn.commit()
+            database.engine.execute(insert_other_identifier)
 
     def _load_data(self, *args, **kwargs):
-        chembl_transformed_db = \
-            PROJECT_ROOT / 'data' / 'chembl' / 'chembl_transformed.db'
-        t_conn = sqlite3.connect(chembl_transformed_db)
-        self._t_conn = t_conn
-        self._t_cursor = t_conn.cursor()
+        B.metadata.create_all(bind=database.engine)
+        self._get_db()
 
         self._extract_data()
         self._transform_data()
         self._add_meta()
 
-    def _add_meta(self, *args, **kwargs):
-        insert_meta_table = """
-                    CREATE TABLE IF NOT EXISTS meta(
-                        src_name text,
-                        data_license text,
-                        data_license_url text,
-                        version text,
-                        data_url text
-                    );
-        """
-        self._t_cursor.execute(insert_meta_table)
+    def _get_db(self, *args, **kwargs):
+        db = database.SessionLocal()
+        try:
+            yield db
+        finally:
+            db.close()
 
+    def _add_meta(self, *args, **kwargs):
         insert_meta = """
-            INSERT INTO meta(src_name, data_license, data_license_url,
+            INSERT INTO meta_data(src_name, data_license, data_license_url,
                 version, data_url)
             SELECT
                 'CHEMBL',
@@ -159,25 +115,11 @@ class ChEMBL(Base):
                 '27',
                 'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'
             WHERE NOT EXISTS (
-                SELECT * FROM meta
+                SELECT * FROM meta_data
                 WHERE src_name = 'CHEMBL'
             );
         """
-        self._t_cursor.execute(insert_meta)
-        self._t_conn.commit()
-
-    def _create_lower_index_if_not_exists(self, table, field):
-        try:
-            command = f"""
-                CREATE INDEX lower_{field} ON {table} (lower({field}));
-            """
-            self._cursor.execute(command)
-        except sqlite3.OperationalError as e:
-            if str(e) == f'index lower_{field} already exists':
-                return False
-            else:
-                raise e
-        return True
+        database.engine.execute(insert_meta)
 
     @staticmethod
     def _download_chembl_27(filepath):
