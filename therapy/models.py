@@ -9,7 +9,8 @@ class Therapy(Base):
 
     __tablename__ = "therapies"
 
-    concept_id = Column(String, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    concept_id = Column(String, index=True)
     label = Column(String, index=True)
     max_phase = Column(Integer)
     withdrawn_flag = Column(Boolean)
@@ -44,7 +45,7 @@ class Alias(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     alias = Column(String, index=True)
-    concept_id = Column(String, ForeignKey='therapies.concept_id')
+    concept_id = Column(String, ForeignKey('therapies.concept_id'))
 
     record = relationship("Therapy", back_populates="aliases")
 
