@@ -38,8 +38,8 @@ class ChEMBL(Base):
         def connect(engine, rec):
             copy_chembl_db = PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27.db'
             attach_db = f"""
-                       ATTACH DATABASE '{copy_chembl_db}' AS chembldb;
-                   """
+                ATTACH DATABASE '{copy_chembl_db}' AS chembldb;
+            """
             engine.execute(attach_db)
         database.engine.connect()
 
@@ -80,14 +80,6 @@ class ChEMBL(Base):
                 WHERE molecule_dictionary.molregno={molregno};
             """
             database.engine.execute(insert_therapy)
-
-            insert_other_identifier = f"""
-                INSERT INTO other_identifiers(concept_id, chembl_id)
-                SELECT DISTINCT chembl_id, chembl_id
-                FROM chembldb.molecule_dictionary
-                WHERE molecule_dictionary.molregno={molregno};
-            """
-            database.engine.execute(insert_other_identifier)
 
     def _load_data(self, *args, **kwargs):
         B.metadata.create_all(bind=database.engine)

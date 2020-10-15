@@ -17,7 +17,6 @@ class Base(ABC):
     def __init__(self, *args, **kwargs):
         """Extract from sources."""
         self._load_data(*args, **kwargs)
-        self._add_meta(*args, **kwargs)
 
     @abstractmethod
     def _extract_data(self, *args, **kwargs):
