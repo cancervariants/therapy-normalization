@@ -1,8 +1,15 @@
 """This module defines the Wikidata normalizer"""
 from .base import Base, IDENTIFIER_PREFIXES
-from therapy import PROJECT_ROOT
+from therapy import PROJECT_ROOT, database, models, schemas  # noqa: F401
+from therapy.database import Base as B  # noqa: F401
 import json
 from therapy.schemas import Drug
+import logging
+from sqlalchemy import create_engine, event  # noqa: F401
+from collections import defaultdict
+
+logger = logging.getLogger('therapy')
+logger.setLevel(logging.DEBUG)
 
 
 class Wikidata(Base):
@@ -41,68 +48,142 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
 """
 
     def _extract_data(self, *args, **kwargs):
+        """Extract data"""
         if 'data_path' in kwargs:
-            latest_file = kwargs['data_path']
+            self._data_src = kwargs['data_path']
         else:
-            wd = PROJECT_ROOT / 'data' / 'wikidata'
-            wd.mkdir(exist_ok=True, parents=True)
+            wd_dir = PROJECT_ROOT / 'data' / 'wikidata'
+            wd_dir.mkdir(exist_ok=True, parents=True)  # TODO needed?
             try:
-                latest_file = sorted(list(wd.iterdir()))[-1]
+                self._data_src = sorted(list(wd_dir.iterdir()))[-1]
             except TypeError:
-                raise FileNotFoundError  # TODO: Wikidata update function
-        self.version = latest_file.stem.split('_')[1]
-        with open(latest_file, 'r') as f:
-            self._data = json.load(f)
-        self._primary_index = dict()
-        self._lower_primary_index = dict()
-        self._alias_index = dict()
-        self._lower_alias_index = dict()
-        self._records = dict()
-        i = 0
-        for record in self._data:
-            i += 1
-            record_id = record['item'].split('/')[-1]
-            for k, v in record.items():
-                exact_index = self._primary_index
-                lower_index = self._lower_primary_index
-                if k == 'item':
-                    k = 'wikidata'
-                    v = record_id
-                elif k == 'itemLabel':
-                    k = 'label'
-                elif k == 'therapy':
-                    raise ValueError
-                elif k == 'alias':
-                    exact_index = self._alias_index
-                    lower_index = self._lower_alias_index
-                s = exact_index.setdefault(v, set())
-                s.add(record_id)
-                s = lower_index.setdefault(v.lower(), set())
-                s.add(record_id)
-                d = self._records.setdefault(record_id, dict())
-                if k != 'wikidata':
-                    s = d.setdefault(k, set())
-                    s.add(v)
-                else:
-                    d[k] = v
-                if k not in IDENTIFIER_PREFIXES:
-                    continue
-                v = f'{IDENTIFIER_PREFIXES[k]}:{v}'
-                s = exact_index.setdefault(v, set())
-                s.add(record_id)
-                s = lower_index.setdefault(v.lower(), set())
-                s.add(record_id)
-                d = self._records[record_id]
-                s = d.setdefault('other_identifiers', set())
-                s.add(v)
+                raise FileNotFoundError  # TODO wikidata update function here
+        self._version = self._data_src.stem.split('_')[1]
 
-        for k, record in self._records.items():
-            assert len(record['label']) == 1
-            params = {
-                'label': list(record['label'])[0],
-                'concept_identifier': f"wikidata:{record['wikidata']}",
-                'aliases': list(record.get('alias', set())),
-                'other_identifiers': list(record.get(
-                    'other_identifiers', set()))
-            }
-            self._records[k]['therapy'] = Drug(**params)
+    def _transform_data(self, *args, **kwargs):
+        """Transform data"""
+        with open(self._data_src, 'r') as f:
+            records = json.load(f)
+
+        database.engine.connect()
+        for record in records:
+            record_id = record['item'].split('/')[-1]
+            concept_id = f"wikidata:{record_id}"
+            if 'alias' in record.keys():
+                alias = record['alias']
+                alias = alias.replace('"', '""')
+                self._load_alias(alias, concept_id)
+            other_ids_exists = True
+            if not other_ids_exists:
+                other_ids = defaultdict(lambda: "NULL")
+                if 'casRegistry' in record.items():
+                    id = record['casRegistry']
+                    fmted = f"{IDENTIFIER_PREFIXES['casRegistry']}:{id}"
+                    other_ids['casRegistry'] = fmted
+                if 'pubchemCompound' in record.items():
+                    id = record['pubchemCompound']
+                    fmted = f"{IDENTIFIER_PREFIXES['pubchemCompound']}:{id}"
+                    other_ids['pubchemCompound'] = fmted
+                if 'pubchemSubstance' in record.items():
+                    id = record['pubchemSubstance']
+                    fmted = f"{IDENTIFIER_PREFIXES['pubchemSubstance']}:{id}"
+                    other_ids['pubchemSubstance'] = fmted
+                if 'rxnorm' in record.items():
+                    id = record['rxnorm']
+                    fmted = f"{IDENTIFIER_PREFIXES['rxnorm']}:{id}"
+                    other_ids['rxnorm'] = fmted
+                if 'chembl' in record.items():
+                    id = record['chembl']
+                    fmted = f"{IDENTIFIER_PREFIXES['chembl']}:{id}"
+                    other_ids['chembl'] = fmted
+                if 'drugbank' in record.items():
+                    id = record['drugbank']
+                    fmted = f"{IDENTIFIER_PREFIXES['drugbank']}:{id}"
+                    other_ids['drugbank'] = fmted
+                self._load_other_ids(concept_id, other_ids)
+
+                record_exists = True  # TODO
+                if not record_exists:
+                    if 'itemLabel' in record.items():
+                        label = record['itemLabel']
+                    else:
+                        label = "NULL"
+                    record = schemas.Drug(label=label)
+                    self._load_therapy(concept_id, record)
+
+    def _load_alias(self, concept_id: str, alias: str):
+        """Load alias"""
+        database.engine.execute(f"""INSERT INTO aliases(alias, concept_id)
+                VALUES("{alias}", "{concept_id}");""")
+
+    def _sqlite_str(self, string):
+        if string == "NULL":
+            return "NULL"
+        else:
+            return f'"{string}"'
+
+    def _load_other_ids(self, concept_id: str, other_ids: defaultdict):
+        """Load individual other_ids row
+        Args:
+            concept_id: a str corresponding to full namespaced Wikidata
+                concept ID
+            other_ids: defaultdict that returns an empty string if key
+                is not contained
+        """
+        statement = """INSERT INTO other_ids(concept_id, chembl_id,
+                    drugbank_id, rxnorm_id, pubchemcompound_id,
+                    pubchemsubstance_id, casregistry_id)
+                    VALUES(
+                        {self._sqlite_str(concept_id)},
+                        {self._sqlite_str(other_ids['chembl'])},
+                        {self._sqlite_str(other_ids['drugbank'])},
+                        {self._sqlite_str(other_ids['rxnorm'])},
+                        {self._sqlite_str(other_ids['pubchemCompound'])},
+                        {self._sqlite_str(other_ids['pubchemSubstance'])},
+                        {self._sqlite_str(other_ids['casRegistry'])}
+                    )"""
+        database.engine.execute(statement)
+
+    def _load_therapy(self, concept_id: str, record: Drug):
+        """Load individual therapy row"""
+        statement = """INSERT INTO therapies(concept_id, label, src_name)
+                    VALUES(
+                        {self._sqlite_str(concept_id)},
+                        {self._sqlite_str(label)},
+                        "Wikidata"
+                    )"""
+        database.engine.execute(statement)
+
+    def _load_data(self, *args, **kwargs):
+        """Load data - called from base clase init"""
+        B.metadata.create_all(bind=database.engine)
+        self._get_db()
+
+        self._extract_data(*args, **kwargs)
+        self._transform_data()
+        self._add_meta()
+
+    def _get_db(self, *args, **kwargs):
+        """Get db - unclear if needed"""
+        db = database.SessionLocal()
+        try:
+            yield db
+        finally:
+            db.close()
+
+    def _add_meta(self, *args, **kwargs):
+        insert_meta = f"""
+            INSERT INTO meta_data(src_name, data_license, data_license_url,
+                version, data_url)
+            SELECT
+                'Wikidata',
+                'CC0 1.0',
+                'https://creativecommons.org/publicdomain/zero/1.0/',
+                '{self._version}',
+                NULL
+            WHERE NOT EXISTS (
+                SELECT * FROM meta_data
+                WHERE src_name = 'Wikidata'
+            );
+        """
+        database.engine.execute(insert_meta)
