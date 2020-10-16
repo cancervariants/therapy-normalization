@@ -34,6 +34,10 @@ class OtherIdentifier(Base):
     wikidata_id = Column(String)
     ncit_id = Column(String)
     drugbank_id = Column(String)
+    rxnorm_id = Column(String, default=None)
+    pubchemcompound_id = Column(String, default=None)
+    pubchemsubstance_id = Column(String, default=None)
+    casregistry_id = Column(String, default=None)
 
     record = relationship("Therapy", back_populates="other_identifiers")
 

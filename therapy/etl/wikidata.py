@@ -60,6 +60,15 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                 raise FileNotFoundError  # TODO wikidata update function here
         self._version = self._data_src.stem.split('_')[1]
 
+    def _other_ids_exists(self, concept_id: str):
+        """Check if Other IDs entry has already been created"""
+        # db.execute("")
+        pass
+
+    def _therapy_exists(self, concept_id: str):
+        """Check if therapy entry has already been created"""
+        pass
+
     def _transform_data(self, *args, **kwargs):
         """Transform data"""
         with open(self._data_src, 'r') as f:
@@ -72,9 +81,8 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
             if 'alias' in record.keys():
                 alias = record['alias']
                 alias = alias.replace('"', '""')
-                self._load_alias(alias, concept_id)
-            other_ids_exists = True
-            if not other_ids_exists:
+                self._load_alias(concept_id, alias)
+            if not self._other_ids_exists(concept_id):
                 other_ids = defaultdict(lambda: "NULL")
                 if 'casRegistry' in record.items():
                     id = record['casRegistry']
@@ -102,14 +110,16 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                     other_ids['drugbank'] = fmted
                 self._load_other_ids(concept_id, other_ids)
 
-                record_exists = True  # TODO
-                if not record_exists:
-                    if 'itemLabel' in record.items():
-                        label = record['itemLabel']
-                    else:
-                        label = "NULL"
-                    record = schemas.Drug(label=label)
-                    self._load_therapy(concept_id, record)
+            if not self._therapy_exists(concept_id):
+                if 'itemLabel' in record.items():
+                    label = record['itemLabel']
+                else:
+                    label = "NULL"
+                record = schemas.Drug(label=label,
+                                      max_phase=None,
+                                      withdrawn=None,
+                                      trade_name=None)
+                self._load_therapy(concept_id, record)
 
     def _load_alias(self, concept_id: str, alias: str):
         """Load alias"""
@@ -130,7 +140,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
             other_ids: defaultdict that returns an empty string if key
                 is not contained
         """
-        statement = """INSERT INTO other_ids(concept_id, chembl_id,
+        statement = f"""INSERT INTO other_identifiers(concept_id, chembl_id,
                     drugbank_id, rxnorm_id, pubchemcompound_id,
                     pubchemsubstance_id, casregistry_id)
                     VALUES(

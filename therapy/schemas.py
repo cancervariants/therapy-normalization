@@ -1,7 +1,7 @@
 """Data models for representing VICC normalized therapy records."""
 from typing import List, Optional
 from pydantic import BaseModel
-from enum import IntEnum
+from enum import Enum, IntEnum
 from collections import namedtuple
 
 
@@ -61,6 +61,24 @@ class MatchType(IntEnum):
     CASE_INSENSITIVE_ALIAS = 40
     FUZZY_MATCH = 20
     NO_MATCH = 0
+
+
+class SourceName(Enum):
+    """Define string constriants for use in source attribute"""
+
+    WIKIDATA = "Wikidata"
+    CHEMBL = "ChEMBL"
+    DRUGBANK = "Drugbank"
+
+
+class TherapyLoad(BaseModel):
+    """An entry into the therapies table"""
+
+    concept_id: str
+    label: Optional[str]
+    max_phase: Optional[PhaseEnum]
+    withdrawn: Optional[bool]
+    trade_name: Optional[str]
 
 
 Meta = namedtuple(
