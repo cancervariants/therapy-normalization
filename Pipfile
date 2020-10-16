@@ -21,6 +21,7 @@ thera-py = {editable = true, path = "."}
 fastapi = "*"
 uvicorn = "*"
 sqlalchemy = "*"
+click = "*"
 
 [requires]
 python_version = "3.8"
