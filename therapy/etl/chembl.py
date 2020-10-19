@@ -3,7 +3,6 @@ from .base import Base
 from therapy import PROJECT_ROOT
 from ftplib import FTP
 import logging
-import sqlite3
 import tarfile
 from therapy import database, models, schemas  # noqa: F401
 from therapy.database import Base as B, engine  # noqa: F401
@@ -81,7 +80,7 @@ class ChEMBL(Base):
 
             insert_trade_name = f"""
                 INSERT INTO trade_names(trade_name, concept_id)
-                SELECT DISTINCT 
+                SELECT DISTINCT
                     products.trade_name,
                     molecule_dictionary.chembl_id
                 FROM chembldb.molecule_dictionary
