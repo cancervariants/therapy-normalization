@@ -47,6 +47,11 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
 }
 """
 
+    def __init__(self):
+        """Initialize wikidata ETL class"""
+        self._concept_ids = []
+        super().__init__()
+
     def _extract_data(self, *args, **kwargs):
         """Extract data"""
         if 'data_path' in kwargs:
@@ -60,14 +65,15 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                 raise FileNotFoundError  # TODO wikidata update function here
         self._version = self._data_src.stem.split('_')[1]
 
-    def _other_ids_exists(self, concept_id: str):
-        """Check if Other IDs entry has already been created"""
-        # db.execute("")
-        pass
+    def _entry_exists(self, concept_id: str):
+        """Check if ETL methods have already encountered concept_id. This
+        should mean that there is no need to insert rows for the aliases
+        or other_identifiers tables.
 
-    def _therapy_exists(self, concept_id: str):
-        """Check if therapy entry has already been created"""
-        pass
+        At present, checks the arg `concept_id` against a list held in a class
+        data field; in the future, could consider querying the DB to confirm.
+        """
+        return concept_id in self._concept_ids
 
     def _transform_data(self, *args, **kwargs):
         """Transform data"""
@@ -82,55 +88,70 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                 alias = record['alias']
                 alias = alias.replace('"', '""')
                 self._load_alias(concept_id, alias)
-            if not self._other_ids_exists(concept_id):
+
+            if self._entry_exists(concept_id):
+                entry_exists = True
+            else:
+                self._concept_ids.append(concept_id)
+                entry_exists = False
+            if not entry_exists:
                 other_ids = defaultdict(lambda: "NULL")
-                if 'casRegistry' in record.items():
+                if 'casRegistry' in record.keys():
                     id = record['casRegistry']
                     fmted = f"{IDENTIFIER_PREFIXES['casRegistry']}:{id}"
                     other_ids['casRegistry'] = fmted
-                if 'pubchemCompound' in record.items():
+                if 'pubchemCompound' in record.keys():
                     id = record['pubchemCompound']
                     fmted = f"{IDENTIFIER_PREFIXES['pubchemCompound']}:{id}"
                     other_ids['pubchemCompound'] = fmted
-                if 'pubchemSubstance' in record.items():
+                if 'pubchemSubstance' in record.keys():
                     id = record['pubchemSubstance']
                     fmted = f"{IDENTIFIER_PREFIXES['pubchemSubstance']}:{id}"
                     other_ids['pubchemSubstance'] = fmted
-                if 'rxnorm' in record.items():
+                if 'rxnorm' in record.keys():
                     id = record['rxnorm']
                     fmted = f"{IDENTIFIER_PREFIXES['rxnorm']}:{id}"
                     other_ids['rxnorm'] = fmted
-                if 'chembl' in record.items():
+                if 'chembl' in record.keys():
                     id = record['chembl']
                     fmted = f"{IDENTIFIER_PREFIXES['chembl']}:{id}"
                     other_ids['chembl'] = fmted
-                if 'drugbank' in record.items():
+                if 'drugbank' in record.keys():
                     id = record['drugbank']
                     fmted = f"{IDENTIFIER_PREFIXES['drugbank']}:{id}"
                     other_ids['drugbank'] = fmted
                 self._load_other_ids(concept_id, other_ids)
 
-            if not self._therapy_exists(concept_id):
-                if 'itemLabel' in record.items():
+                if 'itemLabel' in record.keys():
                     label = record['itemLabel']
                 else:
-                    label = "NULL"
+                    label = 'NULL'
                 record = schemas.Drug(label=label,
                                       max_phase=None,
                                       withdrawn=None,
-                                      trade_name=None)
+                                      trade_name=None,
+                                      aliases=[],
+                                      concept_identifier=concept_id,
+                                      other_identifiers=[])
                 self._load_therapy(concept_id, record)
+
+    def _sqlite_str(self, string):
+        """Sanitizes string to use as value in SQL statement
+
+        Some wikidata entries include items with single or double quotes,
+        like wikidata:Q80863 (alias: 5'-(Tetrahydrogen triphosphate) Adenosine)
+        and wikidata:Q55871701 (label: Wedding "sugar")
+        """
+        if string == "NULL":
+            return "NULL"
+        else:
+            sanitized = string.replace('"', '""').replace("'", "''")
+            return f"'{sanitized}'"
 
     def _load_alias(self, concept_id: str, alias: str):
         """Load alias"""
         database.engine.execute(f"""INSERT INTO aliases(alias, concept_id)
-                VALUES("{alias}", "{concept_id}");""")
-
-    def _sqlite_str(self, string):
-        if string == "NULL":
-            return "NULL"
-        else:
-            return f'"{string}"'
+                VALUES({self._sqlite_str(alias)}, '{concept_id}');""")
 
     def _load_other_ids(self, concept_id: str, other_ids: defaultdict):
         """Load individual other_ids row
@@ -156,11 +177,11 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
 
     def _load_therapy(self, concept_id: str, record: Drug):
         """Load individual therapy row"""
-        statement = """INSERT INTO therapies(concept_id, label, src_name)
+        statement = f"""INSERT INTO therapies(concept_id, label, src_name)
                     VALUES(
                         {self._sqlite_str(concept_id)},
-                        {self._sqlite_str(label)},
-                        "Wikidata"
+                        {self._sqlite_str(record.label)},
+                        'Wikidata'
                     )"""
         database.engine.execute(statement)
 
