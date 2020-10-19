@@ -49,8 +49,6 @@ class ChEMBL(Base):
         distinct_molregnos = \
             [x[0] for x in engine.execute(get_molgrenos)]
 
-        distinct_molregnos = [8633, 1358551]
-
         for molregno in distinct_molregnos:
             self._add_meta()
 
