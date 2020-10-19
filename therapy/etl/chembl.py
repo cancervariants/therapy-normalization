@@ -6,7 +6,7 @@ import logging
 import sqlite3
 import tarfile
 from therapy import database, models, schemas  # noqa: F401
-from therapy.database import Base as B  # noqa: F401
+from therapy.database import Base as B, engine  # noqa: F401
 from sqlalchemy import create_engine, event  # noqa: F401
 
 logger = logging.getLogger('therapy')
@@ -29,28 +29,46 @@ class ChEMBL(Base):
             tar.extractall()
             tar.close()
         assert chembl_db.exists()
-        conn = sqlite3.connect(chembl_db, check_same_thread=False)
-        self._conn = conn
-        self._cursor = conn.cursor()
 
     def _transform_data(self, *args, **kwargs):
-        @event.listens_for(database.engine, "connect")
+        @event.listens_for(engine, "connect")
         def connect(engine, rec):
             copy_chembl_db = PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27.db'
             attach_db = f"""
                 ATTACH DATABASE '{copy_chembl_db}' AS chembldb;
             """
             engine.execute(attach_db)
-        database.engine.connect()
+            cursor = engine.cursor()
+            cursor.execute("PRAGMA foreign_keys=ON")
+            cursor.close()
+        engine.connect()
 
         get_molgrenos = """
             SELECT DISTINCT molregno FROM chembldb.molecule_dictionary;
         """
 
         distinct_molregnos = \
-            [x[0] for x in database.engine.execute(get_molgrenos)]
+            [x[0] for x in engine.execute(get_molgrenos)]
+
+        distinct_molregnos = [8633, 1358551]
 
         for molregno in distinct_molregnos:
+            self._add_meta()
+
+            insert_therapy = f"""
+                INSERT INTO therapies(
+                    concept_id, label, max_phase, withdrawn_flag, src_name
+                )
+                SELECT DISTINCT molecule_dictionary.chembl_id,
+                    molecule_dictionary.pref_name,
+                    molecule_dictionary.max_phase,
+                    molecule_dictionary.withdrawn_flag,
+                    substr(molecule_dictionary.chembl_id,1,6)
+                FROM chembldb.molecule_dictionary
+                WHERE molecule_dictionary.molregno={molregno};
+            """
+            engine.execute(insert_therapy)
+
             insert_alias = f"""
                 INSERT INTO aliases(alias, concept_id)
                 SELECT DISTINCT synonyms, chembl_id
@@ -59,19 +77,13 @@ class ChEMBL(Base):
                     ON molecule_dictionary.molregno=molecule_synonyms.molregno
                     WHERE molecule_dictionary.molregno={molregno};
             """
-            database.engine.execute(insert_alias)
+            engine.execute(insert_alias)
 
-            insert_therapy = f"""
-                INSERT INTO therapies(
-                    concept_id, label, max_phase, withdrawn_flag,
-                    trade_name, src_name
-                )
-                SELECT DISTINCT molecule_dictionary.chembl_id,
-                    molecule_dictionary.pref_name,
-                    molecule_dictionary.max_phase,
-                    molecule_dictionary.withdrawn_flag,
+            insert_trade_name = f"""
+                INSERT INTO trade_names(trade_name, concept_id)
+                SELECT DISTINCT 
                     products.trade_name,
-                    substr(molecule_dictionary.chembl_id,1,6)
+                    molecule_dictionary.chembl_id
                 FROM chembldb.molecule_dictionary
                 LEFT JOIN chembldb.formulations
                     ON molecule_dictionary.molregno=formulations.molregno
@@ -79,15 +91,14 @@ class ChEMBL(Base):
                     ON formulations.product_id=products.product_id
                 WHERE molecule_dictionary.molregno={molregno};
             """
-            database.engine.execute(insert_therapy)
+            engine.execute(insert_trade_name)
 
     def _load_data(self, *args, **kwargs):
-        B.metadata.create_all(bind=database.engine)
+        B.metadata.create_all(bind=engine)
         self._get_db()
 
         self._extract_data()
         self._transform_data()
-        self._add_meta()
 
     def _get_db(self, *args, **kwargs):
         db = database.SessionLocal()
@@ -111,7 +122,7 @@ class ChEMBL(Base):
                 WHERE src_name = 'CHEMBL'
             );
         """
-        database.engine.execute(insert_meta)
+        engine.execute(insert_meta)
 
     @staticmethod
     def _download_chembl_27(filepath):

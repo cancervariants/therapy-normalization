@@ -1,8 +1,10 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
 from therapy.etl import ChEMBL, Wikidata
-from therapy.database import Base
+from therapy.database import Base, engine, SessionLocal
 from therapy import database, models, schemas  # noqa: F401
+from therapy.models import Therapy
+from sqlalchemy import event
 
 normalizers_dict = {
     'chembl': ChEMBL,
@@ -17,7 +19,7 @@ class CLI:
     @click.option(
         '--all',
         is_flag=True,
-        help='Update all normalizer databases'
+        help='Update all normalizer databases.'
     )
     @click.option(
         '--normalizer',
@@ -25,6 +27,15 @@ class CLI:
     )
     def update_normalizer_db(normalizer, all):
         """Update select normalizer(s) in the database."""
+
+        @event.listens_for(engine, "connect")
+        def set_sqlite_pragma(engine, rec):
+            cursor = engine.cursor()
+            cursor.execute("PRAGMA foreign_keys=ON")
+            cursor.close()
+
+        engine.connect()
+
         if all:
             for n in normalizers_dict:
                 CLI()._delete_data(n)
@@ -43,26 +54,12 @@ class CLI:
                     raise Exception("Not a normalizer.")
 
     def _delete_data(self, source, *args, **kwargs):
-        # TODO: Fix so that delete cascade works and use SQLAlchemy commands
-        Base.metadata.create_all(bind=database.engine)
+        Base.metadata.create_all(bind=engine)
+        session = SessionLocal()
 
-        delete_therapies = f"""
-            DELETE FROM therapies
-            WHERE LOWER(concept_id) LIKE LOWER('{source}%');
-        """
-        database.engine.execute(delete_therapies)
-
-        delete_aliases = f"""
-            DELETE FROM aliases
-            WHERE LOWER(concept_id) LIKE LOWER('{source}%');
-        """
-        database.engine.execute(delete_aliases)
-
-        delete_other_identifiers = f"""
-            DELETE FROM other_identifiers
-            WHERE LOWER(concept_id) LIKE LOWER('{source}%');
-        """
-        database.engine.execute(delete_other_identifiers)
+        session.query(Therapy).filter(Therapy.src_name.ilike(f"%{source}%")).\
+            delete(synchronize_session=False)
+        session.commit()
 
 
 if __name__ == '__main__':
