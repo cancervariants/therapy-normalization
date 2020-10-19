@@ -191,8 +191,8 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         self._get_db()
 
         self._extract_data(*args, **kwargs)
-        self._transform_data()
         self._add_meta()
+        self._transform_data()
 
     def _get_db(self, *args, **kwargs):
         """Get db - unclear if needed"""
