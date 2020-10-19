@@ -1,35 +1,41 @@
-"""Define models"""
+"""Define models."""
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 from .database import Base
 
 
 class Therapy(Base):
-    """Therapy table"""
+    """Table that lists compounds/biotherapeutics
+    with associated identifiers.
+    """
 
     __tablename__ = "therapies"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    concept_id = Column(String, index=True)
+    concept_id = Column(String, index=True, primary_key=True)
     label = Column(String, index=True)
     max_phase = Column(Integer)
     withdrawn_flag = Column(Boolean)
-    trade_name = Column(String)
     src_name = Column(String, ForeignKey('meta_data.src_name'))
 
-    aliases = relationship("Alias", back_populates="record")
+    aliases = relationship("Alias", back_populates="record",
+                           passive_deletes=True)
     other_identifiers = relationship("OtherIdentifier",
-                                     back_populates="record")
+                                     back_populates="record",
+                                     passive_deletes=True)
+    trade_names = relationship("TradeName",
+                               back_populates="record",
+                               passive_deletes=True)
     src_meta_data = relationship("Meta", back_populates="record")
 
 
 class OtherIdentifier(Base):
-    """Other Identifier table"""
+    """Table that lists other identifiers for a compound."""
 
     __tablename__ = "other_identifiers"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    concept_id = Column(String, ForeignKey('therapies.concept_id'))
+    concept_id = Column(String, ForeignKey('therapies.concept_id',
+                                           ondelete='CASCADE'))
     chembl_id = Column(String)
     wikidata_id = Column(String)
     ncit_id = Column(String)
@@ -43,19 +49,33 @@ class OtherIdentifier(Base):
 
 
 class Alias(Base):
-    """Alias table"""
+    """Table that lists synonyms for the compound."""
 
     __tablename__ = "aliases"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     alias = Column(String, index=True)
-    concept_id = Column(String, ForeignKey('therapies.concept_id'))
+    concept_id = Column(String, ForeignKey('therapies.concept_id',
+                                           ondelete='CASCADE'))
 
     record = relationship("Therapy", back_populates="aliases")
 
 
+class TradeName(Base):
+    """Table that lists the trade name for the product."""
+
+    __tablename__ = "trade_names"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    trade_name = Column(String, index=True)
+    concept_id = Column(String, ForeignKey('therapies.concept_id',
+                                           ondelete='CASCADE'))
+
+    record = relationship("Therapy", back_populates="trade_names")
+
+
 class Meta(Base):
-    """Meta info for each source"""
+    """Table that lists meta info for each source."""
 
     __tablename__ = "meta_data"
 
