@@ -40,8 +40,13 @@ def fetch_meta(session: Session, src_name: str) -> MetaResponse:
     """Fetch metadata for src_name"""
     meta = session.query(Meta).filter(Meta.src_name == src_name).first()
     if meta:
-        return MetaResponse(meta.data_license, meta.data_license_url,
-                            meta.version, meta.data_url)
+        params = {
+            'data_license': meta.data_license,
+            'data_license_url': meta.data_license_url,
+            'version': meta.version,
+            'data_url': meta.data_url
+        }
+        return MetaResponse(**params)
 
 
 def fetch_records(session: Session,
@@ -62,23 +67,30 @@ def fetch_records(session: Session,
         therapy = session.query(Therapy). \
             filter(Therapy.concept_id == concept_id).first()
 
+        other_identifiers = session.query(
+            OtherIdentifier.wikidata_id, OtherIdentifier.chembl_id,
+            OtherIdentifier.casregistry_id, OtherIdentifier.drugbank_id,
+            OtherIdentifier.ncit_id, OtherIdentifier.pubchemcompound_id,
+            OtherIdentifier.pubchemsubstance_id, OtherIdentifier.rxnorm_id
+        ).first()
+
+        aliases = [a.alias for a in session.query(Alias).filter(
+            Alias.concept_id == concept_id)]
+
+        trade_name = [t.trade_name for t in session.query(
+            TradeName).filter(TradeName.concept_id == concept_id)]
+
         params = {
             'concept_identifier': concept_id,
             'label': therapy.label,
             'max_phase': therapy.max_phase,
             'withdrawn': therapy.withdrawn_flag,
             # TODO FIX
-            'other_identifiers': session.query(
-                OtherIdentifier.wikidata_id, OtherIdentifier.chembl_id,
-                OtherIdentifier.casregistry_id, OtherIdentifier.drugbank_id,
-                OtherIdentifier.ncit_id, OtherIdentifier.pubchemcompound_id,
-                OtherIdentifier.pubchemsubstance_id, OtherIdentifier.rxnorm_id
-            ).first(),
-            'aliases': [a.alias for a in session.query(Alias).filter(
-                Alias.concept_id == concept_id)],
-            'trade_name': [t.trade_name for t in session.query(
-                TradeName).filter(TradeName.concept_id == concept_id)]
+            'other_identifiers': [c_id for c_id in other_identifiers if c_id],
+            'aliases': aliases if aliases != [None] else [],
+            'trade_name': trade_name if trade_name != [None] else []
         }
+
         drug = Drug(**params)
         src_name = therapy.src_name
         if src_name not in response.keys():
@@ -160,9 +172,9 @@ def response_keyed(query: str, sources: List[str]):
         resp = fetch_records(session, resp, concept_ids, MatchType.PRIMARY)
 
     # check if therapies.label ILIKE query
-    results = (session.query(Therapy)
-                      .filter(Therapy.label.ilike(f"{query}"))
-                      .all())
+    results = session.query(Therapy)\
+                     .filter(Therapy.label.ilike(f"{query}"))\
+                     .all()
     if results:
         concept_ids = [r.concept_id for r in results]
         resp = fetch_records(session, resp, concept_ids,
@@ -185,7 +197,7 @@ def response_keyed(query: str, sources: List[str]):
     results = session.query(Alias).filter(
         Alias.alias.ilike(f"%{query}%")).all()
     if results:
-        concept_ids = [r.concept_ids for r in results]
+        concept_ids = [r.concept_id for r in results]
         fetch_records(session, resp, concept_ids,
                       MatchType.CASE_INSENSITIVE_ALIAS)
 
@@ -193,11 +205,12 @@ def response_keyed(query: str, sources: List[str]):
     results = session.query(TradeName).filter(
         TradeName.trade_name.ilike(f"%{query}%")).all()
     if results:
-        concept_ids = [r.concept_ids for r in results]
+        concept_ids = [r.concept_id for r in results]
         fetch_records(session, resp, concept_ids,
                       MatchType.CASE_INSENSITIVE_ALIAS)
 
     # return NO MATCH
+    print(resp)
     resp = fill_no_matches(session, resp)
     session.close()
     return resp
@@ -299,4 +312,4 @@ def emit_warnings(query_str):
 
 # TODO needed?
 if __name__ == '__main__':
-    response_keyed('Platinol', ['Chembl'])
+    print(response_keyed('CISPLATIN', ['CHEMBL']))
