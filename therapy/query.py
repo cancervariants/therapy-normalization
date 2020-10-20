@@ -93,15 +93,18 @@ def fetch_records(session: Session,
 
         drug = Drug(**params)
         src_name = therapy.src_name
-        if src_name not in response.keys():
+        if src_name not in response['normalizer_matches'].keys():
             pass
-        elif response[src_name] is None:
-            response[src_name]['match_type'] = match_type
-            response[src_name]['records'] = [drug]
-            response[src_name]['meta_'] = fetch_meta(session, src_name)
-        elif response[src_name]['match_type'] == match_type:
+        elif response['normalizer_matches'][src_name] is None:
+            response['normalizer_matches'][src_name] = {
+                'match_type': match_type,
+                'records': [drug],
+                'meta_': fetch_meta(session, src_name)
+            }
+        elif response['normalizer_matches'][src_name]['match_type']\
+                == match_type:
             # TODO add diff kinds of matches (eg alias vs tradename)?
-            response[src_name]['records'].append(drug)
+            response['normalizer_matches'][src_name]['records'].append(drug)
     return response
 
 
@@ -117,6 +120,7 @@ def fill_no_matches(session: Session, resp: Dict) -> Dict:
     return resp
 
 
+# TODO: Case insensitivity for sources
 def response_keyed(query: str, sources: List[str]):
     """Return response as dict where key is source name and value
     is a list of records
@@ -210,7 +214,6 @@ def response_keyed(query: str, sources: List[str]):
                       MatchType.CASE_INSENSITIVE_ALIAS)
 
     # return NO MATCH
-    print(resp)
     resp = fill_no_matches(session, resp)
     session.close()
     return resp
@@ -273,7 +276,7 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
             raise InvalidParameterException(detail)
 
     if keyed:
-        return response_keyed()
+        return response_keyed(query_str, query_sources)
     else:
         return response_list()
     # if keyed:
@@ -308,8 +311,3 @@ def emit_warnings(query_str):
             f'Query ({query_str}) contains non breaking space characters.'
         )
     return warnings
-
-
-# TODO needed?
-if __name__ == '__main__':
-    print(response_keyed('CISPLATIN', ['CHEMBL']))
