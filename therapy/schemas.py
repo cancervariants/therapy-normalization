@@ -2,7 +2,6 @@
 from typing import List, Optional
 from pydantic import BaseModel
 from enum import Enum, IntEnum
-from collections import namedtuple
 
 
 class Therapy(BaseModel):
@@ -81,6 +80,10 @@ class TherapyLoad(BaseModel):
     trade_name: Optional[str]
 
 
-Meta = namedtuple(
-    'Meta', ['data_license', 'data_license_url', 'version', 'data_url']
-)
+class MetaResponse(BaseModel):
+    """Metadata for a given source to return in response object"""
+
+    data_license: str
+    data_license_url: str
+    version: str
+    data_url: str
