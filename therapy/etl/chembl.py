@@ -1,4 +1,4 @@
-"""This module defines the ChEMBL normalizer"""
+"""This module defines the ChEMBL ETL methods."""
 from .base import Base
 from therapy import PROJECT_ROOT
 from ftplib import FTP
@@ -13,7 +13,7 @@ logger.setLevel(logging.DEBUG)
 
 
 class ChEMBL(Base):
-    """A normalizer using the ChEMBL resource."""
+    """ETL ChEMBL resource into therapy.db."""
 
     def _extract_data(self, *args, **kwargs):
         if 'data_path' in kwargs:
@@ -42,58 +42,45 @@ class ChEMBL(Base):
             cursor.close()
         engine.connect()
 
-        get_molgrenos = """
-            SELECT DISTINCT molregno FROM chembldb.molecule_dictionary;
+        insert_therapy = """
+            INSERT INTO therapies(
+                concept_id, label, max_phase, withdrawn_flag, src_name
+            )
+            SELECT DISTINCT 'chembl:'||molecule_dictionary.chembl_id,
+                molecule_dictionary.pref_name,
+                molecule_dictionary.max_phase,
+                molecule_dictionary.withdrawn_flag,
+                substr(molecule_dictionary.chembl_id,1,6)
+            FROM chembldb.molecule_dictionary;
         """
+        engine.execute(insert_therapy)
 
-        distinct_molregnos = \
-            [x[0] for x in engine.execute(get_molgrenos)]
+        insert_alias = """
+            INSERT INTO aliases(alias, concept_id)
+            SELECT DISTINCT synonyms, 'chembl:'||chembl_id
+            FROM chembldb.molecule_dictionary
+            LEFT JOIN chembldb.molecule_synonyms
+                ON molecule_dictionary.molregno=molecule_synonyms.molregno;
+        """
+        engine.execute(insert_alias)
 
-        for molregno in distinct_molregnos:
-            self._add_meta()
-
-            insert_therapy = f"""
-                INSERT INTO therapies(
-                    concept_id, label, max_phase, withdrawn_flag, src_name
-                )
-                SELECT DISTINCT 'chembl:'||molecule_dictionary.chembl_id,
-                    molecule_dictionary.pref_name,
-                    molecule_dictionary.max_phase,
-                    molecule_dictionary.withdrawn_flag,
-                    substr(molecule_dictionary.chembl_id,1,6)
-                FROM chembldb.molecule_dictionary
-                WHERE molecule_dictionary.molregno={molregno};
-            """
-            engine.execute(insert_therapy)
-
-            insert_alias = f"""
-                INSERT INTO aliases(alias, concept_id)
-                SELECT DISTINCT synonyms, 'chembl:'||chembl_id
-                FROM chembldb.molecule_dictionary
-                LEFT JOIN chembldb.molecule_synonyms
-                    ON molecule_dictionary.molregno=molecule_synonyms.molregno
-                    WHERE molecule_dictionary.molregno={molregno};
-            """
-            engine.execute(insert_alias)
-
-            insert_trade_name = f"""
-                INSERT INTO trade_names(trade_name, concept_id)
-                SELECT DISTINCT
-                    products.trade_name,
-                    'chembl:'||molecule_dictionary.chembl_id
-                FROM chembldb.molecule_dictionary
-                LEFT JOIN chembldb.formulations
-                    ON molecule_dictionary.molregno=formulations.molregno
-                LEFT JOIN chembldb.products
-                    ON formulations.product_id=products.product_id
-                WHERE molecule_dictionary.molregno={molregno};
-            """
-            engine.execute(insert_trade_name)
+        insert_trade_name = """
+            INSERT INTO trade_names(trade_name, concept_id)
+            SELECT DISTINCT
+                products.trade_name,
+                'chembl:'||molecule_dictionary.chembl_id
+            FROM chembldb.molecule_dictionary
+            LEFT JOIN chembldb.formulations
+                ON molecule_dictionary.molregno=formulations.molregno
+            LEFT JOIN chembldb.products
+                ON formulations.product_id=products.product_id;
+        """
+        engine.execute(insert_trade_name)
 
     def _load_data(self, *args, **kwargs):
         B.metadata.create_all(bind=engine)
         self._get_db()
-
+        self._add_meta()
         self._extract_data()
         self._transform_data()
 
