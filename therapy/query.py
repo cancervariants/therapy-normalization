@@ -2,9 +2,14 @@
 import re
 from typing import List
 from uvicorn.config import logger
+from therapy import database, models, schemas # noqa F401
 from therapy.etl import ChEMBL, Wikidata  # noqa F401
 from therapy.database import Base, engine, SessionLocal
-from therapy.models import Therapy, Alias, OtherIdentifier, TradeName, Meta  # noqa F401
+from therapy.models import Therapy, Alias, OtherIdentifier, TradeName, \
+    Meta  # noqa F401
+from therapy.schemas import Drug
+
+session = SessionLocal()
 
 
 class InvalidParameterException(Exception):
@@ -39,11 +44,6 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
         Dict containing all matches found in normalizers.
     """
     sources = ['wikidata', 'chembl']
-
-    resp = {
-        'warnings': emit_warnings(query_str),
-        'query': query_str,
-    }
 
     if not incl and not excl:
         query_sources = sources
@@ -98,7 +98,6 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
     #             'meta_': results.meta_._asdict(),
     #         })
     # return resp
-    return resp
 
 
 def response_keyed(query: str, sources: List[str]):
@@ -110,8 +109,19 @@ def response_keyed(query: str, sources: List[str]):
         # return response w/ MatchType.NO_MATCH
         pass
 
+    resp = {  # noqa F841
+        'query': query,
+        'warnings': emit_warnings(query),
+        'records': {
+            source: None for source in sources
+        }
+    }
+
+    engine.connect()
     Base.metadata.create_all(bind=engine)
-    session = SessionLocal()  # noqa F841
+    get_db()
+
+    # session = SessionLocal()  # noqa F841
 
     # GROUP 1
     # first check if therapies.concept_id = query
@@ -122,14 +132,73 @@ def response_keyed(query: str, sources: List[str]):
 
     # GROUP 2
     # check if aliases.alias = query
+    records = session.query(Alias).filter(Alias.alias == query).all()
+    if records:
+        get_records()
+
     # check if aliases.alias ILIKE query
+    records = session.query(Alias).filter(
+        Alias.alias.ilike(f"%{query}%")).all()
+    if records:
+        get_records()
+
     # check if trade_names.trade_name = query TODO special match type?
+    records = session.query(TradeName).filter(
+        TradeName.trade_name == query).all()
+    if records:
+        get_records()
+
     # check if trade_names.trade_name ILIKE query
-    # get concept ID from ^ that table, get row from therapies, get other rows
-    # based on concept ID
+    records = session.query(TradeName).filter(
+        TradeName.trade_name.ilike(f"%{query}%")).all()
+    if records:
+        get_records()
 
     # return NO MATCH
     pass
+
+
+def get_records(records):
+    """Return matched Drug records."""
+    for record in records:
+        concept_id = record.concept_id
+        therapy = session.query(Therapy). \
+            filter(Therapy.concept_id == concept_id).first()
+
+        kwargs = {
+            'concept_identifier': concept_id,
+            'label': therapy.label,
+            'max_phase': therapy.max_phase,
+            'withdrawn': therapy.withdrawn_flag,
+            # TODO FIX
+            'other_identifiers': session.query(
+                OtherIdentifier.wikidata_id, OtherIdentifier.chembl_id,
+                OtherIdentifier.casregistry_id, OtherIdentifier.drugbank_id,
+                OtherIdentifier.ncit_id, OtherIdentifier.pubchemcompound_id,
+                OtherIdentifier.pubchemsubstance_id, OtherIdentifier.rxnorm_id
+            ),
+            'aliases': [a.alias for a in session.query(Alias).filter(
+                Alias.concept_id == concept_id)],
+            'trade_name': [t.trade_name for t in session.query(
+                TradeName).filter(TradeName.concept_id == concept_id)]
+        }
+
+        Drug(kwargs)
+
+
+def get_db():
+    """Create a new SQLAlchemy SessionLocal that will be used in a single
+    request, and then close it once the request is finished
+    """
+    db = database.SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+if __name__ == '__main__':
+    response_keyed('Platinol', ['Chembl'])
 
 
 def response_list():

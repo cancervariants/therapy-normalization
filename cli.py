@@ -62,6 +62,7 @@ class CLI:
         session.query(Therapy).filter(Therapy.src_name.ilike(f"%{source}%")).\
             delete(synchronize_session=False)
         session.commit()
+        session.close()
 
 
 if __name__ == '__main__':
