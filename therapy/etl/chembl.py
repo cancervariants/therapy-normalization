@@ -56,7 +56,7 @@ class ChEMBL(Base):
                 INSERT INTO therapies(
                     concept_id, label, max_phase, withdrawn_flag, src_name
                 )
-                SELECT DISTINCT molecule_dictionary.chembl_id,
+                SELECT DISTINCT 'chembl:'||molecule_dictionary.chembl_id,
                     molecule_dictionary.pref_name,
                     molecule_dictionary.max_phase,
                     molecule_dictionary.withdrawn_flag,
@@ -68,7 +68,7 @@ class ChEMBL(Base):
 
             insert_alias = f"""
                 INSERT INTO aliases(alias, concept_id)
-                SELECT DISTINCT synonyms, chembl_id
+                SELECT DISTINCT synonyms, 'chembl:'||chembl_id
                 FROM chembldb.molecule_dictionary
                 LEFT JOIN chembldb.molecule_synonyms
                     ON molecule_dictionary.molregno=molecule_synonyms.molregno
@@ -80,7 +80,7 @@ class ChEMBL(Base):
                 INSERT INTO trade_names(trade_name, concept_id)
                 SELECT DISTINCT
                     products.trade_name,
-                    molecule_dictionary.chembl_id
+                    'chembl:'||molecule_dictionary.chembl_id
                 FROM chembldb.molecule_dictionary
                 LEFT JOIN chembldb.formulations
                     ON molecule_dictionary.molregno=formulations.molregno

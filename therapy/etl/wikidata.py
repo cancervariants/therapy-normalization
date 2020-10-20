@@ -84,17 +84,24 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         for record in records:
             record_id = record['item'].split('/')[-1]
             concept_id = f"wikidata:{record_id}"
-            if 'alias' in record.keys():
-                alias = record['alias']
-                alias = alias.replace('"', '""')
-                self._load_alias(concept_id, alias)
-
+            if 'itemLabel' in record.keys():
+                label = record['itemLabel']
+            else:
+                label = 'NULL'
+            drug = schemas.Drug(label=label,
+                                max_phase=None,
+                                withdrawn=None,
+                                trade_name=None,
+                                aliases=[],
+                                concept_identifier=concept_id,
+                                other_identifiers=[])
             if self._entry_exists(concept_id):
                 entry_exists = True
             else:
                 self._concept_ids.append(concept_id)
                 entry_exists = False
             if not entry_exists:
+                self._load_therapy(concept_id, drug)
                 other_ids = defaultdict(lambda: "NULL")
                 if 'casRegistry' in record.keys():
                     id = record['casRegistry']
@@ -121,19 +128,10 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                     fmted = f"{IDENTIFIER_PREFIXES['drugbank']}:{id}"
                     other_ids['drugbank'] = fmted
                 self._load_other_ids(concept_id, other_ids)
-
-                if 'itemLabel' in record.keys():
-                    label = record['itemLabel']
-                else:
-                    label = 'NULL'
-                record = schemas.Drug(label=label,
-                                      max_phase=None,
-                                      withdrawn=None,
-                                      trade_name=None,
-                                      aliases=[],
-                                      concept_identifier=concept_id,
-                                      other_identifiers=[])
-                self._load_therapy(concept_id, record)
+            if 'alias' in record.keys():
+                alias = record['alias']
+                alias = alias.replace('"', '""')
+                self._load_alias(concept_id, alias)
 
     def _sqlite_str(self, string):
         """Sanitizes string to use as value in SQL statement
@@ -175,12 +173,12 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                     )"""
         database.engine.execute(statement)
 
-    def _load_therapy(self, concept_id: str, record: Drug):
+    def _load_therapy(self, concept_id: str, drug: Drug):
         """Load individual therapy row"""
         statement = f"""INSERT INTO therapies(concept_id, label, src_name)
                     VALUES(
                         {self._sqlite_str(concept_id)},
-                        {self._sqlite_str(record.label)},
+                        {self._sqlite_str(drug.label)},
                         'Wikidata'
                     )"""
         database.engine.execute(statement)
