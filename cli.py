@@ -44,6 +44,8 @@ class CLI:
             click.echo('Updated all of the normalizer sources.')
         else:
             normalizers = normalizer.lower().split()
+            if len(normalizers) == 0:
+                raise Exception("Must enter a normalizer.")
             for n in normalizers:
                 if n in normalizers_dict:
                     # TODO: Fix so that self._delete_data(n) works
