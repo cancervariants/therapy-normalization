@@ -6,7 +6,7 @@ import logging
 import tarfile
 from therapy import database, models  # noqa: F401
 from therapy.schemas import SourceName, NamespacePrefix
-from therapy.database import Base as B, engine  # noqa: F401
+from therapy.database import Base as B, engine, SessionLocal  # noqa: F401
 from sqlalchemy import create_engine, event  # noqa: F401
 
 logger = logging.getLogger('therapy')
@@ -89,7 +89,7 @@ class ChEMBL(Base):
         self._transform_data()
 
     def _get_db(self, *args, **kwargs):
-        db = database.SessionLocal()
+        db = SessionLocal()
         try:
             yield db
         finally:

@@ -11,8 +11,6 @@ from therapy.schemas import Drug, MetaResponse, MatchType, SourceName, \
     NamespacePrefix
 from sqlalchemy.orm import Session
 
-# session = SessionLocal() TODO can we just do this out here
-
 
 class InvalidParameterException(Exception):
     """Exception for invalid parameter args provided by the user"""
@@ -30,7 +28,7 @@ def get_db():
     """Create a new SQLAlchemy SessionLocal that will be used in a single
     request, and then close it once the request is finished
     """
-    db = database.SessionLocal()
+    db = SessionLocal()
     try:
         yield db
     finally:
@@ -128,6 +126,7 @@ def fetch_records(session: Session,
     return response
 
 
+# TODO: Response list?
 def fill_no_matches(session: Session, resp: Dict) -> Dict:
     """Fill all empty normalizer_matches slots with NO_MATCH results"""
     for src_name in resp['normalizer_matches'].keys():
@@ -140,20 +139,21 @@ def fill_no_matches(session: Session, resp: Dict) -> Dict:
     return resp
 
 
-def response_keyed(query: str, sources: List[str]):
+def create_session() -> Session:
+    """Create a session to access database."""
+    engine.connect()
+    Base.metadata.create_all(bind=engine)
+    get_db()
+    return SessionLocal()
+
+
+def response_keyed(query: str, sources: List[str], session: Session):
     """Return response as dict where key is source name and value
     is a list of records
 
     TODO refactor to return as soon as response is complete,
     clean up fetch_records calls
     """
-    query = query.strip()
-
-    engine.connect()
-    Base.metadata.create_all(bind=engine)
-    get_db()
-    session = SessionLocal()
-
     resp = {
         'query': query,
         'warnings': emit_warnings(query),
@@ -240,11 +240,15 @@ def response_keyed(query: str, sources: List[str]):
     return resp
 
 
-def response_list():
+def response_list(query: str, sources: List[str], session: Session):
     """Return response as list, where the first key-value in each item
     is the source name
     """
-    pass
+    resp = {  # noqa F841
+        'query': query,
+        'warnings': emit_warnings(query),
+        'normalizer_matches': []
+    }
 
 
 def normalize(query_str, keyed='false', incl='', excl='', **params):
@@ -301,7 +305,10 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
             detail = f"Invalider normalizer name(s): {invalid_sources}"
             raise InvalidParameterException(detail)
 
+    session = create_session()
+    query_str = query_str.strip()
+
     if keyed:
-        return response_keyed(query_str, query_sources)
+        return response_keyed(query_str, query_sources, session)
     else:
         return response_list()
