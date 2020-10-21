@@ -81,23 +81,33 @@ def fetch_records(session: Session,
             filter(Therapy.concept_id == concept_id).first()
 
         other_identifiers = session.query(
-            OtherIdentifier.wikidata_id, OtherIdentifier.chembl_id,
-            OtherIdentifier.casregistry_id, OtherIdentifier.drugbank_id,
-            OtherIdentifier.ncit_id, OtherIdentifier.pubchemcompound_id,
-            OtherIdentifier.pubchemsubstance_id, OtherIdentifier.rxnorm_id
-        ).first()
+            OtherIdentifier.chembl_id,
+            OtherIdentifier.wikidata_id,
+            OtherIdentifier.ncit_id,
+            OtherIdentifier.drugbank_id,
+            OtherIdentifier.rxnorm_id,
+            OtherIdentifier.pubchemcompound_id,
+            OtherIdentifier.pubchemsubstance_id,
+            OtherIdentifier.casregistry_id
+        ).filter(OtherIdentifier.concept_id == concept_id).first()
+        if other_identifiers:
+            other_identifiers = [c_id for c_id in other_identifiers if c_id]
+        else:
+            other_identifiers = []
 
+        # TODO does this need to be fixed?
         aliases = [a.alias for a in session.query(Alias).filter(
             Alias.concept_id == concept_id)]
 
         trade_name = [t.trade_name for t in session.query(
             TradeName).filter(TradeName.concept_id == concept_id)]
+
         params = {
             'concept_identifier': concept_id,
             'label': therapy.label,
             'max_phase': therapy.max_phase,
             'withdrawn': therapy.withdrawn_flag,
-            'other_identifiers': [c_id for c_id in other_identifiers if c_id],
+            'other_identifiers': other_identifiers,
             'aliases': aliases if aliases != [None] else [],
             'trade_name': trade_name if trade_name != [None] else []
         }
@@ -197,7 +207,7 @@ def response_keyed(query: str, sources: List[str]):
     # check alias match
     results = session.query(Alias).filter(Alias.alias == query).all()
     if results:
-        concept_ids = [r.concept_ids for r in results]
+        concept_ids = [r.concept_id for r in results]
         fetch_records(session, resp, concept_ids, MatchType.ALIAS)
 
     # check trade name match

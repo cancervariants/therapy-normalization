@@ -33,7 +33,7 @@ class Drug(Therapy):
 
     max_phase: Optional[PhaseEnum]
     withdrawn: Optional[bool]
-    trade_name: Optional[List[str]]
+    trade_name: List[str]
     label: Optional[str]
 
     class Config:
@@ -88,7 +88,7 @@ class TherapyLoad(BaseModel):
     label: Optional[str]
     max_phase: Optional[PhaseEnum]
     withdrawn: Optional[bool]
-    trade_name: Optional[List[str]]
+    trade_name: List[str]
 
 
 class MetaResponse(BaseModel):
