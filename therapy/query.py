@@ -92,7 +92,6 @@ def fetch_records(session: Session,
 
         trade_name = [t.trade_name for t in session.query(
             TradeName).filter(TradeName.concept_id == concept_id)]
-        print(trade_name)
         params = {
             'concept_identifier': concept_id,
             'label': therapy.label,
@@ -158,8 +157,8 @@ def response_keyed(query: str, sources: List[str]):
 
     # check concept ID match
     def namespace_prefix_match(q: str) -> bool:
-        namespace_prefixes = [prefix for prefix, _ in
-                              NamespacePrefix.__members__.items()]
+        namespace_prefixes = [prefix.value for prefix in
+                              NamespacePrefix.__members__.values()]
         return len(list(filter(lambda p: q.startswith(p),
                                namespace_prefixes))) == 1
 
@@ -257,8 +256,8 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
     Returns:
         Dict containing all matches found in normalizers.
     """
-    sources = {name.lower(): name for name, _ in
-               SourceName.__members__.items()}
+    sources = {name.value.lower(): name.value for name in
+               SourceName.__members__.values()}
 
     if not incl and not excl:
         query_sources = sources.values()
@@ -296,6 +295,3 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
         return response_keyed(query_str, query_sources)
     else:
         return response_list()
-
-
-print(normalize('CISPLATIN', keyed=True))

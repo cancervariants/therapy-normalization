@@ -97,4 +97,4 @@ class MetaResponse(BaseModel):
     data_license: str
     data_license_url: str
     version: str
-    data_url: str
+    data_url: Optional[str]  # TODO how to handle empty values like Wikidata?
