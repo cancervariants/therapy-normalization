@@ -92,7 +92,7 @@ def fetch_records(session: Session,
 
         trade_name = [t.trade_name for t in session.query(
             TradeName).filter(TradeName.concept_id == concept_id)]
-
+        print(trade_name)
         params = {
             'concept_identifier': concept_id,
             'label': therapy.label,
@@ -257,37 +257,45 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
     Returns:
         Dict containing all matches found in normalizers.
     """
-    sources = [name for name, _ in SourceName.__members__.items()]
+    sources = {name.lower(): name for name, _ in
+               SourceName.__members__.items()}
 
     if not incl and not excl:
-        query_sources = sources
+        query_sources = sources.values()
     elif incl and excl:
         detail = "Cannot request both normalizer inclusions and exclusions"
         raise InvalidParameterException(detail)
     elif incl:
-        req_sources = incl.lower().split(',')
-        req_sources = [n.strip() for n in req_sources]
+        req_sources = [n.strip() for n in incl.split(',')]
         invalid_sources = []
+        query_sources = []
         for source in req_sources:
-            if source not in sources:
+            if source.lower() in sources.keys():
+                query_sources.append(sources[source.lower()])
+            else:
                 invalid_sources.append(source)
         if invalid_sources:
             detail = f"Invalid normalizer name(s): {invalid_sources}"
             raise InvalidParameterException(detail)
-        query_sources = req_sources
     else:
-        req_exclusions = incl.lower().split(',')
-        req_exclusions = [n.strip() for n in req_exclusions]
-        query_sources = list(filter(
-            lambda s: s not in req_exclusions,
-            sources
-        ))
-        if len(query_sources) > len(sources) - len(req_exclusions):
-            invalid_names = set(req_exclusions).difference(sources)
-            detail = f"Invalider normalizer name(s): {invalid_names}"
+        req_exclusions = [n.strip() for n in excl.lower().split(',')]
+        req_excl_dict = {r.lower: r for r in req_exclusions}
+        invalid_sources = []
+        query_sources = []
+        for req_l, req in req_excl_dict.items():
+            if req_l not in sources.keys():
+                invalid_sources.append(req)
+        for src_l, src in sources.items():
+            if src_l not in req_excl_dict.keys():
+                query_sources.append(src)
+        if invalid_sources:
+            detail = f"Invalider normalizer name(s): {invalid_sources}"
             raise InvalidParameterException(detail)
 
     if keyed:
         return response_keyed(query_str, query_sources)
     else:
         return response_list()
+
+
+print(normalize('CISPLATIN', keyed=True))
