@@ -126,7 +126,6 @@ def fetch_records(session: Session,
     return response
 
 
-# TODO: Response list?
 def fill_no_matches(session: Session, resp: Dict) -> Dict:
     """Fill all empty source_matches slots with NO_MATCH results"""
     for src_name in resp['source_matches'].keys():
@@ -137,6 +136,14 @@ def fill_no_matches(session: Session, resp: Dict) -> Dict:
                 'meta_': fetch_meta(session, src_name)
             }
     return resp
+
+
+def is_resp_complete(response: Dict, sources: List[str]) -> bool:
+    """Check that response has all sources."""
+    for src in sources:
+        if not response['source_matches'][src]:
+            return False
+    return True
 
 
 def create_session() -> Session:
@@ -189,11 +196,17 @@ def response_keyed(query: str, sources: List[str], session: Session):
                 resp = fetch_records(session, resp, concept_ids,
                                      MatchType.NAMESPACE_CASE_INSENSITIVE)
 
+    if is_resp_complete(resp, sources):
+        return resp
+
     # check label match
     results = session.query(Therapy).filter(Therapy.label == query).all()
     if results:
         concept_ids = [r.concept_id for r in results]
         resp = fetch_records(session, resp, concept_ids, MatchType.PRIMARY)
+
+    if is_resp_complete(resp, sources):
+        return resp
 
     # check case-insensitive label match
     results = session.query(Therapy)\
@@ -204,11 +217,17 @@ def response_keyed(query: str, sources: List[str], session: Session):
         resp = fetch_records(session, resp, concept_ids,
                              MatchType.CASE_INSENSITIVE_PRIMARY)
 
+    if is_resp_complete(resp, sources):
+        return resp
+
     # check alias match
     results = session.query(Alias).filter(Alias.alias == query).all()
     if results:
         concept_ids = [r.concept_id for r in results]
         fetch_records(session, resp, concept_ids, MatchType.ALIAS)
+
+    if is_resp_complete(resp, sources):
+        return resp
 
     # check trade name match
     results = session.query(TradeName).filter(
@@ -216,6 +235,9 @@ def response_keyed(query: str, sources: List[str], session: Session):
     if results:
         concept_ids = [r.concept_id for r in results]
         fetch_records(session, resp, concept_ids, MatchType.ALIAS)
+
+    if is_resp_complete(resp, sources):
+        return resp
 
     # check case-insensitive alias match
     results = session.query(Alias).filter(
@@ -225,6 +247,9 @@ def response_keyed(query: str, sources: List[str], session: Session):
         fetch_records(session, resp, concept_ids,
                       MatchType.CASE_INSENSITIVE_ALIAS)
 
+    if is_resp_complete(resp, sources):
+        return resp
+
     # check case-insensitive trade name match
     results = session.query(TradeName).filter(
         TradeName.trade_name.ilike(f"%{query}%")).all()
@@ -232,6 +257,9 @@ def response_keyed(query: str, sources: List[str], session: Session):
         concept_ids = [r.concept_id for r in results]
         fetch_records(session, resp, concept_ids,
                       MatchType.CASE_INSENSITIVE_ALIAS)
+
+    if is_resp_complete(resp, sources):
+        return resp
 
     # remaining sources get no match
     resp = fill_no_matches(session, resp)
