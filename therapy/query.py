@@ -197,7 +197,7 @@ def response_keyed(query: str, sources: List[str]):
     # check alias match
     results = session.query(Alias).filter(Alias.alias == query).all()
     if results:
-        concept_ids = [r.concept_ids for r in results]
+        concept_ids = [r.concept_id for r in results]
         fetch_records(session, resp, concept_ids, MatchType.ALIAS)
 
     # check trade name match
