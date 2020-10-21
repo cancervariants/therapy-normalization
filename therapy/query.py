@@ -240,15 +240,23 @@ def response_keyed(query: str, sources: List[str], session: Session):
     return resp
 
 
-def response_list(query: str, sources: List[str], session: Session):
+def response_list(query: str, sources: List[str], session: Session) -> Dict:
     """Return response as list, where the first key-value in each item
     is the source name
     """
-    resp = {  # noqa F841
-        'query': query,
-        'warnings': emit_warnings(query),
-        'normalizer_matches': []
-    }
+    response_dict = response_keyed(query, sources, session)
+    source_list = []
+    for src_name in response_dict['normalizer_matches'].keys():
+        src = {
+            "normalizer": src_name,
+        }
+        to_merge = response_dict['normalizer_matches'][src_name]
+        src.update(to_merge)
+
+        source_list.append(src)
+    response_dict['normalizer_matches'] = source_list
+
+    return response_dict
 
 
 def normalize(query_str, keyed='false', incl='', excl='', **params):
@@ -311,4 +319,4 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
     if keyed:
         return response_keyed(query_str, query_sources, session)
     else:
-        return response_list()
+        return response_list(query_str, query_sources, session)
