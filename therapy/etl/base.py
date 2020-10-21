@@ -1,13 +1,15 @@
 """A base class for extraction, transformation, and loading of data."""
 from abc import ABC, abstractmethod
+from therapy.schemas import NamespacePrefix
 
 IDENTIFIER_PREFIXES = {
-    'casRegistry': 'chemidplus',
-    'pubchemCompound': 'pubchem.compound',
-    'pubchemSubstance': 'pubchem.substance',
-    'chembl': 'chembl',
-    'rxnorm': 'rxcui',
-    'drugbank': 'drugbank'
+    'casRegistry': NamespacePrefix.CASREGISTRY.value,
+    'pubchemCompound': NamespacePrefix.PUBCHEMCOMPOUND.value,
+    'pubchemSubstance': NamespacePrefix.PUBCHEMSUBSTANCE.value,
+    'chembl': NamespacePrefix.CHEMBL.value,
+    'rxnorm': NamespacePrefix.RXNORM.value,
+    'drugbank': NamespacePrefix.DRUGBANK.value,
+    'wikidata': NamespacePrefix.WIKIDATA.value,
 }
 
 
