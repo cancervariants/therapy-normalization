@@ -6,11 +6,6 @@ from therapy import database, models, schemas  # noqa: F401
 from therapy.models import Therapy
 from sqlalchemy import event
 
-normalizers_dict = {
-    'chembl': ChEMBL,
-    'wikidata': Wikidata
-}
-
 
 class CLI:
     """Class for updating the normalizer database via Click"""
@@ -26,7 +21,7 @@ class CLI:
         help="The normalizer(s) you wish to update separated by spaces."
     )
     def update_normalizer_db(normalizer, all):
-        """Update select normalizer(s) in the database."""
+        """Update select normalizer(s) sources in the therapy database."""
 
         @event.listens_for(engine, "connect")
         def set_sqlite_pragma(engine, rec):
@@ -35,12 +30,19 @@ class CLI:
             cursor.close()
 
         engine.connect()
+        Base.metadata.create_all(bind=engine)
+        session = SessionLocal()
+
+        normalizers_dict = {
+            'chembl': ChEMBL,
+            'wikidata': Wikidata
+        }
 
         if all:
             for n in normalizers_dict:
-                CLI()._delete_data(n)
+                CLI()._delete_data(session, n)
                 normalizers_dict[n]()
-                click.echo(f"Finished updating the {n} source")
+                click.echo(f"Finished updating the {n} source.")
             click.echo('Updated all of the normalizer sources.')
         else:
             normalizers = normalizer.lower().split()
@@ -49,20 +51,24 @@ class CLI:
             for n in normalizers:
                 if n in normalizers_dict:
                     # TODO: Fix so that self._delete_data(n) works
-                    CLI()._delete_data(n)
+                    CLI()._delete_data(session, n)
                     normalizers_dict[n]()
-                    click.echo(f"Finished updating the {n} source")
+                    click.echo(f"Finished updating the {n} source.")
                 else:
-                    raise Exception("Not a normalizer.")
-
-    def _delete_data(self, source, *args, **kwargs):
-        Base.metadata.create_all(bind=engine)
-        session = SessionLocal()
-
-        session.query(Therapy).filter(Therapy.src_name.ilike(f"%{source}%")).\
-            delete(synchronize_session=False)
-        session.commit()
+                    raise Exception("Not a normalizer source.")
         session.close()
+
+    def _delete_data(self, session, source, *args, **kwargs):
+        click.echo(f"Start deleting the {source} source.")
+        src_name_db = {
+            'chembl': 'CHEMBL',
+            'wikidata': 'Wikidata'
+        }
+        delete_therapies = Therapy.__table__.delete().where(
+            Therapy.src_name == src_name_db[source])
+        session.execute(delete_therapies)
+        session.commit()
+        click.echo(f"Finished deleting the {source} source.")
 
 
 if __name__ == '__main__':

@@ -35,7 +35,7 @@ class OtherIdentifier(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     concept_id = Column(String, ForeignKey('therapies.concept_id',
-                                           ondelete='CASCADE'))
+                                           ondelete='CASCADE'), index=True)
     chembl_id = Column(String)
     wikidata_id = Column(String)
     ncit_id = Column(String)
@@ -56,7 +56,7 @@ class Alias(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     alias = Column(String, index=True)
     concept_id = Column(String, ForeignKey('therapies.concept_id',
-                                           ondelete='CASCADE'))
+                                           ondelete='CASCADE'), index=True)
 
     record = relationship("Therapy", back_populates="aliases")
 
@@ -69,7 +69,7 @@ class TradeName(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     trade_name = Column(String, index=True)
     concept_id = Column(String, ForeignKey('therapies.concept_id',
-                                           ondelete='CASCADE'))
+                                           ondelete='CASCADE'), index=True)
 
     record = relationship("Therapy", back_populates="trade_names")
 
