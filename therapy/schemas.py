@@ -51,7 +51,7 @@ class DrugGroup(Therapy):
 
 
 class MatchType(IntEnum):
-    """Define string constants for use in Match Type attributes"""
+    """Define string constaints for use in Match Type attributes"""
 
     PRIMARY = 100
     NAMESPACE_CASE_INSENSITIVE = 95
@@ -63,11 +63,23 @@ class MatchType(IntEnum):
 
 
 class SourceName(Enum):
-    """Define string constriants for use in source attribute"""
+    """Define string constraints to ensure consistent capitalization"""
 
     WIKIDATA = "Wikidata"
     CHEMBL = "ChEMBL"
     DRUGBANK = "Drugbank"
+
+
+class NamespacePrefix(Enum):
+    """Define string constraints for namespace prefixes on concept IDs"""
+
+    CASREGISTRY = "chemidplus"
+    PUBCHEMCOMPOUND = "pubchem.compound"
+    PUBCHEMSUBSTANCE = "pubchem.substance"
+    CHEMBL = "chembl"
+    RXNORM = "rxcui"
+    DRUGBANK = "drug"
+    WIKIDATA = "wikidata"
 
 
 class TherapyLoad(BaseModel):
@@ -77,7 +89,7 @@ class TherapyLoad(BaseModel):
     label: Optional[str]
     max_phase: Optional[PhaseEnum]
     withdrawn: Optional[bool]
-    trade_name: Optional[str]
+    trade_name: Optional[List[str]]
 
 
 class MetaResponse(BaseModel):

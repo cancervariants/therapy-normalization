@@ -7,7 +7,8 @@ from therapy.etl import ChEMBL, Wikidata  # noqa F401
 from therapy.database import Base, engine, SessionLocal
 from therapy.models import Therapy, Alias, OtherIdentifier, TradeName, \
     Meta  # noqa F401
-from therapy.schemas import Drug, MetaResponse, MatchType
+from therapy.schemas import Drug, MetaResponse, MatchType, SourceName, \
+    NamespacePrefix
 from sqlalchemy.orm import Session
 
 # session = SessionLocal() TODO can we just do this out here
@@ -34,6 +35,18 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+def emit_warnings(query_str):
+    """Emit warnings if query contains non breaking space characters."""
+    warnings = None
+    nbsp = re.search('\xa0|\u00A0|&nbsp;', query_str)
+    if nbsp:
+        warnings = {'nbsp': 'Query contains non breaking space characters.'}
+        logger.warning(
+            f'Query ({query_str}) contains non breaking space characters.'
+        )
+    return warnings
 
 
 def fetch_meta(session: Session, src_name: str) -> MetaResponse:
@@ -85,7 +98,6 @@ def fetch_records(session: Session,
             'label': therapy.label,
             'max_phase': therapy.max_phase,
             'withdrawn': therapy.withdrawn_flag,
-            # TODO FIX
             'other_identifiers': [c_id for c_id in other_identifiers if c_id],
             'aliases': aliases if aliases != [None] else [],
             'trade_name': trade_name if trade_name != [None] else []
@@ -93,18 +105,17 @@ def fetch_records(session: Session,
 
         drug = Drug(**params)
         src_name = therapy.src_name
-        if src_name not in response['normalizer_matches'].keys():
+        matches = response['normalizer_matches']
+        if src_name not in matches.keys():
             pass
-        elif response['normalizer_matches'][src_name] is None:
-            response['normalizer_matches'][src_name] = {
+        elif matches[src_name] is None:
+            matches[src_name] = {
                 'match_type': match_type,
                 'records': [drug],
                 'meta_': fetch_meta(session, src_name)
             }
-        elif response['normalizer_matches'][src_name]['match_type']\
-                == match_type:
-            # TODO add diff kinds of matches (eg alias vs tradename)?
-            response['normalizer_matches'][src_name]['records'].append(drug)
+        elif matches[src_name]['match_type'] == match_type:
+            matches[src_name]['records'].append(drug)
     return response
 
 
@@ -120,7 +131,6 @@ def fill_no_matches(session: Session, resp: Dict) -> Dict:
     return resp
 
 
-# TODO: Case insensitivity for sources
 def response_keyed(query: str, sources: List[str]):
     """Return response as dict where key is source name and value
     is a list of records
@@ -135,7 +145,7 @@ def response_keyed(query: str, sources: List[str]):
     get_db()
     session = SessionLocal()
 
-    resp = {  # noqa F841
+    resp = {
         'query': query,
         'warnings': emit_warnings(query),
         'normalizer_matches': {
@@ -146,9 +156,10 @@ def response_keyed(query: str, sources: List[str]):
     if query == '':
         resp = fill_no_matches(session, resp)
 
-    # first check if therapies.concept_id = query
+    # check concept ID match
     def namespace_prefix_match(q: str) -> bool:
-        namespace_prefixes = ['chembl', 'wikidata']
+        namespace_prefixes = [prefix for prefix, _ in
+                              NamespacePrefix.__members__.items()]
         return len(list(filter(lambda p: q.startswith(p),
                                namespace_prefixes))) == 1
 
@@ -169,13 +180,13 @@ def response_keyed(query: str, sources: List[str]):
                 resp = fetch_records(session, resp, concept_ids,
                                      MatchType.NAMESPACE_CASE_INSENSITIVE)
 
-    # check if therapies.label = query
+    # check label match
     results = session.query(Therapy).filter(Therapy.label == query).all()
     if results:
         concept_ids = [r.concept_id for r in results]
         resp = fetch_records(session, resp, concept_ids, MatchType.PRIMARY)
 
-    # check if therapies.label ILIKE query
+    # check case-insensitive label match
     results = session.query(Therapy)\
                      .filter(Therapy.label.ilike(f"{query}"))\
                      .all()
@@ -184,20 +195,20 @@ def response_keyed(query: str, sources: List[str]):
         resp = fetch_records(session, resp, concept_ids,
                              MatchType.CASE_INSENSITIVE_PRIMARY)
 
-    # check if aliases.alias = query
+    # check alias match
     results = session.query(Alias).filter(Alias.alias == query).all()
     if results:
         concept_ids = [r.concept_ids for r in results]
         fetch_records(session, resp, concept_ids, MatchType.ALIAS)
 
-    # check if trade_names.trade_name = query TODO special match type?
+    # check trade name match
     results = session.query(TradeName).filter(
         TradeName.trade_name == query).all()
     if results:
         concept_ids = [r.concept_id for r in results]
         fetch_records(session, resp, concept_ids, MatchType.ALIAS)
 
-    # check if aliases.alias ILIKE query
+    # check case-insensitive alias match
     results = session.query(Alias).filter(
         Alias.alias.ilike(f"%{query}%")).all()
     if results:
@@ -205,7 +216,7 @@ def response_keyed(query: str, sources: List[str]):
         fetch_records(session, resp, concept_ids,
                       MatchType.CASE_INSENSITIVE_ALIAS)
 
-    # check if trade_names.trade_name ILIKE query
+    # check case-insensitive trade name match
     results = session.query(TradeName).filter(
         TradeName.trade_name.ilike(f"%{query}%")).all()
     if results:
@@ -213,8 +224,9 @@ def response_keyed(query: str, sources: List[str]):
         fetch_records(session, resp, concept_ids,
                       MatchType.CASE_INSENSITIVE_ALIAS)
 
-    # return NO MATCH
+    # remaining sources get no match
     resp = fill_no_matches(session, resp)
+
     session.close()
     return resp
 
@@ -245,7 +257,7 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
     Returns:
         Dict containing all matches found in normalizers.
     """
-    sources = ['wikidata', 'chembl']
+    sources = [name for name, _ in SourceName.__members__.items()]
 
     if not incl and not excl:
         query_sources = sources
@@ -279,35 +291,3 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
         return response_keyed(query_str, query_sources)
     else:
         return response_list()
-    # if keyed:
-    #     resp['normalizer_matches'] = dict()
-    #     for normalizer in query_normalizers:
-    #         results = normalizer.normalize(query_str)
-    #         resp['normalizer_matches'][normalizer.__class__.__name__] = {
-    #             'match_type': results.match_type,
-    #             'records': results.records,
-    #             'meta_': results.meta_._asdict(),
-    #         }
-    # else:
-    #     resp['normalizer_matches'] = list()
-    #     for normalizer in query_normalizers:
-    #         results = normalizer.normalize(query_str)
-    #         resp['normalizer_matches'].append({
-    #             'normalizer': normalizer.__class__.__name__,
-    #             'match_type': results.match_type,
-    #             'records': results.records,
-    #             'meta_': results.meta_._asdict(),
-    #         })
-    # return resp
-
-
-def emit_warnings(query_str):
-    """Emit warnings if query contains non breaking space characters."""
-    warnings = None
-    nbsp = re.search('\xa0|\u00A0|&nbsp;', query_str)
-    if nbsp:
-        warnings = {'nbsp': 'Query contains non breaking space characters.'}
-        logger.warning(
-            f'Query ({query_str}) contains non breaking space characters.'
-        )
-    return warnings

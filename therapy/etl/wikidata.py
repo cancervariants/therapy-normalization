@@ -3,7 +3,7 @@ from .base import Base, IDENTIFIER_PREFIXES
 from therapy import PROJECT_ROOT, database, models, schemas  # noqa: F401
 from therapy.database import Base as B  # noqa: F401
 import json
-from therapy.schemas import Drug
+from therapy.schemas import Drug, SourceName, NamespacePrefix
 import logging
 from sqlalchemy import create_engine, event  # noqa: F401
 from collections import defaultdict
@@ -83,7 +83,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         database.engine.connect()
         for record in records:
             record_id = record['item'].split('/')[-1]
-            concept_id = f"wikidata:{record_id}"
+            concept_id = f"{NamespacePrefix.WIKIDATA.value}:{record_id}"
             if 'itemLabel' in record.keys():
                 label = record['itemLabel']
             else:
@@ -137,8 +137,8 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         """Sanitizes string to use as value in SQL statement
 
         Some wikidata entries include items with single or double quotes,
-        like wikidata:Q80863 (alias: 5'-(Tetrahydrogen triphosphate) Adenosine)
-        and wikidata:Q55871701 (label: Wedding "sugar")
+        like wikidata:Q80863 alias: 5'-(Tetrahydrogen triphosphate) Adenosine
+        and wikidata:Q55871701 label: Wedding "sugar"
         """
         if string == "NULL":
             return "NULL"
@@ -179,7 +179,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                     VALUES(
                         {self._sqlite_str(concept_id)},
                         {self._sqlite_str(drug.label)},
-                        'Wikidata'
+                        '{SourceName.WIKIDATA.value}'
                     )"""
         database.engine.execute(statement)
 
@@ -205,14 +205,14 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
             INSERT INTO meta_data(src_name, data_license, data_license_url,
                 version, data_url)
             SELECT
-                'Wikidata',
+                '{SourceName.WIKIDATA.value}',
                 'CC0 1.0',
                 'https://creativecommons.org/publicdomain/zero/1.0/',
                 '{self._version}',
                 NULL
             WHERE NOT EXISTS (
                 SELECT * FROM meta_data
-                WHERE src_name = 'Wikidata'
+                WHERE src_name = '{SourceName.WIKIDATA.value}'
             );
         """
         database.engine.execute(insert_meta)

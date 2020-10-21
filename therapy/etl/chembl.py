@@ -4,7 +4,8 @@ from therapy import PROJECT_ROOT
 from ftplib import FTP
 import logging
 import tarfile
-from therapy import database, models, schemas  # noqa: F401
+from therapy import database, models  # noqa: F401
+from therapy.schemas import SourceName, NamespacePrefix
 from therapy.database import Base as B, engine  # noqa: F401
 from sqlalchemy import create_engine, event  # noqa: F401
 
@@ -42,33 +43,36 @@ class ChEMBL(Base):
             cursor.close()
         engine.connect()
 
-        insert_therapy = """
+        insert_therapy = f"""
             INSERT INTO therapies(
                 concept_id, label, max_phase, withdrawn_flag, src_name
             )
-            SELECT DISTINCT 'chembl:'||molecule_dictionary.chembl_id,
+            SELECT DISTINCT
+                '{NamespacePrefix.CHEMBL.value}:'||molecule_dictionary.chembl_id,
                 molecule_dictionary.pref_name,
                 molecule_dictionary.max_phase,
                 molecule_dictionary.withdrawn_flag,
-                substr(molecule_dictionary.chembl_id,1,6)
+                '{SourceName.CHEMBL.value}'
             FROM chembldb.molecule_dictionary;
         """
         engine.execute(insert_therapy)
 
-        insert_alias = """
+        insert_alias = f"""
             INSERT INTO aliases(alias, concept_id)
-            SELECT DISTINCT synonyms, 'chembl:'||chembl_id
+            SELECT DISTINCT
+                synonyms,
+                '{NamespacePrefix.CHEMBL.value}:'||chembl_id
             FROM chembldb.molecule_dictionary
             LEFT JOIN chembldb.molecule_synonyms
                 ON molecule_dictionary.molregno=molecule_synonyms.molregno;
         """
         engine.execute(insert_alias)
 
-        insert_trade_name = """
+        insert_trade_name = f"""
             INSERT INTO trade_names(trade_name, concept_id)
             SELECT DISTINCT
                 products.trade_name,
-                'chembl:'||molecule_dictionary.chembl_id
+                '{NamespacePrefix.CHEMBL.value}:'||molecule_dictionary.chembl_id
             FROM chembldb.molecule_dictionary
             LEFT JOIN chembldb.formulations
                 ON molecule_dictionary.molregno=formulations.molregno
@@ -92,18 +96,18 @@ class ChEMBL(Base):
             db.close()
 
     def _add_meta(self, *args, **kwargs):
-        insert_meta = """
+        insert_meta = f"""
             INSERT INTO meta_data(src_name, data_license, data_license_url,
                 version, data_url)
             SELECT
-                'CHEMBL',
+                '{SourceName.CHEMBL.value}',
                 'CC BY-SA 3.0',
                 'https://creativecommons.org/licenses/by-sa/3.0/',
                 '27',
                 'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'
             WHERE NOT EXISTS (
                 SELECT * FROM meta_data
-                WHERE src_name = 'CHEMBL'
+                WHERE src_name = '{SourceName.CHEMBL.value}'
             );
         """
         engine.execute(insert_meta)
