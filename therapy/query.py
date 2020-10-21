@@ -112,7 +112,7 @@ def fetch_records(session: Session,
 
         drug = Drug(**params)
         src_name = therapy.src_name
-        matches = response['normalizer_matches']
+        matches = response['source_matches']
         if src_name not in matches.keys():
             pass
         elif matches[src_name] is None:
@@ -128,10 +128,10 @@ def fetch_records(session: Session,
 
 # TODO: Response list?
 def fill_no_matches(session: Session, resp: Dict) -> Dict:
-    """Fill all empty normalizer_matches slots with NO_MATCH results"""
-    for src_name in resp['normalizer_matches'].keys():
-        if resp['normalizer_matches'][src_name] is None:
-            resp['normalizer_matches'][src_name] = {
+    """Fill all empty source_matches slots with NO_MATCH results"""
+    for src_name in resp['source_matches'].keys():
+        if resp['source_matches'][src_name] is None:
+            resp['source_matches'][src_name] = {
                 'match_type': MatchType.NO_MATCH,
                 'records': [],
                 'meta_': fetch_meta(session, src_name)
@@ -157,7 +157,7 @@ def response_keyed(query: str, sources: List[str], session: Session):
     resp = {
         'query': query,
         'warnings': emit_warnings(query),
-        'normalizer_matches': {
+        'source_matches': {
             source: None for source in sources
         }
     }
@@ -246,15 +246,15 @@ def response_list(query: str, sources: List[str], session: Session) -> Dict:
     """
     response_dict = response_keyed(query, sources, session)
     source_list = []
-    for src_name in response_dict['normalizer_matches'].keys():
+    for src_name in response_dict['source_matches'].keys():
         src = {
-            "normalizer": src_name,
+            "source": src_name,
         }
-        to_merge = response_dict['normalizer_matches'][src_name]
+        to_merge = response_dict['source_matches'][src_name]
         src.update(to_merge)
 
         source_list.append(src)
-    response_dict['normalizer_matches'] = source_list
+    response_dict['source_matches'] = source_list
 
     return response_dict
 
@@ -264,19 +264,19 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
 
     Args:
         query_str: query, a string, to search for
-        keyed: bool - if true, return response as dict keying normalizer names
-            to normalizer objects; otherwise, return list of normalizer objects
-        incl: str containing comma-separated names of normalizers to use. Will
-            exclude all other normalizers. Case-insensitive. Raises
+        keyed: bool - if true, return response as dict keying source names
+            to source objects; otherwise, return list of source objects
+        incl: str containing comma-separated names of sources to use. Will
+            exclude all other sources. Case-insensitive. Raises
             InvalidParameterException if both incl and excl args are provided,
-            or if invalid normalizer names are given.
-        excl: str containing comma-separated names of normalizers to exclude.
-            Will include all other normalizers. Case-insensitive. Raises
+            or if invalid source names are given.
+        excl: str containing comma-separated names of source to exclude.
+            Will include all other source. Case-insensitive. Raises
             InvalidParameterException if both incl and excl args are provided,
-            or if invalid normalizer names are given.
+            or if invalid source names are given.
 
     Returns:
-        Dict containing all matches found in normalizers.
+        Dict containing all matches found in sources.
     """
     sources = {name.value.lower(): name.value for name in
                SourceName.__members__.values()}
@@ -284,7 +284,7 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
     if not incl and not excl:
         query_sources = sources.values()
     elif incl and excl:
-        detail = "Cannot request both normalizer inclusions and exclusions"
+        detail = "Cannot request both source inclusions and exclusions"
         raise InvalidParameterException(detail)
     elif incl:
         req_sources = [n.strip() for n in incl.split(',')]
@@ -296,7 +296,7 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
             else:
                 invalid_sources.append(source)
         if invalid_sources:
-            detail = f"Invalid normalizer name(s): {invalid_sources}"
+            detail = f"Invalid source name(s): {invalid_sources}"
             raise InvalidParameterException(detail)
     else:
         req_exclusions = [n.strip() for n in excl.lower().split(',')]
@@ -310,7 +310,7 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
             if src_l not in req_excl_dict.keys():
                 query_sources.append(src)
         if invalid_sources:
-            detail = f"Invalider normalizer name(s): {invalid_sources}"
+            detail = f"Invalid source name(s): {invalid_sources}"
             raise InvalidParameterException(detail)
 
     session = create_session()
