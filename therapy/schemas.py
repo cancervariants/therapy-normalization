@@ -69,6 +69,13 @@ class SourceName(Enum):
     CHEMBL = "ChEMBL"
 
 
+class SourceIDAfterNamespace(Enum):
+    """Define string constraints after namespace."""
+
+    WIKIDATA = "Q"
+    CHEMBL = "CHEMBL"
+
+
 class NamespacePrefix(Enum):
     """Define string constraints for namespace prefixes on concept IDs"""
 
