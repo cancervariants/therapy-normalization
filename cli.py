@@ -5,6 +5,7 @@ from therapy.database import Base, engine, SessionLocal
 from therapy import database, models, schemas  # noqa: F401
 from therapy.models import Therapy
 from sqlalchemy import event
+from therapy.schemas import SourceName
 
 
 class CLI:
@@ -33,15 +34,15 @@ class CLI:
         Base.metadata.create_all(bind=engine)
         session = SessionLocal()
 
-        normalizers_dict = {
+        sources = {
             'chembl': ChEMBL,
             'wikidata': Wikidata
         }
 
         if all:
-            for n in normalizers_dict:
+            for n in sources:
                 CLI()._delete_data(session, n)
-                normalizers_dict[n]()
+                sources[n]()
                 click.echo(f"Finished updating the {n} source.")
             click.echo('Updated all of the normalizer sources.')
         else:
@@ -49,10 +50,10 @@ class CLI:
             if len(normalizers) == 0:
                 raise Exception("Must enter a normalizer.")
             for n in normalizers:
-                if n in normalizers_dict:
+                if n in sources:
                     # TODO: Fix so that self._delete_data(n) works
                     CLI()._delete_data(session, n)
-                    normalizers_dict[n]()
+                    sources[n]()
                     click.echo(f"Finished updating the {n} source.")
                 else:
                     raise Exception("Not a normalizer source.")
@@ -60,12 +61,10 @@ class CLI:
 
     def _delete_data(self, session, source, *args, **kwargs):
         click.echo(f"Start deleting the {source} source.")
-        src_name_db = {
-            'chembl': 'CHEMBL',
-            'wikidata': 'Wikidata'
-        }
+        src_names = [src.value for src in SourceName.__members__.values()]
+        lower_src_names = [src.lower() for src in src_names]
         delete_therapies = Therapy.__table__.delete().where(
-            Therapy.src_name == src_name_db[source])
+            Therapy.src_name == src_names[lower_src_names.index(source)])
         session.execute(delete_therapies)
         session.commit()
         click.echo(f"Finished deleting the {source} source.")
