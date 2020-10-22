@@ -33,7 +33,7 @@ class Drug(Therapy):
 
     max_phase: Optional[PhaseEnum]
     withdrawn: Optional[bool]
-    trade_name: List[str]
+    trade_name: Optional[List[str]]
     label: Optional[str]
 
     class Config:
@@ -77,7 +77,7 @@ class NamespacePrefix(Enum):
     PUBCHEMSUBSTANCE = "pubchem.substance"
     CHEMBL = "chembl"
     RXNORM = "rxcui"
-    DRUGBANK = "drug"
+    DRUGBANK = "drugbank"
     WIKIDATA = "wikidata"
 
 
