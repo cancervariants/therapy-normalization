@@ -348,7 +348,7 @@ def normalize(query_str, keyed='false', incl='', excl='', **params):
             raise InvalidParameterException(detail)
     else:
         req_exclusions = [n.strip() for n in excl.lower().split(',')]
-        req_excl_dict = {r.lower: r for r in req_exclusions}
+        req_excl_dict = {r.lower(): r for r in req_exclusions}
         invalid_sources = []
         query_sources = []
         for req_l, req in req_excl_dict.items():
