@@ -3,6 +3,8 @@ on: [push, pull_request]
 jobs:
     test:
         runs-on: ubuntu-latest
+        env:
+            THERAPY_DB_TEST: TEST
         steps:
             - uses: actions/checkout@v2
 
