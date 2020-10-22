@@ -2,13 +2,13 @@
 import re
 from typing import List, Dict
 from uvicorn.config import logger
-from therapy import database, models, schemas # noqa F401
+from therapy import database, models, schemas  # noqa F401
 from therapy.etl import ChEMBL, Wikidata  # noqa F401
 from therapy.database import Base, engine, SessionLocal
 from therapy.models import Therapy, Alias, OtherIdentifier, TradeName, \
     Meta  # noqa F401
 from therapy.schemas import Drug, MetaResponse, MatchType, SourceName, \
-    NamespacePrefix
+    NamespacePrefix, SourceIDAfterNamespace
 from sqlalchemy.orm import Session
 
 
@@ -179,22 +179,42 @@ def response_keyed(query: str, sources: List[str], session: Session):
         return len(list(filter(lambda p: q.startswith(p),
                                namespace_prefixes))) == 1
 
+    # check that id after namespace match
+    def id_after_namespace_match(q: str) -> bool:
+        id_after_namespaces = [id.value for id in
+                               SourceIDAfterNamespace.__members__.values()]
+        return len(list(filter(lambda p: q.startswith(p),
+                               id_after_namespaces))) == 1
+
     if namespace_prefix_match(query.lower()):
-        case_sensitive_match = namespace_prefix_match(query)
+        contains_namespace = True
+        if ":" in query:
+            id_after_namespace = query.split(':')[1]
+            case_sensitive_match = namespace_prefix_match(query) and \
+                id_after_namespace_match(id_after_namespace)
+        else:
+            contains_namespace = False
+            case_sensitive_match = id_after_namespace_match(query)
         query_split = query.split(':')
         query_split[0] = query_split[0].lower()
         query = ':'.join(query_split)
         results = session.query(Therapy).filter(
-            Therapy.concept_id.ilike(f"{query}")  # TODO: fix case?
+            Therapy.concept_id.ilike(f"%{query}")  # TODO: fix case?
         ).all()
+
         if results:
             concept_ids = [r.concept_id for r in results]
             if case_sensitive_match:
                 resp = fetch_records(session, resp, concept_ids,
                                      MatchType.PRIMARY)
             else:
-                resp = fetch_records(session, resp, concept_ids,
-                                     MatchType.NAMESPACE_CASE_INSENSITIVE)
+                if contains_namespace and id_after_namespace_match(
+                        query.split(':')[1]):
+                    resp = fetch_records(session, resp, concept_ids,
+                                         MatchType.NAMESPACE_CASE_INSENSITIVE)
+                else:
+                    resp = fetch_records(session, resp, concept_ids,
+                                         MatchType.CASE_INSENSITIVE_PRIMARY)
 
     if is_resp_complete(resp, sources):
         return resp
@@ -209,9 +229,9 @@ def response_keyed(query: str, sources: List[str], session: Session):
         return resp
 
     # check case-insensitive label match
-    results = session.query(Therapy)\
-                     .filter(Therapy.label.ilike(f"{query}"))\
-                     .all()
+    results = session.query(Therapy) \
+        .filter(Therapy.label.ilike(f"{query}")) \
+        .all()
     if results:
         concept_ids = [r.concept_id for r in results]
         resp = fetch_records(session, resp, concept_ids,
@@ -241,7 +261,7 @@ def response_keyed(query: str, sources: List[str], session: Session):
 
     # check case-insensitive alias match
     results = session.query(Alias).filter(
-        Alias.alias.ilike(f"%{query}%")).all()
+        Alias.alias.ilike(f"{query}")).all()
     if results:
         concept_ids = [r.concept_id for r in results]
         fetch_records(session, resp, concept_ids,
@@ -252,7 +272,7 @@ def response_keyed(query: str, sources: List[str], session: Session):
 
     # check case-insensitive trade name match
     results = session.query(TradeName).filter(
-        TradeName.trade_name.ilike(f"%{query}%")).all()
+        TradeName.trade_name.ilike(f"{query}")).all()
     if results:
         concept_ids = [r.concept_id for r in results]
         fetch_records(session, resp, concept_ids,
