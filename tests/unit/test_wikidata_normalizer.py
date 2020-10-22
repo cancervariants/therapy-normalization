@@ -1,17 +1,18 @@
 """Test that the therapy normalizer works as intended."""
 import pytest
-from therapy import PROJECT_ROOT
-from therapy.normalizers import Wikidata
-from therapy.schemas import Drug
-from therapy.normalizers.base import MatchType
+from therapy import query
+from therapy.schemas import Drug, MatchType
 
 
 @pytest.fixture(scope='module')
 def wikidata():
-    """Create a Wikidata normalizer instance."""
-    wd_file = PROJECT_ROOT / 'tests' / 'unit' / 'data' \
-        / 'wd_00000000.json'
-    w = Wikidata(data_path=wd_file)
+    """Build test fixture"""
+    class QueryGetter:
+        def normalize(self, query_str):
+            resp = query.normalize(query_str, keyed=True)
+            return resp['source_matches']['Wikidata']
+
+    w = QueryGetter()
     return w
 
 
@@ -77,9 +78,9 @@ def test_case_cisplatin_normalize(cisplatin, wikidata):
     matches.
     """
     normalizer_response = wikidata.normalize('cisplatin')
-    assert normalizer_response.match_type == MatchType.PRIMARY
-    assert len(normalizer_response.records) == 1
-    normalized_drug = normalizer_response.records[0]
+    assert normalizer_response['match_type'] == MatchType.PRIMARY
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_identifier == cisplatin.concept_identifier
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
@@ -87,21 +88,23 @@ def test_case_cisplatin_normalize(cisplatin, wikidata):
            set(cisplatin.other_identifiers)
 
     normalizer_response = wikidata.normalize('Cisplatin')
-    assert normalizer_response.match_type == MatchType.CASE_INSENSITIVE_PRIMARY
+    assert normalizer_response['match_type'] ==\
+           MatchType.CASE_INSENSITIVE_PRIMARY
 
     normalizer_response = wikidata.normalize('CDDP')
-    assert normalizer_response.match_type == MatchType.ALIAS
+    assert normalizer_response['match_type'] == MatchType.ALIAS
 
     normalizer_response = wikidata.normalize('cddp')
-    assert normalizer_response.match_type == MatchType.CASE_INSENSITIVE_ALIAS
+    assert normalizer_response['match_type'] ==\
+           MatchType.CASE_INSENSITIVE_ALIAS
 
 
 def test_case_interferon_alfacon_1_normalize(interferon_alfacon_1, wikidata):
     """Test that Interferon alfacon-1 normalizes to correct drug concept."""
     normalizer_response = wikidata.normalize('Interferon alfacon-1')
-    assert normalizer_response.match_type == MatchType.PRIMARY
-    assert len(normalizer_response.records) == 1
-    normalized_drug = normalizer_response.records[0]
+    assert normalizer_response['match_type'] == MatchType.PRIMARY
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == interferon_alfacon_1.label
     assert normalized_drug.concept_identifier == \
            interferon_alfacon_1.concept_identifier
@@ -110,31 +113,33 @@ def test_case_interferon_alfacon_1_normalize(interferon_alfacon_1, wikidata):
            set(interferon_alfacon_1.other_identifiers)
 
     normalizer_response = wikidata.normalize('Interferon Alfacon-1')
-    assert normalizer_response.match_type == MatchType.CASE_INSENSITIVE_PRIMARY
+    assert normalizer_response['match_type'] ==\
+           MatchType.CASE_INSENSITIVE_PRIMARY
 
     normalizer_response = wikidata.normalize('Interferon alfacon - 1')
-    assert normalizer_response.match_type == MatchType.NO_MATCH
+    assert normalizer_response['match_type'] == MatchType.NO_MATCH
 
 
 def test_case_no_match(wikidata):
     """Test that term normalizes to NO match"""
     normalizer_response = wikidata.normalize('cisplati')
-    assert normalizer_response.match_type == MatchType.NO_MATCH
-    assert len(normalizer_response.records) == 0
+    assert normalizer_response['match_type'] == MatchType.NO_MATCH
+    assert len(normalizer_response['records']) == 0
 
 
 def test_case_empty_query(wikidata):
     """Test that empty query normalizes to NO match"""
     normalizer_response = wikidata.normalize('')
-    assert normalizer_response.match_type == MatchType.NO_MATCH
-    assert len(normalizer_response.records) == 0
+    assert normalizer_response['match_type'] == MatchType.NO_MATCH
+    assert len(normalizer_response['records']) == 0
 
 
 def test_meta_info(cisplatin, wikidata):
     """Test that the meta field is correct."""
     normalizer_response = wikidata.normalize('cisplatin')
-    assert normalizer_response.meta_.data_license == 'CC0 1.0'
-    assert normalizer_response.meta_.data_license_url == \
+    print(normalizer_response.keys())
+    assert normalizer_response['meta_'].data_license == 'CC0 1.0'
+    assert normalizer_response['meta_'].data_license_url == \
            'https://creativecommons.org/publicdomain/zero/1.0/'
-    assert normalizer_response.meta_.version == '00000000'
-    assert normalizer_response.meta_.data_url is None
+    assert normalizer_response['meta_'].version == '20200817'
+    assert normalizer_response['meta_'].data_url is None
