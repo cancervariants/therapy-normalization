@@ -8,8 +8,8 @@ from therapy.schemas import Drug, MatchType
 def wikidata():
     """Build test fixture"""
     class QueryGetter:
-        def normalize(self, query_str):
-            resp = query.normalize(query_str, keyed=True)
+        def normalize(self, query_str, incl=''):
+            resp = query.normalize(query_str, keyed=True, incl=incl)
             return resp['source_matches']['Wikidata']
 
     w = QueryGetter()
@@ -101,7 +101,8 @@ def test_case_cisplatin_normalize(cisplatin, wikidata):
 
 def test_case_interferon_alfacon_1_normalize(interferon_alfacon_1, wikidata):
     """Test that Interferon alfacon-1 normalizes to correct drug concept."""
-    normalizer_response = wikidata.normalize('Interferon alfacon-1')
+    normalizer_response = wikidata.normalize(query_str='Interferon alfacon-1',
+                                             incl='wikidata')
     assert normalizer_response['match_type'] == MatchType.PRIMARY
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
@@ -112,11 +113,14 @@ def test_case_interferon_alfacon_1_normalize(interferon_alfacon_1, wikidata):
     assert set(normalized_drug.other_identifiers) ==\
            set(interferon_alfacon_1.other_identifiers)
 
-    normalizer_response = wikidata.normalize('Interferon Alfacon-1')
+    normalizer_response = wikidata.normalize(query_str='Interferon Alfacon-1',
+                                             incl='wikidata')
     assert normalizer_response['match_type'] ==\
            MatchType.CASE_INSENSITIVE_PRIMARY
 
-    normalizer_response = wikidata.normalize('Interferon alfacon - 1')
+    normalizer_response = wikidata.normalize(
+        query_str='Interferon alfacon - 1', incl='wikidata'
+    )
     assert normalizer_response['match_type'] == MatchType.NO_MATCH
 
 
@@ -141,5 +145,5 @@ def test_meta_info(cisplatin, wikidata):
     assert normalizer_response['meta_'].data_license == 'CC0 1.0'
     assert normalizer_response['meta_'].data_license_url == \
            'https://creativecommons.org/publicdomain/zero/1.0/'
-    assert normalizer_response['meta_'].version == '20200817'
+    assert normalizer_response['meta_'].version == '20200812'
     assert normalizer_response['meta_'].data_url is None

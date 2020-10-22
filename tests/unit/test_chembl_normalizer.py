@@ -51,7 +51,8 @@ def test_case_sensitive_primary(cisplatin):
     """Test that cisplatin term normalizes to correct drug concept
     as a PRIMARY match.
     """
-    normalizer_response = normalize('CISPLATIN')
+    normalizer_response = normalize('CISPLATIN', keyed=True)
+    print(normalizer_response)
     chembl_dict = normalizer_response['source_matches']['ChEMBL']
     assert chembl_dict['match_type'] == MatchType.PRIMARY
     assert len(chembl_dict['records']) == 2
@@ -61,7 +62,8 @@ def test_case_sensitive_primary(cisplatin):
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_identifier == cisplatin.concept_identifier
 
-    normalizer_response = normalize('chembl:CHEMBL11359', incl='chembl')
+    normalizer_response = normalize('chembl:CHEMBL11359', incl='chembl',
+                                    keyed=True)
     chembl_dict = normalizer_response['source_matches']['ChEMBL']
     assert chembl_dict['match_type'] == MatchType.PRIMARY
     assert len(chembl_dict['records']) == 1
@@ -69,7 +71,7 @@ def test_case_sensitive_primary(cisplatin):
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_identifier == cisplatin.concept_identifier
 
-    normalizer_response = normalize('CHEMBL11359')
+    normalizer_response = normalize('CHEMBL11359', keyed=True)
     chembl_dict = normalizer_response['source_matches']['ChEMBL']
     assert chembl_dict['match_type'] == MatchType.PRIMARY
     assert len(chembl_dict['records']) == 1
@@ -82,7 +84,7 @@ def test_case_insensitive_primary(cisplatin):
     """Tests that cisplatin term normalizes to correct drug concept
     as CASE_INSENSITIVE_PRIMARY, NAMESPACE_CASE_INSENSITIVE matches.
     """
-    normalizer_response = normalize('cisplatin')
+    normalizer_response = normalize('cisplatin', keyed=True)
     chembl_dict = normalizer_response['source_matches']['ChEMBL']
     assert chembl_dict['match_type'] == MatchType.CASE_INSENSITIVE_PRIMARY
     assert len(chembl_dict['records']) == 2
@@ -90,7 +92,7 @@ def test_case_insensitive_primary(cisplatin):
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_identifier == cisplatin.concept_identifier
 
-    normalizer_response = normalize('chembl:chembl11359')
+    normalizer_response = normalize('chembl:chembl11359', keyed=True)
     chembl_dict = normalizer_response['source_matches']['ChEMBL']
     assert chembl_dict['match_type'] == MatchType.CASE_INSENSITIVE_PRIMARY
     assert len(chembl_dict['records']) == 1
@@ -98,7 +100,7 @@ def test_case_insensitive_primary(cisplatin):
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_identifier == cisplatin.concept_identifier
 
-    normalizer_response = normalize('cHEmbl:CHEMBL11359')
+    normalizer_response = normalize('cHEmbl:CHEMBL11359', keyed=True)
     chembl_dict = normalizer_response['source_matches']['ChEMBL']
     assert chembl_dict['match_type'] == \
            MatchType.NAMESPACE_CASE_INSENSITIVE
@@ -107,7 +109,7 @@ def test_case_insensitive_primary(cisplatin):
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_identifier == cisplatin.concept_identifier
 
-    normalizer_response = normalize('cHEmbl:chembl11359')
+    normalizer_response = normalize('cHEmbl:chembl11359', keyed=True)
     chembl_dict = normalizer_response['source_matches']['ChEMBL']
     assert chembl_dict['match_type'] == MatchType.CASE_INSENSITIVE_PRIMARY
     assert len(chembl_dict['records']) == 1
@@ -118,7 +120,8 @@ def test_case_insensitive_primary(cisplatin):
 
 def test_case_sensitive_alias(cisplatin):
     """Tests that alias term normalizes correctly"""
-    normalizer_response = normalize('cis-diamminedichloroplatinum(II)')
+    normalizer_response = normalize('cis-diamminedichloroplatinum(II)',
+                                    keyed=True)
     chembl_dict = normalizer_response['source_matches']['ChEMBL']
     assert chembl_dict['match_type'] == MatchType.ALIAS
     assert len(chembl_dict['records']) == 1
@@ -129,7 +132,7 @@ def test_case_sensitive_alias(cisplatin):
 
 def test_case_insensitive_alias(cisplatin):
     """Tests that case-insensitive alias term normalizes correctly"""
-    normalizer_response = normalize('INT230-6 COMPONENT CISPLATIn')
+    normalizer_response = normalize('INT230-6 COMPONENT CISPLATIn', keyed=True)
     chembl_dict = normalizer_response['source_matches']['ChEMBL']
     assert chembl_dict['match_type'] == MatchType.CASE_INSENSITIVE_ALIAS
     normalized_drug = chembl_dict['records'][0]
@@ -139,7 +142,7 @@ def test_case_insensitive_alias(cisplatin):
 
 def test_no_match():
     """Test that term normalizes to NO match"""
-    normalizer_response = normalize('cisplati')
+    normalizer_response = normalize('cisplati', keyed=True)
     chembl_dict = normalizer_response['source_matches']['ChEMBL']
     assert chembl_dict['match_type'] == MatchType.NO_MATCH
     assert len(chembl_dict['records']) == 0
@@ -147,7 +150,7 @@ def test_no_match():
 
 def test_query_with_symbols(l745870):
     """Test that L-745870 normalizes to PRIMARY and CASE_INSENSITIVE match"""
-    normalizer_response = normalize('L-745870')
+    normalizer_response = normalize('L-745870', keyed=True)
     chembl_dict = normalizer_response['source_matches']['ChEMBL']
     assert chembl_dict['match_type'] == MatchType.PRIMARY
     assert len(chembl_dict['records']) == 1
@@ -158,19 +161,19 @@ def test_query_with_symbols(l745870):
     assert normalized_drug.concept_identifier == l745870.concept_identifier
     assert normalized_drug.max_phase == l745870.max_phase
 
-    normalizer_response = normalize('l-745870')
+    normalizer_response = normalize('l-745870', keyed=True)
     chembl_dict = normalizer_response['source_matches']['ChEMBL']
     assert chembl_dict['match_type'] == MatchType.CASE_INSENSITIVE_PRIMARY
     assert len(chembl_dict['records']) == 1
 
-    normalizer_response = normalize('L - 745870')
+    normalizer_response = normalize('L - 745870', keyed=True)
     chembl_dict = normalizer_response['source_matches']['ChEMBL']
     assert chembl_dict['match_type'] == MatchType.NO_MATCH
 
 
 def test_case_empty_query():
     """Test that empty query normalizes to NO match"""
-    normalizer_response = normalize('')
+    normalizer_response = normalize('', keyed=True)
     chembl_dict = normalizer_response['source_matches']['ChEMBL']
     assert chembl_dict['match_type'] == MatchType.NO_MATCH
     assert len(chembl_dict['records']) == 0
@@ -178,7 +181,7 @@ def test_case_empty_query():
 
 def test_meta_info(cisplatin):
     """Test that the meta field is correct."""
-    normalizer_response = normalize('cisplatin')
+    normalizer_response = normalize('cisplatin', keyed=True)
     chembl_dict = normalizer_response['source_matches']['ChEMBL']
     assert chembl_dict['meta_'].data_license == 'CC BY-SA 3.0'
     assert chembl_dict['meta_'].data_license_url == \

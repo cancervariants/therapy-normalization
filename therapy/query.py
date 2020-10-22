@@ -307,7 +307,7 @@ def response_list(query: str, sources: List[str], session: Session) -> Dict:
     return response_dict
 
 
-def normalize(query_str, keyed='false', incl='', excl='', **params):
+def normalize(query_str, keyed=False, incl='', excl='', **params):
     """Fetch normalized therapy objects.
 
     Args:
