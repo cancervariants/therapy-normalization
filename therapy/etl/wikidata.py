@@ -148,8 +148,15 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
 
     def _load_alias(self, concept_id: str, alias: str):
         """Load alias"""
+        alias_clean = self._sqlite_str(alias)
         database.engine.execute(f"""INSERT INTO aliases(alias, concept_id)
-                VALUES({self._sqlite_str(alias)}, '{concept_id}');""")
+                SELECT
+                    {alias_clean},
+                    '{concept_id}'
+                WHERE NOT EXISTS (
+                    SELECT * FROM aliases WHERE alias = {alias_clean} AND
+                    concept_id = '{concept_id}'
+                );""")
 
     def _load_other_ids(self, concept_id: str, other_ids: defaultdict):
         """Load individual other_ids row
