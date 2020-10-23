@@ -8,7 +8,7 @@ from therapy import query
 def chembl():
     """Build ChEMBL test fixture."""
     class QueryGetter:
-        def normalize(self, query_str, incl=''):
+        def normalize(self, query_str, incl='chembl'):
             resp = query.normalize(query_str, keyed=True, incl=incl)
             return resp['source_matches']['ChEMBL']
 
