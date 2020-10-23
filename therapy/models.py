@@ -1,5 +1,6 @@
 """Define models."""
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Index,\
+    func
 from sqlalchemy.orm import relationship
 from .database import Base
 
@@ -86,3 +87,10 @@ class Meta(Base):
     data_url = Column(String)
 
     record = relationship("Therapy", back_populates="src_meta_data")
+
+
+Index('lower_therapies_label', func.lower(Therapy.label))
+Index('lower_therapies_c_id', func.lower(Therapy.concept_id))
+Index('lower_other_identifiers_c_id', func.lower(OtherIdentifier.concept_id))
+Index('lower_alias', func.lower(Alias.alias))
+Index('lower_trade_name', func.lower(TradeName.trade_name))
