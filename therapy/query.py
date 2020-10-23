@@ -82,18 +82,11 @@ def fetch_records(session: Session,
         therapy = session.query(Therapy). \
             filter(Therapy.concept_id == concept_id).first()
 
-        other_identifiers = session.query(
-            OtherIdentifier.chembl_id,
-            OtherIdentifier.wikidata_id,
-            OtherIdentifier.ncit_id,
-            OtherIdentifier.drugbank_id,
-            OtherIdentifier.rxnorm_id,
-            OtherIdentifier.pubchemcompound_id,
-            OtherIdentifier.pubchemsubstance_id,
-            OtherIdentifier.casregistry_id
-        ).filter(OtherIdentifier.concept_id == concept_id).first()
+        other_identifiers = session.query(OtherIdentifier).filter(
+            OtherIdentifier.concept_id == concept_id).all()
         if other_identifiers:
-            other_identifiers = [c_id for c_id in other_identifiers if c_id]
+            other_identifiers = \
+                [c_id.other_id for c_id in other_identifiers if c_id]
         else:
             other_identifiers = []
 
