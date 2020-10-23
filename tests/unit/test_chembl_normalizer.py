@@ -56,7 +56,10 @@ def test_case_sensitive_primary(cisplatin):
     assert chembl_dict['match_type'] == MatchType.PRIMARY
     assert len(chembl_dict['records']) == 2
     normalized_drug = chembl_dict['records'][0]
-    assert normalized_drug.aliases == cisplatin.aliases
+    # assert normalized_drug.aliases == cisplatin.aliases
+    for alias in normalized_drug.aliases:
+        assert alias in cisplatin.aliases
+    assert len(normalized_drug.aliases) == len(cisplatin.aliases)
     assert normalized_drug.trade_name == cisplatin.trade_name
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_identifier == cisplatin.concept_identifier
