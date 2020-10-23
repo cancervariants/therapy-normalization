@@ -64,7 +64,8 @@ class ChEMBL(Base):
                 '{NamespacePrefix.CHEMBL.value}:'||chembl_id
             FROM chembldb.molecule_dictionary
             LEFT JOIN chembldb.molecule_synonyms
-                ON molecule_dictionary.molregno=molecule_synonyms.molregno;
+                ON molecule_dictionary.molregno=molecule_synonyms.molregno
+            WHERE molecule_synonyms.synonyms NOT NULL;
         """
         engine.execute(insert_alias)
 
@@ -77,7 +78,8 @@ class ChEMBL(Base):
             LEFT JOIN chembldb.formulations
                 ON molecule_dictionary.molregno=formulations.molregno
             LEFT JOIN chembldb.products
-                ON formulations.product_id=products.product_id;
+                ON formulations.product_id=products.product_id
+            WHERE products.trade_name NOT NULL;
         """
         engine.execute(insert_trade_name)
 
