@@ -41,27 +41,29 @@ QUERY_TERM_LIST = [
 ]
 
 
-def run_trials(n=8):
-    """Run n trials"""
+def run_trials(n=12):
+    """Run n trials on a miscellaneous slate of queries"""
     queries_per_trial = []
+    print(f"Running {n} trials")
     for i in range(n):
         to_randomize = QUERY_TERM_LIST[:]
         random.shuffle(to_randomize)
         queries_per_trial.append(to_randomize)
     times = []
-    for queries in queries_per_trial:
+    for i, queries in enumerate(queries_per_trial):
         start = timer()
         for query in queries:
             normalize(query)
         end = timer()
         duration = end - start
-        print(duration)
+        print(f"Trial {i + 1}: {duration:.5f} seconds")
         times.append(duration)
     avg = sum(times) / len(times)
     max_val = max(times)
     min_val = min(times)
-    print(f"Ran {n} trials")
-    print(f"Average: {avg}, maximum: {max_val}, minimum: {min_val}")
+    print(f"Average: {avg:.5f} seconds")
+    print(f"maximum: {max_val:.5f} seconds")
+    print(f"minimum: {min_val:.5f} seconds")
 
 
 if __name__ == '__main__':
