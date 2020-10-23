@@ -1,10 +1,10 @@
-"""Test therapy querying method"""
+"""Test the therapy querying method."""
 from therapy.query import normalize, InvalidParameterException
 import pytest
 
 
 def test_query():
-    """Test that query returns properly-structured response"""
+    """Test that query returns properly-structured response."""
     resp = normalize('cisplatin', keyed=False)
     assert resp['query'] == 'cisplatin'
     print(resp)
@@ -19,7 +19,7 @@ def test_query():
 
 
 def test_query_keyed():
-    """Test that query structures matches as dict when requested"""
+    """Test that query structures matches as dict when requested."""
     resp = normalize('cisplatin', keyed=True)
     matches = resp['source_matches']
     assert isinstance(matches, dict)
@@ -29,7 +29,7 @@ def test_query_keyed():
 
 
 def test_query_specify_normalizers():
-    """Test inclusion and exclusion of normalizers in query"""
+    """Test inclusion and exclusion of normalizers in query."""
     # test blank params
     resp = normalize('cisplatin', keyed=True)
     matches = resp['source_matches']

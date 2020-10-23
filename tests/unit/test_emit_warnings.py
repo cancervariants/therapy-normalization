@@ -1,4 +1,4 @@
-"""Test emit_warnings"""
+"""Test the emit_warnings function."""
 from therapy.query import emit_warnings
 
 
@@ -8,8 +8,13 @@ def test_emit_warnings():
         'nbsp': 'Query contains non breaking space characters.'
     }
 
+    # Test emit no warnings
     actual_warnings = emit_warnings('CISPLATIN')
     assert actual_warnings is None
+
+    # Test emit warnings
+    actual_warnings = emit_warnings('CIS PLATIN')
+    assert actual_warnings == actual_warnings
 
     actual_warnings = emit_warnings('CIS\u00A0platin')
     assert expected_warnings == actual_warnings
