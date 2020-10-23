@@ -6,7 +6,6 @@ import json
 from therapy.schemas import Drug, SourceName, NamespacePrefix
 import logging
 from sqlalchemy import create_engine, event  # noqa: F401
-from collections import defaultdict
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -91,7 +90,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
             drug = schemas.Drug(label=label,
                                 max_phase=None,
                                 withdrawn=None,
-                                trade_name=None,
+                                trade_name=[],
                                 aliases=[],
                                 concept_identifier=concept_id,
                                 other_identifiers=[])
@@ -102,36 +101,36 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                 entry_exists = False
             if not entry_exists:
                 self._load_therapy(concept_id, drug)
-                other_ids = defaultdict(lambda: "NULL")
-                if 'casRegistry' in record.keys():
-                    id = record['casRegistry']
-                    fmted = f"{IDENTIFIER_PREFIXES['casRegistry']}:{id}"
-                    other_ids['casRegistry'] = fmted
-                if 'pubchemCompound' in record.keys():
-                    id = record['pubchemCompound']
-                    fmted = f"{IDENTIFIER_PREFIXES['pubchemCompound']}:{id}"
-                    other_ids['pubchemCompound'] = fmted
-                if 'pubchemSubstance' in record.keys():
-                    id = record['pubchemSubstance']
-                    fmted = f"{IDENTIFIER_PREFIXES['pubchemSubstance']}:{id}"
-                    other_ids['pubchemSubstance'] = fmted
-                if 'rxnorm' in record.keys():
-                    id = record['rxnorm']
-                    fmted = f"{IDENTIFIER_PREFIXES['rxnorm']}:{id}"
-                    other_ids['rxnorm'] = fmted
-                if 'chembl' in record.keys():
-                    id = record['chembl']
-                    fmted = f"{IDENTIFIER_PREFIXES['chembl']}:{id}"
-                    other_ids['chembl'] = fmted
-                if 'drugbank' in record.keys():
-                    id = record['drugbank']
-                    fmted = f"{IDENTIFIER_PREFIXES['drugbank']}:{id}"
-                    other_ids['drugbank'] = fmted
-                self._load_other_ids(concept_id, other_ids)
+
             if 'alias' in record.keys():
                 alias = record['alias']
                 alias = alias.replace('"', '""')
                 self._load_alias(concept_id, alias)
+
+            if 'casRegistry' in record.keys():
+                id = record['casRegistry']
+                fmted = f"{IDENTIFIER_PREFIXES['casRegistry']}:{id}"
+                self._load_other_id(concept_id, fmted)
+            if 'pubchemCompound' in record.keys():
+                id = record['pubchemCompound']
+                fmted = f"{IDENTIFIER_PREFIXES['pubchemCompound']}:{id}"
+                self._load_other_id(concept_id, fmted)
+            if 'pubchemSubstance' in record.keys():
+                id = record['pubchemSubstance']
+                fmted = f"{IDENTIFIER_PREFIXES['pubchemSubstance']}:{id}"
+                self._load_other_id(concept_id, fmted)
+            if 'rxnorm' in record.keys():
+                id = record['rxnorm']
+                fmted = f"{IDENTIFIER_PREFIXES['rxnorm']}:{id}"
+                self._load_other_id(concept_id, fmted)
+            if 'chembl' in record.keys():
+                id = record['chembl']
+                fmted = f"{IDENTIFIER_PREFIXES['chembl']}:{id}"
+                self._load_other_id(concept_id, fmted)
+            if 'drugbank' in record.keys():
+                id = record['drugbank']
+                fmted = f"{IDENTIFIER_PREFIXES['drugbank']}:{id}"
+                self._load_other_id(concept_id, fmted)
 
     def _sqlite_str(self, string):
         """Sanitizes string to use as value in SQL statement
@@ -154,30 +153,27 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                     {alias_clean},
                     '{concept_id}'
                 WHERE NOT EXISTS (
-                    SELECT * FROM aliases WHERE alias = {alias_clean} AND
+                    SELECT 1 FROM aliases WHERE alias = {alias_clean} AND
                     concept_id = '{concept_id}'
                 );""")
 
-    def _load_other_ids(self, concept_id: str, other_ids: defaultdict):
-        """Load individual other_ids row
+    def _load_other_id(self, concept_id: str, other_id: str):
+        """Load individual other_id row
         Args:
             concept_id: a str corresponding to full namespaced Wikidata
                 concept ID
-            other_ids: defaultdict that returns an empty string if key
-                is not contained
+            other_id: a str corresponding to other identifier
         """
-        statement = f"""INSERT INTO other_identifiers(concept_id, chembl_id,
-                    drugbank_id, rxnorm_id, pubchemcompound_id,
-                    pubchemsubstance_id, casregistry_id)
-                    VALUES(
-                        {self._sqlite_str(concept_id)},
-                        {self._sqlite_str(other_ids['chembl'])},
-                        {self._sqlite_str(other_ids['drugbank'])},
-                        {self._sqlite_str(other_ids['rxnorm'])},
-                        {self._sqlite_str(other_ids['pubchemCompound'])},
-                        {self._sqlite_str(other_ids['pubchemSubstance'])},
-                        {self._sqlite_str(other_ids['casRegistry'])}
-                    )"""
+        statement = f"""
+            INSERT INTO other_identifiers(concept_id, other_id)
+            SELECT '{concept_id}', '{other_id}'
+            WHERE NOT EXISTS(
+                SELECT 1
+                FROM other_identifiers
+                WHERE concept_id =
+                    '{concept_id}' AND other_id = '{other_id}'
+            );
+        """
         database.engine.execute(statement)
 
     def _load_therapy(self, concept_id: str, drug: Drug):

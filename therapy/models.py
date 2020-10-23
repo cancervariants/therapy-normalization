@@ -37,14 +37,7 @@ class OtherIdentifier(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     concept_id = Column(String, ForeignKey('therapies.concept_id',
                                            ondelete='CASCADE'), index=True)
-    chembl_id = Column(String)
-    wikidata_id = Column(String)
-    ncit_id = Column(String)
-    drugbank_id = Column(String)
-    rxnorm_id = Column(String, default=None)
-    pubchemcompound_id = Column(String, default=None)
-    pubchemsubstance_id = Column(String, default=None)
-    casregistry_id = Column(String, default=None)
+    other_id = Column(String, index=True, nullable=False)
 
     record = relationship("Therapy", back_populates="other_identifiers")
 
