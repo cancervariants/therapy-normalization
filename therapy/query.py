@@ -58,6 +58,8 @@ def fetch_meta(session: Session, src_name: str) -> MetaResponse:
             'data_url': meta.data_url
         }
         return MetaResponse(**params)
+    else:
+        raise Exception(f"Couldn't find metadata for source name: {src_name}")
 
 
 def fetch_records(session: Session,
