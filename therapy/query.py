@@ -1,6 +1,8 @@
 """This module provides methods for handling queries"""
 import re
 from typing import List, Dict
+
+from sqlalchemy import func
 from uvicorn.config import logger
 from therapy import database, models, schemas  # noqa F401
 from therapy.etl import ChEMBL, Wikidata  # noqa F401
@@ -231,9 +233,8 @@ def response_keyed(query: str, sources: List[str], session: Session):
         return resp
 
     # check case-insensitive label match
-    results = session.query(Therapy) \
-        .filter(Therapy.label.ilike(f"{query}")) \
-        .all()
+    results = session.query(Therapy).filter(func.lower(
+        Therapy.label) == f"{query.lower()}").all()
     if results:
         concept_ids = [r.concept_id for r in results]
         resp = fetch_records(session, resp, concept_ids,
@@ -263,7 +264,7 @@ def response_keyed(query: str, sources: List[str], session: Session):
 
     # check case-insensitive alias match
     results = session.query(Alias).filter(
-        Alias.alias.ilike(f"{query}")).all()
+        func.lower(Alias.alias) == f"{query.lower()}").all()
     if results:
         concept_ids = [r.concept_id for r in results]
         fetch_records(session, resp, concept_ids,
@@ -275,6 +276,8 @@ def response_keyed(query: str, sources: List[str], session: Session):
     # check case-insensitive trade name match
     results = session.query(TradeName).filter(
         TradeName.trade_name.ilike(f"{query}")).all()
+    results = session.query(TradeName).filter(
+        func.lower(TradeName.trade_name) == f"{query.lower()}").all()
     if results:
         concept_ids = [r.concept_id for r in results]
         fetch_records(session, resp, concept_ids,
