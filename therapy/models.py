@@ -1,5 +1,6 @@
 """Define models."""
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Index,\
+    func
 from sqlalchemy.orm import relationship
 from .database import Base
 
@@ -54,7 +55,7 @@ class Alias(Base):
     __tablename__ = "aliases"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    alias = Column(String, index=True)
+    alias = Column(String, index=True, nullable=False)
     concept_id = Column(String, ForeignKey('therapies.concept_id',
                                            ondelete='CASCADE'), index=True)
 
@@ -67,7 +68,7 @@ class TradeName(Base):
     __tablename__ = "trade_names"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    trade_name = Column(String, index=True)
+    trade_name = Column(String, index=True, nullable=False)
     concept_id = Column(String, ForeignKey('therapies.concept_id',
                                            ondelete='CASCADE'), index=True)
 
@@ -80,9 +81,16 @@ class Meta(Base):
     __tablename__ = "meta_data"
 
     src_name = Column(String, primary_key=True)
-    data_license = Column(String)
-    data_license_url = Column(String)
-    version = Column(String)
+    data_license = Column(String, nullable=False)
+    data_license_url = Column(String, nullable=False)
+    version = Column(String, nullable=False)
     data_url = Column(String)
 
     record = relationship("Therapy", back_populates="src_meta_data")
+
+
+Index('lower_therapies_label', func.lower(Therapy.label))
+Index('lower_therapies_c_id', func.lower(Therapy.concept_id))
+Index('lower_other_identifiers_c_id', func.lower(OtherIdentifier.concept_id))
+Index('lower_alias', func.lower(Alias.alias))
+Index('lower_trade_name', func.lower(TradeName.trade_name))
