@@ -1,4 +1,4 @@
-"""This module defines the Wikidata normalizer"""
+"""This module defines the Wikidata ETL methods."""
 from .base import Base, IDENTIFIER_PREFIXES
 from therapy import PROJECT_ROOT, database, models, schemas  # noqa: F401
 from therapy.database import Base as B  # noqa: F401
@@ -12,7 +12,7 @@ logger.setLevel(logging.DEBUG)
 
 
 class Wikidata(Base):
-    """A normalizer using the Wikidata resource."""
+    """ETL the Wikidata source into therapy.db."""
 
     SPARQL_QUERY = """
 SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
@@ -54,7 +54,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         super().__init__()
 
     def _extract_data(self, *args, **kwargs):
-        """Extract data"""
+        """Extract data from the Wikidata source."""
         if 'data_path' in kwargs:
             self._data_src = kwargs['data_path']
         else:
@@ -67,7 +67,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         self._version = self._data_src.stem.split('_')[1]
 
     def _transform_data(self, *args, **kwargs):
-        """Transform data"""
+        """Transform the Wikidata source."""
         with open(self._data_src, 'r') as f:
             records = json.load(f)
 
@@ -106,24 +106,21 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                         self._other_id_pairs.add((concept_id, fmted_other_id))
                         self._load_other_id(concept_id, fmted_other_id)
 
-    # TODO currently producing weird behavior? not necessary?
     def _sqlite_str(self, string):
-        """Sanitizes string to use as value in SQL statement
+        """Sanitizes string to use as value in SQL statement.
 
         Some wikidata entries include items with single or double quotes,
         like wikidata:Q80863 alias: 5'-(Tetrahydrogen triphosphate) Adenosine
-        and wikidata:Q55871701 label: Wedding "sugar"
+        and wikidata:Q55871701 label: Wedding "sugar".
         """
         if string == "NULL":
             return "NULL"
         else:
-            # sanitized = string.replace('"', '""').replace("'", "''")
-            # return f"'{sanitized}'"
             sanitized = string.replace("'", "''")
             return f"{sanitized}"
 
     def _load_alias(self, concept_id: str, alias: str):
-        """Load alias"""
+        """Load alias."""
         alias_clean = self._sqlite_str(alias)
         statement = f"""INSERT INTO aliases(alias, concept_id)
             VALUES (
@@ -133,7 +130,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         database.engine.execute(statement)
 
     def _load_other_id(self, concept_id: str, other_id: str):
-        """Load individual other_id row
+        """Load individual other_id row.
         Args:
             concept_id: a str corresponding to full namespaced Wikidata
                 concept ID
@@ -146,7 +143,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         database.engine.execute(statement)
 
     def _load_therapy(self, concept_id: str, drug: Drug):
-        """Load individual therapy row"""
+        """Load an individual therapy row."""
         statement = f"""INSERT INTO therapies(concept_id, label, src_name)
                     VALUES(
                         '{concept_id}',
@@ -155,7 +152,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         database.engine.execute(statement)
 
     def _load_data(self, *args, **kwargs):
-        """Load data - called from base clase init"""
+        """Load the data - called from base clase init."""
         B.metadata.create_all(bind=database.engine)
         self._get_db()
 
@@ -164,7 +161,9 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         self._transform_data()
 
     def _get_db(self, *args, **kwargs):
-        """Get db - unclear if needed"""
+        """Create a new SQLAlchemy session that will be used in a single
+        request, and then close it once the request is finished.
+        """
         db = database.SessionLocal()
         try:
             yield db
@@ -172,6 +171,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
             db.close()
 
     def _add_meta(self, *args, **kwargs):
+        """Add Wikidata metadata."""
         insert_meta = f"""
             INSERT INTO meta_data(src_name, data_license, data_license_url,
                 version, data_url)
