@@ -5,7 +5,7 @@ from therapy.database import Base as B
 import json
 from therapy.schemas import Drug, SourceName, NamespacePrefix
 import logging
-# from sqlalchemy import create_engine, event
+from sqlalchemy import create_engine, event  # noqa F401
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
