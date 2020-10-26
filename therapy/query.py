@@ -29,7 +29,7 @@ class InvalidParameterException(Exception):
 def emit_warnings(query_str):
     """Emit warnings if query contains non breaking space characters."""
     warnings = None
-    nbsp = re.search('\xa0|\u00A0|&nbsp;', query_str)
+    nbsp = re.search('\xa0|&nbsp;', query_str)
     if nbsp:
         warnings = {'nbsp': 'Query contains non breaking space characters.'}
         logger.warning(
@@ -165,21 +165,14 @@ def response_keyed(query: str, sources: List[str], session: Session):
 
     # check that id after namespace match
     def id_after_namespace_match(q: str) -> bool:
-        id_after_namespaces = [id.value for id in
+        id_after_namespaces = [c_id.value for c_id in
                                SourceIDAfterNamespace.__members__.values()]
         return len(list(filter(lambda p: q.startswith(p),
                                id_after_namespaces))) == 1
 
+    # Check concept ID
     if namespace_prefix_match(query.lower()) or\
-            id_after_namespace_match(query):
-        contains_namespace = True
-        if ":" in query:
-            id_after_namespace = query.split(':')[1]
-            case_sensitive_match = namespace_prefix_match(query) and \
-                id_after_namespace_match(id_after_namespace)
-        else:
-            contains_namespace = False
-            case_sensitive_match = id_after_namespace_match(query)
+            id_after_namespace_match(query.upper()):
         query_split = query.split(':')
         query_split[0] = query_split[0].lower()
         query = ':'.join(query_split)
@@ -189,80 +182,41 @@ def response_keyed(query: str, sources: List[str], session: Session):
 
         if results:
             concept_ids = [r.concept_id for r in results]
-            if case_sensitive_match:
-                resp = fetch_records(session, resp, concept_ids,
-                                     MatchType.PRIMARY)
-            else:
-                if contains_namespace and id_after_namespace_match(
-                        query.split(':')[1]):
-                    resp = fetch_records(session, resp, concept_ids,
-                                         MatchType.NAMESPACE_CASE_INSENSITIVE)
-                else:
-                    resp = fetch_records(session, resp, concept_ids,
-                                         MatchType.CASE_INSENSITIVE_PRIMARY)
+            resp = fetch_records(session, resp, concept_ids,
+                                 MatchType.CONCEPT_ID)
 
     if is_resp_complete(resp, sources):
         return resp
 
     # check label match
-    results = session.query(Therapy).filter(Therapy.label == query).all()
-    if results:
-        concept_ids = [r.concept_id for r in results]
-        resp = fetch_records(session, resp, concept_ids, MatchType.PRIMARY)
-
-    if is_resp_complete(resp, sources):
-        return resp
-
-    # check case-insensitive label match
     results = session.query(Therapy).filter(func.lower(
         Therapy.label) == f"{query.lower()}").all()
     if results:
         concept_ids = [r.concept_id for r in results]
         resp = fetch_records(session, resp, concept_ids,
-                             MatchType.CASE_INSENSITIVE_PRIMARY)
+                             MatchType.PRIMARY_LABEL)
 
     if is_resp_complete(resp, sources):
         return resp
 
     # check alias match
-    results = session.query(Alias).filter(Alias.alias == query).all()
+    results = session.query(Alias).filter(
+        func.lower(Alias.alias) == f"{query.lower()}").all()
     if results:
         concept_ids = [r.concept_id for r in results]
-        fetch_records(session, resp, concept_ids, MatchType.ALIAS)
+        fetch_records(session, resp, concept_ids,
+                      MatchType.ALIAS)
 
     if is_resp_complete(resp, sources):
         return resp
 
     # check trade name match
     results = session.query(TradeName).filter(
-        TradeName.trade_name == query).all()
-    if results:
-        concept_ids = [r.concept_id for r in results]
-        fetch_records(session, resp, concept_ids, MatchType.ALIAS)
-
-    if is_resp_complete(resp, sources):
-        return resp
-
-    # check case-insensitive alias match
-    results = session.query(Alias).filter(
-        func.lower(Alias.alias) == f"{query.lower()}").all()
-    if results:
-        concept_ids = [r.concept_id for r in results]
-        fetch_records(session, resp, concept_ids,
-                      MatchType.CASE_INSENSITIVE_ALIAS)
-
-    if is_resp_complete(resp, sources):
-        return resp
-
-    # check case-insensitive trade name match
-    results = session.query(TradeName).filter(
-        TradeName.trade_name.ilike(f"{query}")).all()
-    results = session.query(TradeName).filter(
         func.lower(TradeName.trade_name) == f"{query.lower()}").all()
     if results:
         concept_ids = [r.concept_id for r in results]
         fetch_records(session, resp, concept_ids,
-                      MatchType.CASE_INSENSITIVE_ALIAS)
+                      MatchType.TRADE_NAME)
 
     if is_resp_complete(resp, sources):
         return resp
