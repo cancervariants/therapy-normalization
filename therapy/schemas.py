@@ -49,6 +49,34 @@ class Drug(Therapy):
         """Enables orm_mode"""
 
         orm_mode = True
+        schema_extra = {
+            'example': [
+                {
+                    'label': 'CISPLATIN',
+                    'concept_identifier': 'chembl:CHEMBL11359',
+                    'aliases': [
+                        'Cisplatin',
+                        'Cis-Platinum II',
+                        'Cisplatinum',
+                        'cis-diamminedichloroplatinum(II)',
+                        'CIS-DDP',
+                        'INT-230-6 COMPONENT CISPLATIN',
+                        'INT230-6 COMPONENT CISPLATIN',
+                        'NSC-119875',
+                        'Platinol',
+                        'Platinol-Aq'
+                    ],
+                    'other_identifiers': [],
+                    'max_phase': 4,
+                    'withdrawn': 0,
+                    'trade_name': [
+                        'PLATINOL',
+                        'PLATINOL-AQ',
+                        'CISPLATIN'
+                    ]
+                }
+            ]
+        }
 
 
 class DrugGroup(Therapy):
@@ -114,6 +142,19 @@ class MetaResponse(BaseModel):
             for prop in schema.get('properties', {}).values():
                 prop.pop('title', None)
 
+        schema_extra = {  # noqa F811
+            'example': [
+                {
+                    'data_license': 'CC BY-SA 3.0',
+                    'data_license_url':
+                        'https://creativecommons.org/licenses/by-sa/3.0/',
+                    'version': '27',
+                    'data_url':
+                        'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501
+                }
+            ]
+        }
+
 
 class Match(BaseModel):
     """Container for matching information for an individual source"""
@@ -132,12 +173,29 @@ class Match(BaseModel):
             for prop in schema.get('properties', {}).values():
                 prop.pop('title', None)
 
+        schema_extra = {  # noqa F811
+            'example': [
+                {
+                    'match_type': 0,
+                    'records': [],
+                    'meta_': {
+                        'data_license': 'CC BY-SA 3.0',
+                        'data_license_url':
+                            'https://creativecommons.org/licenses/by-sa/3.0/',
+                        'version': '27',
+                        'data_url':
+                            'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501
+                    }
+                }
+            ]
+        }
+
 
 class Service(BaseModel):
     """Core response schema containing matches for each source"""
 
     query: str = Field(..., description="Search string provided by user")
-    warnings: Optional[List[str]]
+    warnings: Optional[Dict]
     source_matches: Union[Dict[str, Match], List[Match]]
 
     class Config:
@@ -149,3 +207,20 @@ class Service(BaseModel):
             """Customize fields in OpenAPI JSON output"""
             for prop in schema.get('properties', {}).values():
                 prop.pop('title', None)
+
+        schema_extra = {  # noqa F811
+            'example': [
+                {
+                    'query': 'CISPLATIN',
+                    'warnings': None,
+                    'meta_': {
+                        'data_license': 'CC BY-SA 3.0',
+                        'data_license_url':
+                            'https://creativecommons.org/licenses/by-sa/3.0/',
+                        'version': '27',
+                        'data_url':
+                            'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501
+                    }
+                }
+            ]
+        }
