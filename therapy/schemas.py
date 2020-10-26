@@ -23,6 +23,8 @@ class Therapy(BaseModel):
         def schema_extra(schema: Dict[str, Any],
                          model: Type['Service']) -> None:
             """Customize fields in OpenAPI JSON output"""
+            if schema.get('title', None):
+                schema.pop('title')
             for prop in schema.get('properties', {}).values():
                 prop.pop('title', None)
 
@@ -49,6 +51,15 @@ class Drug(Therapy):
         """Enables orm_mode"""
 
         orm_mode = True
+
+        @staticmethod
+        def schema_extra(schema: Dict[str, Any],
+                         model: Type['Service']) -> None:
+            """Customize fields in OpenAPI JSON output"""
+            if schema.get('title', None):
+                schema.pop('title')
+            for prop in schema.get('properties', {}).values():
+                prop.pop('title', None)
 
 
 class DrugGroup(Therapy):
@@ -102,7 +113,7 @@ class MetaResponse(BaseModel):
     data_license: str
     data_license_url: str
     version: str
-    data_url: Optional[str]  # TODO how to handle empty values like Wikidata?
+    data_url: Optional[str]
 
     class Config:
         """Configure model"""
@@ -111,12 +122,16 @@ class MetaResponse(BaseModel):
         def schema_extra(schema: Dict[str, Any],
                          model: Type['Service']) -> None:
             """Customize fields in OpenAPI JSON output"""
+            if schema.get('title', None):
+                schema.pop('title')
             for prop in schema.get('properties', {}).values():
                 prop.pop('title', None)
 
 
-class Match(BaseModel):
-    """Container for matching information for an individual source"""
+class MatchKeyed(BaseModel):
+    """Container for matching information from an individual source.
+    Used when matches are requested as an object, not an array.
+    """
 
     match_type: MatchType
     records: List[Drug]
@@ -129,6 +144,31 @@ class Match(BaseModel):
         def schema_extra(schema: Dict[str, Any],
                          model: Type['Service']) -> None:
             """Customize fields in OpenAPI JSON output"""
+            if schema.get('title', None):
+                schema.pop('title')
+            for prop in schema.get('properties', {}).values():
+                prop.pop('title', None)
+
+
+class MatchListed(BaseModel):
+    """Container for matching information from an individual source.
+    Used when matches are requested as an array, not an object.
+    """
+
+    normalizer: SourceName
+    match_type: MatchType
+    records: List[Drug]
+    meta_: MetaResponse
+
+    class Config:
+        """Configure model"""
+
+        @staticmethod
+        def schema_extra(schema: Dict[str, Any],
+                         model: Type['Service']) -> None:
+            """Customize fields in OpenAPI JSON output"""
+            if schema.get('title', None):
+                schema.pop('title')
             for prop in schema.get('properties', {}).values():
                 prop.pop('title', None)
 
@@ -138,7 +178,7 @@ class Service(BaseModel):
 
     query: str = Field(..., description="Search string provided by user")
     warnings: Optional[List[str]]
-    source_matches: Union[Dict[str, Match], List[Match]]
+    source_matches: Union[Dict[SourceName, MatchKeyed], List[MatchListed]]
 
     class Config:
         """Configure model"""
@@ -147,5 +187,7 @@ class Service(BaseModel):
         def schema_extra(schema: Dict[str, Any],
                          model: Type['Service']) -> None:
             """Customize fields in OpenAPI JSON output"""
+            if schema.get('title', None):
+                schema.pop('title')
             for prop in schema.get('properties', {}).values():
                 prop.pop('title', None)
