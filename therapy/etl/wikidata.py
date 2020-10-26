@@ -48,7 +48,9 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
 
     def __init__(self):
         """Initialize wikidata ETL class"""
-        self._concept_ids = []
+        self._concept_ids = set()
+        self._alias_pairs = set()
+        self._other_id_pairs = set()
         super().__init__()
 
     def _extract_data(self, *args, **kwargs):
@@ -63,16 +65,6 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
             except TypeError:
                 raise FileNotFoundError  # TODO wikidata update function here
         self._version = self._data_src.stem.split('_')[1]
-
-    def _entry_exists(self, concept_id: str):
-        """Check if ETL methods have already encountered concept_id. This
-        should mean that there is no need to insert rows for the aliases
-        or other_identifiers tables.
-
-        At present, checks the arg `concept_id` against a list held in a class
-        data field; in the future, could consider querying the DB to confirm.
-        """
-        return concept_id in self._concept_ids
 
     def _transform_data(self, *args, **kwargs):
         """Transform data"""
@@ -94,44 +86,27 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                                 aliases=[],
                                 concept_identifier=concept_id,
                                 other_identifiers=[])
-            if self._entry_exists(concept_id):
-                entry_exists = True
-            else:
-                self._concept_ids.append(concept_id)
-                entry_exists = False
-            if not entry_exists:
+
+            if concept_id not in self._concept_ids:
+                self._concept_ids.add(concept_id)
                 self._load_therapy(concept_id, drug)
 
             if 'alias' in record.keys():
                 alias = record['alias']
-                alias = alias.replace('"', '""')
-                self._load_alias(concept_id, alias)
+                if (concept_id, alias) not in self._alias_pairs:
+                    self._alias_pairs.add((concept_id, alias))
+                    self._load_alias(concept_id, alias)
 
-            if 'casRegistry' in record.keys():
-                id = record['casRegistry']
-                fmted = f"{IDENTIFIER_PREFIXES['casRegistry']}:{id}"
-                self._load_other_id(concept_id, fmted)
-            if 'pubchemCompound' in record.keys():
-                id = record['pubchemCompound']
-                fmted = f"{IDENTIFIER_PREFIXES['pubchemCompound']}:{id}"
-                self._load_other_id(concept_id, fmted)
-            if 'pubchemSubstance' in record.keys():
-                id = record['pubchemSubstance']
-                fmted = f"{IDENTIFIER_PREFIXES['pubchemSubstance']}:{id}"
-                self._load_other_id(concept_id, fmted)
-            if 'rxnorm' in record.keys():
-                id = record['rxnorm']
-                fmted = f"{IDENTIFIER_PREFIXES['rxnorm']}:{id}"
-                self._load_other_id(concept_id, fmted)
-            if 'chembl' in record.keys():
-                id = record['chembl']
-                fmted = f"{IDENTIFIER_PREFIXES['chembl']}:{id}"
-                self._load_other_id(concept_id, fmted)
-            if 'drugbank' in record.keys():
-                id = record['drugbank']
-                fmted = f"{IDENTIFIER_PREFIXES['drugbank']}:{id}"
-                self._load_other_id(concept_id, fmted)
+            for key in IDENTIFIER_PREFIXES.keys():
+                if key in record.keys():
+                    other_id = record[key]
+                    fmted_other_id = f"{IDENTIFIER_PREFIXES[key]}:{other_id}"
+                    if (concept_id, fmted_other_id) not in \
+                            self._other_id_pairs:
+                        self._other_id_pairs.add((concept_id, fmted_other_id))
+                        self._load_other_id(concept_id, fmted_other_id)
 
+    # TODO currently producing weird behavior? not necessary?
     def _sqlite_str(self, string):
         """Sanitizes string to use as value in SQL statement
 
@@ -142,20 +117,20 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         if string == "NULL":
             return "NULL"
         else:
-            sanitized = string.replace('"', '""').replace("'", "''")
-            return f"'{sanitized}'"
+            # sanitized = string.replace('"', '""').replace("'", "''")
+            # return f"'{sanitized}'"
+            sanitized = string.replace("'", "''")
+            return f"{sanitized}"
 
     def _load_alias(self, concept_id: str, alias: str):
         """Load alias"""
         alias_clean = self._sqlite_str(alias)
-        database.engine.execute(f"""INSERT INTO aliases(alias, concept_id)
-                SELECT
-                    {alias_clean},
-                    '{concept_id}'
-                WHERE NOT EXISTS (
-                    SELECT 1 FROM aliases WHERE alias = {alias_clean} AND
-                    concept_id = '{concept_id}'
-                );""")
+        statement = f"""INSERT INTO aliases(alias, concept_id)
+            VALUES (
+                '{alias_clean}',
+                '{concept_id}');
+        """
+        database.engine.execute(statement)
 
     def _load_other_id(self, concept_id: str, other_id: str):
         """Load individual other_id row
@@ -166,13 +141,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         """
         statement = f"""
             INSERT INTO other_identifiers(concept_id, other_id)
-            SELECT '{concept_id}', '{other_id}'
-            WHERE NOT EXISTS(
-                SELECT 1
-                FROM other_identifiers
-                WHERE concept_id =
-                    '{concept_id}' AND other_id = '{other_id}'
-            );
+            VALUES ('{concept_id}', '{other_id}');
         """
         database.engine.execute(statement)
 
@@ -180,10 +149,9 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         """Load individual therapy row"""
         statement = f"""INSERT INTO therapies(concept_id, label, src_name)
                     VALUES(
-                        {self._sqlite_str(concept_id)},
-                        {self._sqlite_str(drug.label)},
-                        '{SourceName.WIKIDATA.value}'
-                    )"""
+                        '{concept_id}',
+                        '{self._sqlite_str(drug.label)}',
+                        '{SourceName.WIKIDATA.value}');"""
         database.engine.execute(statement)
 
     def _load_data(self, *args, **kwargs):
