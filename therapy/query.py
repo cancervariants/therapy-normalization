@@ -131,22 +131,10 @@ def is_resp_complete(response: Dict, sources: List[str]) -> bool:
     return True
 
 
-def get_db():
-    """Create a new SQLAlchemy session that will be used in a single
-    request, and then close it once the request is finished.
-    """
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
 def create_session() -> Session:
     """Create a session to access database."""
     engine.connect()
     Base.metadata.create_all(bind=engine)
-    get_db()
     return SessionLocal()
 
 
@@ -283,7 +271,6 @@ def response_keyed(query: str, sources: List[str], session: Session):
     # remaining sources get no match
     resp = fill_no_matches(session, resp)
 
-    session.close()
     return resp
 
 
@@ -367,3 +354,5 @@ def normalize(query_str, keyed=False, incl='', excl='', **params):
         return response_keyed(query_str, query_sources, session)
     else:
         return response_list(query_str, query_sources, session)
+
+    session.close()
