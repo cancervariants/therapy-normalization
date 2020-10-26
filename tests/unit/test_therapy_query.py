@@ -7,7 +7,6 @@ def test_query():
     """Test that query returns properly-structured response."""
     resp = normalize('cisplatin', keyed=False)
     assert resp['query'] == 'cisplatin'
-    print(resp)
     matches = resp['source_matches']
     assert isinstance(matches, list)
     assert len(matches) == 2

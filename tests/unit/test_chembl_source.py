@@ -58,12 +58,55 @@ def l745870():
     return Drug(**params)
 
 
-def test_case_sensitive_primary(cisplatin, chembl):
+def test_concept_id_cisplatin(cisplatin, chembl):
     """Test that cisplatin drug normalizes to correct drug concept
-    as a PRIMARY match.
+    as a CONCEPT_ID match.
+    """
+    normalizer_response = chembl.normalize('chembl:CHEMBL11359')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == cisplatin.label
+    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+
+    normalizer_response = chembl.normalize('CHEMBL11359')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == cisplatin.label
+    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+
+    normalizer_response = chembl.normalize('chembl:chembl11359')
+    assert normalizer_response['match_type'] == \
+           MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == cisplatin.label
+    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+
+    normalizer_response = chembl.normalize('cHEmbl:chembl11359')
+    assert normalizer_response['match_type'] == \
+           MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == cisplatin.label
+    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+
+    normalizer_response = chembl.normalize('cHEmbl:CHEMBL11359')
+    assert normalizer_response['match_type'] == \
+           MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == cisplatin.label
+    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+
+
+def test_primary_label_cisplatin(cisplatin, chembl):
+    """Test that cisplatin drug normalizes to correct drug concept
+    as a PRIMARY_LABEL match.
     """
     normalizer_response = chembl.normalize('CISPLATIN')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY
+    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
     assert len(normalizer_response['records']) == 2
     normalized_drug = normalizer_response['records'][0]
     for alias in normalized_drug.aliases:
@@ -73,63 +116,16 @@ def test_case_sensitive_primary(cisplatin, chembl):
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_identifier == cisplatin.concept_identifier
 
-    normalizer_response = chembl.normalize('chembl:CHEMBL11359')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
-
-    normalizer_response = chembl.normalize('CHEMBL11359')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
-
-
-def test_case_insensitive(cisplatin, chembl):
-    """Test that cisplatin drug normalizes to correct drug concept
-    as CASE_INSENSITIVE_PRIMARY and NAMESPACE_CASE_INSENSITIVE matches.
-    """
-    # Test CASE_INSENSITIVE_PRIMARY
     normalizer_response = chembl.normalize('cisplatin')
     assert normalizer_response['match_type'] ==\
-           MatchType.CASE_INSENSITIVE_PRIMARY
+           MatchType.PRIMARY_LABEL
     assert len(normalizer_response['records']) == 2
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_identifier == cisplatin.concept_identifier
 
-    # Test CASE_INSENSITIVE_PRIMARY
-    normalizer_response = chembl.normalize('chembl:chembl11359')
-    assert normalizer_response['match_type'] == \
-           MatchType.CASE_INSENSITIVE_PRIMARY
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
 
-    # Test CASE_INSENSITIVE_PRIMARY
-    normalizer_response = chembl.normalize('cHEmbl:chembl11359')
-    assert normalizer_response['match_type'] ==\
-           MatchType.CASE_INSENSITIVE_PRIMARY
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
-
-    # Test NAMESPACE_CASE_INSENSITIVE
-    normalizer_response = chembl.normalize('cHEmbl:CHEMBL11359')
-    assert normalizer_response['match_type'] == \
-           MatchType.NAMESPACE_CASE_INSENSITIVE
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
-
-
-def test_case_sensitive_alias(cisplatin, chembl):
+def test_alias_cisplatin(cisplatin, chembl):
     """Test that alias term normalizes to correct drug concept as an
     ALIAS match.
     """
@@ -140,14 +136,9 @@ def test_case_sensitive_alias(cisplatin, chembl):
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_identifier == cisplatin.concept_identifier
 
-
-def test_case_insensitive_alias(cisplatin, chembl):
-    """Test that alias term normalizes to correct drug concept as an
-    CASE_INSENSITIVE_ALIAS match.
-    """
     normalizer_response = chembl.normalize('INT230-6 COMPONENT CISPLATIn')
-    assert normalizer_response['match_type'] ==\
-           MatchType.CASE_INSENSITIVE_ALIAS
+    assert normalizer_response['match_type'] == \
+           MatchType.ALIAS
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_identifier == cisplatin.concept_identifier
@@ -159,14 +150,65 @@ def test_no_match(chembl):
     assert normalizer_response['match_type'] == MatchType.NO_MATCH
     assert len(normalizer_response['records']) == 0
 
+    # Test white space in between label
+    normalizer_response = chembl.normalize('L - 745870')
+    assert normalizer_response['match_type'] == MatchType.NO_MATCH
 
-def test_query_with_symbols(l745870, chembl):
+    # Test empty query
+    normalizer_response = chembl.normalize('')
+    assert normalizer_response['match_type'] == MatchType.NO_MATCH
+    assert len(normalizer_response['records']) == 0
+
+
+def test_concept_id_l745870(l745870, chembl):
     """Test that L-745870 drug normalizes to correct drug concept
-    as PRIMARY, CASE_INSENSITIVE_PRIMARY and NO matches.
+    as a CONCEPT_ID match.
     """
-    # Test PRIMARY
+    normalizer_response = chembl.normalize('chembl:CHEMBL267014')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == l745870.label
+    assert normalized_drug.concept_identifier == l745870.concept_identifier
+
+    normalizer_response = chembl.normalize('CHEMBL267014')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == l745870.label
+    assert normalized_drug.concept_identifier == l745870.concept_identifier
+
+    normalizer_response = chembl.normalize('chembl:chembl267014')
+    assert normalizer_response['match_type'] == \
+           MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == l745870.label
+    assert normalized_drug.concept_identifier == l745870.concept_identifier
+
+    normalizer_response = chembl.normalize('cHEmbl:chembl267014')
+    assert normalizer_response['match_type'] == \
+           MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == l745870.label
+    assert normalized_drug.concept_identifier == l745870.concept_identifier
+
+    normalizer_response = chembl.normalize('cHEmbl:CHEMBL267014')
+    assert normalizer_response['match_type'] == \
+           MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == l745870.label
+    assert normalized_drug.concept_identifier == l745870.concept_identifier
+
+
+def test_primary_label_l745870(l745870, chembl):
+    """Test that L-745870 drug normalizes to correct drug concept
+    as a PRIMARY_LABEL match.
+    """
     normalizer_response = chembl.normalize('L-745870')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY
+    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == l745870.label
@@ -175,22 +217,10 @@ def test_query_with_symbols(l745870, chembl):
     assert normalized_drug.concept_identifier == l745870.concept_identifier
     assert normalized_drug.max_phase == l745870.max_phase
 
-    # Test CASE_INSENSITIVE_PRIMARY
     normalizer_response = chembl.normalize('l-745870')
     assert normalizer_response['match_type'] ==\
-           MatchType.CASE_INSENSITIVE_PRIMARY
+           MatchType.PRIMARY_LABEL
     assert len(normalizer_response['records']) == 1
-
-    # Test NO_MATCH
-    normalizer_response = chembl.normalize('L - 745870')
-    assert normalizer_response['match_type'] == MatchType.NO_MATCH
-
-
-def test_case_empty_query(chembl):
-    """Test that an empty normalizes to correct drug concept as a NO match."""
-    normalizer_response = chembl.normalize('')
-    assert normalizer_response['match_type'] == MatchType.NO_MATCH
-    assert len(normalizer_response['records']) == 0
 
 
 def test_meta_info(cisplatin, chembl):

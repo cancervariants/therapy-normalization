@@ -10,7 +10,7 @@ from therapy.schemas import Drug, MatchType
 def wikidata():
     """Build Wikidata test fixture."""
     class QueryGetter:
-        def normalize(self, query_str, incl=''):
+        def normalize(self, query_str, incl='wikidata'):
             resp = query.normalize(query_str, keyed=True, incl=incl)
             return resp['source_matches']['Wikidata']
 
@@ -74,14 +74,12 @@ def interferon_alfacon_1():
     return Drug(**params)
 
 
-def test_case_cisplatin_normalize(cisplatin, wikidata):
-    """Test that cisplatin drug normalizes to correct drug concept as
-    PRIMARY, CASE INSENSITIVE PRIMARY, ALIAS, and CASE INSENSITIVE ALIAS
-    matches.
+def test_concept_id_cisplatin(cisplatin, wikidata):
+    """Test that cisplatin drug normalizes to correct drug concept
+    as a CONCEPT_ID match.
     """
-    # Test PRIMARY
-    normalizer_response = wikidata.normalize('cisplatin')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY
+    normalizer_response = wikidata.normalize('wikidata:Q412415')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
@@ -90,29 +88,150 @@ def test_case_cisplatin_normalize(cisplatin, wikidata):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
 
-    # Test CASE_INSENSITIVE_PRIMARY
-    normalizer_response = wikidata.normalize('Cisplatin')
-    assert normalizer_response['match_type'] ==\
-           MatchType.CASE_INSENSITIVE_PRIMARY
+    normalizer_response = wikidata.normalize('wiKIdata:Q412415')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == cisplatin.label
+    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(cisplatin.other_identifiers)
 
-    # Test ALIAS
+    normalizer_response = wikidata.normalize('wiKIdata:q412415')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == cisplatin.label
+    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(cisplatin.other_identifiers)
+
+    normalizer_response = wikidata.normalize('Q412415')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == cisplatin.label
+    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(cisplatin.other_identifiers)
+
+
+def test_primary_label_cisplatin(cisplatin, wikidata):
+    """Test that cisplatin drug normalizes to correct drug concept
+    as a PRIMARY_LABEL match.
+    """
+    normalizer_response = wikidata.normalize('cisplatin')
+    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == cisplatin.label
+    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(cisplatin.other_identifiers)
+
+    normalizer_response = wikidata.normalize('Cisplatin')
+    assert normalizer_response['match_type'] == \
+           MatchType.PRIMARY_LABEL
+
+
+def test_alias_cisplatin(cisplatin, wikidata):
+    """Test that alias term normalizes to correct drug concept as an
+    ALIAS match.
+    """
     normalizer_response = wikidata.normalize('CDDP')
     assert normalizer_response['match_type'] == MatchType.ALIAS
 
-    # Test CASE_INSENSITIVE_ALIAS
     normalizer_response = wikidata.normalize('cddp')
     assert normalizer_response['match_type'] ==\
-           MatchType.CASE_INSENSITIVE_ALIAS
+           MatchType.ALIAS
 
 
-def test_case_interferon_alfacon_1_normalize(interferon_alfacon_1, wikidata):
-    """Test that Interferon alfacon-1 drug normalizes to correct drug
-    concept as PRIMARY, CASE_INSENSITIVE_PRIMARY, and NO matches.
+def test_case_no_match(wikidata):
+    """Test that a term normalizes to NO match."""
+    normalizer_response = wikidata.normalize('cisplati')
+    assert normalizer_response['match_type'] == MatchType.NO_MATCH
+    assert len(normalizer_response['records']) == 0
+
+    # Test white space in between label
+    normalizer_response = wikidata.normalize('Interferon alfacon - 1')
+    assert normalizer_response['match_type'] == MatchType.NO_MATCH
+
+    # Test empty query
+    normalizer_response = wikidata.normalize('')
+    assert normalizer_response['match_type'] == MatchType.NO_MATCH
+    assert len(normalizer_response['records']) == 0
+
+
+def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
+    """Test that interferon alfacon-1 drug normalizes to correct drug concept
+    as a CONCEPT_ID match.
     """
-    # Test PRIMARY
-    normalizer_response = wikidata.normalize(query_str='Interferon alfacon-1',
-                                             incl='wikidata')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY
+    normalizer_response = wikidata.normalize('wikidata:Q15353101')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == interferon_alfacon_1.label
+    assert normalized_drug.concept_identifier ==\
+           interferon_alfacon_1.concept_identifier
+    assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(interferon_alfacon_1.other_identifiers)
+
+    normalizer_response = wikidata.normalize('wiKIdata:Q15353101')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == interferon_alfacon_1.label
+    assert normalized_drug.concept_identifier ==\
+           interferon_alfacon_1.concept_identifier
+    assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(interferon_alfacon_1.other_identifiers)
+
+    normalizer_response = wikidata.normalize('wiKIdata:q15353101')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == interferon_alfacon_1.label
+    assert normalized_drug.concept_identifier ==\
+           interferon_alfacon_1.concept_identifier
+    assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(interferon_alfacon_1.other_identifiers)
+
+    normalizer_response = wikidata.normalize('Q15353101')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == interferon_alfacon_1.label
+    assert normalized_drug.concept_identifier ==\
+           interferon_alfacon_1.concept_identifier
+    assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(interferon_alfacon_1.other_identifiers)
+
+    normalizer_response = wikidata.normalize('q15353101')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == interferon_alfacon_1.label
+    assert normalized_drug.concept_identifier == \
+           interferon_alfacon_1.concept_identifier
+    assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(interferon_alfacon_1.other_identifiers)
+
+
+def test_primary_label_interferon_alfacon_1(interferon_alfacon_1, wikidata):
+    """Test that Interferon alfacon-1 drug normalizes to correct drug
+    concept as a PRIMARY_LABEL match.
+    """
+    normalizer_response = wikidata.normalize('Interferon alfacon-1')
+    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == interferon_alfacon_1.label
@@ -122,31 +241,9 @@ def test_case_interferon_alfacon_1_normalize(interferon_alfacon_1, wikidata):
     assert set(normalized_drug.other_identifiers) ==\
            set(interferon_alfacon_1.other_identifiers)
 
-    # Test CASE_INSENSITIVE_PRIMARY
-    normalizer_response = wikidata.normalize(query_str='Interferon Alfacon-1',
-                                             incl='wikidata')
+    normalizer_response = wikidata.normalize('Interferon Alfacon-1')
     assert normalizer_response['match_type'] ==\
-           MatchType.CASE_INSENSITIVE_PRIMARY
-
-    # Test NO_MATCH
-    normalizer_response = wikidata.normalize(
-        query_str='Interferon alfacon - 1', incl='wikidata'
-    )
-    assert normalizer_response['match_type'] == MatchType.NO_MATCH
-
-
-def test_case_no_match(wikidata):
-    """Test that a term normalizes to NO match."""
-    normalizer_response = wikidata.normalize('cisplati')
-    assert normalizer_response['match_type'] == MatchType.NO_MATCH
-    assert len(normalizer_response['records']) == 0
-
-
-def test_case_empty_query(wikidata):
-    """Test that an empty normalizes to correct drug concept as a NO match."""
-    normalizer_response = wikidata.normalize('')
-    assert normalizer_response['match_type'] == MatchType.NO_MATCH
-    assert len(normalizer_response['records']) == 0
+           MatchType.PRIMARY_LABEL
 
 
 def test_meta_info(cisplatin, wikidata):

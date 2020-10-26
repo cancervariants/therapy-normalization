@@ -55,11 +55,10 @@ class DrugGroup(Therapy):
 class MatchType(IntEnum):
     """Define string constraints for use in Match Type attributes."""
 
-    PRIMARY = 100
-    NAMESPACE_CASE_INSENSITIVE = 95
-    CASE_INSENSITIVE_PRIMARY = 80
+    CONCEPT_ID = 100
+    PRIMARY_LABEL = 80
+    TRADE_NAME = 80
     ALIAS = 60
-    CASE_INSENSITIVE_ALIAS = 40
     FUZZY_MATCH = 20
     NO_MATCH = 0
 
