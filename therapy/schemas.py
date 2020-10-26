@@ -128,7 +128,7 @@ class MetaResponse(BaseModel):
                 prop.pop('title', None)
 
 
-class MatchKeyed(BaseModel):
+class MatchesKeyed(BaseModel):
     """Container for matching information from an individual source.
     Used when matches are requested as an object, not an array.
     """
@@ -150,7 +150,7 @@ class MatchKeyed(BaseModel):
                 prop.pop('title', None)
 
 
-class MatchListed(BaseModel):
+class MatchesListed(BaseModel):
     """Container for matching information from an individual source.
     Used when matches are requested as an array, not an object.
     """
@@ -178,7 +178,7 @@ class Service(BaseModel):
 
     query: str = Field(..., description="Search string provided by user")
     warnings: Optional[List[str]]
-    source_matches: Union[Dict[SourceName, MatchKeyed], List[MatchListed]]
+    source_matches: Union[Dict[SourceName, MatchesKeyed], List[MatchesListed]]
 
     class Config:
         """Configure model"""
