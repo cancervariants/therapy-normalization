@@ -1,7 +1,7 @@
 """This module contains data models for representing VICC normalized
 therapy records.
 """
-from typing import List, Optional
+from typing import List, Optional, Dict, Union
 from pydantic import BaseModel
 from enum import Enum, IntEnum
 
@@ -106,3 +106,19 @@ class MetaResponse(BaseModel):
     data_license_url: str
     version: str
     data_url: Optional[str]  # TODO how to handle empty values like Wikidata?
+
+
+class Match(BaseModel):
+    """Container for matching information for an individual source"""
+
+    match_type: MatchType
+    records: List[Drug]
+    meta_: MetaResponse
+
+
+class Service(BaseModel):
+    """Core response schema containing matches for each source"""
+
+    query: str
+    warnings: Optional[List[str]]
+    source_matches: Union[Dict[str, Match], List[Match]]
