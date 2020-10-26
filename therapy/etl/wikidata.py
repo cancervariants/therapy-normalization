@@ -1,11 +1,11 @@
 """This module defines the Wikidata ETL methods."""
 from .base import Base, IDENTIFIER_PREFIXES
-from therapy import PROJECT_ROOT, database, models, schemas  # noqa: F401
-from therapy.database import Base as B  # noqa: F401
+from therapy import PROJECT_ROOT, database, schemas
+from therapy.database import Base as B
 import json
 from therapy.schemas import Drug, SourceName, NamespacePrefix
 import logging
-from sqlalchemy import create_engine, event  # noqa: F401
+from sqlalchemy import create_engine, event  # noqa F401
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -46,12 +46,16 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
 }
 """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Initialize wikidata ETL class"""
         self._concept_ids = set()
         self._alias_pairs = set()
         self._other_id_pairs = set()
-        super().__init__()
+        B.metadata.create_all(bind=database.engine)
+        self._get_db()
+        self._extract_data(*args, **kwargs)
+        self._add_meta()
+        self._transform_data()
 
     def _extract_data(self, *args, **kwargs):
         """Extract data from the Wikidata source."""
@@ -66,7 +70,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                 raise FileNotFoundError  # TODO wikidata update function here
         self._version = self._data_src.stem.split('_')[1]
 
-    def _transform_data(self, *args, **kwargs):
+    def _transform_data(self):
         """Transform the Wikidata source."""
         with open(self._data_src, 'r') as f:
             records = json.load(f)
@@ -75,19 +79,19 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         for record in records:
             record_id = record['item'].split('/')[-1]
             concept_id = f"{NamespacePrefix.WIKIDATA.value}:{record_id}"
-            if 'itemLabel' in record.keys():
-                label = record['itemLabel']
-            else:
-                label = 'NULL'
-            drug = schemas.Drug(label=label,
-                                max_phase=None,
-                                withdrawn=None,
-                                trade_name=[],
-                                aliases=[],
-                                concept_identifier=concept_id,
-                                other_identifiers=[])
-
             if concept_id not in self._concept_ids:
+                if 'itemLabel' in record.keys():
+                    label = record['itemLabel']
+                else:
+                    label = 'NULL'
+                drug = schemas.Drug(label=label,
+                                    max_phase=None,
+                                    withdrawn=None,
+                                    trade_name=[],
+                                    aliases=[],
+                                    concept_identifier=concept_id,
+                                    other_identifiers=[])
+
                 self._concept_ids.add(concept_id)
                 self._load_therapy(concept_id, drug)
 
@@ -109,9 +113,8 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
     def _sqlite_str(self, string):
         """Sanitizes string to use as value in SQL statement.
 
-        Some wikidata entries include items with single or double quotes,
+        Some wikidata entries include items with single quotes,
         like wikidata:Q80863 alias: 5'-(Tetrahydrogen triphosphate) Adenosine
-        and wikidata:Q55871701 label: Wedding "sugar".
         """
         if string == "NULL":
             return "NULL"
@@ -151,16 +154,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                         '{SourceName.WIKIDATA.value}');"""
         database.engine.execute(statement)
 
-    def _load_data(self, *args, **kwargs):
-        """Load the data - called from base clase init."""
-        B.metadata.create_all(bind=database.engine)
-        self._get_db()
-
-        self._extract_data(*args, **kwargs)
-        self._add_meta()
-        self._transform_data()
-
-    def _get_db(self, *args, **kwargs):
+    def _get_db(self):
         """Create a new SQLAlchemy session that will be used in a single
         request, and then close it once the request is finished.
         """
@@ -168,9 +162,10 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         try:
             yield db
         finally:
+            print("closed")
             db.close()
 
-    def _add_meta(self, *args, **kwargs):
+    def _add_meta(self):
         """Add Wikidata metadata."""
         insert_meta = f"""
             INSERT INTO meta_data(src_name, data_license, data_license_url,

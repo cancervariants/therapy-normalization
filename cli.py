@@ -6,6 +6,7 @@ from therapy import database, models, schemas  # noqa: F401
 from therapy.models import Therapy
 from sqlalchemy import event
 from therapy.schemas import SourceName
+from timeit import default_timer as timer
 
 
 class CLI:
@@ -42,9 +43,12 @@ class CLI:
         if all:
             for n in sources:
                 CLI()._delete_data(session, n)
+                click.echo(f"Loading {n}...")
+                start = timer()
                 sources[n]()
-                click.echo(f"Finished updating the {n} source.")
-            click.echo('Updated all of the normalizer sources.')
+                end = timer()
+                click.echo(f"Loaded {n} in {end - start} seconds.")
+            click.echo('Finished updating all normalizer sources.')
         else:
             normalizers = normalizer.lower().split()
             if len(normalizers) == 0:
@@ -53,8 +57,11 @@ class CLI:
                 if n in sources:
                     # TODO: Fix so that self._delete_data(n) works
                     CLI()._delete_data(session, n)
+                    click.echo(f"Loading {n}...")
+                    start = timer()
                     sources[n]()
-                    click.echo(f"Finished updating the {n} source.")
+                    end = timer()
+                    click.echo(f"Loaded {n} in {end - start} seconds.")
                 else:
                     raise Exception("Not a normalizer source.")
         session.close()

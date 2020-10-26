@@ -29,9 +29,5 @@ class Base(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def _load_data(self, *args, **kwargs):
-        raise NotImplementedError
-
-    @abstractmethod
     def _add_meta(self, *args, **kwargs):
         raise NotImplementedError
