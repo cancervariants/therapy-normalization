@@ -1,4 +1,4 @@
-"""This module provides methods for handling queries"""
+"""This module provides methods for handling queries."""
 import re
 from typing import List, Dict
 
@@ -15,7 +15,7 @@ from sqlalchemy.orm import Session
 
 
 class InvalidParameterException(Exception):
-    """Exception for invalid parameter args provided by the user"""
+    """Exception for invalid parameter args provided by the user."""
 
     def __init__(self, message):
         """Create new instance
@@ -24,17 +24,6 @@ class InvalidParameterException(Exception):
             message: string describing the nature of the error
         """
         super().__init__(message)
-
-
-def get_db():
-    """Create a new SQLAlchemy SessionLocal that will be used in a single
-    request, and then close it once the request is finished
-    """
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 def emit_warnings(query_str):
@@ -50,7 +39,7 @@ def emit_warnings(query_str):
 
 
 def fetch_meta(session: Session, src_name: str) -> MetaResponse:
-    """Fetch metadata for src_name"""
+    """Fetch metadata for src_name."""
     meta = session.query(Meta).filter(Meta.src_name == src_name).first()
     if meta:
         params = {
@@ -90,7 +79,6 @@ def fetch_records(session: Session,
         else:
             other_identifiers = []
 
-        # TODO does this need to be fixed?
         aliases = [a.alias for a in session.query(Alias).filter(
             Alias.concept_id == concept_id)]
 
@@ -124,7 +112,7 @@ def fetch_records(session: Session,
 
 
 def fill_no_matches(session: Session, resp: Dict) -> Dict:
-    """Fill all empty source_matches slots with NO_MATCH results"""
+    """Fill all empty source_matches slots with NO_MATCH results."""
     for src_name in resp['source_matches'].keys():
         if resp['source_matches'][src_name] is None:
             resp['source_matches'][src_name] = {
@@ -143,6 +131,17 @@ def is_resp_complete(response: Dict, sources: List[str]) -> bool:
     return True
 
 
+def get_db():
+    """Create a new SQLAlchemy session that will be used in a single
+    request, and then close it once the request is finished.
+    """
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
 def create_session() -> Session:
     """Create a session to access database."""
     engine.connect()
@@ -153,7 +152,7 @@ def create_session() -> Session:
 
 def response_keyed(query: str, sources: List[str], session: Session):
     """Return response as dict where key is source name and value
-    is a list of records
+    is a list of records.
 
     TODO refactor to return as soon as response is complete,
     clean up fetch_records calls
@@ -173,6 +172,7 @@ def response_keyed(query: str, sources: List[str], session: Session):
     def namespace_prefix_match(q: str) -> bool:
         namespace_prefixes = [prefix.value for prefix in
                               NamespacePrefix.__members__.values()]
+        print(namespace_prefixes)
         return len(list(filter(lambda p: q.startswith(p),
                                namespace_prefixes))) == 1
 
@@ -183,7 +183,8 @@ def response_keyed(query: str, sources: List[str], session: Session):
         return len(list(filter(lambda p: q.startswith(p),
                                id_after_namespaces))) == 1
 
-    if namespace_prefix_match(query.lower()):
+    if namespace_prefix_match(query.lower()) or\
+            id_after_namespace_match(query):
         contains_namespace = True
         if ":" in query:
             id_after_namespace = query.split(':')[1]
@@ -196,7 +197,7 @@ def response_keyed(query: str, sources: List[str], session: Session):
         query_split[0] = query_split[0].lower()
         query = ':'.join(query_split)
         results = session.query(Therapy).filter(
-            Therapy.concept_id.ilike(f"%{query}")  # TODO: fix case?
+            Therapy.concept_id.ilike(f"%{query}")
         ).all()
 
         if results:
@@ -288,7 +289,7 @@ def response_keyed(query: str, sources: List[str], session: Session):
 
 def response_list(query: str, sources: List[str], session: Session) -> Dict:
     """Return response as list, where the first key-value in each item
-    is the source name
+    is the source name.
     """
     response_dict = response_keyed(query, sources, session)
     source_list = []
@@ -330,7 +331,7 @@ def normalize(query_str, keyed=False, incl='', excl='', **params):
     if not incl and not excl:
         query_sources = sources.values()
     elif incl and excl:
-        detail = "Cannot request both source inclusions and exclusions"
+        detail = "Cannot request both source inclusions and exclusions."
         raise InvalidParameterException(detail)
     elif incl:
         req_sources = [n.strip() for n in incl.split(',')]

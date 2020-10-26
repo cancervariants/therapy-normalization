@@ -1,4 +1,6 @@
-"""Data models for representing VICC normalized therapy records."""
+"""This module contains data models for representing VICC normalized
+therapy records.
+"""
 from typing import List, Optional
 from pydantic import BaseModel
 from enum import Enum, IntEnum
@@ -51,7 +53,7 @@ class DrugGroup(Therapy):
 
 
 class MatchType(IntEnum):
-    """Define string constaints for use in Match Type attributes"""
+    """Define string constraints for use in Match Type attributes."""
 
     PRIMARY = 100
     NAMESPACE_CASE_INSENSITIVE = 95
@@ -63,7 +65,7 @@ class MatchType(IntEnum):
 
 
 class SourceName(Enum):
-    """Define string constraints to ensure consistent capitalization"""
+    """Define string constraints to ensure consistent capitalization."""
 
     WIKIDATA = "Wikidata"
     CHEMBL = "ChEMBL"
@@ -77,7 +79,7 @@ class SourceIDAfterNamespace(Enum):
 
 
 class NamespacePrefix(Enum):
-    """Define string constraints for namespace prefixes on concept IDs"""
+    """Define string constraints for namespace prefixes on concept IDs."""
 
     CASREGISTRY = "chemidplus"
     PUBCHEMCOMPOUND = "pubchem.compound"
@@ -89,7 +91,7 @@ class NamespacePrefix(Enum):
 
 
 class TherapyLoad(BaseModel):
-    """An entry into the therapies table"""
+    """An entry into the therapies table."""
 
     concept_id: str
     label: Optional[str]
@@ -99,7 +101,7 @@ class TherapyLoad(BaseModel):
 
 
 class MetaResponse(BaseModel):
-    """Metadata for a given source to return in response object"""
+    """Metadata for a given source to return in response object."""
 
     data_license: str
     data_license_url: str

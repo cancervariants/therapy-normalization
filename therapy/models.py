@@ -1,4 +1,4 @@
-"""Define models."""
+"""This module defines the database models."""
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Index,\
     func
 from sqlalchemy.orm import relationship
