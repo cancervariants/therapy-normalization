@@ -160,7 +160,6 @@ def response_keyed(query: str, sources: List[str], session: Session):
     def namespace_prefix_match(q: str) -> bool:
         namespace_prefixes = [prefix.value for prefix in
                               NamespacePrefix.__members__.values()]
-        print(namespace_prefixes)
         return len(list(filter(lambda p: q.startswith(p),
                                namespace_prefixes))) == 1
 

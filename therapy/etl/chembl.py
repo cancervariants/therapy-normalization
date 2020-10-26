@@ -3,7 +3,7 @@ from .base import Base
 from therapy import PROJECT_ROOT
 from ftplib import FTP
 import logging
-import tarfile
+import tarfile  # noqa: F401
 from therapy import database, models  # noqa: F401
 from therapy.schemas import SourceName, NamespacePrefix
 from therapy.database import Base as B, engine, SessionLocal  # noqa: F401
@@ -23,12 +23,14 @@ class ChEMBL(Base):
         else:
             chembl_db = PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27.db'
         if not chembl_db.exists():
-            chembl_archive = PROJECT_ROOT / 'data' / 'chembl_27_sqlite.tar.gz'
-            chembl_archive.parent.mkdir(exist_ok=True)
-            self._download_chembl_27(chembl_archive)
-            tar = tarfile.open(chembl_archive)
-            tar.extractall()
-            tar.close()
+            raise FileNotFoundError  # TODO: update download methods
+            # chembl_archive = PROJECT_ROOT / 'data' / \
+            #   'chembl_27_sqlite.tar.gz'
+            # chembl_archive.parent.mkdir(exist_ok=True)
+            # self._download_chembl_27(chembl_archive)
+            # tar = tarfile.open(chembl_archive)
+            # tar.extractall()
+            # tar.close()
         assert chembl_db.exists()
 
     def _transform_data(self, *args, **kwargs):

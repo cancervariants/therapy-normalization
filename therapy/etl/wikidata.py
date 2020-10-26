@@ -66,7 +66,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
             wd_dir.mkdir(exist_ok=True, parents=True)  # TODO needed?
             try:
                 self._data_src = sorted(list(wd_dir.iterdir()))[-1]
-            except TypeError:
+            except IndexError:
                 raise FileNotFoundError  # TODO wikidata update function here
         self._version = self._data_src.stem.split('_')[1]
 
