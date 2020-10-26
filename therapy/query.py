@@ -351,8 +351,9 @@ def normalize(query_str, keyed=False, incl='', excl='', **params):
     query_str = query_str.strip()
 
     if keyed:
-        return response_keyed(query_str, query_sources, session)
+        resp = response_keyed(query_str, query_sources, session)
     else:
-        return response_list(query_str, query_sources, session)
+        resp = response_list(query_str, query_sources, session)
 
     session.close()
+    return resp
