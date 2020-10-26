@@ -1,8 +1,8 @@
 """This module contains data models for representing VICC normalized
 therapy records.
 """
-from typing import List, Optional, Dict, Union
-from pydantic import BaseModel
+from typing import List, Optional, Dict, Union, Any, Type
+from pydantic import BaseModel, Field
 from enum import Enum, IntEnum
 
 
@@ -15,9 +15,16 @@ class Therapy(BaseModel):
     other_identifiers: List[str]
 
     class Config:
-        """Enables orm_mode"""
+        """Configure model"""
 
         orm_mode = True
+
+        @staticmethod
+        def schema_extra(schema: Dict[str, Any],
+                         model: Type['Service']) -> None:
+            """Customize fields in OpenAPI JSON output"""
+            for prop in schema.get('properties', {}).values():
+                prop.pop('title', None)
 
 
 class PhaseEnum(IntEnum):
@@ -89,16 +96,6 @@ class NamespacePrefix(Enum):
     WIKIDATA = "wikidata"
 
 
-class TherapyLoad(BaseModel):
-    """An entry into the therapies table."""
-
-    concept_id: str
-    label: Optional[str]
-    max_phase: Optional[PhaseEnum]
-    withdrawn: Optional[bool]
-    trade_name: List[str]
-
-
 class MetaResponse(BaseModel):
     """Metadata for a given source to return in response object."""
 
@@ -106,6 +103,16 @@ class MetaResponse(BaseModel):
     data_license_url: str
     version: str
     data_url: Optional[str]  # TODO how to handle empty values like Wikidata?
+
+    class Config:
+        """Configure model"""
+
+        @staticmethod
+        def schema_extra(schema: Dict[str, Any],
+                         model: Type['Service']) -> None:
+            """Customize fields in OpenAPI JSON output"""
+            for prop in schema.get('properties', {}).values():
+                prop.pop('title', None)
 
 
 class Match(BaseModel):
@@ -115,10 +122,30 @@ class Match(BaseModel):
     records: List[Drug]
     meta_: MetaResponse
 
+    class Config:
+        """Configure model"""
+
+        @staticmethod
+        def schema_extra(schema: Dict[str, Any],
+                         model: Type['Service']) -> None:
+            """Customize fields in OpenAPI JSON output"""
+            for prop in schema.get('properties', {}).values():
+                prop.pop('title', None)
+
 
 class Service(BaseModel):
     """Core response schema containing matches for each source"""
 
-    query: str
+    query: str = Field(..., description="Search string provided by user")
     warnings: Optional[List[str]]
     source_matches: Union[Dict[str, Match], List[Match]]
+
+    class Config:
+        """Configure model"""
+
+        @staticmethod
+        def schema_extra(schema: Dict[str, Any],
+                         model: Type['Service']) -> None:
+            """Customize fields in OpenAPI JSON output"""
+            for prop in schema.get('properties', {}).values():
+                prop.pop('title', None)
