@@ -14,9 +14,10 @@ logger.setLevel(logging.DEBUG)
 
 
 class ChEMBL(Base):
-    """ETL ChEMBL resource into therapy.db."""
+    """ETL the ChEMBL source into therapy.db."""
 
     def _extract_data(self, *args, **kwargs):
+        """Extract data from the ChEMBL source."""
         if 'data_path' in kwargs:
             chembl_db = kwargs['data_path']
         else:
@@ -31,6 +32,7 @@ class ChEMBL(Base):
         assert chembl_db.exists()
 
     def _transform_data(self, *args, **kwargs):
+        """Transform the ChEMBL source."""
         @event.listens_for(engine, "connect")
         def connect(engine, rec):
             copy_chembl_db = PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27.db'
@@ -84,6 +86,7 @@ class ChEMBL(Base):
         engine.execute(insert_trade_name)
 
     def _load_data(self, *args, **kwargs):
+        """Load the ChEMBL source into therapy.db."""
         B.metadata.create_all(bind=engine)
         self._get_db()
         self._add_meta()
@@ -91,6 +94,9 @@ class ChEMBL(Base):
         self._transform_data()
 
     def _get_db(self, *args, **kwargs):
+        """Create a new SQLAlchemy session that will be used in a single
+        request, and then close it once the request is finished.
+        """
         db = SessionLocal()
         try:
             yield db
@@ -98,6 +104,7 @@ class ChEMBL(Base):
             db.close()
 
     def _add_meta(self, *args, **kwargs):
+        """Add ChEMBL metadata."""
         insert_meta = f"""
             INSERT INTO meta_data(src_name, data_license, data_license_url,
                 version, data_url)
@@ -116,6 +123,7 @@ class ChEMBL(Base):
 
     @staticmethod
     def _download_chembl_27(filepath):
+        """Download the ChEMBL source."""
         logger.info('Downloading ChEMBL v27, this will take a few minutes.')
         try:
             with FTP('ftp.ebi.ac.uk') as ftp:
