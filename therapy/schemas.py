@@ -21,10 +21,8 @@ class Therapy(BaseModel):
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
-                         model: Type['Service']) -> None:
-            """Customize fields in OpenAPI JSON output"""
-            if schema.get('title', None):
-                schema.pop('title')
+                         model: Type['Therapy']) -> None:
+            """Configure OpenAPI schema"""
             for prop in schema.get('properties', {}).values():
                 prop.pop('title', None)
 
@@ -54,12 +52,36 @@ class Drug(Therapy):
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
-                         model: Type['Service']) -> None:
-            """Customize fields in OpenAPI JSON output"""
-            if schema.get('title', None):
-                schema.pop('title')
+                         model: Type['Drug']) -> None:
+            """Configure OpenAPI schema"""
+            if 'title' in schema.keys():
+                schema.pop('title', None)
             for prop in schema.get('properties', {}).values():
                 prop.pop('title', None)
+            schema['example'] = {
+                'label': 'CISPLATIN',
+                'concept_identifier': 'chembl:CHEMBL11359',
+                'aliases': [
+                    'Cisplatin',
+                    'Cis-Platinum II',
+                    'Cisplatinum',
+                    'cis-diamminedichloroplatinum(II)',
+                    'CIS-DDP',
+                    'INT-230-6 COMPONENT CISPLATIN',
+                    'INT230-6 COMPONENT CISPLATIN',
+                    'NSC-119875',
+                    'Platinol',
+                    'Platinol-Aq'
+                ],
+                'other_identifiers': [],
+                'max_phase': 4,
+                'withdrawn': 0,
+                'trade_name': [
+                    'PLATINOL',
+                    'PLATINOL-AQ',
+                    'CISPLATIN'
+                ]
+            }
 
 
 class DrugGroup(Therapy):
@@ -116,16 +138,24 @@ class MetaResponse(BaseModel):
     data_url: Optional[str]
 
     class Config:
-        """Configure model"""
+        """Enables orm_mode"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
-                         model: Type['Service']) -> None:
-            """Customize fields in OpenAPI JSON output"""
-            if schema.get('title', None):
-                schema.pop('title')
+                         model: Type['MetaResponse']) -> None:
+            """Configure OpenAPI schema"""
+            if 'title' in schema.keys():
+                schema.pop('title', None)
             for prop in schema.get('properties', {}).values():
                 prop.pop('title', None)
+            schema['example'] = {
+                'data_license': 'CC BY-SA 3.0',
+                'data_license_url':
+                    'https://creativecommons.org/licenses/by-sa/3.0/',
+                'version': '27',
+                'data_url':
+                    'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501
+            }
 
 
 class MatchesKeyed(BaseModel):
@@ -138,16 +168,28 @@ class MatchesKeyed(BaseModel):
     meta_: MetaResponse
 
     class Config:
-        """Configure model"""
+        """Enables orm_mode"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
-                         model: Type['Service']) -> None:
-            """Customize fields in OpenAPI JSON output"""
-            if schema.get('title', None):
-                schema.pop('title')
+                         model: Type['MatchesKeyed']) -> None:
+            """Configure OpenAPI schema"""
+            if 'title' in schema.keys():
+                schema.pop('title', None)
             for prop in schema.get('properties', {}).values():
                 prop.pop('title', None)
+            schema['example'] = {
+                'match_type': 0,
+                'records': [],
+                'meta_': {
+                    'data_license': 'CC BY-SA 3.0',
+                    'data_license_url':
+                        'https://creativecommons.org/licenses/by-sa/3.0/',
+                    'version': '27',
+                    'data_url':
+                        'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
+                },
+            }
 
 
 class MatchesListed(BaseModel):
@@ -161,33 +203,58 @@ class MatchesListed(BaseModel):
     meta_: MetaResponse
 
     class Config:
-        """Configure model"""
+        """Enables orm_mode"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
-                         model: Type['Service']) -> None:
-            """Customize fields in OpenAPI JSON output"""
-            if schema.get('title', None):
-                schema.pop('title')
+                         model: Type['MatchesListed']) -> None:
+            """Configure OpenAPI schema"""
+            if 'title' in schema.keys():
+                schema.pop('title', None)
             for prop in schema.get('properties', {}).values():
                 prop.pop('title', None)
+            schema['example'] = {
+                'normalizer': 'ChEMBL',
+                'match_type': 0,
+                'records': [],
+                'meta_': {
+                    'data_license': 'CC BY-SA 3.0',
+                    'data_license_url':
+                        'https://creativecommons.org/licenses/by-sa/3.0/',
+                    'version': '27',
+                    'data_url':
+                        'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
+                },
+            }
 
 
 class Service(BaseModel):
     """Core response schema containing matches for each source"""
 
     query: str = Field(..., description="Search string provided by user")
-    warnings: Optional[List[str]]
+    warnings: Optional[Dict]
     source_matches: Union[Dict[SourceName, MatchesKeyed], List[MatchesListed]]
 
     class Config:
-        """Configure model"""
+        """Enables orm_mode"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
                          model: Type['Service']) -> None:
-            """Customize fields in OpenAPI JSON output"""
-            if schema.get('title', None):
-                schema.pop('title')
+            """Configure OpenAPI schema"""
+            if 'title' in schema.keys():
+                schema.pop('title', None)
             for prop in schema.get('properties', {}).values():
                 prop.pop('title', None)
+            schema['example'] = {
+                'query': 'CISPLATIN',
+                'warnings': None,
+                'meta_': {
+                    'data_license': 'CC BY-SA 3.0',
+                    'data_license_url':
+                        'https://creativecommons.org/licenses/by-sa/3.0/',
+                    'version': '27',
+                    'data_url':
+                        'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501
+                }
+            }
