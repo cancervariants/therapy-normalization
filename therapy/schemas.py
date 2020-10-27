@@ -2,7 +2,7 @@
 therapy records.
 """
 from typing import List, Optional, Dict, Union, Any, Type
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from enum import Enum, IntEnum
 
 
@@ -197,7 +197,7 @@ class MatchesListed(BaseModel):
     Used when matches are requested as an array, not an object.
     """
 
-    normalizer: SourceName
+    source: SourceName
     match_type: MatchType
     records: List[Drug]
     meta_: MetaResponse
@@ -231,7 +231,7 @@ class MatchesListed(BaseModel):
 class Service(BaseModel):
     """Core response schema containing matches for each source"""
 
-    query: str = Field(..., description="Search string provided by user")
+    query: str
     warnings: Optional[Dict]
     source_matches: Union[Dict[SourceName, MatchesKeyed], List[MatchesListed]]
 
