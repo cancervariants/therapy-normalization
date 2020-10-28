@@ -11,7 +11,6 @@ class Therapy(Base):
     """
 
     __tablename__ = "therapies"
-    __table_args__ = {"schema": "therapies_schema"}
 
     concept_id = Column(String, index=True, primary_key=True)
     label = Column(String, index=True)
