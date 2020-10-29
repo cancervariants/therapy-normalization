@@ -2,17 +2,19 @@
 from .base import Base, IDENTIFIER_PREFIXES
 from therapy import PROJECT_ROOT, database, schemas
 from therapy.database import Base as B
+from therapy.database import SessionLocal
 import json
 from therapy.schemas import Drug, SourceName, NamespacePrefix
 import logging
-from sqlalchemy import create_engine, event  # noqa F401
+from sqlalchemy.orm import Session
+from therapy.models import Therapy, Alias, OtherIdentifier, Meta
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
 
 
 class Wikidata(Base):
-    """ETL the Wikidata source into therapy.db."""
+    """Extract, tansform, and load the Wikidata source into therapy.db."""
 
     SPARQL_QUERY = """
 SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
@@ -52,10 +54,10 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         self._alias_pairs = set()
         self._other_id_pairs = set()
         B.metadata.create_all(bind=database.engine)
-        self._get_db()
         self._extract_data(*args, **kwargs)
-        self._add_meta()
-        self._transform_data()
+        db: Session = SessionLocal()
+        self._add_meta(db)
+        self._transform_data(db)
 
     def _extract_data(self, *args, **kwargs):
         """Extract data from the Wikidata source."""
@@ -70,12 +72,12 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                 raise FileNotFoundError  # TODO wikidata update function here
         self._version = self._data_src.stem.split('_')[1]
 
-    def _transform_data(self):
-        """Transform the Wikidata source."""
+    def _transform_data(self, db):
+        """Transform the Wikidata source data."""
         with open(self._data_src, 'r') as f:
             records = json.load(f)
 
-        database.engine.connect()
+        # database.engine.connect()
         for record in records:
             record_id = record['item'].split('/')[-1]
             concept_id = f"{NamespacePrefix.WIKIDATA.value}:{record_id}"
@@ -93,13 +95,13 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                                     other_identifiers=[])
 
                 self._concept_ids.add(concept_id)
-                self._load_therapy(concept_id, drug)
+                self._load_therapy(concept_id, drug, db)
 
             if 'alias' in record.keys():
                 alias = record['alias']
                 if (concept_id, alias) not in self._alias_pairs:
                     self._alias_pairs.add((concept_id, alias))
-                    self._load_alias(concept_id, alias)
+                    self._load_alias(concept_id, alias, db)
 
             for key in IDENTIFIER_PREFIXES.keys():
                 if key in record.keys():
@@ -108,7 +110,9 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                     if (concept_id, fmted_other_id) not in \
                             self._other_id_pairs:
                         self._other_id_pairs.add((concept_id, fmted_other_id))
-                        self._load_other_id(concept_id, fmted_other_id)
+                        self._load_other_id(concept_id, fmted_other_id, db)
+        db.commit()
+        db.close()
 
     def _sqlite_str(self, string):
         """Sanitizes string to use as value in SQL statement.
@@ -122,63 +126,36 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
             sanitized = string.replace("'", "''")
             return f"{sanitized}"
 
-    def _load_alias(self, concept_id: str, alias: str):
+    def _load_alias(self, concept_id: str, alias: str, db: Session):
         """Load alias."""
-        alias_clean = self._sqlite_str(alias)
-        statement = f"""INSERT INTO aliases(alias, concept_id)
-            VALUES (
-                '{alias_clean}',
-                '{concept_id}');
-        """
-        database.engine.execute(statement)
+        alias_object = Alias(alias=alias, concept_id=concept_id)
+        db.add(alias_object)
 
-    def _load_other_id(self, concept_id: str, other_id: str):
+    def _load_other_id(self, concept_id: str, other_id: str, db: Session):
         """Load individual other_id row.
         Args:
             concept_id: a str corresponding to full namespaced Wikidata
                 concept ID
             other_id: a str corresponding to other identifier
         """
-        statement = f"""
-            INSERT INTO other_identifiers(concept_id, other_id)
-            VALUES ('{concept_id}', '{other_id}');
-        """
-        database.engine.execute(statement)
+        other_identifier_object = OtherIdentifier(concept_id=concept_id,
+                                                  other_id=other_id)
+        db.add(other_identifier_object)
 
-    def _load_therapy(self, concept_id: str, drug: Drug):
+    def _load_therapy(self, concept_id: str, drug: Drug, db):
         """Load an individual therapy row."""
-        statement = f"""INSERT INTO therapies(concept_id, label, src_name)
-                    VALUES(
-                        '{concept_id}',
-                        '{self._sqlite_str(drug.label)}',
-                        '{SourceName.WIKIDATA.value}');"""
-        database.engine.execute(statement)
+        therapy = Therapy(concept_id=concept_id,
+                          label=drug.label,
+                          max_phase=drug.max_phase,
+                          withdrawn_flag=drug.withdrawn,
+                          src_name=SourceName.WIKIDATA.value)
+        db.add(therapy)
 
-    def _get_db(self):
-        """Create a new SQLAlchemy session that will be used in a single
-        request, and then close it once the request is finished.
-        """
-        db = database.SessionLocal()
-        try:
-            yield db
-        finally:
-            print("closed")
-            db.close()
-
-    def _add_meta(self):
+    def _add_meta(self, db):
         """Add Wikidata metadata."""
-        insert_meta = f"""
-            INSERT INTO meta_data(src_name, data_license, data_license_url,
-                version, data_url)
-            SELECT
-                '{SourceName.WIKIDATA.value}',
-                'CC0 1.0',
-                'https://creativecommons.org/publicdomain/zero/1.0/',
-                '{self._version}',
-                NULL
-            WHERE NOT EXISTS (
-                SELECT * FROM meta_data
-                WHERE src_name = '{SourceName.WIKIDATA.value}'
-            );
-        """
-        database.engine.execute(insert_meta)
+        meta_object = Meta(src_name=SourceName.WIKIDATA.value,
+                           data_license='CC0 1.0',
+                           data_license_url='https://creativecommons.org/publicdomain/zero/1.0/',  # noqa E501
+                           version=self._version,
+                           data_url=None)
+        db.add(meta_object)
