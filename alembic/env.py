@@ -18,7 +18,8 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # target_metadata = None
 from therapy.database import Base  # noqa
-target_metadata = Base.metadata
+from therapy.models import Therapy, Alias, OtherIdentifier, Meta, TradeName # noqa
+target_metadata = Therapy.metadata
 
 
 # other values from the config, defined by the needs of env.py,
@@ -66,7 +67,9 @@ def run_migrations_online():
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection,
+            target_metadata=target_metadata,
+            render_as_batch=True
         )
 
         with context.begin_transaction():
