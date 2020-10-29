@@ -36,7 +36,7 @@ app.openapi = custom_openapi
 
 
 @app.get("/search",
-         summary="Given query, provide matches and match ratings from"
+         summary="Given query, provide matches and match ratings from "
                  "aggregated sources",
          operation_id="getQueryResponse",
          response_description="A response to a validly-formed query",  # TODO
