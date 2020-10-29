@@ -27,7 +27,7 @@ def upgrade():
         sa.Column('data_url', sa.String(), nullable=True),
         sa.PrimaryKeyConstraint('src_name')
         )
-        op.create_table('therapies',
+    op.create_table('therapies',
         sa.Column('concept_id', sa.String(), nullable=False),
         sa.Column('label', sa.String(), nullable=True),
         sa.Column('max_phase', sa.Integer(), nullable=True),
