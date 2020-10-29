@@ -3,7 +3,7 @@ import click
 from therapy.etl import ChEMBL, Wikidata
 from therapy.database import Base, engine, SessionLocal
 from therapy import database, models, schemas  # noqa: F401
-from therapy.models import Therapy
+from therapy.models import Therapy, Meta
 from sqlalchemy import event
 from therapy.schemas import SourceName
 from timeit import default_timer as timer
@@ -71,8 +71,13 @@ class CLI:
         src_names = [src.value for src in SourceName.__members__.values()]
         lower_src_names = [src.lower() for src in src_names]
         delete_therapies = Therapy.__table__.delete().where(
-            Therapy.src_name == src_names[lower_src_names.index(source)])
+            Therapy.src_name == src_names[lower_src_names.index(source)]
+        )
         session.execute(delete_therapies)
+        delete_meta_data = Meta.__table__.delete().where(
+            Meta.src_name == src_names[lower_src_names.index(source)]
+        )
+        session.execute(delete_meta_data)
         session.commit()
         click.echo(f"Finished deleting the {source} source.")
 
