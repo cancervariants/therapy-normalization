@@ -1,49 +1,89 @@
-"""Data models for representing VICC normalized therapy records."""
-from typing import List, Optional
-from pydantic import BaseModel
-from enum import IntEnum
+"""This module defines the database models."""
+from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Index,\
+    func
+from sqlalchemy.orm import relationship
+from .database import Base
 
 
-class Therapy(BaseModel):
-    """A procedure or substance used in the treatment of a disease."""
+class Therapy(Base):
+    """Table that lists compounds/biotherapeutics
+    with associated identifiers.
+    """
 
-    label: str
-    concept_identifier: str
-    aliases: List[str]
-    other_identifiers: List[str]
+    __tablename__ = "therapies"
 
+    concept_id = Column(String, index=True, primary_key=True)
+    label = Column(String, index=True)
+    max_phase = Column(Integer)
+    withdrawn_flag = Column(Boolean)
+    src_name = Column(String, ForeignKey('meta_data.src_name'))
 
-# class Attribute(BaseModel):
-#     """Wikidata statement describing an item."""
-#
-#     property: str
-#     property_identifier: str
-#     value: str
-#     value_identifier: str
-
-
-class PhaseEnum(IntEnum):
-    """An enumerated drug development phase type."""
-
-    preclinical = 0
-    phase_i_trials = 1
-    phase_ii_trials = 2
-    phase_iii_trials = 3
-    approved = 4
+    aliases = relationship("Alias", back_populates="record",
+                           passive_deletes=True)
+    other_identifiers = relationship("OtherIdentifier",
+                                     back_populates="record",
+                                     passive_deletes=True)
+    trade_names = relationship("TradeName",
+                               back_populates="record",
+                               passive_deletes=True)
+    src_meta_data = relationship("Meta", back_populates="record")
 
 
-class Drug(Therapy):
-    """A pharmacologic substance used to treat a medical condition."""
+class OtherIdentifier(Base):
+    """Table that lists other identifiers for a compound."""
 
-    max_phase: Optional[PhaseEnum]
-    withdrawn: Optional[bool]
-    trade_name: Optional[str]
-    label: Optional[str]
+    __tablename__ = "other_identifiers"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    concept_id = Column(String, ForeignKey('therapies.concept_id',
+                                           ondelete='CASCADE'), index=True)
+    other_id = Column(String, index=True, nullable=False)
+
+    record = relationship("Therapy", back_populates="other_identifiers")
 
 
-class DrugGroup(Therapy):
-    """A grouping of drugs based on common pharmacological attributes."""
+class Alias(Base):
+    """Table that lists synonyms for the compound."""
 
-    description: str
-    type_identifier: str
-    drugs: List[Drug]
+    __tablename__ = "aliases"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    alias = Column(String, index=True, nullable=False)
+    concept_id = Column(String, ForeignKey('therapies.concept_id',
+                                           ondelete='CASCADE'), index=True)
+
+    record = relationship("Therapy", back_populates="aliases")
+
+
+class TradeName(Base):
+    """Table that lists the trade name for the product."""
+
+    __tablename__ = "trade_names"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    trade_name = Column(String, index=True, nullable=False)
+    concept_id = Column(String, ForeignKey('therapies.concept_id',
+                                           ondelete='CASCADE'), index=True)
+
+    record = relationship("Therapy", back_populates="trade_names")
+
+
+class Meta(Base):
+    """Table that lists meta info for each source."""
+
+    __tablename__ = "meta_data"
+
+    src_name = Column(String, primary_key=True)
+    data_license = Column(String, nullable=False)
+    data_license_url = Column(String, nullable=False)
+    version = Column(String, nullable=False)
+    data_url = Column(String)
+
+    record = relationship("Therapy", back_populates="src_meta_data")
+
+
+Index('lower_therapies_label', func.lower(Therapy.label))
+Index('lower_therapies_c_id', func.lower(Therapy.concept_id))
+Index('lower_other_identifiers_c_id', func.lower(OtherIdentifier.concept_id))
+Index('lower_alias', func.lower(Alias.alias))
+Index('lower_trade_name', func.lower(TradeName.trade_name))
