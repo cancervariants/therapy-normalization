@@ -6,7 +6,7 @@ from sqlalchemy import func
 from uvicorn.config import logger
 from therapy import database, models, schemas  # noqa F401
 from therapy.etl import ChEMBL, Wikidata  # noqa F401
-from therapy.database import Base, engine, SessionLocal
+from therapy.database import engine, SessionLocal
 from therapy.models import Therapy, Alias, OtherIdentifier, TradeName, \
     Meta  # noqa F401
 from therapy.schemas import Drug, MetaResponse, MatchType, SourceName, \
@@ -134,7 +134,6 @@ def is_resp_complete(response: Dict, sources: List[str]) -> bool:
 def create_session() -> Session:
     """Create a session to access database."""
     engine.connect()
-    Base.metadata.create_all(bind=engine)
     return SessionLocal()
 
 
