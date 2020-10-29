@@ -77,7 +77,6 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         with open(self._data_src, 'r') as f:
             records = json.load(f)
 
-        # database.engine.connect()
         for record in records:
             record_id = record['item'].split('/')[-1]
             concept_id = f"{NamespacePrefix.WIKIDATA.value}:{record_id}"
