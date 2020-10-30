@@ -108,6 +108,7 @@ class SourceName(Enum):
 
     WIKIDATA = "Wikidata"
     CHEMBL = "ChEMBL"
+    DRUGBANK = "DrugBank"
 
 
 class SourceIDAfterNamespace(Enum):
@@ -115,6 +116,11 @@ class SourceIDAfterNamespace(Enum):
 
     WIKIDATA = "Q"
     CHEMBL = "CHEMBL"
+    DRUGBANK = "DB"
+    CASREGISTRY = ""
+    PUBCHEMCOMPOUND = ""
+    PUBCHEMSUBSTANCE = ""
+    RXNORM = ""
 
 
 class NamespacePrefix(Enum):

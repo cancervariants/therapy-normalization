@@ -166,6 +166,7 @@ def response_keyed(query: str, sources: List[str], session: Session):
     def id_after_namespace_match(q: str) -> bool:
         id_after_namespaces = [c_id.value for c_id in
                                SourceIDAfterNamespace.__members__.values()]
+        id_after_namespaces = list(filter(None, id_after_namespaces))
         return len(list(filter(lambda p: q.startswith(p),
                                id_after_namespaces))) == 1
 
