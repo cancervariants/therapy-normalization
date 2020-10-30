@@ -37,7 +37,7 @@ def cisplatin():
             list((
                 'chembl:CHEMBL11359',
                 'rxcui:2555',
-                'drugbank:00515',
+                'drugbank:DB00515',
                 'chemidplus:15663-27-1',
                 'pubchem.compound:5702198',
             )),
@@ -68,7 +68,7 @@ def interferon_alfacon_1():
                 'chembl:CHEMBL1201557',
                 'rxcui:59744',
                 'chemidplus:118390-30-0',
-                'drugbank:00069',
+                'drugbank:DB00069',
             )),
     }
     return Drug(**params)

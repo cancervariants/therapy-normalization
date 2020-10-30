@@ -9,7 +9,7 @@ def test_query():
     assert resp['query'] == 'cisplatin'
     matches = resp['source_matches']
     assert isinstance(matches, list)
-    assert len(matches) == 2
+    assert len(matches) == 3
     wikidata = list(filter(lambda m: m['source'] == 'Wikidata',
                            matches))[0]
     assert len(wikidata['records']) == 1
@@ -32,7 +32,7 @@ def test_query_specify_normalizers():
     # test blank params
     resp = normalize('cisplatin', keyed=True)
     matches = resp['source_matches']
-    assert len(matches) == 2
+    assert len(matches) == 3
     assert 'Wikidata' in matches
     assert 'ChEMBL' in matches
 
@@ -54,12 +54,12 @@ def test_query_specify_normalizers():
     # test partial exclusion
     resp = normalize('cisplatin', keyed=True, excl='chembl')
     matches = resp['source_matches']
-    assert len(matches) == 1
+    assert len(matches) == 2
     assert 'Wikidata' in matches
     assert 'ChEMBL' not in matches
 
     # test full exclusion
-    resp = normalize('cisplatin', keyed=True, excl='chembl,wikidata')
+    resp = normalize('cisplatin', keyed=True, excl='chembl,wikidata, drugbank')
     matches = resp['source_matches']
     assert len(matches) == 0
     assert 'Wikidata' not in matches
