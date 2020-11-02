@@ -7,6 +7,7 @@ from therapy import database, models, schemas  # noqa: F401
 from therapy.models import Meta, Therapy, Alias, OtherIdentifier, TradeName
 from therapy.schemas import SourceName, NamespacePrefix, Drug
 from therapy.database import Base as B, engine, SessionLocal  # noqa: F401
+from therapy.etl.base import IDENTIFIER_PREFIXES
 from sqlalchemy import create_engine, event  # noqa: F401
 import xml.etree.ElementTree as ET
 
@@ -32,6 +33,7 @@ class DrugBank(Base):
         """Transform the DrugBank source."""
         tree = ET.parse(self._data_src)
         root = tree.getroot()
+        xmlns = "{http://www.drugbank.ca}"
         for d in root:
             params = {
                 'concept_id': None,
@@ -44,7 +46,7 @@ class DrugBank(Base):
                 'trade_names': []
             }
             for child in d:
-                if child.tag == "{http://www.drugbank.ca}drugbank-id":
+                if child.tag == f"{xmlns}drugbank-id":
                     # Concept ID
                     if 'primary' in child.attrib:
                         params['concept_id'] = \
@@ -53,25 +55,29 @@ class DrugBank(Base):
                         # Aliases
                         params['aliases'].append(child.text)
                 # Label
-                if child.tag == "{http://www.drugbank.ca}name":
+                if child.tag == f"{xmlns}name":
                     params['label'] = child.text
                 # Aliases
-                if child.tag == "{http://www.drugbank.ca}synonyms":
+                if child.tag == f"{xmlns}synonyms":
                     for alias in child:
                         if alias.text not in params['aliases']:
                             params['aliases'].append(alias.text)
                 # Trade Names TODO check that these are actually trade names
-                if child.tag == "{http://www.drugbank.ca}products":
+                if child.tag == f"{xmlns}products":
                     for products in child:
                         for product in products:
-                            if product.tag == "{http://www.drugbank.ca}name":
+                            if product.tag == f"{xmlns}name":
                                 if product.text not in params['trade_names']:
                                     params['trade_names'].append(product.text)
-                if child.tag == "{http://www.drugbank.ca}groups":
+                # Other Identifiers
+                if child.tag == f"{xmlns}cas-number":
+                    params['other_identifiers'].append(
+                        f"{IDENTIFIER_PREFIXES['casRegistry']}:{child.text}")
+                # Withdrawn flag
+                if child.tag == f"{xmlns}groups":
                     for groups in child:
                         for group in groups:
                             if group.text == "withdrawn":
-                                print(params['label'], 'WITHDRAWN')
                                 params['withdrawn_flag'] = True
 
             drug = schemas.Drug(
@@ -115,7 +121,6 @@ class DrugBank(Base):
                 Alias(concept_id=drug.concept_identifier, alias=alias)
             db.add(alias_object)
 
-    # TODO Check if cas-number is other_id
     def _load_other_identifiers(self, drug: Drug, db: Session):
         for other_identifier in drug.other_identifiers:
             other_identifier_object = OtherIdentifier(
