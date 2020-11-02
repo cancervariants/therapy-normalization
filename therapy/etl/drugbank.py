@@ -62,7 +62,8 @@ class DrugBank(Base):
                 # Aliases
                 if child.tag == f"{xmlns}synonyms":
                     for alias in child:
-                        if alias.text not in params['aliases']:
+                        if alias.text not in params['aliases'] and \
+                                alias.attrib['language'] == 'english':
                             params['aliases'].append(alias.text)
                 # Trade Names TODO check that these are actually trade names
                 if child.tag == f"{xmlns}products":
