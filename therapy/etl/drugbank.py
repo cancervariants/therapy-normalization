@@ -31,11 +31,10 @@ class DrugBank(Base):
 
     def _transform_data(self, db):
         """Transform the DrugBank source."""
-        with open(self._data_src) as file:
-            xml = file.read().encode()
-
-        root = etree.fromstring(xml)
         xmlns = "{http://www.drugbank.ca}"
+
+        tree = etree.parse(f"{self._data_src}")
+        root = tree.getroot()
 
         for d in root:
             params = {
