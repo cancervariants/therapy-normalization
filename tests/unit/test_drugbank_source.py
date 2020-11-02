@@ -30,7 +30,9 @@ def lepirudin():
             'BTD00024',
             'BIOD00024'
         )),
-        'other_identifiers': list(),
+        'other_identifiers': list((
+            'chemidplus:138068-37-8',
+        )),
         'trade_name': list((
             'Refludan',
         ))
@@ -66,7 +68,9 @@ def db14201():
             'Dwusiarczek dwubenzotiazylu',
             'Thiofide'
         )),
-        'other_identifiers': list(),
+        'other_identifiers': list((
+            'chemidplus:120-78-5',
+        )),
         'trade_name': list((
             'T.R.U.E. Test Thin-Layer Rapid Use Patch Test',
         ))
