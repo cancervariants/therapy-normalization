@@ -9,7 +9,7 @@ from therapy.schemas import SourceName, NamespacePrefix, Drug
 from therapy.database import Base as B, engine, SessionLocal  # noqa: F401
 from therapy.etl.base import IDENTIFIER_PREFIXES
 from sqlalchemy import create_engine, event  # noqa: F401
-import xml.etree.ElementTree as ET
+from lxml import etree
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -31,9 +31,12 @@ class DrugBank(Base):
 
     def _transform_data(self, db):
         """Transform the DrugBank source."""
-        tree = ET.parse(self._data_src)
-        root = tree.getroot()
+        with open(self._data_src) as file:
+            xml = file.read().encode()
+
+        root = etree.fromstring(xml)
         xmlns = "{http://www.drugbank.ca}"
+
         for d in root:
             params = {
                 'concept_id': None,
@@ -71,8 +74,10 @@ class DrugBank(Base):
                                     params['trade_names'].append(product.text)
                 # Other Identifiers
                 if child.tag == f"{xmlns}cas-number":
-                    params['other_identifiers'].append(
-                        f"{IDENTIFIER_PREFIXES['casRegistry']}:{child.text}")
+                    if child.text:
+                        params['other_identifiers'].append(
+                            f"{IDENTIFIER_PREFIXES['casRegistry']}:"
+                            f"{child.text}")
                 # Withdrawn flag
                 if child.tag == f"{xmlns}groups":
                     for groups in child:

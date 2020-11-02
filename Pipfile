@@ -23,6 +23,7 @@ uvicorn = "*"
 sqlalchemy = "*"
 click = "*"
 alembic = "*"
+lxml = "*"
 
 [requires]
 python_version = "3.8"
