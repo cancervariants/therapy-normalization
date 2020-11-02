@@ -65,7 +65,6 @@ def db14201():
             'Dibenzothiazolyl disulphide',
             'Dibenzothiazyl disulfide',
             'Dibenzoylthiazyl disulfide',
-            'Dwusiarczek dwubenzotiazylu',
             'Thiofide'
         )),
         'other_identifiers': list((
@@ -283,20 +282,17 @@ def test_alias_db14201(db14201, drugbank):
     assert normalized_drug.concept_identifier == db14201.concept_identifier
     assert normalized_drug.other_identifiers == db14201.other_identifiers
 
-    normalizer_response = drugbank.normalize('Dwusiarczek dwubenzotiazylu')
-    assert normalizer_response['match_type'] == \
-           MatchType.ALIAS
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == db14201.label
-    assert normalized_drug.concept_identifier == db14201.concept_identifier
-    assert normalized_drug.other_identifiers == db14201.other_identifiers
-
 
 def test_no_match(drugbank):
     """Test that a term normalizes to correct drug concept as a NO match."""
     normalizer_response = drugbank.normalize('lepirudi')
     assert normalizer_response['match_type'] == MatchType.NO_MATCH
     assert len(normalizer_response['records']) == 0
+
+    # Polish alias for DB14201
+    normalizer_response = drugbank.normalize('Dwusiarczek dwubenzotiazylu')
+    assert normalizer_response['match_type'] == \
+           MatchType.NO_MATCH
 
     # Test white space in between id
     normalizer_response = drugbank.normalize('DB 00001')
