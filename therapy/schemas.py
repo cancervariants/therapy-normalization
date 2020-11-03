@@ -129,6 +129,8 @@ class NamespacePrefix(Enum):
     DRUGBANK = "drugbank"
     WIKIDATA = "wikidata"
     NCIT = "ncit"
+    FDA = "fda"
+    ISO = "iso"
 
 
 class MetaResponse(BaseModel):
