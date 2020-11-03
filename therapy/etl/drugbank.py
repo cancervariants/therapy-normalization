@@ -89,19 +89,7 @@ class DrugBank(Base):
                     elif "investigational" in group_type:
                         params['approval_status'] = "investigational"
 
-            drug_obj = schemas.Drug(
-                label=params['label'],
-                approval_status=params['approval_status'],
-                trade_name=params['trade_names'],
-                aliases=params['aliases'],
-                concept_identifier=params['concept_id'],
-                other_identifiers=params['other_identifiers']
-            )
-
-            self._load_therapy(drug_obj, db)
-            self._load_aliases(drug_obj, db)
-            self._load_other_identifiers(drug_obj, db)
-            self._load_trade_names(drug_obj, db)
+            self._load_drug(params, db)
 
     def _load_data(self, *args, **kwargs):
         """Load the DrugBank source into normalized database."""
@@ -112,6 +100,22 @@ class DrugBank(Base):
         self._add_meta(db)
         db.commit()
         db.close()
+
+    def _load_drug(self, params, db):
+        """Load drug into each table of the normalized database."""
+        drug = schemas.Drug(
+            label=params['label'],
+            approval_status=params['approval_status'],
+            trade_name=params['trade_names'],
+            aliases=params['aliases'],
+            concept_identifier=params['concept_id'],
+            other_identifiers=params['other_identifiers']
+        )
+
+        self._load_therapy(drug, db)
+        self._load_aliases(drug, db)
+        self._load_other_identifiers(drug, db)
+        self._load_trade_names(drug, db)
 
     def _load_therapy(self, drug: Drug, db: Session):
         """Load a DrugBank therapy row into normalized database."""
