@@ -23,6 +23,9 @@ uvicorn = "*"
 sqlalchemy = "*"
 click = "*"
 alembic = "*"
+cython = "*"
+owlready2 = "*"
+pronto = "*"
 
 [requires]
 python_version = "3.8"

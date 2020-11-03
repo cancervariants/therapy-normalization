@@ -37,27 +37,15 @@ class NCIt(Base):
         P107?
         P108?
     aliases:
+        P90 -- not all?
 
     other identifiers:
         NLM: P207
-        uncl.: P208
+        uncl.: P208 ("for concepts in NCIT but not NLM"?)
 
-    (no max phase, withdrawn)
+    (no max phase or withdrawn)
 
     """
-
-    def _extract_data(self, *args, **kwargs):
-        """Get NCIt source file"""
-        if 'data_path' in kwargs:
-            self._data_src = kwargs['data_path']
-        else:
-            data_dir = PROJECT_ROOT / 'data' / 'ncit'
-            data_dir.mkdir(exist_ok=True, parents=True)
-            try:
-                self._data_src = sorted(list(data_dir.iterdir()))[-1]
-            except IndexError:
-                raise FileNotFoundError  # TODO download function here
-        self._version = self._data_src.stem.split('_')[1]
 
     def _load_data(self, db: Session, onto: Ontology, leaf: ThingClass):
         """Load data from individual NCIt entry into db"""
@@ -74,7 +62,7 @@ class NCIt(Base):
         if leaf.P319:
             other_id = OtherIdentifier(
                 concept_id=concept_id,
-                other_id=""
+                other_id=""  # TODO
             )
             db.add(other_id)
 
@@ -89,6 +77,14 @@ class NCIt(Base):
             # load node
             pass
 
+    def _add_meta(self, db: Session):
+        meta_object = Meta(src_name=SourceName.NCIT.value,
+                           data_license="CC BY 4.0",
+                           data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
+                           version=self._version,
+                           data_url="https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/Thesaurus_20.09d.OWL.zip",)  # noqa F401
+        db.add(meta_object)
+
     def _transform_data(self, *args, **kwargs):
         """Get data from file and construct objects for loading"""
         ncit = owl.get_ontology(self._data_src)
@@ -100,10 +96,15 @@ class NCIt(Base):
         db.commit()
         db.close()
 
-    def _add_meta(self, db: Session):
-        meta_object = Meta(src_name=SourceName.NCIT.value,
-                           data_license="CC BY 4.0",
-                           data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
-                           version=self._version,
-                           data_url="https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/Thesaurus_20.09d.OWL.zip",)  # noqa F401
-        db.add(meta_object)
+    def _extract_data(self, *args, **kwargs):
+        """Get NCIt source file"""
+        if 'data_path' in kwargs:
+            self._data_src = kwargs['data_path']
+        else:
+            data_dir = PROJECT_ROOT / 'data' / 'ncit'
+            data_dir.mkdir(exist_ok=True, parents=True)
+            try:
+                self._data_src = sorted(list(data_dir.iterdir()))[-1]
+            except IndexError:
+                raise FileNotFoundError  # TODO download function here
+        self._version = self._data_src.stem.split('_')[1]
