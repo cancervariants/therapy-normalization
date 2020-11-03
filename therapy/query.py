@@ -5,7 +5,6 @@ from typing import List, Dict
 from sqlalchemy import func
 from uvicorn.config import logger
 from therapy import database, models, schemas  # noqa F401
-from therapy.etl import ChEMBL, Wikidata  # noqa F401
 from therapy.database import engine, SessionLocal
 from therapy.models import Therapy, Alias, OtherIdentifier, TradeName, \
     Meta  # noqa F401
