@@ -88,8 +88,7 @@ def fetch_records(session: Session,
         params = {
             'concept_identifier': concept_id,
             'label': therapy.label,
-            'max_phase': therapy.max_phase,
-            'withdrawn': therapy.withdrawn_flag,
+            'approval_status': therapy.approval_status,
             'other_identifiers': other_identifiers,
             'aliases': aliases if aliases != [None] else [],
             'trade_name': trade_name if trade_name != [None] else []

@@ -49,13 +49,16 @@ class ChEMBL(Base):
 
         insert_therapy = f"""
             INSERT INTO therapies(
-                concept_id, label, max_phase, withdrawn_flag, src_name
+                concept_id, label, approval_status, src_name
             )
             SELECT DISTINCT
                 '{NamespacePrefix.CHEMBL.value}:'||molecule_dictionary.chembl_id,
                 molecule_dictionary.pref_name,
-                molecule_dictionary.max_phase,
-                molecule_dictionary.withdrawn_flag,
+                CASE
+                    WHEN molecule_dictionary.withdrawn_flag THEN 'withdrawn'
+                    WHEN molecule_dictionary.max_phase == 4 THEN 'approved'
+                    ELSE 'investigational'
+                END,
                 '{SourceName.CHEMBL.value}'
             FROM chembldb.molecule_dictionary;
         """

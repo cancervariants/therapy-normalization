@@ -30,6 +30,7 @@ def lepirudin():
             'BTD00024',
             'BIOD00024'
         )),
+        'approval_status': 'approved',
         'other_identifiers': list((
             'chemidplus:138068-37-8',
         )),
@@ -67,6 +68,7 @@ def db14201():
             'Dibenzoylthiazyl disulfide',
             'Thiofide'
         )),
+        'approval_status': 'approved',
         'other_identifiers': list((
             'chemidplus:120-78-5',
         )),
@@ -88,6 +90,7 @@ def test_concept_id_lepirudin(lepirudin, drugbank):
     assert normalized_drug.label == lepirudin.label
     assert normalized_drug.concept_identifier == lepirudin.concept_identifier
     assert normalized_drug.other_identifiers == lepirudin.other_identifiers
+    assert normalized_drug.approval_status == lepirudin.approval_status
 
     normalizer_response = drugbank.normalize('DB00001')
     assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
@@ -96,6 +99,7 @@ def test_concept_id_lepirudin(lepirudin, drugbank):
     assert normalized_drug.label == lepirudin.label
     assert normalized_drug.concept_identifier == lepirudin.concept_identifier
     assert normalized_drug.other_identifiers == lepirudin.other_identifiers
+    assert normalized_drug.approval_status == lepirudin.approval_status
 
     normalizer_response = drugbank.normalize('drugbank:db00001')
     assert normalizer_response['match_type'] == \
@@ -105,6 +109,7 @@ def test_concept_id_lepirudin(lepirudin, drugbank):
     assert normalized_drug.label == lepirudin.label
     assert normalized_drug.concept_identifier == lepirudin.concept_identifier
     assert normalized_drug.other_identifiers == lepirudin.other_identifiers
+    assert normalized_drug.approval_status == lepirudin.approval_status
 
     normalizer_response = drugbank.normalize('Drugbank:db00001')
     assert normalizer_response['match_type'] == \
@@ -114,6 +119,7 @@ def test_concept_id_lepirudin(lepirudin, drugbank):
     assert normalized_drug.label == lepirudin.label
     assert normalized_drug.concept_identifier == lepirudin.concept_identifier
     assert normalized_drug.other_identifiers == lepirudin.other_identifiers
+    assert normalized_drug.approval_status == lepirudin.approval_status
 
     normalizer_response = drugbank.normalize('druGBank:DB00001')
     assert normalizer_response['match_type'] == \
@@ -123,6 +129,7 @@ def test_concept_id_lepirudin(lepirudin, drugbank):
     assert normalized_drug.label == lepirudin.label
     assert normalized_drug.concept_identifier == lepirudin.concept_identifier
     assert normalized_drug.other_identifiers == lepirudin.other_identifiers
+    assert normalized_drug.approval_status == lepirudin.approval_status
 
 
 def test_primary_label_lepirudin(lepirudin, drugbank):
@@ -140,6 +147,7 @@ def test_primary_label_lepirudin(lepirudin, drugbank):
     assert normalized_drug.label == lepirudin.label
     assert normalized_drug.concept_identifier == lepirudin.concept_identifier
     assert normalized_drug.other_identifiers == lepirudin.other_identifiers
+    assert normalized_drug.approval_status == lepirudin.approval_status
 
     normalizer_response = drugbank.normalize('lepirudin')
     assert normalizer_response['match_type'] ==\
@@ -149,6 +157,7 @@ def test_primary_label_lepirudin(lepirudin, drugbank):
     assert normalized_drug.label == lepirudin.label
     assert normalized_drug.concept_identifier == lepirudin.concept_identifier
     assert normalized_drug.other_identifiers == lepirudin.other_identifiers
+    assert normalized_drug.approval_status == lepirudin.approval_status
 
 
 def test_alias_lepirudin(lepirudin, drugbank):
@@ -162,6 +171,7 @@ def test_alias_lepirudin(lepirudin, drugbank):
     assert normalized_drug.label == lepirudin.label
     assert normalized_drug.concept_identifier == lepirudin.concept_identifier
     assert normalized_drug.other_identifiers == lepirudin.other_identifiers
+    assert normalized_drug.approval_status == lepirudin.approval_status
 
     normalizer_response = drugbank.normalize('BTD00024')
     assert normalizer_response['match_type'] == MatchType.ALIAS
@@ -170,6 +180,7 @@ def test_alias_lepirudin(lepirudin, drugbank):
     assert normalized_drug.label == lepirudin.label
     assert normalized_drug.concept_identifier == lepirudin.concept_identifier
     assert normalized_drug.other_identifiers == lepirudin.other_identifiers
+    assert normalized_drug.approval_status == lepirudin.approval_status
 
     normalizer_response = drugbank.normalize('BIOD00024')
     assert normalizer_response['match_type'] == \
@@ -178,6 +189,7 @@ def test_alias_lepirudin(lepirudin, drugbank):
     assert normalized_drug.label == lepirudin.label
     assert normalized_drug.concept_identifier == lepirudin.concept_identifier
     assert normalized_drug.other_identifiers == lepirudin.other_identifiers
+    assert normalized_drug.approval_status == lepirudin.approval_status
 
 
 def test_concept_id_db14201(db14201, drugbank):
@@ -191,6 +203,7 @@ def test_concept_id_db14201(db14201, drugbank):
     assert normalized_drug.label == db14201.label
     assert normalized_drug.concept_identifier == db14201.concept_identifier
     assert normalized_drug.other_identifiers == db14201.other_identifiers
+    assert normalized_drug.approval_status == db14201.approval_status
 
     normalizer_response = drugbank.normalize('DB14201')
     assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
@@ -199,6 +212,7 @@ def test_concept_id_db14201(db14201, drugbank):
     assert normalized_drug.label == db14201.label
     assert normalized_drug.concept_identifier == db14201.concept_identifier
     assert normalized_drug.other_identifiers == db14201.other_identifiers
+    assert normalized_drug.approval_status == db14201.approval_status
 
     normalizer_response = drugbank.normalize('drugbank:db14201')
     assert normalizer_response['match_type'] == \
@@ -208,6 +222,7 @@ def test_concept_id_db14201(db14201, drugbank):
     assert normalized_drug.label == db14201.label
     assert normalized_drug.concept_identifier == db14201.concept_identifier
     assert normalized_drug.other_identifiers == db14201.other_identifiers
+    assert normalized_drug.approval_status == db14201.approval_status
 
     normalizer_response = drugbank.normalize('Drugbank:db14201')
     assert normalizer_response['match_type'] == \
@@ -217,6 +232,7 @@ def test_concept_id_db14201(db14201, drugbank):
     assert normalized_drug.label == db14201.label
     assert normalized_drug.concept_identifier == db14201.concept_identifier
     assert normalized_drug.other_identifiers == db14201.other_identifiers
+    assert normalized_drug.approval_status == db14201.approval_status
 
     normalizer_response = drugbank.normalize('druGBank:DB14201')
     assert normalizer_response['match_type'] == \
@@ -226,6 +242,7 @@ def test_concept_id_db14201(db14201, drugbank):
     assert normalized_drug.label == db14201.label
     assert normalized_drug.concept_identifier == db14201.concept_identifier
     assert normalized_drug.other_identifiers == db14201.other_identifiers
+    assert normalized_drug.approval_status == db14201.approval_status
 
 
 def test_primary_label_db14201(db14201, drugbank):
@@ -243,6 +260,7 @@ def test_primary_label_db14201(db14201, drugbank):
     assert normalized_drug.label == db14201.label
     assert normalized_drug.concept_identifier == db14201.concept_identifier
     assert normalized_drug.other_identifiers == db14201.other_identifiers
+    assert normalized_drug.approval_status == db14201.approval_status
 
     normalizer_response = drugbank.normalize('2,2\'-Dibenzothiazyl Disulfide')
     assert normalizer_response['match_type'] ==\
@@ -252,6 +270,7 @@ def test_primary_label_db14201(db14201, drugbank):
     assert normalized_drug.label == db14201.label
     assert normalized_drug.concept_identifier == db14201.concept_identifier
     assert normalized_drug.other_identifiers == db14201.other_identifiers
+    assert normalized_drug.approval_status == db14201.approval_status
 
 
 def test_alias_db14201(db14201, drugbank):
@@ -265,6 +284,7 @@ def test_alias_db14201(db14201, drugbank):
     assert normalized_drug.label == db14201.label
     assert normalized_drug.concept_identifier == db14201.concept_identifier
     assert normalized_drug.other_identifiers == db14201.other_identifiers
+    assert normalized_drug.approval_status == db14201.approval_status
 
     normalizer_response = drugbank.normalize('BTS-SBT')
     assert normalizer_response['match_type'] == \
@@ -273,6 +293,7 @@ def test_alias_db14201(db14201, drugbank):
     assert normalized_drug.label == db14201.label
     assert normalized_drug.concept_identifier == db14201.concept_identifier
     assert normalized_drug.other_identifiers == db14201.other_identifiers
+    assert normalized_drug.approval_status == db14201.approval_status
 
     normalizer_response = drugbank.normalize('THIOFIDE')
     assert normalizer_response['match_type'] == MatchType.ALIAS
@@ -281,6 +302,7 @@ def test_alias_db14201(db14201, drugbank):
     assert normalized_drug.label == db14201.label
     assert normalized_drug.concept_identifier == db14201.concept_identifier
     assert normalized_drug.other_identifiers == db14201.other_identifiers
+    assert normalized_drug.approval_status == db14201.approval_status
 
 
 def test_no_match(drugbank):

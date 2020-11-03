@@ -36,72 +36,75 @@ class DrugBank(Base):
         tree = etree.parse(f"{self._data_src}")
         root = tree.getroot()
 
-        for d in root:
+        for drug in root:
             params = {
                 'concept_id': None,
                 'label': None,
-                'max_phase': None,
-                'withdrawn_flag': None,
                 'src_name': SourceName.DRUGBANK,
+                'approval_status': None,
                 'aliases': [],
                 'other_identifiers': [],
                 'trade_names': []
             }
-            for child in d:
-                if child.tag == f"{xmlns}drugbank-id":
+            for element in drug:
+                if element.tag == f"{xmlns}drugbank-id":
                     # Concept ID
-                    if 'primary' in child.attrib:
+                    if 'primary' in element.attrib:
                         params['concept_id'] = \
-                            f"{NamespacePrefix.DRUGBANK.value}:{child.text}"
+                            f"{NamespacePrefix.DRUGBANK.value}:{element.text}"
                     else:
                         # Aliases
-                        params['aliases'].append(child.text)
+                        params['aliases'].append(element.text)
                 # Label
-                if child.tag == f"{xmlns}name":
-                    params['label'] = child.text
+                if element.tag == f"{xmlns}name":
+                    params['label'] = element.text
                 # Aliases
-                if child.tag == f"{xmlns}synonyms":
-                    for alias in child:
+                if element.tag == f"{xmlns}synonyms":
+                    for alias in element:
                         if alias.text not in params['aliases'] and \
                                 alias.attrib['language'] == 'english':
                             params['aliases'].append(alias.text)
-                # Trade Names TODO check that these are actually trade names
-                if child.tag == f"{xmlns}products":
-                    for products in child:
-                        for product in products:
-                            if product.tag == f"{xmlns}name":
-                                if product.text not in params['trade_names']:
-                                    params['trade_names'].append(product.text)
+                # Trade Names
+                if element.tag == f"{xmlns}products":
+                    for product in element:
+                        for el in product:
+                            if el.tag == f"{xmlns}name":
+                                if el.text not in params['trade_names']:
+                                    params['trade_names'].append(el.text)
                 # Other Identifiers
-                if child.tag == f"{xmlns}cas-number":
-                    if child.text:
+                if element.tag == f"{xmlns}cas-number":
+                    if element.text:
                         params['other_identifiers'].append(
                             f"{IDENTIFIER_PREFIXES['casRegistry']}:"
-                            f"{child.text}")
-                # Withdrawn flag
-                if child.tag == f"{xmlns}groups":
-                    for groups in child:
-                        for group in groups:
-                            if group.text == "withdrawn":
-                                params['withdrawn_flag'] = True
+                            f"{element.text}")
+                # Approval status
+                if element.tag == f"{xmlns}groups":
+                    group_type = []
+                    for group in element:
+                        group_type.append(group.text)
+                    if "withdrawn" in group_type:
+                        params['approval_status'] = "withdrawn"
+                    elif "approved" in group_type:
+                        params['approval_status'] = "approved"
+                    elif "investigational" in group_type:
+                        params['approval_status'] = "investigational"
 
-            drug = schemas.Drug(
+            drug_obj = schemas.Drug(
                 label=params['label'],
-                max_phase=None,
-                withdrawn=params['withdrawn_flag'],
+                approval_status=params['approval_status'],
                 trade_name=params['trade_names'],
                 aliases=params['aliases'],
                 concept_identifier=params['concept_id'],
                 other_identifiers=params['other_identifiers']
             )
 
-            self._load_therapy(drug, db)
-            self._load_aliases(drug, db)
-            self._load_other_identifiers(drug, db)
-            self._load_trade_names(drug, db)
+            self._load_therapy(drug_obj, db)
+            self._load_aliases(drug_obj, db)
+            self._load_other_identifiers(drug_obj, db)
+            self._load_trade_names(drug_obj, db)
 
     def _load_data(self, *args, **kwargs):
-        """Load the DrugBank source into therapy.db."""
+        """Load the DrugBank source into normalized database."""
         B.metadata.create_all(bind=engine)
         db: Session = SessionLocal()
         self._extract_data()
@@ -111,28 +114,31 @@ class DrugBank(Base):
         db.close()
 
     def _load_therapy(self, drug: Drug, db: Session):
+        """Load a DrugBank therapy row into normalized database."""
         therapy = Therapy(
             concept_id=drug.concept_identifier,
             label=drug.label,
-            max_phase=drug.max_phase,
-            withdrawn_flag=drug.withdrawn,
+            approval_status=drug.approval_status,
             src_name=SourceName.DRUGBANK.value
         )
         db.add(therapy)
 
     def _load_aliases(self, drug: Drug, db: Session):
+        """Load a DrugBank alias row into normalized database."""
         for alias in drug.aliases:
             alias_object = \
                 Alias(concept_id=drug.concept_identifier, alias=alias)
             db.add(alias_object)
 
     def _load_other_identifiers(self, drug: Drug, db: Session):
+        """Load a DrugBank other identifier row into normalized database."""
         for other_identifier in drug.other_identifiers:
             other_identifier_object = OtherIdentifier(
                 concept_id=drug.concept_identifier, other_id=other_identifier)
             db.add(other_identifier_object)
 
     def _load_trade_names(self, drug: Drug, db: Session):
+        """Load a DrugBank trade name row into normalized database."""
         for trade_name in drug.trade_name:
             trade_name_object = TradeName(
                 concept_id=drug.concept_identifier, trade_name=trade_name)

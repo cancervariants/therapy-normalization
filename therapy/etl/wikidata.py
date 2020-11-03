@@ -87,8 +87,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                 else:
                     label = 'NULL'
                 drug = schemas.Drug(label=label,
-                                    max_phase=None,
-                                    withdrawn=None,
+                                    approval_status=None,
                                     trade_name=[],
                                     aliases=[],
                                     concept_identifier=concept_id,
@@ -151,8 +150,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         """Load an individual therapy row."""
         therapy = Therapy(concept_id=concept_id,
                           label=drug.label,
-                          max_phase=drug.max_phase,
-                          withdrawn_flag=drug.withdrawn,
+                          approval_status=drug.approval_status,
                           src_name=SourceName.WIKIDATA.value)
         db.add(therapy)
 

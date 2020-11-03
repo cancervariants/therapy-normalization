@@ -1,6 +1,5 @@
 """This module defines the database models."""
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Index,\
-    func
+from sqlalchemy import Column, ForeignKey, Integer, String, Index, func
 from sqlalchemy.orm import relationship
 from .database import Base
 
@@ -14,8 +13,7 @@ class Therapy(Base):
 
     concept_id = Column(String, index=True, primary_key=True)
     label = Column(String, index=True)
-    max_phase = Column(Integer)
-    withdrawn_flag = Column(Boolean)
+    approval_status = Column(String)
     src_name = Column(String, ForeignKey('meta_data.src_name'))
 
     aliases = relationship("Alias", back_populates="record",
