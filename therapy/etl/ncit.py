@@ -64,12 +64,7 @@ class NCIt(Base):
     def _load_data(self, db: Session, leaf: ThingClass):
         """Load data from individual NCIt entry into db"""
         concept_id = f"{NamespacePrefix.NCIT.value}:{leaf.name}"
-        # aliases = ""
-        # other_identifiers = ""
-        # TODO preferred name vs display name?
-        if leaf.P107:
-            label = leaf.P107.first()
-        elif leaf.P108:
+        if leaf.P108:
             label = leaf.P108.first()
         else:
             label = None
