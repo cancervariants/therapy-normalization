@@ -14,7 +14,7 @@ logger.setLevel(logging.DEBUG)
 
 
 class Wikidata(Base):
-    """Extract, tansform, and load the Wikidata source into therapy.db."""
+    """Extract, transform, and load the Wikidata source into therapy.db."""
 
     SPARQL_QUERY = """
 SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
