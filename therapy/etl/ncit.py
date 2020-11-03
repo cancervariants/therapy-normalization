@@ -1,13 +1,13 @@
 """ETL methods for NCIt source"""
 from .base import Base
 from therapy import PROJECT_ROOT
-from therapy.models import Meta, Therapy, OtherIdentifier
+from therapy.models import Meta, Therapy, OtherIdentifier, Alias
 from therapy.schemas import SourceName, NamespacePrefix
-from therapy.database import SessionLocal
+from therapy.database import Base as B
+from therapy.database import SessionLocal, engine
 from sqlalchemy.orm import Session
 import owlready2 as owl
 from owlready2.entity import ThingClass
-from owlready2.namespace import Ontology
 
 
 class NCIt(Base):
@@ -42,40 +42,79 @@ class NCIt(Base):
     other identifiers:
         NLM: P207
         uncl.: P208 ("for concepts in NCIT but not NLM"?)
+        CAS: P210
+        ISO: P320
+        FDA: P319
 
     (no max phase or withdrawn)
 
     """
 
-    def _load_data(self, db: Session, onto: Ontology, leaf: ThingClass):
+    def __init__(self, *args, **kwargs):
+        """Override base class init method. Call ETL methods with generated
+        db SessionLocal instance.
+        """
+        B.metadata.create_all(bind=engine)
+        self._extract_data()
+        db: Session = SessionLocal()
+        self._transform_data(db)
+        db.commit()
+        db.close()
+
+    def _load_data(self, db: Session, leaf: ThingClass):
         """Load data from individual NCIt entry into db"""
-        concept_id = f"{NamespacePrefix.NCIT}:{leaf.name}"
-        # trade_name = ""
-        # label = ""
+        concept_id = f"{NamespacePrefix.NCIT.value}:{leaf.name}"
         # aliases = ""
         # other_identifiers = ""
+        # TODO preferred name vs display name?
+        if leaf.P107:
+            label = leaf.P107.first()
+        elif leaf.P108:
+            label = leaf.P108.first()
+        else:
+            label = None
+        aliases = leaf.P90
+        if label and aliases and label in aliases:
+            aliases.remove(label)
         therapy = Therapy(
-            concept_identifier=concept_id
+            concept_id=concept_id,
+            src_name=SourceName.NCIT.value,
+            label=label,
         )
         db.add(therapy)
 
+        if leaf.P210:
+            other_id = OtherIdentifier(
+                concept_id=concept_id,
+                other_id=f"{NamespacePrefix.CASREGISTRY.value}:{leaf.P210.first()}"  # noqa F501
+            )
+            db.add(other_id)
         if leaf.P319:
             other_id = OtherIdentifier(
                 concept_id=concept_id,
-                other_id=""  # TODO
+                other_id=f"{NamespacePrefix.FDA.value}:{leaf.P319.first()}"
+            )
+            db.add(other_id)
+        if leaf.P320:
+            other_id = OtherIdentifier(
+                concept_id=concept_id,
+                other_id=f"{NamespacePrefix.ISO.value}:{leaf.P320.first()}"
             )
             db.add(other_id)
 
-    def _transform_tree(self, db: Session, onto: Ontology, node: ThingClass):
-        """Recursively travel ontology and load leaf nodes into DB"""
+        for a in aliases:
+            alias = Alias(alias=a, concept_id=concept_id)
+            db.add(alias)
+
+    def get_unique_nodes(self, node: ThingClass, nodes: set):
+        """Create set of unique leaf nodes"""
         children = node.descendants()
         if children:
             for child_node in children:
                 if child_node is not node:
-                    self._transform_tree(db, onto, child_node)
-        else:
-            # load node
-            pass
+                    nodes.add(child_node)
+                    self.get_unique_nodes(child_node, nodes)
+        return nodes
 
     def _add_meta(self, db: Session):
         meta_object = Meta(src_name=SourceName.NCIT.value,
@@ -85,16 +124,14 @@ class NCIt(Base):
                            data_url="https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/Thesaurus_20.09d.OWL.zip",)  # noqa F401
         db.add(meta_object)
 
-    def _transform_data(self, *args, **kwargs):
+    def _transform_data(self, db: Session, *args, **kwargs):
         """Get data from file and construct objects for loading"""
-        ncit = owl.get_ontology(self._data_src)
+        ncit = owl.get_ontology(self._data_src.absolute().as_uri())
         ncit.load()
-        pharm_subst = ncit.C1909
-        db: Session = SessionLocal()
         self._add_meta(db)
-        self._transform_tree(db, ncit, pharm_subst)
-        db.commit()
-        db.close()
+        nodes = self.get_unique_nodes(ncit.C1909, set())
+        for node in nodes:
+            self._load_data(db, node)
 
     def _extract_data(self, *args, **kwargs):
         """Get NCIt source file"""
