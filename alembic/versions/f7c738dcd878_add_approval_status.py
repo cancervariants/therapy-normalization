@@ -23,10 +23,6 @@ def upgrade():
     with op.batch_alter_table('therapies', schema=None) as batch_op:
         batch_op.add_column(sa.Column('approval_status',
                                       sa.String(), nullable=True))
-        batch_op.create_index('lower_therapies_c_id',
-                              [sa.text('lower(concept_id)')], unique=False)
-        batch_op.create_index('lower_therapies_label',
-                              [sa.text('lower(label)')], unique=False)
         batch_op.drop_column('withdrawn_flag')
         batch_op.drop_column('max_phase')
 
@@ -38,6 +34,4 @@ def downgrade():
                                       sa.INTEGER(), nullable=True))
         batch_op.add_column(sa.Column('withdrawn_flag',
                                       sa.BOOLEAN(), nullable=True))
-        batch_op.drop_index('lower_therapies_label')
-        batch_op.drop_index('lower_therapies_c_id')
         batch_op.drop_column('approval_status')

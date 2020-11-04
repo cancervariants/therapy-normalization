@@ -27,6 +27,14 @@ class Therapy(BaseModel):
                 prop.pop('title', None)
 
 
+class ApprovalStatus(str, Enum):
+    """Define string constraints for approval status attribute."""
+
+    WITHDRAWN = "withdrawn"
+    APPROVED = "approved"
+    INVESTIGATIONAL = "investigational"
+
+
 class PhaseEnum(IntEnum):
     """An enumerated drug development phase type."""
 
@@ -40,7 +48,7 @@ class PhaseEnum(IntEnum):
 class Drug(Therapy):
     """A pharmacologic substance used to treat a medical condition."""
 
-    approval_status: Optional[str]
+    approval_status: Optional[ApprovalStatus]
     trade_name: Optional[List[str]]
     label: Optional[str]
 
