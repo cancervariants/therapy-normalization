@@ -87,8 +87,7 @@ def fetch_records(session: Session,
         params = {
             'concept_identifier': concept_id,
             'label': therapy.label,
-            'max_phase': therapy.max_phase,
-            'withdrawn': therapy.withdrawn_flag,
+            'approval_status': therapy.approval_status,
             'other_identifiers': other_identifiers,
             'aliases': aliases if aliases != [None] else [],
             'trade_name': trade_name if trade_name != [None] else []
@@ -166,6 +165,7 @@ def response_keyed(query: str, sources: List[str], session: Session):
     def id_after_namespace_match(q: str) -> bool:
         id_after_namespaces = [c_id.value for c_id in
                                SourceIDAfterNamespace.__members__.values()]
+        id_after_namespaces = list(filter(None, id_after_namespaces))
         return len(list(filter(lambda p: q.startswith(p),
                                id_after_namespaces))) == 1
 

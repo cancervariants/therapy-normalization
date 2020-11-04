@@ -26,6 +26,8 @@ alembic = "*"
 cython = "*"
 owlready2 = "*"
 pronto = "*"
+lxml = "*"
+matplotlib = "*"
 
 [requires]
 python_version = "3.8"
