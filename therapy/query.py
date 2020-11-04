@@ -149,7 +149,6 @@ def response_keyed(query: str, sources: List[str], session: Session):
             source: None for source in sources
         }
     }
-    print(resp)
 
     if query == '':
         resp = fill_no_matches(session, resp)
