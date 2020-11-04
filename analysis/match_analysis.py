@@ -11,8 +11,14 @@ def __main__():
             writer.writerow(
                 ['Label', 'Wikidata Match', 'ChEMBL Match', 'DrugBank Match'])
             for line in f:
-                name = line.strip().split('\t')[0]
-                resp = query.normalize(name, keyed=True)
+                line_spl = line.strip().split('\t')
+                name = line_spl[0]
+                if len(line_spl) > 1:
+                    concept_id = line_spl[1]
+                    resp = query.normalize(concept_id, keyed=True)
+                else:
+                    resp = query.normalize(name, keyed=True)
+                # resp = query.normalize(name, keyed=True)
 
                 wikidata_match = \
                     resp['source_matches']['Wikidata']['match_type']
