@@ -115,7 +115,8 @@ class SourceIDAfterNamespace(Enum):
     WIKIDATA = "Q"
     CHEMBL = "CHEMBL"
     DRUGBANK = "DB"
-    CASREGISTRY = ""
+    NCIT = "C"
+    CASREGISTRY = ""  # do we need these for sources that we don't query?
     PUBCHEMCOMPOUND = ""
     PUBCHEMSUBSTANCE = ""
     RXNORM = ""
