@@ -8,7 +8,7 @@ from therapy import query
 def ncit():
     """Build NCIt test fixture"""
     class QueryGetter:
-        def normalize(self, query_str, incl='chembl'):
+        def normalize(self, query_str, incl='ncit'):
             resp = query.normalize(query_str, keyed=True, incl=incl)
             return resp['source_matches']['NCIt']
 
@@ -32,13 +32,13 @@ def voglibose():
 
 @pytest.fixture(scope='module')
 def apricoxib():
-    """Create aprocoxib drug fixture"""
+    """Create apricoxib drug fixture"""
     params = {
         'label': 'Apricoxib',
-        'concept_identifier': 'C74021',
+        'concept_identifier': 'ncit:C74021',
         'aliases': ['APRICOXIB', 'COX-2 Inhibitor TG01', 'CS-706', 'R-109339',
                     'TG01', 'TP2001'],
-        'other_identifiers': ['chemidplus:197904-84-0', 'fda:5x5HB3Vz3Z'],
+        'other_identifiers': ['chemidplus:197904-84-0', 'fda:5X5HB3VZ3Z'],
     }
     return Drug(**params)
 
@@ -113,10 +113,10 @@ def test_alias_voglibose(voglibose, ncit):
     """Test that alias term normalizes to correct drug concept as an
     ALIAS match.
     """
-    normalizer_response = ncit.normalize('VOGLIBOSE')
+    normalizer_response = ncit.normalize('BASEN')
     assert normalizer_response['match_type'] == MatchType.ALIAS
 
-    normalizer_response = ncit.normalize('A0-128')
+    normalizer_response = ncit.normalize('AO-128')
     assert normalizer_response['match_type'] ==\
            MatchType.ALIAS
 
@@ -137,94 +137,94 @@ def test_case_no_match(ncit):
     assert len(normalizer_response['records']) == 0
 
 
-def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, ncit):
-    """Test that interferon alfacon-1 drug normalizes to correct drug concept
+def test_concept_id_apricoxib(apricoxib, ncit):
+    """Test that apricoxib drug normalizes to correct drug concept
     as a CONCEPT_ID match.
     """
-    normalizer_response = ncit.normalize('ncit:Q15353101')
+    normalizer_response = ncit.normalize('ncit:C74021')
     assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == interferon_alfacon_1.label
+    assert normalized_drug.label == apricoxib.label
     assert normalized_drug.concept_identifier ==\
-           interferon_alfacon_1.concept_identifier
-    assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
+           apricoxib.concept_identifier
+    assert set(normalized_drug.aliases) == set(apricoxib.aliases)
     assert set(normalized_drug.other_identifiers) == \
-           set(interferon_alfacon_1.other_identifiers)
+           set(apricoxib.other_identifiers)
     assert normalized_drug.approval_status == \
-           interferon_alfacon_1.approval_status
+           apricoxib.approval_status
 
-    normalizer_response = ncit.normalize('ncit:Q15353101')
+    normalizer_response = ncit.normalize('NCIt:C74021')
     assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == interferon_alfacon_1.label
+    assert normalized_drug.label == apricoxib.label
     assert normalized_drug.concept_identifier ==\
-           interferon_alfacon_1.concept_identifier
-    assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
+           apricoxib.concept_identifier
+    assert set(normalized_drug.aliases) == set(apricoxib.aliases)
     assert set(normalized_drug.other_identifiers) == \
-           set(interferon_alfacon_1.other_identifiers)
+           set(apricoxib.other_identifiers)
     assert normalized_drug.approval_status == \
-           interferon_alfacon_1.approval_status
+           apricoxib.approval_status
 
-    normalizer_response = ncit.normalize('ncit:q15353101')
+    normalizer_response = ncit.normalize('ncit:c74021')
     assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == interferon_alfacon_1.label
+    assert normalized_drug.label == apricoxib.label
     assert normalized_drug.concept_identifier ==\
-           interferon_alfacon_1.concept_identifier
-    assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
+           apricoxib.concept_identifier
+    assert set(normalized_drug.aliases) == set(apricoxib.aliases)
     assert set(normalized_drug.other_identifiers) == \
-           set(interferon_alfacon_1.other_identifiers)
+           set(apricoxib.other_identifiers)
     assert normalized_drug.approval_status == \
-           interferon_alfacon_1.approval_status
+           apricoxib.approval_status
 
-    normalizer_response = ncit.normalize('Q15353101')
+    normalizer_response = ncit.normalize('C74021')
     assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == interferon_alfacon_1.label
+    assert normalized_drug.label == apricoxib.label
     assert normalized_drug.concept_identifier ==\
-           interferon_alfacon_1.concept_identifier
-    assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
+           apricoxib.concept_identifier
+    assert set(normalized_drug.aliases) == set(apricoxib.aliases)
     assert set(normalized_drug.other_identifiers) == \
-           set(interferon_alfacon_1.other_identifiers)
+           set(apricoxib.other_identifiers)
     assert normalized_drug.approval_status == \
-           interferon_alfacon_1.approval_status
+           apricoxib.approval_status
 
-    normalizer_response = ncit.normalize('q15353101')
+    normalizer_response = ncit.normalize('C74021')
     assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == interferon_alfacon_1.label
+    assert normalized_drug.label == apricoxib.label
     assert normalized_drug.concept_identifier == \
-           interferon_alfacon_1.concept_identifier
-    assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
+           apricoxib.concept_identifier
+    assert set(normalized_drug.aliases) == set(apricoxib.aliases)
     assert set(normalized_drug.other_identifiers) == \
-           set(interferon_alfacon_1.other_identifiers)
+           set(apricoxib.other_identifiers)
     assert normalized_drug.approval_status == \
-           interferon_alfacon_1.approval_status
+           apricoxib.approval_status
 
 
-def test_primary_label_interferon_alfacon_1(interferon_alfacon_1, ncit):
-    """Test that Interferon alfacon-1 drug normalizes to correct drug
+def test_primary_label_apricoxib(apricoxib, ncit):
+    """Test that apricoxib drug normalizes to correct drug
     concept as a PRIMARY_LABEL match.
     """
-    normalizer_response = ncit.normalize('Interferon alfacon-1')
+    normalizer_response = ncit.normalize('Apricoxib')
     assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == interferon_alfacon_1.label
+    assert normalized_drug.label == apricoxib.label
     assert normalized_drug.concept_identifier == \
-           interferon_alfacon_1.concept_identifier
-    assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
+           apricoxib.concept_identifier
+    assert set(normalized_drug.aliases) == set(apricoxib.aliases)
     assert set(normalized_drug.other_identifiers) ==\
-           set(interferon_alfacon_1.other_identifiers)
+           set(apricoxib.other_identifiers)
     assert normalized_drug.approval_status == \
-           interferon_alfacon_1.approval_status
+           apricoxib.approval_status
 
-    normalizer_response = ncit.normalize('Interferon Alfacon-1')
+    normalizer_response = ncit.normalize('APRICOXIB')
     assert normalizer_response['match_type'] ==\
            MatchType.PRIMARY_LABEL
 
