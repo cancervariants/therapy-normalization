@@ -4,7 +4,8 @@ from therapy import PROJECT_ROOT, database, schemas
 from therapy.database import Base as B
 from therapy.database import SessionLocal
 import json
-from therapy.schemas import Drug, SourceName, NamespacePrefix
+from therapy.schemas import Drug, SourceName, NamespacePrefix, \
+    SourceIDAfterNamespace
 import logging
 from sqlalchemy.orm import Session
 from therapy.models import Therapy, Alias, OtherIdentifier, Meta
@@ -86,8 +87,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                 else:
                     label = 'NULL'
                 drug = schemas.Drug(label=label,
-                                    max_phase=None,
-                                    withdrawn=None,
+                                    approval_status=None,
                                     trade_name=[],
                                     aliases=[],
                                     concept_identifier=concept_id,
@@ -105,7 +105,12 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
             for key in IDENTIFIER_PREFIXES.keys():
                 if key in record.keys():
                     other_id = record[key]
-                    fmted_other_id = f"{IDENTIFIER_PREFIXES[key]}:{other_id}"
+                    if key != 'chembl':
+                        fmted_other_id = \
+                            f"{IDENTIFIER_PREFIXES[key]}:{SourceIDAfterNamespace[f'{key.upper()}'].value}{other_id}"  # noqa E501
+                    else:
+                        fmted_other_id = \
+                            f"{IDENTIFIER_PREFIXES[key]}:{other_id}"
                     if (concept_id, fmted_other_id) not in \
                             self._other_id_pairs:
                         self._other_id_pairs.add((concept_id, fmted_other_id))
@@ -145,8 +150,7 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         """Load an individual therapy row."""
         therapy = Therapy(concept_id=concept_id,
                           label=drug.label,
-                          max_phase=drug.max_phase,
-                          withdrawn_flag=drug.withdrawn,
+                          approval_status=drug.approval_status,
                           src_name=SourceName.WIKIDATA.value)
         db.add(therapy)
 

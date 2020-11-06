@@ -5,7 +5,7 @@ from ftplib import FTP
 import logging
 import tarfile  # noqa: F401
 from therapy import database, models  # noqa: F401
-from therapy.schemas import SourceName, NamespacePrefix
+from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
 from therapy.database import Base as B, engine, SessionLocal  # noqa: F401
 from sqlalchemy import create_engine, event  # noqa: F401
 
@@ -49,13 +49,19 @@ class ChEMBL(Base):
 
         insert_therapy = f"""
             INSERT INTO therapies(
-                concept_id, label, max_phase, withdrawn_flag, src_name
+                concept_id, label, approval_status, src_name
             )
             SELECT DISTINCT
                 '{NamespacePrefix.CHEMBL.value}:'||molecule_dictionary.chembl_id,
                 molecule_dictionary.pref_name,
-                molecule_dictionary.max_phase,
-                molecule_dictionary.withdrawn_flag,
+                CASE
+                    WHEN molecule_dictionary.withdrawn_flag
+                        THEN '{ApprovalStatus.WITHDRAWN.value}'
+                    WHEN molecule_dictionary.max_phase == 4
+                        THEN '{ApprovalStatus.APPROVED.value}'
+                    ELSE
+                        '{ApprovalStatus.INVESTIGATIONAL.value}'
+                END,
                 '{SourceName.CHEMBL.value}'
             FROM chembldb.molecule_dictionary;
         """

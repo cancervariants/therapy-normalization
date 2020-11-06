@@ -27,6 +27,14 @@ class Therapy(BaseModel):
                 prop.pop('title', None)
 
 
+class ApprovalStatus(str, Enum):
+    """Define string constraints for approval status attribute."""
+
+    WITHDRAWN = "withdrawn"
+    APPROVED = "approved"
+    INVESTIGATIONAL = "investigational"
+
+
 class PhaseEnum(IntEnum):
     """An enumerated drug development phase type."""
 
@@ -40,8 +48,7 @@ class PhaseEnum(IntEnum):
 class Drug(Therapy):
     """A pharmacologic substance used to treat a medical condition."""
 
-    max_phase: Optional[PhaseEnum]
-    withdrawn: Optional[bool]
+    approval_status: Optional[ApprovalStatus]
     trade_name: Optional[List[str]]
     label: Optional[str]
 
@@ -74,8 +81,6 @@ class Drug(Therapy):
                     'Platinol-Aq'
                 ],
                 'other_identifiers': [],
-                'max_phase': 4,
-                'withdrawn': 0,
                 'trade_name': [
                     'PLATINOL',
                     'PLATINOL-AQ',
@@ -108,6 +113,7 @@ class SourceName(Enum):
 
     WIKIDATA = "Wikidata"
     CHEMBL = "ChEMBL"
+    DRUGBANK = "DrugBank"
 
 
 class SourceIDAfterNamespace(Enum):
@@ -115,6 +121,11 @@ class SourceIDAfterNamespace(Enum):
 
     WIKIDATA = "Q"
     CHEMBL = "CHEMBL"
+    DRUGBANK = "DB"
+    CASREGISTRY = ""
+    PUBCHEMCOMPOUND = ""
+    PUBCHEMSUBSTANCE = ""
+    RXNORM = ""
 
 
 class NamespacePrefix(Enum):
