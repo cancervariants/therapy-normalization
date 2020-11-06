@@ -5,7 +5,7 @@ from therapy import PROJECT_ROOT
 import logging
 from therapy import database, models, schemas  # noqa: F401
 from therapy.models import Meta, Therapy, Alias, OtherIdentifier, TradeName
-from therapy.schemas import SourceName, NamespacePrefix, Drug
+from therapy.schemas import SourceName, NamespacePrefix, Drug, ApprovalStatus
 from therapy.database import Base as B, engine, SessionLocal  # noqa: F401
 from therapy.etl.base import IDENTIFIER_PREFIXES
 from sqlalchemy import create_engine, event  # noqa: F401
@@ -40,7 +40,6 @@ class DrugBank(Base):
             params = {
                 'concept_id': None,
                 'label': None,
-                'src_name': SourceName.DRUGBANK,
                 'approval_status': None,
                 'aliases': [],
                 'other_identifiers': [],
@@ -83,11 +82,14 @@ class DrugBank(Base):
                     for group in element:
                         group_type.append(group.text)
                     if "withdrawn" in group_type:
-                        params['approval_status'] = "withdrawn"
+                        params['approval_status'] = \
+                            ApprovalStatus.WITHDRAWN.value
                     elif "approved" in group_type:
-                        params['approval_status'] = "approved"
+                        params['approval_status'] = \
+                            ApprovalStatus.APPROVED.value
                     elif "investigational" in group_type:
-                        params['approval_status'] = "investigational"
+                        params['approval_status'] = \
+                            ApprovalStatus.INVESTIGATIONAL.value
 
             self._load_drug(params, db)
 
