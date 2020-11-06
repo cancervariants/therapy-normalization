@@ -8,46 +8,14 @@ from therapy.database import SessionLocal, engine
 from sqlalchemy.orm import Session
 import owlready2 as owl
 from owlready2.entity import ThingClass
+from typing import Set
 
 
 class NCIt(Base):
     """Core NCIt ETL class
-    Notes:
-    * <NHCO> = NCIT concept ID
-    * <A8> = Concept Is In Subset
-    * <P90> = synonym (contains string, term type, source, optional source
-        code)
-    * <P97> = definition
-    * <P106> = semantic type, a property that represents a description of the
-        sort of thing or category to which a concept belongs
-    * <P107> = display name
-    * <P108> = preferred name
-    * <P207> = NLM concept ID
-    * <P208> = concept ID for concepts that are in NCIt but not NLM UMLS (???)
-    * <P325> =
-    * <P378> =
-    * <P383> =
-    * <P384> =
-    * <C1909> = Pharmacologic Substance
-
-
-    concept id:
-        NHC0
-    label:
-        P107?
-        P108?
-    aliases:
-        P90 -- not all?
-
-    other identifiers:
-        NLM: P207
-        uncl.: P208 ("for concepts in NCIT but not NLM"?)
-        CAS: P210
-        ISO: P320
-        FDA: P319
-
-    (no max phase or withdrawn)
-
+    Extracting both:
+     * NCIt classes with semantic_type "Pharmacologic Substance"
+     * NCIt classes that are subclasses of C1909 (Pharmacologic Substance)
     """
 
     def __init__(self, *args, **kwargs):
@@ -101,15 +69,48 @@ class NCIt(Base):
             alias = Alias(alias=a, concept_id=concept_id)
             db.add(alias)
 
-    def get_unique_nodes(self, node: ThingClass, nodes: set):
-        """Create set of unique leaf nodes"""
+    def get_desc_nodes(self, node: ThingClass,
+                       uq_nodes: Set[ThingClass]) -> Set[ThingClass]:
+        """Create set of unique subclasses of node parameter.
+        Originally called on C1909, Pharmacologic Substance.
+        """
         children = node.descendants()
         if children:
             for child_node in children:
                 if child_node is not node:
-                    nodes.add(child_node)
-                    self.get_unique_nodes(child_node, nodes)
-        return nodes
+                    uq_nodes.add(child_node)
+                    self.get_desc_nodes(child_node, uq_nodes)
+        return uq_nodes
+
+    def get_typed_nodes(self, uq_nodes: Set[ThingClass],
+                        ncit: owl.namespace.Ontology) -> Set[ThingClass]:
+        """Get all nodes with semantic_type Pharmacologic Substance"""
+        graph = owl.default_world.as_rdflib_graph()
+        query_str = '''SELECT ?x WHERE
+        {
+            ?x <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P106>
+            "Pharmacologic Substance"
+        }'''
+        typed_results = set(graph.query(query_str))
+
+        retired_query_str = '''SELECT ?x WHERE {
+            ?x <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P310>
+            "Retired_Concept"
+        }
+        '''
+
+        retired_results = set(graph.query(retired_query_str))
+
+        typed_results = typed_results - retired_results
+
+        def parse_uri(uri):
+            uri.toPython().split('#')[1]
+
+        for result in typed_results:
+            # parse result as URI and get ThingClass object back from NCIt
+            class_object = ncit[result[0].toPython().split('#')[1]]
+            uq_nodes.add(class_object)
+        return uq_nodes
 
     def _add_meta(self, db: Session):
         meta_object = Meta(src_name=SourceName.NCIT.value,
@@ -124,8 +125,10 @@ class NCIt(Base):
         ncit = owl.get_ontology(self._data_src.absolute().as_uri())
         ncit.load()
         self._add_meta(db)
-        nodes = self.get_unique_nodes(ncit.C1909, set())
-        for node in nodes:
+        uq_nodes = set()
+        uq_nodes = self.get_desc_nodes(ncit.C1909, uq_nodes)
+        uq_nodes = self.get_typed_nodes(uq_nodes, ncit)
+        for node in uq_nodes:
             self._load_data(db, node)
 
     def _extract_data(self, *args, **kwargs):
