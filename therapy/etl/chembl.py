@@ -8,6 +8,7 @@ from therapy import database, models  # noqa: F401
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
 from therapy.database import Base as B, engine, SessionLocal  # noqa: F401
 from sqlalchemy import create_engine, event  # noqa: F401
+import json
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -47,51 +48,119 @@ class ChEMBL(Base):
             cursor.close()
         engine.connect()
 
-        insert_therapy = f"""
-            INSERT INTO therapies(
-                concept_id, label, approval_status, src_name
-            )
-            SELECT DISTINCT
-                '{NamespacePrefix.CHEMBL.value}:'||molecule_dictionary.chembl_id,
-                molecule_dictionary.pref_name,
+        engine.execute("DROP TABLE test;")
+        engine.execute("DROP TABLE DictionarySynonyms;")
+        engine.execute("DROP TABLE TradeNames;")
+
+        create_dictionary_synonyms_view = f"""
+            CREATE TABLE DictionarySynonyms AS
+            SELECT
+                md.molregno,
+                '{NamespacePrefix.CHEMBL.value}:'||md.chembl_id as chembl_id,
+                md.pref_name,
+                md.max_phase,
+                md.withdrawn_flag,
+                REPLACE(group_concat(
+                    DISTINCT ms.synonyms), ',', '||') as synonyms
+            FROM chembldb.molecule_dictionary md
+            LEFT JOIN chembldb.molecule_synonyms ms USING(molregno)
+            GROUP BY md.molregno
+            UNION ALL
+            SELECT
+                md.molregno,
+                '{NamespacePrefix.CHEMBL.value}:'||md.chembl_id as chembl_id,
+                md.pref_name,
+                md.max_phase,
+                md.withdrawn_flag,
+                REPLACE(group_concat(
+                    DISTINCT ms.synonyms), ',', '||') as synonyms
+            FROM chembldb.molecule_synonyms ms
+            LEFT JOIN chembldb.molecule_dictionary md USING(molregno)
+            WHERE md.molregno IS NULL
+            GROUP BY md.molregno
+        """
+        engine.execute(create_dictionary_synonyms_view)
+
+        create_trade_names_view = """
+            CREATE TABLE TradeNames AS
+            SELECT
+                f.molregno,
+                f.product_id,
+                REPLACE(group_concat(
+                    DISTINCT p.trade_name), ',', '||') as trade_names
+            FROM chembldb.formulations f
+            LEFT JOIN chembldb.products p
+                ON f.product_id = p.product_id
+            GROUP BY f.molregno;
+        """
+        engine.execute(create_trade_names_view)
+
+        create_test_table = """
+                    CREATE TABLE test(concept_id, label, approval_status,
+                                      src_name, trade_names, aliases);
+                """
+        engine.execute(create_test_table)
+
+        insert_test = f"""
+            INSERT INTO test(concept_id, label, approval_status, src_name,
+                             trade_names, aliases)
+            SELECT
+                ds.chembl_id,
+                ds.pref_name,
                 CASE
-                    WHEN molecule_dictionary.withdrawn_flag
+                    WHEN ds.withdrawn_flag
                         THEN '{ApprovalStatus.WITHDRAWN.value}'
-                    WHEN molecule_dictionary.max_phase == 4
+                    WHEN ds.max_phase == 4
                         THEN '{ApprovalStatus.APPROVED.value}'
+                    WHEN ds.max_phase == 0
+                        THEN NULL
                     ELSE
                         '{ApprovalStatus.INVESTIGATIONAL.value}'
                 END,
-                '{SourceName.CHEMBL.value}'
-            FROM chembldb.molecule_dictionary;
+                '{SourceName.CHEMBL.value}',
+                t.trade_names,
+                ds.synonyms
+            FROM DictionarySynonyms ds
+            LEFT JOIN TradeNames t USING(molregno)
+            GROUP BY ds.molregno
+            UNION ALL
+            SELECT
+                ds.chembl_id,
+                ds.pref_name,
+                CASE
+                    WHEN ds.withdrawn_flag
+                        THEN '{ApprovalStatus.WITHDRAWN.value}'
+                    WHEN ds.max_phase == 4
+                        THEN '{ApprovalStatus.APPROVED.value}'
+                    WHEN ds.max_phase == 0
+                        THEN NULL
+                    ELSE
+                        '{ApprovalStatus.INVESTIGATIONAL.value}'
+                END,
+                '{SourceName.CHEMBL.value}',
+                t.trade_names,
+                ds.synonyms
+            FROM TradeNames t
+            LEFT JOIN DictionarySynonyms ds USING(molregno)
+            WHERE ds.molregno IS NULL
+            GROUP BY ds.molregno;
         """
-        engine.execute(insert_therapy)
+        engine.execute(insert_test)
 
-        insert_alias = f"""
-            INSERT INTO aliases(alias, concept_id)
-            SELECT DISTINCT
-                synonyms,
-                '{NamespacePrefix.CHEMBL.value}:'||chembl_id
-            FROM chembldb.molecule_dictionary
-            LEFT JOIN chembldb.molecule_synonyms
-                ON molecule_dictionary.molregno=molecule_synonyms.molregno
-            WHERE molecule_synonyms.synonyms NOT NULL;
+        a = """
+            SELECT
+                concept_id,
+                label,
+                approval_status,
+                src_name,
+                trade_names,
+                aliases
+            FROM test;
         """
-        engine.execute(insert_alias)
 
-        insert_trade_name = f"""
-            INSERT INTO trade_names(trade_name, concept_id)
-            SELECT DISTINCT
-                products.trade_name,
-                '{NamespacePrefix.CHEMBL.value}:'||molecule_dictionary.chembl_id
-            FROM chembldb.molecule_dictionary
-            LEFT JOIN chembldb.formulations
-                ON molecule_dictionary.molregno=formulations.molregno
-            LEFT JOIN chembldb.products
-                ON formulations.product_id=products.product_id
-            WHERE products.trade_name NOT NULL;
-        """
-        engine.execute(insert_trade_name)
+        with open('data/chembl/chembl.json', 'w') as f:
+            b = [dict(x) for x in engine.execute(a).fetchall()]
+            f.write(json.dumps(b))
 
     def _load_data(self, *args, **kwargs):
         """Load the ChEMBL source into therapy.db."""
