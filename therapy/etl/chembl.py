@@ -1,4 +1,6 @@
 """This module defines the ChEMBL ETL methods."""
+import os
+
 from .base import Base
 from therapy import PROJECT_ROOT
 from ftplib import FTP
@@ -6,9 +8,8 @@ import logging
 import tarfile  # noqa: F401
 from therapy import database, models  # noqa: F401
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
-from therapy.database import Base as B, engine, SessionLocal  # noqa: F401
-from sqlalchemy import create_engine, event  # noqa: F401
 import json
+import sqlite3
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -32,28 +33,16 @@ class ChEMBL(Base):
             # tar = tarfile.open(chembl_archive)
             # tar.extractall()
             # tar.close()
+        conn = sqlite3.connect(chembl_db)
+        conn.row_factory = sqlite3.Row
+        self._conn = conn
+        self._cursor = conn.cursor()
         assert chembl_db.exists()
 
     def _transform_data(self, *args, **kwargs):
         """Transform the ChEMBL source."""
-        @event.listens_for(engine, "connect")
-        def connect(engine, rec):
-            copy_chembl_db = PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27.db'
-            attach_db = f"""
-                ATTACH DATABASE '{copy_chembl_db}' AS chembldb;
-            """
-            engine.execute(attach_db)
-            cursor = engine.cursor()
-            cursor.execute("PRAGMA foreign_keys=ON")
-            cursor.close()
-        engine.connect()
-
-        engine.execute("DROP TABLE test;")
-        engine.execute("DROP TABLE DictionarySynonyms;")
-        engine.execute("DROP TABLE TradeNames;")
-
-        create_dictionary_synonyms_view = f"""
-            CREATE TABLE DictionarySynonyms AS
+        create_dictionary_synonyms_table = f"""
+            CREATE TEMPORARY TABLE DictionarySynonyms AS
             SELECT
                 md.molregno,
                 '{NamespacePrefix.CHEMBL.value}:'||md.chembl_id as chembl_id,
@@ -62,8 +51,8 @@ class ChEMBL(Base):
                 md.withdrawn_flag,
                 REPLACE(group_concat(
                     DISTINCT ms.synonyms), ',', '||') as synonyms
-            FROM chembldb.molecule_dictionary md
-            LEFT JOIN chembldb.molecule_synonyms ms USING(molregno)
+            FROM molecule_dictionary md
+            LEFT JOIN molecule_synonyms ms USING(molregno)
             GROUP BY md.molregno
             UNION ALL
             SELECT
@@ -74,35 +63,35 @@ class ChEMBL(Base):
                 md.withdrawn_flag,
                 REPLACE(group_concat(
                     DISTINCT ms.synonyms), ',', '||') as synonyms
-            FROM chembldb.molecule_synonyms ms
-            LEFT JOIN chembldb.molecule_dictionary md USING(molregno)
+            FROM molecule_synonyms ms
+            LEFT JOIN molecule_dictionary md USING(molregno)
             WHERE md.molregno IS NULL
             GROUP BY md.molregno
         """
-        engine.execute(create_dictionary_synonyms_view)
+        self._cursor.execute(create_dictionary_synonyms_table)
 
-        create_trade_names_view = """
-            CREATE TABLE TradeNames AS
+        create_trade_names_table = """
+            CREATE TEMPORARY TABLE TradeNames AS
             SELECT
                 f.molregno,
                 f.product_id,
                 REPLACE(group_concat(
                     DISTINCT p.trade_name), ',', '||') as trade_names
-            FROM chembldb.formulations f
-            LEFT JOIN chembldb.products p
+            FROM formulations f
+            LEFT JOIN products p
                 ON f.product_id = p.product_id
             GROUP BY f.molregno;
         """
-        engine.execute(create_trade_names_view)
+        self._cursor.execute(create_trade_names_table)
 
-        create_test_table = """
-                    CREATE TABLE test(concept_id, label, approval_status,
-                                      src_name, trade_names, aliases);
-                """
-        engine.execute(create_test_table)
+        create_temp_table = """
+            CREATE TEMPORARY TABLE temp(concept_id, label, approval_status,
+                                        src_name, trade_names, aliases);
+        """
+        self._cursor.execute(create_temp_table)
 
         insert_test = f"""
-            INSERT INTO test(concept_id, label, approval_status, src_name,
+            INSERT INTO temp(concept_id, label, approval_status, src_name,
                              trade_names, aliases)
             SELECT
                 ds.chembl_id,
@@ -145,9 +134,11 @@ class ChEMBL(Base):
             WHERE ds.molregno IS NULL
             GROUP BY ds.molregno;
         """
-        engine.execute(insert_test)
+        self._cursor.execute(insert_test)
 
-        a = """
+    def _load_json(self):
+        """Load ChEMBL data into JSON file."""
+        chembl_data = """
             SELECT
                 concept_id,
                 label,
@@ -155,48 +146,62 @@ class ChEMBL(Base):
                 src_name,
                 trade_names,
                 aliases
-            FROM test;
+            FROM temp;
         """
+        with open('data/chembl/chembl_temp.json', 'w+') as temp:
+            result = [dict(row) for row in
+                      self._cursor.execute(chembl_data).fetchall()]
+            temp.write(json.dumps(result))
+            temp.seek(0)
 
-        with open('data/chembl/chembl.json', 'w') as f:
-            b = [dict(x) for x in engine.execute(a).fetchall()]
-            f.write(json.dumps(b))
+            records = json.load(temp)
+
+            records_list = []
+            with open('data/chembl/chembl.json', 'w') as f:
+                for record in records:
+                    if record['aliases']:
+                        record['aliases'] = record['aliases'].split("||")
+                    else:
+                        record['aliases'] = list()
+                    if record['trade_names']:
+                        record['trade_names'] = \
+                            record['trade_names'].split("||")
+                    else:
+                        record['trade_names'] = list()
+                    records_list.append(record)
+                f.write(json.dumps(records_list))
+            os.remove(temp.name)
+
+        self._cursor.execute("DROP TABLE temp;")
+        self._cursor.execute("DROP TABLE DictionarySynonyms;")
+        self._cursor.execute("DROP TABLE TradeNames;")
 
     def _load_data(self, *args, **kwargs):
         """Load the ChEMBL source into therapy.db."""
-        B.metadata.create_all(bind=engine)
-        self._get_db()
-        self._add_meta()
+        self._add_meta()  # TODO
         self._extract_data()
         self._transform_data()
-
-    def _get_db(self, *args, **kwargs):
-        """Create a new SQLAlchemy session that will be used in a single
-        request, and then close it once the request is finished.
-        """
-        db = SessionLocal()
-        try:
-            yield db
-        finally:
-            db.close()
+        self._load_json()
+        self._conn.commit()
+        self._conn.close()
 
     def _add_meta(self, *args, **kwargs):
         """Add ChEMBL metadata."""
-        insert_meta = f"""
-            INSERT INTO meta_data(src_name, data_license, data_license_url,
-                version, data_url)
-            SELECT
-                '{SourceName.CHEMBL.value}',
-                'CC BY-SA 3.0',
-                'https://creativecommons.org/licenses/by-sa/3.0/',
-                '27',
-                'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'
-            WHERE NOT EXISTS (
-                SELECT * FROM meta_data
-                WHERE src_name = '{SourceName.CHEMBL.value}'
-            );
-        """
-        engine.execute(insert_meta)
+        # insert_meta = f"""
+        #     INSERT INTO meta_data(src_name, data_license, data_license_url,
+        #         version, data_url)
+        #     SELECT
+        #         '{SourceName.CHEMBL.value}',
+        #         'CC BY-SA 3.0',
+        #         'https://creativecommons.org/licenses/by-sa/3.0/',
+        #         '27',
+        #         'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'
+        #     WHERE NOT EXISTS (
+        #         SELECT * FROM meta_data
+        #         WHERE src_name = '{SourceName.CHEMBL.value}'
+        #     );
+        # """
+        pass
 
     @staticmethod
     def _download_chembl_27(filepath):

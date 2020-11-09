@@ -52,7 +52,7 @@ def l745870():
         'label': 'L-745870',
         'concept_identifier': 'chembl:CHEMBL267014',
         'aliases': list(('L-745870',)),
-        'approval_status': 'investigational',
+        'approval_status': None,
         'other_identifiers': list(),
         'max_phase': 0,
         'trade_name': list()
