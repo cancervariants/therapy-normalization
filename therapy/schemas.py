@@ -124,10 +124,11 @@ class SourceIDAfterNamespace(Enum):
     CHEMBL = "CHEMBL"
     DRUGBANK = "DB"
     NCIT = "C"
-    CASREGISTRY = ""  # do we need these for sources that we don't query?
+    CASREGISTRY = ""
     PUBCHEMCOMPOUND = ""
     PUBCHEMSUBSTANCE = ""
     RXNORM = ""
+    UMLS = ""
 
 
 class NamespacePrefix(Enum):
@@ -143,6 +144,7 @@ class NamespacePrefix(Enum):
     NCIT = "ncit"
     FDA = "fda"
     ISO = "iso"
+    UMLS = "umls"
 
 
 class MetaResponse(BaseModel):

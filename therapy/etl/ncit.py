@@ -46,6 +46,12 @@ class NCIt(Base):
         )
         db.add(therapy)
 
+        if leaf.P207:
+            other_id = OtherIdentifier(
+                concept_id=concept_id,
+                other_id=f"{NamespacePrefix.UMLS.value}:{leaf.P207.first()}"
+            )
+            db.add(other_id)
         if leaf.P210:
             other_id = OtherIdentifier(
                 concept_id=concept_id,
