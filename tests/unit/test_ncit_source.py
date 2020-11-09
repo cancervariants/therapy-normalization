@@ -25,7 +25,8 @@ def voglibose():
         'aliases': ['3,4-Dideoxy-4-((2-Hydroxy-1-(Hydroxymethyl)Ethyl)Amino)-2-C-(Hydroxymethyl)-D-Epi-Inositol',  # noqa F401
                     'A-71100', 'AO-128', 'Basen',
                     'N-(1,3-Dihydroxy-2-Propyl)Valiolamine', 'VOGLIBOSE'],
-        'other_identifiers': ['chemidplus:83480-29-9', 'fda:S77P977AG8'],
+        'other_identifiers': ['chemidplus:83480-29-9', 'fda:S77P977AG8',
+                              'umls:C0532578'],
     }
     return Drug(**params)
 
@@ -38,7 +39,8 @@ def apricoxib():
         'concept_identifier': 'ncit:C74021',
         'aliases': ['APRICOXIB', 'COX-2 Inhibitor TG01', 'CS-706', 'R-109339',
                     'TG01', 'TP2001'],
-        'other_identifiers': ['chemidplus:197904-84-0', 'fda:5X5HB3VZ3Z'],
+        'other_identifiers': ['chemidplus:197904-84-0', 'fda:5X5HB3VZ3Z',
+                              'umls:C1737955'],
     }
     return Drug(**params)
 
