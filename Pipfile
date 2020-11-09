@@ -23,8 +23,11 @@ uvicorn = "*"
 sqlalchemy = "*"
 click = "*"
 alembic = "*"
+cython = "*"
+owlready2 = "*"
 lxml = "*"
 matplotlib = "*"
+rdflib = "*"
 
 [requires]
 python_version = "3.8"
