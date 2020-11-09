@@ -113,6 +113,7 @@ class SourceName(Enum):
 
     WIKIDATA = "Wikidata"
     CHEMBL = "ChEMBL"
+    NCIT = "NCIt"
     DRUGBANK = "DrugBank"
 
 
@@ -122,10 +123,12 @@ class SourceIDAfterNamespace(Enum):
     WIKIDATA = "Q"
     CHEMBL = "CHEMBL"
     DRUGBANK = "DB"
+    NCIT = "C"
     CASREGISTRY = ""
     PUBCHEMCOMPOUND = ""
     PUBCHEMSUBSTANCE = ""
     RXNORM = ""
+    UMLS = ""
 
 
 class NamespacePrefix(Enum):
@@ -138,6 +141,10 @@ class NamespacePrefix(Enum):
     RXNORM = "rxcui"
     DRUGBANK = "drugbank"
     WIKIDATA = "wikidata"
+    NCIT = "ncit"
+    FDA = "fda"
+    ISO = "iso"
+    UMLS = "umls"
 
 
 class MetaResponse(BaseModel):

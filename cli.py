@@ -1,6 +1,6 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
-from therapy.etl import ChEMBL, Wikidata, DrugBank
+from therapy.etl import ChEMBL, Wikidata, NCIt, DrugBank
 from therapy.database import Base, engine, SessionLocal
 from therapy import database, models, schemas  # noqa: F401
 from therapy.models import Therapy, Meta
@@ -38,6 +38,7 @@ class CLI:
         sources = {
             'chembl': ChEMBL,
             'wikidata': Wikidata,
+            'ncit': NCIt,
             'drugbank': DrugBank,
         }
 
