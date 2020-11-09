@@ -123,7 +123,7 @@ class NCIt(Base):
                            data_license="CC BY 4.0",
                            data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
                            version=self._version,
-                           data_url="https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/Thesaurus_20.09d.OWL.zip",)  # noqa F401
+                           data_url="https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/",)  # noqa F401
         db.add(meta_object)
 
     def _transform_data(self, db: Session, *args, **kwargs):
