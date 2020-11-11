@@ -1,13 +1,15 @@
 """This module defines the ChEMBL ETL methods."""
+import os
+
 from .base import Base
 from therapy import PROJECT_ROOT
 from ftplib import FTP
 import logging
 import tarfile  # noqa: F401
-from therapy import database, models  # noqa: F401
+from therapy import database  # noqa: F401
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
-from therapy.database import Base as B, engine, SessionLocal  # noqa: F401
-from sqlalchemy import create_engine, event  # noqa: F401
+import json
+import sqlite3
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -31,103 +33,188 @@ class ChEMBL(Base):
             # tar = tarfile.open(chembl_archive)
             # tar.extractall()
             # tar.close()
+        conn = sqlite3.connect(chembl_db)
+        conn.row_factory = sqlite3.Row
+        self._conn = conn
+        self._cursor = conn.cursor()
         assert chembl_db.exists()
 
     def _transform_data(self, *args, **kwargs):
         """Transform the ChEMBL source."""
-        @event.listens_for(engine, "connect")
-        def connect(engine, rec):
-            copy_chembl_db = PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27.db'
-            attach_db = f"""
-                ATTACH DATABASE '{copy_chembl_db}' AS chembldb;
-            """
-            engine.execute(attach_db)
-            cursor = engine.cursor()
-            cursor.execute("PRAGMA foreign_keys=ON")
-            cursor.close()
-        engine.connect()
+        create_dictionary_synonyms_table = f"""
+            CREATE TEMPORARY TABLE DictionarySynonyms AS
+            SELECT
+                md.molregno,
+                '{NamespacePrefix.CHEMBL.value}:'||md.chembl_id as chembl_id,
+                md.pref_name,
+                md.max_phase,
+                md.withdrawn_flag,
+                REPLACE(group_concat(
+                    DISTINCT ms.synonyms), ',', '||') as synonyms
+            FROM molecule_dictionary md
+            LEFT JOIN molecule_synonyms ms USING(molregno)
+            GROUP BY md.molregno
+            UNION ALL
+            SELECT
+                md.molregno,
+                '{NamespacePrefix.CHEMBL.value}:'||md.chembl_id as chembl_id,
+                md.pref_name,
+                md.max_phase,
+                md.withdrawn_flag,
+                REPLACE(group_concat(
+                    DISTINCT ms.synonyms), ',', '||') as synonyms
+            FROM molecule_synonyms ms
+            LEFT JOIN molecule_dictionary md USING(molregno)
+            WHERE md.molregno IS NULL
+            GROUP BY md.molregno
+        """
+        self._cursor.execute(create_dictionary_synonyms_table)
 
-        insert_therapy = f"""
-            INSERT INTO therapies(
-                concept_id, label, approval_status, src_name
-            )
-            SELECT DISTINCT
-                '{NamespacePrefix.CHEMBL.value}:'||molecule_dictionary.chembl_id,
-                molecule_dictionary.pref_name,
+        create_trade_names_table = """
+            CREATE TEMPORARY TABLE TradeNames AS
+            SELECT
+                f.molregno,
+                f.product_id,
+                REPLACE(group_concat(
+                    DISTINCT p.trade_name), ',', '||') as trade_names
+            FROM formulations f
+            LEFT JOIN products p
+                ON f.product_id = p.product_id
+            GROUP BY f.molregno;
+        """
+        self._cursor.execute(create_trade_names_table)
+
+        create_temp_table = """
+            CREATE TEMPORARY TABLE temp(concept_id, label, approval_status,
+                                        src_name, trade_names, aliases);
+        """
+        self._cursor.execute(create_temp_table)
+
+        insert_test = f"""
+            INSERT INTO temp(concept_id, label, approval_status, src_name,
+                             trade_names, aliases)
+            SELECT
+                ds.chembl_id,
+                ds.pref_name,
                 CASE
-                    WHEN molecule_dictionary.withdrawn_flag
+                    WHEN ds.withdrawn_flag
                         THEN '{ApprovalStatus.WITHDRAWN.value}'
-                    WHEN molecule_dictionary.max_phase == 4
+                    WHEN ds.max_phase == 4
                         THEN '{ApprovalStatus.APPROVED.value}'
+                    WHEN ds.max_phase == 0
+                        THEN NULL
                     ELSE
                         '{ApprovalStatus.INVESTIGATIONAL.value}'
                 END,
-                '{SourceName.CHEMBL.value}'
-            FROM chembldb.molecule_dictionary;
+                '{SourceName.CHEMBL.value}',
+                t.trade_names,
+                ds.synonyms
+            FROM DictionarySynonyms ds
+            LEFT JOIN TradeNames t USING(molregno)
+            GROUP BY ds.molregno
+            UNION ALL
+            SELECT
+                ds.chembl_id,
+                ds.pref_name,
+                CASE
+                    WHEN ds.withdrawn_flag
+                        THEN '{ApprovalStatus.WITHDRAWN.value}'
+                    WHEN ds.max_phase == 4
+                        THEN '{ApprovalStatus.APPROVED.value}'
+                    WHEN ds.max_phase == 0
+                        THEN NULL
+                    ELSE
+                        '{ApprovalStatus.INVESTIGATIONAL.value}'
+                END,
+                '{SourceName.CHEMBL.value}',
+                t.trade_names,
+                ds.synonyms
+            FROM TradeNames t
+            LEFT JOIN DictionarySynonyms ds USING(molregno)
+            WHERE ds.molregno IS NULL
+            GROUP BY ds.molregno;
         """
-        engine.execute(insert_therapy)
+        self._cursor.execute(insert_test)
 
-        insert_alias = f"""
-            INSERT INTO aliases(alias, concept_id)
-            SELECT DISTINCT
-                synonyms,
-                '{NamespacePrefix.CHEMBL.value}:'||chembl_id
-            FROM chembldb.molecule_dictionary
-            LEFT JOIN chembldb.molecule_synonyms
-                ON molecule_dictionary.molregno=molecule_synonyms.molregno
-            WHERE molecule_synonyms.synonyms NOT NULL;
+    def _load_json(self):
+        """Load ChEMBL data into JSON file."""
+        chembl_data = """
+            SELECT
+                concept_id,
+                label,
+                approval_status,
+                src_name,
+                trade_names,
+                aliases
+            FROM temp;
         """
-        engine.execute(insert_alias)
+        with open('data/chembl/chembl_temp.json', 'w+') as temp:
+            result = [dict(row) for row in
+                      self._cursor.execute(chembl_data).fetchall()]
+            temp.write(json.dumps(result))
+            temp.seek(0)
 
-        insert_trade_name = f"""
-            INSERT INTO trade_names(trade_name, concept_id)
-            SELECT DISTINCT
-                products.trade_name,
-                '{NamespacePrefix.CHEMBL.value}:'||molecule_dictionary.chembl_id
-            FROM chembldb.molecule_dictionary
-            LEFT JOIN chembldb.formulations
-                ON molecule_dictionary.molregno=formulations.molregno
-            LEFT JOIN chembldb.products
-                ON formulations.product_id=products.product_id
-            WHERE products.trade_name NOT NULL;
-        """
-        engine.execute(insert_trade_name)
+            records = json.load(temp)
+
+            records_list = []
+            with open('data/chembl/chembl.json', 'w') as f:
+                for record in records:
+                    if record['label']:
+                        label = {
+                            'label_and_type':
+                                f"{record['label'].lower()}##label",
+                            'concept_id': f"{record['concept_id'].lower()}"
+                        }
+                        records_list.append(label)
+                    if record['aliases']:
+                        record['aliases'] = record['aliases'].split("||")
+                        for alias in record['aliases']:
+                            alias = {
+                                'label_and_type': f"{alias.lower()}##alias",
+                                'concept_id': f"{record['concept_id'].lower()}"
+                            }
+                            records_list.append(alias)
+                    else:
+                        record['aliases'] = list()
+                    if record['trade_names']:
+                        record['trade_names'] = \
+                            record['trade_names'].split("||")
+                        for trade_name in record['trade_names']:
+                            trade_name = {
+                                'label_and_type':
+                                    f"{trade_name.lower()}##trade_name",
+                                'concept_id': f"{record['concept_id'].lower()}"
+                            }
+                            records_list.append(trade_name)
+                    else:
+                        record['trade_names'] = list()
+                    record['label_and_type'] = \
+                        f"{record['concept_id'].lower()}##identity"
+                    records_list.append(record)
+                f.write(json.dumps(records_list))
+            os.remove(temp.name)
+
+        self._cursor.execute("DROP TABLE temp;")
+        self._cursor.execute("DROP TABLE DictionarySynonyms;")
+        self._cursor.execute("DROP TABLE TradeNames;")
 
     def _load_data(self, *args, **kwargs):
         """Load the ChEMBL source into therapy.db."""
-        B.metadata.create_all(bind=engine)
-        self._get_db()
         self._add_meta()
         self._extract_data()
         self._transform_data()
-
-    def _get_db(self, *args, **kwargs):
-        """Create a new SQLAlchemy session that will be used in a single
-        request, and then close it once the request is finished.
-        """
-        db = SessionLocal()
-        try:
-            yield db
-        finally:
-            db.close()
+        self._load_json()
+        self._conn.commit()
+        self._conn.close()
 
     def _add_meta(self, *args, **kwargs):
         """Add ChEMBL metadata."""
-        insert_meta = f"""
-            INSERT INTO meta_data(src_name, data_license, data_license_url,
-                version, data_url)
-            SELECT
-                '{SourceName.CHEMBL.value}',
-                'CC BY-SA 3.0',
-                'https://creativecommons.org/licenses/by-sa/3.0/',
-                '27',
-                'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'
-            WHERE NOT EXISTS (
-                SELECT * FROM meta_data
-                WHERE src_name = '{SourceName.CHEMBL.value}'
-            );
-        """
-        engine.execute(insert_meta)
+        # TODO: Add to MetaData table
+        src_name = SourceName.CHEMBL.value  # noqa: F841
+        data_license = 'CC BY-SA 3.0'  # noqa: F841
+        data_license_url = 'https://creativecommons.org/licenses/by-sa/3.0/'  # noqa: F841, E501
+        version = '27'  # noqa: F841
+        data_url = 'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501, F841
 
     @staticmethod
     def _download_chembl_27(filepath):
