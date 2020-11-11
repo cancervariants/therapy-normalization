@@ -1,7 +1,7 @@
 """ETL methods for NCIt source"""
 from .base import Base
 from therapy import PROJECT_ROOT
-from therapy.models import Meta, Therapy, OtherIdentifier, Alias
+from therapy.models import Meta, Therapy, OtherIdentifier
 from therapy.schemas import SourceName, NamespacePrefix
 from therapy.database import Base as B
 from therapy.database import SessionLocal, engine
@@ -111,8 +111,7 @@ class NCIt(Base):
                 label = node.P108.first()
             else:
                 label = None
-            aliases = [Alias()]
-            node.P90
+            aliases = node.P90
             if label and aliases and label in aliases:
                 aliases.remove(label)
 
