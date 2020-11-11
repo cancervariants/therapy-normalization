@@ -6,7 +6,7 @@ from therapy import PROJECT_ROOT
 from ftplib import FTP
 import logging
 import tarfile  # noqa: F401
-from therapy import database, models  # noqa: F401
+from therapy import database  # noqa: F401
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
 import json
 import sqlite3
@@ -159,15 +159,37 @@ class ChEMBL(Base):
             records_list = []
             with open('data/chembl/chembl.json', 'w') as f:
                 for record in records:
+                    if record['label']:
+                        label = {
+                            'label_and_type':
+                                f"{record['label'].lower()}##label",
+                            'concept_id': f"{record['concept_id'].lower()}"
+                        }
+                        records_list.append(label)
                     if record['aliases']:
                         record['aliases'] = record['aliases'].split("||")
+                        for alias in record['aliases']:
+                            alias = {
+                                'label_and_type': f"{alias.lower()}##alias",
+                                'concept_id': f"{record['concept_id'].lower()}"
+                            }
+                            records_list.append(alias)
                     else:
                         record['aliases'] = list()
                     if record['trade_names']:
                         record['trade_names'] = \
                             record['trade_names'].split("||")
+                        for trade_name in record['trade_names']:
+                            trade_name = {
+                                'label_and_type':
+                                    f"{trade_name.lower()}##trade_name",
+                                'concept_id': f"{record['concept_id'].lower()}"
+                            }
+                            records_list.append(trade_name)
                     else:
                         record['trade_names'] = list()
+                    record['label_and_type'] = \
+                        f"{record['concept_id'].lower()}##identity"
                     records_list.append(record)
                 f.write(json.dumps(records_list))
             os.remove(temp.name)
@@ -178,7 +200,7 @@ class ChEMBL(Base):
 
     def _load_data(self, *args, **kwargs):
         """Load the ChEMBL source into therapy.db."""
-        self._add_meta()  # TODO
+        self._add_meta()
         self._extract_data()
         self._transform_data()
         self._load_json()
@@ -187,21 +209,12 @@ class ChEMBL(Base):
 
     def _add_meta(self, *args, **kwargs):
         """Add ChEMBL metadata."""
-        # insert_meta = f"""
-        #     INSERT INTO meta_data(src_name, data_license, data_license_url,
-        #         version, data_url)
-        #     SELECT
-        #         '{SourceName.CHEMBL.value}',
-        #         'CC BY-SA 3.0',
-        #         'https://creativecommons.org/licenses/by-sa/3.0/',
-        #         '27',
-        #         'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'
-        #     WHERE NOT EXISTS (
-        #         SELECT * FROM meta_data
-        #         WHERE src_name = '{SourceName.CHEMBL.value}'
-        #     );
-        # """
-        pass
+        # TODO: Add to MetaData table
+        src_name = SourceName.CHEMBL.value  # noqa: F841
+        data_license = 'CC BY-SA 3.0'  # noqa: F841
+        data_license_url = 'https://creativecommons.org/licenses/by-sa/3.0/'  # noqa: F841, E501
+        version = '27'  # noqa: F841
+        data_url = 'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501, F841
 
     @staticmethod
     def _download_chembl_27(filepath):
