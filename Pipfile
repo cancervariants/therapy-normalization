@@ -20,14 +20,14 @@ civicpy = "*"
 thera-py = {editable = true, path = "."}
 fastapi = "*"
 uvicorn = "*"
-sqlalchemy = "*"
 click = "*"
 alembic = "*"
 cython = "*"
 owlready2 = "*"
+rdflib = "*"
 lxml = "*"
 matplotlib = "*"
-rdflib = "*"
+boto3 = "*"
 
 [requires]
 python_version = "3.8"
