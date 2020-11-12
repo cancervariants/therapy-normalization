@@ -153,3 +153,6 @@ data/*
 .idea/
 .vim/
 *.swp
+
+# DynamoDB Local
+dynamodb_local_latest/*

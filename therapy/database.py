@@ -1,28 +1,103 @@
-"""This module creates the database session."""
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+"""This module creates the database."""
+import boto3
+import json
 from therapy import PROJECT_ROOT
-import os
-
-test = os.environ.get("THERAPY_DB_TEST")
-if not test:
-    uri = f"sqlite:///{PROJECT_ROOT}/data/therapy.db"
-elif test == "TEST":
-    uri = f"sqlite:///{PROJECT_ROOT}/tests/unit/data/test_therapy.db"
+from boto3.dynamodb.conditions import Key
 
 
-engine = create_engine(
-    uri, connect_args={"check_same_thread": False}
-)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+class Database:
+    """The database class."""
 
-convention = {
-    "ix": 'ix_%(column_0_label)s',
-    "uq": "uq_%(table_name)s_%(column_0_name)s",
-    "ck": "ck_%(table_name)s_%(constraint_name)s",
-    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-    "pk": "pk_%(table_name)s"
-}
-meta = MetaData(naming_convention=convention)
-Base = declarative_base(meta)
+    def __init__(self):
+        """Initialize Database class."""
+        dynamodb = boto3.resource('dynamodb',
+                                  endpoint_url="http://localhost:8000")
+        dynamodb_client = boto3.client('dynamodb',
+                                       endpoint_url="http://localhost:8000")
+        existing_tables = dynamodb_client.list_tables()['TableNames']  # noqa
+        # self.create_therapies_table(dynamodb, existing_tables)
+        # self.create_meta_data_table(dynamodb, existing_tables)
+        # self.load_chembl_data(dynamodb, dynamodb_client)
+        self.query(dynamodb)
+
+    def query(self, dynamodb):
+        """Make a query."""
+        table = dynamodb.Table('Therapies')
+        try:
+            response = table.query(
+                KeyConditionExpression=Key(
+                    'label_and_type').eq('chembl:chembl25##identity')
+            )
+            return response['Items']
+        except ValueError:
+            print("Not a valid query.")
+
+    def load_chembl_data(self, dynamodb):
+        """Load ChEMBL data into DynamoDB."""
+        table = dynamodb.Table('Therapies')
+        with open(f"{PROJECT_ROOT}/data/chembl/chembl.json") as f:
+            chembl_data = json.load(f)
+
+            with table.batch_writer() as batch:
+
+                for data in chembl_data:
+                    batch.put_item(Item=data)
+
+    def create_therapies_table(self, dynamodb, existing_tables):
+        """Create Therapies table if not exists."""
+        table_name = 'Therapies'
+        if table_name not in existing_tables:
+            dynamodb.create_table(
+                TableName=table_name,
+                KeySchema=[
+                    {
+                        'AttributeName': 'label_and_type',
+                        'KeyType': 'HASH'  # Partition key
+                    },
+                    {
+                        'AttributeName': 'concept_id',
+                        'KeyType': 'RANGE'  # Sort key
+                    }
+                ],
+                AttributeDefinitions=[
+                    {
+                        'AttributeName': 'label_and_type',
+                        'AttributeType': 'S'
+                    },
+                    {
+                        'AttributeName': 'concept_id',
+                        'AttributeType': 'S'
+                    },
+
+                ],
+                ProvisionedThroughput={
+                    'ReadCapacityUnits': 10,
+                    'WriteCapacityUnits': 10
+                }
+            )
+
+    def create_meta_data_table(self, dynamodb, existing_tables):
+        """Create MetaData table if not exists."""
+        table_name = 'MetaData'
+        if table_name not in existing_tables:
+            dynamodb.create_table(
+                TableName=table_name,
+                KeySchema=[
+                    {
+                        'AttributeName': 'src_name',
+                        'KeyType': 'HASH'  # Partition key
+                    }
+                ],
+                AttributeDefinitions=[
+                    {
+                        'AttributeName': 'src_name',
+                        'AttributeType': 'S'
+                    },
+                ],
+                ProvisionedThroughput={
+                    'ReadCapacityUnits': 10,
+                    'WriteCapacityUnits': 10
+                }
+            )
+
+# Database()
