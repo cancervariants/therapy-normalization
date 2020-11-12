@@ -30,7 +30,8 @@ class CLI:
 
         sources = {
             'chembl': ChEMBL  # ,
-            # wikidata': Wikidata,
+            # 'ncit': NCIt,
+            # 'wikidata': Wikidata,
             # 'drugbank': DrugBank,
         }
 
