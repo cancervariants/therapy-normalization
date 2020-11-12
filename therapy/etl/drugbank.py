@@ -1,15 +1,12 @@
 """This module defines the DrugBank ETL methods."""
-from sqlalchemy.orm import Session
 from therapy.etl.base import Base
 from therapy import PROJECT_ROOT
 import logging
-from therapy import database, models, schemas  # noqa: F401
-from therapy.models import Meta, Therapy, Alias, OtherIdentifier, TradeName
-from therapy.schemas import SourceName, NamespacePrefix, Drug, ApprovalStatus
-from therapy.database import Base as B, engine, SessionLocal  # noqa: F401
+from therapy import database, schemas  # noqa: F401
+from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
 from therapy.etl.base import IDENTIFIER_PREFIXES
-from sqlalchemy import create_engine, event  # noqa: F401
 from lxml import etree
+import json
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -29,21 +26,23 @@ class DrugBank(Base):
             except IndexError:
                 raise FileNotFoundError  # TODO drugbank update function here
 
-    def _transform_data(self, db):
+    def _transform_data(self):
         """Transform the DrugBank source."""
         xmlns = "{http://www.drugbank.ca}"
 
         tree = etree.parse(f"{self._data_src}")
         root = tree.getroot()
-
+        records_list = []
         for drug in root:
             params = {
+                'label_and_type': None,
                 'concept_id': None,
                 'label': None,
                 'approval_status': None,
                 'aliases': [],
                 'other_identifiers': [],
-                'trade_names': []
+                'trade_names': [],
+                'src_name': SourceName.DRUGBANK.value
             }
             for element in drug:
                 if element.tag == f"{xmlns}drugbank-id":
@@ -51,6 +50,8 @@ class DrugBank(Base):
                     if 'primary' in element.attrib:
                         params['concept_id'] = \
                             f"{NamespacePrefix.DRUGBANK.value}:{element.text}"
+                        params['label_and_type'] = \
+                            f"{params['concept_id'].lower()}##identity"
                     else:
                         # Aliases
                         params['aliases'].append(element.text)
@@ -91,71 +92,65 @@ class DrugBank(Base):
                         params['approval_status'] = \
                             ApprovalStatus.INVESTIGATIONAL.value
 
-            self._load_drug(params, db)
+            records_list.append(params)
+            if params['label']:
+                self._load_label(params['label'], params['concept_id'],
+                                 records_list)
+            if params['aliases']:
+                self._load_aliases(params['aliases'], params['concept_id'],
+                                   records_list)
+            if params['trade_names']:
+                self._load_trade_names(params['trade_names'],
+                                       params['concept_id'], records_list)
+        return records_list
 
     def _load_data(self, *args, **kwargs):
         """Load the DrugBank source into normalized database."""
-        B.metadata.create_all(bind=engine)
-        db: Session = SessionLocal()
         self._extract_data()
-        self._transform_data(db)
-        self._add_meta(db)
-        db.commit()
-        db.close()
+        records_list = self._transform_data()
+        self._load_json(records_list)
+        self._add_meta()
 
-    def _load_drug(self, params, db):
-        """Load drug into each table of the normalized database."""
-        drug = schemas.Drug(
-            label=params['label'],
-            approval_status=params['approval_status'],
-            trade_name=params['trade_names'],
-            aliases=params['aliases'],
-            concept_identifier=params['concept_id'],
-            other_identifiers=params['other_identifiers']
-        )
+    def _load_json(self, records_list):
+        """Load DrugBank data into JSON file."""
+        with open('data/drugbank/drugbank.json', 'w') as f:
+            f.write(json.dumps(records_list))
 
-        self._load_therapy(drug, db)
-        self._load_aliases(drug, db)
-        self._load_other_identifiers(drug, db)
-        self._load_trade_names(drug, db)
+    def _load_label(self, label, concept_id, records_list):
+        """Insert label data into records_list."""
+        label = {
+            'label_and_type':
+                f"{label.lower()}##label",
+            'concept_id': f"{concept_id.lower()}"
+        }
+        records_list.append(label)
 
-    def _load_therapy(self, drug: Drug, db: Session):
-        """Load a DrugBank therapy row into normalized database."""
-        therapy = Therapy(
-            concept_id=drug.concept_identifier,
-            label=drug.label,
-            approval_status=drug.approval_status,
-            src_name=SourceName.DRUGBANK.value
-        )
-        db.add(therapy)
+    def _load_aliases(self, aliases, concept_id, records_list):
+        """Insert alias data into records_list."""
+        aliases = list(set({a.casefold(): a for a in aliases}.values()))
+        for alias in aliases:
+            alias = {
+                'label_and_type': f"{alias.lower()}##alias",
+                'concept_id': f"{concept_id.lower()}"
+            }
+            records_list.append(alias)
 
-    def _load_aliases(self, drug: Drug, db: Session):
-        """Load a DrugBank alias row into normalized database."""
-        for alias in drug.aliases:
-            alias_object = \
-                Alias(concept_id=drug.concept_identifier, alias=alias)
-            db.add(alias_object)
+    def _load_trade_names(self, trade_names, concept_id, records_list):
+        """Insert trade_name data into records_list."""
+        trade_names = \
+            list(set({t.casefold(): t for t in trade_names}.values()))
+        for trade_name in trade_names:
+            trade_name = {
+                'label_and_type': f"{trade_name.lower()}##trade_name",
+                'concept_id': f"{concept_id.lower()}"
+            }
+            records_list.append(trade_name)
 
-    def _load_other_identifiers(self, drug: Drug, db: Session):
-        """Load a DrugBank other identifier row into normalized database."""
-        for other_identifier in drug.other_identifiers:
-            other_identifier_object = OtherIdentifier(
-                concept_id=drug.concept_identifier, other_id=other_identifier)
-            db.add(other_identifier_object)
-
-    def _load_trade_names(self, drug: Drug, db: Session):
-        """Load a DrugBank trade name row into normalized database."""
-        for trade_name in drug.trade_name:
-            trade_name_object = TradeName(
-                concept_id=drug.concept_identifier, trade_name=trade_name)
-            db.add(trade_name_object)
-
-    def _add_meta(self, db: Session):
+    def _add_meta(self):
         """Add DrugBank metadata."""
-        meta_object = Meta(src_name=SourceName.DRUGBANK.value,
-                           data_license='CC BY-NC 4.0',
-                           data_license_url='https://creativecommons.org/licenses/by-nc/4.0/legalcode',  # noqa E501
-                           version='5.1.7',
-                           data_url='https://go.drugbank.com/releases/5-1-7/downloads/all-full-database'  # noqa E501
-                           )
-        db.add(meta_object)
+        # TODO: Add to MetaData table
+        src_name = SourceName.DRUGBANK.value  # noqa: F841
+        data_license = 'CC BY-NC 4.0'  # noqa: F841
+        data_license_url = 'https://creativecommons.org/licenses/by-nc/4.0/legalcode'  # noqa: E501, F841
+        version = '5.1.7'  # noqa: F841
+        data_url = 'https://go.drugbank.com/releases/5-1-7/downloads/all-full-database'  # noqa E501, F481
