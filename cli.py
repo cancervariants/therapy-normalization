@@ -1,6 +1,6 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
-from therapy.etl import ChEMBL  # , Wikidata, DrugBank
+from therapy.etl import ChEMBL, DrugBank  # , Wikidata,
 from therapy.schemas import SourceName
 from timeit import default_timer as timer
 from therapy.database import Database  # noqa F401
@@ -29,10 +29,10 @@ class CLI:
         # Database(dynamodb, dynamodb_client)
 
         sources = {
-            'chembl': ChEMBL  # ,
+            'chembl': ChEMBL,
             # 'ncit': NCIt,
             # 'wikidata': Wikidata,
-            # 'drugbank': DrugBank,
+            'drugbank': DrugBank
         }
 
         if all:
