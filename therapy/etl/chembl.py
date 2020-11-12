@@ -49,8 +49,8 @@ class ChEMBL(Base):
                 md.pref_name,
                 md.max_phase,
                 md.withdrawn_flag,
-                REPLACE(group_concat(
-                    DISTINCT ms.synonyms), ',', '||') as synonyms
+                group_concat(
+                    ms.synonyms, '||')as synonyms
             FROM molecule_dictionary md
             LEFT JOIN molecule_synonyms ms USING(molregno)
             GROUP BY md.molregno
@@ -61,8 +61,8 @@ class ChEMBL(Base):
                 md.pref_name,
                 md.max_phase,
                 md.withdrawn_flag,
-                REPLACE(group_concat(
-                    DISTINCT ms.synonyms), ',', '||') as synonyms
+                group_concat(
+                    ms.synonyms, '||') as synonyms
             FROM molecule_synonyms ms
             LEFT JOIN molecule_dictionary md USING(molregno)
             WHERE md.molregno IS NULL
@@ -75,8 +75,8 @@ class ChEMBL(Base):
             SELECT
                 f.molregno,
                 f.product_id,
-                REPLACE(group_concat(
-                    DISTINCT p.trade_name), ',', '||') as trade_names
+                group_concat(
+                    p.trade_name, '||') as trade_names
             FROM formulations f
             LEFT JOIN products p
                 ON f.product_id = p.product_id
@@ -168,6 +168,10 @@ class ChEMBL(Base):
                         records_list.append(label)
                     if record['aliases']:
                         record['aliases'] = record['aliases'].split("||")
+                        # Remove duplicates (case-insensitive)
+                        record['aliases'] = \
+                            list(set({a.casefold(): a for a in
+                                      record['aliases']}.values()))
                         for alias in record['aliases']:
                             alias = {
                                 'label_and_type': f"{alias.lower()}##alias",
@@ -179,6 +183,10 @@ class ChEMBL(Base):
                     if record['trade_names']:
                         record['trade_names'] = \
                             record['trade_names'].split("||")
+                        # Remove duplicates (case-insensitive)
+                        record['trade_names'] = \
+                            list(set({t.casefold(): t for t in
+                                      record['trade_names']}.values()))
                         for trade_name in record['trade_names']:
                             trade_name = {
                                 'label_and_type':
