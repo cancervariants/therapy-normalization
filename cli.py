@@ -1,10 +1,11 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
-from therapy.etl import ChEMBL  # , Wikidata, DrugBank
+# from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt  # noqa: F401
+from therapy.etl import NCIt
 from therapy.schemas import SourceName
 from timeit import default_timer as timer
-from therapy.database import Database  # noqa F401
-import boto3  # noqa F401
+from therapy.database import DB
+import boto3  # noqa: F401
 
 
 class CLI:
@@ -22,20 +23,19 @@ class CLI:
     )
     def update_normalizer_db(normalizer, all):
         """Update select normalizer(s) sources in the therapy database."""
-        dynamodb = boto3.resource('dynamodb',
-                                  endpoint_url="http://localhost:8000")
-        dynamodb_client = boto3.client('dynamodb',
-                                       endpoint_url="http://localhost:8000")
-        Database(dynamodb, dynamodb_client)
-
         sources = {
-            # 'ncit': NCIt,
-            'chembl': ChEMBL,
+            'ncit': NCIt,
+            # 'chembl': ChEMBL,
             # wikidata': Wikidata,
             # 'drugbank': DrugBank,
         }
 
         if all:
+            CLI()._delete_all_data(DB)
+            tables = DB.db_client.list_tables()['TableNames']
+            DB.create_meta_data_table(tables)
+            tables = DB.db_client.list_tables()['TableNames']
+            DB.create_therapies_table(tables)
             for n in sources:
                 # CLI()._delete_data(n, dynamodb)
                 click.echo(f"Loading {n}...")
@@ -59,6 +59,12 @@ class CLI:
                     click.echo(f"Loaded {n} in {end - start} seconds.")
                 else:
                     raise Exception("Not a normalizer source.")
+
+    def _delete_all_data(self, db):
+        tables = db.db_client.list_tables()['TableNames']
+        for table in tables:
+            response = db.db_client.delete_table(TableName=table)  # noqa F841
+            print(f"Deleted table: {table}")
 
     def _delete_data(self, source, dynamodb, *args, **kwargs):
         click.echo(f"Start deleting the {source} source.")
