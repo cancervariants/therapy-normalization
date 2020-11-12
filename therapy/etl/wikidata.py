@@ -15,7 +15,7 @@ logger.setLevel(logging.DEBUG)
 
 
 class Wikidata(Base):
-    """Extract, tansform, and load the Wikidata source into therapy.db."""
+    """Extract, transform, and load the Wikidata source into therapy.db."""
 
     SPARQL_QUERY = """
 SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
@@ -59,6 +59,8 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
         db: Session = SessionLocal()
         self._add_meta(db)
         self._transform_data(db)
+        db.commit()
+        db.close()
 
     def _extract_data(self, *args, **kwargs):
         """Extract data from the Wikidata source."""
@@ -115,8 +117,6 @@ SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
                             self._other_id_pairs:
                         self._other_id_pairs.add((concept_id, fmted_other_id))
                         self._load_other_id(concept_id, fmted_other_id, db)
-        db.commit()
-        db.close()
 
     def _sqlite_str(self, string):
         """Sanitizes string to use as value in SQL statement.

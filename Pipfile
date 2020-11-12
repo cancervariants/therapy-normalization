@@ -24,6 +24,9 @@ click = "*"
 lxml = "*"
 matplotlib = "*"
 boto3 = "*"
+cython = "*"
+owlready2 = "*"
+rdflib = "*"
 
 [requires]
 python_version = "3.8"
