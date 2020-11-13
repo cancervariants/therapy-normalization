@@ -56,7 +56,29 @@ class Database:
                         'AttributeName': 'concept_id',
                         'AttributeType': 'S'
                     },
+                    {
+                        'AttributeName': 'src_name',
+                        'AttributeType': 'S'
+                    }
 
+                ],
+                GlobalSecondaryIndexes=[
+                    {
+                        'IndexName': 'src_index',
+                        'KeySchema': [
+                            {
+                                'AttributeName': 'src_name',
+                                'KeyType': 'HASH'
+                            }
+                        ],
+                        'Projection': {
+                            'ProjectionType': 'KEYS_ONLY'
+                        },
+                        'ProvisionedThroughput': {
+                            'ReadCapacityUnits': 10,
+                            'WriteCapacityUnits': 10
+                        }
+                    }
                 ],
                 ProvisionedThroughput={
                     'ReadCapacityUnits': 10,

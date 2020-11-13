@@ -158,7 +158,8 @@ class DrugBank(Base):
         label = {
             'label_and_type':
                 f"{label.lower()}##label",
-            'concept_id': f"{concept_id.lower()}"
+            'concept_id': f"{concept_id.lower()}",
+            'src_name': SourceName.DRUGBANK.value
         }
         batch.put_item(Item=label)
 
@@ -168,7 +169,8 @@ class DrugBank(Base):
         for alias in aliases:
             alias = {
                 'label_and_type': f"{alias.lower()}##alias",
-                'concept_id': f"{concept_id.lower()}"
+                'concept_id': f"{concept_id.lower()}",
+                'src_name': SourceName.DRUGBANK.value
             }
             batch.put_item(Item=alias)
 
@@ -179,7 +181,8 @@ class DrugBank(Base):
         for trade_name in trade_names:
             trade_name = {
                 'label_and_type': f"{trade_name.lower()}##trade_name",
-                'concept_id': f"{concept_id.lower()}"
+                'concept_id': f"{concept_id.lower()}",
+                'src_name': SourceName.DRUGBANK.value
             }
             batch.put_item(Item=trade_name)
 
