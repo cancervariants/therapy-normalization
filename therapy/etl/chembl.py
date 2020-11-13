@@ -1,6 +1,4 @@
 """This module defines the ChEMBL ETL methods."""
-import os
-
 from .base import Base
 from therapy import PROJECT_ROOT
 from ftplib import FTP
@@ -8,8 +6,8 @@ import logging
 import tarfile  # noqa: F401
 from therapy import database  # noqa: F401
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
-import json
 import sqlite3
+from therapy.database import THERAPIES_TABLE, METADATA_TABLE
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -137,7 +135,7 @@ class ChEMBL(Base):
         self._cursor.execute(insert_test)
 
     def _load_json(self):
-        """Load ChEMBL data into JSON file."""
+        """Load ChEMBL data into database."""
         chembl_data = """
             SELECT
                 concept_id,
@@ -148,66 +146,57 @@ class ChEMBL(Base):
                 aliases
             FROM temp;
         """
-        with open('data/chembl/chembl_temp.json', 'w+') as temp:
-            result = [dict(row) for row in
-                      self._cursor.execute(chembl_data).fetchall()]
-            temp.write(json.dumps(result))
-            temp.seek(0)
-
-            records = json.load(temp)
-
-            records_list = []
-            with open('data/chembl/chembl.json', 'w') as f:
-                for record in records:
-                    if record['label']:
-                        label = {
-                            'label_and_type':
-                                f"{record['label'].lower()}##label",
-                            'concept_id': f"{record['concept_id'].lower()}"
-                        }
-                        records_list.append(label)
-                    if record['aliases']:
-                        record['aliases'] = record['aliases'].split("||")
-                        # Remove duplicates (case-insensitive)
-                        record['aliases'] = \
-                            list(set({a.casefold(): a for a in
-                                      record['aliases']}.values()))
-                        for alias in record['aliases']:
-                            alias = {
-                                'label_and_type': f"{alias.lower()}##alias",
-                                'concept_id': f"{record['concept_id'].lower()}"
-                            }
-                            records_list.append(alias)
-                    else:
-                        record['aliases'] = list()
-                    if record['trade_names']:
-                        record['trade_names'] = \
-                            record['trade_names'].split("||")
-                        # Remove duplicates (case-insensitive)
-                        record['trade_names'] = \
-                            list(set({t.casefold(): t for t in
-                                      record['trade_names']}.values()))
-                        for trade_name in record['trade_names']:
-                            trade_name = {
-                                'label_and_type':
-                                    f"{trade_name.lower()}##trade_name",
-                                'concept_id': f"{record['concept_id'].lower()}"
-                            }
-                            records_list.append(trade_name)
-                    else:
-                        record['trade_names'] = list()
-                    record['label_and_type'] = \
-                        f"{record['concept_id'].lower()}##identity"
-                    records_list.append(record)
-                f.write(json.dumps(records_list))
-            os.remove(temp.name)
+        batch = THERAPIES_TABLE.batch_writer()
+        result = [dict(row) for row in
+                  self._cursor.execute(chembl_data).fetchall()]
+        for record in result:
+            if record['label']:
+                label = {
+                    'label_and_type':
+                        f"{record['label'].lower()}##label",
+                    'concept_id': f"{record['concept_id'].lower()}"
+                }
+                batch.put_item(Item=label)
+            if record['aliases']:
+                record['aliases'] = record['aliases'].split("||")
+                # Remove duplicates (case-insensitive)
+                record['aliases'] = \
+                    list(set({a.casefold(): a for a in
+                              record['aliases']}.values()))
+                for alias in record['aliases']:
+                    alias = {
+                        'label_and_type': f"{alias.lower()}##alias",
+                        'concept_id': f"{record['concept_id'].lower()}"
+                    }
+                    batch.put_item(Item=alias)
+            else:
+                record['aliases'] = list()
+            if record['trade_names']:
+                record['trade_names'] = \
+                    record['trade_names'].split("||")
+                # Remove duplicates (case-insensitive)
+                record['trade_names'] = \
+                    list(set({t.casefold(): t for t in
+                              record['trade_names']}.values()))
+                for trade_name in record['trade_names']:
+                    trade_name = {
+                        'label_and_type':
+                            f"{trade_name.lower()}##trade_name",
+                        'concept_id': f"{record['concept_id'].lower()}"
+                    }
+                    batch.put_item(Item=trade_name)
+            else:
+                record['trade_names'] = list()
+            record['label_and_type'] = \
+                f"{record['concept_id'].lower()}##identity"
+            batch.put_item(Item=record)
 
         self._cursor.execute("DROP TABLE temp;")
         self._cursor.execute("DROP TABLE DictionarySynonyms;")
         self._cursor.execute("DROP TABLE TradeNames;")
 
     def _load_data(self, *args, **kwargs):
-        """Load the ChEMBL source into therapy.db."""
+        """Load the ChEMBL source into database."""
         self._add_meta()
         self._extract_data()
         self._transform_data()
@@ -217,12 +206,15 @@ class ChEMBL(Base):
 
     def _add_meta(self, *args, **kwargs):
         """Add ChEMBL metadata."""
-        # TODO: Add to MetaData table
-        src_name = SourceName.CHEMBL.value  # noqa: F841
-        data_license = 'CC BY-SA 3.0'  # noqa: F841
-        data_license_url = 'https://creativecommons.org/licenses/by-sa/3.0/'  # noqa: F841, E501
-        version = '27'  # noqa: F841
-        data_url = 'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501, F841
+        METADATA_TABLE.put_item(
+            Item={
+                'src_name': SourceName.CHEMBL.value,  # noqa: F841
+                'data_license': 'CC BY-SA 3.0',  # noqa: F841
+                'data_license_url': 'https://creativecommons.org/licenses/by-sa/3.0/',  # noqa: F841, E501
+                'version': '27',  # noqa: F841
+                'data_url': 'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501, F841
+            }
+        )
 
     @staticmethod
     def _download_chembl_27(filepath):

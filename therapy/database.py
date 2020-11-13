@@ -1,7 +1,5 @@
 """This module creates the database."""
 import boto3
-import json
-from therapy import PROJECT_ROOT
 from boto3.dynamodb.conditions import Key
 
 DYNAMODB = boto3.resource('dynamodb', endpoint_url="http://localhost:8000")
@@ -19,7 +17,6 @@ class Database:
         existing_tables = DYNAMODBCLIENT.list_tables()['TableNames']
         self.create_therapies_table(DYNAMODB, existing_tables)
         self.create_meta_data_table(DYNAMODB, existing_tables)
-        # self.load_chembl_data(dynamodb)
         # self.query(dynamodb)
 
     def query(self, dynamodb):
@@ -33,16 +30,6 @@ class Database:
             return response['Items']
         except ValueError:
             print("Not a valid query.")
-
-    def load_chembl_data(self, dynamodb):
-        """Load ChEMBL data into DynamoDB."""
-        table = dynamodb.Table('Therapies')
-        with open(f"{PROJECT_ROOT}/data/chembl/chembl.json") as f:
-            chembl_data = json.load(f)
-
-            with table.batch_writer() as batch:
-                for data in chembl_data:
-                    batch.put_item(Item=data)
 
     def create_therapies_table(self, dynamodb, existing_tables):
         """Create Therapies table if not exists."""
