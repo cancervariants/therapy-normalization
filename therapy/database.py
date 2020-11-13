@@ -4,21 +4,23 @@ import json
 from therapy import PROJECT_ROOT
 from boto3.dynamodb.conditions import Key
 
+DYNAMODB = boto3.resource('dynamodb', endpoint_url="http://localhost:8000")
+DYNAMODBCLIENT = \
+    boto3.client('dynamodb', endpoint_url="http://localhost:8000")
+THERAPIES_TABLE = DYNAMODB.Table('Therapies')
+METADATA_TABLE = DYNAMODB.Table('MetaData')
+
 
 class Database:
     """The database class."""
 
     def __init__(self):
         """Initialize Database class."""
-        dynamodb = boto3.resource('dynamodb',
-                                  endpoint_url="http://localhost:8000")
-        dynamodb_client = boto3.client('dynamodb',
-                                       endpoint_url="http://localhost:8000")
-        existing_tables = dynamodb_client.list_tables()['TableNames']  # noqa
-        # self.create_therapies_table(dynamodb, existing_tables)
-        # self.create_meta_data_table(dynamodb, existing_tables)
-        # self.load_chembl_data(dynamodb, dynamodb_client)
-        self.query(dynamodb)
+        existing_tables = DYNAMODBCLIENT.list_tables()['TableNames']
+        self.create_therapies_table(DYNAMODB, existing_tables)
+        self.create_meta_data_table(DYNAMODB, existing_tables)
+        # self.load_chembl_data(dynamodb)
+        # self.query(dynamodb)
 
     def query(self, dynamodb):
         """Make a query."""
@@ -39,7 +41,6 @@ class Database:
             chembl_data = json.load(f)
 
             with table.batch_writer() as batch:
-
                 for data in chembl_data:
                     batch.put_item(Item=data)
 
@@ -99,5 +100,3 @@ class Database:
                     'WriteCapacityUnits': 10
                 }
             )
-
-# Database()
