@@ -22,11 +22,7 @@ class CLI:
     )
     def update_normalizer_db(normalizer, all):
         """Update select normalizer(s) sources in the therapy database."""
-        # dynamodb = boto3.resource('dynamodb',
-        #                           endpoint_url="http://localhost:8000")
-        # dynamodb_client = boto3.client('dynamodb',
-        #                                endpoint_url="http://localhost:8000")
-        # Database(dynamodb, dynamodb_client)
+        Database()
 
         sources = {
             'chembl': ChEMBL,
