@@ -1,6 +1,5 @@
 """This module creates the database."""
 import boto3
-from boto3.dynamodb.conditions import Key
 
 DYNAMODB = boto3.resource('dynamodb', endpoint_url="http://localhost:8000")
 DYNAMODBCLIENT = \
@@ -17,19 +16,6 @@ class Database:
         existing_tables = DYNAMODBCLIENT.list_tables()['TableNames']
         self.create_therapies_table(DYNAMODB, existing_tables)
         self.create_meta_data_table(DYNAMODB, existing_tables)
-        # self.query(dynamodb)
-
-    def query(self, dynamodb):
-        """Make a query."""
-        table = dynamodb.Table('Therapies')
-        try:
-            response = table.query(
-                KeyConditionExpression=Key(
-                    'label_and_type').eq('chembl:chembl25##identity')
-            )
-            return response['Items']
-        except ValueError:
-            print("Not a valid query.")
 
     def create_therapies_table(self, dynamodb, existing_tables):
         """Create Therapies table if not exists."""

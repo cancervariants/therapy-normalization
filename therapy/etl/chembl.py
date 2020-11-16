@@ -38,7 +38,39 @@ class ChEMBL(Base):
         assert chembl_db.exists()
 
     def _transform_data(self, *args, **kwargs):
-        """Transform the ChEMBL source."""
+        """Transform SQLite data to JSON."""
+        self._create_dictionary_synonyms_table()
+        self._create_trade_names_table()
+        self._create_temp_table()
+
+        self._cursor.execute("DROP TABLE DictionarySynonyms;")
+        self._cursor.execute("DROP TABLE TradeNames;")
+
+    def _load_data(self, *args, **kwargs):
+        """Load the ChEMBL source into database."""
+        self._add_meta()
+        self._extract_data()
+        self._transform_data()
+        self._load_json()
+        self._conn.commit()
+        self._conn.close()
+
+    @staticmethod
+    def _download_chembl_27(filepath):
+        """Download the ChEMBL source."""
+        logger.info('Downloading ChEMBL v27, this will take a few minutes.')
+        try:
+            with FTP('ftp.ebi.ac.uk') as ftp:
+                ftp.login()
+                logger.debug('FTP login completed.')
+                ftp.cwd('pub/databases/chembl/ChEMBLdb/releases/chembl_27')
+                with open(filepath, 'wb') as fp:
+                    ftp.retrbinary('RETR chembl_27_sqlite.tar.gz', fp.write)
+        except TimeoutError:
+            logger.error('Connection to EBI FTP server timed out.')
+
+    def _create_dictionary_synonyms_table(self):
+        """Create temporary table to store drugs and their synonyms."""
         create_dictionary_synonyms_table = f"""
             CREATE TEMPORARY TABLE DictionarySynonyms AS
             SELECT
@@ -68,6 +100,8 @@ class ChEMBL(Base):
         """
         self._cursor.execute(create_dictionary_synonyms_table)
 
+    def _create_trade_names_table(self):
+        """Create temporary table to store trade name data."""
         create_trade_names_table = """
             CREATE TEMPORARY TABLE TradeNames AS
             SELECT
@@ -82,13 +116,15 @@ class ChEMBL(Base):
         """
         self._cursor.execute(create_trade_names_table)
 
+    def _create_temp_table(self):
+        """Create temporary table to store therapies data."""
         create_temp_table = """
             CREATE TEMPORARY TABLE temp(concept_id, label, approval_status,
                                         src_name, trade_names, aliases);
         """
         self._cursor.execute(create_temp_table)
 
-        insert_test = f"""
+        insert_temp = f"""
             INSERT INTO temp(concept_id, label, approval_status, src_name,
                              trade_names, aliases)
             SELECT
@@ -132,7 +168,7 @@ class ChEMBL(Base):
             WHERE ds.molregno IS NULL
             GROUP BY ds.molregno;
         """
-        self._cursor.execute(insert_test)
+        self._cursor.execute(insert_temp)
 
     def _load_json(self):
         """Load ChEMBL data into database."""
@@ -146,89 +182,86 @@ class ChEMBL(Base):
                 aliases
             FROM temp;
         """
-        batch = THERAPIES_TABLE.batch_writer()
         result = [dict(row) for row in
                   self._cursor.execute(chembl_data).fetchall()]
-        for record in result:
-            if record['label']:
-                label = {
-                    'label_and_type':
-                        f"{record['label'].lower()}##label",
-                    'concept_id': f"{record['concept_id'].lower()}",
-                    'src_name': SourceName.CHEMBL.value
-                }
-                batch.put_item(Item=label)
-            if record['aliases']:
-                record['aliases'] = record['aliases'].split("||")
-                # Remove duplicates (case-insensitive)
-                record['aliases'] = \
-                    list(set({a.casefold(): a for a in
-                              record['aliases']}.values()))
-                for alias in record['aliases']:
-                    alias = {
-                        'label_and_type': f"{alias.lower()}##alias",
-                        'concept_id': f"{record['concept_id'].lower()}",
-                        'src_name': SourceName.CHEMBL.value
-                    }
-                    batch.put_item(Item=alias)
-            else:
-                record['aliases'] = list()
-            if record['trade_names']:
-                record['trade_names'] = \
-                    record['trade_names'].split("||")
-                # Remove duplicates (case-insensitive)
-                record['trade_names'] = \
-                    list(set({t.casefold(): t for t in
-                              record['trade_names']}.values()))
-                for trade_name in record['trade_names']:
-                    trade_name = {
-                        'label_and_type':
-                            f"{trade_name.lower()}##trade_name",
-                        'concept_id': f"{record['concept_id'].lower()}",
-                        'src_name': SourceName.CHEMBL.value
-                    }
-                    batch.put_item(Item=trade_name)
-            else:
-                record['trade_names'] = list()
-            record['label_and_type'] = \
-                f"{record['concept_id'].lower()}##identity"
-            batch.put_item(Item=record)
-
         self._cursor.execute("DROP TABLE temp;")
-        self._cursor.execute("DROP TABLE DictionarySynonyms;")
-        self._cursor.execute("DROP TABLE TradeNames;")
 
-    def _load_data(self, *args, **kwargs):
-        """Load the ChEMBL source into database."""
-        self._add_meta()
-        self._extract_data()
-        self._transform_data()
-        self._load_json()
-        self._conn.commit()
-        self._conn.close()
+        with THERAPIES_TABLE.batch_writer() as batch:
+            for record in result:
+                if record['label']:
+                    self._load_label(record, batch)
+                if record['aliases']:
+                    self._load_alias(record, batch)
+                else:
+                    record['aliases'] = list()
+                if record['trade_names']:
+                    self._load_trade_name(record, batch)
+                else:
+                    record['trade_names'] = list()
+                self._load_therapy(record, batch)
+
+    def _load_therapy(self, record, batch):
+        """Load therapy record into DynamoDB."""
+        record['label_and_type'] = \
+            f"{record['concept_id'].lower()}##identity"
+        batch.put_item(Item=record)
+
+    def _load_label(self, record, batch):
+        """Load label record into DynamoDB."""
+        label = {
+            'label_and_type':
+                f"{record['label'].lower()}##label",
+            'concept_id': f"{record['concept_id'].lower()}",
+            'src_name': SourceName.CHEMBL.value
+        }
+        batch.put_item(Item=label)
+
+    def _load_alias(self, record, batch):
+        """Load alias records into DynamoDB."""
+        record['aliases'] = record['aliases'].split("||")
+
+        # Remove duplicates (case-insensitive)
+        record['aliases'] = \
+            list(set({a.casefold(): a for a in
+                      record['aliases']}.values()))
+
+        for alias in record['aliases']:
+            alias = {
+                'label_and_type': f"{alias.lower()}##alias",
+                'concept_id': f"{record['concept_id'].lower()}",
+                'src_name': SourceName.CHEMBL.value
+            }
+            batch.put_item(Item=alias)
+
+    def _load_trade_name(self, record, batch):
+        """Load trade name records into DynamoDB."""
+        record['trade_names'] = \
+            record['trade_names'].split("||")
+
+        # Remove duplicates (case-insensitive)
+        record['trade_names'] = \
+            list(set({t.casefold(): t for t in
+                      record['trade_names']}.values()))
+
+        for trade_name in record['trade_names']:
+            trade_name = {
+                'label_and_type':
+                    f"{trade_name.lower()}##trade_name",
+                'concept_id': f"{record['concept_id'].lower()}",
+                'src_name': SourceName.CHEMBL.value
+            }
+            batch.put_item(Item=trade_name)
 
     def _add_meta(self, *args, **kwargs):
         """Add ChEMBL metadata."""
         METADATA_TABLE.put_item(
             Item={
-                'src_name': SourceName.CHEMBL.value,  # noqa: F841
-                'data_license': 'CC BY-SA 3.0',  # noqa: F841
-                'data_license_url': 'https://creativecommons.org/licenses/by-sa/3.0/',  # noqa: F841, E501
-                'version': '27',  # noqa: F841
-                'data_url': 'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501, F841
+                'src_name': SourceName.CHEMBL.value,
+                'data_license': 'CC BY-SA 3.0',
+                'data_license_url':
+                    'https://creativecommons.org/licenses/by-sa/3.0/',
+                'version': '27',
+                'data_url':
+                    'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501
             }
         )
-
-    @staticmethod
-    def _download_chembl_27(filepath):
-        """Download the ChEMBL source."""
-        logger.info('Downloading ChEMBL v27, this will take a few minutes.')
-        try:
-            with FTP('ftp.ebi.ac.uk') as ftp:
-                ftp.login()
-                logger.debug('FTP login completed.')
-                ftp.cwd('pub/databases/chembl/ChEMBLdb/releases/chembl_27')
-                with open(filepath, 'wb') as fp:
-                    ftp.retrbinary('RETR chembl_27_sqlite.tar.gz', fp.write)
-        except TimeoutError:
-            logger.error('Connection to EBI FTP server timed out.')
