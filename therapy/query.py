@@ -2,15 +2,27 @@
 import re
 from typing import List, Dict
 
-from sqlalchemy import func
 from uvicorn.config import logger
-from therapy import database, models, schemas  # noqa F401
-from therapy.database import engine, SessionLocal
-from therapy.models import Therapy, Alias, OtherIdentifier, TradeName, \
-    Meta  # noqa F401
-from therapy.schemas import Drug, MetaResponse, MatchType, SourceName, \
+from therapy.database import DB
+from therapy.schemas import Drug, Meta, MatchType, SourceName, \
     NamespacePrefix, SourceIDAfterNamespace
-from sqlalchemy.orm import Session
+from botocore.exceptions import ClientError
+from boto3.dynamodb.conditions import Key
+
+# use to fetch source name from schema based on concept id namespace
+PREFIX_LOOKUP = {v.value: SourceName[k].value
+                 for k, v in NamespacePrefix.__members__.items()
+                 if k in SourceName.__members__.keys()}
+
+# use to generate namespace prefix from source ID value
+NAMESPACE_LOOKUP = {v.value.lower(): NamespacePrefix[k].value
+                    for k, v in SourceIDAfterNamespace.__members__.items()
+                    if v.value != ''}
+
+# use to identify queries that could be concept IDs
+IDS_AFTER_NAMESPACE = {c.value.lower()
+                       for c in SourceIDAfterNamespace.__members__.values()
+                       if c.value != ''}
 
 
 class InvalidParameterException(Exception):
@@ -37,64 +49,50 @@ def emit_warnings(query_str):
     return warnings
 
 
-def fetch_meta(session: Session, src_name: str) -> MetaResponse:
+def fetch_meta(src_name: str) -> Meta:
     """Fetch metadata for src_name."""
-    meta = session.query(Meta).filter(Meta.src_name == src_name).first()
-    if meta:
-        params = {
-            'data_license': meta.data_license,
-            'data_license_url': meta.data_license_url,
-            'version': meta.version,
-            'data_url': meta.data_url
-        }
-        return MetaResponse(**params)
+    if src_name in DB.cached_sources.keys():
+        return DB.cached_sources[src_name]
     else:
-        raise Exception(f"Couldn't find metadata for source name: {src_name}")
+        table = DB.db.Table('Metadata')
+        try:
+            db_response = table.get_item(Key={'src_name': src_name})
+        except ClientError as e:
+            print(e.response['Error']['Message'])
+        response = Meta(**db_response['Item'])
+        DB.cached_sources[src_name] = response
+        return response
 
 
-def fetch_records(session: Session,
-                  response: Dict[str, Dict],
+# TODO refactor so that concept ID match doesn't have to go thru this
+# process twice
+def fetch_records(response: Dict[str, Dict],
                   concept_ids: List[str],
                   match_type: MatchType) -> Dict:
     """Return matched Drug records.
 
     Args:
-        session: to call queries from
         response: in-progress response object to return to client.
-        concept_ids: List of concept IDs to build from
+        concept_ids: List of concept IDs to build from. Should be all lower-
+            case.
         match_type: level of match current queries are evaluated as
 
     Returns response Dict with records filled in via provided concept IDs
     """
+    table = DB.db.Table('Therapies')
     for concept_id in concept_ids:
-        therapy = session.query(Therapy). \
-            filter(Therapy.concept_id == concept_id).first()
+        try:
+            pk = f'{concept_id.lower()}##identity'
+            filter_exp = Key('label_and_type').eq(pk)
+            match = table.query(KeyConditionExpression=filter_exp)['Items'][0]
+        except ClientError as e:
+            print(e.response['Error']['Message'])
 
-        other_identifiers = session.query(OtherIdentifier).filter(
-            OtherIdentifier.concept_id == concept_id).all()
-        if other_identifiers:
-            other_identifiers = \
-                [c_id.other_id for c_id in other_identifiers if c_id]
-        else:
-            other_identifiers = []
+        del match['label_and_type']
 
-        aliases = [a.alias for a in session.query(Alias).filter(
-            Alias.concept_id == concept_id)]
+        drug = Drug(**match)
+        src_name = PREFIX_LOOKUP[concept_id.split(':')[0]]
 
-        trade_name = [t.trade_name for t in session.query(
-            TradeName).filter(TradeName.concept_id == concept_id)]
-
-        params = {
-            'concept_identifier': concept_id,
-            'label': therapy.label,
-            'approval_status': therapy.approval_status,
-            'other_identifiers': other_identifiers,
-            'aliases': aliases if aliases != [None] else [],
-            'trade_name': trade_name if trade_name != [None] else []
-        }
-
-        drug = Drug(**params)
-        src_name = therapy.src_name
         matches = response['source_matches']
         if src_name not in matches.keys():
             pass
@@ -102,21 +100,21 @@ def fetch_records(session: Session,
             matches[src_name] = {
                 'match_type': match_type,
                 'records': [drug],
-                'meta_': fetch_meta(session, src_name)
+                'meta_': fetch_meta(src_name)
             }
         elif matches[src_name]['match_type'] == match_type:
             matches[src_name]['records'].append(drug)
     return response
 
 
-def fill_no_matches(session: Session, resp: Dict) -> Dict:
+def fill_no_matches(resp: Dict) -> Dict:
     """Fill all empty source_matches slots with NO_MATCH results."""
     for src_name in resp['source_matches'].keys():
         if resp['source_matches'][src_name] is None:
             resp['source_matches'][src_name] = {
                 'match_type': MatchType.NO_MATCH,
                 'records': [],
-                'meta_': fetch_meta(session, src_name)
+                'meta_': fetch_meta(src_name)
             }
     return resp
 
@@ -129,13 +127,7 @@ def is_resp_complete(response: Dict, sources: List[str]) -> bool:
     return True
 
 
-def create_session() -> Session:
-    """Create a session to access database."""
-    engine.connect()
-    return SessionLocal()
-
-
-def response_keyed(query: str, sources: List[str], session: Session):
+def response_keyed(query: str, sources: List[str]):
     """Return response as dict where key is source name and value
     is a list of records.
 
@@ -149,9 +141,11 @@ def response_keyed(query: str, sources: List[str], session: Session):
             source: None for source in sources
         }
     }
+    table = DB.db.Table('Therapies')
 
     if query == '':
-        resp = fill_no_matches(session, resp)
+        resp = fill_no_matches(resp)
+        return resp
 
     # check concept ID match
     def namespace_prefix_match(q: str) -> bool:
@@ -162,74 +156,91 @@ def response_keyed(query: str, sources: List[str], session: Session):
 
     # check that id after namespace match
     def id_after_namespace_match(q: str) -> bool:
-        id_after_namespaces = [c_id.value for c_id in
-                               SourceIDAfterNamespace.__members__.values()]
-        id_after_namespaces = list(filter(None, id_after_namespaces))
         return len(list(filter(lambda p: q.startswith(p),
-                               id_after_namespaces))) == 1
+                               IDS_AFTER_NAMESPACE))) == 1
 
-    # Check concept ID
-    if namespace_prefix_match(query.lower()) or\
-            id_after_namespace_match(query.upper()):
-        query_split = query.split(':')
-        query_split[0] = query_split[0].lower()
-        query = ':'.join(query_split)
-        results = session.query(Therapy).filter(
-            Therapy.concept_id.ilike(f"%{query}")
-        ).all()
+    query_l = query.lower()
 
-        if results:
-            concept_ids = [r.concept_id for r in results]
-            resp = fetch_records(session, resp, concept_ids,
-                                 MatchType.CONCEPT_ID)
-
+    # Check concept ID by namespace prefix match
+    # Assumes concept IDs have distinct source ID after prefix matches
+    if namespace_prefix_match(query.lower()):
+        pk = f'{query_l}##identity'
+        filter_exp = Key('label_and_type').eq(pk)
+        try:
+            db_response = table.query(KeyConditionExpression=filter_exp)
+        except ClientError as e:
+            print(e.response['Error']['Message'])
+        if len(db_response['Items']) > 0:
+            concept_ids = [i['concept_id'] for i in db_response['Items']]
+            resp = fetch_records(resp, concept_ids, MatchType.CONCEPT_ID)
+    elif id_after_namespace_match(query_l):
+        for p in IDS_AFTER_NAMESPACE:
+            if query_l.startswith(p):
+                pk = f'{NAMESPACE_LOOKUP[p].lower()}:{query_l}##identity'
+                filter_exp = Key('label_and_type').eq(pk)
+                try:
+                    db_response = table.query(
+                        KeyConditionExpression=filter_exp
+                    )
+                except ClientError as e:
+                    print(e.response['Error']['Message'])
+                if len(db_response['Items']) > 0:
+                    concept_ids = [i['concept_id']
+                                   for i in db_response['Items']]
+                    resp = fetch_records(resp, concept_ids,
+                                         MatchType.CONCEPT_ID)
+                break
     if is_resp_complete(resp, sources):
         return resp
 
     # check label match
-    results = session.query(Therapy).filter(func.lower(
-        Therapy.label) == f"{query.lower()}").all()
-    if results:
-        concept_ids = [r.concept_id for r in results]
-        resp = fetch_records(session, resp, concept_ids,
-                             MatchType.PRIMARY_LABEL)
+    try:
+        filter_exp = Key('label_and_type').eq(f'{query_l}##label')
+        db_response = table.query(KeyConditionExpression=filter_exp)
+        if len(db_response['Items']) > 0:
+            concept_ids = [i['concept_id'] for i in db_response['Items']]
+            resp = fetch_records(resp, concept_ids, MatchType.PRIMARY_LABEL)
+    except ClientError as e:
+        print(e.response['Error']['Message'])
+    if is_resp_complete(resp, sources):
+        return resp
 
+    # check trade name match # TODO think about adding to label match
+    try:
+        filter_exp = Key('label_and_type').eq(f'{query_l}##trade_name')
+        db_response = table.query(KeyConditionExpression=filter_exp)
+        if 'Items' in db_response.keys():
+            concept_ids = [i['concept_id'] for i in db_response['Items']]
+            resp = fetch_records(resp, concept_ids, MatchType.TRADE_NAME)
+    except ClientError as e:
+        print(e.response['Error']['Message'])
     if is_resp_complete(resp, sources):
         return resp
 
     # check alias match
-    results = session.query(Alias).filter(
-        func.lower(Alias.alias) == f"{query.lower()}").all()
-    if results:
-        concept_ids = [r.concept_id for r in results]
-        fetch_records(session, resp, concept_ids,
-                      MatchType.ALIAS)
-
-    if is_resp_complete(resp, sources):
-        return resp
-
-    # check trade name match
-    results = session.query(TradeName).filter(
-        func.lower(TradeName.trade_name) == f"{query.lower()}").all()
-    if results:
-        concept_ids = [r.concept_id for r in results]
-        fetch_records(session, resp, concept_ids,
-                      MatchType.TRADE_NAME)
-
+    try:
+        filter_exp = Key('label_and_type').eq(f'{query_l}##alias')
+        db_response = table.query(KeyConditionExpression=filter_exp)
+        if 'Items' in db_response.keys():
+            concept_ids = [i['concept_id'] for i in db_response['Items']]
+            resp = fetch_records(resp, concept_ids, MatchType.ALIAS)
+    except ClientError as e:
+        print(e.response['Error']['Message'])
     if is_resp_complete(resp, sources):
         return resp
 
     # remaining sources get no match
-    resp = fill_no_matches(session, resp)
+    print("Filling no matches...")
+    resp = fill_no_matches(resp)
 
     return resp
 
 
-def response_list(query: str, sources: List[str], session: Session) -> Dict:
+def response_list(query: str, sources: List[str]) -> Dict:
     """Return response as list, where the first key-value in each item
     is the source name.
     """
-    response_dict = response_keyed(query, sources, session)
+    response_dict = response_keyed(query, sources)
     source_list = []
     for src_name in response_dict['source_matches'].keys():
         src = {
@@ -263,8 +274,11 @@ def normalize(query_str, keyed=False, incl='', excl='', **params):
     Returns:
         Dict containing all matches found in sources.
     """
-    sources = {name.value.lower(): name.value for name in
-               SourceName.__members__.values()}
+    # sources = {name.value.lower(): name.value for name in
+    #            SourceName.__members__.values()}
+
+    # TODO testing remove
+    sources = {"ncit": "NCIt", "wikidata": "Wikidata"}
 
     if not incl and not excl:
         query_sources = sources.values()
@@ -298,13 +312,11 @@ def normalize(query_str, keyed=False, incl='', excl='', **params):
             detail = f"Invalid source name(s): {invalid_sources}"
             raise InvalidParameterException(detail)
 
-    session = create_session()
     query_str = query_str.strip()
 
     if keyed:
-        resp = response_keyed(query_str, query_sources, session)
+        resp = response_keyed(query_str, query_sources)
     else:
-        resp = response_list(query_str, query_sources, session)
+        resp = response_list(query_str, query_sources)
 
-    session.close()
     return resp

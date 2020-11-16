@@ -14,6 +14,7 @@ class Database:
                                  endpoint_url="http://localhost:8000")
         self.db_client = boto3.client('dynamodb',
                                       endpoint_url="http://localhost:8000")
+        self.cached_sources = dict()
         # existing_tables = self.db_client.list_tables()['TableNames']  # noqa
         # self.create_therapies_table(existing_tables)
         # self.create_meta_data_table(existing_tables)
