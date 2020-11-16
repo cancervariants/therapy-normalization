@@ -3,7 +3,8 @@ import click
 from therapy.etl import ChEMBL, DrugBank  # , Wikidata,
 from therapy.schemas import SourceName
 from timeit import default_timer as timer
-from therapy.database import Database, DYNAMODB
+from therapy.database import Database, DYNAMODB, THERAPIES_TABLE, \
+    METADATA_TABLE
 from boto3.dynamodb.conditions import Key
 
 
@@ -47,24 +48,36 @@ class CLI:
             for n in normalizers:
                 if n in sources:
                     # TODO: Fix so that self._delete_data(n) works
-                    CLI()._delete_data(n, DYNAMODB)
+                    # CLI()._delete_data(n, DYNAMODB)
                     click.echo(f"Loading {n}...")
                     start = timer()
-                    # sources[n]()
+                    sources[n]()
                     end = timer()
                     click.echo(f"Loaded {n} in {end - start} seconds.")
                 else:
                     raise Exception("Not a normalizer source.")
 
-    def _delete_data(self, source, dynamodb):
+    def _delete_data(self, source):
         click.echo(f"Start deleting the {source} source.")
 
-        therapies_table = dynamodb.Table('Therapies')  # noqa F841
-        metadata_table = dynamodb.Table('MetaData')  # noqa F841
+        # Delete source's metadata
+        metadata = METADATA_TABLE.query(
+            KeyConditionExpression=Key(
+                'src_name').eq(SourceName[f"{source.upper()}"].value)
+        )
+        if metadata['Items']:
+            METADATA_TABLE.delete_item(
+                Key={'src_name': metadata['Items'][0]['src_name']},
+                ConditionExpression="src_name = :src",
+                ExpressionAttributeValues={
+                    ':src': SourceName[f"{source.upper()}"].value}
+            )
 
+        # Delete source's data from therapies table
+        # TODO: Batch Delete?
         try:
             while True:
-                response = therapies_table.query(
+                response = THERAPIES_TABLE.query(
                     IndexName='src_index',
                     KeyConditionExpression=Key(
                         'src_name').eq(SourceName[f"{source.upper()}"].value)
@@ -73,7 +86,7 @@ class CLI:
                 if not records:
                     break
                 for record in records:
-                    therapies_table.delete_item(
+                    THERAPIES_TABLE.delete_item(
                         Key={
                             'label_and_type': record['label_and_type'],
                             'concept_id': record['concept_id']
@@ -81,18 +94,6 @@ class CLI:
                         ConditionExpression="begins_with(concept_id, :src)",
                         ExpressionAttributeValues={':src': source.lower()}
                     )
-
-            metadata = metadata_table.query(
-                KeyConditionExpression=Key(
-                    'src_name').eq(SourceName[f"{source.upper()}"].value)
-            )
-            metadata = metadata['Items'][0]['src_name']
-            metadata_table.delete_item(
-                Key={'src_name': metadata},
-                ConditionExpression="src_name = :src",
-                ExpressionAttributeValues={
-                    ':src': SourceName[f"{source.upper()}"].value}
-            )
         except ValueError:
             print("Not a valid query.")
 
