@@ -154,7 +154,8 @@ class ChEMBL(Base):
                 label = {
                     'label_and_type':
                         f"{record['label'].lower()}##label",
-                    'concept_id': f"{record['concept_id'].lower()}"
+                    'concept_id': f"{record['concept_id'].lower()}",
+                    'src_name': SourceName.CHEMBL.value
                 }
                 batch.put_item(Item=label)
             if record['aliases']:
@@ -166,7 +167,8 @@ class ChEMBL(Base):
                 for alias in record['aliases']:
                     alias = {
                         'label_and_type': f"{alias.lower()}##alias",
-                        'concept_id': f"{record['concept_id'].lower()}"
+                        'concept_id': f"{record['concept_id'].lower()}",
+                        'src_name': SourceName.CHEMBL.value
                     }
                     batch.put_item(Item=alias)
             else:
@@ -182,7 +184,8 @@ class ChEMBL(Base):
                     trade_name = {
                         'label_and_type':
                             f"{trade_name.lower()}##trade_name",
-                        'concept_id': f"{record['concept_id'].lower()}"
+                        'concept_id': f"{record['concept_id'].lower()}",
+                        'src_name': SourceName.CHEMBL.value
                     }
                     batch.put_item(Item=trade_name)
             else:
