@@ -193,25 +193,17 @@ def response_keyed(query: str, sources: List[str]):
     if is_resp_complete(resp, sources):
         return resp
 
-    # check label match
+    # check label and trade_name match
     try:
         filter_exp = Key('label_and_type').eq(f'{query_l}##label')
         db_response = table.query(KeyConditionExpression=filter_exp)
-        if len(db_response['Items']) > 0:
-            concept_ids = [i['concept_id'] for i in db_response['Items']]
-            resp = fetch_records(resp, concept_ids, MatchType.PRIMARY_LABEL)
-    except ClientError as e:
-        print(e.response['Error']['Message'])
-    if is_resp_complete(resp, sources):
-        return resp
-
-    # check trade name match # TODO think about adding to label match
-    try:
+        items = db_response['Items'][:]
         filter_exp = Key('label_and_type').eq(f'{query_l}##trade_name')
         db_response = table.query(KeyConditionExpression=filter_exp)
-        if 'Items' in db_response.keys():
-            concept_ids = [i['concept_id'] for i in db_response['Items']]
-            resp = fetch_records(resp, concept_ids, MatchType.TRADE_NAME)
+        items += db_response['Items'][:]
+        if len(items) > 0:
+            concept_ids = [i['concept_id'] for i in items]
+            resp = fetch_records(resp, concept_ids, MatchType.PRIMARY_LABEL)
     except ClientError as e:
         print(e.response['Error']['Message'])
     if is_resp_complete(resp, sources):
@@ -230,7 +222,6 @@ def response_keyed(query: str, sources: List[str]):
         return resp
 
     # remaining sources get no match
-    print("Filling no matches...")
     resp = fill_no_matches(resp)
 
     return resp
