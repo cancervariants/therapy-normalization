@@ -77,7 +77,7 @@ class Wikidata(Base):
                         data_url=None)
         table = self.db.Table('Metadata')
         table.put_item(Item={
-            'src_name': SourceName.NCIT.value,
+            'src_name': SourceName.WIKIDATA.value,
             'data_license': metadata.data_license,
             'data_license_url': metadata.data_license_url,
             'version': metadata.version,
@@ -149,7 +149,7 @@ class Wikidata(Base):
                 })
 
         if 'label' in item.keys():
-            pk = f"{item['label']}##label"
+            pk = f"{item['label'].lower()}##label"
             batch.put_item(Item={
                 'label_and_type': pk,
                 'concept_id': concept_id_lower

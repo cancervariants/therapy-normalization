@@ -23,7 +23,7 @@ def cisplatin():
     """Create a cisplatin drug fixture."""
     params = {
         'label': 'cisplatin',
-        'concept_identifier': 'wikidata:Q412415',
+        'concept_id': 'wikidata:Q412415',
         'aliases':
             list((
                 'CDDP',
@@ -51,7 +51,7 @@ def interferon_alfacon_1():
     """Create a Interferon alfacon-1 drug fixture."""
     params = {
         'label': 'Interferon alfacon-1',
-        'concept_identifier': 'wikidata:Q15353101',
+        'concept_id': 'wikidata:Q15353101',
         'aliases':
             list((
                 'CIFN',
@@ -85,7 +85,7 @@ def test_concept_id_cisplatin(cisplatin, wikidata):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert normalized_drug.concept_id == cisplatin.concept_id
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
@@ -96,7 +96,7 @@ def test_concept_id_cisplatin(cisplatin, wikidata):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert normalized_drug.concept_id == cisplatin.concept_id
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
@@ -107,7 +107,7 @@ def test_concept_id_cisplatin(cisplatin, wikidata):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert normalized_drug.concept_id == cisplatin.concept_id
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
@@ -118,7 +118,7 @@ def test_concept_id_cisplatin(cisplatin, wikidata):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert normalized_drug.concept_id == cisplatin.concept_id
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
@@ -134,7 +134,7 @@ def test_primary_label_cisplatin(cisplatin, wikidata):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert normalized_drug.concept_id == cisplatin.concept_id
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
@@ -182,8 +182,8 @@ def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == interferon_alfacon_1.label
-    assert normalized_drug.concept_identifier ==\
-           interferon_alfacon_1.concept_identifier
+    assert normalized_drug.concept_id ==\
+           interferon_alfacon_1.concept_id
     assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(interferon_alfacon_1.other_identifiers)
@@ -195,8 +195,8 @@ def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == interferon_alfacon_1.label
-    assert normalized_drug.concept_identifier ==\
-           interferon_alfacon_1.concept_identifier
+    assert normalized_drug.concept_id ==\
+           interferon_alfacon_1.concept_id
     assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(interferon_alfacon_1.other_identifiers)
@@ -208,8 +208,8 @@ def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == interferon_alfacon_1.label
-    assert normalized_drug.concept_identifier ==\
-           interferon_alfacon_1.concept_identifier
+    assert normalized_drug.concept_id ==\
+           interferon_alfacon_1.concept_id
     assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(interferon_alfacon_1.other_identifiers)
@@ -221,8 +221,8 @@ def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == interferon_alfacon_1.label
-    assert normalized_drug.concept_identifier ==\
-           interferon_alfacon_1.concept_identifier
+    assert normalized_drug.concept_id ==\
+           interferon_alfacon_1.concept_id
     assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(interferon_alfacon_1.other_identifiers)
@@ -234,8 +234,8 @@ def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == interferon_alfacon_1.label
-    assert normalized_drug.concept_identifier == \
-           interferon_alfacon_1.concept_identifier
+    assert normalized_drug.concept_id == \
+           interferon_alfacon_1.concept_id
     assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(interferon_alfacon_1.other_identifiers)
@@ -252,8 +252,8 @@ def test_primary_label_interferon_alfacon_1(interferon_alfacon_1, wikidata):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == interferon_alfacon_1.label
-    assert normalized_drug.concept_identifier == \
-           interferon_alfacon_1.concept_identifier
+    assert normalized_drug.concept_id == \
+           interferon_alfacon_1.concept_id
     assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
     assert set(normalized_drug.other_identifiers) ==\
            set(interferon_alfacon_1.other_identifiers)
