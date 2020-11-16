@@ -133,49 +133,6 @@ class NCIt(Base):
             uq_nodes.add(class_object)
         return uq_nodes
 
-    def _add_meta(self):
-        """Load metadata"""
-        metadata = Meta(data_license="CC BY 4.0",
-                        data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
-                        version=self._version,
-                        data_url=self._SRC_DIR)
-        table = self.db.Table('Metadata')
-        table.put_item(Item={
-            'src_name': SourceName.NCIT.value,
-            'data_license': metadata.data_license,
-            'data_license_url': metadata.data_license_url,
-            'version': metadata.version,
-            'data_url': metadata.data_url
-        })
-
-    def _load_therapy(self, therapy: Therapy, batch):
-        """Load individual therapy into dynamodb table
-
-        Args:
-            therapy: complete Therapy instance
-            batch: dynamoDB batch_writer context manager object
-        """
-        item = therapy.dict()
-        concept_id_lower = item['concept_id'].lower()
-        aliases = {alias.lower() for alias in item['aliases']}
-        for alias in aliases:
-            pk = f"{alias}##alias"
-            batch.put_item(Item={
-                'label_and_type': pk,
-                'concept_id': concept_id_lower
-            })
-        if item['label']:
-            pk = f"{item['label']}##label"
-            batch.put_item(Item={
-                'label_and_type': pk,
-                'concept_id': concept_id_lower,
-            })
-        else:
-            del therapy['label']
-        item['label_and_type'] = f"{concept_id_lower}##identity"
-
-        batch.put_item(Item=item)
-
     def _transform_data(self, *args, **kwargs):
         """Get data from file and construct objects for loading"""
         ncit = owl.get_ontology(self._data_src.absolute().as_uri())
@@ -212,3 +169,46 @@ class NCIt(Base):
                                   aliases=aliases,
                                   other_identifiers=other_ids)
                 self._load_therapy(therapy, batch)
+
+    def _add_meta(self):
+        """Load metadata"""
+        metadata = Meta(data_license="CC BY 4.0",
+                        data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
+                        version=self._version,
+                        data_url=self._SRC_DIR)
+        table = self.db.Table('Metadata')
+        table.put_item(Item={
+            'src_name': SourceName.NCIT.value,
+            'data_license': metadata.data_license,
+            'data_license_url': metadata.data_license_url,
+            'version': metadata.version,
+            'data_url': metadata.data_url
+        })
+
+    def _load_therapy(self, therapy: Therapy, batch):
+        """Load individual therapy into dynamodb table
+
+        Args:
+            therapy: complete Therapy instance
+            batch: dynamoDB batch_writer context manager object
+        """
+        item = therapy.dict()
+        concept_id_lower = item['concept_id'].lower()
+        aliases = {alias.lower() for alias in item['aliases']}
+        for alias in aliases:
+            pk = f"{alias}##alias"
+            batch.put_item(Item={
+                'label_and_type': pk,
+                'concept_id': concept_id_lower
+            })
+        if item['label']:
+            pk = f"{item['label'].lower()}##label"
+            batch.put_item(Item={
+                'label_and_type': pk,
+                'concept_id': concept_id_lower,
+            })
+        else:
+            del therapy['label']
+        item['label_and_type'] = f"{concept_id_lower}##identity"
+
+        batch.put_item(Item=item)
