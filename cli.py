@@ -1,7 +1,7 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
 # from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt  # noqa: F401
-from therapy.etl import NCIt
+from therapy.etl import Wikidata, NCIt
 from therapy.schemas import SourceName
 from timeit import default_timer as timer
 from therapy.database import DB
@@ -26,7 +26,7 @@ class CLI:
         sources = {
             'ncit': NCIt,
             # 'chembl': ChEMBL,
-            # wikidata': Wikidata,
+            'wikidata': Wikidata,
             # 'drugbank': DrugBank,
         }
 
