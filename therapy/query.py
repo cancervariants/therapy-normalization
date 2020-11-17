@@ -54,10 +54,10 @@ def fetch_meta(src_name: str) -> Meta:
         table = DB.db.Table('Metadata')
         try:
             db_response = table.get_item(Key={'src_name': src_name})
+            response = Meta(**db_response['Item'])
+            DB.cached_sources[src_name] = response
         except ClientError as e:
             print(e.response['Error']['Message'])
-        response = Meta(**db_response['Item'])
-        DB.cached_sources[src_name] = response
         return response
 
 
@@ -120,10 +120,10 @@ def fetch_records(response: Dict[str, Dict],
             pk = f'{concept_id.lower()}##identity'
             filter_exp = Key('label_and_type').eq(pk)
             match = table.query(KeyConditionExpression=filter_exp)['Items'][0]
+            (response, src) = add_record(response, match, match_type)
+            matched_sources.add(src)
         except ClientError as e:
             print(e.response['Error']['Message'])
-        (response, src) = add_record(response, match, match_type)
-        matched_sources.add(src)
 
     return (response, matched_sources)
 
@@ -163,10 +163,10 @@ def check_concept_id(query: str,
         filter_exp = Key('label_and_type').eq(pk)
         try:
             db_response = table.query(KeyConditionExpression=filter_exp)
+            if len(db_response['Items']) > 0:
+                concept_id_items = db_response['Items']
         except ClientError as e:
             print(e.response['Error']['Message'])
-        if len(db_response['Items']) > 0:
-            concept_id_items = db_response['Items']
     elif len([p for p in NAMESPACE_LOOKUP.keys()
               if query.startswith(p)]) == 1:
         for p in NAMESPACE_LOOKUP.keys():
@@ -177,10 +177,10 @@ def check_concept_id(query: str,
                     db_response = table.query(
                         KeyConditionExpression=filter_exp
                     )
+                    if len(db_response['Items']) > 0:
+                        concept_id_items = db_response['Items']
                 except ClientError as e:
                     print(e.response['Error']['Message'])
-                if len(db_response['Items']) > 0:
-                    concept_id_items = db_response['Items']
     for item in concept_id_items:
         (resp, src_name) = add_record(resp, item, MatchType.CONCEPT_ID)
         sources = sources - {src_name}
@@ -203,18 +203,19 @@ def check_label_tn(query: str,
         Tuple with updated resp object and updated unmatched sources set
     """
     filter_exp = Key('label_and_type').eq(f'{query}##label')
+    items = []
     try:
         db_response = table.query(KeyConditionExpression=filter_exp)
+        items = db_response['Items'][:]
     except ClientError as e:
         print(e.response['Error']['Message'])
-    items = db_response['Items'][:]
 
     filter_exp = Key('label_and_type').eq(f'{query}##trade_name')
     try:
         db_response = table.query(KeyConditionExpression=filter_exp)
+        items += db_response['Items'][:]
     except ClientError as e:
         print(e.response['Error']['Message'])
-    items += db_response['Items'][:]
 
     if len(items) > 0:
         concept_ids = {i['concept_id'] for i in items}
@@ -346,7 +347,7 @@ def normalize(query_str, keyed=False, incl='', excl='', **params):
     # sources = {name.value.lower(): name.value for name in
     #            SourceName.__members__.values()}
 
-    # TODO testing remove
+    # TODO testing -- remove when dynamodb implementation complete
     sources = {"ncit": "NCIt", "wikidata": "Wikidata"}
 
     if not incl and not excl:
