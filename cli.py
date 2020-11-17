@@ -1,5 +1,7 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
+from botocore.exceptions import ClientError
+
 from therapy.etl import ChEMBL, DrugBank  # , Wikidata,
 from therapy.schemas import SourceName
 from timeit import default_timer as timer
@@ -47,8 +49,7 @@ class CLI:
                 raise Exception("Must enter a normalizer.")
             for n in normalizers:
                 if n in sources:
-                    # TODO: Fix so that self._delete_data(n) works
-                    # CLI()._delete_data(n, DYNAMODB)
+                    CLI()._delete_data(n)
                     click.echo(f"Loading {n}...")
                     start = timer()
                     sources[n]()
@@ -74,28 +75,29 @@ class CLI:
             )
 
         # Delete source's data from therapies table
-        # TODO: Batch Delete?
         try:
-            while True:
-                response = THERAPIES_TABLE.query(
-                    IndexName='src_index',
-                    KeyConditionExpression=Key(
-                        'src_name').eq(SourceName[f"{source.upper()}"].value)
-                )
-                records = response['Items']
-                if not records:
-                    break
-                for record in records:
-                    THERAPIES_TABLE.delete_item(
-                        Key={
-                            'label_and_type': record['label_and_type'],
-                            'concept_id': record['concept_id']
-                        },
-                        ConditionExpression="begins_with(concept_id, :src)",
-                        ExpressionAttributeValues={':src': source.lower()}
+            with THERAPIES_TABLE.batch_writer(
+                    overwrite_by_pkeys=['label_and_type', 'concept_id']) \
+                    as batch:
+                while True:
+                    response = THERAPIES_TABLE.query(
+                        IndexName='src_index',
+                        KeyConditionExpression=Key(
+                            'src_name').eq(
+                            SourceName[f"{source.upper()}"].value)
                     )
-        except ValueError:
-            print("Not a valid query.")
+                    records = response['Items']
+                    if not records:
+                        break
+                    for record in records:
+                        batch.delete_item(
+                            Key={
+                                'label_and_type': record['label_and_type'],
+                                'concept_id': record['concept_id']
+                            }
+                        )
+        except ClientError as e:
+            print(e.response['Error']['Message'])
 
         click.echo(f"Finished deleting the {source} source.")
 
