@@ -2,7 +2,7 @@
 from .base import Base
 from therapy import PROJECT_ROOT
 from therapy.schemas import SourceName, NamespacePrefix, Therapy, Meta
-from therapy.database import DB
+from therapy.database import THERAPIES_TABLE, METADATA_TABLE
 import logging
 import owlready2 as owl
 from owlready2.entity import ThingClass
@@ -38,7 +38,6 @@ class NCIt(Base):
         self._SRC_DIR = src_dir
         self._SRC_FNAME = src_fname
         self._extract_data()
-        self.db = DB.db
         self._transform_data()
 
     def _download_data(self):
@@ -141,8 +140,7 @@ class NCIt(Base):
         uq_nodes = set()
         uq_nodes = self.get_desc_nodes(ncit.C1909, uq_nodes)
         uq_nodes = self.get_typed_nodes(uq_nodes, ncit)
-        table = self.db.Table('Therapies')
-        with table.batch_writer() as batch:  # noqa: E501
+        with THERAPIES_TABLE.batch_writer() as batch:
             for node in uq_nodes:
                 concept_id = f"{NamespacePrefix.NCIT.value}:{node.name}"
                 if node.P108:
@@ -176,8 +174,7 @@ class NCIt(Base):
                         data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
                         version=self._version,
                         data_url=self._SRC_DIR)
-        table = self.db.Table('Metadata')
-        table.put_item(Item={
+        METADATA_TABLE.put_item(Item={
             'src_name': SourceName.NCIT.value,
             'data_license': metadata.data_license,
             'data_license_url': metadata.data_license_url,

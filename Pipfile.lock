@@ -1,7 +1,11 @@
 {
     "_meta": {
         "hash": {
+<<<<<<< HEAD
             "sha256": "58b25b3cf8a67938480d9ed5691b0e62e47bc6d6468b0ea3508121a0d9e848de"
+=======
+            "sha256": "98934922521d138605bc05e6eb8b831efe1695da77ba4b8a45a8b78feb3272c0"
+>>>>>>> dynamodb-chembl
         },
         "pipfile-spec": 6,
         "requires": {

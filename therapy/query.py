@@ -3,7 +3,7 @@ import re
 from typing import List, Dict, Set
 
 from uvicorn.config import logger
-from therapy.database import DB
+from therapy.database import THERAPIES_TABLE, METADATA_TABLE, cached_sources
 from therapy.schemas import Drug, Meta, MatchType, SourceName, \
     NamespacePrefix, SourceIDAfterNamespace
 from botocore.exceptions import ClientError
@@ -48,17 +48,16 @@ def emit_warnings(query_str):
 
 def fetch_meta(src_name: str) -> Meta:
     """Fetch metadata for src_name."""
-    if src_name in DB.cached_sources.keys():
-        return DB.cached_sources[src_name]
+    if src_name in cached_sources.keys():
+        return cached_sources[src_name]
     else:
-        table = DB.db.Table('Metadata')
         try:
-            db_response = table.get_item(Key={'src_name': src_name})
+            db_response = METADATA_TABLE.get_item(Key={'src_name': src_name})
             response = Meta(**db_response['Item'])
-            DB.cached_sources[src_name] = response
+            cached_sources[src_name] = response
+            return response
         except ClientError as e:
             print(e.response['Error']['Message'])
-        return response
 
 
 def add_record(response: Dict[str, Dict],
@@ -114,12 +113,12 @@ def fetch_records(response: Dict[str, Dict],
         Set of source names of matched records
     """
     matched_sources = set()
-    table = DB.db.Table('Therapies')
     for concept_id in concept_ids:
         try:
             pk = f'{concept_id.lower()}##identity'
             filter_exp = Key('label_and_type').eq(pk)
-            match = table.query(KeyConditionExpression=filter_exp)['Items'][0]
+            result = THERAPIES_TABLE.query(KeyConditionExpression=filter_exp)
+            match = result['Items'][0]
             (response, src) = add_record(response, match, match_type)
             matched_sources.add(src)
         except ClientError as e:
@@ -141,7 +140,6 @@ def fill_no_matches(resp: Dict) -> Dict:
 
 
 def check_concept_id(query: str,
-                     table,  # dynamoDB Table object
                      resp: Dict,
                      sources: Set[str]) -> (Dict, Set):
     """Check query for concept ID match. Should only find 0 or 1 matches,
@@ -149,7 +147,6 @@ def check_concept_id(query: str,
 
     Args:
         query: search string
-        table: DynamoDB table object for Therapies
         resp: in-progress response object to return to client
         sources: remaining unmatched sources
 
@@ -162,9 +159,9 @@ def check_concept_id(query: str,
         pk = f'{query}##identity'
         filter_exp = Key('label_and_type').eq(pk)
         try:
-            db_response = table.query(KeyConditionExpression=filter_exp)
-            if len(db_response['Items']) > 0:
-                concept_id_items = db_response['Items']
+            result = THERAPIES_TABLE.query(KeyConditionExpression=filter_exp)
+            if len(result['Items']) > 0:
+                concept_id_items = result['Items']
         except ClientError as e:
             print(e.response['Error']['Message'])
     elif len([p for p in NAMESPACE_LOOKUP.keys()
@@ -174,11 +171,11 @@ def check_concept_id(query: str,
                 pk = f'{NAMESPACE_LOOKUP[p].lower()}:{query}##identity'
                 filter_exp = Key('label_and_type').eq(pk)
                 try:
-                    db_response = table.query(
+                    result = THERAPIES_TABLE.query(
                         KeyConditionExpression=filter_exp
                     )
-                    if len(db_response['Items']) > 0:
-                        concept_id_items = db_response['Items']
+                    if len(result['Items']) > 0:  # TODO remove check?
+                        concept_id_items = result['Items']
                 except ClientError as e:
                     print(e.response['Error']['Message'])
     for item in concept_id_items:
@@ -188,14 +185,12 @@ def check_concept_id(query: str,
 
 
 def check_label_tn(query: str,
-                   table,  # dynamoDB Table object
                    resp: Dict,
                    sources: Set[str]) -> (Dict, Set):
     """Check query for label/trade name match.
 
     Args:
         query: search string
-        table: DynamoDB table object for Therapies
         resp: in-progress response object to return to client
         sources: remaining unmatched sources
 
@@ -205,14 +200,14 @@ def check_label_tn(query: str,
     filter_exp = Key('label_and_type').eq(f'{query}##label')
     items = []
     try:
-        db_response = table.query(KeyConditionExpression=filter_exp)
+        db_response = THERAPIES_TABLE.query(KeyConditionExpression=filter_exp)
         items = db_response['Items'][:]
     except ClientError as e:
         print(e.response['Error']['Message'])
 
     filter_exp = Key('label_and_type').eq(f'{query}##trade_name')
     try:
-        db_response = table.query(KeyConditionExpression=filter_exp)
+        db_response = THERAPIES_TABLE.query(KeyConditionExpression=filter_exp)
         items += db_response['Items'][:]
     except ClientError as e:
         print(e.response['Error']['Message'])
@@ -226,14 +221,12 @@ def check_label_tn(query: str,
 
 
 def check_alias(query: str,
-                table,
                 resp: Dict,
                 sources: Set) -> (Dict, Set):
     """Check query for alias match.
 
     Args:
         query: search string
-        table: DynamoDB table object for Therapies
         resp: in-progress response object to return to client
         sources: remaining unmatched sources
 
@@ -242,7 +235,7 @@ def check_alias(query: str,
     """
     filter_exp = Key('label_and_type').eq(f'{query}##alias')
     try:
-        db_response = table.query(KeyConditionExpression=filter_exp)
+        db_response = THERAPIES_TABLE.query(KeyConditionExpression=filter_exp)
         if 'Items' in db_response.keys():
             concept_ids = [i['concept_id'] for i in db_response['Items']]
             (resp, matched_sources) = fetch_records(resp, concept_ids,
@@ -276,20 +269,18 @@ def response_keyed(query: str, sources: Set[str]) -> Dict:
         return resp
     query_l = query.lower()
 
-    table = DB.db.Table('Therapies')
-
     # check if concept ID match
-    (resp, sources) = check_concept_id(query_l, table, resp, sources)
+    (resp, sources) = check_concept_id(query_l, resp, sources)
     if len(sources) == 0:
         return resp
 
     # check if label and trade_name match
-    (resp, sources) = check_label_tn(query_l, table, resp, sources)
+    (resp, sources) = check_label_tn(query_l, resp, sources)
     if len(sources) == 0:
         return resp
 
     # check alias match
-    (resp, sources) = check_alias(query_l, table, resp, sources)
+    (resp, sources) = check_alias(query_l, resp, sources)
     if len(sources) == 0:
         return resp
 
