@@ -10,7 +10,7 @@ class Therapy(BaseModel):
     """A procedure or substance used in the treatment of a disease."""
 
     label: str
-    concept_identifier: str
+    concept_id: str
     aliases: List[str]
     other_identifiers: List[str]
 
@@ -157,7 +157,7 @@ class NamespacePrefix(Enum):
     PHARMGKB = "pharmgkb"
 
 
-class MetaResponse(BaseModel):
+class Meta(BaseModel):
     """Metadata for a given source to return in response object."""
 
     data_license: str
@@ -170,7 +170,7 @@ class MetaResponse(BaseModel):
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
-                         model: Type['MetaResponse']) -> None:
+                         model: Type['Meta']) -> None:
             """Configure OpenAPI schema"""
             if 'title' in schema.keys():
                 schema.pop('title', None)
@@ -193,7 +193,7 @@ class MatchesKeyed(BaseModel):
 
     match_type: MatchType
     records: List[Drug]
-    meta_: MetaResponse
+    meta_: Meta
 
     class Config:
         """Enables orm_mode"""
@@ -228,7 +228,7 @@ class MatchesListed(BaseModel):
     source: SourceName
     match_type: MatchType
     records: List[Drug]
-    meta_: MetaResponse
+    meta_: Meta
 
     class Config:
         """Enables orm_mode"""

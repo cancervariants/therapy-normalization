@@ -5,13 +5,13 @@ DYNAMODB = boto3.resource('dynamodb', endpoint_url="http://localhost:8000")
 DYNAMODBCLIENT = \
     boto3.client('dynamodb', endpoint_url="http://localhost:8000")
 THERAPIES_TABLE = DYNAMODB.Table('Therapies')
-METADATA_TABLE = DYNAMODB.Table('MetaData')
+METADATA_TABLE = DYNAMODB.Table('Metadata')
 
 
 class Database:
     """The database class."""
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Initialize Database class."""
         existing_tables = DYNAMODBCLIENT.list_tables()['TableNames']
         self.create_therapies_table(DYNAMODB, existing_tables)
@@ -74,7 +74,7 @@ class Database:
 
     def create_meta_data_table(self, dynamodb, existing_tables):
         """Create MetaData table if not exists."""
-        table_name = 'MetaData'
+        table_name = 'Metadata'
         if table_name not in existing_tables:
             dynamodb.create_table(
                 TableName=table_name,
