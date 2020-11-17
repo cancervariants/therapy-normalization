@@ -141,7 +141,7 @@ class NCIt(Base):
         uq_nodes = set()
         uq_nodes = self.get_desc_nodes(ncit.C1909, uq_nodes)
         uq_nodes = self.get_typed_nodes(uq_nodes, ncit)
-        with THERAPIES_TABLE.batch_writer() as batch:  # noqa: E501
+        with THERAPIES_TABLE.batch_writer() as batch:
             for node in uq_nodes:
                 concept_id = f"{NamespacePrefix.NCIT.value}:{node.name}"
                 if node.P108:

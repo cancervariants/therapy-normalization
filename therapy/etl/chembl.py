@@ -4,7 +4,6 @@ from therapy import PROJECT_ROOT
 from ftplib import FTP
 import logging
 import tarfile  # noqa: F401
-from therapy import database  # noqa: F401
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
 import sqlite3
 from therapy.database import THERAPIES_TABLE, METADATA_TABLE

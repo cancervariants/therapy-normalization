@@ -4,7 +4,7 @@ from botocore.exceptions import ClientError
 from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt
 from therapy.schemas import SourceName
 from timeit import default_timer as timer
-from therapy.database import Database, DYNAMODB, THERAPIES_TABLE, \
+from therapy.database import Database, DYNAMODBCLIENT, THERAPIES_TABLE, \
     METADATA_TABLE
 from boto3.dynamodb.conditions import Key
 
@@ -24,8 +24,6 @@ class CLI:
     )
     def update_normalizer_db(normalizer, all):
         """Update select normalizer(s) sources in the therapy database."""
-        DB = Database()
-
         sources = {
             'chembl': ChEMBL,
             'ncit': NCIt,
@@ -34,13 +32,10 @@ class CLI:
         }
 
         if all:
-            CLI()._delete_all_data(DB)
-            tables = DB.db_client.list_tables()['TableNames']
-            DB.create_meta_data_table(tables)
-            tables = DB.db_client.list_tables()['TableNames']
-            DB.create_therapies_table(tables)
+            CLI()._delete_all_data()
+            Database()
             for n in sources:
-                CLI()._delete_data(n, DYNAMODB)
+                CLI()._delete_data(n)
                 click.echo(f"Loading {n}...")
                 start = timer()
                 sources[n]()
@@ -48,6 +43,7 @@ class CLI:
                 click.echo(f"Loaded {n} in {end - start} seconds.")
             click.echo('Finished updating all normalizer sources.')
         else:
+            Database()
             normalizers = normalizer.lower().split()
             if len(normalizers) == 0:
                 raise Exception("Must enter a normalizer.")
@@ -62,10 +58,10 @@ class CLI:
                 else:
                     raise Exception("Not a normalizer source.")
 
-    def _delete_all_data(self, db):
-        tables = db.db_client.list_tables()['TableNames']
+    def _delete_all_data(self):
+        tables = DYNAMODBCLIENT.list_tables()['TableNames']
         for table in tables:
-            response = db.db_client.delete_table(TableName=table)  # noqa F841
+            response = DYNAMODBCLIENT.delete_table(TableName=table)  # noqa F841
             click.echo(f"Deleted table: {table}")
 
     def _delete_data(self, source):
