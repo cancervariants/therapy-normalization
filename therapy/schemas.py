@@ -49,7 +49,7 @@ class Drug(Therapy):
     """A pharmacologic substance used to treat a medical condition."""
 
     approval_status: Optional[ApprovalStatus]
-    trade_name: Optional[List[str]]
+    trade_names: Optional[List[str]]
     label: Optional[str]
 
     class Config:
