@@ -2,7 +2,6 @@
 import boto3
 
 DYNAMODB = boto3.resource('dynamodb', endpoint_url="http://localhost:8000")
-print("called database")
 DYNAMODBCLIENT = \
     boto3.client('dynamodb', endpoint_url="http://localhost:8000")
 THERAPIES_TABLE = DYNAMODB.Table('Therapies')
