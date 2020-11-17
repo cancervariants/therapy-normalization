@@ -129,6 +129,11 @@ class SourceIDAfterNamespace(Enum):
     PUBCHEMSUBSTANCE = ""
     RXNORM = ""
     UMLS = ""
+    CHEBI = ""
+    KEGGCOMPOUND = ""
+    KEGGDRUG = ""
+    BINDINGDB = ""
+    PHARMGKB = ""
 
 
 class NamespacePrefix(Enum):
@@ -145,6 +150,11 @@ class NamespacePrefix(Enum):
     FDA = "fda"
     ISO = "iso"
     UMLS = "umls"
+    CHEBI = "chebi"
+    KEGGCOMPOUND = "kegg.compound"
+    KEGGDRUG = "kegg.drug"
+    BINDINGDB = "bindingdb"
+    PHARMGKB = "pharmgkb"
 
 
 class Meta(BaseModel):
