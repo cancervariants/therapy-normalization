@@ -77,6 +77,8 @@ def add_record(response: Dict[str, Dict],
     del item['label_and_type']
     if 'aliases' not in item.keys():
         item['aliases'] = []
+    if 'other_identifiers' not in item.keys():
+        item['other_identifiers'] = []
 
     drug = Drug(**item)
     src_name = PREFIX_LOOKUP[drug.concept_id.split(':')[0]]
@@ -154,30 +156,27 @@ def check_concept_id(query: str,
         Tuple with updated resp object and updated unmatched sources set
     """
     concept_id_items = []
-    if len([p for p in PREFIX_LOOKUP.keys()
-            if query.startswith(p)]) == 1:
+    if [p for p in PREFIX_LOOKUP.keys() if query.startswith(p)]:
         pk = f'{query}##identity'
         filter_exp = Key('label_and_type').eq(pk)
         try:
             result = THERAPIES_TABLE.query(KeyConditionExpression=filter_exp)
             if len(result['Items']) > 0:
-                concept_id_items = result['Items']
+                concept_id_items += result['Items']
         except ClientError as e:
             print(e.response['Error']['Message'])
-    elif len([p for p in NAMESPACE_LOOKUP.keys()
-              if query.startswith(p)]) == 1:
-        for p in NAMESPACE_LOOKUP.keys():
-            if query.startswith(p):
-                pk = f'{NAMESPACE_LOOKUP[p].lower()}:{query}##identity'
-                filter_exp = Key('label_and_type').eq(pk)
-                try:
-                    result = THERAPIES_TABLE.query(
-                        KeyConditionExpression=filter_exp
-                    )
-                    if len(result['Items']) > 0:  # TODO remove check?
-                        concept_id_items = result['Items']
-                except ClientError as e:
-                    print(e.response['Error']['Message'])
+    for prefix in [p for p in NAMESPACE_LOOKUP.keys() if query.startswith(p)]:
+        pk = f'{NAMESPACE_LOOKUP[prefix].lower()}:{query}##identity'
+        filter_exp = Key('label_and_type').eq(pk)
+        try:
+            result = THERAPIES_TABLE.query(
+                KeyConditionExpression=filter_exp
+            )
+            if len(result['Items']) > 0:  # TODO remove check?
+                concept_id_items += result['Items']
+        except ClientError as e:
+            print(e.response['Error']['Message'])
+
     for item in concept_id_items:
         (resp, src_name) = add_record(resp, item, MatchType.CONCEPT_ID)
         sources = sources - {src_name}
@@ -335,11 +334,11 @@ def normalize(query_str, keyed=False, incl='', excl='', **params):
     Returns:
         Dict containing all matches found in sources.
     """
-    # sources = {name.value.lower(): name.value for name in
-    #            SourceName.__members__.values()}
+    sources = {name.value.lower(): name.value for name in
+               SourceName.__members__.values()}
 
     # TODO testing -- remove when dynamodb implementation complete
-    sources = {"ncit": "NCIt", "wikidata": "Wikidata"}
+    # sources = {"ncit": "NCIt", "wikidata": "Wikidata"}
 
     if not incl and not excl:
         query_sources = set(sources.values())
