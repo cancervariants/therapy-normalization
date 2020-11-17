@@ -21,7 +21,7 @@ def cisplatin():
     """Create a cisplatin drug fixture."""
     params = {
         'label': 'CISPLATIN',
-        'concept_identifier': 'chembl:CHEMBL11359',
+        'concept_id': 'chembl:CHEMBL11359',
         'aliases': list((
             'Cisplatin',
             'Cis-Platinum II',
@@ -36,7 +36,7 @@ def cisplatin():
         )),
         'approval_status': 'approved',
         'other_identifiers': list(),
-        'trade_name': list((
+        'trade_names': list((
             'PLATINOL',
             'PLATINOL-AQ',
             'CISPLATIN'
@@ -50,12 +50,12 @@ def l745870():
     """Create a L-745870 drug fixture."""
     params = {
         'label': 'L-745870',
-        'concept_identifier': 'chembl:CHEMBL267014',
+        'concept_id': 'chembl:CHEMBL267014',
         'aliases': list(('L-745870',)),
         'approval_status': None,
         'other_identifiers': list(),
         'max_phase': 0,
-        'trade_name': list()
+        'trade_names': list()
     }
     return Drug(**params)
 
@@ -69,7 +69,7 @@ def test_concept_id_cisplatin(cisplatin, chembl):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert normalized_drug.concept_id == cisplatin.concept_id
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = chembl.normalize('CHEMBL11359')
@@ -77,7 +77,7 @@ def test_concept_id_cisplatin(cisplatin, chembl):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert normalized_drug.concept_id == cisplatin.concept_id
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = chembl.normalize('chembl:chembl11359')
@@ -86,7 +86,7 @@ def test_concept_id_cisplatin(cisplatin, chembl):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert normalized_drug.concept_id == cisplatin.concept_id
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = chembl.normalize('cHEmbl:chembl11359')
@@ -95,7 +95,7 @@ def test_concept_id_cisplatin(cisplatin, chembl):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert normalized_drug.concept_id == cisplatin.concept_id
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = chembl.normalize('cHEmbl:CHEMBL11359')
@@ -104,7 +104,7 @@ def test_concept_id_cisplatin(cisplatin, chembl):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert normalized_drug.concept_id == cisplatin.concept_id
     assert normalized_drug.approval_status == cisplatin.approval_status
 
 
@@ -115,22 +115,34 @@ def test_primary_label_cisplatin(cisplatin, chembl):
     normalizer_response = chembl.normalize('CISPLATIN')
     assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
     assert len(normalizer_response['records']) == 2
-    normalized_drug = normalizer_response['records'][0]
+    if len(normalizer_response['records'][0].aliases) >\
+            len(normalizer_response['records'][1].aliases):
+        ind = 0
+    else:
+        ind = 1
+    normalized_drug = normalizer_response['records'][ind]
     for alias in normalized_drug.aliases:
         assert alias in cisplatin.aliases
     assert len(normalized_drug.aliases) == len(cisplatin.aliases)
-    assert normalized_drug.trade_name == cisplatin.trade_name
+    for tn in normalized_drug.trade_names:
+        assert tn in cisplatin.trade_names
+    assert len(normalized_drug.trade_names) == len(cisplatin.trade_names)
     assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert normalized_drug.concept_id == cisplatin.concept_id
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = chembl.normalize('cisplatin')
     assert normalizer_response['match_type'] ==\
            MatchType.PRIMARY_LABEL
     assert len(normalizer_response['records']) == 2
-    normalized_drug = normalizer_response['records'][0]
+    if len(normalizer_response['records'][0].aliases) >\
+            len(normalizer_response['records'][1].aliases):
+        ind = 0
+    else:
+        ind = 1
+    normalized_drug = normalizer_response['records'][ind]
     assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert normalized_drug.concept_id == cisplatin.concept_id
     assert normalized_drug.approval_status == cisplatin.approval_status
 
 
@@ -143,7 +155,7 @@ def test_alias_cisplatin(cisplatin, chembl):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert normalized_drug.concept_id == cisplatin.concept_id
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = chembl.normalize('INT230-6 COMPONENT CISPLATIn')
@@ -151,7 +163,7 @@ def test_alias_cisplatin(cisplatin, chembl):
            MatchType.ALIAS
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_identifier == cisplatin.concept_identifier
+    assert normalized_drug.concept_id == cisplatin.concept_id
     assert normalized_drug.approval_status == cisplatin.approval_status
 
 
@@ -180,7 +192,7 @@ def test_concept_id_l745870(l745870, chembl):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == l745870.label
-    assert normalized_drug.concept_identifier == l745870.concept_identifier
+    assert normalized_drug.concept_id == l745870.concept_id
     assert normalized_drug.approval_status == l745870.approval_status
 
     normalizer_response = chembl.normalize('CHEMBL267014')
@@ -188,7 +200,7 @@ def test_concept_id_l745870(l745870, chembl):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == l745870.label
-    assert normalized_drug.concept_identifier == l745870.concept_identifier
+    assert normalized_drug.concept_id == l745870.concept_id
     assert normalized_drug.approval_status == l745870.approval_status
 
     normalizer_response = chembl.normalize('chembl:chembl267014')
@@ -197,7 +209,7 @@ def test_concept_id_l745870(l745870, chembl):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == l745870.label
-    assert normalized_drug.concept_identifier == l745870.concept_identifier
+    assert normalized_drug.concept_id == l745870.concept_id
     assert normalized_drug.approval_status == l745870.approval_status
 
     normalizer_response = chembl.normalize('cHEmbl:chembl267014')
@@ -206,7 +218,7 @@ def test_concept_id_l745870(l745870, chembl):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == l745870.label
-    assert normalized_drug.concept_identifier == l745870.concept_identifier
+    assert normalized_drug.concept_id == l745870.concept_id
     assert normalized_drug.approval_status == l745870.approval_status
 
     normalizer_response = chembl.normalize('cHEmbl:CHEMBL267014')
@@ -215,7 +227,7 @@ def test_concept_id_l745870(l745870, chembl):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == l745870.label
-    assert normalized_drug.concept_identifier == l745870.concept_identifier
+    assert normalized_drug.concept_id == l745870.concept_id
     assert normalized_drug.approval_status == l745870.approval_status
 
 
@@ -228,9 +240,9 @@ def test_primary_label_l745870(l745870, chembl):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == l745870.label
-    assert normalized_drug.concept_identifier == l745870.concept_identifier
+    assert normalized_drug.concept_id == l745870.concept_id
     assert normalized_drug.aliases == l745870.aliases
-    assert normalized_drug.concept_identifier == l745870.concept_identifier
+    assert normalized_drug.concept_id == l745870.concept_id
     assert normalized_drug.approval_status == l745870.approval_status
 
     normalizer_response = chembl.normalize('l-745870')
@@ -239,9 +251,9 @@ def test_primary_label_l745870(l745870, chembl):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == l745870.label
-    assert normalized_drug.concept_identifier == l745870.concept_identifier
+    assert normalized_drug.concept_id == l745870.concept_id
     assert normalized_drug.aliases == l745870.aliases
-    assert normalized_drug.concept_identifier == l745870.concept_identifier
+    assert normalized_drug.concept_id == l745870.concept_id
     assert normalized_drug.approval_status == l745870.approval_status
 
 

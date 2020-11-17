@@ -6,6 +6,7 @@ DYNAMODBCLIENT = \
     boto3.client('dynamodb', endpoint_url="http://localhost:8000")
 THERAPIES_TABLE = DYNAMODB.Table('Therapies')
 METADATA_TABLE = DYNAMODB.Table('Metadata')
+cached_sources = dict()
 
 
 class Database:
