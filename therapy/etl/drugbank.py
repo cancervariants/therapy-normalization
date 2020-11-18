@@ -12,15 +12,22 @@ logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
 
 DRUGBANK_IDENTIFIER_PREFIXES = {
+    'ChEBI': NamespacePrefix.CHEBI.value,
     'ChEMBL': NamespacePrefix.CHEMBL.value,
     'PubChem Compound': NamespacePrefix.PUBCHEMCOMPOUND.value,
     'PubChem Substance': NamespacePrefix.PUBCHEMSUBSTANCE.value,
-    'RxCUI': NamespacePrefix.RXNORM.value,
-    'ChEBI': NamespacePrefix.CHEBI.value,
     'KEGG Compound': NamespacePrefix.KEGGCOMPOUND.value,
     'KEGG Drug': NamespacePrefix.KEGGDRUG.value,
+    'ChemSpider': NamespacePrefix.CHEMSPIDER.value,
     'BindingDB': NamespacePrefix.BINDINGDB.value,
-    'PharmGKB': NamespacePrefix.PHARMGKB.value
+    'PharmGKB': NamespacePrefix.PHARMGKB.value,
+    'ZINC': NamespacePrefix.ZINC.value,
+    'RxCUI': NamespacePrefix.RXNORM.value,
+    'PDB': NamespacePrefix.PDB.value,
+    'Therapeutic Targets Database': NamespacePrefix.THERAPEUTICTARGETSDB.value,
+    'GenBank': NamespacePrefix.GENBANK.value,
+    'IUPHAR': NamespacePrefix.IUPHAR.value,
+    'Guide to Pharmacology': NamespacePrefix.GUIDETOPHARMACOLOGY.value
 }
 
 
