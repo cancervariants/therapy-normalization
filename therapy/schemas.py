@@ -134,6 +134,13 @@ class SourceIDAfterNamespace(Enum):
     KEGGDRUG = ""
     BINDINGDB = ""
     PHARMGKB = ""
+    CHEMSPIDER = ""
+    ZINC = ""
+    PDB = ""
+    THERAPEUTICTARGETSDB = ""
+    GENBANK = ""
+    IUPHAR = ""
+    GUIDETOPHARMACOLOGY = ""
 
 
 class NamespacePrefix(Enum):
@@ -155,6 +162,13 @@ class NamespacePrefix(Enum):
     KEGGDRUG = "kegg.drug"
     BINDINGDB = "bindingdb"
     PHARMGKB = "pharmgkb"
+    CHEMSPIDER = "chemspider"
+    ZINC = "zinc"
+    PDB = "pdb"  # TODO: Check
+    THERAPEUTICTARGETSDB = "ttd"  # TODO: Check
+    GENBANK = "genbank"  # TODO: Check
+    IUPHAR = "iuphar"  # TODO: Check
+    GUIDETOPHARMACOLOGY = "gtopdb"  # TODO: Check
 
 
 class Meta(BaseModel):
