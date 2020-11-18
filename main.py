@@ -13,7 +13,6 @@ app = FastAPI()
 def custom_openapi():
     """Generate custom fields for OpenAPI response"""
     if app.openapi_schema:
-        print(app.openapi_schema)
         return app.openapi_schema
     openapi_schema = get_openapi(
         title="Therapy Normalizer",
@@ -21,15 +20,17 @@ def custom_openapi():
         description="TODO Description here",  # TODO
         routes=app.routes
     )
-    openapi_schema['info']['license'] = {  # TODO
-        "name": "name of our license",
-        "url": "link to it"
-    }
-    openapi_schema['info']['contact'] = {  # TODO
-        "name": "alex wagner",
-        "email": "his email"
-    }
-    return openapi_schema
+    # TODO: Figure out how to add these back
+    # openapi_schema['info']['license'] = {  # TODO
+    #     "name": "name of our license",
+    #     "url": "link to it"
+    # }
+    # openapi_schema['info']['contact'] = {  # TODO
+    #     "name": "alex wagner",
+    #     "email": "his email"
+    # }
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
 
 
 app.openapi = custom_openapi
