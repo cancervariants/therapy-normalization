@@ -101,9 +101,13 @@ class DrugBank(Base):
             if params['aliases']:
                 self._load_aliases(params['aliases'], params['concept_id'],
                                    batch)
+            else:
+                del params['aliases']
             if params['trade_names']:
                 self._load_trade_names(params['trade_names'],
                                        params['concept_id'], batch)
+            else:
+                del params['trade_names']
 
     def _load_data(self, *args, **kwargs):
         """Load the DrugBank source into normalized database."""
