@@ -37,10 +37,7 @@ def cisplatin():
             'Abiplatin',
             'Cisplatyl',
             'Platidiam',
-            'Platin',
-            # Generic Products
-            'CISplatin',
-            'PMS-cisplatin'
+            'Platin'
         ],
         'approval_status': 'approved',
         'other_identifiers': [
@@ -69,7 +66,8 @@ def cisplatin():
             'Cisplatin Injection, Mylan Std.',
             'Platinol',
             'Platinol AQ Inj 1mg/ml',
-            'Platinol-AQ'
+            'Platinol-AQ',
+            'PMS-cisplatin'
         ]
     }
     return Drug(**params)
@@ -125,7 +123,6 @@ def db14201():
             'zinc:ZINC000001555224',
             'rxcui:1306112'
         ],
-        # TODO: Check if this should be a trade name
         'trade_names': [
             'T.R.U.E. Test Thin-Layer Rapid Use Patch Test'
         ]
@@ -557,7 +554,6 @@ def test_db14201_trade_name(db14201, drugbank):
     normalizer_response = \
         drugbank.normalize('T.R.U.E. Test Thin-Layer Rapid Use Patch Test')
     assert normalizer_response['match_type'] == MatchType.TRADE_NAME
-    assert len(normalizer_response['records']) == 53
 
 
 def test_no_match(drugbank):
