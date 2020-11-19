@@ -193,6 +193,8 @@ class NCIt(Base):
         item = therapy.dict()
         concept_id_lower = item['concept_id'].lower()
         aliases = {alias.lower() for alias in item['aliases']}
+        if len(aliases) == 0:
+            item['aliases'] = list()
         for alias in aliases:
             pk = f"{alias}##alias"
             batch.put_item(Item={
@@ -211,5 +213,5 @@ class NCIt(Base):
             del therapy['label']
         item['label_and_type'] = f"{concept_id_lower}##identity"
         item['src_name'] = SourceName.NCIT.value
-
+        item['trade_names'] = list()
         batch.put_item(Item=item)

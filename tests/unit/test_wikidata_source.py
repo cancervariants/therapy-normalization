@@ -24,24 +24,23 @@ def cisplatin():
     params = {
         'label': 'cisplatin',
         'concept_id': 'wikidata:Q412415',
-        'aliases':
-            list((
-                'CDDP',
-                'Cis-DDP',
-                'CIS-DDP',
-                'cis-diamminedichloroplatinum(II)',
-                'Platinol',
-                'Platinol-AQ'
-            )),
+        'aliases': [
+            'CDDP',
+            'Cis-DDP',
+            'CIS-DDP',
+            'cis-diamminedichloroplatinum(II)',
+            'Platinol',
+            'Platinol-AQ'
+        ],
         'approval_status': None,
-        'other_identifiers':
-            list((
-                'chembl:CHEMBL11359',
-                'rxcui:2555',
-                'drugbank:DB00515',
-                'chemidplus:15663-27-1',
-                'pubchem.compound:5702198',
-            )),
+        'other_identifiers': [
+            'chembl:CHEMBL11359',
+            'rxcui:2555',
+            'drugbank:DB00515',
+            'chemidplus:15663-27-1',
+            'pubchem.compound:5702198'
+        ],
+        'trade_names': []
     }
     return Drug(**params)
 
@@ -52,26 +51,25 @@ def interferon_alfacon_1():
     params = {
         'label': 'Interferon alfacon-1',
         'concept_id': 'wikidata:Q15353101',
-        'aliases':
-            list((
-                'CIFN',
-                'consensus interferon',
-                'IFN Alfacon-1',
-                'Interferon Consensus, Methionyl',
-                'methionyl interferon consensus',
-                'methionyl-interferon-consensus',
-                'rCon-IFN',
-                'Recombinant Consensus Interferon',
-                'Recombinant methionyl human consensus interferon',
-            )),
+        'aliases': [
+            'CIFN',
+            'consensus interferon',
+            'IFN Alfacon-1',
+            'Interferon Consensus, Methionyl',
+            'methionyl interferon consensus',
+            'methionyl-interferon-consensus',
+            'rCon-IFN',
+            'Recombinant Consensus Interferon',
+            'Recombinant methionyl human consensus interferon'
+        ],
         'approval_status': None,
-        'other_identifiers':
-            list((
-                'chembl:CHEMBL1201557',
-                'rxcui:59744',
-                'chemidplus:118390-30-0',
-                'drugbank:DB00069',
-            )),
+        'other_identifiers': [
+            'chembl:CHEMBL1201557',
+            'rxcui:59744',
+            'chemidplus:118390-30-0',
+            'drugbank:DB00069'
+        ],
+        'trade_names': []
     }
     return Drug(**params)
 
@@ -89,6 +87,7 @@ def test_concept_id_cisplatin(cisplatin, wikidata):
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = wikidata.normalize('wiKIdata:Q412415')
@@ -100,6 +99,7 @@ def test_concept_id_cisplatin(cisplatin, wikidata):
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = wikidata.normalize('wiKIdata:q412415')
@@ -111,6 +111,7 @@ def test_concept_id_cisplatin(cisplatin, wikidata):
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = wikidata.normalize('Q412415')
@@ -122,6 +123,7 @@ def test_concept_id_cisplatin(cisplatin, wikidata):
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
 
@@ -138,11 +140,21 @@ def test_primary_label_cisplatin(cisplatin, wikidata):
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = wikidata.normalize('Cisplatin')
     assert normalizer_response['match_type'] == \
            MatchType.PRIMARY_LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == cisplatin.label
+    assert normalized_drug.concept_id == cisplatin.concept_id
+    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(cisplatin.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert normalized_drug.approval_status == cisplatin.approval_status
 
 
 def test_alias_cisplatin(cisplatin, wikidata):
@@ -151,10 +163,28 @@ def test_alias_cisplatin(cisplatin, wikidata):
     """
     normalizer_response = wikidata.normalize('CDDP')
     assert normalizer_response['match_type'] == MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == cisplatin.label
+    assert normalized_drug.concept_id == cisplatin.concept_id
+    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(cisplatin.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = wikidata.normalize('cddp')
     assert normalizer_response['match_type'] ==\
            MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == cisplatin.label
+    assert normalized_drug.concept_id == cisplatin.concept_id
+    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(cisplatin.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert normalized_drug.approval_status == cisplatin.approval_status
 
 
 def test_case_no_match(wikidata):
@@ -182,11 +212,12 @@ def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == interferon_alfacon_1.label
-    assert normalized_drug.concept_id ==\
-           interferon_alfacon_1.concept_id
+    assert normalized_drug.concept_id == interferon_alfacon_1.concept_id
     assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(interferon_alfacon_1.other_identifiers)
+    assert set(normalized_drug.trade_names) == \
+           set(interferon_alfacon_1.trade_names)
     assert normalized_drug.approval_status == \
            interferon_alfacon_1.approval_status
 
@@ -195,11 +226,12 @@ def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == interferon_alfacon_1.label
-    assert normalized_drug.concept_id ==\
-           interferon_alfacon_1.concept_id
+    assert normalized_drug.concept_id == interferon_alfacon_1.concept_id
     assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(interferon_alfacon_1.other_identifiers)
+    assert set(normalized_drug.trade_names) == \
+           set(interferon_alfacon_1.trade_names)
     assert normalized_drug.approval_status == \
            interferon_alfacon_1.approval_status
 
@@ -207,12 +239,12 @@ def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
     assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == interferon_alfacon_1.label
-    assert normalized_drug.concept_id ==\
-           interferon_alfacon_1.concept_id
+    assert normalized_drug.concept_id == interferon_alfacon_1.concept_id
     assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(interferon_alfacon_1.other_identifiers)
+    assert set(normalized_drug.trade_names) == \
+           set(interferon_alfacon_1.trade_names)
     assert normalized_drug.approval_status == \
            interferon_alfacon_1.approval_status
 
@@ -220,12 +252,12 @@ def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
     assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == interferon_alfacon_1.label
-    assert normalized_drug.concept_id ==\
-           interferon_alfacon_1.concept_id
+    assert normalized_drug.concept_id == interferon_alfacon_1.concept_id
     assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(interferon_alfacon_1.other_identifiers)
+    assert set(normalized_drug.trade_names) == \
+           set(interferon_alfacon_1.trade_names)
     assert normalized_drug.approval_status == \
            interferon_alfacon_1.approval_status
 
@@ -233,12 +265,12 @@ def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
     assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == interferon_alfacon_1.label
-    assert normalized_drug.concept_id == \
-           interferon_alfacon_1.concept_id
+    assert normalized_drug.concept_id == interferon_alfacon_1.concept_id
     assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(interferon_alfacon_1.other_identifiers)
+    assert set(normalized_drug.trade_names) == \
+           set(interferon_alfacon_1.trade_names)
     assert normalized_drug.approval_status == \
            interferon_alfacon_1.approval_status
 
@@ -251,18 +283,28 @@ def test_primary_label_interferon_alfacon_1(interferon_alfacon_1, wikidata):
     assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == interferon_alfacon_1.label
-    assert normalized_drug.concept_id == \
-           interferon_alfacon_1.concept_id
+    assert normalized_drug.concept_id == interferon_alfacon_1.concept_id
     assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
-    assert set(normalized_drug.other_identifiers) ==\
+    assert set(normalized_drug.other_identifiers) == \
            set(interferon_alfacon_1.other_identifiers)
+    assert set(normalized_drug.trade_names) == \
+           set(interferon_alfacon_1.trade_names)
     assert normalized_drug.approval_status == \
            interferon_alfacon_1.approval_status
 
     normalizer_response = wikidata.normalize('Interferon Alfacon-1')
     assert normalizer_response['match_type'] ==\
            MatchType.PRIMARY_LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.concept_id == interferon_alfacon_1.concept_id
+    assert set(normalized_drug.aliases) == set(interferon_alfacon_1.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(interferon_alfacon_1.other_identifiers)
+    assert set(normalized_drug.trade_names) == \
+           set(interferon_alfacon_1.trade_names)
+    assert normalized_drug.approval_status == \
+           interferon_alfacon_1.approval_status
 
 
 def test_meta_info(cisplatin, wikidata):

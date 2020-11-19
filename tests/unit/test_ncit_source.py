@@ -27,6 +27,8 @@ def voglibose():
                     'N-(1,3-Dihydroxy-2-Propyl)Valiolamine', 'VOGLIBOSE'],
         'other_identifiers': ['chemidplus:83480-29-9', 'fda:S77P977AG8',
                               'umls:C0532578'],
+        'approval_status': None,
+        'trade_names': []
     }
     return Drug(**params)
 
@@ -41,6 +43,8 @@ def apricoxib():
                     'TG01', 'TP2001'],
         'other_identifiers': ['chemidplus:197904-84-0', 'fda:5X5HB3VZ3Z',
                               'umls:C1737955'],
+        'approval_status': None,
+        'trade_names': []
     }
     return Drug(**params)
 
@@ -51,10 +55,11 @@ def test_concept_id_voglibose(voglibose, ncit):
     assert response['match_type'] == MatchType.CONCEPT_ID
     assert len(response['records']) == 1
     drug = response['records'][0]
+    assert drug.label == voglibose.label
     assert drug.concept_id == voglibose.concept_id
     assert set(drug.aliases) == set(voglibose.aliases)
-    assert set(drug.other_identifiers) == \
-           set(voglibose.other_identifiers)
+    assert set(drug.other_identifiers) == set(voglibose.other_identifiers)
+    assert set(drug.trade_names) == set(voglibose.trade_names)
     assert drug.approval_status == voglibose.approval_status
 
     normalizer_response = ncit.normalize('NCIT:C95221')
@@ -64,8 +69,8 @@ def test_concept_id_voglibose(voglibose, ncit):
     assert drug.label == voglibose.label
     assert drug.concept_id == voglibose.concept_id
     assert set(drug.aliases) == set(voglibose.aliases)
-    assert set(drug.other_identifiers) == \
-           set(voglibose.other_identifiers)
+    assert set(drug.other_identifiers) == set(voglibose.other_identifiers)
+    assert set(drug.trade_names) == set(voglibose.trade_names)
     assert drug.approval_status == voglibose.approval_status
 
     normalizer_response = ncit.normalize('NCIt:c95221')
@@ -75,8 +80,8 @@ def test_concept_id_voglibose(voglibose, ncit):
     assert drug.label == voglibose.label
     assert drug.concept_id == voglibose.concept_id
     assert set(drug.aliases) == set(voglibose.aliases)
-    assert set(drug.other_identifiers) == \
-           set(voglibose.other_identifiers)
+    assert set(drug.other_identifiers) == set(voglibose.other_identifiers)
+    assert set(drug.trade_names) == set(voglibose.trade_names)
     assert drug.approval_status == voglibose.approval_status
 
     normalizer_response = ncit.normalize('C95221')
@@ -86,8 +91,8 @@ def test_concept_id_voglibose(voglibose, ncit):
     assert drug.label == voglibose.label
     assert drug.concept_id == voglibose.concept_id
     assert set(drug.aliases) == set(voglibose.aliases)
-    assert set(drug.other_identifiers) == \
-           set(voglibose.other_identifiers)
+    assert set(drug.other_identifiers) == set(voglibose.other_identifiers)
+    assert set(drug.trade_names) == set(voglibose.trade_names)
     assert drug.approval_status == voglibose.approval_status
 
 
@@ -104,11 +109,21 @@ def test_primary_label_voglibose(voglibose, ncit):
     assert set(normalized_drug.aliases) == set(voglibose.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(voglibose.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(voglibose.trade_names)
     assert normalized_drug.approval_status == voglibose.approval_status
 
     normalizer_response = ncit.normalize('voglibose')
     assert normalizer_response['match_type'] == \
            MatchType.PRIMARY_LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == voglibose.label
+    assert normalized_drug.concept_id == voglibose.concept_id
+    assert set(normalized_drug.aliases) == set(voglibose.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(voglibose.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(voglibose.trade_names)
+    assert normalized_drug.approval_status == voglibose.approval_status
 
 
 def test_alias_voglibose(voglibose, ncit):
@@ -117,10 +132,28 @@ def test_alias_voglibose(voglibose, ncit):
     """
     normalizer_response = ncit.normalize('BASEN')
     assert normalizer_response['match_type'] == MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == voglibose.label
+    assert normalized_drug.concept_id == voglibose.concept_id
+    assert set(normalized_drug.aliases) == set(voglibose.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(voglibose.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(voglibose.trade_names)
+    assert normalized_drug.approval_status == voglibose.approval_status
 
     normalizer_response = ncit.normalize('AO-128')
     assert normalizer_response['match_type'] ==\
            MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == voglibose.label
+    assert normalized_drug.concept_id == voglibose.concept_id
+    assert set(normalized_drug.aliases) == set(voglibose.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(voglibose.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(voglibose.trade_names)
+    assert normalized_drug.approval_status == voglibose.approval_status
 
 
 def test_case_no_match(ncit):
@@ -148,65 +181,60 @@ def test_concept_id_apricoxib(apricoxib, ncit):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == apricoxib.label
-    assert normalized_drug.concept_id ==\
-           apricoxib.concept_id
+    assert normalized_drug.concept_id == apricoxib.concept_id
     assert set(normalized_drug.aliases) == set(apricoxib.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(apricoxib.other_identifiers)
-    assert normalized_drug.approval_status == \
-           apricoxib.approval_status
+    assert set(normalized_drug.trade_names) == set(apricoxib.trade_names)
+    assert normalized_drug.approval_status == apricoxib.approval_status
 
     normalizer_response = ncit.normalize('NCIt:C74021')
     assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == apricoxib.label
-    assert normalized_drug.concept_id ==\
-           apricoxib.concept_id
+    assert normalized_drug.concept_id == apricoxib.concept_id
     assert set(normalized_drug.aliases) == set(apricoxib.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(apricoxib.other_identifiers)
-    assert normalized_drug.approval_status == \
-           apricoxib.approval_status
+    assert set(normalized_drug.trade_names) == set(apricoxib.trade_names)
+    assert normalized_drug.approval_status == apricoxib.approval_status
 
     normalizer_response = ncit.normalize('ncit:c74021')
     assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == apricoxib.label
-    assert normalized_drug.concept_id ==\
-           apricoxib.concept_id
+    assert normalized_drug.concept_id == apricoxib.concept_id
     assert set(normalized_drug.aliases) == set(apricoxib.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(apricoxib.other_identifiers)
-    assert normalized_drug.approval_status == \
-           apricoxib.approval_status
+    assert set(normalized_drug.trade_names) == set(apricoxib.trade_names)
+    assert normalized_drug.approval_status == apricoxib.approval_status
 
     normalizer_response = ncit.normalize('C74021')
     assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == apricoxib.label
-    assert normalized_drug.concept_id ==\
-           apricoxib.concept_id
+    assert normalized_drug.concept_id == apricoxib.concept_id
     assert set(normalized_drug.aliases) == set(apricoxib.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(apricoxib.other_identifiers)
-    assert normalized_drug.approval_status == \
-           apricoxib.approval_status
+    assert set(normalized_drug.trade_names) == set(apricoxib.trade_names)
+    assert normalized_drug.approval_status == apricoxib.approval_status
 
     normalizer_response = ncit.normalize('C74021')
     assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == apricoxib.label
-    assert normalized_drug.concept_id == \
-           apricoxib.concept_id
+    assert normalized_drug.concept_id == apricoxib.concept_id
     assert set(normalized_drug.aliases) == set(apricoxib.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(apricoxib.other_identifiers)
-    assert normalized_drug.approval_status == \
-           apricoxib.approval_status
+    assert set(normalized_drug.trade_names) == set(apricoxib.trade_names)
+    assert normalized_drug.approval_status == apricoxib.approval_status
 
 
 def test_primary_label_apricoxib(apricoxib, ncit):
@@ -218,17 +246,25 @@ def test_primary_label_apricoxib(apricoxib, ncit):
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == apricoxib.label
-    assert normalized_drug.concept_id == \
-           apricoxib.concept_id
+    assert normalized_drug.concept_id == apricoxib.concept_id
     assert set(normalized_drug.aliases) == set(apricoxib.aliases)
-    assert set(normalized_drug.other_identifiers) ==\
+    assert set(normalized_drug.other_identifiers) == \
            set(apricoxib.other_identifiers)
-    assert normalized_drug.approval_status == \
-           apricoxib.approval_status
+    assert set(normalized_drug.trade_names) == set(apricoxib.trade_names)
+    assert normalized_drug.approval_status == apricoxib.approval_status
 
     normalizer_response = ncit.normalize('APRICOXIB')
     assert normalizer_response['match_type'] ==\
            MatchType.PRIMARY_LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == apricoxib.label
+    assert normalized_drug.concept_id == apricoxib.concept_id
+    assert set(normalized_drug.aliases) == set(apricoxib.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(apricoxib.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(apricoxib.trade_names)
+    assert normalized_drug.approval_status == apricoxib.approval_status
 
 
 def test_meta_info(voglibose, ncit):
