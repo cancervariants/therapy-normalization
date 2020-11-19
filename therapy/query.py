@@ -75,10 +75,10 @@ def add_record(response: Dict[str, Dict],
         of the source of the match
     """
     del item['label_and_type']
-    if 'aliases' not in item.keys():
-        item['aliases'] = []
-    if 'other_identifiers' not in item.keys():
-        item['other_identifiers'] = []
+    label_types = ['aliases', 'other_identifiers', 'trade_names']
+    for type in label_types:
+        if type not in item.keys():
+            item[type] = []
 
     drug = Drug(**item)
     src_name = PREFIX_LOOKUP[drug.concept_id.split(':')[0]]
