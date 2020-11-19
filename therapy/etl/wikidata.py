@@ -101,8 +101,6 @@ class Wikidata(Base):
                     item['label_and_type'] = f"{concept_id.lower()}##identity"
                     item['concept_id'] = concept_id
                     item['src_name'] = SourceName.WIKIDATA.value
-                    item['aliases'] = list()
-                    item['trade_names'] = list()
 
                     other_ids = []
                     for key in IDENTIFIER_PREFIXES.keys():
