@@ -524,7 +524,7 @@ def test_db14201_label(db14201, drugbank):
     """Test that db14201 drug normalizes to correct drug concept
     as a PRIMARY_LABEL match.
     """
-    normalizer_response = drugbank.normalize('2,2\'-Dibenzothiazyl disulfide')
+    normalizer_response = drugbank.normalize("2,2'-Dibenzothiazyl disulfide")
     assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
