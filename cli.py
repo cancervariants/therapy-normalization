@@ -32,6 +32,7 @@ class CLI:
         }
 
         if all:
+            # TODO: Remove for prod
             CLI()._delete_all_data()
             Database()
             for n in sources:
