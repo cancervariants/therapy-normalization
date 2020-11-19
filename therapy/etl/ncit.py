@@ -193,7 +193,7 @@ class NCIt(Base):
         item = therapy.dict()
         concept_id_lower = item['concept_id'].lower()
         aliases = {alias.lower() for alias in item['aliases']}
-        if len(aliases) == 0:
+        if not aliases:
             item['aliases'] = list()
         for alias in aliases:
             pk = f"{alias}##alias"
