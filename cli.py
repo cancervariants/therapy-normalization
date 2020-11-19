@@ -35,7 +35,6 @@ class CLI:
             CLI()._delete_all_data()
             Database()
             for n in sources:
-                CLI()._delete_data(n)
                 click.echo(f"Loading {n}...")
                 start = timer()
                 sources[n]()
@@ -49,12 +48,21 @@ class CLI:
                 raise Exception("Must enter a normalizer.")
             for n in normalizers:
                 if n in sources:
+                    click.echo(f"\nDeleting {n}...")
+                    start_delete = timer()
                     CLI()._delete_data(n)
+                    end_delete = timer()
+                    delete_time = end_delete - start_delete
+                    click.echo(f"Deleted {n} in "
+                               f"{delete_time} seconds.\n")
                     click.echo(f"Loading {n}...")
-                    start = timer()
+                    start_load = timer()
                     sources[n]()
-                    end = timer()
-                    click.echo(f"Loaded {n} in {end - start} seconds.")
+                    end_load = timer()
+                    load_time = end_load - start_load
+                    click.echo(f"Loaded {n} in {load_time} seconds.")
+                    click.echo(f"Total time for {n}: "
+                               f"{delete_time + load_time} seconds.")
                 else:
                     raise Exception("Not a normalizer source.")
 
@@ -65,8 +73,6 @@ class CLI:
             click.echo(f"Deleted table: {table}")
 
     def _delete_data(self, source):
-        click.echo(f"Start deleting the {source} source.")
-
         # Delete source's metadata
         try:
             metadata = METADATA_TABLE.query(
@@ -84,21 +90,22 @@ class CLI:
             click.echo(e.response['Error']['Message'])
 
         # Delete source's data from therapies table
-        # TODO: Sometimes works? Sometimes leaves < 10 items left?
         try:
-            with THERAPIES_TABLE.batch_writer(
-                    overwrite_by_pkeys=['label_and_type', 'concept_id']) \
-                    as batch:
-                while True:
-                    response = THERAPIES_TABLE.query(
-                        IndexName='src_index',
-                        KeyConditionExpression=Key(
-                            'src_name').eq(
-                            SourceName[f"{source.upper()}"].value)
-                    )
-                    records = response['Items']
-                    if not records:
-                        break
+            while True:
+                response = THERAPIES_TABLE.query(
+                    IndexName='src_index',
+                    KeyConditionExpression=Key('src_name').eq(
+                        SourceName[f"{source.upper()}"].value)
+                )
+
+                records = response['Items']
+                if not records:
+                    break
+
+                with THERAPIES_TABLE.batch_writer(
+                        overwrite_by_pkeys=['label_and_type', 'concept_id']) \
+                        as batch:
+
                     for record in records:
                         batch.delete_item(
                             Key={
@@ -108,8 +115,6 @@ class CLI:
                         )
         except ClientError as e:
             click.echo(e.response['Error']['Message'])
-
-        click.echo(f"Finished deleting the {source} source.")
 
 
 if __name__ == '__main__':
