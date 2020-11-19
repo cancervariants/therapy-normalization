@@ -268,7 +268,6 @@ def test_primary_label_interferon_alfacon_1(interferon_alfacon_1, wikidata):
 def test_meta_info(cisplatin, wikidata):
     """Test that the meta field is correct."""
     normalizer_response = wikidata.normalize('cisplatin')
-    print(normalizer_response.keys())
     assert normalizer_response['meta_'].data_license == 'CC0 1.0'
     assert normalizer_response['meta_'].data_license_url == \
            'https://creativecommons.org/publicdomain/zero/1.0/'
