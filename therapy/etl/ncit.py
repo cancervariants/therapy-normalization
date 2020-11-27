@@ -192,14 +192,17 @@ class NCIt(Base):
         """
         item = therapy.dict()
         concept_id_lower = item['concept_id'].lower()
-        aliases = {alias.lower() for alias in item['aliases']}
-        for alias in aliases:
-            pk = f"{alias}##alias"
-            batch.put_item(Item={
-                'label_and_type': pk,
-                'concept_id': concept_id_lower,
-                'src_name': SourceName.NCIT.value
-            })
+        if len(item['aliases']) > 20 or not item['aliases']:
+            del item['aliases']
+        else:
+            aliases = {alias.lower() for alias in item['aliases']}
+            for alias in aliases:
+                pk = f"{alias}##alias"
+                batch.put_item(Item={
+                    'label_and_type': pk,
+                    'concept_id': concept_id_lower,
+                    'src_name': SourceName.NCIT.value
+                })
         if item['label']:
             pk = f"{item['label'].lower()}##label"
             batch.put_item(Item={
