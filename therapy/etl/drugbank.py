@@ -121,9 +121,11 @@ class DrugBank(Base):
             del params['other_identifiers']
 
         for label_type in ['trade_names', 'aliases']:
-            if label_type in params and (
-                    len(params[label_type]) > 20 or not params[label_type]):
-                del params[label_type]
+            if label_type in params:
+                if not params[label_type] or len(
+                        set({a.casefold(): a for a in params[
+                            label_type]}.values())) > 20:
+                    del params[label_type]
         batch.put_item(Item=params)
 
     def _load_drugbank_id(self, element, params):
