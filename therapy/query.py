@@ -76,9 +76,9 @@ def add_record(response: Dict[str, Dict],
     """
     del item['label_and_type']
     label_types = ['aliases', 'other_identifiers', 'trade_names']
-    for type in label_types:
-        if type not in item.keys():
-            item[type] = []
+    for label_type in label_types:
+        if label_type not in item.keys():
+            item[label_type] = []
 
     drug = Drug(**item)
     src_name = PREFIX_LOOKUP[drug.concept_id.split(':')[0]]
