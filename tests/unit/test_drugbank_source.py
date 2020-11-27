@@ -49,7 +49,7 @@ def cisplatin():
             'kegg.drug:D00275',
             'chemspider:76401',
             'bindingdb:50028111',
-            'pharmgkb:PA449014',
+            'pharmgkb.drug:PA449014',
             'pdb:CPT',
             'ttd:DAP000215',
             'chembl:CHEMBL2068237',
@@ -95,7 +95,7 @@ def bentiromide():
             'kegg.drug:D01346',
             'chemspider:5329364',
             'bindingdb:50240073',
-            'pharmgkb:PA164750572',
+            'pharmgkb.drug:PA164750572',
             'chembl:CHEMBL1200368',
             'zinc:ZINC000000608204',
             'rxcui:18896'
