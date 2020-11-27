@@ -220,20 +220,22 @@ class ChEMBL(Base):
         record['aliases'] = record['aliases'].split("||")
 
         # Remove duplicates (case-insensitive)
-        record['aliases'] = \
-            list(set({a.casefold(): a for a in
+        aliases = \
+            list(set({t.casefold(): t for t in
                       record['aliases']}.values()))
 
-        if len(record['aliases']) > 20:
+        if len(aliases) > 20:
             del record['aliases']
         else:
-            for alias in record['aliases']:
+            for alias in aliases:
                 alias = {
                     'label_and_type': f"{alias.lower()}##alias",
                     'concept_id': f"{record['concept_id'].lower()}",
                     'src_name': SourceName.CHEMBL.value
                 }
                 batch.put_item(Item=alias)
+            # Remove case sensitive duplicates when loading therapy
+            record['aliases'] = list(set(record['aliases']))
 
     def _load_trade_name(self, record, batch):
         """Load trade name records into DynamoDB."""
@@ -241,14 +243,14 @@ class ChEMBL(Base):
             record['trade_names'].split("||")
 
         # Remove duplicates (case-insensitive)
-        record['trade_names'] = \
+        trade_names = \
             list(set({t.casefold(): t for t in
                       record['trade_names']}.values()))
 
-        if len(record['trade_names']) > 20:
+        if len(trade_names) > 20:
             del record['trade_names']
         else:
-            for trade_name in record['trade_names']:
+            for trade_name in trade_names:
                 trade_name = {
                     'label_and_type':
                         f"{trade_name.lower()}##trade_name",
@@ -256,6 +258,8 @@ class ChEMBL(Base):
                     'src_name': SourceName.CHEMBL.value
                 }
                 batch.put_item(Item=trade_name)
+            # Remove case sensitive duplicates when loading therapy
+            record['trade_names'] = list(set(record['trade_names']))
 
     def _add_meta(self, *args, **kwargs):
         """Add ChEMBL metadata."""

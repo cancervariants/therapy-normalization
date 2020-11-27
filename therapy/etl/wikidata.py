@@ -135,7 +135,7 @@ class Wikidata(Base):
         if 'aliases' in item:
             item['aliases'] = list(set(item['aliases']))
 
-            if len(item['aliases']) > 20:
+            if len(set({a.casefold(): a for a in item['aliases']}.values())) > 20:  # noqa: E501
                 del item['aliases']
 
         batch.put_item(Item=item)
