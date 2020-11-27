@@ -161,14 +161,13 @@ class NamespacePrefix(Enum):
     KEGGCOMPOUND = "kegg.compound"
     KEGGDRUG = "kegg.drug"
     BINDINGDB = "bindingdb"
-    PHARMGKB = "pharmgkb"
+    PHARMGKB = "pharmgkb.drug"
     CHEMSPIDER = "chemspider"
     ZINC = "zinc"
-    PDB = "pdb"  # TODO: Check
-    THERAPEUTICTARGETSDB = "ttd"  # TODO: Check
-    GENBANK = "genbank"  # TODO: Check
-    IUPHAR = "iuphar"  # TODO: Check
-    GUIDETOPHARMACOLOGY = "gtopdb"  # TODO: Check
+    PDB = "pdb"
+    THERAPEUTICTARGETSDB = "ttd"
+    IUPHAR = "iuphar"
+    GUIDETOPHARMACOLOGY = "gtopdb"
 
 
 class Meta(BaseModel):

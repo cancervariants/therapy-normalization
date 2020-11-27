@@ -25,7 +25,6 @@ DRUGBANK_IDENTIFIER_PREFIXES = {
     'RxCUI': NamespacePrefix.RXNORM.value,
     'PDB': NamespacePrefix.PDB.value,
     'Therapeutic Targets Database': NamespacePrefix.THERAPEUTICTARGETSDB.value,
-    'GenBank': NamespacePrefix.GENBANK.value,
     'IUPHAR': NamespacePrefix.IUPHAR.value,
     'Guide to Pharmacology': NamespacePrefix.GUIDETOPHARMACOLOGY.value
 }
@@ -83,7 +82,6 @@ class DrugBank(Base):
                     self._load_products(element, params, xmlns)
 
                 # Other Identifiers
-                # TODO: Check to see if we should include more
                 if element.tag == f"{xmlns}external-identifiers":
                     self._load_external_identifiers(element, params, xmlns)
                 if element.tag == f"{xmlns}cas-number":
@@ -93,22 +91,21 @@ class DrugBank(Base):
                 if element.tag == f"{xmlns}groups":
                     self._load_approval_status(element, params)
 
+            self._load_therapy(batch, params)
+
             if params['label']:
                 self._load_label(params['label'], params['concept_id'],
                                  batch)
-            if params['aliases']:
-                self._load_aliases(params['aliases'], params['concept_id'],
-                                   batch)
-            else:
-                del params['aliases']
-            if params['trade_names']:
-                self._load_trade_names(params['trade_names'],
-                                       params['concept_id'], batch)
-            else:
-                del params['trade_names']
-            if not params['other_identifiers']:
-                del params['other_identifiers']
-            self._load_therapy(batch, params)
+
+            if 'aliases' in params:
+                if params['aliases']:
+                    self._load_aliases(params['aliases'], params['concept_id'],
+                                       batch)
+
+            if 'trade_names' in params:
+                if params['trade_names']:
+                    self._load_trade_names(params['trade_names'],
+                                           params['concept_id'], batch)
 
     def _load_data(self, *args, **kwargs):
         """Load the DrugBank source into normalized database."""
@@ -120,8 +117,12 @@ class DrugBank(Base):
         """Filter out trade names and aliases that exceed 20 and add item to
         therapies table.
         """
+        if not params['other_identifiers']:
+            del params['other_identifiers']
+
         for label_type in ['trade_names', 'aliases']:
-            if label_type in params and len(params[label_type]) > 20:
+            if label_type in params and (
+                    len(params[label_type]) > 20 or not params[label_type]):
                 del params[label_type]
         batch.put_item(Item=params)
 
