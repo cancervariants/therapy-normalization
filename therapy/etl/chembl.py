@@ -224,13 +224,16 @@ class ChEMBL(Base):
             list(set({a.casefold(): a for a in
                       record['aliases']}.values()))
 
-        for alias in record['aliases']:
-            alias = {
-                'label_and_type': f"{alias.lower()}##alias",
-                'concept_id': f"{record['concept_id'].lower()}",
-                'src_name': SourceName.CHEMBL.value
-            }
-            batch.put_item(Item=alias)
+        if len(record['aliases']) > 20:
+            del record['aliases']
+        else:
+            for alias in record['aliases']:
+                alias = {
+                    'label_and_type': f"{alias.lower()}##alias",
+                    'concept_id': f"{record['concept_id'].lower()}",
+                    'src_name': SourceName.CHEMBL.value
+                }
+                batch.put_item(Item=alias)
 
     def _load_trade_name(self, record, batch):
         """Load trade name records into DynamoDB."""
@@ -242,14 +245,17 @@ class ChEMBL(Base):
             list(set({t.casefold(): t for t in
                       record['trade_names']}.values()))
 
-        for trade_name in record['trade_names']:
-            trade_name = {
-                'label_and_type':
-                    f"{trade_name.lower()}##trade_name",
-                'concept_id': f"{record['concept_id'].lower()}",
-                'src_name': SourceName.CHEMBL.value
-            }
-            batch.put_item(Item=trade_name)
+        if len(record['trade_names']) > 20:
+            del record['trade_names']
+        else:
+            for trade_name in record['trade_names']:
+                trade_name = {
+                    'label_and_type':
+                        f"{trade_name.lower()}##trade_name",
+                    'concept_id': f"{record['concept_id'].lower()}",
+                    'src_name': SourceName.CHEMBL.value
+                }
+                batch.put_item(Item=trade_name)
 
     def _add_meta(self, *args, **kwargs):
         """Add ChEMBL metadata."""
