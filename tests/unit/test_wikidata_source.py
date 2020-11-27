@@ -47,7 +47,7 @@ def cisplatin():
 
 @pytest.fixture(scope='module')
 def interferon_alfacon_1():
-    """Create a Interferon alfacon-1 drug fixture."""
+    """Create an Interferon alfacon-1 drug fixture."""
     params = {
         'label': 'Interferon alfacon-1',
         'concept_id': 'wikidata:Q15353101',
@@ -68,6 +68,60 @@ def interferon_alfacon_1():
             'rxcui:59744',
             'chemidplus:118390-30-0',
             'drugbank:DB00069'
+        ],
+        'trade_names': []
+    }
+    return Drug(**params)
+
+
+# Test drug that has > 20 aliases
+@pytest.fixture(scope='module')
+def d_methamphetamine():
+    """Create a D-methamphetamine drug fixture."""
+    params = {
+        'label': 'D-methamphetamine',
+        'concept_id': 'wikidata:Q191924',
+        'aliases': [],
+        'approval_status': None,
+        'other_identifiers': [
+            'chemidplus:537-46-2',
+            'pubchem.compound:10836',
+            'chembl:CHEMBL1201201',
+            'rxcui:6816',
+            'drugbank:DB01577'
+        ],
+        'trade_names': []
+    }
+    return Drug(**params)
+
+
+# Test removing duplicate (case sensitive) aliases
+@pytest.fixture(scope='module')
+def atropine():
+    """Create an atropine drug fixture."""
+    params = {
+        'label': 'atropine',
+        'concept_id': 'wikidata:Q26272',
+        'aliases': [
+            'dl-Hyoscyamine',
+            'dl-tropyltropate',
+            'Mydriasine',
+            'Tropine tropate',
+            '(±)-atropine',
+            '(±)-hyoscyamine',
+            '(+-)-Atropine',
+            '(+-)-Hyoscyamine',
+            '(+,-)-Tropyl tropate',
+            '(3-Endo)-8-methyl-8-azabicyclo[3.2.1]oct-3-yl tropate',
+            '[(1S,5R)-8-Methyl-8-azabicyclo[3.2.1]oct-3-yl] '
+            '3-hydroxy-2-phenyl-propanoate',
+            '8-Methyl-8-azabicyclo[3.2.1]oct-3-yl '
+            '3-hydroxy-2-phenylpropanoate',
+            '8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate'
+        ],
+        'approval_status': None,
+        'other_identifiers': [
+            'rxcui:1223'
         ],
         'trade_names': []
     }
@@ -185,6 +239,119 @@ def test_alias_cisplatin(cisplatin, wikidata):
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
+
+
+def test_concept_id_atropine(atropine, wikidata):
+    """Test that atropine drug normalizes to correct drug concept
+    as a CONCEPT_ID match.
+    """
+    normalizer_response = wikidata.normalize('wikidata:Q26272')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == atropine.label
+    assert normalized_drug.concept_id == atropine.concept_id
+    assert set(normalized_drug.aliases) == set(atropine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(atropine.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(atropine.trade_names)
+    assert normalized_drug.approval_status == atropine.approval_status
+
+    normalizer_response = wikidata.normalize('wiKIdata:Q26272')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == atropine.label
+    assert normalized_drug.concept_id == atropine.concept_id
+    assert set(normalized_drug.aliases) == set(atropine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(atropine.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(atropine.trade_names)
+    assert normalized_drug.approval_status == atropine.approval_status
+
+    normalizer_response = wikidata.normalize('wiKIdata:q26272')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == atropine.label
+    assert normalized_drug.concept_id == atropine.concept_id
+    assert set(normalized_drug.aliases) == set(atropine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(atropine.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(atropine.trade_names)
+    assert normalized_drug.approval_status == atropine.approval_status
+
+    normalizer_response = wikidata.normalize('Q26272')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == atropine.label
+    assert normalized_drug.concept_id == atropine.concept_id
+    assert set(normalized_drug.aliases) == set(atropine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(atropine.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(atropine.trade_names)
+    assert normalized_drug.approval_status == atropine.approval_status
+
+
+def test_primary_label_atropine(atropine, wikidata):
+    """Test that atropine drug normalizes to correct drug concept
+    as a PRIMARY_LABEL match.
+    """
+    normalizer_response = wikidata.normalize('atropine')
+    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == atropine.label
+    assert normalized_drug.concept_id == atropine.concept_id
+    assert set(normalized_drug.aliases) == set(atropine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(atropine.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(atropine.trade_names)
+    assert normalized_drug.approval_status == atropine.approval_status
+
+    normalizer_response = wikidata.normalize('Atropine')
+    assert normalizer_response['match_type'] == \
+           MatchType.PRIMARY_LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == atropine.label
+    assert normalized_drug.concept_id == atropine.concept_id
+    assert set(normalized_drug.aliases) == set(atropine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(atropine.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(atropine.trade_names)
+    assert normalized_drug.approval_status == atropine.approval_status
+
+
+def test_alias_atropine(atropine, wikidata):
+    """Test that alias term normalizes to correct drug concept as an
+    ALIAS match.
+    """
+    normalizer_response = wikidata.normalize('Mydriasine')
+    assert normalizer_response['match_type'] == MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == atropine.label
+    assert normalized_drug.concept_id == atropine.concept_id
+    assert set(normalized_drug.aliases) == set(atropine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(atropine.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(atropine.trade_names)
+    assert normalized_drug.approval_status == atropine.approval_status
+
+    normalizer_response = wikidata.normalize('(±)-Hyoscyamine')
+    assert normalizer_response['match_type'] ==\
+           MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == atropine.label
+    assert normalized_drug.concept_id == atropine.concept_id
+    assert set(normalized_drug.aliases) == set(atropine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(atropine.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(atropine.trade_names)
+    assert normalized_drug.approval_status == atropine.approval_status
 
 
 def test_case_no_match(wikidata):
@@ -305,6 +472,95 @@ def test_primary_label_interferon_alfacon_1(interferon_alfacon_1, wikidata):
            set(interferon_alfacon_1.trade_names)
     assert normalized_drug.approval_status == \
            interferon_alfacon_1.approval_status
+
+
+def test_concept_id_d_methamphetamine(d_methamphetamine, wikidata):
+    """Test that d_methamphetamine drug normalizes to correct drug concept
+    as a CONCEPT_ID match.
+    """
+    normalizer_response = wikidata.normalize('wikidata:Q191924')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == d_methamphetamine.label
+    assert normalized_drug.concept_id == d_methamphetamine.concept_id
+    assert set(normalized_drug.aliases) == set(d_methamphetamine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(d_methamphetamine.other_identifiers)
+    assert set(normalized_drug.trade_names) == \
+           set(d_methamphetamine.trade_names)
+    assert normalized_drug.approval_status == d_methamphetamine.approval_status
+
+    normalizer_response = wikidata.normalize('wiKIdata:Q191924')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == d_methamphetamine.label
+    assert normalized_drug.concept_id == d_methamphetamine.concept_id
+    assert set(normalized_drug.aliases) == set(d_methamphetamine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(d_methamphetamine.other_identifiers)
+    assert set(normalized_drug.trade_names) ==\
+           set(d_methamphetamine.trade_names)
+    assert normalized_drug.approval_status == d_methamphetamine.approval_status
+
+    normalizer_response = wikidata.normalize('wiKIdata:q191924')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == d_methamphetamine.label
+    assert normalized_drug.concept_id == d_methamphetamine.concept_id
+    assert set(normalized_drug.aliases) == set(d_methamphetamine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(d_methamphetamine.other_identifiers)
+    assert set(normalized_drug.trade_names) == \
+           set(d_methamphetamine.trade_names)
+    assert normalized_drug.approval_status == d_methamphetamine.approval_status
+
+    normalizer_response = wikidata.normalize('Q191924')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == d_methamphetamine.label
+    assert normalized_drug.concept_id == d_methamphetamine.concept_id
+    assert set(normalized_drug.aliases) == set(d_methamphetamine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(d_methamphetamine.other_identifiers)
+    assert set(normalized_drug.trade_names) == \
+           set(d_methamphetamine.trade_names)
+    assert normalized_drug.approval_status == d_methamphetamine.approval_status
+
+
+def test_primary_label_d_methamphetamine(d_methamphetamine, wikidata):
+    """Test that d_methamphetamine drug normalizes to correct drug concept
+    as a PRIMARY_LABEL match.
+    """
+    normalizer_response = wikidata.normalize('D-methamphetamine')
+    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == d_methamphetamine.label
+    assert normalized_drug.concept_id == d_methamphetamine.concept_id
+    assert set(normalized_drug.aliases) == set(d_methamphetamine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(d_methamphetamine.other_identifiers)
+    assert set(normalized_drug.trade_names) ==\
+           set(d_methamphetamine.trade_names)
+    assert normalized_drug.approval_status == d_methamphetamine.approval_status
+
+    normalizer_response = wikidata.normalize('d-methamphetamine')
+    assert normalizer_response['match_type'] == \
+           MatchType.PRIMARY_LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == d_methamphetamine.label
+    assert normalized_drug.concept_id == d_methamphetamine.concept_id
+    assert set(normalized_drug.aliases) == set(d_methamphetamine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(d_methamphetamine.other_identifiers)
+    assert set(normalized_drug.trade_names) ==\
+           set(d_methamphetamine.trade_names)
+    assert normalized_drug.approval_status == d_methamphetamine.approval_status
 
 
 def test_meta_info(cisplatin, wikidata):
