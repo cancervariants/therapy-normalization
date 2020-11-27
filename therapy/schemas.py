@@ -138,7 +138,6 @@ class SourceIDAfterNamespace(Enum):
     ZINC = ""
     PDB = ""
     THERAPEUTICTARGETSDB = ""
-    GENBANK = ""
     IUPHAR = ""
     GUIDETOPHARMACOLOGY = ""
 
