@@ -14,7 +14,6 @@ logger.setLevel(logging.DEBUG)
 
 class Wikidata(Base):
     """Extract, transform, and load the Wikidata source into therapy.db.
-
     SPARQL_QUERY:
     SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound
            ?pubchemSubstance ?chembl
@@ -128,12 +127,17 @@ class Wikidata(Base):
 
     def _load_therapy(self, item: Dict, batch):
         """Load individual therapy record into DynamoDB
-
         Args:
             item: dict containing, at minimum, label_and_type and concept_id
                 keys.
             batch: boto3 batch writer
         """
+        if 'aliases' in item:
+            item['aliases'] = list(set(item['aliases']))
+
+            if len(item['aliases']) > 20:
+                del item['aliases']
+
         batch.put_item(Item=item)
         concept_id_lower = item['concept_id'].lower()
 
@@ -157,7 +161,6 @@ class Wikidata(Base):
 
     def _sqlite_str(self, string):
         """Sanitizes string to use as value in SQL statement.
-
         Some wikidata entries include items with single quotes,
         like wikidata:Q80863 alias: 5'-(Tetrahydrogen triphosphate) Adenosine
         """
