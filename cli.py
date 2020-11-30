@@ -4,7 +4,7 @@ from botocore.exceptions import ClientError
 from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt
 from therapy.schemas import SourceName
 from timeit import default_timer as timer
-from therapy.database import Database, DYNAMODBCLIENT, THERAPIES_TABLE, \
+from therapy.database import DYNAMODBCLIENT, THERAPIES_TABLE, \
     METADATA_TABLE
 from boto3.dynamodb.conditions import Key
 
@@ -34,7 +34,6 @@ class CLI:
         if all:
             # TODO: Remove for prod
             CLI()._delete_all_data()
-            Database()
             for n in sources:
                 click.echo(f"Loading {n}...")
                 start = timer()
@@ -43,7 +42,6 @@ class CLI:
                 click.echo(f"Loaded {n} in {end - start} seconds.")
             click.echo('Finished updating all normalizer sources.')
         else:
-            Database()
             normalizers = normalizer.lower().split()
             if len(normalizers) == 0:
                 raise Exception("Must enter a normalizer.")
