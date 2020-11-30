@@ -192,7 +192,7 @@ class NCIt(Base):
         """
         item = therapy.dict()
         concept_id_lower = item['concept_id'].lower()
-        if len(set({a.casefold(): a for a in item['aliases']}.values())) > 20 or not item['aliases']:  # noqa: E501
+        if len({a.casefold(): a for a in item['aliases']}) > 20 or not item['aliases']:  # noqa: E501
             del item['aliases']
         else:
             if 'aliases' in item:
