@@ -4,25 +4,24 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-
-[packages]
-pydantic = "*"
 pytest = "*"
 pre-commit = "*"
 flake8 = "*"
 flake8-docstrings = "*"
 coverage = "*"
 pytest-cov = "*"
+jupyterlab = "*"
+
+[packages]
+pydantic = "*"
 coveralls = "*"
 twine = "*"
-jupyterlab = "*"
 civicpy = "*"
 thera-py = {editable = true, path = "."}
 fastapi = "*"
 uvicorn = "*"
 click = "*"
 lxml = "*"
-matplotlib = "*"
 boto3 = "*"
 cython = "*"
 owlready2 = "*"
