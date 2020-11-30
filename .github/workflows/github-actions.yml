@@ -16,7 +16,7 @@ jobs:
             - name: Install dependencies
               run: |
                   python3 -m pip install pipenv
-                  pipenv sync
+                  pipenv install --dev
 
             - run: pipenv run flake8
             - run: pipenv run pytest tests/
