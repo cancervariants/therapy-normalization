@@ -4,8 +4,7 @@ from botocore.exceptions import ClientError
 from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt
 from therapy.schemas import SourceName
 from timeit import default_timer as timer
-from therapy.database import DYNAMODBCLIENT, THERAPIES_TABLE, \
-    METADATA_TABLE
+from therapy.database import THERAPIES_TABLE, METADATA_TABLE
 from boto3.dynamodb.conditions import Key
 
 
@@ -31,45 +30,28 @@ class CLI:
             'drugbank': DrugBank
         }
 
-        if all:
-            # TODO: Remove for prod
-            CLI()._delete_all_data()
-            for n in sources:
+        normalizers = normalizer.lower().split()
+        if len(normalizers) == 0:
+            raise Exception("Must enter a normalizer.")
+        for n in normalizers:
+            if n in sources:
+                click.echo(f"\nDeleting {n}...")
+                start_delete = timer()
+                CLI()._delete_data(n)
+                end_delete = timer()
+                delete_time = end_delete - start_delete
+                click.echo(f"Deleted {n} in "
+                           f"{delete_time} seconds.\n")
                 click.echo(f"Loading {n}...")
-                start = timer()
+                start_load = timer()
                 sources[n]()
-                end = timer()
-                click.echo(f"Loaded {n} in {end - start} seconds.")
-            click.echo('Finished updating all normalizer sources.')
-        else:
-            normalizers = normalizer.lower().split()
-            if len(normalizers) == 0:
-                raise Exception("Must enter a normalizer.")
-            for n in normalizers:
-                if n in sources:
-                    click.echo(f"\nDeleting {n}...")
-                    start_delete = timer()
-                    CLI()._delete_data(n)
-                    end_delete = timer()
-                    delete_time = end_delete - start_delete
-                    click.echo(f"Deleted {n} in "
-                               f"{delete_time} seconds.\n")
-                    click.echo(f"Loading {n}...")
-                    start_load = timer()
-                    sources[n]()
-                    end_load = timer()
-                    load_time = end_load - start_load
-                    click.echo(f"Loaded {n} in {load_time} seconds.")
-                    click.echo(f"Total time for {n}: "
-                               f"{delete_time + load_time} seconds.")
-                else:
-                    raise Exception("Not a normalizer source.")
-
-    def _delete_all_data(self):
-        tables = DYNAMODBCLIENT.list_tables()['TableNames']
-        for table in tables:
-            response = DYNAMODBCLIENT.delete_table(TableName=table)  # noqa F841
-            click.echo(f"Deleted table: {table}")
+                end_load = timer()
+                load_time = end_load - start_load
+                click.echo(f"Loaded {n} in {load_time} seconds.")
+                click.echo(f"Total time for {n}: "
+                           f"{delete_time + load_time} seconds.")
+            else:
+                raise Exception("Not a normalizer source.")
 
     def _delete_data(self, source):
         # Delete source's metadata
