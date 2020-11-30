@@ -220,21 +220,19 @@ class ChEMBL(Base):
         record['aliases'] = record['aliases'].split("||")
 
         # Remove duplicates (case-insensitive)
-        aliases = \
-            list(set({t.casefold(): t for t in
-                      record['aliases']}.values()))
+        aliases = set({t.casefold(): t for t in record['aliases']})
 
         if len(aliases) > 20:
             del record['aliases']
         else:
             for alias in aliases:
                 alias = {
-                    'label_and_type': f"{alias.lower()}##alias",
+                    'label_and_type': f"{alias}##alias",
                     'concept_id': f"{record['concept_id'].lower()}",
                     'src_name': SourceName.CHEMBL.value
                 }
                 batch.put_item(Item=alias)
-            # Remove case sensitive duplicates when loading therapy
+
             record['aliases'] = list(set(record['aliases']))
 
     def _load_trade_name(self, record, batch):
@@ -244,8 +242,7 @@ class ChEMBL(Base):
 
         # Remove duplicates (case-insensitive)
         trade_names = \
-            list(set({t.casefold(): t for t in
-                      record['trade_names']}.values()))
+            set({t.casefold(): t for t in record['trade_names']})
 
         if len(trade_names) > 20:
             del record['trade_names']
@@ -253,12 +250,12 @@ class ChEMBL(Base):
             for trade_name in trade_names:
                 trade_name = {
                     'label_and_type':
-                        f"{trade_name.lower()}##trade_name",
+                        f"{trade_name}##trade_name",
                     'concept_id': f"{record['concept_id'].lower()}",
                     'src_name': SourceName.CHEMBL.value
                 }
                 batch.put_item(Item=trade_name)
-            # Remove case sensitive duplicates when loading therapy
+
             record['trade_names'] = list(set(record['trade_names']))
 
     def _add_meta(self, *args, **kwargs):
