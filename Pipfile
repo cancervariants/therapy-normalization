@@ -29,6 +29,7 @@ owlready2 = "*"
 rdflib = "*"
 uvloop = "*"
 websockets = "*"
+httptools = "*"
 
 [requires]
 python_version = "3.8"
