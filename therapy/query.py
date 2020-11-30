@@ -53,7 +53,6 @@ def fetch_meta(src_name: str) -> Meta:
     else:
         try:
             db_response = METADATA_TABLE.get_item(Key={'src_name': src_name})
-            print(db_response)
             response = Meta(**db_response['Item'])
             cached_sources[src_name] = response
             return response
