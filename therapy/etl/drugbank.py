@@ -6,7 +6,7 @@ from therapy import schemas  # noqa: F401
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
 from therapy.etl.base import IDENTIFIER_PREFIXES
 from lxml import etree
-from therapy.database import DYNAMODB, THERAPIES_TABLE, METADATA_TABLE
+from therapy.database import THERAPIES_TABLE, METADATA_TABLE
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -44,7 +44,7 @@ class DrugBank(Base):
             except IndexError:
                 raise FileNotFoundError  # TODO drugbank update function here
 
-    def _transform_data(self, dynamodb):
+    def _transform_data(self):
         """Transform the DrugBank source."""
         xmlns = "{http://www.drugbank.ca}"
         tree = etree.parse(f"{self._data_src}")
@@ -110,7 +110,7 @@ class DrugBank(Base):
     def _load_data(self, *args, **kwargs):
         """Load the DrugBank source into normalized database."""
         self._extract_data()
-        self._transform_data(DYNAMODB)
+        self._transform_data()
         self._add_meta()
 
     def _load_therapy(self, batch, params):
