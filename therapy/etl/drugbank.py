@@ -25,7 +25,6 @@ DRUGBANK_IDENTIFIER_PREFIXES = {
     'RxCUI': NamespacePrefix.RXNORM.value,
     'PDB': NamespacePrefix.PDB.value,
     'Therapeutic Targets Database': NamespacePrefix.THERAPEUTICTARGETSDB.value,
-    'GenBank': NamespacePrefix.GENBANK.value,
     'IUPHAR': NamespacePrefix.IUPHAR.value,
     'Guide to Pharmacology': NamespacePrefix.GUIDETOPHARMACOLOGY.value
 }
@@ -78,13 +77,11 @@ class DrugBank(Base):
                 if element.tag == f"{xmlns}international-brands":
                     self._load_international_brands(element, params, xmlns)
 
-                # Trade Names / Aliases
-                # TODO: Fix. Brand tags?
+                # Trade Names
                 if element.tag == f"{xmlns}products":
                     self._load_products(element, params, xmlns)
 
                 # Other Identifiers
-                # TODO: Check to see if we should include more
                 if element.tag == f"{xmlns}external-identifiers":
                     self._load_external_identifiers(element, params, xmlns)
                 if element.tag == f"{xmlns}cas-number":
@@ -95,19 +92,20 @@ class DrugBank(Base):
                     self._load_approval_status(element, params)
 
             self._load_therapy(batch, params)
+
             if params['label']:
                 self._load_label(params['label'], params['concept_id'],
                                  batch)
-            if params['aliases']:
-                self._load_aliases(params['aliases'], params['concept_id'],
-                                   batch)
-            else:
-                del params['aliases']
-            if params['trade_names']:
-                self._load_trade_names(params['trade_names'],
-                                       params['concept_id'], batch)
-            else:
-                del params['trade_names']
+
+            if 'aliases' in params:
+                if params['aliases']:
+                    self._load_aliases(params['aliases'], params['concept_id'],
+                                       batch)
+
+            if 'trade_names' in params:
+                if params['trade_names']:
+                    self._load_trade_names(params['trade_names'],
+                                           params['concept_id'], batch)
 
     def _load_data(self, *args, **kwargs):
         """Load the DrugBank source into normalized database."""
@@ -116,14 +114,21 @@ class DrugBank(Base):
         self._add_meta()
 
     def _load_therapy(self, batch, params):
-        # TODO: Temp filtering out
-        if len(params['trade_names']) > 20:
-            params['trade_names'] = list()
-        if len(params['aliases']) > 20:
-            params['aliases'] = list()
+        """Filter out trade names and aliases that exceed 20 and add item to
+        therapies table.
+        """
+        if not params['other_identifiers']:
+            del params['other_identifiers']
+
+        for label_type in ['trade_names', 'aliases']:
+            if label_type in params:
+                if not params[label_type] or len(
+                        {a.casefold() for a in params[label_type]}) > 20:
+                    del params[label_type]
         batch.put_item(Item=params)
 
     def _load_drugbank_id(self, element, params):
+        """Load drugbank id as concept id or alias."""
         # Concept ID
         if 'primary' in element.attrib:
             params['concept_id'] = \
@@ -182,19 +187,16 @@ class DrugBank(Base):
                     f"{identifier}")
 
     def _load_products(self, element, params, xmlns):
-        """Load products as trade names and aliases."""
+        """Load products as trade names."""
         for product in element:
+            name = product.find(f"{xmlns}name").text
             generic = product.find(f"{xmlns}generic").text
             approved = product.find(f"{xmlns}approved").text
             over_the_counter = \
                 product.find(f"{xmlns}over-the-counter").text
-            name = product.find(f"{xmlns}name").text
-            if generic == "true" and over_the_counter != "true":
-                # Generic Prescription Products
-                if name not in params['aliases']:
-                    params['aliases'].append(name)
-            elif approved == "true":
-                # Brand Name Prescription Products
+
+            if generic == "true" or approved == "true" or \
+                    over_the_counter == "true":
                 if name not in params['trade_names']:
                     params['trade_names'].append(name)
 

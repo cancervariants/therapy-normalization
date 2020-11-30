@@ -59,6 +59,21 @@ def l745870():
     return Drug(**params)
 
 
+# Test with aliases and trade names > 20
+@pytest.fixture(scope='module')
+def aspirin():
+    """Create an aspirin drug fixture."""
+    params = {
+        'label': 'ASPIRIN',
+        'concept_id': 'chembl:CHEMBL25',
+        'aliases': [],
+        'approval_status': 'approved',
+        'other_identifiers': [],
+        'trade_names': []
+    }
+    return Drug(**params)
+
+
 def test_concept_id_cisplatin(cisplatin, chembl):
     """Test that cisplatin drug normalizes to correct drug concept
     as a CONCEPT_ID match.
@@ -308,6 +323,104 @@ def test_l745870_label(l745870, chembl):
            set(l745870.other_identifiers)
     assert set(normalized_drug.trade_names) == set(l745870.trade_names)
     assert normalized_drug.approval_status == l745870.approval_status
+
+
+def test_aspirin_concept_id(aspirin, chembl):
+    """Test that L-745870 drug normalizes to correct drug concept
+    as a CONCEPT_ID match.
+    """
+    normalizer_response = chembl.normalize('chembl:CHEMBL25')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == aspirin.label
+    assert normalized_drug.concept_id == aspirin.concept_id
+    assert set(normalized_drug.aliases) == set(aspirin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(aspirin.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(aspirin.trade_names)
+    assert normalized_drug.approval_status == aspirin.approval_status
+
+    normalizer_response = chembl.normalize('CHEMBL25')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == aspirin.label
+    assert normalized_drug.concept_id == aspirin.concept_id
+    assert set(normalized_drug.aliases) == set(aspirin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(aspirin.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(aspirin.trade_names)
+    assert normalized_drug.approval_status == aspirin.approval_status
+
+    normalizer_response = chembl.normalize('chembl:chembl25')
+    assert normalizer_response['match_type'] == \
+           MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == aspirin.label
+    assert normalized_drug.concept_id == aspirin.concept_id
+    assert set(normalized_drug.aliases) == set(aspirin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(aspirin.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(aspirin.trade_names)
+    assert normalized_drug.approval_status == aspirin.approval_status
+
+    normalizer_response = chembl.normalize('cHEmbl:chembl25')
+    assert normalizer_response['match_type'] == \
+           MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == aspirin.label
+    assert normalized_drug.concept_id == aspirin.concept_id
+    assert set(normalized_drug.aliases) == set(aspirin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(aspirin.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(aspirin.trade_names)
+    assert normalized_drug.approval_status == aspirin.approval_status
+
+    normalizer_response = chembl.normalize('cHEmbl:CHEMBL25')
+    assert normalizer_response['match_type'] == \
+           MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == aspirin.label
+    assert normalized_drug.concept_id == aspirin.concept_id
+    assert set(normalized_drug.aliases) == set(aspirin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(aspirin.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(aspirin.trade_names)
+    assert normalized_drug.approval_status == aspirin.approval_status
+
+
+def test_aspirin_label(aspirin, chembl):
+    """Test that L-745870 drug normalizes to correct drug concept
+    as a PRIMARY_LABEL match.
+    """
+    normalizer_response = chembl.normalize('ASPIRIN')
+    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == aspirin.label
+    assert normalized_drug.concept_id == aspirin.concept_id
+    assert set(normalized_drug.aliases) == set(aspirin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(aspirin.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(aspirin.trade_names)
+    assert normalized_drug.approval_status == aspirin.approval_status
+
+    normalizer_response = chembl.normalize('aspirin')
+    assert normalizer_response['match_type'] ==\
+           MatchType.PRIMARY_LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == aspirin.label
+    assert normalized_drug.concept_id == aspirin.concept_id
+    assert set(normalized_drug.aliases) == set(aspirin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(aspirin.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(aspirin.trade_names)
+    assert normalized_drug.approval_status == aspirin.approval_status
 
 
 def test_meta_info(cisplatin, chembl):
