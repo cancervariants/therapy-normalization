@@ -123,8 +123,7 @@ class DrugBank(Base):
         for label_type in ['trade_names', 'aliases']:
             if label_type in params:
                 if not params[label_type] or len(
-                        set({a.casefold(): a for a in params[
-                            label_type]}.values())) > 20:
+                        {a.casefold() for a in params[label_type]} > 20:
                     del params[label_type]
         batch.put_item(Item=params)
 
