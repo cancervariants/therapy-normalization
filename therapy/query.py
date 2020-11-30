@@ -53,6 +53,7 @@ def fetch_meta(src_name: str) -> Meta:
     else:
         try:
             db_response = METADATA_TABLE.get_item(Key={'src_name': src_name})
+            print(db_response)
             response = Meta(**db_response['Item'])
             cached_sources[src_name] = response
             return response
@@ -334,11 +335,12 @@ def normalize(query_str, keyed=False, incl='', excl='', **params):
     Returns:
         Dict containing all matches found in sources.
     """
-    sources = {name.value.lower(): name.value for name in
-               SourceName.__members__.values()}
+    # sources = {name.value.lower(): name.value for name in
+    #            SourceName.__members__.values()}
 
     # TODO testing -- remove when dynamodb implementation complete
-    # sources = {"ncit": "NCIt", "wikidata": "Wikidata"}
+    sources = {"ncit": "NCIt", "wikidata": "Wikidata",
+               "drugbank": "DrugBank"}
 
     if not incl and not excl:
         query_sources = set(sources.values())
