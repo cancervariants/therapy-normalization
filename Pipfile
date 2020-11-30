@@ -27,6 +27,8 @@ boto3 = "*"
 cython = "*"
 owlready2 = "*"
 rdflib = "*"
+uvloop = "*"
+websockets = "*"
 
 [requires]
 python_version = "3.8"
