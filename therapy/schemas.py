@@ -10,7 +10,7 @@ class Therapy(BaseModel):
     """A procedure or substance used in the treatment of a disease."""
 
     label: str
-    concept_identifier: str
+    concept_id: str
     aliases: List[str]
     other_identifiers: List[str]
 
@@ -49,7 +49,7 @@ class Drug(Therapy):
     """A pharmacologic substance used to treat a medical condition."""
 
     approval_status: Optional[ApprovalStatus]
-    trade_name: Optional[List[str]]
+    trade_names: Optional[List[str]]
     label: Optional[str]
 
     class Config:
@@ -129,6 +129,17 @@ class SourceIDAfterNamespace(Enum):
     PUBCHEMSUBSTANCE = ""
     RXNORM = ""
     UMLS = ""
+    CHEBI = ""
+    KEGGCOMPOUND = ""
+    KEGGDRUG = ""
+    BINDINGDB = ""
+    PHARMGKB = ""
+    CHEMSPIDER = ""
+    ZINC = ""
+    PDB = ""
+    THERAPEUTICTARGETSDB = ""
+    IUPHAR = ""
+    GUIDETOPHARMACOLOGY = ""
 
 
 class NamespacePrefix(Enum):
@@ -145,9 +156,20 @@ class NamespacePrefix(Enum):
     FDA = "fda"
     ISO = "iso"
     UMLS = "umls"
+    CHEBI = "chebi"
+    KEGGCOMPOUND = "kegg.compound"
+    KEGGDRUG = "kegg.drug"
+    BINDINGDB = "bindingdb"
+    PHARMGKB = "pharmgkb.drug"
+    CHEMSPIDER = "chemspider"
+    ZINC = "zinc"
+    PDB = "pdb"
+    THERAPEUTICTARGETSDB = "ttd"
+    IUPHAR = "iuphar"
+    GUIDETOPHARMACOLOGY = "gtopdb"
 
 
-class MetaResponse(BaseModel):
+class Meta(BaseModel):
     """Metadata for a given source to return in response object."""
 
     data_license: str
@@ -160,7 +182,7 @@ class MetaResponse(BaseModel):
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
-                         model: Type['MetaResponse']) -> None:
+                         model: Type['Meta']) -> None:
             """Configure OpenAPI schema"""
             if 'title' in schema.keys():
                 schema.pop('title', None)
@@ -183,7 +205,7 @@ class MatchesKeyed(BaseModel):
 
     match_type: MatchType
     records: List[Drug]
-    meta_: MetaResponse
+    meta_: Meta
 
     class Config:
         """Enables orm_mode"""
@@ -218,7 +240,7 @@ class MatchesListed(BaseModel):
     source: SourceName
     match_type: MatchType
     records: List[Drug]
-    meta_: MetaResponse
+    meta_: Meta
 
     class Config:
         """Enables orm_mode"""

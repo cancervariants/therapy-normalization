@@ -1,12 +1,12 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
-from therapy.etl import ChEMBL, Wikidata, NCIt, DrugBank
-from therapy.database import Base, engine, SessionLocal
-from therapy import database, models, schemas  # noqa: F401
-from therapy.models import Therapy, Meta
-from sqlalchemy import event
+from botocore.exceptions import ClientError
+from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt
 from therapy.schemas import SourceName
 from timeit import default_timer as timer
+from therapy.database import Database, DYNAMODBCLIENT, THERAPIES_TABLE, \
+    METADATA_TABLE
+from boto3.dynamodb.conditions import Key
 
 
 class CLI:
@@ -24,27 +24,17 @@ class CLI:
     )
     def update_normalizer_db(normalizer, all):
         """Update select normalizer(s) sources in the therapy database."""
-
-        @event.listens_for(engine, "connect")
-        def set_sqlite_pragma(engine, rec):
-            cursor = engine.cursor()
-            cursor.execute("PRAGMA foreign_keys=ON")
-            cursor.close()
-
-        engine.connect()
-        Base.metadata.create_all(bind=engine)
-        session = SessionLocal()
-
         sources = {
             'chembl': ChEMBL,
-            'wikidata': Wikidata,
             'ncit': NCIt,
-            'drugbank': DrugBank,
+            'wikidata': Wikidata,
+            'drugbank': DrugBank
         }
 
         if all:
+            CLI()._delete_all_data()
+            Database()
             for n in sources:
-                CLI()._delete_data(session, n)
                 click.echo(f"Loading {n}...")
                 start = timer()
                 sources[n]()
@@ -52,36 +42,79 @@ class CLI:
                 click.echo(f"Loaded {n} in {end - start} seconds.")
             click.echo('Finished updating all normalizer sources.')
         else:
+            Database()
             normalizers = normalizer.lower().split()
             if len(normalizers) == 0:
                 raise Exception("Must enter a normalizer.")
             for n in normalizers:
                 if n in sources:
-                    # TODO: Fix so that self._delete_data(n) works
-                    CLI()._delete_data(session, n)
+                    click.echo(f"\nDeleting {n}...")
+                    start_delete = timer()
+                    CLI()._delete_data(n)
+                    end_delete = timer()
+                    delete_time = end_delete - start_delete
+                    click.echo(f"Deleted {n} in "
+                               f"{delete_time} seconds.\n")
                     click.echo(f"Loading {n}...")
-                    start = timer()
+                    start_load = timer()
                     sources[n]()
-                    end = timer()
-                    click.echo(f"Loaded {n} in {end - start} seconds.")
+                    end_load = timer()
+                    load_time = end_load - start_load
+                    click.echo(f"Loaded {n} in {load_time} seconds.")
+                    click.echo(f"Total time for {n}: "
+                               f"{delete_time + load_time} seconds.")
                 else:
                     raise Exception("Not a normalizer source.")
-        session.close()
 
-    def _delete_data(self, session, source, *args, **kwargs):
-        click.echo(f"Start deleting the {source} source.")
-        src_names = [src.value for src in SourceName.__members__.values()]
-        lower_src_names = [src.lower() for src in src_names]
-        delete_therapies = Therapy.__table__.delete().where(
-            Therapy.src_name == src_names[lower_src_names.index(source)]
-        )
-        session.execute(delete_therapies)
-        delete_meta_data = Meta.__table__.delete().where(
-            Meta.src_name == src_names[lower_src_names.index(source)]
-        )
-        session.execute(delete_meta_data)
-        session.commit()
-        click.echo(f"Finished deleting the {source} source.")
+    def _delete_all_data(self):
+        tables = DYNAMODBCLIENT.list_tables()['TableNames']
+        for table in tables:
+            response = DYNAMODBCLIENT.delete_table(TableName=table)  # noqa F841
+            click.echo(f"Deleted table: {table}")
+
+    def _delete_data(self, source):
+        # Delete source's metadata
+        try:
+            metadata = METADATA_TABLE.query(
+                KeyConditionExpression=Key(
+                    'src_name').eq(SourceName[f"{source.upper()}"].value)
+            )
+            if metadata['Items']:
+                METADATA_TABLE.delete_item(
+                    Key={'src_name': metadata['Items'][0]['src_name']},
+                    ConditionExpression="src_name = :src",
+                    ExpressionAttributeValues={
+                        ':src': SourceName[f"{source.upper()}"].value}
+                )
+        except ClientError as e:
+            click.echo(e.response['Error']['Message'])
+
+        # Delete source's data from therapies table
+        try:
+            while True:
+                response = THERAPIES_TABLE.query(
+                    IndexName='src_index',
+                    KeyConditionExpression=Key('src_name').eq(
+                        SourceName[f"{source.upper()}"].value)
+                )
+
+                records = response['Items']
+                if not records:
+                    break
+
+                with THERAPIES_TABLE.batch_writer(
+                        overwrite_by_pkeys=['label_and_type', 'concept_id']) \
+                        as batch:
+
+                    for record in records:
+                        batch.delete_item(
+                            Key={
+                                'label_and_type': record['label_and_type'],
+                                'concept_id': record['concept_id']
+                            }
+                        )
+        except ClientError as e:
+            click.echo(e.response['Error']['Message'])
 
 
 if __name__ == '__main__':

@@ -1,28 +1,98 @@
-"""This module creates the database session."""
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-from therapy import PROJECT_ROOT
-import os
+"""This module creates the database."""
+import boto3
 
-test = os.environ.get("THERAPY_DB_TEST")
-if not test:
-    uri = f"sqlite:///{PROJECT_ROOT}/data/therapy.db"
-elif test == "TEST":
-    uri = f"sqlite:///{PROJECT_ROOT}/tests/unit/data/test_therapy.db"
+DYNAMODB = boto3.resource('dynamodb', endpoint_url="http://localhost:8000")
+DYNAMODBCLIENT = \
+    boto3.client('dynamodb', endpoint_url="http://localhost:8000")
+THERAPIES_TABLE = DYNAMODB.Table('Therapies')
+METADATA_TABLE = DYNAMODB.Table('Metadata')
+cached_sources = dict()
 
 
-engine = create_engine(
-    uri, connect_args={"check_same_thread": False}
-)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+class Database:
+    """The database class."""
 
-convention = {
-    "ix": 'ix_%(column_0_label)s',
-    "uq": "uq_%(table_name)s_%(column_0_name)s",
-    "ck": "ck_%(table_name)s_%(constraint_name)s",
-    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-    "pk": "pk_%(table_name)s"
-}
-meta = MetaData(naming_convention=convention)
-Base = declarative_base(meta)
+    def __init__(self, *args, **kwargs):
+        """Initialize Database class."""
+        existing_tables = DYNAMODBCLIENT.list_tables()['TableNames']
+        self.create_therapies_table(DYNAMODB, existing_tables)
+        self.create_meta_data_table(DYNAMODB, existing_tables)
+
+    def create_therapies_table(self, dynamodb, existing_tables):
+        """Create Therapies table if not exists."""
+        table_name = 'Therapies'
+        if table_name not in existing_tables:
+            dynamodb.create_table(
+                TableName=table_name,
+                KeySchema=[
+                    {
+                        'AttributeName': 'label_and_type',
+                        'KeyType': 'HASH'  # Partition key
+                    },
+                    {
+                        'AttributeName': 'concept_id',
+                        'KeyType': 'RANGE'  # Sort key
+                    }
+                ],
+                AttributeDefinitions=[
+                    {
+                        'AttributeName': 'label_and_type',
+                        'AttributeType': 'S'
+                    },
+                    {
+                        'AttributeName': 'concept_id',
+                        'AttributeType': 'S'
+                    },
+                    {
+                        'AttributeName': 'src_name',
+                        'AttributeType': 'S'
+                    }
+
+                ],
+                GlobalSecondaryIndexes=[
+                    {
+                        'IndexName': 'src_index',
+                        'KeySchema': [
+                            {
+                                'AttributeName': 'src_name',
+                                'KeyType': 'HASH'
+                            }
+                        ],
+                        'Projection': {
+                            'ProjectionType': 'KEYS_ONLY'
+                        },
+                        'ProvisionedThroughput': {
+                            'ReadCapacityUnits': 10,
+                            'WriteCapacityUnits': 10
+                        }
+                    }
+                ],
+                ProvisionedThroughput={
+                    'ReadCapacityUnits': 10,
+                    'WriteCapacityUnits': 10
+                }
+            )
+
+    def create_meta_data_table(self, dynamodb, existing_tables):
+        """Create MetaData table if not exists."""
+        table_name = 'Metadata'
+        if table_name not in existing_tables:
+            dynamodb.create_table(
+                TableName=table_name,
+                KeySchema=[
+                    {
+                        'AttributeName': 'src_name',
+                        'KeyType': 'HASH'  # Partition key
+                    }
+                ],
+                AttributeDefinitions=[
+                    {
+                        'AttributeName': 'src_name',
+                        'AttributeType': 'S'
+                    },
+                ],
+                ProvisionedThroughput={
+                    'ReadCapacityUnits': 10,
+                    'WriteCapacityUnits': 10
+                }
+            )
