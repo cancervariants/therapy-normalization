@@ -3,6 +3,7 @@ from therapy.query import normalize, InvalidParameterException
 from therapy.schemas import Service
 from fastapi import FastAPI, HTTPException
 from fastapi.openapi.utils import get_openapi
+from fastapi.responses import RedirectResponse
 import html
 from typing import Optional
 
@@ -34,6 +35,12 @@ def custom_openapi():
 
 
 app.openapi = custom_openapi
+
+
+@app.get("/")
+def root_redirect():
+    """Redirect requests for root dir to OpenAPI schema"""
+    return RedirectResponse("/openapi.json")
 
 
 @app.get("/search",
