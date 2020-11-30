@@ -19,7 +19,7 @@ class CLI:
     )
     @click.option(
         '--normalizer',
-        help="The normalizer(s) you wish to update separated by spaces."
+        help="The normalizer(s) you wish to update separated by commas."
     )
     def update_normalizer_db(normalizer, all):
         """Update select normalizer(s) sources in the therapy database."""
@@ -30,7 +30,7 @@ class CLI:
             'drugbank': DrugBank
         }
 
-        normalizers = normalizer.lower().split()
+        normalizers = normalizer.lower().split(',')
         if len(normalizers) == 0:
             raise Exception("Must enter a normalizer.")
         for n in normalizers:
@@ -41,15 +41,15 @@ class CLI:
                 end_delete = timer()
                 delete_time = end_delete - start_delete
                 click.echo(f"Deleted {n} in "
-                           f"{delete_time} seconds.\n")
+                           f"{delete_time:.5f} seconds.\n")
                 click.echo(f"Loading {n}...")
                 start_load = timer()
                 sources[n]()
                 end_load = timer()
                 load_time = end_load - start_load
-                click.echo(f"Loaded {n} in {load_time} seconds.")
+                click.echo(f"Loaded {n} in {load_time:.5f} seconds.")
                 click.echo(f"Total time for {n}: "
-                           f"{delete_time + load_time} seconds.")
+                           f"{(delete_time + load_time):.5f} seconds.")
             else:
                 raise Exception("Not a normalizer source.")
 
