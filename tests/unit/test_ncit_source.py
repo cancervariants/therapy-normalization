@@ -18,7 +18,7 @@ def ncit():
 
 @pytest.fixture(scope='module')
 def voglibose():
-    """Create voglibose drug fixture"""
+    """Create a voglibose drug fixture.."""
     params = {
         'label': 'Voglibose',
         'concept_id': 'ncit:C95221',
@@ -35,7 +35,7 @@ def voglibose():
 
 @pytest.fixture(scope='module')
 def apricoxib():
-    """Create apricoxib drug fixture"""
+    """Create an apricoxib drug fixture."""
     params = {
         'label': 'Apricoxib',
         'concept_id': 'ncit:C74021',
@@ -43,6 +43,22 @@ def apricoxib():
                     'TG01', 'TP2001'],
         'other_identifiers': ['chemidplus:197904-84-0', 'fda:5X5HB3VZ3Z',
                               'umls:C1737955'],
+        'approval_status': None,
+        'trade_names': []
+    }
+    return Drug(**params)
+
+
+# Test aliases > 20
+@pytest.fixture(scope='module')
+def trastuzumab():
+    """Create a Trastuzumab drug fixture."""
+    params = {
+        'label': 'Trastuzumab',
+        'concept_id': 'ncit:C1647',
+        'aliases': [],
+        'other_identifiers': ['umls:C0728747', 'chemidplus:180288-69-1',
+                              'fda:P188ANX8CK'],
         'approval_status': None,
         'trade_names': []
     }
@@ -265,6 +281,83 @@ def test_primary_label_apricoxib(apricoxib, ncit):
            set(apricoxib.other_identifiers)
     assert set(normalized_drug.trade_names) == set(apricoxib.trade_names)
     assert normalized_drug.approval_status == apricoxib.approval_status
+
+
+def test_concept_id_trastuzumab(trastuzumab, ncit):
+    """Test that trastuzumab successfully matches to concept ID queries"""
+    response = ncit.normalize('ncit:C1647')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    drug = response['records'][0]
+    assert drug.label == trastuzumab.label
+    assert drug.concept_id == trastuzumab.concept_id
+    assert set(drug.aliases) == set(trastuzumab.aliases)
+    assert set(drug.other_identifiers) == set(trastuzumab.other_identifiers)
+    assert set(drug.trade_names) == set(trastuzumab.trade_names)
+    assert drug.approval_status == trastuzumab.approval_status
+
+    normalizer_response = ncit.normalize('NCIT:C1647')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    drug = normalizer_response['records'][0]
+    assert drug.label == trastuzumab.label
+    assert drug.concept_id == trastuzumab.concept_id
+    assert set(drug.aliases) == set(trastuzumab.aliases)
+    assert set(drug.other_identifiers) == set(trastuzumab.other_identifiers)
+    assert set(drug.trade_names) == set(trastuzumab.trade_names)
+    assert drug.approval_status == trastuzumab.approval_status
+
+    normalizer_response = ncit.normalize('NCIt:c1647')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    drug = normalizer_response['records'][0]
+    assert drug.label == trastuzumab.label
+    assert drug.concept_id == trastuzumab.concept_id
+    assert set(drug.aliases) == set(trastuzumab.aliases)
+    assert set(drug.other_identifiers) == set(trastuzumab.other_identifiers)
+    assert set(drug.trade_names) == set(trastuzumab.trade_names)
+    assert drug.approval_status == trastuzumab.approval_status
+
+    normalizer_response = ncit.normalize('C1647')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    drug = normalizer_response['records'][0]
+    assert drug.label == trastuzumab.label
+    assert drug.concept_id == trastuzumab.concept_id
+    assert set(drug.aliases) == set(trastuzumab.aliases)
+    assert set(drug.other_identifiers) == set(trastuzumab.other_identifiers)
+    assert set(drug.trade_names) == set(trastuzumab.trade_names)
+    assert drug.approval_status == trastuzumab.approval_status
+
+
+def test_primary_label_trastuzumab(trastuzumab, ncit):
+    """Test that trastuzumab drug normalizes to correct drug concept
+    as a PRIMARY_LABEL match.
+    """
+    normalizer_response = ncit.normalize('trastuzumab')
+    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == trastuzumab.label
+    assert normalized_drug.concept_id == trastuzumab.concept_id
+    assert set(normalized_drug.aliases) == set(trastuzumab.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(trastuzumab.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(trastuzumab.trade_names)
+    assert normalized_drug.approval_status == trastuzumab.approval_status
+
+    normalizer_response = ncit.normalize('Trastuzumab')
+    assert normalizer_response['match_type'] == \
+           MatchType.PRIMARY_LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == trastuzumab.label
+    assert normalized_drug.concept_id == trastuzumab.concept_id
+    assert set(normalized_drug.aliases) == set(trastuzumab.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(trastuzumab.other_identifiers)
+    assert set(normalized_drug.trade_names) == set(trastuzumab.trade_names)
+    assert normalized_drug.approval_status == trastuzumab.approval_status
 
 
 def test_meta_info(voglibose, ncit):
