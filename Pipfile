@@ -11,13 +11,13 @@ flake8-docstrings = "*"
 coverage = "*"
 pytest-cov = "*"
 jupyterlab = "*"
+thera-py = {editable = true, path = "."}
+coveralls = "*"
 
 [packages]
 pydantic = "*"
-coveralls = "*"
 twine = "*"
 civicpy = "*"
-thera-py = {editable = true, path = "."}
 fastapi = "*"
 uvicorn = "*"
 click = "*"
