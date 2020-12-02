@@ -6,7 +6,7 @@ from therapy.query import Normalizer
 
 @pytest.fixture(scope='module')
 def chembl():
-    """Build Wikidata normalizer test fixture."""
+    """Build ChEMBL normalizer test fixture."""
     class QueryGetter:
 
         def __init__(self):
