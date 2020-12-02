@@ -8,7 +8,7 @@ from therapy.query import Normalizer
 
 @pytest.fixture(scope='module')
 def drugbank():
-    """Build Wikidata normalizer test fixture."""
+    """Build DrugBank normalizer test fixture."""
     class QueryGetter:
 
         def __init__(self):

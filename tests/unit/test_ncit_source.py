@@ -6,7 +6,7 @@ from therapy.query import Normalizer
 
 @pytest.fixture(scope='module')
 def ncit():
-    """Build Wikidata normalizer test fixture."""
+    """Build NCIt normalizer test fixture."""
     class QueryGetter:
 
         def __init__(self):
