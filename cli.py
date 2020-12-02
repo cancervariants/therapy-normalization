@@ -13,19 +13,10 @@ class CLI:
 
     @click.command()
     @click.option(
-        '--all',
-        is_flag=True,
-        help='Update all normalizer databases.'
-    )
-    @click.option(
         '--normalizer',
         help="The normalizer(s) you wish to update separated by commas."
     )
-    @click.option(
-        '--env',
-        help="dev or prod"
-    )
-    def update_normalizer_db(normalizer, all):
+    def update_normalizer_db(normalizer):
         """Update select normalizer(s) sources in the therapy database."""
         sources = {
             'chembl': ChEMBL,
@@ -37,8 +28,10 @@ class CLI:
         db: Database = Database()
 
         normalizers = normalizer.lower().split(',')
+
         if len(normalizers) == 0:
             raise Exception("Must enter a normalizer.")
+
         for n in normalizers:
             if n in sources:
                 click.echo(f"\nDeleting {n}...")
