@@ -11,8 +11,9 @@ def normalizer():
         def __init__(self):
             self.normalizer = Normalizer()
 
-        def normalize(self, query_str, keyed=False):
-            resp = self.normalizer.normalize(query_str, keyed)
+        def normalize(self, query_str, keyed=False, incl='', excl=''):
+            resp = self.normalizer.normalize(query_str=query_str, keyed=keyed,
+                                             incl=incl, excl=excl)
             return resp
 
     return QueryGetter()
@@ -24,7 +25,7 @@ def test_query(normalizer):
     assert resp['query'] == 'cisplatin'
     matches = resp['source_matches']
     assert isinstance(matches, list)
-    assert len(matches) == 3
+    assert len(matches) == 4
     wikidata = list(filter(lambda m: m['source'] == 'Wikidata',
                            matches))[0]
     assert len(wikidata['records']) == 1
@@ -56,7 +57,7 @@ def test_query_specify_normalizers(normalizer):
     # test partial inclusion
     resp = normalizer.normalize('cisplatin', keyed=True, incl='chembl,ncit')
     matches = resp['source_matches']
-    assert len(matches) == 1
+    assert len(matches) == 2
     assert 'Wikidata' not in matches
     assert 'ChEMBL' in matches
     assert 'NCIt' in matches
@@ -79,11 +80,13 @@ def test_query_specify_normalizers(normalizer):
 
     # test full exclusion
     resp = normalizer.normalize('cisplatin', keyed=True,
-                                excl='chembl,wikidata, drugbank')
+                                excl='chembl, wikidata, drugbank, ncit')
     matches = resp['source_matches']
     assert len(matches) == 0
     assert 'Wikidata' not in matches
     assert 'ChEMBL' not in matches
+    assert 'NCIt' not in matches
+    assert 'DrugBank' not in matches
 
     # test case insensitive
     resp = normalizer.normalize('cisplatin', keyed=True, excl='ChEmBl')
@@ -99,10 +102,6 @@ def test_query_specify_normalizers(normalizer):
     # test error on invalid normalizer names
     with pytest.raises(InvalidParameterException):
         resp = normalizer.normalize('cisplatin', keyed=True, incl='chambl')
-
-    # assert resp is error
-    with pytest.raises(InvalidParameterException):
-        resp = normalizer.normalize('cisplatin', keyed=True, excl='wakidata')
 
     # test error for supplying both incl and excl args
     with pytest.raises(InvalidParameterException):

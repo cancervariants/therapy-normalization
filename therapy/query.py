@@ -364,12 +364,12 @@ class Normalizer:
         Returns:
             Dict containing all matches found in sources.
         """
-        # sources = {name.value.lower(): name.value for name in
-        #            SourceName.__members__.values()}
+        sources = {name.value.lower(): name.value for name in
+                   SourceName.__members__.values()}
 
         # TODO testing -- remove when dynamodb implementation complete
-        sources = {"ncit": "NCIt", "wikidata": "Wikidata",
-                   "drugbank": "DrugBank"}
+        # sources = {"ncit": "NCIt", "wikidata": "Wikidata",
+        #            "drugbank": "DrugBank"}
 
         if not incl and not excl:
             query_sources = set(sources.values())
