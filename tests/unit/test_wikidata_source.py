@@ -2,20 +2,23 @@
 Wikidata source.
 """
 import pytest
-from therapy import query
 from therapy.schemas import Drug, MatchType
+from therapy.query import Normalizer
 
 
 @pytest.fixture(scope='module')
 def wikidata():
-    """Build Wikidata test fixture."""
+    """Build Wikidata normalizer test fixture."""
     class QueryGetter:
-        def normalize(self, query_str, incl='wikidata'):
-            resp = query.normalize(query_str, keyed=True, incl=incl)
-            return resp['source_matches']['Wikidata']
 
-    w = QueryGetter()
-    return w
+        def __init__(self):
+            self.normalizer = Normalizer()
+
+        def normalize(self, query_str):
+            resp = self.normalizer.normalize(query_str, keyed=True,
+                                             incl='wikidata')
+            return resp['source_matches']['Wikidata']
+    return QueryGetter()
 
 
 @pytest.fixture(scope='module')
