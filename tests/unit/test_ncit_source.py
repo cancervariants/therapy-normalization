@@ -1,19 +1,22 @@
 """Test NCIT source"""
 import pytest
 from therapy.schemas import Drug, MatchType
-from therapy import query
+from therapy.query import Normalizer
 
 
 @pytest.fixture(scope='module')
 def ncit():
-    """Build NCIt test fixture"""
+    """Build Wikidata normalizer test fixture."""
     class QueryGetter:
-        def normalize(self, query_str, incl='ncit'):
-            resp = query.normalize(query_str, keyed=True, incl=incl)
-            return resp['source_matches']['NCIt']
 
-    c = QueryGetter()
-    return c
+        def __init__(self):
+            self.normalizer = Normalizer()
+
+        def normalize(self, query_str):
+            resp = self.normalizer.normalize(query_str, keyed=True,
+                                             incl='ncit')
+            return resp['source_matches']['NCIt']
+    return QueryGetter()
 
 
 @pytest.fixture(scope='module')

@@ -3,22 +3,26 @@ source.
 """
 import pytest
 from therapy.schemas import Drug, MatchType
-from therapy import query
+from therapy.query import Normalizer
 
 
 @pytest.fixture(scope='module')
 def drugbank():
-    """Build DrugBank test fixture."""
+    """Build Wikidata normalizer test fixture."""
     class QueryGetter:
-        def normalize(self, query_str, incl='drugbank'):
-            resp = query.normalize(query_str, keyed=True, incl=incl)
+
+        def __init__(self):
+            self.normalizer = Normalizer()
+
+        def normalize(self, query_str):
+            resp = self.normalizer.normalize(query_str, keyed=True,
+                                             incl='drugbank')
             return resp['source_matches']['DrugBank']
 
         def fetch_meta(self):
-            return query.fetch_meta('DrugBank')
+            return self.normalizer.fetch_meta('DrugBank')
 
-    d = QueryGetter()
-    return d
+    return QueryGetter()
 
 
 @pytest.fixture(scope='module')
