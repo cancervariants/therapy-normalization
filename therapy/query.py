@@ -3,7 +3,6 @@ import re
 from typing import List, Dict, Set, Optional
 
 from uvicorn.config import logger
-# from therapy.database import THERAPIES_TABLE, METADATA_TABLE, cached_sources
 from therapy.database import Database
 from therapy.schemas import Drug, Meta, MatchType, SourceName, \
     NamespacePrefix, SourceIDAfterNamespace
@@ -367,9 +366,6 @@ class Normalizer:
         sources = {name.value.lower(): name.value for name in
                    SourceName.__members__.values()}
 
-        # TODO testing -- remove when dynamodb implementation complete
-        # sources = {"ncit": "NCIt", "wikidata": "Wikidata",
-        #            "drugbank": "DrugBank"}
 
         if not incl and not excl:
             query_sources = set(sources.values())
