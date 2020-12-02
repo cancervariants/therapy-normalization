@@ -2,7 +2,6 @@
 from therapy.etl.base import Base
 from therapy import PROJECT_ROOT
 import logging
-from therapy import schemas  # noqa: F401
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
 from therapy.etl.base import IDENTIFIER_PREFIXES
 from lxml import etree
