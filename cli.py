@@ -16,7 +16,7 @@ class CLI:
         '--normalizer',
         help="The normalizer(s) you wish to update separated by commas."
     )
-    def update_normalizer_db(normalizer):
+    def update_normalizer_db(normalizer, update_all):
         """Update select normalizer(s) sources in the therapy database."""
         sources = {
             'chembl': ChEMBL,
@@ -31,6 +31,10 @@ class CLI:
 
         if len(normalizers) == 0:
             raise Exception("Must enter a normalizer.")
+        if update_all and normalizer:
+            raise click.UsageError("Cannot specify normalizers and call --all")
+        if update_all:
+            normalizers = sources
 
         for n in normalizers:
             if n in sources:
