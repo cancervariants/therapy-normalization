@@ -5,7 +5,7 @@ import pytest
 
 @pytest.fixture(scope='module')
 def normalizer():
-    """Build Wikidata normalizer test fixture."""
+    """Build normalizer test fixture."""
     class QueryGetter:
 
         def __init__(self):
