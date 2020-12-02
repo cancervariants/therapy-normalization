@@ -21,6 +21,10 @@ class CLI:
         '--normalizer',
         help="The normalizer(s) you wish to update separated by commas."
     )
+    @click.option(
+        '--env',
+        help="dev or prod"
+    )
     def update_normalizer_db(normalizer, all):
         """Update select normalizer(s) sources in the therapy database."""
         sources = {
