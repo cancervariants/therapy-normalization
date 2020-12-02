@@ -4,8 +4,8 @@ from therapy import PROJECT_ROOT
 import json
 from therapy.schemas import SourceName, NamespacePrefix, \
     SourceIDAfterNamespace, Meta
+from therapy.database import Database
 import logging
-from therapy.database import THERAPIES_TABLE, METADATA_TABLE
 from typing import Dict
 
 logger = logging.getLogger('therapy')
@@ -47,8 +47,9 @@ class Wikidata(Base):
     }
     """
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, database: Database, *args, **kwargs):
         """Initialize wikidata ETL class"""
+        self.database = database
         self._extract_data(*args, **kwargs)
         self._add_meta()
         self._transform_data()
@@ -73,7 +74,7 @@ class Wikidata(Base):
                         data_license_url='https://creativecommons.org/publicdomain/zero/1.0/',  # noqa: E501
                         version=self._version,
                         data_url=None)
-        METADATA_TABLE.put_item(Item={
+        self.database.metadata.put_item(Item={
             'src_name': SourceName.WIKIDATA.value,
             'data_license': metadata.data_license,
             'data_license_url': metadata.data_license_url,
@@ -121,7 +122,7 @@ class Wikidata(Base):
                     else:
                         items[concept_id]['aliases'] = [record['alias']]
 
-        with THERAPIES_TABLE.batch_writer() as batch:
+        with self.database.therapies.batch_writer() as batch:
             for item in items.values():
                 self._load_therapy(item, batch)
 

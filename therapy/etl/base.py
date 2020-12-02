@@ -1,6 +1,7 @@
 """A base class for extraction, transformation, and loading of data."""
 from abc import ABC, abstractmethod
 from therapy.schemas import NamespacePrefix
+from therapy.database import Database
 
 IDENTIFIER_PREFIXES = {
     'casRegistry': NamespacePrefix.CASREGISTRY.value,
@@ -16,8 +17,9 @@ IDENTIFIER_PREFIXES = {
 class Base(ABC):
     """The ETL base class."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, database: Database, *args, **kwargs):
         """Extract from sources."""
+        self.database = database
         self._load_data(*args, **kwargs)
 
     @abstractmethod

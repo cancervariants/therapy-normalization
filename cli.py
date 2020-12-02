@@ -4,7 +4,7 @@ from botocore.exceptions import ClientError
 from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt
 from therapy.schemas import SourceName
 from timeit import default_timer as timer
-from therapy.database import THERAPIES_TABLE, METADATA_TABLE
+from therapy.database import Database
 from boto3.dynamodb.conditions import Key
 
 
@@ -30,6 +30,8 @@ class CLI:
             'drugbank': DrugBank
         }
 
+        db: Database = Database()
+
         normalizers = normalizer.lower().split(',')
         if len(normalizers) == 0:
             raise Exception("Must enter a normalizer.")
@@ -37,14 +39,14 @@ class CLI:
             if n in sources:
                 click.echo(f"\nDeleting {n}...")
                 start_delete = timer()
-                CLI()._delete_data(n)
+                CLI()._delete_data(n, db)
                 end_delete = timer()
                 delete_time = end_delete - start_delete
                 click.echo(f"Deleted {n} in "
                            f"{delete_time:.5f} seconds.\n")
                 click.echo(f"Loading {n}...")
                 start_load = timer()
-                sources[n]()
+                sources[n](database=db)
                 end_load = timer()
                 load_time = end_load - start_load
                 click.echo(f"Loaded {n} in {load_time:.5f} seconds.")
@@ -53,15 +55,15 @@ class CLI:
             else:
                 raise Exception("Not a normalizer source.")
 
-    def _delete_data(self, source):
+    def _delete_data(self, source, database):
         # Delete source's metadata
         try:
-            metadata = METADATA_TABLE.query(
+            metadata = database.metadata.query(
                 KeyConditionExpression=Key(
                     'src_name').eq(SourceName[f"{source.upper()}"].value)
             )
             if metadata['Items']:
-                METADATA_TABLE.delete_item(
+                database.metadata.delete_item(
                     Key={'src_name': metadata['Items'][0]['src_name']},
                     ConditionExpression="src_name = :src",
                     ExpressionAttributeValues={
@@ -73,7 +75,7 @@ class CLI:
         # Delete source's data from therapies table
         try:
             while True:
-                response = THERAPIES_TABLE.query(
+                response = database.therapies.query(
                     IndexName='src_index',
                     KeyConditionExpression=Key('src_name').eq(
                         SourceName[f"{source.upper()}"].value)
@@ -83,7 +85,7 @@ class CLI:
                 if not records:
                     break
 
-                with THERAPIES_TABLE.batch_writer(
+                with database.therapies.batch_writer(
                         overwrite_by_pkeys=['label_and_type', 'concept_id']) \
                         as batch:
 
