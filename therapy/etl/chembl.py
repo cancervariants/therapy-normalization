@@ -6,7 +6,6 @@ import logging
 import tarfile  # noqa: F401
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
 import sqlite3
-from therapy.database import THERAPIES_TABLE, METADATA_TABLE
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -185,7 +184,7 @@ class ChEMBL(Base):
                   self._cursor.execute(chembl_data).fetchall()]
         self._cursor.execute("DROP TABLE temp;")
 
-        with THERAPIES_TABLE.batch_writer() as batch:
+        with self.database.therapies.batch_writer() as batch:
             for record in result:
                 if record['label']:
                     self._load_label(record, batch)
@@ -260,7 +259,7 @@ class ChEMBL(Base):
 
     def _add_meta(self, *args, **kwargs):
         """Add ChEMBL metadata."""
-        METADATA_TABLE.put_item(
+        self.database.metadata.put_item(
             Item={
                 'src_name': SourceName.CHEMBL.value,
                 'data_license': 'CC BY-SA 3.0',

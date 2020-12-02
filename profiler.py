@@ -1,8 +1,8 @@
 """This tool is used for profiling query return speed.
 Call from command line with optional # of trials argument; otherwise,
-will run 8 trials by default.
+will run 12 trials by default.
 """
-from therapy.query import normalize
+from therapy.query import Normalizer
 import random
 from timeit import default_timer as timer
 from sys import argv
@@ -42,6 +42,8 @@ QUERY_TERM_LIST = [
 
 
 def run_trials(n=12):
+    """Run n trials"""
+    normalizer = Normalizer()
     """Run n trials on a miscellaneous slate of queries"""
     queries_per_trial = []
     print(f"Running {n} trials")
@@ -53,7 +55,7 @@ def run_trials(n=12):
     for i, queries in enumerate(queries_per_trial):
         start = timer()
         for query in queries:
-            normalize(query)
+            normalizer.normalize(query)
         end = timer()
         duration = end - start
         print(f"Trial {i + 1}: {duration:.5f} seconds")
