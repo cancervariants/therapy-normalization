@@ -189,6 +189,8 @@ class ChEMBL(Base):
             for record in result:
                 if record['label']:
                     self._load_label(record, batch)
+                else:
+                    del record['label']
                 if record['aliases']:
                     self._load_alias(record, batch)
                 else:
@@ -197,6 +199,8 @@ class ChEMBL(Base):
                     self._load_trade_name(record, batch)
                 else:
                     del record['trade_names']
+                if not record['approval_status']:
+                    del record['approval_status']
                 self._load_therapy(record, batch)
 
     def _load_therapy(self, record, batch):
