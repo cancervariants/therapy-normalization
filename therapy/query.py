@@ -50,7 +50,6 @@ class Normalizer:
         """
         self.db = Database(db_url=db_url, region_name=db_region,
                            create_tables=db_create_tables)
-        print('made database')
 
     def emit_warnings(self, query_str) -> Optional[Dict]:
         """Emit warnings if query contains non breaking space characters."""
@@ -365,7 +364,6 @@ class Normalizer:
         """
         sources = {name.value.lower(): name.value for name in
                    SourceName.__members__.values()}
-
 
         if not incl and not excl:
             query_sources = set(sources.values())
