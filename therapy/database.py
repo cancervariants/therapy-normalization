@@ -1,28 +1,43 @@
 """This module creates the database."""
 import boto3
-
-DYNAMODB = boto3.resource('dynamodb', endpoint_url="http://localhost:8000")
-DYNAMODBCLIENT = \
-    boto3.client('dynamodb', endpoint_url="http://localhost:8000")
-THERAPIES_TABLE = DYNAMODB.Table('Therapies')
-METADATA_TABLE = DYNAMODB.Table('Metadata')
-cached_sources = dict()
+from os import environ
 
 
 class Database:
     """The database class."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, db_url='', region_name='us-east-2'):
         """Initialize Database class."""
-        existing_tables = DYNAMODBCLIENT.list_tables()['TableNames']
-        self.create_therapies_table(DYNAMODB, existing_tables)
-        self.create_meta_data_table(DYNAMODB, existing_tables)
+        if db_url:
+            self.ddb = boto3.resource('dynamodb', region_name=region_name,
+                                      endpoint_url=db_url)
+            self.ddb_client = boto3.client('dynamodb',
+                                           region_name=region_name,
+                                           endpoint_url=db_url)
+        elif 'THERAPY_NORM_DB_URL' in environ.keys():
+            db_url = environ['THERAPY_NORM_DB_URL']
+            self.ddb = boto3.resource('dynamodb', region_name=region_name,
+                                      endpoint_url=db_url)
+            self.ddb_client = boto3.client('dynamodb',
+                                           region_name=region_name,
+                                           endpoint_url=db_url)
+        else:
+            self.ddb = boto3.resource('dynamodb', region_name=region_name)
+            self.ddb_client = boto3.client('dynamodb',
+                                           region_name=region_name)
+        if db_url or 'THERAPY_NORM_DB_URL' in environ.keys():
+            existing_tables = self.ddb_client.list_tables()['TableNames']
+            self.create_therapies_table(existing_tables)
+            self.create_meta_data_table(existing_tables)
+        self.therapies = self.ddb.Table('therapy_concepts')
+        self.metadata = self.ddb.Table('therapy_metadata')
+        self.cached_sources = {}
 
-    def create_therapies_table(self, dynamodb, existing_tables):
+    def create_therapies_table(self, existing_tables):
         """Create Therapies table if not exists."""
-        table_name = 'Therapies'
+        table_name = 'therapy_concepts'
         if table_name not in existing_tables:
-            dynamodb.create_table(
+            self.ddb.create_table(
                 TableName=table_name,
                 KeySchema=[
                     {
@@ -73,11 +88,11 @@ class Database:
                 }
             )
 
-    def create_meta_data_table(self, dynamodb, existing_tables):
+    def create_meta_data_table(self, existing_tables):
         """Create MetaData table if not exists."""
-        table_name = 'Metadata'
+        table_name = 'therapy_metadata'
         if table_name not in existing_tables:
-            dynamodb.create_table(
+            self.ddb.create_table(
                 TableName=table_name,
                 KeySchema=[
                     {

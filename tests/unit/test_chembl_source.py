@@ -1,19 +1,22 @@
 """Test that the therapy normalizer works as intended for the ChEMBL source."""
 import pytest
 from therapy.schemas import Drug, MatchType
-from therapy import query
+from therapy.query import Normalizer
 
 
 @pytest.fixture(scope='module')
 def chembl():
-    """Build ChEMBL test fixture."""
+    """Build ChEMBL normalizer test fixture."""
     class QueryGetter:
-        def normalize(self, query_str, incl='chembl'):
-            resp = query.normalize(query_str, keyed=True, incl=incl)
-            return resp['source_matches']['ChEMBL']
 
-    c = QueryGetter()
-    return c
+        def __init__(self):
+            self.normalizer = Normalizer()
+
+        def normalize(self, query_str):
+            resp = self.normalizer.normalize(query_str, keyed=True,
+                                             incl='chembl')
+            return resp['source_matches']['ChEMBL']
+    return QueryGetter()
 
 
 @pytest.fixture(scope='module')
