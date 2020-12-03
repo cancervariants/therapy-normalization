@@ -19,12 +19,13 @@ def custom_openapi():
     openapi_schema = get_openapi(
         title="Therapy Normalizer",
         version="0.1.0",
+        openapi_version="3.0.3",
         description="Normalize therapy terms.",
         routes=app.routes
     )
     openapi_schema['info']['license'] = {  # TODO
-        "name": "name of license",
-        "url": "link"
+        "name": "Name-of-license",
+        "url": "http://www.to-be-determined.com"
     }
     openapi_schema['info']['contact'] = {  # TODO
         "name": "Alex Wagner",
