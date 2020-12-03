@@ -29,6 +29,7 @@ class Database:
             existing_tables = self.ddb_client.list_tables()['TableNames']
             self.create_therapies_table(existing_tables)
             self.create_meta_data_table(existing_tables)
+
         self.therapies = self.ddb.Table('therapy_concepts')
         self.metadata = self.ddb.Table('therapy_metadata')
         self.cached_sources = {}
