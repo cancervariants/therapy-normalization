@@ -16,7 +16,11 @@ class CLI:
         '--normalizer',
         help="The normalizer(s) you wish to update separated by commas."
     )
-    def update_normalizer_db(normalizer):
+    @click.option(
+        '--db_url',
+        help="URL endpoint for the application database."
+    )
+    def update_normalizer_db(normalizer, db_url):
         """Update select normalizer(s) sources in the therapy database."""
         sources = {
             'chembl': ChEMBL,
@@ -25,7 +29,10 @@ class CLI:
             'drugbank': DrugBank
         }
 
-        db: Database = Database()
+        if db_url:
+            db: Database = Database(db_url=db_url)
+        else:
+            db: Database = Database()
 
         normalizers = normalizer.lower().split(',')
 
