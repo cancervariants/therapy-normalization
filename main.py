@@ -59,10 +59,22 @@ excl_descr = """Optional. Comma-separated list of source names to exclude in
          operation_id="getQueryResponse",
          response_description=response_description,
          response_model=Service)
-def read_query(q: str = Query(..., description=q_descr),  # noqa: D103
+def read_query(q: str = Query(..., description=q_descr),
                keyed: Optional[bool] = Query(False, description=keyed_descr),
                incl: Optional[str] = Query('', description=incl_descr),
                excl: Optional[str] = Query('', description=excl_descr)):
+    """Normalize query string given by user.
+
+    :param q: therapy search term
+    :param keyed: if true, response is structured as key/value pair of
+        sources to source match lists.
+    :param incl: comma-separated list of sources to include, with all others
+        excluded. Raises HTTPException if both `incl` and `excl` are given.
+    :param excl: comma-separated list of sources exclude, with all others
+        included. Raises HTTPException if both `incl` and `excl` are given.
+
+    :returns: JSON response with matched records and source metadata
+    """
     try:
         resp = normalizer.normalize(html.unescape(q), keyed=keyed, incl=incl,
                                     excl=excl)
