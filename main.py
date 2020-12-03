@@ -36,7 +36,7 @@ def custom_openapi():
 
 app.openapi = custom_openapi
 
-# endpoint parameter description text
+# endpoint description text
 read_query_summary = """Given query, provide highest matches from
                      aggregated sources."""
 response_description = "A response to a validly-formed query."
