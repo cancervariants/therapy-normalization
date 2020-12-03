@@ -1,5 +1,4 @@
 """Main application for FastAPI"""
-# from therapy.query import normalize, InvalidParameterException
 from therapy.query import Normalizer, InvalidParameterException
 from therapy.schemas import Service
 from fastapi import FastAPI, HTTPException, Query
