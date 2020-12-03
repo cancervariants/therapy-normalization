@@ -4,29 +4,32 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-
-[packages]
-pydantic = "*"
 pytest = "*"
 pre-commit = "*"
 flake8 = "*"
 flake8-docstrings = "*"
 coverage = "*"
 pytest-cov = "*"
-coveralls = "*"
-twine = "*"
 jupyterlab = "*"
-civicpy = "*"
 thera-py = {editable = true, path = "."}
+coveralls = "*"
+
+[packages]
+pydantic = "*"
+twine = "*"
+civicpy = "*"
 fastapi = "*"
 uvicorn = "*"
 click = "*"
 lxml = "*"
-matplotlib = "*"
 boto3 = "*"
 cython = "*"
 owlready2 = "*"
 rdflib = "*"
+uvloop = "*"
+websockets = "*"
+httptools = "*"
+typing-extensions = "*"
 
 [requires]
 python_version = "3.8"

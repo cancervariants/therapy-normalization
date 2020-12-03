@@ -2,7 +2,7 @@
 from .base import Base
 from therapy import PROJECT_ROOT
 from therapy.schemas import SourceName, NamespacePrefix, Therapy, Meta
-from therapy.database import DYNAMODB, THERAPIES_TABLE, METADATA_TABLE
+from therapy.database import Database
 import logging
 import owlready2 as owl
 from owlready2.entity import ThingClass
@@ -25,6 +25,7 @@ class NCIt(Base):
     """
 
     def __init__(self,
+                 database: Database,
                  src_dir: str = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/",  # noqa F401
                  src_fname: str = "Thesaurus_20.09d.OWL.zip",
                  *args,
@@ -35,10 +36,10 @@ class NCIt(Base):
             src_dir: URL of source directory
             src_fname: filename for source file within source directory URL
         """
+        self.database = database
         self._SRC_DIR = src_dir
         self._SRC_FNAME = src_fname
         self._extract_data()
-        self.db = DYNAMODB
         self._transform_data()
 
     def _download_data(self):
@@ -141,7 +142,7 @@ class NCIt(Base):
         uq_nodes = set()
         uq_nodes = self.get_desc_nodes(ncit.C1909, uq_nodes)
         uq_nodes = self.get_typed_nodes(uq_nodes, ncit)
-        with THERAPIES_TABLE.batch_writer() as batch:
+        with self.database.therapies.batch_writer() as batch:
             for node in uq_nodes:
                 concept_id = f"{NamespacePrefix.NCIT.value}:{node.name}"
                 if node.P108:
@@ -175,7 +176,7 @@ class NCIt(Base):
                         data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
                         version=self._version,
                         data_url=self._SRC_DIR)
-        METADATA_TABLE.put_item(Item={
+        self.database.metadata.put_item(Item={
             'src_name': SourceName.NCIT.value,
             'data_license': metadata.data_license,
             'data_license_url': metadata.data_license_url,

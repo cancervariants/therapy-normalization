@@ -2,11 +2,9 @@
 from therapy.etl.base import Base
 from therapy import PROJECT_ROOT
 import logging
-from therapy import schemas  # noqa: F401
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
 from therapy.etl.base import IDENTIFIER_PREFIXES
 from lxml import etree
-from therapy.database import THERAPIES_TABLE, METADATA_TABLE
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -49,7 +47,7 @@ class DrugBank(Base):
         xmlns = "{http://www.drugbank.ca}"
         tree = etree.parse(f"{self._data_src}")
         root = tree.getroot()
-        batch = THERAPIES_TABLE.batch_writer()
+        batch = self.database.therapies.batch_writer()
 
         for drug in root:
             params = {
@@ -235,7 +233,7 @@ class DrugBank(Base):
 
     def _add_meta(self):
         """Add DrugBank metadata."""
-        METADATA_TABLE.put_item(
+        self.database.metadata.put_item(
             Item={
                 'src_name': SourceName.DRUGBANK.value,
                 'data_license': 'CC BY-NC 4.0',
