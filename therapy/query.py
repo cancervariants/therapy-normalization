@@ -39,8 +39,7 @@ class Normalizer:
     and normalizes query input.
     """
 
-    def __init__(self, db_url: str = '', db_region: str = 'us-east-2',
-                 db_create_tables: bool = False):
+    def __init__(self, db_url: str = '', db_region: str = 'us-east-2'):
         """Initialize Normalizer instance.
 
         :param db_url: URL to database source.
@@ -48,8 +47,7 @@ class Normalizer:
         :param db_create_tables: flag to try to create tables if they don't
             already exist.
         """
-        self.db = Database(db_url=db_url, region_name=db_region,
-                           create_tables=db_create_tables)
+        self.db = Database(db_url=db_url, region_name=db_region)
 
     def emit_warnings(self, query_str) -> Optional[Dict]:
         """Emit warnings if query contains non breaking space characters."""
