@@ -38,20 +38,20 @@ def custom_openapi():
 app.openapi = custom_openapi
 
 # endpoint parameter description text
-read_query_summary = "Given query, provide highest matches from "\
-                     "aggregated sources."
+read_query_summary = """Given query, provide highest matches from
+                     aggregated sources."""
 response_description = "A response to a validly-formed query."
 q_descr = "Therapy to normalize."
-keyed_descr = "Optional. If true, return response as key-value pairs of "\
-              "sources to source matches. False by default"
-incl_descr = "Optional. Comma-separated list of source names to include in "\
-             "response. Will exclude all other sources. Will return HTTP "\
-             "status code 422: Unprocessable Entity if both 'incl' and "\
-             "'excl' parameters are given."
-excl_descr = "Optional. Comma-separated list of source names to exclude in "\
-             "response. Will include all other sources. Will return HTTP "\
-             "status code 422: Unprocessable Entity if both 'incl' and "\
-             "'excl' parameters are given."
+keyed_descr = """Optional. If true, return response as key-value pairs of
+              sources to source matches. False by default"""
+incl_descr = """Optional. Comma-separated list of source names to include in
+             response. Will exclude all other sources. Will return HTTP
+             status code 422: Unprocessable Entity if both 'incl' and
+             'excl' parameters are given."""
+excl_descr = """Optional. Comma-separated list of source names to exclude in
+             response. Will include all other sources. Will return HTTP
+             status code 422: Unprocessable Entity if both 'incl' and
+             'excl' parameters are given."""
 
 
 @app.get("/search",
