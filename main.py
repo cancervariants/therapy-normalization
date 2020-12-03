@@ -40,7 +40,7 @@ app.openapi = custom_openapi
 read_query_summary = "Given query, provide highest matches from "\
                      "aggregated sources."
 response_description = "A response to a validly-formed query."
-q_descr = "String to normalize."
+q_descr = "Therapy to normalize."
 keyed_descr = "Optional. If true, return response as key-value pairs of "\
               "sources to source matches. False by default"
 incl_descr = "Optional. Comma-separated list of source names to include in "\
