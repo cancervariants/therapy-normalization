@@ -14,13 +14,18 @@ class CLI:
     @click.command()
     @click.option(
         '--normalizer',
-        help="The normalizer(s) you wish to update separated by commas."
+        help="The normalizer(s) you wish to update separated by spaces."
     )
     @click.option(
         '--db_url',
         help="URL endpoint for the application database."
     )
-    def update_normalizer_db(normalizer, db_url):
+    @click.option(
+        '--update_all',
+        is_flag=True,
+        help="Update all normalizer sources."
+    )
+    def update_normalizer_db(normalizer, db_url, update_all):
         """Update select normalizer(s) sources in the therapy database."""
         sources = {
             'chembl': ChEMBL,
@@ -34,30 +39,44 @@ class CLI:
         else:
             db: Database = Database()
 
-        normalizers = normalizer.lower().split(',')
+        if update_all:
+            normalizers = list(src for src in sources)
+            CLI()._update_normalizers(normalizers, sources, db)
+        else:
+            normalizers = normalizer.lower().split()
 
-        if len(normalizers) == 0:
-            raise Exception("Must enter a normalizer.")
+            if len(normalizers) == 0:
+                raise Exception("Must enter a normalizer.")
 
+            non_sources = CLI()._check_norm_srcs_match(sources, normalizers)
+
+            if len(non_sources) != 0:
+                raise Exception(f"Not valid source(s): {non_sources}")
+
+            CLI()._update_normalizers(normalizers, sources, db)
+
+    def _check_norm_srcs_match(self, sources, normalizers):
+        """Check that entered normalizers are actual sources."""
+        return set(normalizers) - {src for src in sources}
+
+    def _update_normalizers(self, normalizers, sources, db):
+        """Update selected normalizer sources."""
         for n in normalizers:
-            if n in sources:
-                click.echo(f"\nDeleting {n}...")
-                start_delete = timer()
-                CLI()._delete_data(n, db)
-                end_delete = timer()
-                delete_time = end_delete - start_delete
-                click.echo(f"Deleted {n} in "
-                           f"{delete_time:.5f} seconds.\n")
-                click.echo(f"Loading {n}...")
-                start_load = timer()
-                sources[n](database=db)
-                end_load = timer()
-                load_time = end_load - start_load
-                click.echo(f"Loaded {n} in {load_time:.5f} seconds.")
-                click.echo(f"Total time for {n}: "
-                           f"{(delete_time + load_time):.5f} seconds.")
-            else:
-                raise Exception("Not a normalizer source.")
+            click.echo(f"\nDeleting {n}...")
+            start_delete = timer()
+            CLI()._delete_data(n, db)
+            end_delete = timer()
+            delete_time = end_delete - start_delete
+            click.echo(f"Deleted {n} in "
+                       f"{delete_time:.5f} seconds.\n")
+            click.echo(f"Loading {n}...")
+            start_load = timer()
+            sources[n](database=db)
+            end_load = timer()
+            load_time = end_load - start_load
+            click.echo(f"Loaded {n} in {load_time:.5f} seconds.")
+            click.echo(f"Total time for {n}: "
+                       f"{(delete_time + load_time):.5f} seconds.")
 
     def _delete_data(self, source, database):
         # Delete source's metadata
