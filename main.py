@@ -16,19 +16,19 @@ def custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema
     openapi_schema = get_openapi(
-        title="Therapy Normalizer",
+        title="The VICC Therapy Normalizer",
         version="0.1.0",
         openapi_version="3.0.3",
-        description="Normalize therapy terms.",
+        description="Normalize drugs and other therapy terms.",
         routes=app.routes
     )
-    openapi_schema['info']['license'] = {  # TODO
-        "name": "Name-of-license",
-        "url": "http://www.to-be-determined.com"
-    }
+#    openapi_schema['info']['license'] = {  # TODO
+#        "name": "Name-of-license",
+#        "url": "http://www.to-be-determined.com"
+#    }
     openapi_schema['info']['contact'] = {  # TODO
-        "name": "Alex Wagner",
-        "email": "email@email.com"
+        "name": "Alex H. Wagner",
+        "email": "Alex.Wagner@nationwidechildrens.org"
     }
     app.openapi_schema = openapi_schema
     return app.openapi_schema
@@ -62,7 +62,7 @@ def read_query(q: str = Query(..., description=q_descr),
                keyed: Optional[bool] = Query(False, description=keyed_descr),
                incl: Optional[str] = Query('', description=incl_descr),
                excl: Optional[str] = Query('', description=excl_descr)):
-    """Normalize query string given by user.
+    """Return strongest match concepts to query string provided by user.
 
     :param q: therapy search term
     :param keyed: if true, response is structured as key/value pair of
