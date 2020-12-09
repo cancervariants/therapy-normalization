@@ -229,8 +229,6 @@ class Normalizer:
                 KeyConditionExpression=filter_exp
             )
             if 'Items' in db_response.keys():
-                if match == 'label':
-                    match = 'primary_label'
                 concept_ids = [i['concept_id'] for i in db_response['Items']]
                 (resp, matched_srcs) = self.fetch_records(
                     resp, concept_ids, MatchType[match.upper()]
