@@ -186,10 +186,10 @@ def test_concept_id_cisplatin(cisplatin, wikidata):
 
 def test_primary_label_cisplatin(cisplatin, wikidata):
     """Test that cisplatin drug normalizes to correct drug concept
-    as a PRIMARY_LABEL match.
+    as a LABEL match.
     """
     normalizer_response = wikidata.normalize('cisplatin')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert normalizer_response['match_type'] == MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
@@ -202,7 +202,7 @@ def test_primary_label_cisplatin(cisplatin, wikidata):
 
     normalizer_response = wikidata.normalize('Cisplatin')
     assert normalizer_response['match_type'] == \
-           MatchType.PRIMARY_LABEL
+           MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
@@ -299,10 +299,10 @@ def test_concept_id_atropine(atropine, wikidata):
 
 def test_primary_label_atropine(atropine, wikidata):
     """Test that atropine drug normalizes to correct drug concept
-    as a PRIMARY_LABEL match.
+    as a LABEL match.
     """
     normalizer_response = wikidata.normalize('atropine')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert normalizer_response['match_type'] == MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == atropine.label
@@ -315,7 +315,7 @@ def test_primary_label_atropine(atropine, wikidata):
 
     normalizer_response = wikidata.normalize('Atropine')
     assert normalizer_response['match_type'] == \
-           MatchType.PRIMARY_LABEL
+           MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == atropine.label
@@ -447,10 +447,10 @@ def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
 
 def test_primary_label_interferon_alfacon_1(interferon_alfacon_1, wikidata):
     """Test that Interferon alfacon-1 drug normalizes to correct drug
-    concept as a PRIMARY_LABEL match.
+    concept as a LABEL match.
     """
     normalizer_response = wikidata.normalize('Interferon alfacon-1')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert normalizer_response['match_type'] == MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.concept_id == interferon_alfacon_1.concept_id
@@ -464,7 +464,7 @@ def test_primary_label_interferon_alfacon_1(interferon_alfacon_1, wikidata):
 
     normalizer_response = wikidata.normalize('Interferon Alfacon-1')
     assert normalizer_response['match_type'] ==\
-           MatchType.PRIMARY_LABEL
+           MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.concept_id == interferon_alfacon_1.concept_id
@@ -536,10 +536,10 @@ def test_concept_id_d_methamphetamine(d_methamphetamine, wikidata):
 
 def test_primary_label_d_methamphetamine(d_methamphetamine, wikidata):
     """Test that d_methamphetamine drug normalizes to correct drug concept
-    as a PRIMARY_LABEL match.
+    as a LABEL match.
     """
     normalizer_response = wikidata.normalize('D-methamphetamine')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert normalizer_response['match_type'] == MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == d_methamphetamine.label
@@ -553,7 +553,7 @@ def test_primary_label_d_methamphetamine(d_methamphetamine, wikidata):
 
     normalizer_response = wikidata.normalize('d-methamphetamine')
     assert normalizer_response['match_type'] == \
-           MatchType.PRIMARY_LABEL
+           MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == d_methamphetamine.label
