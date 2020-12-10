@@ -27,10 +27,10 @@ jobs:
                   chmod +x ./tests/unit/dynamodb_build.bash
                   ./tests/unit/dynamodb_build.bash
 
-            - name: Load test data
-              run: python3 tests/unit/load_test_data.py
+            - name: Load and Test DynamoDB
+              run: |
+                  pipenv run pytest tests/unit/test_database.py
 
             - run: pipenv run flake8
 #            - run: pipenv run pytest tests/
-            - run: pipenv run pytest tests/unit/test_database.py
             - run: pipenv run pytest tests/unit/test_chembl_source.py
