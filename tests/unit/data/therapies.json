@@ -221,12 +221,12 @@
     ]
   },
   {
-    "label_and_type": "2,2'-Dibenzothiazyl disulfide##label",
+    "label_and_type": "2,2'-dibenzothiazyl disulfide##label",
     "concept_id": "drugbank:db14201",
     "src_name": "DrugBank"
   },
   {
-    "label_and_type": "T.R.U.E. Test Thin-Layer Rapid Use Patch Test##trade_name",
+    "label_and_type": "t.r.u.e. test thin-layer rapid use patch test##trade_name",
     "concept_id": "drugbank:db14201",
     "src_name": "DrugBank"
   },
@@ -391,6 +391,21 @@
   {
     "label_and_type": "trastuzumab##label",
     "concept_id": "ncit:c1647",
+    "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "ncit:c376##identity",
+    "label": "Cisplatin",
+    "concept_id": "ncit:C376",
+    "other_identifiers": [
+      "umls:C0008838",
+      "chemidplus:15663-27-1",
+      "fda:Q20Q21Q62"
+    ]
+  },
+  {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "ncit:c376",
     "src_name": "NCIt"
   }
 ]
