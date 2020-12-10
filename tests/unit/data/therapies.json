@@ -38,6 +38,17 @@
     "src_name": "ChEMBL"
   },
   {
+    "label_and_type": "chembl:chembl1628046##identity",
+    "concept_id": "chembl:CHEMBL1628046",
+    "label": "CISPLATIN",
+    "approval_status": "approved"
+  },
+  {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "chembl:chembl1628046",
+    "src_name": "ChEMBL"
+  },
+  {
     "label_and_type": "chembl:chembl267014##identity",
     "label": "L-745870",
     "concept_id": "chembl:CHEMBL267014",
