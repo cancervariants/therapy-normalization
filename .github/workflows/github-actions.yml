@@ -32,5 +32,4 @@ jobs:
                   pipenv run pytest tests/unit/test_database.py
 
             - run: pipenv run flake8
-#            - run: pipenv run pytest tests/
-            - run: pipenv run pytest tests/unit/test_chembl_source.py
+            - run: pipenv run pytest tests/

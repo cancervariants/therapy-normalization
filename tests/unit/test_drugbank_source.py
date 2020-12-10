@@ -301,7 +301,7 @@ def test_cisplatin_trade_name(cisplatin, drugbank):
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
-    normalizer_response = drugbank.normalize('CISplatin')
+    normalizer_response = drugbank.normalize('pms-cisplatin')
     assert normalizer_response['match_type'] == \
            MatchType.TRADE_NAME
     normalized_drug = normalizer_response['records'][0]
