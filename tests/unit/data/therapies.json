@@ -1,0 +1,67 @@
+[
+  {
+    "label_and_type": "chembl:chembl11359##identity",
+    "concept_id": "chembl:CHEMBL11359",
+    "label": "CISPLATIN",
+    "aliases": [
+        "Cisplatin",
+        "Cis-Platinum II",
+        "Cisplatinum",
+        "cis-diamminedichloroplatinum(II)",
+        "CIS-DDP",
+        "INT-230-6 COMPONENT CISPLATIN",
+        "INT230-6 COMPONENT CISPLATIN",
+        "NSC-119875",
+        "Platinol",
+        "Platinol-Aq"
+    ],
+    "approval_status": "approved",
+    "trade_names": [
+        "PLATINOL",
+        "PLATINOL-AQ",
+        "CISPLATIN"
+    ]
+  },
+  {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "chembl:chembl11359",
+    "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "cis-diamminedichloroplatinum(II)##alias",
+    "concept_id": "chembl:chembl11359",
+    "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "int230-6 component cisplatin##alias",
+    "concept_id": "chembl:chembl11359",
+    "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "chembl:chembl267014##identity",
+    "label": "L-745870",
+    "concept_id": "chembl:CHEMBL267014",
+    "aliases": ["L-745870"]
+  },
+  {
+    "label_and_type": "l-745870##label",
+    "concept_id": "chembl:chembl267014",
+    "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "l-745870##alias",
+    "concept_id": "chembl:chembl267014",
+    "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "chembl:chembl25##identity",
+    "label": "ASPIRIN",
+    "concept_id": "chembl:CHEMBL25",
+    "approval_status": "approved"
+  },
+  {
+    "label_and_type": "aspirin##label",
+    "concept_id": "chembl:chembl25",
+    "src_name": "ChEMBL"
+  }
+]
