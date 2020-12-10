@@ -117,10 +117,10 @@ def test_concept_id_voglibose(voglibose, ncit):
 
 def test_primary_label_voglibose(voglibose, ncit):
     """Test that voglibose drug normalizes to correct drug concept
-    as a PRIMARY_LABEL match.
+    as a LABEL match.
     """
     normalizer_response = ncit.normalize('voglibose')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert normalizer_response['match_type'] == MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == voglibose.label
@@ -133,7 +133,7 @@ def test_primary_label_voglibose(voglibose, ncit):
 
     normalizer_response = ncit.normalize('voglibose')
     assert normalizer_response['match_type'] == \
-           MatchType.PRIMARY_LABEL
+           MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == voglibose.label
@@ -258,10 +258,10 @@ def test_concept_id_apricoxib(apricoxib, ncit):
 
 def test_primary_label_apricoxib(apricoxib, ncit):
     """Test that apricoxib drug normalizes to correct drug
-    concept as a PRIMARY_LABEL match.
+    concept as a LABEL match.
     """
     normalizer_response = ncit.normalize('Apricoxib')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert normalizer_response['match_type'] == MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == apricoxib.label
@@ -274,7 +274,7 @@ def test_primary_label_apricoxib(apricoxib, ncit):
 
     normalizer_response = ncit.normalize('APRICOXIB')
     assert normalizer_response['match_type'] ==\
-           MatchType.PRIMARY_LABEL
+           MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == apricoxib.label
@@ -335,10 +335,10 @@ def test_concept_id_trastuzumab(trastuzumab, ncit):
 
 def test_primary_label_trastuzumab(trastuzumab, ncit):
     """Test that trastuzumab drug normalizes to correct drug concept
-    as a PRIMARY_LABEL match.
+    as a LABEL match.
     """
     normalizer_response = ncit.normalize('trastuzumab')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert normalizer_response['match_type'] == MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == trastuzumab.label
@@ -351,7 +351,7 @@ def test_primary_label_trastuzumab(trastuzumab, ncit):
 
     normalizer_response = ncit.normalize('Trastuzumab')
     assert normalizer_response['match_type'] == \
-           MatchType.PRIMARY_LABEL
+           MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == trastuzumab.label

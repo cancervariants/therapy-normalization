@@ -147,10 +147,10 @@ def test_concept_id_cisplatin(cisplatin, chembl):
 
 def test_cisplatin_label(cisplatin, chembl):
     """Test that cisplatin drug normalizes to correct drug concept
-    as a PRIMARY_LABEL match.
+    as a LABEL match.
     """
     normalizer_response = chembl.normalize('CISPLATIN')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert normalizer_response['match_type'] == MatchType.LABEL
     assert len(normalizer_response['records']) == 2
     if len(normalizer_response['records'][0].aliases) >\
             len(normalizer_response['records'][1].aliases):
@@ -168,7 +168,7 @@ def test_cisplatin_label(cisplatin, chembl):
 
     normalizer_response = chembl.normalize('cisplatin')
     assert normalizer_response['match_type'] ==\
-           MatchType.PRIMARY_LABEL
+           MatchType.LABEL
     assert len(normalizer_response['records']) == 2
     if len(normalizer_response['records'][0].aliases) >\
             len(normalizer_response['records'][1].aliases):
@@ -300,10 +300,10 @@ def test_l745870_concept_id(l745870, chembl):
 
 def test_l745870_label(l745870, chembl):
     """Test that L-745870 drug normalizes to correct drug concept
-    as a PRIMARY_LABEL match.
+    as a LABEL match.
     """
     normalizer_response = chembl.normalize('L-745870')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert normalizer_response['match_type'] == MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == l745870.label
@@ -316,7 +316,7 @@ def test_l745870_label(l745870, chembl):
 
     normalizer_response = chembl.normalize('l-745870')
     assert normalizer_response['match_type'] ==\
-           MatchType.PRIMARY_LABEL
+           MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == l745870.label
@@ -398,10 +398,10 @@ def test_aspirin_concept_id(aspirin, chembl):
 
 def test_aspirin_label(aspirin, chembl):
     """Test that L-745870 drug normalizes to correct drug concept
-    as a PRIMARY_LABEL match.
+    as a LABEL match.
     """
     normalizer_response = chembl.normalize('ASPIRIN')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert normalizer_response['match_type'] == MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == aspirin.label
@@ -414,7 +414,7 @@ def test_aspirin_label(aspirin, chembl):
 
     normalizer_response = chembl.normalize('aspirin')
     assert normalizer_response['match_type'] ==\
-           MatchType.PRIMARY_LABEL
+           MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == aspirin.label

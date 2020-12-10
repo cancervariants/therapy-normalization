@@ -204,10 +204,10 @@ def test_cisplatin_concept_id(cisplatin, drugbank):
 
 def test_cisplatin_label(cisplatin, drugbank):
     """Test that cisplatin drug normalizes to correct drug concept
-    as a PRIMARY_LABEL match.
+    as a LABEL match.
     """
     normalizer_response = drugbank.normalize('cisplatin')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert normalizer_response['match_type'] == MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
@@ -220,7 +220,7 @@ def test_cisplatin_label(cisplatin, drugbank):
 
     normalizer_response = drugbank.normalize('cisplatin')
     assert normalizer_response['match_type'] ==\
-           MatchType.PRIMARY_LABEL
+           MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
@@ -384,10 +384,10 @@ def test_bentiromide_concept_id(bentiromide, drugbank):
 
 def test_bentiromide_label(bentiromide, drugbank):
     """Test that bentiromide drug normalizes to correct drug concept
-    as a PRIMARY_LABEL match.
+    as a LABEL match.
     """
     normalizer_response = drugbank.normalize('Bentiromide')
-    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert normalizer_response['match_type'] == MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == bentiromide.label
@@ -400,7 +400,7 @@ def test_bentiromide_label(bentiromide, drugbank):
 
     normalizer_response = drugbank.normalize('bentiromide')
     assert normalizer_response['match_type'] ==\
-           MatchType.PRIMARY_LABEL
+           MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == bentiromide.label
@@ -523,10 +523,10 @@ def test_db14201_concept_id(db14201, drugbank):
 
 def test_db14201_label(db14201, drugbank):
     """Test that db14201 drug normalizes to correct drug concept
-    as a PRIMARY_LABEL match.
+    as a LABEL match.
     """
     normalizer_response = drugbank.normalize("2,2'-Dibenzothiazyl disulfide")
-    assert normalizer_response['match_type'] == MatchType.PRIMARY_LABEL
+    assert normalizer_response['match_type'] == MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == db14201.label
@@ -539,7 +539,7 @@ def test_db14201_label(db14201, drugbank):
 
     normalizer_response = drugbank.normalize('2,2\'-dibenzothiazyl disulfide')
     assert normalizer_response['match_type'] ==\
-           MatchType.PRIMARY_LABEL
+           MatchType.LABEL
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == db14201.label
