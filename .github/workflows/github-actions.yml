@@ -3,6 +3,11 @@ on: [push, pull_request]
 jobs:
     test:
         runs-on: ubuntu-latest
+        env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.DUMMY_AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.DUMMY_AWS_SECRET_ACCESS_KEY }}
+            AWS_DEFAULT_REGION: us-east-2
+            AWS_DEFAULT_OUTPUT: text
         steps:
             - uses: actions/checkout@v2
 
@@ -16,8 +21,11 @@ jobs:
                   python3 -m pip install pipenv
                   pipenv install --dev
 
-            - run: chmod +x ./tests/unit/dynamodb_build.bash
-            - run: ./tests/unit/dynamodb_build.bash
+            - name: Build local DynamoDB
+              run: |
+                  chmod +x ./tests/unit/dynamodb_build.bash
+                  ./tests/unit/dynamodb_build.bash
+
             - run: pipenv run flake8
             # - run: pipenv run pytest tests/
             - run: pipenv run pytest tests/unit/test_database.py
