@@ -20,7 +20,8 @@
         "PLATINOL",
         "PLATINOL-AQ",
         "CISPLATIN"
-    ]
+    ],
+    "src_name": "ChEMBL"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -41,7 +42,8 @@
     "label_and_type": "chembl:chembl1628046##identity",
     "concept_id": "chembl:CHEMBL1628046",
     "label": "CISPLATIN",
-    "approval_status": "approved"
+    "approval_status": "approved",
+    "src_name": "ChEMBL"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -52,7 +54,8 @@
     "label_and_type": "chembl:chembl267014##identity",
     "label": "L-745870",
     "concept_id": "chembl:CHEMBL267014",
-    "aliases": ["L-745870"]
+    "aliases": ["L-745870"],
+    "src_name": "ChEMBL"
   },
   {
     "label_and_type": "l-745870##label",
@@ -68,7 +71,8 @@
     "label_and_type": "chembl:chembl25##identity",
     "label": "ASPIRIN",
     "concept_id": "chembl:CHEMBL25",
-    "approval_status": "approved"
+    "approval_status": "approved",
+    "src_name": "ChEMBL"
   },
   {
     "label_and_type": "aspirin##label",
@@ -119,7 +123,8 @@
         "Platinol AQ Inj 1mg/ml",
         "Platinol-AQ",
         "PMS-cisplatin"
-    ]
+    ],
+    "src_name": "DrugBank"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -180,7 +185,8 @@
         "chembl:CHEMBL1200368",
         "zinc:ZINC000000608204",
         "rxcui:18896"
-    ]
+    ],
+    "src_name": "DrugBank"
   },
   {
     "label_and_type": "bentiromide##label",
@@ -218,7 +224,8 @@
     ],
     "trade_names": [
         "T.R.U.E. Test Thin-Layer Rapid Use Patch Test"
-    ]
+    ],
+    "src_name": "DrugBank"
   },
   {
     "label_and_type": "2,2'-dibenzothiazyl disulfide##label",
@@ -248,7 +255,8 @@
         "drugbank:DB00515",
         "chemidplus:15663-27-1",
         "pubchem.compound:5702198"
-    ]
+    ],
+    "src_name": "Wikidata"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -280,7 +288,8 @@
         "rxcui:59744",
         "chemidplus:118390-30-0",
         "drugbank:DB00069"
-    ]
+    ],
+    "src_name": "Wikidata"
   },
   {
     "label_and_type": "interferon alfacon-1##label",
@@ -297,7 +306,8 @@
       "chembl:CHEMBL1201201",
       "rxcui:6816",
       "drugbank:DB01577"
-    ]
+    ],
+    "src_name": "Wikidata"
   },
   {
     "label_and_type": "d-methamphetamine##label",
@@ -325,7 +335,8 @@
     ],
     "other_identifiers": [
         "rxcui:1223"
-    ]
+    ],
+    "src_name": "Wikidata"
   },
   {
     "label_and_type": "atropine##label",
@@ -350,7 +361,8 @@
                 "A-71100", "AO-128", "Basen",
                 "N-(1,3-Dihydroxy-2-Propyl)Valiolamine", "VOGLIBOSE"],
     "other_identifiers": ["chemidplus:83480-29-9", "fda:S77P977AG8",
-                          "umls:C0532578"]
+                          "umls:C0532578"],
+    "src_name": "NCIt"
   },
   {
     "label_and_type": "voglibose##label",
@@ -374,7 +386,8 @@
     "aliases": ["APRICOXIB", "COX-2 Inhibitor TG01", "CS-706", "R-109339",
                 "TG01", "TP2001"],
     "other_identifiers": ["chemidplus:197904-84-0", "fda:5X5HB3VZ3Z",
-                          "umls:C1737955"]
+                          "umls:C1737955"],
+    "src_name": "NCIt"
   },
   {
     "label_and_type": "apricoxib##label",
@@ -386,7 +399,8 @@
     "label": "Trastuzumab",
     "concept_id": "ncit:C1647",
     "other_identifiers": ["umls:C0728747", "chemidplus:180288-69-1",
-                          "fda:P188ANX8CK"]
+                          "fda:P188ANX8CK"],
+    "src_name": "NCIt"
   },
   {
     "label_and_type": "trastuzumab##label",
@@ -401,7 +415,8 @@
       "umls:C0008838",
       "chemidplus:15663-27-1",
       "fda:Q20Q21Q62"
-    ]
+    ],
+    "src_name": "NCIt"
   },
   {
     "label_and_type": "cisplatin##label",
