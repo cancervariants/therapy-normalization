@@ -1,0 +1,9 @@
+[
+  {
+      "src_name": "ChEMBL",
+      "data_license": "CC BY-SA 3.0",
+      "data_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
+      "version": "27",
+      "data_url": "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/"
+  }
+]

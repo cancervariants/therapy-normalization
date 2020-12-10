@@ -8,6 +8,7 @@ jobs:
             AWS_SECRET_ACCESS_KEY: ${{ secrets.DUMMY_AWS_SECRET_ACCESS_KEY }}
             AWS_DEFAULT_REGION: us-east-2
             AWS_DEFAULT_OUTPUT: text
+            THERAPY_NORM_DB_URL: http://localhost:8000
         steps:
             - uses: actions/checkout@v2
 
@@ -26,6 +27,10 @@ jobs:
                   chmod +x ./tests/unit/dynamodb_build.bash
                   ./tests/unit/dynamodb_build.bash
 
+            - name: Load test data
+              run: pipenv python3 tests/unit/load_test_data.py
+
             - run: pipenv run flake8
-            # - run: pipenv run pytest tests/
+#            - run: pipenv run pytest tests/
             - run: pipenv run pytest tests/unit/test_database.py
+            - run: pipenv run pytest tests/unit/test_chembl_source.py
