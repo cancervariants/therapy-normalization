@@ -204,7 +204,7 @@
   },
   {
     "label_and_type": "drugbank:db14201##identity",
-    "label": "2,2\"-Dibenzothiazyl disulfide",
+    "label": "2,2'-Dibenzothiazyl disulfide",
     "concept_id": "drugbank:DB14201",
     "approval_status": "approved",
     "other_identifiers": [
@@ -221,7 +221,7 @@
     ]
   },
   {
-    "label_and_type": "2,2\\'-Dibenzothiazyl disulfide##label",
+    "label_and_type": "2,2'-Dibenzothiazyl disulfide##label",
     "concept_id": "drugbank:db14201",
     "src_name": "DrugBank"
   },
@@ -338,7 +338,7 @@
     "src_name": "Wikidata"
   },
   {
-    "label_and_type": "(±)-Hyoscyamine##alias",
+    "label_and_type": "(±)-hyoscyamine##alias",
     "concept_id": "wikidata:q26272",
     "src_name": "Wikidata"
   },
