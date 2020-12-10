@@ -1,0 +1,426 @@
+[
+  {
+    "label_and_type": "chembl:chembl11359##identity",
+    "concept_id": "chembl:CHEMBL11359",
+    "label": "CISPLATIN",
+    "aliases": [
+        "Cisplatin",
+        "Cis-Platinum II",
+        "Cisplatinum",
+        "cis-diamminedichloroplatinum(II)",
+        "CIS-DDP",
+        "INT-230-6 COMPONENT CISPLATIN",
+        "INT230-6 COMPONENT CISPLATIN",
+        "NSC-119875",
+        "Platinol",
+        "Platinol-Aq"
+    ],
+    "approval_status": "approved",
+    "trade_names": [
+        "PLATINOL",
+        "PLATINOL-AQ",
+        "CISPLATIN"
+    ],
+    "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "chembl:chembl11359",
+    "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "cis-diamminedichloroplatinum(ii)##alias",
+    "concept_id": "chembl:chembl11359",
+    "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "int230-6 component cisplatin##alias",
+    "concept_id": "chembl:chembl11359",
+    "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "chembl:chembl1628046##identity",
+    "concept_id": "chembl:CHEMBL1628046",
+    "label": "CISPLATIN",
+    "approval_status": "approved",
+    "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "chembl:chembl1628046",
+    "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "chembl:chembl267014##identity",
+    "label": "L-745870",
+    "concept_id": "chembl:CHEMBL267014",
+    "aliases": ["L-745870"],
+    "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "l-745870##label",
+    "concept_id": "chembl:chembl267014",
+    "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "l-745870##alias",
+    "concept_id": "chembl:chembl267014",
+    "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "chembl:chembl25##identity",
+    "label": "ASPIRIN",
+    "concept_id": "chembl:CHEMBL25",
+    "approval_status": "approved",
+    "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "aspirin##label",
+    "concept_id": "chembl:chembl25",
+    "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "drugbank:db00515##identity",
+    "label": "Cisplatin",
+    "concept_id": "drugbank:DB00515",
+    "aliases": [
+        "CDDP",
+        "Cis-DDP",
+        "cis-diamminedichloroplatinum(II)",
+        "Cisplatin",
+        "APRD00359",
+        "Abiplatin",
+        "Cisplatyl",
+        "Platidiam",
+        "Platin"
+    ],
+    "approval_status": "approved",
+    "other_identifiers": [
+        "chemidplus:15663-27-1",
+        "chebi:27899",
+        "pubchem.compound:2767",
+        "pubchem.substance:46504561",
+        "kegg.compound:C06911",
+        "kegg.drug:D00275",
+        "chemspider:76401",
+        "bindingdb:50028111",
+        "pharmgkb.drug:PA449014",
+        "pdb:CPT",
+        "ttd:DAP000215",
+        "chembl:CHEMBL2068237",
+        "rxcui:2555"
+    ],
+    "trade_names": [
+        "CISplatin",
+        "Cisplatin",
+        "Cisplatin Inj 0.5mg/ml",
+        "Cisplatin Inj 1mg/ml",
+        "Cisplatin Injection",
+        "Cisplatin Injection BP",
+        "Cisplatin Injection, BP",
+        "Cisplatin Injection, Mylan Std.",
+        "Platinol",
+        "Platinol AQ Inj 1mg/ml",
+        "Platinol-AQ",
+        "PMS-cisplatin"
+    ],
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "drugbank:db00515",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "abiplatin##alias",
+    "concept_id": "drugbank:db00515",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "cis-ddp##alias",
+    "concept_id": "drugbank:db00515",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "platidiam##alias",
+    "concept_id": "drugbank:db00515",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "platinol##trade_name",
+    "concept_id": "drugbank:db00515",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "platinol-aq##trade_name",
+    "concept_id": "drugbank:db00515",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "pms-cisplatin##trade_name",
+    "concept_id": "drugbank:db00515",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "drugbank:db00522##identity",
+    "label": "Bentiromide",
+    "concept_id": "drugbank:DB00522",
+    "aliases": [
+        "APRD00818",
+        "Bentiromide",
+        "BTPABA",
+        "PFT",
+        "PFD"
+    ],
+    "approval_status": "withdrawn",
+    "other_identifiers": [
+        "chemidplus:37106-97-1",
+        "chebi:31263",
+        "pubchem.compound:6957673",
+        "pubchem.substance:46508175",
+        "kegg.drug:D01346",
+        "chemspider:5329364",
+        "bindingdb:50240073",
+        "pharmgkb.drug:PA164750572",
+        "chembl:CHEMBL1200368",
+        "zinc:ZINC000000608204",
+        "rxcui:18896"
+    ],
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "bentiromide##label",
+    "concept_id": "drugbank:db00522",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "aprd00818##alias",
+    "concept_id": "drugbank:db00522",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "pfd##alias",
+    "concept_id": "drugbank:db00522",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "pft##alias",
+    "concept_id": "drugbank:db00522",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "drugbank:db14201##identity",
+    "label": "2,2'-Dibenzothiazyl disulfide",
+    "concept_id": "drugbank:DB14201",
+    "approval_status": "approved",
+    "other_identifiers": [
+        "chemidplus:120-78-5",
+        "chemspider:8139",
+        "bindingdb:50444458",
+        "chebi:53239",
+        "chembl:CHEMBL508112",
+        "zinc:ZINC000001555224",
+        "rxcui:1306112"
+    ],
+    "trade_names": [
+        "T.R.U.E. Test Thin-Layer Rapid Use Patch Test"
+    ],
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "2,2'-dibenzothiazyl disulfide##label",
+    "concept_id": "drugbank:db14201",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "t.r.u.e. test thin-layer rapid use patch test##trade_name",
+    "concept_id": "drugbank:db14201",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "wikidata:q412415##identity",
+    "label": "cisplatin",
+    "concept_id": "wikidata:Q412415",
+    "aliases": [
+        "CDDP",
+        "Cis-DDP",
+        "CIS-DDP",
+        "cis-diamminedichloroplatinum(II)",
+        "Platinol",
+        "Platinol-AQ"
+    ],
+    "other_identifiers": [
+        "chembl:CHEMBL11359",
+        "rxcui:2555",
+        "drugbank:DB00515",
+        "chemidplus:15663-27-1",
+        "pubchem.compound:5702198"
+    ],
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "wikidata:q412415",
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "cddp##alias",
+    "concept_id": "wikidata:q412415",
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "wikidata:q15353101##identity",
+    "label": "Interferon alfacon-1",
+    "concept_id": "wikidata:Q15353101",
+    "aliases": [
+        "CIFN",
+        "consensus interferon",
+        "IFN Alfacon-1",
+        "Interferon Consensus, Methionyl",
+        "methionyl interferon consensus",
+        "methionyl-interferon-consensus",
+        "rCon-IFN",
+        "Recombinant Consensus Interferon",
+        "Recombinant methionyl human consensus interferon"
+    ],
+    "other_identifiers": [
+        "chembl:CHEMBL1201557",
+        "rxcui:59744",
+        "chemidplus:118390-30-0",
+        "drugbank:DB00069"
+    ],
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "interferon alfacon-1##label",
+    "concept_id": "wikidata:q15353101",
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "wikidata:q191924##identity",
+    "label": "D-methamphetamine",
+    "concept_id": "wikidata:Q191924",
+    "other_identifiers": [
+      "chemidplus:537-46-2",
+      "pubchem.compound:10836",
+      "chembl:CHEMBL1201201",
+      "rxcui:6816",
+      "drugbank:DB01577"
+    ],
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "d-methamphetamine##label",
+    "concept_id": "wikidata:q191924",
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "wikidata:q26272##identity",
+    "label": "atropine",
+    "concept_id": "wikidata:Q26272",
+    "aliases": [
+        "dl-Hyoscyamine",
+        "dl-tropyltropate",
+        "Mydriasine",
+        "Tropine tropate",
+        "(±)-atropine",
+        "(±)-hyoscyamine",
+        "(+-)-Atropine",
+        "(+-)-Hyoscyamine",
+        "(+,-)-Tropyl tropate",
+        "(3-Endo)-8-methyl-8-azabicyclo[3.2.1]oct-3-yl tropate",
+        "[(1S,5R)-8-Methyl-8-azabicyclo[3.2.1]oct-3-yl] 3-hydroxy-2-phenyl-propanoate",
+        "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl 3-hydroxy-2-phenylpropanoate",
+        "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate"
+    ],
+    "other_identifiers": [
+        "rxcui:1223"
+    ],
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "atropine##label",
+    "concept_id": "wikidata:q26272",
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "mydriasine##alias",
+    "concept_id": "wikidata:q26272",
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "(±)-hyoscyamine##alias",
+    "concept_id": "wikidata:q26272",
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "ncit:c95221##identity",
+    "label": "Voglibose",
+    "concept_id": "ncit:C95221",
+    "aliases": ["3,4-Dideoxy-4-((2-Hydroxy-1-(Hydroxymethyl)Ethyl)Amino)-2-C-(Hydroxymethyl)-D-Epi-Inositol",
+                "A-71100", "AO-128", "Basen",
+                "N-(1,3-Dihydroxy-2-Propyl)Valiolamine", "VOGLIBOSE"],
+    "other_identifiers": ["chemidplus:83480-29-9", "fda:S77P977AG8",
+                          "umls:C0532578"],
+    "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "voglibose##label",
+    "concept_id": "ncit:c95221",
+    "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "basen##alias",
+    "concept_id": "ncit:c95221",
+    "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "ao-128##alias",
+    "concept_id": "ncit:c95221",
+    "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "ncit:c74021##identity",
+    "label": "Apricoxib",
+    "concept_id": "ncit:C74021",
+    "aliases": ["APRICOXIB", "COX-2 Inhibitor TG01", "CS-706", "R-109339",
+                "TG01", "TP2001"],
+    "other_identifiers": ["chemidplus:197904-84-0", "fda:5X5HB3VZ3Z",
+                          "umls:C1737955"],
+    "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "apricoxib##label",
+    "concept_id": "ncit:c74021",
+    "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "ncit:c1647##identity",
+    "label": "Trastuzumab",
+    "concept_id": "ncit:C1647",
+    "other_identifiers": ["umls:C0728747", "chemidplus:180288-69-1",
+                          "fda:P188ANX8CK"],
+    "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "trastuzumab##label",
+    "concept_id": "ncit:c1647",
+    "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "ncit:c376##identity",
+    "label": "Cisplatin",
+    "concept_id": "ncit:C376",
+    "other_identifiers": [
+      "umls:C0008838",
+      "chemidplus:15663-27-1",
+      "fda:Q20Q21Q62"
+    ],
+    "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "ncit:c376",
+    "src_name": "NCIt"
+  }
+]
