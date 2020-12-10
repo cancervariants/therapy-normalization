@@ -3,8 +3,6 @@ on: [push, pull_request]
 jobs:
     test:
         runs-on: ubuntu-latest
-        env:
-            THERAPY_DB_TEST: TEST
         steps:
             - uses: actions/checkout@v2
 
@@ -18,5 +16,8 @@ jobs:
                   python3 -m pip install pipenv
                   pipenv install --dev
 
+            - run: chmod +x ./tests/unit/dynamodb_build.bash
+            - run: ./tests/unit/dynamodb_build.bash
             - run: pipenv run flake8
-            - run: pipenv run pytest tests/
+            # - run: pipenv run pytest tests/
+            - run: pipenv run pytest tests/unit/test_database.py
