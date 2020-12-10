@@ -28,7 +28,7 @@ jobs:
                   ./tests/unit/dynamodb_build.bash
 
             - name: Load test data
-              run: pipenv python3 tests/unit/load_test_data.py
+              run: python3 tests/unit/load_test_data.py
 
             - run: pipenv run flake8
 #            - run: pipenv run pytest tests/
