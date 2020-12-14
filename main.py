@@ -8,8 +8,7 @@ from typing import Optional
 
 
 normalizer = Normalizer()
-app = FastAPI(docs_url='/dev/therapy', root_path='/dev/therapy')
-# app = FastAPI(docs_url='/dev/therapy')
+app = FastAPI(docs_url='/dev/therapy', openapi_url='/dev/therapy/openapi.json')
 
 
 def custom_openapi():
