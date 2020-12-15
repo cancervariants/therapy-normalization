@@ -8,7 +8,7 @@ from typing import Optional
 
 
 normalizer = Normalizer()
-app = FastAPI(docs_url='/')
+app = FastAPI(docs_url='/dev/therapy', openapi_url='/dev/therapy/openapi.json')
 
 
 def custom_openapi():
@@ -53,7 +53,7 @@ excl_descr = """Optional. Comma-separated list of source names to exclude in
              'excl' parameters are given."""
 
 
-@app.get("/search",
+@app.get("/dev/therapy/search",
          summary=read_query_summary,
          operation_id="getQueryResponse",
          response_description=response_description,
