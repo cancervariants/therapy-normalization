@@ -101,7 +101,7 @@ class MatchType(IntEnum):
     """Define string constraints for use in Match Type attributes."""
 
     CONCEPT_ID = 100
-    PRIMARY_LABEL = 80
+    LABEL = 80
     TRADE_NAME = 80
     ALIAS = 60
     FUZZY_MATCH = 20
