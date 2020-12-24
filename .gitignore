@@ -148,3 +148,11 @@ pytest.ini
 
 # ignore data dir
 data/*
+
+# IDE materials
+.idea/
+.vim/
+*.swp
+
+# DynamoDB Local
+dynamodb_local_latest/*
