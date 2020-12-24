@@ -6,6 +6,7 @@ from therapy.schemas import SourceName
 from timeit import default_timer as timer
 from therapy.database import Database
 from boto3.dynamodb.conditions import Key
+import sys
 
 
 class CLI:
@@ -17,15 +18,20 @@ class CLI:
         help="The normalizer(s) you wish to update separated by spaces."
     )
     @click.option(
+        '--dev',
+        is_flag=True,
+        help="Working in development environment on localhost port 8000."
+    )
+    @click.option(
         '--db_url',
         help="URL endpoint for the application database."
     )
     @click.option(
         '--update_all',
         is_flag=True,
-        help="Update all normalizer sources."
+        help='Update all normalizer sources.'
     )
-    def update_normalizer_db(normalizer, db_url, update_all):
+    def update_normalizer_db(normalizer, dev, db_url, update_all):
         """Update select normalizer(s) sources in the therapy database."""
         sources = {
             'chembl': ChEMBL,
@@ -34,10 +40,18 @@ class CLI:
             'drugbank': DrugBank
         }
 
-        if db_url:
+        if dev:
+            db: Database = Database(db_url='http://localhost:8000')
+        elif db_url:
             db: Database = Database(db_url=db_url)
         else:
-            db: Database = Database()
+            check = input("Enter 'yes' if you want to use production db: ")
+            if check.lower() == 'yes':
+                click.echo("Updating production db...")
+                db: Database = Database()
+            else:
+                click.echo("Exiting CLI.")
+                sys.exit()
 
         if update_all:
             normalizers = list(src for src in sources)
