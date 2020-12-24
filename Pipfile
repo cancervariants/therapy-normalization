@@ -13,11 +13,11 @@ pytest-cov = "*"
 jupyterlab = "*"
 thera-py = {editable = true, path = "."}
 coveralls = "*"
+civicpy = "*"
 
 [packages]
 pydantic = "*"
 twine = "*"
-civicpy = "*"
 fastapi = "*"
 uvicorn = "*"
 click = "*"
