@@ -1,0 +1,458 @@
+Label	Wikidata Match	ChEMBL Match	DrugBank Match	NCIt Match
+Prexasertib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Sertraline	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+C-Met Inhibitor	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Gefitinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Trabectedin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Anti-EGFR Monoclonal Antibody	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Pertuzumab	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+ALK2 Inhibitor LDN-193189	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Dacomitinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Radiation Ionizing Radiotherapy	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Nutlin-3a	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Anti-CD33	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+BPTES	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Iniparib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Mercaptopurine	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH
+Go6983	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Alisertib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Apalutamide	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Refametinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+AMGMDS3	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Fasudil	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Azacitidine	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH
+G-573	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Angiogenesis Inhibitor	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Tipifarnib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Therapeutic Glucocorticoid	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+IGF1R Monoclonal Antibody	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+PD1 Inhibitor	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Nirogacestat	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Gemcitabine	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Tegafur	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+RapaLink-1	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Tyrphostin AG 1296	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+HER2 Inhibitor CP-724,714	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Sulindac	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Tarextumab	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Aromatase Inhibitor	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Talazoparib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+JAK Inhibitor I	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+VE-821	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Phosphatidylinositide 3-Kinase Inhibitor	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+FOLFOX Regimen	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Aspirin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.ALIAS	MatchType.CONCEPT_ID
+Pan-AKT Kinase Inhibitor GSK690693	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Idelalisib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Pomalidomide	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Autologous Anti-NY-ESO-1/LAGE-1 TCR-transduced C259 T Lymphocytes GSK3377794	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Melphalan	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+MTOR Inhibitor	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+TAK-788	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Temozolomide	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Eribulin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Anti-CTLA-4 Monoclonal Antibody	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Pemigatinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Cixutumumab	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Tamoxifen	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Avapritinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Radiation Therapy	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+GPI-15427	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Anastrozole	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+VTX-11e	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Carmustine	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Amuvatinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Nintedanib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+K 252a	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Palbociclib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Lenalidomide	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Metformin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Imatinib Mesylate	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Bafetinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Pan-RAF Inhibitor LY3009120	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+CHZ868	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Omacetaxine Mepesuccinate	MatchType.ALIAS	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH
+FGF/VEGF Receptor Tyrosine Kinase Inhibitor, PD173074	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+PI3Kbeta Inhibitor AZD8186	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Daunorubicin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Ponatinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Quarfloxin	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+MEK-1/MEKK-1 Inhibitor E6201	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Guadecitabine	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Trastuzumab Emtansine	MatchType.ALIAS	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Salirasib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Patritumab	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Alvocidib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Patritumab Deruxtecan	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Pexidartinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Enzastaurin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Ixazomib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Lucitanib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Topotecan	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Ipatasertib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Raltitrexed	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH
+ATR Kinase Inhibitor BAY1895344	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Capmatinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Selpercatinib	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Erlotinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Rovalpituzumab Tesirine	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Sapanisertib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Vismodegib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+O6-Benzylguanine	MatchType.NO_MATCH	MatchType.ALIAS	MatchType.ALIAS	MatchType.NO_MATCH
+Dinaciclib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Pazopanib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Lenvatinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Meloxicam	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+AZD5438	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Tozasertib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Monomethyl Auristatin E	MatchType.NO_MATCH	MatchType.ALIAS	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Patidegib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Vorinostat	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Lomustine	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Pyrimidine Antagonist	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+FOLFIRI Regimen	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+SB202190	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Enfortumab Vedotin	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Akt/ERK Inhibitor ONC201	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Capivasertib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Mutant IDH1 Inhibitor DS-1001	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Rociletinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Methotrexate	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Repotrectinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+G007-LK	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Panobinostat	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Mitogen-Activated Protein Kinase Kinase Inhibitor	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Tamibarotene	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Sunitinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+WHI-P154	MatchType.NO_MATCH	MatchType.ALIAS	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Picoplatin	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Alectinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Savolitinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Onatasertib	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Cytarabine	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+MET Tyrosine Kinase Inhibitor SGX523	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Agerafenib	MatchType.NO_MATCH	MatchType.ALIAS	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Motesanib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Ivosidenib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Anti-PD-1 Monoclonal Antibody MEDI0680	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Lumretuzumab	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Valproic Acid	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Ceritinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Asparaginase	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.ALIAS	MatchType.CONCEPT_ID
+Ibrutinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Ramucirumab	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+UNC1999	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Abexinostat	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+U0126	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Uprosertib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Belvarafenib	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+JAK2 Inhibitor AZD1480	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Durvalumab	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Porcupine Inhibitor WNT974	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+9F7-F11	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Vandetanib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+EAP Protocol	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+HDM2 Inhibitor MK-8242	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Ganetespib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+FACT Complex-targeting Curaxin CBL0137	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Atezolizumab	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Olaparib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Adjuvant Chemotherapy	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Pembrolizumab	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Vemurafenib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Leucovorin	MatchType.ALIAS	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+7-Ethyl-10-Hydroxycamptothecin	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+I-BET151	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Tyrosine Kinase Inhibitor	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+RG7356	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Ganitumab	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+FLT3/ABL/Aurora Kinase Inhibitor KW-2449	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Mocetinostat	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Trastuzumab Deruxtecan	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL
+KRAS G12C Inhibitor MRTX849	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Encorafenib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Canertinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Anti-VEGF Monoclonal Antibody	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.ALIAS	MatchType.CONCEPT_ID
+Trastuzumab	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Aminoglutethimide	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Trichostatin A	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Nedaplatin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Veliparib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+NU7441	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+B-Raf/VEGFR-2 Inhibitor RAF265	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Onartuzumab	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Oxaliplatin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Alemtuzumab	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+ERBB3 Inhibitor	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+EPZ011989	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Fisogatinib	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Spliceostatin A	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+NVP-AEW541	MatchType.NO_MATCH	MatchType.ALIAS	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Dual IGF-1R/InsR Inhibitor BMS-754807	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+JQ1 Compound	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+AZ628	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Naquotinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Sotrastaurin Acetate	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Imatinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Quizartinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Tazemetostat	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+SGK1-Inh	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+CDK Inhibitor SNS-032	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+PSI	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Dovitinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Cytoreductive Surgery	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+FGFR Inhibitor AZD4547	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Letrozole	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Bevacizumab	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+BRAF Inhibitor	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Enasidenib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Ribociclib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Cediranib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Niraparib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+3-Dimensional Conformal Radiation Therapy	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Nelarabine	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Niacinamide	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.ALIAS	MatchType.CONCEPT_ID
+Peginterferon Alfa-2a	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Bortezomib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH
+UO126	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+UNC1062	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+WZ4002	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Avelumab	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+PD-180970	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+AZD3463	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Ensartinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Adavosertib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Temsirolimus	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH
+OICR-9429	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Pegargiminase	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Stattic	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Fluorouracil	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Retaspimycin Hydrochloride	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+AS602868	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Derazantinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Panitumumab	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Therapeutic Tumor Infiltrating Lymphocytes	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Prednisolone	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Irbesartan	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+IRAK-1/4 Inhibitor	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Cabozantinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Tepotinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+CHMFL-KIT-031	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+AZ12908010	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Anti-ErbB3 Monoclonal Antibody AV-203	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+AZ20	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Flutamide	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH
+RG7112	MatchType.ALIAS	MatchType.ALIAS	MatchType.NO_MATCH	MatchType.NO_MATCH
+Anti-TIM-3 Monoclonal Antibody	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Salinomycin	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+ALK Inhibitor ASP3026	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Epirubicin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Amrubicin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Bicalutamide	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Alpelisib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Arsenic Trioxide	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH
+Fulvestrant	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Fludarabine	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+R3Mab	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+C646	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Conatumumab	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Ruxolitinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Induction Therapy	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+ARS-853	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Levoleucovorin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Staurosporine	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Pemetrexed	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Rebastinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Cisplatin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Hyperthermic Intraperitoneal Chemotherapy	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Entrectinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Gemtuzumab Ozogamicin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Brigatinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+FGFR4 Inhibitor H3B-6527	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Exemestane	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Vistusertib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Ridaforolimus	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Seribantumab	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+EPZ004777	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+PLX4720	MatchType.ALIAS	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+AZD-4547	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Crizotinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Chloroquine	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Pol I Inhibitor CX5461	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+SU5614	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Cabazitaxel	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+FOLFOX-4 Regimen	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Vatalanib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Fms/Trk Tyrosine Kinase Inhibitor PLX7486 Tosylate	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Fedratinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+MTOR Kinase Inhibitor AZD8055	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+RDEA 119	MatchType.NO_MATCH	MatchType.ALIAS	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+JQ1	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Belinostat	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Verteporfin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Capecitabine	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Decitabine	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH
+Ipilimumab	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Pan-Mutant-IDH1 Inhibitor Bay-1436032	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Etoposide	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+GSK126	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+MEK Inhibitor CI-1040	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Binimetinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Anti-PD-L1 Monoclonal Antibody	MatchType.ALIAS	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Trametinib Dimethyl Sulfoxide	MatchType.ALIAS	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Doxorubicin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Zoledronic Acid	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Poziotinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+JQEZ5	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Dactolisib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Everolimus	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+5-Fluoro-2-Deoxycytidine	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.ALIAS	MatchType.CONCEPT_ID
+Nilutamide	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Selumetinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Lorlatinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Futibatinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Lonafarnib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Gilteritinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+A66	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Venetoclax	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+GDC-0879	MatchType.NO_MATCH	MatchType.ALIAS	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Lysine	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.ALIAS	MatchType.NO_MATCH
+JSI-124	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+GW-2580	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+GF109203X	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Bazedoxifene	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+2,4-pyrimidinediamine	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Abiraterone	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+MAP855	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Immunomodulatory Oligonucleotide	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Buparlisib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Dexamethasone	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Rogaratinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Larotrectinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+ACLY SiRNA	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+NVP-AST487	MatchType.NO_MATCH	MatchType.ALIAS	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Tofacitinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Docetaxel	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH
+Vinorelbine	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Neratinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Birabresib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Lometrexol	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+PI3K/BET Inhibitor LY294002	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Infigratinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Arabinosylguanine	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+SHP2 Inhibitor RMC-4630	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Osimertinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Multikinase Inhibitor AEE788	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Checkpoint Kinase Inhibitor AZD7762	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Procarbazine	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+MC1568	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Futuximab/Modotuximab Mixture	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Apitolisib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+AGI-5198	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Azathioprine	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+NSC348884	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Chemotherapy	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Platinum Compound	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Paclitaxel	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH
+MEK Inhibitor PD0325901	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Teprotumumab	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Luminespib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Erdafitinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Afimoxifene	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Ibuprofen	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Prednisone	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Tretinoin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH
+Icotinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+AKTi-1/2	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+MEK Inhibitor TAK-733	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+TAE684	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Pictilisib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Foretinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Cyproterone Acetate	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Carfilzomib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+DS-6501b	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Sonidegib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Alvespimycin	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Afatinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Anti-CD123	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Tgx 221	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Dabrafenib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+ARS-1620	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+SCH772984	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Nimotuzumab	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+MUC1-targeted Peptide GO-203-2C	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+NOTCH1 Antibody (PF-06293622)	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Lapatinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+GSK321	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Anti-HER3 Monoclonal Antibody GSK2849330	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Anthracycline Antineoplastic Antibiotic	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+GNE-617	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Sotorasib	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Cyclophosphamide	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Inhibitor	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Enzalutamide	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Abiraterone Acetate	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Axitinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Vincristine	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+MEK Inhibitor GDC-0623	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Regorafenib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Idarubicin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Leuprolide	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Crenolanib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+JW55	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+WYE354	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+PI103	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+PI-103	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Nilotinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Midostaurin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Carboplatin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+CTLA-4 Inhibitor	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Cobimetinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+MTOR Kinase Inhibitor PP242	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+BET Inhibitor	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+HDAC Inhibitor AR-42	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Thioguanine	MatchType.ALIAS	MatchType.PRIMARY_LABEL	MatchType.ALIAS	MatchType.NO_MATCH
+KU-0060648	MatchType.NO_MATCH	MatchType.ALIAS	MatchType.NO_MATCH	MatchType.NO_MATCH
+Chlorambucil	MatchType.ALIAS	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Bosutinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Tandutinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Linsitinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Rindopepimut	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Pictilisib Bismesylate	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Trametinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Nivolumab	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Perifosine	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH
+JQ-1	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Cetuximab	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+PI3K-alpha Inhibitor MEN1611	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+MEK Inhibitor RO4987655	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Radioactive Iodine	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Tyrosine Kinase Inhibitor SU5402	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Omipalisib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Sirolimus	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Lestaurtinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+PI3Ka/Di	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+SU11274	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Irinotecan	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Erlotinib Hydrochloride	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Tanespimycin	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Sorafenib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Mitomycin	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Hormone Therapy	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.ALIAS
+Taselisib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Nutlin-3	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Akt Inhibitor MK2206	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Dasatinib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Abemaciclib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Pacritinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Taxane Compound	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH
+Rilotumumab	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Selitrectinib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Epidermal Growth Factor Receptor Tyrosine Kinase Inhibitor	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+PD173074	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+AZ909	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
+Rucaparib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Iodine I-131	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.ALIAS	MatchType.CONCEPT_ID
+Celecoxib	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+Pilaralisib	MatchType.NO_MATCH	MatchType.PRIMARY_LABEL	MatchType.PRIMARY_LABEL	MatchType.CONCEPT_ID
+IMG-2005-5	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.NO_MATCH	MatchType.CONCEPT_ID
