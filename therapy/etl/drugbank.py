@@ -48,6 +48,8 @@ class DrugBank(Base):
         tree = etree.parse(f"{self._data_src}")
         root = tree.getroot()
         batch = self.database.therapies.batch_writer()
+        normalizer_srcs = {
+            NamespacePrefix[src].value for src in SourceName.__members__}
 
         for drug in root:
             params = {
@@ -57,6 +59,7 @@ class DrugBank(Base):
                 'approval_status': None,
                 'aliases': [],
                 'other_identifiers': [],
+                'xrefs': [],
                 'trade_names': [],
                 'src_name': SourceName.DRUGBANK.value
             }
@@ -81,7 +84,8 @@ class DrugBank(Base):
 
                 # Other Identifiers
                 if element.tag == f"{xmlns}external-identifiers":
-                    self._load_external_identifiers(element, params, xmlns)
+                    self._load_external_identifiers(element, params, xmlns,
+                                                    normalizer_srcs)
                 if element.tag == f"{xmlns}cas-number":
                     self._load_cas_number(element, params)
 
@@ -117,6 +121,8 @@ class DrugBank(Base):
         """
         if not params['other_identifiers']:
             del params['other_identifiers']
+        if not params['xrefs']:
+            del params['xrefs']
 
         for label_type in ['trade_names', 'aliases']:
             if label_type in params:
@@ -169,20 +175,28 @@ class DrugBank(Base):
     def _load_cas_number(self, element, params):
         """Load cas number as other identifiers."""
         if element.text:
-            params['other_identifiers'].append(
+            params['xrefs'].append(
                 f"{IDENTIFIER_PREFIXES['casRegistry']}:"
                 f"{element.text}")
 
-    def _load_external_identifiers(self, element, params, xmlns):
+    def _load_external_identifiers(self, element, params, xmlns,
+                                   normalizer_srcs):
         """Load external identifiers as other identifiers."""
         for external_identifier in element:
             src = external_identifier.find(f"{xmlns}resource").text
             identifier = external_identifier.find(
                 f"{xmlns}identifier").text
             if src in DRUGBANK_IDENTIFIER_PREFIXES.keys():
-                params['other_identifiers'].append(
-                    f"{DRUGBANK_IDENTIFIER_PREFIXES[src]}:"
-                    f"{identifier}")
+                if DRUGBANK_IDENTIFIER_PREFIXES[src] in normalizer_srcs:
+                    params['other_identifiers'].append(
+                        f"{DRUGBANK_IDENTIFIER_PREFIXES[src]}:"
+                        f"{identifier}")
+                else:
+                    params['xrefs'].append(
+                        f"{DRUGBANK_IDENTIFIER_PREFIXES[src]}:"
+                        f"{identifier}")
+            else:
+                logger.info(f"{src} not in DrugBank identifier prefixes.")
 
     def _load_products(self, element, params, xmlns):
         """Load products as trade names."""

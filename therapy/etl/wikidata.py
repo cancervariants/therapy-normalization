@@ -92,6 +92,7 @@ class Wikidata(Base):
             records = json.load(f)
 
             items = dict()
+            normalizer_srcs = {src for src in SourceName.__members__}
 
             for record in records:
                 record_id = record['item'].split('/')[-1]
@@ -107,8 +108,7 @@ class Wikidata(Base):
                     for key in IDENTIFIER_PREFIXES.keys():
                         if key in record.keys():
                             other_id = record[key]
-                            normalizer_srcs = \
-                                {src for src in SourceName.__members__}
+
                             # get other_ids
                             if key.upper() in normalizer_srcs:
                                 if key != 'chembl':
