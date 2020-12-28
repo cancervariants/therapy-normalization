@@ -45,6 +45,9 @@ def cisplatin():
         ],
         'approval_status': 'approved',
         'other_identifiers': [
+            'chembl:CHEMBL2068237'
+        ],
+        'xrefs': [
             'chemidplus:15663-27-1',
             'chebi:27899',
             'pubchem.compound:2767',
@@ -56,7 +59,6 @@ def cisplatin():
             'pharmgkb.drug:PA449014',
             'pdb:CPT',
             'ttd:DAP000215',
-            'chembl:CHEMBL2068237',
             'rxcui:2555'
         ],
         'trade_names': [
@@ -92,6 +94,9 @@ def bentiromide():
         ],
         'approval_status': 'withdrawn',
         'other_identifiers': [
+            'chembl:CHEMBL1200368'
+        ],
+        'xrefs': [
             'chemidplus:37106-97-1',
             'chebi:31263',
             'pubchem.compound:6957673',
@@ -100,7 +105,6 @@ def bentiromide():
             'chemspider:5329364',
             'bindingdb:50240073',
             'pharmgkb.drug:PA164750572',
-            'chembl:CHEMBL1200368',
             'zinc:ZINC000000608204',
             'rxcui:18896'
         ],
@@ -119,11 +123,13 @@ def db14201():
         'aliases': [],
         'approval_status': 'approved',
         'other_identifiers': [
+            'chembl:CHEMBL508112'
+        ],
+        'xrefs': [
             'chemidplus:120-78-5',
             'chemspider:8139',
             'bindingdb:50444458',
             'chebi:53239',
-            'chembl:CHEMBL508112',
             'zinc:ZINC000001555224',
             'rxcui:1306112'
         ],
