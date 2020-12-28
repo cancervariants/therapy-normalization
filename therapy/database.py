@@ -1,6 +1,24 @@
 """This module creates the database."""
 import boto3
 from os import environ
+import logging
+from botocore.exceptions import ClientError
+from boto3.dynamodb.conditions import Key
+from therapy.schemas import Drug
+
+logger = logging.getLogger('therapy')
+logger.setLevel(logging.DEBUG)
+
+
+class RecordNotFoundError(Exception):
+    """Exception to handle record retrieval failure"""
+
+    def __init__(self, message):
+        """Create new instance
+
+        :param str message: string describing context or detail of error
+        """
+        super().__init__(message)
 
 
 class Database:
@@ -33,6 +51,27 @@ class Database:
         self.therapies = self.ddb.Table('therapy_concepts')
         self.metadata = self.ddb.Table('therapy_metadata')
         self.cached_sources = {}
+
+    def get_record_by_id(self, concept_id: str) -> Drug:
+        """Fetch record corresponding to provided concept ID
+
+        :param str concept_id: concept ID for therapy record
+
+        :return: complete therapy record
+        :rtype: therapy.schemas.Drug
+
+        :raises RecordNotFoundError: if no record exists for given cocnept ID
+        """
+        try:
+            pk = f'{concept_id.lower()}##identity'
+            filter_exp = Key('label_and_type').eq(pk)
+            result = self.therapies.query(KeyConditionExpression=filter_exp)
+            match = result['Items'][0]
+        except ClientError as e:
+            logger.error(e.response['Error']['Message'])
+        except IndexError:
+            raise RecordNotFoundError
+        return match
 
     def create_therapies_table(self, existing_tables):
         """Create Therapies table if not exists."""
