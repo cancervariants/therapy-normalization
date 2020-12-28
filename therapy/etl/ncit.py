@@ -153,21 +153,29 @@ class NCIt(Base):
                 if label and aliases and label in aliases:
                     aliases.remove(label)
 
-                other_ids = []
+                xrefs = []
                 if node.P207:
-                    other_ids.append(f"{NamespacePrefix.UMLS.value}:{node.P207.first()}")  # noqa: E501
+                    xrefs.append(f"{NamespacePrefix.UMLS.value}:"
+                                 f"{node.P207.first()}")
                 if node.P210:
-                    other_ids.append(f"{NamespacePrefix.CASREGISTRY.value}:{node.P210.first()}")  # noqa: E501
+                    xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:"
+                                 f"{node.P210.first()}")
                 if node.P319:
-                    other_ids.append(f"{NamespacePrefix.FDA.value}:{node.P319.first()}")  # noqa: E501
+                    xrefs.append(f"{NamespacePrefix.FDA.value}:"
+                                 f"{node.P319.first()}")
                 if node.P320:
-                    other_ids.append(f"{NamespacePrefix.ISO.value}:{node.P320.first()}")  # noqa: E501
+                    xrefs.append(f"{NamespacePrefix.ISO.value}:"
+                                 f"{node.P320.first()}")
+                if node.P368:
+                    xrefs.append(f"{NamespacePrefix.CHEBI.value}:"
+                                 f"{node.P368.first()}")
 
-                therapy = Therapy(concept_id=concept_id,  # noqa: F841
+                therapy = Therapy(concept_id=concept_id,
                                   src_name=SourceName.NCIT.value,
                                   label=label,
                                   aliases=aliases,
-                                  other_identifiers=other_ids)
+                                  other_identifiers=[],
+                                  xrefs=xrefs)
                 self._load_therapy(therapy, batch)
 
     def _add_meta(self):
@@ -217,5 +225,7 @@ class NCIt(Base):
             del therapy['label']
         item['label_and_type'] = f"{concept_id_lower}##identity"
         item['src_name'] = SourceName.NCIT.value
-
+        del item['other_identifiers']
+        if not item['xrefs']:
+            del item['xrefs']
         batch.put_item(Item=item)
