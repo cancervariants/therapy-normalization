@@ -44,12 +44,12 @@ class Database:
         self.dynamodb_client = boto3.client('dynamodb', **boto_params)
 
         if db_url or 'THERAPY_NORM_DB_URL' in environ.keys():
-            existing_tables = self.ddb_client.list_tables()['TableNames']
+            existing_tables = self.dynamodb_client.list_tables()['TableNames']
             self.create_therapies_table(existing_tables)
             self.create_meta_data_table(existing_tables)
 
-        self.therapies = self.ddb.Table('therapy_concepts')
-        self.metadata = self.ddb.Table('therapy_metadata')
+        self.therapies = self.dynamodb.Table('therapy_concepts')
+        self.metadata = self.dynamodb.Table('therapy_metadata')
         self.cached_sources = {}
 
     def get_record_by_id(self, concept_id: str) -> Drug:
@@ -77,7 +77,7 @@ class Database:
         """Create Therapies table if not exists."""
         table_name = 'therapy_concepts'
         if table_name not in existing_tables:
-            self.ddb.create_table(
+            self.dynamodb.create_table(
                 TableName=table_name,
                 KeySchema=[
                     {
@@ -132,7 +132,7 @@ class Database:
         """Create MetaData table if not exists."""
         table_name = 'therapy_metadata'
         if table_name not in existing_tables:
-            self.ddb.create_table(
+            self.dynamodb.create_table(
                 TableName=table_name,
                 KeySchema=[
                     {
