@@ -27,22 +27,22 @@ class Database:
     def __init__(self, db_url='', region_name='us-east-2'):
         """Initialize Database class."""
         if db_url:
-            self.ddb = boto3.resource('dynamodb', region_name=region_name,
-                                      endpoint_url=db_url)
-            self.ddb_client = boto3.client('dynamodb',
-                                           region_name=region_name,
-                                           endpoint_url=db_url)
+            boto_params = {
+                'region_name': region_name,
+                'endpoint_url': db_url
+            }
         elif 'THERAPY_NORM_DB_URL' in environ.keys():
-            db_url = environ['THERAPY_NORM_DB_URL']
-            self.ddb = boto3.resource('dynamodb', region_name=region_name,
-                                      endpoint_url=db_url)
-            self.ddb_client = boto3.client('dynamodb',
-                                           region_name=region_name,
-                                           endpoint_url=db_url)
+            boto_params = {
+                'region_name': region_name,
+                'endpoint_url': environ['THERAPY_NORM_DB_URL']
+            }
         else:
-            self.ddb = boto3.resource('dynamodb', region_name=region_name)
-            self.ddb_client = boto3.client('dynamodb',
-                                           region_name=region_name)
+            boto_params = {
+                'region_name': region_name
+            }
+        self.dynamodb = boto3.resource('dynamodb', **boto_params)
+        self.dynamodb_client = boto3.client('dynamodb', **boto_params)
+
         if db_url or 'THERAPY_NORM_DB_URL' in environ.keys():
             existing_tables = self.ddb_client.list_tables()['TableNames']
             self.create_therapies_table(existing_tables)
