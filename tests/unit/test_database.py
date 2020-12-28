@@ -3,6 +3,7 @@ import pytest
 from therapy.database import Database
 from therapy import PROJECT_ROOT
 import json
+import os
 
 
 @pytest.fixture(scope='module')
@@ -10,8 +11,9 @@ def db():
     """Create a DynamoDB test fixture."""
     class DB:
         def __init__(self):
-            self.db = Database(db_url='http://localhost:8000')
-            self.load_test_data()
+            self.db = Database(db_url=os.environ['THERAPY_NORM_DB_URL'])
+            if os.environ.get('TEST') is not None:
+                self.load_test_data()
 
         def load_test_data(self):
             with open(f'{PROJECT_ROOT}/tests/unit/'
