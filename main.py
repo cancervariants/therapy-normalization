@@ -81,3 +81,26 @@ def read_query(q: str = Query(..., description=q_descr),
         raise HTTPException(status_code=422, detail=str(e))
 
     return resp
+
+
+normalize_summary = """Given query, provide aggregate record from given
+                    sources."""
+q_descr_norm = "Therapy term to normalize."
+
+
+@app.get("/therapy/normalize",
+         summary=normalize_summary,
+         operation_id="getQueryNormalization")
+def normalize_query(q: str = Query(..., description=q_descr_norm)):
+    """Return a single normalized and merged concept for given esarch terms.
+
+    :param str q: therapy search term
+    :returns: JSON response with merged record
+    """
+    try:
+        response = ""
+
+    except InvalidParameterException as e:
+        raise HTTPException(status_code=422, detail=str(e))
+
+    return response
