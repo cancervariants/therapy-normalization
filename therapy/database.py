@@ -2,6 +2,7 @@
 import boto3
 from os import environ
 import logging
+from typing import List
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
 from therapy.schemas import Drug
@@ -13,8 +14,9 @@ logger.setLevel(logging.DEBUG)
 class RecordNotFoundError(Exception):
     """Exception to handle record retrieval failure"""
 
-    def __init__(self, message):
-        """Create new instance
+    def __init__(self, message: str):
+        """
+        Create new instance
 
         :param str message: string describing context or detail of error
         """
@@ -24,8 +26,13 @@ class RecordNotFoundError(Exception):
 class Database:
     """The database class."""
 
-    def __init__(self, db_url='', region_name='us-east-2'):
-        """Initialize Database class."""
+    def __init__(self, db_url: str = '', region_name: str = 'us-east-2'):
+        """
+        Initialize Database class.
+
+        :param str db_url: database endpoint URL to connect to
+        :param str region_name: AWS region name to use
+        """
         if db_url:
             boto_params = {
                 'region_name': region_name,
@@ -53,7 +60,8 @@ class Database:
         self.cached_sources = {}
 
     def get_record_by_id(self, concept_id: str) -> Drug:
-        """Fetch record corresponding to provided concept ID
+        """
+        Fetch record corresponding to provided concept ID
 
         :param str concept_id: concept ID for therapy record
 
@@ -73,8 +81,12 @@ class Database:
             raise RecordNotFoundError
         return match
 
-    def create_therapies_table(self, existing_tables):
-        """Create Therapies table if not exists."""
+    def create_therapies_table(self, existing_tables: List):
+        """
+        Create Therapies table if it doesn't already exist.
+
+        :param List existing_tables: list of existing table names
+        """
         table_name = 'therapy_concepts'
         if table_name not in existing_tables:
             self.dynamodb.create_table(
@@ -128,8 +140,12 @@ class Database:
                 }
             )
 
-    def create_meta_data_table(self, existing_tables):
-        """Create MetaData table if not exists."""
+    def create_meta_data_table(self, existing_tables: List):
+        """
+        Create MetaData table if not exists.
+
+        :param List existing_tables: list of existing table names
+        """
         table_name = 'therapy_metadata'
         if table_name not in existing_tables:
             self.dynamodb.create_table(
