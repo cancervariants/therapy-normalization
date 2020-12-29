@@ -1,6 +1,6 @@
 """Create concept groups and merged records."""
 from therapy.database import Database, RecordNotFoundError
-from therapy.schemas import Drug, NamespacePrefix
+from therapy.schemas import Drug, NamespacePrefix, MergedDrug
 from typing import Set
 import logging
 
@@ -10,7 +10,19 @@ logger.setLevel(logging.DEBUG)
 
 
 class Merge:
-    """Handles record merging."""
+    """
+    Handles record merging.
+
+    Working db scheme:
+        <uuid> -> merged record
+        <concept ID> -> <uuid>
+        <concept ID> -> <uuid>
+
+    UUID generation:
+        https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices.html
+        https://forums.aws.amazon.com/thread.jspa?messageID=312527
+        https://stackoverflow.com/questions/37072341/how-to-use-auto-increment-for-primary-key-id-in-dynamodb
+    """
 
     def __init__(self, database: Database):
         """Initialize Merge instance"""
@@ -18,7 +30,8 @@ class Merge:
 
     def create_record_id_set(self, record_id: str,
                              observed_id_set: Set = set()) -> Set:
-        """Create concept ID group
+        """
+        Create concept ID group
 
         :param str record_id: concept ID for record to build group from
 
@@ -39,7 +52,7 @@ class Merge:
                                                        merged_id_set)
         return merged_id_set
 
-    def create_merged_record(self, record_id_set: Set) -> Drug:
+    def generate_merged_record(self, record_id_set: Set) -> MergedDrug:
         """
         Generate merged record from provided concept ID group.
         Where attributes are sets, they should be merged, and where they are
@@ -73,18 +86,6 @@ class Merge:
 
         records.sort(key=order)
 
-        """
-        scalars:
-            label
-            approval status
-
-        sets:
-            trade names
-            concept ids??? both?
-            other ids???
-            xrefs
-
-        """
         attrs = {'aliases': set(), 'concept_ids': set(), 'trade_names': set()}
         scalar_fields = ['trade_names', 'xrefs']
         for record in records:
@@ -97,3 +98,13 @@ class Merge:
 
         for s in scalar_fields:
             attrs[s] = list(attrs[s])
+
+        return MergedDrug(**attrs)
+
+    def update_record(self, new_record: Drug):
+        """
+        Naive implementation. Unclear if more work is worthwhile.
+
+        :param Drug new_record: new record being added to database
+        """
+        pass  # TODO
