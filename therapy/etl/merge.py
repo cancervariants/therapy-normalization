@@ -1,6 +1,6 @@
 """Create concept groups and merged records."""
 from therapy.database import Database, RecordNotFoundError
-from therapy.schemas import Drug, NamespacePrefix, MergedDrug
+from therapy.schemas import NamespacePrefix, MergedDrug
 from typing import Set
 import logging
 
@@ -28,13 +28,15 @@ class Merge:
         """Initialize Merge instance"""
         self.database = database
 
-    def create_merged_records(self, record_ids: Set[str]):
+    def create_merged_concepts(self, record_ids: Set[str]):
         """
         Create concept groups and generate merged concept records.
 
         :param Set[str] record_ids: concept identifiers to create groups of
 
-        return set of ({concept IDs}, <merged_record>)
+        TODO
+         * Consider moving update method calls into database object
+         * Make final call on how to handle dangling IDs
         """
         completed_ids = set()
         for record_id in record_ids:
@@ -137,11 +139,3 @@ class Merge:
             attrs[field] = list(attrs[field])
 
         return MergedDrug(**attrs)
-
-    def _update_record(self, new_record: Drug):
-        """
-        Naive implementation. Unclear if more work is worthwhile.
-
-        :param Drug new_record: new record being added to database
-        """
-        raise NotImplementedError
