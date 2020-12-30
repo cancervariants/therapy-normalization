@@ -26,11 +26,21 @@ def add_xrefs(db):
     while True:
         if last_evaluated_key:
             response = db.ddb_client.scan(
-                TableName=db.therapies,
-                ExclusiveStartKey=last_evaluated_key
+                TableName=db.therapies.name,
+                ExclusiveStartKey=last_evaluated_key,
+                FilterExpression='src_name <> :src_name',
+                ExpressionAttributeValues={
+                    ':src_name': {'S': 'ChEMBL'}
+                }
             )
         else:
-            response = db.ddb_client.scan(TableName=db.therapies)
+            response = db.ddb_client.scan(
+                TableName=db.therapies.name,
+                FilterExpression='src_name <> :src_name',
+                ExpressionAttributeValues={
+                    ':src_name': {'S': 'ChEMBL'}
+                }
+            )
         last_evaluated_key = response.get('LastEvaluatedKey')
 
         records = response['Items']
@@ -113,7 +123,6 @@ if __name__ == '__main__':
         else:
             click.echo("Exiting.")
             sys.exit()
-    click.echo(f"Using {environ['THERAPY_NORM_DB_URL']} as DB endpoint.")
     click.echo("Adding xrefs attribute...")
     start = timer()
     add_xrefs(Database())
