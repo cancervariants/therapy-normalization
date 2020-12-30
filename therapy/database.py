@@ -4,7 +4,6 @@ from os import environ
 import logging
 from typing import List
 from botocore.exceptions import ClientError
-from boto3.dynamodb.conditions import Key
 from therapy.schemas import Drug
 
 logger = logging.getLogger('therapy')
@@ -58,28 +57,6 @@ class Database:
         self.therapies = self.dynamodb.Table('therapy_concepts')
         self.metadata = self.dynamodb.Table('therapy_metadata')
         self.cached_sources = {}
-
-    def get_record_by_id(self, concept_id: str) -> Drug:
-        """
-        Fetch record corresponding to provided concept ID
-
-        :param str concept_id: concept ID for therapy record
-
-        :return: complete therapy record
-        :rtype: therapy.schemas.Drug
-
-        :raises RecordNotFoundError: if no record exists for given cocnept ID
-        """
-        try:
-            pk = f'{concept_id.lower()}##identity'
-            filter_exp = Key('label_and_type').eq(pk)
-            result = self.therapies.query(KeyConditionExpression=filter_exp)
-            match = result['Items'][0]
-        except ClientError as e:
-            logger.error(e.response['Error']['Message'])
-        except IndexError:
-            raise RecordNotFoundError
-        return match
 
     def create_therapies_table(self, existing_tables: List):
         """
@@ -167,3 +144,27 @@ class Database:
                     'WriteCapacityUnits': 10
                 }
             )
+
+    def get_record_by_id(self, concept_id: str) -> Drug:
+        """
+        Fetch record corresponding to provided concept ID
+
+        :param str concept_id: concept ID for therapy record
+
+        :return: complete therapy record
+        :rtype: therapy.schemas.Drug
+
+        :raises RecordNotFoundError: if no record exists for given cocnept ID
+        """
+        try:
+            match = self.therapies.get_item(Key={
+                'label_and_type': f'{concept_id.lower()}##identity',
+                'concept_id': concept_id
+            })
+            item = match['Item']
+            return Drug(**item)
+        except ClientError as e:
+            logger.error(e.response['Error']['Message'])
+        except KeyError:
+            raise RecordNotFoundError
+        return match
