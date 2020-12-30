@@ -95,11 +95,10 @@ class MergedDrug(BaseModel):
     records.
     """
 
-    concept_ids: List[str]
     label: Optional[str]
     aliases: List[str]
+    concept_ids: List[str]
     xrefs: List[str]
-    other_identifiers: List[str]
     approval_status: Optional[ApprovalStatus]
     trade_names: Optional[List[str]]
 
