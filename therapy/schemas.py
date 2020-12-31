@@ -13,6 +13,7 @@ class Therapy(BaseModel):
     concept_id: str
     aliases: List[str]
     other_identifiers: List[str]
+    xrefs: Optional[List[str]]
 
     class Config:
         """Configure model"""
@@ -158,22 +159,6 @@ class SourceIDAfterNamespace(Enum):
     CHEMBL = "CHEMBL"
     DRUGBANK = "DB"
     NCIT = "C"
-    CASREGISTRY = ""
-    PUBCHEMCOMPOUND = ""
-    PUBCHEMSUBSTANCE = ""
-    RXNORM = ""
-    UMLS = ""
-    CHEBI = ""
-    KEGGCOMPOUND = ""
-    KEGGDRUG = ""
-    BINDINGDB = ""
-    PHARMGKB = ""
-    CHEMSPIDER = ""
-    ZINC = ""
-    PDB = ""
-    THERAPEUTICTARGETSDB = ""
-    IUPHAR = ""
-    GUIDETOPHARMACOLOGY = ""
 
 
 class NamespacePrefix(Enum):

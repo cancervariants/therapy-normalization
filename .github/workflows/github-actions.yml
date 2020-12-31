@@ -9,6 +9,7 @@ jobs:
             AWS_DEFAULT_REGION: us-east-2
             AWS_DEFAULT_OUTPUT: text
             THERAPY_NORM_DB_URL: http://localhost:8000
+            TEST: THERAPY_TEST
         steps:
             - uses: actions/checkout@v2
 
