@@ -2,7 +2,7 @@
 therapy records.
 """
 from typing import List, Optional, Dict, Union, Any, Type
-from pydantic import BaseModel
+from pydantic import BaseModel, validator
 from enum import Enum, IntEnum
 
 
@@ -97,6 +97,11 @@ class DynamoDBItem(BaseModel):
     concept_id: str
     src_name: str
 
+    class Config:
+        """Pydantic config"""
+
+        extra = 'forbid'
+
 
 class MergedDrug(BaseModel):
     """A merged record for a single concept drawn from multiple individual
@@ -110,18 +115,52 @@ class MergedDrug(BaseModel):
     xrefs: Optional[List[str]]
     trade_names: Optional[List[str]]
 
+    class Config:
+        """Pydantic config"""
+
+        extra = 'forbid'
+
 
 class DynamoDBIdentity(DynamoDBItem):
     """An identity record as stored in DynamoDB."""
 
-    aliases: List[str]
-    other_identifiers: List[str]
+    aliases: Optional[List[str]]
+    other_identifiers: Optional[List[str]]
+    xrefs: Optional[str]
     label: Optional[str]
     approval_status: Optional[ApprovalStatus]
     trade_names: Optional[List[str]]
     label: Optional[str]
     merged_record: Optional[MergedDrug]
     merged_record_reference: Optional[str]
+
+    class Config:
+        """Pydantic config"""
+
+        extra = 'forbid'
+
+    @validator('merged_record_reference', always=True)
+    def merge_mut_excl(cls, merged_rec_ref, values):
+        """Perform validation to ensure that merged_record and
+        merged_record_reference are mutually-exclusive attributes, since a DB
+        item should only contain one.
+
+        :param cls: DynamoDBIdentity class, passed automatically since this
+            is a class method
+        :param str merged_rec_ref: the value of the merged_record_reference
+            attribute, which may or may not be None
+        :param Dict values: all other assigned values in the object instance
+        :return: value of merged_record_reference attribute if successful
+        :rtype: str
+        :raises ValueError: if values are given for both merged_record and
+            merged_record_reference
+        """
+        if (merged_rec_ref and values['merged_record'] is not None) or \
+                merged_rec_ref is None:
+            raise ValueError(f"""Record for {values['concept_id']} provides
+                    values for both merged_record and
+                    merged_record_reference""")
+        return merged_rec_ref
 
 
 class DrugGroup(Therapy):
