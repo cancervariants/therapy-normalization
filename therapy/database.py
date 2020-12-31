@@ -158,9 +158,8 @@ class Database:
                 'concept_id': concept_id
             })
             item = match['Item']
-            return item
+            return DynamoDBItem(**item)
         except ClientError as e:
             logger.error(e.response['Error']['Message'])
         except KeyError:
             raise RecordNotFoundError
-        return match
