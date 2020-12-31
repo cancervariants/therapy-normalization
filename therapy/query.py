@@ -3,7 +3,7 @@ import re
 from typing import List, Dict, Set, Optional
 
 from uvicorn.config import logger
-from therapy.database import Database
+from therapy.database import Database, RecordNotFoundError
 from therapy.schemas import Drug, Meta, MatchType, SourceName, \
     NamespacePrefix, SourceIDAfterNamespace
 from botocore.exceptions import ClientError
@@ -239,7 +239,8 @@ class QueryHandler:
         return (resp, sources)
 
     def _response_keyed(self, query: str, sources: Set[str]) -> Dict:
-        """Return response as dict where key is source name and value
+        """
+        Return response as dict where key is source name and value
         is a list of records. Corresponds to `keyed=true` API parameter.
 
         :param str query: string to match against
@@ -367,4 +368,34 @@ class QueryHandler:
             'query': query_str,
             'warnings': self._emit_warnings(query_str),
         }
-        return response
+        if query_str == '':
+            response['match'] = {
+                'match_type': MatchType.NO_MATCH,
+                'record': {}
+            }
+            return response
+        query_l = query_str.lower()
+        try:
+            record = self.db.get_record_by_id(f"{query_l}##identity")
+            if 'merged_record' in record:
+                response['match'] = {
+                    'match_type': MatchType.CONCEPT_ID,
+                    'record': record['merged_record']
+                }
+                return response
+            elif 'merged_record_reference' in record:
+                ref_id = record['merged_record_reference']
+                ref = f"{ref_id.lower()}##identity"
+                try:
+                    record = self.db.get_record_by_id(ref)
+                    response['']
+                except RecordNotFoundError:
+                    logger.error(f"Couldn't retrieve merged record referenced at {ref_id}")  # noqa: E501
+                except KeyError:
+                    logger.error(f"Record at {ref_id} doesn't contain merged record")  # noqa: E501
+
+        except RecordNotFoundError:
+            # no concept ID match for query
+            pass
+        for match_type in ['identity', 'label', 'alias']:
+            pass

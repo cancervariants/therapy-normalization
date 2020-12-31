@@ -3,8 +3,8 @@ import boto3
 from os import environ
 import logging
 from typing import List
+from therapy.schemas import DynamoDBItem
 from botocore.exceptions import ClientError
-from therapy.schemas import Drug
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -26,8 +26,7 @@ class Database:
     """The database class."""
 
     def __init__(self, db_url: str = '', region_name: str = 'us-east-2'):
-        """
-        Initialize Database class.
+        """Initialize Database class.
 
         :param str db_url: database endpoint URL to connect to
         :param str region_name: AWS region name to use
@@ -59,8 +58,7 @@ class Database:
         self.cached_sources = {}
 
     def create_therapies_table(self, existing_tables: List):
-        """
-        Create Therapies table if it doesn't already exist.
+        """Create Therapies table if it doesn't already exist.
 
         :param List existing_tables: list of existing table names
         """
@@ -118,8 +116,7 @@ class Database:
             )
 
     def create_meta_data_table(self, existing_tables: List):
-        """
-        Create MetaData table if not exists.
+        """Create MetaData table if not exists.
 
         :param List existing_tables: list of existing table names
         """
@@ -145,16 +142,15 @@ class Database:
                 }
             )
 
-    def get_record_by_id(self, concept_id: str) -> Drug:
-        """
-        Fetch record corresponding to provided concept ID
+    def get_record_by_id(self, concept_id: str) -> DynamoDBItem:
+        """Fetch record corresponding to provided concept ID
 
         :param str concept_id: concept ID for therapy record
 
-        :return: complete therapy record
-        :rtype: therapy.schemas.Drug
+        :return: complete therapy record as it's stored remotely
+        :rtype: Dict
 
-        :raises RecordNotFoundError: if no record exists for given cocnept ID
+        :raises RecordNotFoundError: if no record exists for given concept ID
         """
         try:
             match = self.therapies.get_item(Key={
@@ -162,7 +158,7 @@ class Database:
                 'concept_id': concept_id
             })
             item = match['Item']
-            return Drug(**item)
+            return item
         except ClientError as e:
             logger.error(e.response['Error']['Message'])
         except KeyError:
