@@ -33,9 +33,9 @@ class InvalidParameterException(Exception):
         super().__init__(message)
 
 
-class Normalizer:
-    """Class for normalizer management. Stores reference to database instance
-    and normalizes query input.
+class QueryHandler:
+    """Class for normalizer searching. Stores reference to database instance
+    and handle query and normalization input.
     """
 
     def __init__(self, db_url: str = '', db_region: str = 'us-east-2'):
@@ -297,8 +297,8 @@ class Normalizer:
 
         return response_dict
 
-    def normalize(self, query_str, keyed=False, incl='', excl='', **params):
-        """Fetch normalized therapy objects.
+    def search(self, query_str, keyed=False, incl='', excl='', **params):
+        """Fetch normalized therapy objects matching query string.
 
         :param str query_str: query, a string, to search for
         :param bool keyed: if true, return response as dict keying source names
@@ -356,3 +356,15 @@ class Normalizer:
             resp = self._response_list(query_str, query_sources)
 
         return resp
+
+    def normalize(self, query_str: str):
+        """
+        Return merged, normalized concept for given search term.
+
+        :param str query_str: string to search against
+        """
+        response = {
+            'query': query_str,
+            'warnings': self._emit_warnings(query_str),
+        }
+        return response
