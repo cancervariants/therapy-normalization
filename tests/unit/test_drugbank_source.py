@@ -45,6 +45,9 @@ def cisplatin():
         ],
         'approval_status': 'approved',
         'other_identifiers': [
+            'chembl:CHEMBL2068237'
+        ],
+        'xrefs': [
             'chemidplus:15663-27-1',
             'chebi:27899',
             'pubchem.compound:2767',
@@ -56,7 +59,6 @@ def cisplatin():
             'pharmgkb.drug:PA449014',
             'pdb:CPT',
             'ttd:DAP000215',
-            'chembl:CHEMBL2068237',
             'rxcui:2555'
         ],
         'trade_names': [
@@ -92,6 +94,9 @@ def bentiromide():
         ],
         'approval_status': 'withdrawn',
         'other_identifiers': [
+            'chembl:CHEMBL1200368'
+        ],
+        'xrefs': [
             'chemidplus:37106-97-1',
             'chebi:31263',
             'pubchem.compound:6957673',
@@ -100,7 +105,6 @@ def bentiromide():
             'chemspider:5329364',
             'bindingdb:50240073',
             'pharmgkb.drug:PA164750572',
-            'chembl:CHEMBL1200368',
             'zinc:ZINC000000608204',
             'rxcui:18896'
         ],
@@ -119,11 +123,13 @@ def db14201():
         'aliases': [],
         'approval_status': 'approved',
         'other_identifiers': [
+            'chembl:CHEMBL508112'
+        ],
+        'xrefs': [
             'chemidplus:120-78-5',
             'chemspider:8139',
             'bindingdb:50444458',
             'chebi:53239',
-            'chembl:CHEMBL508112',
             'zinc:ZINC000001555224',
             'rxcui:1306112'
         ],
@@ -148,6 +154,7 @@ def test_cisplatin_concept_id(cisplatin, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = drugbank.normalize('DB00515')
@@ -160,6 +167,7 @@ def test_cisplatin_concept_id(cisplatin, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = drugbank.normalize('drugbank:db00515')
@@ -173,6 +181,7 @@ def test_cisplatin_concept_id(cisplatin, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = drugbank.normalize('Drugbank:db00515')
@@ -186,6 +195,7 @@ def test_cisplatin_concept_id(cisplatin, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = drugbank.normalize('druGBank:DB00515')
@@ -199,6 +209,7 @@ def test_cisplatin_concept_id(cisplatin, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
 
@@ -216,6 +227,7 @@ def test_cisplatin_label(cisplatin, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = drugbank.normalize('cisplatin')
@@ -229,6 +241,7 @@ def test_cisplatin_label(cisplatin, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
 
@@ -246,6 +259,7 @@ def test_cisplatin_alias(cisplatin, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = drugbank.normalize('Cis-ddp')
@@ -258,6 +272,7 @@ def test_cisplatin_alias(cisplatin, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = drugbank.normalize('Platidiam')
@@ -270,6 +285,7 @@ def test_cisplatin_alias(cisplatin, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
 
@@ -287,6 +303,7 @@ def test_cisplatin_trade_name(cisplatin, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = drugbank.normalize('platinol-aq')
@@ -299,6 +316,7 @@ def test_cisplatin_trade_name(cisplatin, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = drugbank.normalize('pms-cisplatin')
@@ -311,6 +329,7 @@ def test_cisplatin_trade_name(cisplatin, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
 
@@ -328,6 +347,7 @@ def test_bentiromide_concept_id(bentiromide, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(bentiromide.other_identifiers)
     assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
+    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
     assert normalized_drug.approval_status == bentiromide.approval_status
 
     normalizer_response = drugbank.normalize('DB00522')
@@ -340,6 +360,7 @@ def test_bentiromide_concept_id(bentiromide, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(bentiromide.other_identifiers)
     assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
+    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
     assert normalized_drug.approval_status == bentiromide.approval_status
 
     normalizer_response = drugbank.normalize('drugbank:db00522')
@@ -353,6 +374,7 @@ def test_bentiromide_concept_id(bentiromide, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(bentiromide.other_identifiers)
     assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
+    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
     assert normalized_drug.approval_status == bentiromide.approval_status
 
     normalizer_response = drugbank.normalize('Drugbank:db00522')
@@ -366,6 +388,7 @@ def test_bentiromide_concept_id(bentiromide, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(bentiromide.other_identifiers)
     assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
+    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
     assert normalized_drug.approval_status == bentiromide.approval_status
 
     normalizer_response = drugbank.normalize('druGBank:DB00522')
@@ -379,6 +402,7 @@ def test_bentiromide_concept_id(bentiromide, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(bentiromide.other_identifiers)
     assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
+    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
     assert normalized_drug.approval_status == bentiromide.approval_status
 
 
@@ -396,6 +420,7 @@ def test_bentiromide_label(bentiromide, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(bentiromide.other_identifiers)
     assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
+    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
     assert normalized_drug.approval_status == bentiromide.approval_status
 
     normalizer_response = drugbank.normalize('bentiromide')
@@ -409,6 +434,7 @@ def test_bentiromide_label(bentiromide, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(bentiromide.other_identifiers)
     assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
+    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
     assert normalized_drug.approval_status == bentiromide.approval_status
 
 
@@ -426,6 +452,7 @@ def test_bentiromide_alias(bentiromide, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(bentiromide.other_identifiers)
     assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
+    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
     assert normalized_drug.approval_status == bentiromide.approval_status
 
     normalizer_response = drugbank.normalize('pfd')
@@ -438,6 +465,7 @@ def test_bentiromide_alias(bentiromide, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(bentiromide.other_identifiers)
     assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
+    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
     assert normalized_drug.approval_status == bentiromide.approval_status
 
     normalizer_response = drugbank.normalize('PFT')
@@ -450,6 +478,7 @@ def test_bentiromide_alias(bentiromide, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(bentiromide.other_identifiers)
     assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
+    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
     assert normalized_drug.approval_status == bentiromide.approval_status
 
 
@@ -467,6 +496,7 @@ def test_db14201_concept_id(db14201, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(db14201.other_identifiers)
     assert set(normalized_drug.trade_names) == set(db14201.trade_names)
+    assert set(normalized_drug.xrefs) == set(db14201.xrefs)
     assert normalized_drug.approval_status == db14201.approval_status
 
     normalizer_response = drugbank.normalize('DB14201')
@@ -479,6 +509,7 @@ def test_db14201_concept_id(db14201, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(db14201.other_identifiers)
     assert set(normalized_drug.trade_names) == set(db14201.trade_names)
+    assert set(normalized_drug.xrefs) == set(db14201.xrefs)
     assert normalized_drug.approval_status == db14201.approval_status
 
     normalizer_response = drugbank.normalize('drugbank:db14201')
@@ -492,6 +523,7 @@ def test_db14201_concept_id(db14201, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(db14201.other_identifiers)
     assert set(normalized_drug.trade_names) == set(db14201.trade_names)
+    assert set(normalized_drug.xrefs) == set(db14201.xrefs)
     assert normalized_drug.approval_status == db14201.approval_status
 
     normalizer_response = drugbank.normalize('Drugbank:db14201')
@@ -505,6 +537,7 @@ def test_db14201_concept_id(db14201, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(db14201.other_identifiers)
     assert set(normalized_drug.trade_names) == set(db14201.trade_names)
+    assert set(normalized_drug.xrefs) == set(db14201.xrefs)
     assert normalized_drug.approval_status == db14201.approval_status
 
     normalizer_response = drugbank.normalize('druGBank:DB14201')
@@ -518,6 +551,7 @@ def test_db14201_concept_id(db14201, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(db14201.other_identifiers)
     assert set(normalized_drug.trade_names) == set(db14201.trade_names)
+    assert set(normalized_drug.xrefs) == set(db14201.xrefs)
     assert normalized_drug.approval_status == db14201.approval_status
 
 
@@ -535,6 +569,7 @@ def test_db14201_label(db14201, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(db14201.other_identifiers)
     assert set(normalized_drug.trade_names) == set(db14201.trade_names)
+    assert set(normalized_drug.xrefs) == set(db14201.xrefs)
     assert normalized_drug.approval_status == db14201.approval_status
 
     normalizer_response = drugbank.normalize('2,2\'-dibenzothiazyl disulfide')
@@ -548,6 +583,7 @@ def test_db14201_label(db14201, drugbank):
     assert set(normalized_drug.other_identifiers) == \
            set(db14201.other_identifiers)
     assert set(normalized_drug.trade_names) == set(db14201.trade_names)
+    assert set(normalized_drug.xrefs) == set(db14201.xrefs)
     assert normalized_drug.approval_status == db14201.approval_status
 
 
