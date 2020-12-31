@@ -39,6 +39,7 @@ def cisplatin():
         ],
         'approval_status': 'approved',
         'other_identifiers': [],
+        'xrefs': [],
         'trade_names': [
             'PLATINOL',
             'PLATINOL-AQ',
@@ -57,6 +58,7 @@ def l745870():
         'aliases': ['L-745870'],
         'approval_status': None,
         'other_identifiers': [],
+        'xrefs': [],
         'trade_names': []
     }
     return Drug(**params)
@@ -72,6 +74,7 @@ def aspirin():
         'aliases': [],
         'approval_status': 'approved',
         'other_identifiers': [],
+        'xrefs': [],
         'trade_names': []
     }
     return Drug(**params)
@@ -90,6 +93,7 @@ def test_concept_id_cisplatin(cisplatin, chembl):
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
@@ -102,6 +106,7 @@ def test_concept_id_cisplatin(cisplatin, chembl):
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
@@ -115,6 +120,7 @@ def test_concept_id_cisplatin(cisplatin, chembl):
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
@@ -128,6 +134,7 @@ def test_concept_id_cisplatin(cisplatin, chembl):
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
@@ -141,6 +148,7 @@ def test_concept_id_cisplatin(cisplatin, chembl):
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
@@ -163,6 +171,7 @@ def test_cisplatin_label(cisplatin, chembl):
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
@@ -181,6 +190,7 @@ def test_cisplatin_label(cisplatin, chembl):
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
@@ -198,6 +208,7 @@ def test_cisplatin_alias(cisplatin, chembl):
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
@@ -210,6 +221,7 @@ def test_cisplatin_alias(cisplatin, chembl):
     assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
@@ -243,6 +255,7 @@ def test_l745870_concept_id(l745870, chembl):
     assert set(normalized_drug.aliases) == set(l745870.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(l745870.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(l745870.xrefs)
     assert set(normalized_drug.trade_names) == set(l745870.trade_names)
     assert normalized_drug.approval_status == l745870.approval_status
 
@@ -255,6 +268,7 @@ def test_l745870_concept_id(l745870, chembl):
     assert set(normalized_drug.aliases) == set(l745870.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(l745870.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(l745870.xrefs)
     assert set(normalized_drug.trade_names) == set(l745870.trade_names)
     assert normalized_drug.approval_status == l745870.approval_status
 
@@ -268,6 +282,7 @@ def test_l745870_concept_id(l745870, chembl):
     assert set(normalized_drug.aliases) == set(l745870.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(l745870.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(l745870.xrefs)
     assert set(normalized_drug.trade_names) == set(l745870.trade_names)
     assert normalized_drug.approval_status == l745870.approval_status
 
@@ -281,6 +296,7 @@ def test_l745870_concept_id(l745870, chembl):
     assert set(normalized_drug.aliases) == set(l745870.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(l745870.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(l745870.xrefs)
     assert set(normalized_drug.trade_names) == set(l745870.trade_names)
     assert normalized_drug.approval_status == l745870.approval_status
 
@@ -294,6 +310,7 @@ def test_l745870_concept_id(l745870, chembl):
     assert set(normalized_drug.aliases) == set(l745870.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(l745870.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(l745870.xrefs)
     assert set(normalized_drug.trade_names) == set(l745870.trade_names)
     assert normalized_drug.approval_status == l745870.approval_status
 
@@ -311,6 +328,7 @@ def test_l745870_label(l745870, chembl):
     assert set(normalized_drug.aliases) == set(l745870.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(l745870.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(l745870.xrefs)
     assert set(normalized_drug.trade_names) == set(l745870.trade_names)
     assert normalized_drug.approval_status == l745870.approval_status
 
@@ -324,6 +342,7 @@ def test_l745870_label(l745870, chembl):
     assert set(normalized_drug.aliases) == set(l745870.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(l745870.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(l745870.xrefs)
     assert set(normalized_drug.trade_names) == set(l745870.trade_names)
     assert normalized_drug.approval_status == l745870.approval_status
 
@@ -341,6 +360,7 @@ def test_aspirin_concept_id(aspirin, chembl):
     assert set(normalized_drug.aliases) == set(aspirin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(aspirin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(aspirin.xrefs)
     assert set(normalized_drug.trade_names) == set(aspirin.trade_names)
     assert normalized_drug.approval_status == aspirin.approval_status
 
@@ -353,6 +373,7 @@ def test_aspirin_concept_id(aspirin, chembl):
     assert set(normalized_drug.aliases) == set(aspirin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(aspirin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(aspirin.xrefs)
     assert set(normalized_drug.trade_names) == set(aspirin.trade_names)
     assert normalized_drug.approval_status == aspirin.approval_status
 
@@ -366,6 +387,7 @@ def test_aspirin_concept_id(aspirin, chembl):
     assert set(normalized_drug.aliases) == set(aspirin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(aspirin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(aspirin.xrefs)
     assert set(normalized_drug.trade_names) == set(aspirin.trade_names)
     assert normalized_drug.approval_status == aspirin.approval_status
 
@@ -379,6 +401,7 @@ def test_aspirin_concept_id(aspirin, chembl):
     assert set(normalized_drug.aliases) == set(aspirin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(aspirin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(aspirin.xrefs)
     assert set(normalized_drug.trade_names) == set(aspirin.trade_names)
     assert normalized_drug.approval_status == aspirin.approval_status
 
@@ -392,6 +415,7 @@ def test_aspirin_concept_id(aspirin, chembl):
     assert set(normalized_drug.aliases) == set(aspirin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(aspirin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(aspirin.xrefs)
     assert set(normalized_drug.trade_names) == set(aspirin.trade_names)
     assert normalized_drug.approval_status == aspirin.approval_status
 
@@ -409,6 +433,7 @@ def test_aspirin_label(aspirin, chembl):
     assert set(normalized_drug.aliases) == set(aspirin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(aspirin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(aspirin.xrefs)
     assert set(normalized_drug.trade_names) == set(aspirin.trade_names)
     assert normalized_drug.approval_status == aspirin.approval_status
 
@@ -422,6 +447,7 @@ def test_aspirin_label(aspirin, chembl):
     assert set(normalized_drug.aliases) == set(aspirin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(aspirin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(aspirin.xrefs)
     assert set(normalized_drug.trade_names) == set(aspirin.trade_names)
     assert normalized_drug.approval_status == aspirin.approval_status
 
