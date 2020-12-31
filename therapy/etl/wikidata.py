@@ -92,6 +92,7 @@ class Wikidata(Base):
             records = json.load(f)
 
             items = dict()
+            normalizer_srcs = {src for src in SourceName.__members__}
 
             for record in records:
                 record_id = record['item'].split('/')[-1]
@@ -103,16 +104,28 @@ class Wikidata(Base):
                     item['src_name'] = SourceName.WIKIDATA.value
 
                     other_ids = []
+                    xrefs = []
                     for key in IDENTIFIER_PREFIXES.keys():
                         if key in record.keys():
                             other_id = record[key]
-                            if key != 'chembl':
-                                fmted_other_id = f"{IDENTIFIER_PREFIXES[key]}:{SourceIDAfterNamespace[key.upper()].value}{other_id}"  # noqa: E501
+
+                            # get other_ids
+                            if key.upper() in normalizer_srcs:
+                                if key != 'chembl':
+                                    fmted_other_id = \
+                                        f"{IDENTIFIER_PREFIXES[key]}:" \
+                                        f"{SourceIDAfterNamespace[key.upper()].value}{other_id}"  # noqa: E501
+                                else:
+                                    fmted_other_id = \
+                                        f"{IDENTIFIER_PREFIXES[key]}:" \
+                                        f"{other_id}"
+                                other_ids.append(fmted_other_id)
                             else:
-                                fmted_other_id = \
-                                    f"{IDENTIFIER_PREFIXES[key]}:{other_id}"
-                            other_ids.append(fmted_other_id)
+                                fmted_xref = f"{IDENTIFIER_PREFIXES[key]}:" \
+                                             f"{other_id}"
+                                xrefs.append(fmted_xref)
                     item['other_identifiers'] = other_ids
+                    item['xrefs'] = xrefs
                     if 'itemLabel' in record.keys():
                         item['label'] = record['itemLabel']
                     items[concept_id] = item
