@@ -38,8 +38,10 @@ def cisplatin():
         'approval_status': None,
         'other_identifiers': [
             'chembl:CHEMBL11359',
+            'drugbank:DB00515'
+        ],
+        'xrefs': [
             'rxcui:2555',
-            'drugbank:DB00515',
             'chemidplus:15663-27-1',
             'pubchem.compound:5702198'
         ],
@@ -68,9 +70,11 @@ def interferon_alfacon_1():
         'approval_status': None,
         'other_identifiers': [
             'chembl:CHEMBL1201557',
-            'rxcui:59744',
-            'chemidplus:118390-30-0',
             'drugbank:DB00069'
+        ],
+        'xrefs': [
+            'rxcui:59744',
+            'chemidplus:118390-30-0'
         ],
         'trade_names': []
     }
@@ -87,11 +91,13 @@ def d_methamphetamine():
         'aliases': [],
         'approval_status': None,
         'other_identifiers': [
+            'chembl:CHEMBL1201201',
+            'drugbank:DB01577'
+        ],
+        'xrefs': [
             'chemidplus:537-46-2',
             'pubchem.compound:10836',
-            'chembl:CHEMBL1201201',
-            'rxcui:6816',
-            'drugbank:DB01577'
+            'rxcui:6816'
         ],
         'trade_names': []
     }
@@ -123,7 +129,8 @@ def atropine():
             '8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate'
         ],
         'approval_status': None,
-        'other_identifiers': [
+        'other_identifiers': [],
+        'xrefs': [
             'rxcui:1223'
         ],
         'trade_names': []
@@ -145,6 +152,7 @@ def test_concept_id_cisplatin(cisplatin, wikidata):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = wikidata.normalize('wiKIdata:Q412415')
@@ -157,6 +165,7 @@ def test_concept_id_cisplatin(cisplatin, wikidata):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = wikidata.normalize('wiKIdata:q412415')
@@ -169,6 +178,7 @@ def test_concept_id_cisplatin(cisplatin, wikidata):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = wikidata.normalize('Q412415')
@@ -181,6 +191,7 @@ def test_concept_id_cisplatin(cisplatin, wikidata):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
 
@@ -198,6 +209,7 @@ def test_primary_label_cisplatin(cisplatin, wikidata):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = wikidata.normalize('Cisplatin')
@@ -211,6 +223,7 @@ def test_primary_label_cisplatin(cisplatin, wikidata):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
 
@@ -228,6 +241,7 @@ def test_alias_cisplatin(cisplatin, wikidata):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = wikidata.normalize('cddp')
@@ -241,6 +255,7 @@ def test_alias_cisplatin(cisplatin, wikidata):
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
 
@@ -258,6 +273,7 @@ def test_concept_id_atropine(atropine, wikidata):
     assert set(normalized_drug.other_identifiers) == \
            set(atropine.other_identifiers)
     assert set(normalized_drug.trade_names) == set(atropine.trade_names)
+    assert set(normalized_drug.xrefs) == set(atropine.xrefs)
     assert normalized_drug.approval_status == atropine.approval_status
 
     normalizer_response = wikidata.normalize('wiKIdata:Q26272')
@@ -270,6 +286,7 @@ def test_concept_id_atropine(atropine, wikidata):
     assert set(normalized_drug.other_identifiers) == \
            set(atropine.other_identifiers)
     assert set(normalized_drug.trade_names) == set(atropine.trade_names)
+    assert set(normalized_drug.xrefs) == set(atropine.xrefs)
     assert normalized_drug.approval_status == atropine.approval_status
 
     normalizer_response = wikidata.normalize('wiKIdata:q26272')
@@ -282,6 +299,7 @@ def test_concept_id_atropine(atropine, wikidata):
     assert set(normalized_drug.other_identifiers) == \
            set(atropine.other_identifiers)
     assert set(normalized_drug.trade_names) == set(atropine.trade_names)
+    assert set(normalized_drug.xrefs) == set(atropine.xrefs)
     assert normalized_drug.approval_status == atropine.approval_status
 
     normalizer_response = wikidata.normalize('Q26272')
@@ -294,6 +312,7 @@ def test_concept_id_atropine(atropine, wikidata):
     assert set(normalized_drug.other_identifiers) == \
            set(atropine.other_identifiers)
     assert set(normalized_drug.trade_names) == set(atropine.trade_names)
+    assert set(normalized_drug.xrefs) == set(atropine.xrefs)
     assert normalized_drug.approval_status == atropine.approval_status
 
 
@@ -311,6 +330,7 @@ def test_primary_label_atropine(atropine, wikidata):
     assert set(normalized_drug.other_identifiers) == \
            set(atropine.other_identifiers)
     assert set(normalized_drug.trade_names) == set(atropine.trade_names)
+    assert set(normalized_drug.xrefs) == set(atropine.xrefs)
     assert normalized_drug.approval_status == atropine.approval_status
 
     normalizer_response = wikidata.normalize('Atropine')
@@ -324,6 +344,7 @@ def test_primary_label_atropine(atropine, wikidata):
     assert set(normalized_drug.other_identifiers) == \
            set(atropine.other_identifiers)
     assert set(normalized_drug.trade_names) == set(atropine.trade_names)
+    assert set(normalized_drug.xrefs) == set(atropine.xrefs)
     assert normalized_drug.approval_status == atropine.approval_status
 
 
@@ -341,6 +362,7 @@ def test_alias_atropine(atropine, wikidata):
     assert set(normalized_drug.other_identifiers) == \
            set(atropine.other_identifiers)
     assert set(normalized_drug.trade_names) == set(atropine.trade_names)
+    assert set(normalized_drug.xrefs) == set(atropine.xrefs)
     assert normalized_drug.approval_status == atropine.approval_status
 
     normalizer_response = wikidata.normalize('(±)-Hyoscyamine')
@@ -354,6 +376,7 @@ def test_alias_atropine(atropine, wikidata):
     assert set(normalized_drug.other_identifiers) == \
            set(atropine.other_identifiers)
     assert set(normalized_drug.trade_names) == set(atropine.trade_names)
+    assert set(normalized_drug.xrefs) == set(atropine.xrefs)
     assert normalized_drug.approval_status == atropine.approval_status
 
 
@@ -388,6 +411,7 @@ def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
            set(interferon_alfacon_1.other_identifiers)
     assert set(normalized_drug.trade_names) == \
            set(interferon_alfacon_1.trade_names)
+    assert set(normalized_drug.xrefs) == set(interferon_alfacon_1.xrefs)
     assert normalized_drug.approval_status == \
            interferon_alfacon_1.approval_status
 
@@ -402,6 +426,7 @@ def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
            set(interferon_alfacon_1.other_identifiers)
     assert set(normalized_drug.trade_names) == \
            set(interferon_alfacon_1.trade_names)
+    assert set(normalized_drug.xrefs) == set(interferon_alfacon_1.xrefs)
     assert normalized_drug.approval_status == \
            interferon_alfacon_1.approval_status
 
@@ -415,6 +440,7 @@ def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
            set(interferon_alfacon_1.other_identifiers)
     assert set(normalized_drug.trade_names) == \
            set(interferon_alfacon_1.trade_names)
+    assert set(normalized_drug.xrefs) == set(interferon_alfacon_1.xrefs)
     assert normalized_drug.approval_status == \
            interferon_alfacon_1.approval_status
 
@@ -428,6 +454,7 @@ def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
            set(interferon_alfacon_1.other_identifiers)
     assert set(normalized_drug.trade_names) == \
            set(interferon_alfacon_1.trade_names)
+    assert set(normalized_drug.xrefs) == set(interferon_alfacon_1.xrefs)
     assert normalized_drug.approval_status == \
            interferon_alfacon_1.approval_status
 
@@ -441,6 +468,7 @@ def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
            set(interferon_alfacon_1.other_identifiers)
     assert set(normalized_drug.trade_names) == \
            set(interferon_alfacon_1.trade_names)
+    assert set(normalized_drug.xrefs) == set(interferon_alfacon_1.xrefs)
     assert normalized_drug.approval_status == \
            interferon_alfacon_1.approval_status
 
@@ -459,6 +487,7 @@ def test_primary_label_interferon_alfacon_1(interferon_alfacon_1, wikidata):
            set(interferon_alfacon_1.other_identifiers)
     assert set(normalized_drug.trade_names) == \
            set(interferon_alfacon_1.trade_names)
+    assert set(normalized_drug.xrefs) == set(interferon_alfacon_1.xrefs)
     assert normalized_drug.approval_status == \
            interferon_alfacon_1.approval_status
 
@@ -473,6 +502,7 @@ def test_primary_label_interferon_alfacon_1(interferon_alfacon_1, wikidata):
            set(interferon_alfacon_1.other_identifiers)
     assert set(normalized_drug.trade_names) == \
            set(interferon_alfacon_1.trade_names)
+    assert set(normalized_drug.xrefs) == set(interferon_alfacon_1.xrefs)
     assert normalized_drug.approval_status == \
            interferon_alfacon_1.approval_status
 
@@ -492,6 +522,7 @@ def test_concept_id_d_methamphetamine(d_methamphetamine, wikidata):
            set(d_methamphetamine.other_identifiers)
     assert set(normalized_drug.trade_names) == \
            set(d_methamphetamine.trade_names)
+    assert set(normalized_drug.xrefs) == set(d_methamphetamine.xrefs)
     assert normalized_drug.approval_status == d_methamphetamine.approval_status
 
     normalizer_response = wikidata.normalize('wiKIdata:Q191924')
@@ -505,6 +536,7 @@ def test_concept_id_d_methamphetamine(d_methamphetamine, wikidata):
            set(d_methamphetamine.other_identifiers)
     assert set(normalized_drug.trade_names) ==\
            set(d_methamphetamine.trade_names)
+    assert set(normalized_drug.xrefs) == set(d_methamphetamine.xrefs)
     assert normalized_drug.approval_status == d_methamphetamine.approval_status
 
     normalizer_response = wikidata.normalize('wiKIdata:q191924')
@@ -518,6 +550,7 @@ def test_concept_id_d_methamphetamine(d_methamphetamine, wikidata):
            set(d_methamphetamine.other_identifiers)
     assert set(normalized_drug.trade_names) == \
            set(d_methamphetamine.trade_names)
+    assert set(normalized_drug.xrefs) == set(d_methamphetamine.xrefs)
     assert normalized_drug.approval_status == d_methamphetamine.approval_status
 
     normalizer_response = wikidata.normalize('Q191924')
@@ -531,6 +564,7 @@ def test_concept_id_d_methamphetamine(d_methamphetamine, wikidata):
            set(d_methamphetamine.other_identifiers)
     assert set(normalized_drug.trade_names) == \
            set(d_methamphetamine.trade_names)
+    assert set(normalized_drug.xrefs) == set(d_methamphetamine.xrefs)
     assert normalized_drug.approval_status == d_methamphetamine.approval_status
 
 
@@ -549,6 +583,7 @@ def test_primary_label_d_methamphetamine(d_methamphetamine, wikidata):
            set(d_methamphetamine.other_identifiers)
     assert set(normalized_drug.trade_names) ==\
            set(d_methamphetamine.trade_names)
+    assert set(normalized_drug.xrefs) == set(d_methamphetamine.xrefs)
     assert normalized_drug.approval_status == d_methamphetamine.approval_status
 
     normalizer_response = wikidata.normalize('d-methamphetamine')
@@ -563,6 +598,7 @@ def test_primary_label_d_methamphetamine(d_methamphetamine, wikidata):
            set(d_methamphetamine.other_identifiers)
     assert set(normalized_drug.trade_names) ==\
            set(d_methamphetamine.trade_names)
+    assert set(normalized_drug.xrefs) == set(d_methamphetamine.xrefs)
     assert normalized_drug.approval_status == d_methamphetamine.approval_status
 
 
