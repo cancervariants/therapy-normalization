@@ -90,17 +90,37 @@ class Drug(Therapy):
 
 
 class MergedDrug(BaseModel):
-    """
-    A merged record for a single concept drawn from multiple individual
+    """A merged record for a single concept drawn from multiple individual
     records.
     """
 
-    label: Optional[str]
-    aliases: List[str]
     concept_ids: List[str]
-    xrefs: List[str]
+    label: Optional[str]
+    approval_status: Optional[ApprovalStatus]
+    aliases: List[str]
+    xrefs: Optional[List[str]]
+    trade_names: Optional[List[str]]
+
+
+class DynamoDBItem(BaseModel):
+    """An individual item as stored in DynamoDB."""
+
+    label_and_type: str
+    concept_id: str
+    src_name: str
+
+
+class DynamoDBIdentity(DynamoDBItem):
+    """An identity record as stored in DynamoDB."""
+
+    aliases: List[str]
+    other_identifiers: List[str]
+    label: Optional[str]
     approval_status: Optional[ApprovalStatus]
     trade_names: Optional[List[str]]
+    label: Optional[str]
+    merged_record: Optional[MergedDrug]
+    merged_record_reference: Optional[str]
 
 
 class DrugGroup(Therapy):
@@ -287,7 +307,8 @@ class Service(BaseModel):
 
     query: str
     warnings: Optional[Dict]
-    source_matches: Union[Dict[SourceName, MatchesKeyed], List[MatchesListed]]
+    source_matches: Union[Dict[SourceName, MatchesKeyed], List[MatchesListed],
+                          MergedDrug]
 
     class Config:
         """Enables orm_mode"""
