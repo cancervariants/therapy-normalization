@@ -89,6 +89,14 @@ class Drug(Therapy):
             }
 
 
+class DynamoDBItem(BaseModel):
+    """An individual item as stored in DynamoDB."""
+
+    label_and_type: str
+    concept_id: str
+    src_name: str
+
+
 class MergedDrug(BaseModel):
     """A merged record for a single concept drawn from multiple individual
     records.
@@ -100,14 +108,6 @@ class MergedDrug(BaseModel):
     aliases: List[str]
     xrefs: Optional[List[str]]
     trade_names: Optional[List[str]]
-
-
-class DynamoDBItem(BaseModel):
-    """An individual item as stored in DynamoDB."""
-
-    label_and_type: str
-    concept_id: str
-    src_name: str
 
 
 class DynamoDBIdentity(DynamoDBItem):

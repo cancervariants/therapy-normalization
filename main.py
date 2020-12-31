@@ -1,5 +1,5 @@
 """Main application for FastAPI"""
-from therapy.query import Normalizer, InvalidParameterException
+from therapy.query import QueryHandler, InvalidParameterException
 from therapy.schemas import Service
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.openapi.utils import get_openapi
@@ -7,7 +7,7 @@ import html
 from typing import Optional
 
 
-normalizer = Normalizer()
+query_handler = QueryHandler()
 app = FastAPI(docs_url='/therapy', openapi_url='/therapy/openapi.json')
 
 
@@ -75,15 +75,15 @@ def read_query(q: str = Query(..., description=q_descr),
     :returns: JSON response with matched records and source metadata
     """
     try:
-        resp = normalizer.normalize(html.unescape(q), keyed=keyed, incl=incl,
-                                    excl=excl)
+        response = query_handler.search(html.unescape(q), keyed=keyed,
+                                        incl=incl, excl=excl)
     except InvalidParameterException as e:
         raise HTTPException(status_code=422, detail=str(e))
 
-    return resp
+    return response
 
 
-normalize_summary = """Given query, provide aggregate record from given
+normalize_summary = """Given query, provide merged record from given
                     sources."""
 q_descr_norm = "Therapy term to normalize."
 
@@ -98,9 +98,7 @@ def normalize_query(q: str = Query(..., description=q_descr_norm)):
     :returns: JSON response with merged record
     """
     try:
-        response = ""
-
+        response = query_handler.normalize(html.unescape(q))
     except InvalidParameterException as e:
         raise HTTPException(status_code=422, detail=str(e))
-
     return response

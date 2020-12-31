@@ -1,6 +1,6 @@
 """Create concept groups and merged records."""
 from therapy.database import Database, RecordNotFoundError
-from therapy.schemas import NamespacePrefix, MergedDrug
+from therapy.schemas import NamespacePrefix, Drug, MergedDrug
 from typing import Set
 import logging
 
@@ -10,8 +10,7 @@ logger.setLevel(logging.DEBUG)
 
 
 class Merge:
-    """
-    Handles record merging.
+    """Handles record merging.
 
     Working db scheme:
         <uuid> -> merged record
@@ -29,14 +28,15 @@ class Merge:
         self.database = database
 
     def create_merged_concepts(self, record_ids: Set[str]):
-        """
-        Create concept groups and generate merged concept records.
+        """Create concept groups and generate merged concept records.
 
         :param Set[str] record_ids: concept identifiers to create groups of
 
         TODO
          * Consider moving update method calls into database object
          * Make final call on how to handle dangling IDs
+         * When generating merged records, should pull other_id_set if
+           merged record already found?
         """
         completed_ids = set()
         for record_id in record_ids:
@@ -62,21 +62,21 @@ class Merge:
                         'concept_id': other_record_id
                     },
                     AttributeUpdates={
-                        'merged_record_stored_at': record_id
+                        'merged_record_reference': record_id
                     }
                 )
+            completed_ids |= concept_group
 
     def _create_record_id_set(self, record_id: str,
-                              observed_id_set: Set = set()) -> Set:
-        """
-        Create concept ID group.
+                              observed_id_set: Set = set()) -> Set[str]:
+        """Create concept ID group.
 
         :param str record_id: concept ID for record to build group from
         :return: group of related records pertaining to a common concept.
-        :rtype: Set
+        :rtype: Set[str]
         """
         try:
-            record = self.database.get_record_by_id(record_id)
+            record = Drug(**self.database.get_record_by_id(record_id))
         except RecordNotFoundError:
             # TODO
             # may need to include nonexistent record IDs to enable
@@ -106,7 +106,7 @@ class Merge:
         records = []
         for record_id in record_id_set:
             try:
-                records.append(dict(self.database.get_record_by_id(record_id)))
+                records.append(self.database.get_record_by_id(record_id))
             except RecordNotFoundError:
                 logger.error(f"Could not retrieve record for {record_id}"
                              f"ID set: {record_id_set}")
