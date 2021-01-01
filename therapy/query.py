@@ -5,7 +5,7 @@ from typing import List, Dict, Set, Optional
 from uvicorn.config import logger
 from therapy.database import Database, RecordNotFoundError
 from therapy.schemas import Drug, Meta, MatchType, SourceName, \
-    NamespacePrefix, SourceIDAfterNamespace
+    NamespacePrefix, SourceIDAfterNamespace, DynamoDBIdentity
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
 
@@ -305,14 +305,13 @@ class QueryHandler:
         :param bool keyed: if true, return response as dict keying source names
             to source objects; otherwise, return list of source objects
         :param str incl: str containing comma-separated names of sources to
-            use. Will exclude all other sources. Case-insensitive. Raises
-            InvalidParameterException if both incl and excl args are
-            provided, or if invalid source names are given.
+            use. Will exclude all other sources. Case-insensitive.
         :param str excl: str containing comma-separated names of source to
-            exclude. Will include all other source. Case-insensitive. Raises
-            InvalidParameterException if both incl and excl args are
-            provided, or if invalid source names are given.
+            exclude. Will include all other source. Case-insensitive.
         :return: dict containing all matches found in sources.
+        :rtype: dict
+        :raises InvalidParameterException: if both incl and excl args are
+            provided, or if invalid source names are given.
         """
         sources = {name.value.lower(): name.value for name in
                    SourceName.__members__.values()}
@@ -359,8 +358,7 @@ class QueryHandler:
         return resp
 
     def normalize(self, query_str: str):
-        """
-        Return merged, normalized concept for given search term.
+        """Return merged, normalized concept for given search term.
 
         :param str query_str: string to search against
         """
@@ -374,9 +372,8 @@ class QueryHandler:
                 'record': {}
             }
             return response
-        query_l = query_str.lower()
         try:
-            record = self.db.get_record_by_id(f"{query_l}##identity")
+            record = self.db.get_record_by_id(query_str)
             if 'merged_record' in record:
                 response['match'] = {
                     'match_type': MatchType.CONCEPT_ID,
@@ -393,9 +390,37 @@ class QueryHandler:
                     logger.error(f"Couldn't retrieve merged record referenced at {ref_id}")  # noqa: E501
                 except KeyError:
                     logger.error(f"Record at {ref_id} doesn't contain merged record")  # noqa: E501
-
         except RecordNotFoundError:
             # no concept ID match for query
             pass
-        for match_type in ['identity', 'label', 'alias']:
-            pass
+
+        query_l = query_str.lower()
+        for match_type in [MatchType.LABEL, MatchType.ALIAS,
+                           MatchType.TRADE_NAME]:
+            matches = self.db.get_records_by_type(query_l, match_type)
+            if matches:
+                type_matched = match_type
+                break
+        if matches:
+            def record_order(record: DynamoDBIdentity):
+                src = record.src_name
+                if src == SourceName.NCIT:
+                    return 1
+                elif src == SourceName.CHEMBL:
+                    return 2
+                elif src == SourceName.DRUGBANK:
+                    return 3
+                else:
+                    return 4
+            matches.sort(key=record_order)
+
+            response['match'] = {
+                'match_type': type_matched,
+                'record': matches[0]
+            }
+        else:
+            response['match'] = {
+                'match_type': MatchType.NO_MATCH,
+                'record': {}
+            }
+        return response
