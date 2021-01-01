@@ -1,6 +1,6 @@
 """Create concept groups and merged records."""
 from therapy.database import Database, RecordNotFoundError
-from therapy.schemas import NamespacePrefix, Drug, MergedDrug
+from therapy.schemas import Drug, MergedDrug, DynamoDBIdentity, SourceName
 from typing import Set
 import logging
 
@@ -10,18 +10,7 @@ logger.setLevel(logging.DEBUG)
 
 
 class Merge:
-    """Handles record merging.
-
-    Working db scheme:
-        <uuid> -> merged record
-        <concept ID> -> <uuid>
-        <concept ID> -> <uuid>
-
-    UUID generation:
-        https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/best-practices.html
-        https://forums.aws.amazon.com/thread.jspa?messageID=312527
-        https://stackoverflow.com/questions/37072341/how-to-use-auto-increment-for-primary-key-id-in-dynamodb
-    """
+    """Handles record merging."""
 
     def __init__(self, database: Database):
         """Initialize Merge instance"""
@@ -93,8 +82,7 @@ class Merge:
         return merged_id_set
 
     def _generate_merged_record(self, record_id_set: Set) -> MergedDrug:
-        """
-        Generate merged record from provided concept ID group.
+        """Generate merged record from provided concept ID group.
         Where attributes are sets, they should be merged, and where they are
         scalars, assign from the highest-priority source where that attribute
         is non-null. Priority is NCIt > ChEMBL > DrugBank > Wikidata.
@@ -111,30 +99,29 @@ class Merge:
                 logger.error(f"Could not retrieve record for {record_id}"
                              f"ID set: {record_id_set}")
 
-        def record_order(concept_id):
-            prefix = concept_id.split(':')[0]
-            if prefix == NamespacePrefix.NCIT:
+        def record_order(record: DynamoDBIdentity):
+            src = record.src_name
+            if src == SourceName.NCIT:
                 return 1
-            elif prefix == NamespacePrefix.CHEMBL:
+            elif src == SourceName.CHEMBL:
                 return 2
-            elif prefix == NamespacePrefix.DRUGBANK:
+            elif src == SourceName.DRUGBANK:
                 return 3
-            elif prefix == NamespacePrefix.WIKIDATA:
-                return 4
             else:
-                raise Exception(f"Invalid namespace: {concept_id}")
+                return 4
 
         records.sort(key=record_order)
 
         attrs = {'aliases': set(), 'concept_ids': set(), 'trade_names': set()}
         for record in records:
+            values = record.__values__
             for field in ['aliases', 'trade_names']:
-                if field in record:
-                    attrs[field] |= record[field]
-            attrs['concept_ids'].add(record['concept_id'])
+                if field in values:
+                    attrs[field] |= values[field]
+            attrs['concept_ids'].add(values['concept_id'])
             for field in ['label', 'approval_status']:
-                if field not in attrs and field in record and record['field']:
-                    attrs[field] = record[field]
+                if field not in attrs and field in values and values['field']:
+                    attrs[field] = values[field]
         for field in ['aliases', 'concept_ids', 'trade_names']:
             attrs[field] = list(attrs[field])
 

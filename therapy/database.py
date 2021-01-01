@@ -3,8 +3,9 @@ import boto3
 from os import environ
 import logging
 from typing import List
-from therapy.schemas import DynamoDBItem
+from therapy.schemas import DynamoDBIdentity, MatchType
 from botocore.exceptions import ClientError
+from boto3.dynamodb.conditions import Key
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -142,15 +143,15 @@ class Database:
                 }
             )
 
-    def get_record_by_id(self, concept_id: str) -> DynamoDBItem:
+    def get_record_by_id(self, concept_id: str) -> DynamoDBIdentity:
         """Fetch record corresponding to provided concept ID
 
-        :param str concept_id: concept ID for therapy record
-
+        :param str concept_id: concept ID for therapy record -- must be
+            correctly-cased
         :return: complete therapy record as it's stored remotely
         :rtype: Dict
-
-        :raises RecordNotFoundError: if no record exists for given concept ID
+        :raises RecordNotFoundError: if no record exists for given concept ID,
+            or if a ClientError is encountered
         """
         try:
             match = self.therapies.get_item(Key={
@@ -158,8 +159,38 @@ class Database:
                 'concept_id': concept_id
             })
             item = match['Item']
-            return DynamoDBItem(**item)
+            return DynamoDBIdentity(**item)
         except ClientError as e:
             logger.error(e.response['Error']['Message'])
+            raise RecordNotFoundError
         except KeyError:
+            raise RecordNotFoundError
+
+    def get_records_by_type(self, query: str,
+                            match_type: MatchType) -> List[DynamoDBIdentity]:
+        """Fetch record for given query string and match type.
+
+        :param str query: string to match against
+        :param MatchType match_type: type of match to seek
+        :return: list of records matching query
+        :rtype: List[DynamoDBIdentity]
+        :raises RecordNotFoundError: if no records exist for query string,
+            or if a ClientError is encountered in the process
+        """
+        try:
+            pk = f'{query}##{match_type.name}'.lower()
+            filter_exp = Key('label_and_type').eq(pk)
+            result = self.therapies.query(
+                KeyConditionExpression=filter_exp
+            )
+            if 'Items' in result and len(result['Items']) > 0:
+                results = list()
+                concept_ids = [item['concept_id'] for item in result['Items']]
+                for concept_id in concept_ids:
+                    results.append(self.get_record_by_id(concept_id))
+                return results
+            else:
+                raise RecordNotFoundError
+        except ClientError as e:
+            logger(e.response['Error']['Message'])
             raise RecordNotFoundError
