@@ -27,23 +27,30 @@ class NCIt(Base):
     def __init__(self,
                  database: Database,
                  src_dir: str = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/",  # noqa F401
-                 src_fname: str = "Thesaurus_20.09d.OWL.zip",
-                 *args,
-                 **kwargs):
+                 src_fname: str = "Thesaurus_20.09d.OWL.zip"):
         """Override base class init method. Call ETL methods.
 
-        Args:
-            src_dir: URL of source directory
-            src_fname: filename for source file within source directory URL
+        :param therapy.database.Database database: app database instance
+        :param str src_dir: URL of remote directory containing source input
+        :param str src_fname: filename for source file within source directory
         """
         self.database = database
         self._SRC_DIR = src_dir
         self._SRC_FNAME = src_fname
+
+    def perform_etl(self) -> Set[str]:
+        """Initiate ETL operation for source.
+
+        :return: concept IDs loaded by this operation.
+        :rtype: Set[str]
+        """
+        self._processed_ids = set()
         self._extract_data()
         self._transform_data()
+        return self._processed_ids
 
     def _download_data(self):
-        """Download NCI thesaurus source file for loading into normalizer"""
+        """Download NCI thesaurus source file for loading into normalizer."""
         logger.info('Downloading NCI Thesaurus...')
         url = self._SRC_DIR + self._SRC_FNAME
         out_dir = PROJECT_ROOT / 'data' / 'ncit'
@@ -53,7 +60,7 @@ class NCIt(Base):
         for chunk in response.iter_content(chunk_size=512):
             if chunk:
                 handle.write(chunk)
-        print(zip_path)
+        logger.info(zip_path)
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
             zip_ref.extractall(out_dir)
         remove(zip_path)
@@ -62,7 +69,7 @@ class NCIt(Base):
         logger.info('Finished downloading NCI Thesaurus')
 
     def _extract_data(self, *args, **kwargs):
-        """Get NCIt source file"""
+        """Get NCIt source file."""
         if 'data_path' in kwargs:
             self._data_src = kwargs['data_path']
         else:
@@ -75,20 +82,18 @@ class NCIt(Base):
             self._data_src = sorted(dir_files)[-1]
         self._version = self._data_src.stem.split('_')[1]
 
-    def get_desc_nodes(self, node: ThingClass,
-                       uq_nodes: Set[ThingClass]) -> Set[ThingClass]:
+    def _get_desc_nodes(self, node: ThingClass,
+                        uq_nodes: Set[ThingClass]) -> Set[ThingClass]:
         """Create set of unique subclasses of node parameter.
         Should be originally called on ncit:C1909: Pharmacologic Substance.
 
-        Args:
-            node: concept node to either retrieve descendants of, or to
-                normalize and add to DB
-            uq_nodes: set of unique class nodes found so far from recursive
-                tree exploration
-
-        Returns:
-            the uq_nodes set, updated with any class nodes found from
-                recursive exploration of this branch of the class tree
+        :param owlready2.entity.ThingClass node: concept node to either
+            retrieve descendants of, or to normalize and add to DB
+        :param Set[owlready2.entity.ThingClass] uq_nodes: set of unique class
+            nodes found so far from recursive tree exploration
+        :return: the uq_nodes set, updated with any class nodes found from
+            recursive exploration of this branch of the class tree
+        :rtype: Set[owlready2.entity.ThingClass]
         """
         children = node.descendants()
         if children:
@@ -98,18 +103,20 @@ class NCIt(Base):
                     self.get_desc_nodes(child_node, uq_nodes)
         return uq_nodes
 
-    def get_typed_nodes(self, uq_nodes: Set[ThingClass],
-                        ncit: owl.namespace.Ontology) -> Set[ThingClass]:
+    def _get_typed_nodes(self, uq_nodes: Set[ThingClass],
+                         ncit: owl.namespace.Ontology) -> Set[ThingClass]:
         """Get all nodes with semantic_type Pharmacologic Substance
 
         Args:
-            uq_nodes: set of unique class nodes found so far.
-            ncit: owlready2 Ontology instance for NCI Thesaurus
+        :param Set[owlready2.entity.ThingClass] uq_nodes: set of unique class
+            nodes found so far.
+        :param owl.namespace.Ontology ncit: owlready2 Ontology instance for
+            NCI Thesaurus.
 
-        Returns:
-            uq_nodes, with the addition of all classes found to have
-                semantic_type Pharmacologic Substance and not of type
-                Retired_Concept
+        :return: uq_nodes, with the addition of all classes found to have
+            semantic_type Pharmacologic Substance and not of type
+            Retired_Concept
+        :rtype: Set[owlready2.entity.ThingClass]
         """
         graph = owl.default_world.as_rdflib_graph()
 
@@ -135,7 +142,7 @@ class NCIt(Base):
         return uq_nodes
 
     def _transform_data(self, *args, **kwargs):
-        """Get data from file and construct objects for loading"""
+        """Get data from file and construct objects for loading."""
         ncit = owl.get_ontology(self._data_src.absolute().as_uri())
         ncit.load()
         self._add_meta()
@@ -195,9 +202,8 @@ class NCIt(Base):
     def _load_therapy(self, therapy: Therapy, batch):
         """Load individual therapy into dynamodb table
 
-        Args:
-            therapy: complete Therapy instance
-            batch: dynamoDB batch_writer context manager object
+        :param therapy.schemas.Therapy therapy: complete Therapy instance
+        :param batch: dynamoDB batch_writer context manager object
         """
         item = therapy.dict()
         concept_id_lower = item['concept_id'].lower()
@@ -229,3 +235,4 @@ class NCIt(Base):
         if not item['xrefs']:
             del item['xrefs']
         batch.put_item(Item=item)
+        self._processed_ids.add(therapy.concept_id)
