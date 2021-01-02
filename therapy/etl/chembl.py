@@ -6,6 +6,7 @@ import logging
 import tarfile  # noqa: F401
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
 import sqlite3
+from typing import Set
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -13,6 +14,19 @@ logger.setLevel(logging.DEBUG)
 
 class ChEMBL(Base):
     """ETL the ChEMBL source into therapy.db."""
+
+    def perform_etl(self, *args, **kwargs) -> Set[str]:
+        """Initiate ETL operation for source.
+
+        :return: concept IDs loaded by this operation.
+        :rtype: Set[str]
+        """
+        self._processed_ids = set()
+        self._add_meta()
+        self._extract_data()
+        self._transform_data()
+        self._load_data()
+        return self._processed_ids
 
     def _extract_data(self, *args, **kwargs):
         """Extract data from the ChEMBL source."""
@@ -46,9 +60,6 @@ class ChEMBL(Base):
 
     def _load_data(self, *args, **kwargs):
         """Load the ChEMBL source into database."""
-        self._add_meta()
-        self._extract_data()
-        self._transform_data()
         self._load_json()
         self._conn.commit()
         self._conn.close()
@@ -207,6 +218,7 @@ class ChEMBL(Base):
         record['label_and_type'] = \
             f"{record['concept_id'].lower()}##identity"
         batch.put_item(Item=record)
+        self._processed_ids.add(record['concept_id'])
 
     def _load_label(self, record, batch):
         """Load label record into DynamoDB."""
