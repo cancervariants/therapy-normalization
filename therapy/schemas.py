@@ -90,8 +90,8 @@ class Drug(Therapy):
             }
 
 
-class DynamoDBItem(BaseModel):
-    """An individual item as stored in DynamoDB."""
+class DBItem(BaseModel):
+    """An individual item as recorded in app database."""
 
     label_and_type: str
     concept_id: str
@@ -121,8 +121,10 @@ class MergedDrug(BaseModel):
         extra = 'forbid'
 
 
-class DynamoDBIdentity(DynamoDBItem):
-    """An identity record as stored in DynamoDB."""
+class DBIdentity(DBItem):
+    """An identity record (i.e., the complete record for an individual concept
+    ID) as stored in the app database.
+    """
 
     aliases: Optional[List[str]]
     other_identifiers: Optional[List[str]]
@@ -143,7 +145,7 @@ class DynamoDBIdentity(DynamoDBItem):
     def merge_mut_excl(cls, merged_rec_ref, values):
         """Perform validation to ensure that merged_record and
         merged_record_reference are mutually-exclusive attributes, since a DB
-        item should only contain one.
+        identity item should only contain one.
 
         :param cls: DynamoDBIdentity class, passed automatically since this
             is a class method
