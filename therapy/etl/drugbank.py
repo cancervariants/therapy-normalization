@@ -5,6 +5,7 @@ import logging
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
 from therapy.etl.base import IDENTIFIER_PREFIXES
 from lxml import etree
+from typing import Set
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -30,6 +31,16 @@ DRUGBANK_IDENTIFIER_PREFIXES = {
 
 class DrugBank(Base):
     """ETL the DrugBank source into therapy.db."""
+
+    def perform_etl(self, *args, **kwargs) -> Set[str]:
+        """Initiate ETL operation for source.
+
+        :return: concept IDs loaded by this operation. Case-sensitive.
+        :rtype: Set[str]
+        """
+        self._processed_ids = set()
+        self._load_data()
+        return self._processed_ids
 
     def _extract_data(self, *args, **kwargs):
         """Extract data from the DrugBank source."""
@@ -130,6 +141,7 @@ class DrugBank(Base):
                         {a.casefold() for a in params[label_type]}) > 20:
                     del params[label_type]
         batch.put_item(Item=params)
+        self._processed_ids.add(params['concept_id'])
 
     def _load_drugbank_id(self, element, params):
         """Load drugbank id as concept id or alias."""

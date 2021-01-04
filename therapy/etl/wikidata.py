@@ -6,7 +6,7 @@ from therapy.schemas import SourceName, NamespacePrefix, \
     SourceIDAfterNamespace, Meta
 from therapy.database import Database
 import logging
-from typing import Dict
+from typing import Dict, Set
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -47,12 +47,21 @@ class Wikidata(Base):
     }
     """
 
-    def __init__(self, database: Database, *args, **kwargs):
+    def __init__(self, database: Database):
         """Initialize wikidata ETL class"""
         self.database = database
+
+    def perform_etl(self, *args, **kwargs) -> Set[str]:
+        """Initiate ETL operation for source.
+
+        :return: concept IDs loaded by this operation. Case-sensitive.
+        :rtype: Set[str]
+        """
+        self._processed_ids = set()
         self._extract_data(*args, **kwargs)
         self._add_meta()
         self._transform_data()
+        return self._processed_ids
 
     def _extract_data(self, *args, **kwargs):
         """Extract data from the Wikidata source."""
@@ -60,7 +69,7 @@ class Wikidata(Base):
             self._data_src = kwargs['data_path']
         else:
             wd_dir = PROJECT_ROOT / 'data' / 'wikidata'
-            wd_dir.mkdir(exist_ok=True, parents=True)  # TODO needed?
+            wd_dir.mkdir(exist_ok=True, parents=True)
             try:
                 self._data_src = sorted(list(wd_dir.iterdir()))[-1]
             except IndexError:
@@ -83,10 +92,8 @@ class Wikidata(Base):
         })
 
     def _transform_data(self):
-        """Transform the Wikidata source data.
-        Currently, gather all items in memory and then batch-load into
-        DynamoDB. Worth considering whether adding record directly and then
-        issuing update statements to append additional aliases would be better.
+        """Transform the Wikidata source data. Currently, gather all items in
+        memory and then batch-load into database.
         """
         with open(self._data_src, 'r') as f:
             records = json.load(f)
@@ -103,8 +110,8 @@ class Wikidata(Base):
                     item['concept_id'] = concept_id
                     item['src_name'] = SourceName.WIKIDATA.value
 
-                    other_ids = []
-                    xrefs = []
+                    other_ids = list()
+                    xrefs = list()
                     for key in IDENTIFIER_PREFIXES.keys():
                         if key in record.keys():
                             other_id = record[key]
@@ -141,10 +148,10 @@ class Wikidata(Base):
 
     def _load_therapy(self, item: Dict, batch):
         """Load individual therapy record into DynamoDB
-        Args:
-            item: dict containing, at minimum, label_and_type and concept_id
-                keys.
-            batch: boto3 batch writer
+
+        :param Dict item: containing, at minimum, label_and_type and concept_id
+            keys.
+        :param batch: boto3 batch writer
         """
         if 'aliases' in item:
             item['aliases'] = list(set(item['aliases']))
@@ -153,6 +160,7 @@ class Wikidata(Base):
                 del item['aliases']
 
         batch.put_item(Item=item)
+        self._processed_ids.add(item['concept_id'])
         concept_id_lower = item['concept_id'].lower()
 
         if 'aliases' in item.keys():
@@ -172,14 +180,3 @@ class Wikidata(Base):
                 'concept_id': concept_id_lower,
                 'src_name': SourceName.WIKIDATA.value
             })
-
-    def _sqlite_str(self, string):
-        """Sanitizes string to use as value in SQL statement.
-        Some wikidata entries include items with single quotes,
-        like wikidata:Q80863 alias: 5'-(Tetrahydrogen triphosphate) Adenosine
-        """
-        if string == "NULL":
-            return "NULL"
-        else:
-            sanitized = string.replace("'", "''")
-            return f"{sanitized}"

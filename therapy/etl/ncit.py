@@ -41,7 +41,7 @@ class NCIt(Base):
     def perform_etl(self) -> Set[str]:
         """Initiate ETL operation for source.
 
-        :return: concept IDs loaded by this operation.
+        :return: concept IDs loaded by this operation. Case-sensitive.
         :rtype: Set[str]
         """
         self._processed_ids = set()
@@ -228,7 +228,7 @@ class NCIt(Base):
                 'src_name': SourceName.NCIT.value
             })
         else:
-            del therapy['label']
+            del therapy.label
         item['label_and_type'] = f"{concept_id_lower}##identity"
         item['src_name'] = SourceName.NCIT.value
         del item['other_identifiers']
