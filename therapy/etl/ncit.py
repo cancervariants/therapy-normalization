@@ -112,7 +112,6 @@ class NCIt(Base):
             nodes found so far.
         :param owl.namespace.Ontology ncit: owlready2 Ontology instance for
             NCI Thesaurus.
-
         :return: uq_nodes, with the addition of all classes found to have
             semantic_type Pharmacologic Substance and not of type
             Retired_Concept
@@ -207,7 +206,8 @@ class NCIt(Base):
         """
         item = therapy.dict()
         concept_id_lower = item['concept_id'].lower()
-        if len({a.casefold(): a for a in item['aliases']}) > 20 or not item['aliases']:  # noqa: E501
+        if len({a.casefold(): a for a in item['aliases']}) > 20 \
+                or not item['aliases']:
             del item['aliases']
         else:
             if 'aliases' in item:
