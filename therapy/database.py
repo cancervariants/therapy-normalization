@@ -2,7 +2,7 @@
 import boto3
 from os import environ
 import logging
-from typing import List
+from typing import List, Any
 from therapy.schemas import DBItem, DBRecord, MatchType
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
@@ -151,6 +151,23 @@ class Database:
         :param DBItem item: item to add
         """
         self._batch.put_item(item=DBItem)
+
+    def update_record(self, concept_id: str, field: str, value: Any):
+        """Update therapy record in database.
+
+        :param str concept_id: concept ID of record to update. Case-sensitive.
+        :param str field: field name to update
+        :param Any value: new value
+        """
+        key = {
+            'label_and_type': f'{concept_id.lower()}##identity',
+            'concept_id': concept_id
+        }
+        self.therapies.update_item(Key=key, AttributeUpdates={
+            'Value': {
+                field: value
+            }
+        })
 
     def get_record_by_id(self, concept_id: str) -> DBRecord:
         """Fetch record corresponding to provided concept ID
