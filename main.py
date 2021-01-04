@@ -1,6 +1,6 @@
 """Main application for FastAPI"""
 from therapy.query import QueryHandler, InvalidParameterException
-from therapy.schemas import Service
+from therapy.schemas import Service, NormalizationService
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.openapi.utils import get_openapi
 import html
@@ -90,7 +90,8 @@ q_descr_norm = "Therapy term to normalize."
 
 @app.get("/therapy/normalize",
          summary=normalize_summary,
-         operation_id="getQueryNormalization")
+         operation_id="getQueryNormalization",
+         response_model=NormalizationService)
 def normalize_query(q: str = Query(..., description=q_descr_norm)):
     """Return a single normalized and merged concept for given esarch terms.
 
