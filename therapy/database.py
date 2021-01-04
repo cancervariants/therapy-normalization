@@ -3,7 +3,7 @@ import boto3
 from os import environ
 import logging
 from typing import List
-from therapy.schemas import DynamoDBIdentity, MatchType
+from therapy.schemas import DBIdentity, MatchType
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
 
@@ -143,7 +143,7 @@ class Database:
                 }
             )
 
-    def get_record_by_id(self, concept_id: str) -> DynamoDBIdentity:
+    def get_record_by_id(self, concept_id: str) -> DBIdentity:
         """Fetch record corresponding to provided concept ID
 
         :param str concept_id: concept ID for therapy record -- must be
@@ -159,7 +159,7 @@ class Database:
                 'concept_id': concept_id
             })
             item = match['Item']
-            return DynamoDBIdentity(**item)
+            return DBIdentity(**item)
         except ClientError as e:
             logger.error(e.response['Error']['Message'])
             raise RecordNotFoundError
@@ -167,7 +167,7 @@ class Database:
             raise RecordNotFoundError
 
     def get_records_by_type(self, query: str,
-                            match_type: MatchType) -> List[DynamoDBIdentity]:
+                            match_type: MatchType) -> List[DBIdentity]:
         """Fetch record for given query string and match type.
 
         :param str query: string to match against

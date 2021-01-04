@@ -5,7 +5,7 @@ from typing import List, Dict, Set, Optional
 from uvicorn.config import logger
 from therapy.database import Database, RecordNotFoundError
 from therapy.schemas import Drug, Meta, MatchType, SourceName, \
-    NamespacePrefix, SourceIDAfterNamespace, DynamoDBIdentity
+    NamespacePrefix, SourceIDAfterNamespace, DBIdentity
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
 
@@ -402,7 +402,7 @@ class QueryHandler:
                 type_matched = match_type
                 break
         if matches:
-            def record_order(record: DynamoDBIdentity):
+            def record_order(record: DBIdentity):
                 src = record.src_name
                 if src == SourceName.NCIT:
                     return 1
