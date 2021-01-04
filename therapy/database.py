@@ -3,7 +3,7 @@ import boto3
 from os import environ
 import logging
 from typing import List
-from therapy.schemas import DBIdentity, MatchType
+from therapy.schemas import DBItem, DBRecord, MatchType
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
 
@@ -49,6 +49,7 @@ class Database:
         self.dynamodb = boto3.resource('dynamodb', **boto_params)
         self.dynamodb_client = boto3.client('dynamodb', **boto_params)
 
+        # create tables if nonexistant if not connecting to remote database
         if db_url or 'THERAPY_NORM_DB_URL' in environ.keys():
             existing_tables = self.dynamodb_client.list_tables()['TableNames']
             self.create_therapies_table(existing_tables)
@@ -56,6 +57,7 @@ class Database:
 
         self.therapies = self.dynamodb.Table('therapy_concepts')
         self.metadata = self.dynamodb.Table('therapy_metadata')
+        self.batch = self.therapies.batch_writer()
         self.cached_sources = {}
 
     def create_therapies_table(self, existing_tables: List):
@@ -143,13 +145,20 @@ class Database:
                 }
             )
 
-    def get_record_by_id(self, concept_id: str) -> DBIdentity:
+    def add_item(self, item: DBItem):
+        """Add item to database.
+
+        :param DBItem item: item to add
+        """
+        self._batch.put_item(item=DBItem)
+
+    def get_record_by_id(self, concept_id: str) -> DBRecord:
         """Fetch record corresponding to provided concept ID
 
         :param str concept_id: concept ID for therapy record -- must be
             correctly-cased
         :return: complete therapy record as it's stored remotely
-        :rtype: Dict
+        :rtype: therapy.schemas.DBIdentity
         :raises RecordNotFoundError: if no record exists for given concept ID,
             or if a ClientError is encountered
         """
@@ -159,7 +168,7 @@ class Database:
                 'concept_id': concept_id
             })
             item = match['Item']
-            return DBIdentity(**item)
+            return DBRecord(**item)
         except ClientError as e:
             logger.error(e.response['Error']['Message'])
             raise RecordNotFoundError
@@ -167,13 +176,13 @@ class Database:
             raise RecordNotFoundError
 
     def get_records_by_type(self, query: str,
-                            match_type: MatchType) -> List[DBIdentity]:
+                            match_type: MatchType) -> List[DBRecord]:
         """Fetch record for given query string and match type.
 
         :param str query: string to match against
         :param MatchType match_type: type of match to seek
         :return: list of records matching query
-        :rtype: List[DynamoDBIdentity]
+        :rtype: List[DBIdentity]
         :raises RecordNotFoundError: if no records exist for query string,
             or if a ClientError is encountered in the process
         """
