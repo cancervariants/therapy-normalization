@@ -3,9 +3,11 @@ from .base import Base
 from therapy import PROJECT_ROOT
 from ftplib import FTP
 import logging
-import tarfile  # noqa: F401
+import tarfile
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
 import sqlite3
+import os
+import shutil
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -16,24 +18,34 @@ class ChEMBL(Base):
 
     def _extract_data(self, *args, **kwargs):
         """Extract data from the ChEMBL source."""
+        logger.info('Extracting chembl_27.db...')
         if 'data_path' in kwargs:
             chembl_db = kwargs['data_path']
         else:
             chembl_db = PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27.db'
         if not chembl_db.exists():
-            raise FileNotFoundError  # TODO: update download methods
-            # chembl_archive = PROJECT_ROOT / 'data' / \
-            #   'chembl_27_sqlite.tar.gz'
-            # chembl_archive.parent.mkdir(exist_ok=True)
-            # self._download_chembl_27(chembl_archive)
-            # tar = tarfile.open(chembl_archive)
-            # tar.extractall()
-            # tar.close()
+            chembl_dir = PROJECT_ROOT / 'data' / 'chembl'
+            chembl_archive = PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27_' \
+                                                                'sqlite.tar.gz'
+            chembl_archive.parent.mkdir(exist_ok=True)
+            self._download_chembl_27(chembl_archive)
+            tar = tarfile.open(chembl_archive)
+            tar.extractall(path=PROJECT_ROOT / 'data' / 'chembl')
+            tar.close()
+
+            # Remove unused directories and files
+            chembl_27_dir = chembl_dir / 'chembl_27'
+            temp_chembl = chembl_27_dir / 'chembl_27_sqlite' / 'chembl_27.db'
+            chembl_db = chembl_dir / 'chembl_27.db'
+            shutil.move(temp_chembl, chembl_db)
+            os.remove(chembl_archive)
+            shutil.rmtree(chembl_27_dir)
         conn = sqlite3.connect(chembl_db)
         conn.row_factory = sqlite3.Row
         self._conn = conn
         self._cursor = conn.cursor()
         assert chembl_db.exists()
+        logger.info('Finished extracting chembl_27.db.')
 
     def _transform_data(self, *args, **kwargs):
         """Transform SQLite data to JSON."""
@@ -64,6 +76,7 @@ class ChEMBL(Base):
                 ftp.cwd('pub/databases/chembl/ChEMBLdb/releases/chembl_27')
                 with open(filepath, 'wb') as fp:
                     ftp.retrbinary('RETR chembl_27_sqlite.tar.gz', fp.write)
+            logger.info('Downloaded ChEMBL tar file.')
         except TimeoutError:
             logger.error('Connection to EBI FTP server timed out.')
 
