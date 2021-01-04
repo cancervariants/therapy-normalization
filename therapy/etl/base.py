@@ -2,6 +2,7 @@
 from abc import ABC, abstractmethod
 from therapy.schemas import NamespacePrefix
 from therapy.database import Database
+from typing import Set
 
 IDENTIFIER_PREFIXES = {
     'casRegistry': NamespacePrefix.CASREGISTRY.value,
@@ -17,10 +18,18 @@ IDENTIFIER_PREFIXES = {
 class Base(ABC):
     """The ETL base class."""
 
-    def __init__(self, database: Database, *args, **kwargs):
+    def __init__(self, database: Database):
         """Extract from sources."""
         self.database = database
-        self._load_data(*args, **kwargs)
+
+    @abstractmethod
+    def perform_etl(self, *args, **kwargs) -> Set[str]:
+        """Initiate ETL operation for source.
+
+        :return: concept IDs loaded by this operation.
+        :rtype: Set[str]
+        """
+        raise NotImplementedError
 
     @abstractmethod
     def _extract_data(self, *args, **kwargs):
