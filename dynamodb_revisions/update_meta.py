@@ -7,25 +7,25 @@ def main():
     """Update DB with new source meta info."""
     db = Database()
     updates = {
-        SourceName.CHEMBL: {
+        SourceName.CHEMBL.value: {
             "rdp_url": "http://reusabledata.org/chembl.html",
             "non_commercial": False,
             "share_alike": True,
             "attribution": True
         },
-        SourceName.DRUGBANK: {
+        SourceName.DRUGBANK.value: {
             "rdp_url": "http://reusabledata.org/drugbank.html",
             "non_commercial": True,
             "share_alike": False,
             "attribution": True
         },
-        SourceName.NCIT: {
+        SourceName.NCIT.value: {
             "rdp_url": "http://reusabledata.org/ncit.html",
             "non_commercial": False,
             "share_alike": False,
             "attribution": True
         },
-        SourceName.WIKIDATA: {
+        SourceName.WIKIDATA.value: {
             "rdp_url": None,
             "non_commercial": False,
             "share_alike": False,
@@ -34,9 +34,10 @@ def main():
     }
 
     for src_name in updates.keys():
+        attrs = {k: {'Value': v} for k, v in updates[src_name].items()}
         db.metadata.update_item(
             Key={'src_name': src_name},
-            AttributeUpdates={}
+            AttributeUpdates=attrs
         )
 
 
