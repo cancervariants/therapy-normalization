@@ -40,7 +40,7 @@
     "data_url": "https://go.drugbank.com/releases/5-1-7/downloads/all-full-database",
     "rdp_url": "http://reusabledata.org/drugbank.html",
     "non_commercial": true,
-    "share_alike": true,
-    "attribution": false
+    "share_alike": false,
+    "attribution": true
   }
 ]
