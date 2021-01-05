@@ -7,6 +7,7 @@ from timeit import default_timer as timer
 from therapy.database import Database
 from boto3.dynamodb.conditions import Key
 import sys
+from os import environ
 
 
 class CLI:
@@ -44,6 +45,9 @@ class CLI:
             db: Database = Database(db_url='http://localhost:8000')
         elif db_url:
             db: Database = Database(db_url=db_url)
+        elif 'THERAPY_NORM_DB_URL' in environ.keys():
+            # environment variable will be picked up by DB instance
+            db: Database = Database()
         else:
             if click.confirm("Are you sure you want to update"
                              " the production database?", default=False):
