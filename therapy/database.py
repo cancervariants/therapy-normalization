@@ -194,14 +194,14 @@ class Database:
 
     def get_records_by_type(self, query: str,
                             match_type: MatchType) -> List[DBRecord]:
-        """Fetch record for given query string and match type.
+        """Fetch record(s) matching the given query string and match type.
 
         :param str query: string to match against
         :param MatchType match_type: type of match to seek
-        :return: list of records matching query
+        :return: list of records matching query. Returns empty list if boto3
+            client encounters an error.
         :rtype: List[DBIdentity]
-        :raises RecordNotFoundError: if no records exist for query string,
-            or if a ClientError is encountered in the process
+        :raises RecordNotFoundError: if no records exist for query string
         """
         try:
             pk = f'{query}##{match_type.name}'.lower()
@@ -219,4 +219,4 @@ class Database:
                 raise RecordNotFoundError
         except ClientError as e:
             logger(e.response['Error']['Message'])
-            raise RecordNotFoundError
+            return []
