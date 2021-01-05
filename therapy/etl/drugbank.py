@@ -2,7 +2,7 @@
 from therapy.etl.base import Base
 from therapy import PROJECT_ROOT
 import logging
-from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
+from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, Meta
 from therapy.etl.base import IDENTIFIER_PREFIXES
 from lxml import etree
 
@@ -247,14 +247,14 @@ class DrugBank(Base):
 
     def _add_meta(self):
         """Add DrugBank metadata."""
-        self.database.metadata.put_item(
-            Item={
-                'src_name': SourceName.DRUGBANK.value,
-                'data_license': 'CC BY-NC 4.0',
-                'data_license_url':
-                    'https://creativecommons.org/licenses/by-nc/4.0/legalcode',
-                'version': '5.1.7',
-                'data_url':
-                    'https://go.drugbank.com/releases/5-1-7/downloads/all-full-database'  # noqa E501
-            }
-        )
+        meta = Meta(data_license='CC BY-NC 4.0',
+                    data_license_url='https://creativecommons.org/licenses/by-nc/4.0/legalcode',  # noqa: E501
+                    version='5.1.7',
+                    data_url='https://go.drugbank.com/releases/5-1-7/downloads/all-full-database',  # noqa: E501
+                    rdp_url='http://reusabledata.org/drugbank.html',
+                    non_commercial=True,
+                    share_alike=False,
+                    attribution=True)
+        params = dict(meta)
+        params['src_name'] = SourceName.DRUGBANK.value
+        self.database.metadata.put_item(Item=params)
