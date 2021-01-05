@@ -53,7 +53,6 @@ class NCIt(Base):
         for chunk in response.iter_content(chunk_size=512):
             if chunk:
                 handle.write(chunk)
-        print(zip_path)
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
             zip_ref.extractall(out_dir)
         remove(zip_path)
