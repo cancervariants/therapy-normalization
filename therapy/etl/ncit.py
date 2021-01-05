@@ -183,14 +183,14 @@ class NCIt(Base):
         metadata = Meta(data_license="CC BY 4.0",
                         data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
                         version=self._version,
-                        data_url=self._SRC_DIR)
-        self.database.metadata.put_item(Item={
-            'src_name': SourceName.NCIT.value,
-            'data_license': metadata.data_license,
-            'data_license_url': metadata.data_license_url,
-            'version': metadata.version,
-            'data_url': metadata.data_url
-        })
+                        data_url=self._SRC_DIR,
+                        rdp_url='http://reusabledata.org/ncit.html',
+                        non_commercial=False,
+                        share_alike=False,
+                        attribution=True)
+        params = dict(metadata)
+        params['src_name'] = SourceName.NCIT.value
+        self.database.metadata.put_item(Item=params)
 
     def _load_therapy(self, therapy: Therapy, batch):
         """Load individual therapy into dynamodb table
