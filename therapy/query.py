@@ -5,7 +5,7 @@ from typing import List, Dict, Set, Optional
 from uvicorn.config import logger
 from therapy.database import Database, RecordNotFoundError
 from therapy.schemas import Drug, Meta, MatchType, SourceName, \
-    NamespacePrefix, SourceIDAfterNamespace, DBIdentity
+    NamespacePrefix, SourceIDAfterNamespace, DBRecord
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
 
@@ -357,7 +357,7 @@ class QueryHandler:
 
         return resp
 
-    def normalize(self, query_str: str):
+    def normalize(self, query_str: str) -> Dict:
         """Return merged, normalized concept for given search term.
 
         :param str query_str: string to search against
@@ -385,7 +385,10 @@ class QueryHandler:
                 ref = f"{ref_id.lower()}##identity"
                 try:
                     record = self.db.get_record_by_id(ref)
-                    response['']
+                    response['match'] = {
+                        'match_type': MatchType.CONCEPT_ID,
+                        'record': record['merged_record']
+                    }
                 except RecordNotFoundError:
                     logger.error(f"Couldn't retrieve merged record referenced at {ref_id}")  # noqa: E501
                 except KeyError:
@@ -402,7 +405,7 @@ class QueryHandler:
                 type_matched = match_type
                 break
         if matches:
-            def record_order(record: DBIdentity):
+            def record_order(record: DBRecord):
                 src = record.src_name
                 if src == SourceName.NCIT:
                     return 1
