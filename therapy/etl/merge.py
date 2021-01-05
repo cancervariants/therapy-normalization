@@ -52,7 +52,12 @@ class Merge:
         :rtype: Set[str]
         """
         try:
-            record = Drug(**self.database.get_record_by_id(record_id))
+            db_record = self.database.get_record_by_id(record_id)
+            params = dict(db_record)
+            if 'other_identifiers' not in params.keys() \
+                    or not params['other_identifiers']:
+                params['other_identifiers'] = []
+            record = Drug(**params)
         except RecordNotFoundError:
             # TODO
             # may need to include nonexistent record IDs to enable
