@@ -610,7 +610,7 @@ def test_meta_info(cisplatin, wikidata):
            'https://creativecommons.org/publicdomain/zero/1.0/'
     assert normalizer_response['meta_'].version == '20200812'
     assert normalizer_response['meta_'].data_url is None
-    assert not normalizer_response.rdp_url
-    assert not normalizer_response.non_commercial
-    assert not normalizer_response.share_alike
-    assert not normalizer_response.attribution
+    assert not normalizer_response['meta_'].rdp_url
+    assert not normalizer_response['meta_'].non_commercial
+    assert not normalizer_response['meta_'].share_alike
+    assert not normalizer_response['meta_'].attribution
