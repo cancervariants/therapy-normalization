@@ -4,27 +4,51 @@
     "data_license": "CC BY-SA 3.0",
     "data_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
     "version": "27",
-    "data_url": "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/"
+    "data_url": "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",
+    "rdp_url": "http://reusabledata.org/chembl.html",
+    "data_license_attributes": {
+      "non_commercial": false,
+      "share_alike": true,
+      "attribution": true
+    }
   },
   {
     "src_name": "Wikidata",
     "data_license": "CC0 1.0",
     "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
     "version": "20200812",
-    "data_url": null
+    "data_url": null,
+    "rdp_url": null,
+    "data_license_attributes": {
+      "non_commercial": false,
+      "share_alike": false,
+      "attribution": false
+    }
   },
   {
     "src_name": "NCIt",
     "data_license": "CC BY 4.0",
     "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
     "version": "20.09d",
-    "data_url": "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/"
+    "data_url": "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/",
+    "rdp_url": "http://reusabledata.org/ncit.html",
+    "data_license_attributes": {
+      "non_commercial": false,
+      "share_alike": false,
+      "attribution": true
+    }
   },
   {
     "src_name": "DrugBank",
     "data_license": "CC BY-NC 4.0",
     "data_license_url": "https://creativecommons.org/licenses/by-nc/4.0/legalcode",
     "version": "5.1.7",
-    "data_url": "https://go.drugbank.com/releases/5-1-7/downloads/all-full-database"
+    "data_url": "https://go.drugbank.com/releases/5-1-7/downloads/all-full-database",
+    "rdp_url": "http://reusabledata.org/drugbank.html",
+    "data_license_attributes": {
+      "non_commercial": true,
+      "share_alike": false,
+      "attribution": true
+    }
   }
 ]
