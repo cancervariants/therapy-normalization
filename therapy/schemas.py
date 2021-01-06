@@ -221,6 +221,10 @@ class Meta(BaseModel):
     data_license_url: str
     version: str
     data_url: Optional[str]
+    rdp_url: Optional[str]
+    non_commercial: Optional[bool]
+    share_alike: Optional[bool]
+    attribution: Optional[bool]
 
     class Config:
         """Enables orm_mode"""
@@ -239,7 +243,11 @@ class Meta(BaseModel):
                     'https://creativecommons.org/licenses/by-sa/3.0/',
                 'version': '27',
                 'data_url':
-                    'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501
+                    'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
+                'rdp_url': 'http://reusabledata.org/chembl.html',
+                'non-commercial': False,
+                'share_alike': True,
+                'attribution': True
             }
 
 
@@ -273,6 +281,10 @@ class MatchesKeyed(BaseModel):
                     'version': '27',
                     'data_url':
                         'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
+                    'rdp_url': 'http://reusabledata.org/chembl.html',
+                    'non-commercial': False,
+                    'share_alike': True,
+                    'attribution': True
                 },
             }
 
@@ -309,6 +321,10 @@ class MatchesListed(BaseModel):
                     'version': '27',
                     'data_url':
                         'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
+                    'rdp_url': 'http://reusabledata.org/chembl.html',
+                    'non-commercial': False,
+                    'share_alike': True,
+                    'attribution': True
                 },
             }
 
@@ -351,7 +367,11 @@ class Service(BaseModel):
                         'https://creativecommons.org/licenses/by-sa/3.0/',
                     'version': '27',
                     'data_url':
-                        'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501
+                        'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
+                    'rdp_url': 'http://reusabledata.org/chembl.html',
+                    'non-commercial': False,
+                    'share_alike': True,
+                    'attribution': True
                 }
             }
 
