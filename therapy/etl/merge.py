@@ -18,7 +18,8 @@ class Merge:
         self.database = database
 
     def create_merged_concepts(self, record_ids: Set[str]):
-        """Create concept groups and generate merged concept records.
+        """Create concept groups, generate merged concept records, and
+        update database.
 
         :param Set[str] record_ids: concept identifiers to create groups of
 
@@ -29,6 +30,8 @@ class Merge:
            merged record already found?
          * When updating existing records, how to ensure that no dangling
            records remain after an other_identifier is removed?
+         * When computing groups, how to handle cases where new group
+           additions are discovered in subsequent passes?
         """
         completed_ids = set()
         for record_id in record_ids:
@@ -80,8 +83,8 @@ class Merge:
         is non-null. Priority is NCIt > ChEMBL > DrugBank > Wikidata.
 
         :param Set record_id_set: group of concept IDs
-        :return: merged Drug object
-        :rtype: therapy.schemas.Drug
+        :return: merged DBMergedRecord object
+        :rtype: therapy.schemas.DBMergedRecord
         """
         records = []
         for record_id in record_id_set:
