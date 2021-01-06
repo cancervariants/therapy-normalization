@@ -121,10 +121,8 @@ class MergedDrug(BaseModel):
         extra = 'forbid'
 
 
-class DBMergedRecord(MergedDrug):
+class DBMergedRecord(DBItem, MergedDrug):
     """A merge record as stored in the app database."""
-
-    label_and_type: str
 
     class Config:
         """Pydantic config."""
