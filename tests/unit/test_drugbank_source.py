@@ -626,3 +626,7 @@ def test_meta_info(cisplatin, drugbank):
     assert normalizer_response.version == '5.1.7'
     assert normalizer_response.data_url == \
            'https://go.drugbank.com/releases/5-1-7/downloads/all-full-database'  # noqa: E501
+    assert normalizer_response.rdp_url == 'http://reusabledata.org/drugbank.html'  # noqa: E501
+    assert normalizer_response.non_commercial
+    assert not normalizer_response.share_alike
+    assert normalizer_response.attribution

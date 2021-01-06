@@ -4,7 +4,7 @@ from therapy import PROJECT_ROOT
 from ftplib import FTP
 import logging
 import tarfile  # noqa: F401
-from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
+from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, Meta
 import sqlite3
 from typing import Set
 
@@ -275,14 +275,14 @@ class ChEMBL(Base):
 
     def _add_meta(self, *args, **kwargs):
         """Add ChEMBL metadata."""
-        self.database.metadata.put_item(
-            Item={
-                'src_name': SourceName.CHEMBL.value,
-                'data_license': 'CC BY-SA 3.0',
-                'data_license_url':
-                    'https://creativecommons.org/licenses/by-sa/3.0/',
-                'version': '27',
-                'data_url':
-                    'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501
-            }
-        )
+        metadata = Meta(data_license='CC BY-SA 3.0',
+                        data_license_url='https://creativecommons.org/licenses/by-sa/3.0/',  # noqa: E501
+                        version='27',
+                        data_url='http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
+                        rdp_url='http://reusabledata.org/chembl.html',
+                        non_commercial=False,
+                        share_alike=True,
+                        attribution=True)
+        params = dict(metadata)
+        params['src_name'] = SourceName.CHEMBL.value
+        self.database.metadata.put_item(Item=params)
