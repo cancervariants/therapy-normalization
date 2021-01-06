@@ -2,7 +2,7 @@
 therapy records.
 """
 from typing import List, Optional, Dict, Union, Any, Type
-from pydantic import BaseModel
+from pydantic import BaseModel, StrictBool
 from enum import Enum, IntEnum
 
 
@@ -154,6 +154,14 @@ class NamespacePrefix(Enum):
     GUIDETOPHARMACOLOGY = "gtopdb"
 
 
+class DataLicenseAttributes(BaseModel):
+    """Define constraints for data license attributes."""
+
+    non_commercial: StrictBool
+    share_alike: StrictBool
+    attribution: StrictBool
+
+
 class Meta(BaseModel):
     """Metadata for a given source to return in response object."""
 
@@ -162,9 +170,7 @@ class Meta(BaseModel):
     version: str
     data_url: Optional[str]
     rdp_url: Optional[str]
-    non_commercial: Optional[bool]
-    share_alike: Optional[bool]
-    attribution: Optional[bool]
+    data_license_attributes: Dict[str, StrictBool]
 
     class Config:
         """Enables orm_mode"""
@@ -185,9 +191,11 @@ class Meta(BaseModel):
                 'data_url':
                     'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
                 'rdp_url': 'http://reusabledata.org/chembl.html',
-                'non-commercial': False,
-                'share_alike': True,
-                'attribution': True
+                'data_license_attributes': {
+                    'non_commercial': False,
+                    'share_alike': True,
+                    'attribution': True
+                }
             }
 
 
@@ -222,9 +230,11 @@ class MatchesKeyed(BaseModel):
                     'data_url':
                         'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
                     'rdp_url': 'http://reusabledata.org/chembl.html',
-                    'non-commercial': False,
-                    'share_alike': True,
-                    'attribution': True
+                    'data_license_attributes': {
+                        'non_commercial': False,
+                        'share_alike': True,
+                        'attribution': True
+                    }
                 },
             }
 
@@ -262,9 +272,11 @@ class MatchesListed(BaseModel):
                     'data_url':
                         'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
                     'rdp_url': 'http://reusabledata.org/chembl.html',
-                    'non-commercial': False,
-                    'share_alike': True,
-                    'attribution': True
+                    'data_license_attributes': {
+                        'non_commercial': False,
+                        'share_alike': True,
+                        'attribution': True
+                    }
                 },
             }
 
@@ -298,8 +310,10 @@ class Service(BaseModel):
                     'data_url':
                         'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
                     'rdp_url': 'http://reusabledata.org/chembl.html',
-                    'non-commercial': False,
-                    'share_alike': True,
-                    'attribution': True
+                    'data_license_attributes': {
+                        'non_commercial': False,
+                        'share_alike': True,
+                        'attribution': True
+                    }
                 }
             }

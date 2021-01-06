@@ -185,9 +185,11 @@ class NCIt(Base):
                         version=self._version,
                         data_url=self._SRC_DIR,
                         rdp_url='http://reusabledata.org/ncit.html',
-                        non_commercial=False,
-                        share_alike=False,
-                        attribution=True)
+                        data_license_attributes={
+                            'non_commercial': False,
+                            'share_alike': False,
+                            'attribution': True
+                        })
         params = dict(metadata)
         params['src_name'] = SourceName.NCIT.value
         self.database.metadata.put_item(Item=params)
