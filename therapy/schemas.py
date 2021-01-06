@@ -116,6 +116,7 @@ class SourceName(Enum):
     CHEMBL = "ChEMBL"
     NCIT = "NCIt"
     DRUGBANK = "DrugBank"
+    CHEMIDPLUS = "ChemIDplus"
 
 
 class SourceIDAfterNamespace(Enum):
