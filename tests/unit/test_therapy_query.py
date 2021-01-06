@@ -1,5 +1,5 @@
 """Test the therapy querying method."""
-from therapy.query import Normalizer, InvalidParameterException
+from therapy.query import QueryHandler, InvalidParameterException
 import pytest
 
 
@@ -9,10 +9,10 @@ def normalizer():
     class QueryGetter:
 
         def __init__(self):
-            self.normalizer = Normalizer()
+            self.query_handler = QueryHandler()
 
         def normalize(self, query_str, keyed=False, incl='', excl=''):
-            resp = self.normalizer.normalize(query_str=query_str, keyed=keyed,
+            resp = self.query_handler.search(query_str=query_str, keyed=keyed,
                                              incl=incl, excl=excl)
             return resp
 
