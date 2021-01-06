@@ -611,6 +611,8 @@ def test_meta_info(cisplatin, wikidata):
     assert normalizer_response['meta_'].version == '20200812'
     assert normalizer_response['meta_'].data_url is None
     assert not normalizer_response['meta_'].rdp_url
-    assert not normalizer_response['meta_'].non_commercial
-    assert not normalizer_response['meta_'].share_alike
-    assert not normalizer_response['meta_'].attribution
+    assert normalizer_response['meta_'].data_license_attributes == {
+        "non_commercial": False,
+        "share_alike": False,
+        "attribution": False
+    }
