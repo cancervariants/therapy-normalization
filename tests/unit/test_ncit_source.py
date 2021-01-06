@@ -394,6 +394,8 @@ def test_meta_info(voglibose, ncit):
     assert normalizer_response['meta_'].data_url == \
         "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/"  # noqa: E501
     assert normalizer_response['meta_'].rdp_url == 'http://reusabledata.org/ncit.html'  # noqa: E501
-    assert not normalizer_response['meta_'].non_commercial
-    assert not normalizer_response['meta_'].share_alike
-    assert normalizer_response['meta_'].attribution
+    assert normalizer_response['meta_'].data_license_attributes == {
+        "non_commercial": False,
+        "share_alike": False,
+        "attribution": True
+    }
