@@ -73,14 +73,16 @@ class Wikidata(Base):
                         data_license='CC0 1.0',
                         data_license_url='https://creativecommons.org/publicdomain/zero/1.0/',  # noqa: E501
                         version=self._version,
-                        data_url=None)
-        self.database.metadata.put_item(Item={
-            'src_name': SourceName.WIKIDATA.value,
-            'data_license': metadata.data_license,
-            'data_license_url': metadata.data_license_url,
-            'version': metadata.version,
-            'data_url': metadata.data_url
-        })
+                        data_url=None,
+                        rdp_url=None,
+                        data_license_attributes={
+                            'non_commercial': False,
+                            'share_alike': False,
+                            'attribution': False
+                        })
+        params = dict(metadata)
+        params['src_name'] = SourceName.WIKIDATA.value
+        self.database.metadata.put_item(Item=params)
 
     def _transform_data(self):
         """Transform the Wikidata source data.
