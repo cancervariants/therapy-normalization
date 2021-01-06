@@ -1,6 +1,12 @@
 """Update source metadata in prod"""
-from therapy.database import Database
-from therapy.schemas import SourceName
+import sys
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(f"{PROJECT_ROOT}")
+
+from therapy.database import Database  # noqa: E402
+from therapy.schemas import SourceName  # noqa: E402
 
 
 def main():
