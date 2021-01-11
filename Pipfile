@@ -30,6 +30,7 @@ uvloop = "*"
 websockets = "*"
 httptools = "*"
 typing-extensions = "*"
+ipykernel = "*"
 
 [requires]
 python_version = "3.8"
