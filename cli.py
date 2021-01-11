@@ -33,7 +33,7 @@ class CLI:
         help='Update all normalizer sources.'
     )
     def update_normalizer_db(normalizer, dev, db_url, update_all):
-        """Update select normalizer(s) sources in the therapy database."""
+        """Update select normalizer source(s) in the therapy database."""
         sources = {
             'chembl': ChEMBL,
             'ncit': NCIt,
@@ -60,6 +60,11 @@ class CLI:
         if update_all:
             normalizers = list(src for src in sources)
             CLI()._update_normalizers(normalizers, sources, db)
+        elif not normalizer:
+            ctx = click.get_current_context()
+            click.echo("Must either enter 1 or more sources, or use `--update_all` parameter")  # noqa: E501
+            click.echo(ctx.get_help())
+            ctx.exit()
         else:
             normalizers = normalizer.lower().split()
 
