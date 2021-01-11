@@ -6,6 +6,12 @@ from therapy.schemas import Drug, NamespacePrefix, Meta, SourceName, \
     DataLicenseAttributes
 from pathlib import Path
 import xml.etree.ElementTree as ET
+import requests
+import logging
+
+
+logger = logging.getLogger('therapy')
+logger.setLevel(logging.DEBUG)
 
 
 class ChemIDplus(Base):
@@ -15,7 +21,7 @@ class ChemIDplus(Base):
                  database: Database,
                  # TODO figure out data repo info
                  src_dir: str = 'ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/',  # noqa: E501
-                 src_fname: str = None,
+                 src_fname: str = 'CurrentChemID.xml',
                  data_path: Path = PROJECT_ROOT / 'data' / 'chemidplus'):
         """Initialize class instance.
 
@@ -24,13 +30,23 @@ class ChemIDplus(Base):
         :param str src_fname: name of file as stored in src_dir
         """
         self.database = database
-        self.src_dir = src_dir
-        self.src_fname = src_fname
+        self._src_dir = src_dir
+        self._src_fname = src_fname
         self._extract_data(data_path)
         self._transform_data()
 
     def _download_data(self):
-        raise NotImplementedError
+        logger.info('Downloading ChemIDplus data...')
+        url = self._src_dir + self._src_fname
+        out_path = PROJECT_ROOT / 'data' / 'chemidplus' / self._src_fname
+        response = requests.get(url, stream=True)
+        handle = open(out_path, "wb")
+        for chunk in response.iter_content(chunk_size=512):
+            if chunk:
+                handle.write(chunk)
+        version = ET.parse(out_path).getroot().attrib['date'].replace('-', '')
+        out_path.rename(f'chemidplus_{version}.xml')
+        logger.info('Finished downloading ChemIDplus data')
 
     def _extract_data(self, data_dir):
         """Acquire ChemIDplus dataset.
@@ -50,25 +66,43 @@ class ChemIDplus(Base):
         tree = ET.parse(self._data_src)
         root = tree.getroot()
         with self.database.therapies.batch_writer() as batch:
-
             for chemical in root:
-
                 name_element = chemical.find('NameList')
                 label = name_element.get('NameOfSubstance').text
-                aliases = [e.text for e in name_element if e.tag == 'Synonyms']
-                id_element = chemical.find('NumberList')
-                concept_id = f'{NamespacePrefix.CASREGISTRY}:{id_element.find("CASRegistryNumber").text}'  # noqa: E501
-
+                alias_elms = [e for e in name_element if e.tag == 'Synonyms']
+                if len(alias_elms) > 20:
+                    aliases = []
+                else:
+                    aliases = [e.text for e in alias_elms]
+                id_list = chemical.find('NumberList')
+                concept_id = f'{NamespacePrefix.CASREGISTRY}:{id_list.find("CASRegistryNumber").text}'  # noqa: E501
+                other_identifiers = []
+                xrefs = []
+                locator_list = chemical.find('LocatorList')
+                for loc in locator_list:
+                    url = loc.attrib['url']
+                    if 'drugbank' in url.lower():
+                        db = f'{NamespacePrefix.DRUGBANK}:{url.split("/")[-1]}'
+                        other_identifiers.append(db)
+                    elif 'fdasis' in url.lower():
+                        fda = f'{NamespacePrefix.FDA}:{url.split("/")[-1]}'
+                        xrefs.apppend(fda)
                 record = Drug(concept_id=concept_id,
                               aliases=aliases,
                               label=label,
-                              other_identifiers=[],
-                              xrefs=[])
+                              other_identifiers=other_identifiers,
+                              xrefs=xrefs)
                 self._load_record(batch, record)
 
     def _load_record(self, batch, record: Drug):
         """Load individual record into database."""
-        pass
+        for alias in record.aliases:
+            pass
+        if record.label:
+            pass
+        identity_record = dict(record)
+        identity_record['src_name'] = SourceName.CHEMIDPLUS
+        batch.put_item(Item=identity_record)
 
     def _load_meta(self):
         """Add source metadata."""
