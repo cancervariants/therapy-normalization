@@ -68,9 +68,6 @@ class CLI:
         else:
             normalizers = normalizer.lower().split()
 
-            if len(normalizers) == 0:
-                raise Exception("Must enter a normalizer.")
-
             non_sources = CLI()._check_norm_srcs_match(sources, normalizers)
 
             if len(non_sources) != 0:
