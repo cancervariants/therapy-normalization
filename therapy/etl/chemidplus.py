@@ -97,12 +97,21 @@ class ChemIDplus(Base):
     def _load_record(self, batch, record: Drug):
         """Load individual record into database."""
         for alias in record.aliases:
-            pass
+            batch.put_item(Item={
+                'label_and_type': f'{alias}##alias',
+                'concept_id': f'{record.concept_id.lower()}',
+                'src_name': SourceName.CHEMIDPLUS
+            })
         if record.label:
-            pass
-        identity_record = dict(record)
-        identity_record['src_name'] = SourceName.CHEMIDPLUS
-        batch.put_item(Item=identity_record)
+            batch.put_item(Item={
+                'label_and_type': f'{record.label}',
+                'concept_id': f'{record.concept_id.lower()}',
+                'src_name': SourceName.CHEMIDPLUS
+            })
+        id_record = dict(record)
+        id_record['src_name'] = SourceName.CHEMIDPLUS
+        id_record['label_and_type'] = f'{record.concept_id.lower()}##identity'
+        batch.put_item(Item=id_record)
 
     def _load_meta(self):
         """Add source metadata."""
