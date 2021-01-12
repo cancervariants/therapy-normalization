@@ -11,8 +11,8 @@ class Therapy(BaseModel):
 
     label: str
     concept_id: str
-    aliases: List[str]
-    other_identifiers: List[str]
+    aliases: Optional[List[str]]
+    other_identifiers: Optional[List[str]]
     xrefs: Optional[List[str]]
 
     class Config:
@@ -116,6 +116,7 @@ class SourceName(Enum):
     CHEMBL = "ChEMBL"
     NCIT = "NCIt"
     DRUGBANK = "DrugBank"
+    RXNORM = "RxNorm"
 
 
 class SourceIDAfterNamespace(Enum):
@@ -152,6 +153,19 @@ class NamespacePrefix(Enum):
     THERAPEUTICTARGETSDB = "ttd"
     IUPHAR = "iuphar"
     GUIDETOPHARMACOLOGY = "gtopdb"
+    ATC = "atc"
+    CVX = "cvx"
+    GS = "gsddb"  # Gold Standard Drug Database
+    MDDB = "mmddb"  # Medi-Span Master Drug Database
+    MMSL = "mmsl"  # Multum MediSource Lexicon
+    MMX = "mmx"  # Micromedex RED BOOK
+    MSH = "msh"  # Medical Subject Headings
+    MTHCMSFRF = "mthcmsfrf"  # CMS Formulary Reference File
+    MTHSPL = "mthspl"  # FDA Structured Product Labels
+    NDDF = "fdbmk"  # FDB MedKnowledge (Formerly NDDF Plus)
+    SNOMEDCT_US = "snomedct"  # US Edition of SNOMED CT
+    USP = "usp"  # USP Compendial Nomenclature
+    VANDF = "vandf"  # Veterans Health Administration National Drug File
 
 
 class DataLicenseAttributes(BaseModel):

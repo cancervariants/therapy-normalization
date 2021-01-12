@@ -617,7 +617,7 @@ def test_no_match(drugbank):
     assert len(normalizer_response['records']) == 0
 
 
-def test_meta_info(cisplatin, drugbank):
+def test_meta_info(drugbank):
     """Test that the meta field is correct."""
     normalizer_response = drugbank.fetch_meta()
     assert normalizer_response.data_license == 'CC BY-NC 4.0'

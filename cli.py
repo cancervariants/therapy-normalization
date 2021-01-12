@@ -1,7 +1,7 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
 from botocore.exceptions import ClientError
-from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt
+from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, RxNorm
 from therapy.schemas import SourceName
 from timeit import default_timer as timer
 from therapy.database import Database
@@ -38,7 +38,8 @@ class CLI:
             'chembl': ChEMBL,
             'ncit': NCIt,
             'wikidata': Wikidata,
-            'drugbank': DrugBank
+            'drugbank': DrugBank,
+            'rxnorm': RxNorm,
         }
 
         if dev:
