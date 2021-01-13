@@ -434,5 +434,88 @@
     "label_and_type": "cisplatin##label",
     "concept_id": "ncit:c376",
     "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "rxcui:19##identity",
+    "label": "17-hydroxycorticosteroid",
+    "concept_id": "rxcui:19",
+    "aliases": [
+      "17-hydrocorticosteroid",
+      "17-hydroxycorticoid",
+      "17-hydroxycorticosteroid (substance)"
+    ],
+    "xrefs": [
+      "snomedct:112116001"
+    ]
+  },
+  {
+    "label_and_type": "17-hydroxycorticosteroid##label",
+    "concept_id": "rxcui:19",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "17-hydroxycorticoid##alias",
+    "concept_id": "rxcui:19",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "17-hydroxycorticosteroid (substance)##alias",
+    "concept_id": "rxcui:19",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "17-hydrocorticosteroid##alias",
+    "concept_id": "rxcui:19",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:##identity",
+    "label": "AQUANIL LOTION",
+    "concept_id": "rxcui:91837",
+    "xrefs": [
+      "mmsl:5035",
+      "vandf:4010585",
+      "mmx:106710"
+    ],
+    "trade_names": [
+      "Aquanil Lotion, topical lotion",
+      "Lotion, Multi Ingredient Topical application Lotion [AQUANIL]"
+    ]
+  },
+  {
+    "label_and_type": "aquanil lotion##label",
+    "concept_id": "rxcui:91837",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "aquanil lotion, topical lotion##trade_name",
+    "concept_id": "rxcui:91837",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "lotion, multi ingredient topical application Lotion [aquanil]##trade_name",
+    "concept_id": "rxcui:91837",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:100213##identity",
+    "label": "bifidobacterium infantis",
+    "concept_id": "rxcui:100213",
+    "aliases": [
+      "Bifidobacterium infantis"
+    ],
+    "other_identifiers": [
+      "drugbank:db14222"
+    ],
+    "xrefs": [
+      "gsddb:4931",
+      "mmsl:d07347",
+      "fdbmk:001165"
+    ]
+  },
+  {
+    "label_and_type": "bifidobacterium infantis##label",
+    "concept_id": "rxcui:100213",
+    "src_name": "RxNorm"
   }
 ]

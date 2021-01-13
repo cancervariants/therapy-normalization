@@ -126,6 +126,21 @@ def test_hydrocorticosteroid(hydrocorticosteroid, rxnorm):
            == hydrocorticosteroid.approval_status
 
     # Alias Match
+    normalizer_response = rxnorm.normalize('17-hydrocorticosteroid')
+    assert normalizer_response['match_type'] == MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == hydrocorticosteroid.label
+    assert normalized_drug.concept_id == hydrocorticosteroid.concept_id
+    assert set(normalized_drug.aliases) == set(hydrocorticosteroid.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(hydrocorticosteroid.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(hydrocorticosteroid.xrefs)
+    assert set(normalized_drug.trade_names) == \
+           set(hydrocorticosteroid.trade_names)
+    assert normalized_drug.approval_status \
+           == hydrocorticosteroid.approval_status
+
     normalizer_response = rxnorm.normalize('17-hydroxycorticoid')
     assert normalizer_response['match_type'] == MatchType.ALIAS
     assert len(normalizer_response['records']) == 1
