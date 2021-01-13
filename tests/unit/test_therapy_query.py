@@ -25,7 +25,7 @@ def test_query(normalizer):
     assert resp['query'] == 'cisplatin'
     matches = resp['source_matches']
     assert isinstance(matches, list)
-    assert len(matches) == 4
+    assert len(matches) == 5
     wikidata = list(filter(lambda m: m['source'] == 'Wikidata',
                            matches))[0]
     assert len(wikidata['records']) == 1
@@ -48,7 +48,7 @@ def test_query_specify_normalizers(normalizer):
     # test blank params
     resp = normalizer.normalize('cisplatin', keyed=True)
     matches = resp['source_matches']
-    assert len(matches) == 4
+    assert len(matches) == 5
     assert 'Wikidata' in matches
     assert 'ChEMBL' in matches
     assert 'NCIt' in matches

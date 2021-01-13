@@ -446,7 +446,8 @@
     ],
     "xrefs": [
       "snomedct:112116001"
-    ]
+    ],
+    "src_name": "RxNorm"
   },
   {
     "label_and_type": "17-hydroxycorticosteroid##label",
@@ -480,7 +481,8 @@
     "trade_names": [
       "Aquanil Lotion, topical lotion",
       "Lotion, Multi Ingredient Topical application Lotion [AQUANIL]"
-    ]
+    ],
+    "src_name": "RxNorm"
   },
   {
     "label_and_type": "aquanil lotion##label",
@@ -511,7 +513,8 @@
       "gsddb:4931",
       "mmsl:d07347",
       "fdbmk:001165"
-    ]
+    ],
+    "src_name": "RxNorm"
   },
   {
     "label_and_type": "bifidobacterium infantis##label",
