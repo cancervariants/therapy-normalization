@@ -17,8 +17,6 @@
     "data_license": "CC0 1.0",
     "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
     "version": "20200812",
-    "data_url": null,
-    "rdp_url": null,
     "data_license_attributes": {
       "non_commercial": false,
       "share_alike": false,
@@ -47,6 +45,18 @@
     "rdp_url": "http://reusabledata.org/drugbank.html",
     "data_license_attributes": {
       "non_commercial": true,
+      "share_alike": false,
+      "attribution": true
+    }
+  },
+  {
+    "src_name": "RxNorm",
+    "data_license": "NLM",
+    "data_license_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",
+    "version": "20210104",
+    "data_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/rxnormfiles.html",
+    "data_license_attributes": {
+      "non_commercial": false,
       "share_alike": false,
       "attribution": true
     }
