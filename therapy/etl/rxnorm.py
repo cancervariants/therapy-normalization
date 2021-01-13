@@ -42,23 +42,27 @@ class RxNorm(Base):
             rxn_files = list(rxn_dir.iterdir())
             if len(rxn_files) == 0:
                 self._download_data(rxn_dir)
+            files = sorted([fn for fn in rxn_dir.iterdir() if fn.name.
+                           startswith('rxnorm_') and fn.name.endswith('.RRF')],
+                           reverse=True)
+            file_found = False
+            for file in files:
+                version = str(file).split('_')[-1].split('.')[0]
+                try:
+                    datetime.datetime.strptime(version, '%Y%m%d')
+                    self._data_src = file
+                    self._version = version
+                    file_found = True
+                    break
+                except ValueError:
+                    pass
+            if not file_found:
+                logger.error('RxNorm file not found.')
+                raise FileNotFoundError('Could not find RxNorm file.')
             else:
-                # Want to use the most recent version
-                if not str(sorted(rxn_files)[-1]).endswith('.RRF'):
-                    self._download_data(rxn_dir)
-            self._data_src = sorted(rxn_files)[-1]
-            if not str(self._data_src).endswith('.RRF'):
-                raise FileNotFoundError("Could not find RxNorm RFF file.")
-            try:
-                files = [fn for fn in rxn_dir.iterdir()
-                         if fn.name.startswith('rxnorm_')]
-                self._data_src = sorted(files)[-1]
-                self._version = \
-                    str(self._data_src).split('_')[-1].split('.')[0]
-            except IndexError:
-                raise FileNotFoundError
+                logger.info('Successfully extracted RxNorm.')
 
-    def _download_data(self, rxn_dir, *args, **kwargs):
+    def _download_data(self, *args, **kwargs):
         """Download RxNorm data file."""
         logger.info('Downloading RxNorm...')
         self._get_file_url_version()
