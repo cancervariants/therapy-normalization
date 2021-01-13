@@ -51,14 +51,14 @@
   },
   {
     "src_name": "RxNorm",
-    "data_license": "NLM",
+    "data_license": "UMLS Metathesaurus",
     "data_license_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",
     "version": "20210104",
     "data_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/rxnormfiles.html",
     "data_license_attributes": {
       "non_commercial": false,
       "share_alike": false,
-      "attribution": true
+      "attribution": false
     }
   }
 ]

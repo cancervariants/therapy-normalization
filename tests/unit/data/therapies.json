@@ -437,11 +437,11 @@
   },
   {
     "label_and_type": "rxcui:19##identity",
-    "label": "17-hydroxycorticosteroid",
+    "label": "17-hydrocorticosteroid",
     "concept_id": "rxcui:19",
     "aliases": [
-      "17-hydrocorticosteroid",
       "17-hydroxycorticoid",
+      "17-hydroxycorticosteroid",
       "17-hydroxycorticosteroid (substance)"
     ],
     "xrefs": [
@@ -450,7 +450,7 @@
     "src_name": "RxNorm"
   },
   {
-    "label_and_type": "17-hydroxycorticosteroid##label",
+    "label_and_type": "17-hydrocorticosteroid##label",
     "concept_id": "rxcui:19",
     "src_name": "RxNorm"
   },
@@ -465,27 +465,29 @@
     "src_name": "RxNorm"
   },
   {
-    "label_and_type": "17-hydrocorticosteroid##alias",
+    "label_and_type": "17-hydroxycorticosteroid##alias",
     "concept_id": "rxcui:19",
     "src_name": "RxNorm"
   },
   {
     "label_and_type": "rxcui:91837##identity",
-    "label": "AQUANIL LOTION",
+    "label": "Aquanil Lotion, topical lotion",
     "concept_id": "rxcui:91837",
+    "aliases": [
+      "AQUANIL LOTION"
+    ],
     "xrefs": [
       "mmsl:5035",
       "vandf:4010585",
       "mmx:106710"
     ],
     "trade_names": [
-      "Aquanil Lotion, topical lotion",
       "Lotion, Multi Ingredient Topical application Lotion [AQUANIL]"
     ],
     "src_name": "RxNorm"
   },
   {
-    "label_and_type": "aquanil lotion##label",
+    "label_and_type": "aquanil lotion, topical lotion##label",
     "concept_id": "rxcui:91837",
     "src_name": "RxNorm"
   },
@@ -501,13 +503,13 @@
   },
   {
     "label_and_type": "rxcui:100213##identity",
-    "label": "bifidobacterium infantis",
+    "label": "Bifidobacterium infantis",
     "concept_id": "rxcui:100213",
     "aliases": [
-      "Bifidobacterium infantis"
+      "bifidobacterium infantis"
     ],
     "other_identifiers": [
-      "drugbank:db14222"
+      "drugbank:DB14222"
     ],
     "xrefs": [
       "gsddb:4931",
@@ -519,6 +521,60 @@
   {
     "label_and_type": "bifidobacterium infantis##label",
     "concept_id": "rxcui:100213",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:2555##identity",
+    "label": "Cisplatin",
+    "concept_id": "rxcui:2555",
+    "aliases": [
+      "cisplatino",
+      "Cisplatin-containing product",
+      "Diaminedichloroplatinum",
+      "cis-Platinum",
+      "CISplatin",
+      "Cisplatin",
+      "cis Diamminedichloroplatinum",
+      "cis Platinum",
+      "Diamminodichloride, Platinum",
+      "cis-Platinum compound",
+      "cis-DDP",
+      "cis-Diaminedichloroplatinum",
+      "cis-Platinum II",
+      "DDP",
+      "Cisplatin (substance)",
+      "Dichlorodiammineplatinum",
+      "cis-Diamminedichloroplatinum",
+      "cis-Dichlorodiammineplatinum(II)",
+      "Platinum Diamminodichloride",
+      "cis-Diamminedichloroplatinum(II)",
+      "cis-Platinum",
+      "cis-diamminedichloroplatinum(II)",
+      "CDDP",
+      "Cis-DDP",
+      "Product containing cisplatin (medicinal product)"
+    ],
+    "other_identifiers": [
+      "drugbank:DB00515",
+      "drugbank:DB12117"
+    ],
+    "xrefs": [
+      "usp:m17910",
+      "gsddb:862",
+      "snomedct:57066004",
+      "vandf:4018139",
+      "msh:D002945",
+      "mthspl:Q20Q21Q62J",
+      "mmsl:d00195",
+      "fdbmk:002641",
+      "atc:L01XA01",
+      "mmsl:31747",
+      "mmsl:4456",
+      "snomedct:387318005"
+    ],
+    "trade_names": [
+      "Cisplatin"
+    ],
     "src_name": "RxNorm"
   }
 ]
