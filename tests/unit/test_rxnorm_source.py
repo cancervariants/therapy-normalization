@@ -310,7 +310,7 @@ def test_meta_info(rxnorm):
     assert normalizer_response.data_license_url == \
            'https://www.nlm.nih.gov/research/umls/rxnorm/docs/' \
            'termsofservice.html'
-    assert normalizer_response.version == '01042021'
+    assert normalizer_response.version == '20210104'
     assert normalizer_response.data_url == \
            'https://www.nlm.nih.gov/research/umls/rxnorm/docs/rxnormfiles.html'
     assert not normalizer_response.rdp_url
