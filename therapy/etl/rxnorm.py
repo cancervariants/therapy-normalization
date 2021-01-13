@@ -1,4 +1,10 @@
-"""This module defines the RxNorm ETL methods."""
+"""This module defines the RxNorm ETL methods.
+
+"This product uses publicly available data courtesy of the U.S. National
+Library of Medicine (NLM), National Institutes of Health, Department of Health
+ and Human Services; NLM is not responsible for the product and does not
+ endorse or recommend this or any other product."
+"""
 from .base import Base
 from therapy import PROJECT_ROOT
 from therapy.database import Database
@@ -95,7 +101,7 @@ class RxNorm(Base):
                     # Create new gene record
                     params = dict()
                     params['concept_id'] = concept_id
-                    self._add_str_field(params, row)
+                    params['label'] = row[14]
                     self._add_other_ids_xrefs(params, row)
                     data[concept_id] = params
 
@@ -129,7 +135,17 @@ class RxNorm(Base):
         self._load_label_types(params, batch)
         params['src_name'] = SourceName.RXNORM.value
         params['label_and_type'] = f"{params['concept_id'].lower()}##identity"
-        batch.put_item(Item=params)
+        try:
+            batch.put_item(Item=params)
+        except botocore.exceptions.ClientError:
+            if (len((params['label_and_type']).encode('utf-8')) >= 2048) or \
+                    (len((params['concept_id']).encode('utf-8')) >= 1024):
+                logger.info(f"{params['concept_id']}: An error occurred "
+                            "(ValidationException) when calling the "
+                            "BatchWriteItem operation: Hash primary key "
+                            "values must be under 2048 bytes, and range"
+                            " primary key values must be under 1024"
+                            " bytes.")
 
     def _load_label_types(self, params, batch):
         """Insert aliases, trade_names, and label data into the database.
@@ -165,7 +181,8 @@ class RxNorm(Base):
             try:
                 batch.put_item(Item=t)
             except botocore.exceptions.ClientError:
-                if len((t['label_and_type']).encode('utf-8')) > 1024:
+                if (len((t['label_and_type']).encode('utf-8')) >= 2048) or \
+                        (len((t['concept_id']).encode('utf-8')) >= 1024):
                     logger.info(f"{params['concept_id']}: An error occurred "
                                 "(ValidationException) when calling the "
                                 "BatchWriteItem operation: Hash primary key "
@@ -182,34 +199,22 @@ class RxNorm(Base):
         term = row[14]
         term_type = row[12]
 
-        # TODO: Include Foreign Syn, Tall Man Syn, British Syn?
+        # TODO: Include Foreign Syn, British Syn?
         # Foreign Syn, Designated Alias, Designated Syn, Tall Man Syn,
-        # British Syn, Full form descriptor?, Clinical drug name in abbreviated
+        # British Syn, Clinical drug name in abbreviated
         # format, Clinical drug name in concatenated format,
-        # Clinical drug name in delimited format
-        aliases = ['FSY', 'SYN', 'SY', 'TMSY', 'SYGB', 'FN', 'CDA', 'CDC',
-                   'CDD']
-
-        # ['AB' 'BPCK' 'CE' 'DEV' 'DF' 'DFG' 'DP'
-        #  'DSV' 'GPCK' 'IN' 'MH' 'MIN' 'MS' 'MTH_RXN_BD'
-        #  'MTH_RXN_CD' 'MTH_RXN_CDC' 'MTH_RXN_DP' 'N1' 'NM' 'PCE' 'PIN' 'PM'
-        #  'PSN' 'PTGB' 'RXN_IN' 'RXN_PT' 'SBD' 'SBDC' 'SBDF' 'SBDG' 'SC' 'SCD'
-        #  'SCDC' 'SCDF' 'SCDG' 'SU' ]
+        # Clinical drug name in delimited format, Machine permutation
+        aliases = ['FSY', 'SYN', 'SY', 'TMSY', 'SYGB', 'CDA', 'CDC',
+                   'CDD', 'PM']
 
         # Fully-specified drug brand name that can be prescribed
         # Fully-specified drug brand name that can not be prescribed,
         trade_names = ['BD', 'BN']
 
-        # Designated Preferred Name, Preferred Entry Term, Clinical Drug,
-        # Entry Term,
-        other_labels = ['PT', 'PEP', 'CD', 'ET']
-
-        if term_type == 'GN':
-            # Generic Drug Name
-            params['label'] = term
-        if term_type in other_labels:
-            params['label'] = term
-        elif term_type in aliases:
+        # Generic Drug Name, Designated Preferred Name, Preferred Entry Term,
+        # Clinical Drug, Entry Term, Full form descriptor
+        other_labels = ['GN', 'PT', 'PEP', 'CD', 'ET', 'FN']
+        if term_type in aliases + other_labels:
             self._add_term(params, term, 'aliases')
         elif term_type in trade_names:
             self._add_term(params, term, 'trade_names')
@@ -237,30 +242,28 @@ class RxNorm(Base):
             other_id_xref = row[11].upper()
             if other_id_xref in self._other_id_srcs:
                 other_id =\
-                    f"{NamespacePrefix[other_id_xref].value}:" \
-                    f"{row[13].lower()}"
+                    f"{NamespacePrefix[other_id_xref].value}:{row[13]}"
                 if other_id != params['concept_id']:
                     # Sometimes concept_id is included in the source field
                     self._add_term(params, other_id, 'other_identifiers')
             elif other_id_xref in self._xref_srcs:
-                xref = f"{NamespacePrefix[other_id_xref].value}:" \
-                       f"{row[13].lower()}"
+                xref = f"{NamespacePrefix[other_id_xref].value}:{row[13]}"
                 self._add_term(params, xref, 'xrefs')
             else:
                 logger.info(f"{other_id_xref} not in NameSpacePrefix.")
 
     def _add_meta(self):
         """Add RxNorm metadata."""
-        meta = Meta(data_license='NLM',
+        meta = Meta(data_license='UMLS Metathesaurus',
                     data_license_url='https://www.nlm.nih.gov/research/umls/'
                                      'rxnorm/docs/termsofservice.html',
                     version=self._version,
                     data_url=self._data_url,
                     rdp_url=None,
                     data_license_attributes={
-                        'non_commercial': False,  # TODO: Check
-                        'share_alike': False,  # TODO: Check
-                        'attribution': True  # TODO: Check
+                        'non_commercial': False,
+                        'share_alike': False,
+                        'attribution': False
                     })
         params = dict(meta)
         params['src_name'] = SourceName.RXNORM.value
