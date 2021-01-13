@@ -74,13 +74,14 @@ def test_query_specify_normalizers(normalizer):
     # test partial exclusion
     resp = normalizer.normalize('cisplatin', keyed=True, excl='chembl')
     matches = resp['source_matches']
-    assert len(matches) == 3
+    assert len(matches) == 4
     assert 'Wikidata' in matches
     assert 'ChEMBL' not in matches
 
     # test full exclusion
     resp = normalizer.normalize('cisplatin', keyed=True,
-                                excl='chembl, wikidata, drugbank, ncit')
+                                excl='chembl, wikidata, drugbank, ncit, '
+                                     'rxnorm')
     matches = resp['source_matches']
     assert len(matches) == 0
     assert 'Wikidata' not in matches
