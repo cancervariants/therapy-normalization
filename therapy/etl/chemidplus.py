@@ -8,6 +8,7 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 import requests
 import logging
+from boto3.dynamodb.table import BatchWriter
 
 
 logger = logging.getLogger('therapy')
@@ -19,24 +20,30 @@ class ChemIDplus(Base):
 
     def __init__(self,
                  database: Database,
-                 # TODO figure out data repo info
+                 data_path: Path = PROJECT_ROOT / 'data' / 'chemidplus',
                  src_dir: str = 'ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/',  # noqa: E501
-                 src_fname: str = 'CurrentChemID.xml',
-                 data_path: Path = PROJECT_ROOT / 'data' / 'chemidplus'):
+                 src_fname: str = 'CurrentChemID.xml'):
         """Initialize class instance.
 
         :param therapy.database.Database database: database instance to use
-        :param str src_dir: URL to directory containing source file
-        :param str src_fname: name of file as stored in src_dir
+        :param Path data_path: path to chemidplus subdirectory in application
+            data folder
+        :param str src_dir: URL to remote directory containing source file
+        :param str src_fname: name of file as stored in src_dir.
+
+        If the source file is provided locally in the data_path directory,
+        it's unnecessary to provide `src_dir` and `src_fname` args.
         """
         self.database = database
         self._src_dir = src_dir
         self._src_fname = src_fname
+        # perform ETL
         self._extract_data(data_path)
         self._transform_data()
         self._add_meta()
 
     def _download_data(self):
+        """Download source data from default location."""
         logger.info('Downloading ChemIDplus data...')
         url = self._src_dir + self._src_fname
         out_path = PROJECT_ROOT / 'data' / 'chemidplus' / self._src_fname
@@ -49,7 +56,7 @@ class ChemIDplus(Base):
         out_path.rename(f'chemidplus_{version}.xml')
         logger.info('Finished downloading ChemIDplus data')
 
-    def _extract_data(self, data_dir):
+    def _extract_data(self, data_dir: Path):
         """Acquire ChemIDplus dataset.
 
         :arg pathlib.Path data_dir: directory containing source data
@@ -115,10 +122,11 @@ class ChemIDplus(Base):
                               xrefs=list(xrefs))
                 self._load_record(batch, record)
 
-    def _load_record(self, batch, record: Drug):
+    def _load_record(self, batch: BatchWriter, record: Drug):
         """Load individual record into database.
 
-        :param batch: dynamodb batch writer
+        :param boto3.dynamodb.table.BatchWriter batch: dynamodb batch writer
+            instance
         :param therapy.schemas.Drug record: complete drug record to upload
         """
         for alias in record.aliases:
