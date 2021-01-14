@@ -8,7 +8,6 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 import requests
 import logging
-from botocore.exceptions import ClientError
 
 
 logger = logging.getLogger('therapy')
@@ -70,56 +69,52 @@ class ChemIDplus(Base):
         root = tree.getroot()
         with self.database.therapies.batch_writer() as batch:
             for chemical in root:
+                # get concept ID
+                reg_no = chemical.find('NumberList').find("CASRegistryNumber")
+                if not reg_no:
+                    continue
+                concept_id = f'{NamespacePrefix.CASREGISTRY.value}:{reg_no.text}'  # noqa: E501
                 # get names
                 name_element = chemical.find('NameList')
                 if name_element.find('NameOfSubstance'):
                     label = name_element.find('NameOfSubstance').text
                 elif name_element.find('SystematicName'):
                     label = name_element.find('SystematicName').text
-                trade_names = []
+                elif 'displayName' in chemical.attrib:
+                    label = chemical.attrib['displayName']
+                else:
+                    label = None
+                trade_names = set()
                 mixture_names = name_element.findall('MixtureName')
                 if mixture_names:
-                    trade_names = [n.text for n in mixture_names]
+                    trade_names = {n.text for n in mixture_names}
                 alias_elms = [e for e in name_element if e.tag == 'Synonyms']
                 if len(alias_elms) > 20:
-                    aliases = []
+                    aliases = set()
                 else:
-                    aliases = [e.text for e in alias_elms]
-                # get concept ID
-                id_list = chemical.find('NumberList')
-                chemid_num = id_list.find("CASRegistryNumber").text
-                if not chemid_num:
-                    continue
-                concept_id = f'{NamespacePrefix.CASREGISTRY.value}:{chemid_num}'  # noqa: E501
+                    aliases = {e.text for e in alias_elms if e != label}
                 # get other_ids and xrefs
-                other_identifiers = []
-                xrefs = []
+                other_identifiers = set()
+                xrefs = set()
                 locator_list = chemical.find('LocatorList')
-                for loc in locator_list:
-                    if 'url' in loc.attrib:
-                        url = loc.attrib['url']
+                if locator_list:
+                    urls = [loc.attrib['url'] for loc in locator_list
+                            if 'url' in loc.attrib]
+                    for url in urls:
                         if 'drugbank' in url.lower():
                             db = f'{NamespacePrefix.DRUGBANK.value}:{url.split("/")[-1]}'  # noqa: E501
-                            other_identifiers.append(db)
+                            other_identifiers.add(db)
                         elif 'fdasis' in url.lower():
                             fda = f'{NamespacePrefix.FDA.value}:{url.split("/")[-1]}'  # noqa: E501
-                            xrefs.append(fda)
+                            xrefs.add(fda)
                 # load completed record
                 record = Drug(concept_id=concept_id,
-                              aliases=aliases,
-                              trade_names=trade_names,
+                              aliases=list(aliases),
+                              trade_names=list(trade_names),
                               label=label,
-                              other_identifiers=other_identifiers,
-                              xrefs=xrefs)
-                if record.concept_id not in self._added_ids:
-                    try:
-                        self._load_record(batch, record)
-                        self._added_ids.add(record.concept_id)
-                    except ClientError:
-                        print(record)
-                        print(record.concept_id in self._added_ids)
-                else:
-                    print(record)
+                              other_identifiers=list(other_identifiers),
+                              xrefs=list(xrefs))
+                self._load_record(batch, record)
 
     def _load_record(self, batch, record: Drug):
         """Load individual record into database.
@@ -130,19 +125,19 @@ class ChemIDplus(Base):
         for alias in record.aliases:
             batch.put_item(Item={
                 'label_and_type': f'{alias}##alias',
-                'concept_id': f'{record.concept_id.lower()}',
+                'concept_id': record.concept_id.lower(),
                 'src_name': SourceName.CHEMIDPLUS.value
             })
         for trade_name in record.trade_names:
             batch.put_item(Item={
-                'label_and_type': f'{trade_name}##trade_name',
-                'concept_id': f'{record.concept_id.lower()}',
+                'label_and_type': f'{trade_name.lower()}##trade_name',
+                'concept_id': record.concept_id.lower(),
                 'src_name': SourceName.CHEMIDPLUS.value
             })
         if record.label:
             batch.put_item(Item={
-                'label_and_type': f'{record.label}',
-                'concept_id': f'{record.concept_id.lower()}',
+                'label_and_type': f'{record.label.lower()}##label',
+                'concept_id': record.concept_id.lower(),
                 'src_name': SourceName.CHEMIDPLUS.value
             })
         id_record = dict(record)
