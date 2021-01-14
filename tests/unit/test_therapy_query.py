@@ -79,7 +79,9 @@ def test_query_specify_normalizers(normalizer):
     assert 'ChemIDplus' not in matches
 
     # test full exclusion
-    resp = normalizer.normalize('cisplatin', keyed=True, excl='chembl, wikidata, drugbank, ncit, chemidplus')  # noqa: E501
+    resp = normalizer.normalize('cisplatin', keyed=True,
+                                excl='chembl, wikidata, drugbank, ncit, '
+                                     'rxnorm, chemidplus')
     matches = resp['source_matches']
     assert len(matches) == 0
     assert 'Wikidata' not in matches
