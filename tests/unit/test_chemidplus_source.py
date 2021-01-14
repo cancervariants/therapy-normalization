@@ -135,7 +135,7 @@ def test_meta(chemidplus):
     assert response['meta_'].data_license_url == 'https://www.nlm.nih.gov/databases/download/terms_and_conditions.html'  # noqa: E501
     assert response['meta_'].version == '20200327'
     assert response['meta_'].data_url == 'ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/'  # noqa: E501
-    assert response['meta_'].rdp_url == ''
+    assert response['meta_'].rdp_url is None
     assert response['meta_'].data_license_attributes == {
         "non_commercial": False,
         "share_alike": False,

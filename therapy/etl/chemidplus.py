@@ -158,7 +158,7 @@ class ChemIDplus(Base):
                     data_license_url="https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501
                     version=self._version,
                     data_url="ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
-                    rdp_url="",
+                    rdp_url=None,
                     data_license_attributes=DataLicenseAttributes(
                         non_commercial=False,
                         share_alike=False,
