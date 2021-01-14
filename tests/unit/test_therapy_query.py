@@ -25,7 +25,7 @@ def test_query(normalizer):
     assert resp['query'] == 'cisplatin'
     matches = resp['source_matches']
     assert isinstance(matches, list)
-    assert len(matches) == 4
+    assert len(matches) == 5
     wikidata = list(filter(lambda m: m['source'] == 'Wikidata',
                            matches))[0]
     assert len(wikidata['records']) == 1
@@ -38,9 +38,9 @@ def test_query_keyed(normalizer):
     resp = normalizer.normalize('cisplatin', keyed=True)
     matches = resp['source_matches']
     assert isinstance(matches, dict)
-    wikidata = matches['Wikidata']
-    wikidata_record = wikidata['records'][0]
-    assert wikidata_record.label == 'cisplatin'
+    chemidplus = matches['ChemIDplus']
+    chemidplus_record = chemidplus['records'][0]
+    assert chemidplus_record.label == 'cisplatin'
 
 
 def test_query_specify_normalizers(normalizer):
@@ -48,7 +48,7 @@ def test_query_specify_normalizers(normalizer):
     # test blank params
     resp = normalizer.normalize('cisplatin', keyed=True)
     matches = resp['source_matches']
-    assert len(matches) == 4
+    assert len(matches) == 5
     assert 'Wikidata' in matches
     assert 'ChEMBL' in matches
     assert 'NCIt' in matches
@@ -72,15 +72,14 @@ def test_query_specify_normalizers(normalizer):
     assert 'ChEMBL' in matches
 
     # test partial exclusion
-    resp = normalizer.normalize('cisplatin', keyed=True, excl='chembl')
+    resp = normalizer.normalize('cisplatin', keyed=True, excl='chemidplus')
     matches = resp['source_matches']
-    assert len(matches) == 3
+    assert len(matches) == 4
     assert 'Wikidata' in matches
-    assert 'ChEMBL' not in matches
+    assert 'ChemIDplus' not in matches
 
     # test full exclusion
-    resp = normalizer.normalize('cisplatin', keyed=True,
-                                excl='chembl, wikidata, drugbank, ncit')
+    resp = normalizer.normalize('cisplatin', keyed=True, excl='chembl, wikidata, drugbank, ncit, chemidplus')  # noqa: E501
     matches = resp['source_matches']
     assert len(matches) == 0
     assert 'Wikidata' not in matches
