@@ -55,7 +55,7 @@
     "data_license_url": "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",
     "version": "20200327",
     "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
-    "rdp_url": "",
+    "rdp_url": null,
     "data_license_attributes": {
       "non_commercial": false,
       "share_alike": false,
