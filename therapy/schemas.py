@@ -128,6 +128,7 @@ class SourceIDAfterNamespace(Enum):
     DRUGBANK = "DB"
     NCIT = "C"
     CHEMIDPLUS = ""
+    RXNORM = ""
 
 
 class NamespacePrefix(Enum):

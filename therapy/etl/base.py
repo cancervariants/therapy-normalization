@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 from therapy.schemas import NamespacePrefix
 from therapy.database import Database
 
+# prefixes for translating ID namespaces
 IDENTIFIER_PREFIXES = {
     'casRegistry': NamespacePrefix.CASREGISTRY.value,
     'pubchemCompound': NamespacePrefix.PUBCHEMCOMPOUND.value,
