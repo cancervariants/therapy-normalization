@@ -66,7 +66,9 @@ class ChemIDplus(Base):
         if len(dir_files) == 0:
             self._download_data()
             dir_files = list(data_dir.iterdir())
-        self._data_src = sorted(dir_files)[-1]
+        file = sorted([f for f in dir_files
+                       if f.name.startswith('chemidplus')])
+        self._data_src = file[-1]
         self._version = self._data_src.stem.split('_')[1]
 
     def _transform_data(self):
@@ -98,7 +100,8 @@ class ChemIDplus(Base):
                 if len(alias_elms) > 20:
                     aliases = set()
                 else:
-                    aliases = {e.text for e in alias_elms if e != label}
+                    aliases = {e.text for e in alias_elms
+                               if e.text.lower() != label.lower()}
                 # get other_ids and xrefs
                 other_identifiers = set()
                 xrefs = set()
@@ -131,7 +134,7 @@ class ChemIDplus(Base):
         """
         for alias in record.aliases:
             batch.put_item(Item={
-                'label_and_type': f'{alias}##alias',
+                'label_and_type': f'{alias.lower()}##alias',
                 'concept_id': record.concept_id.lower(),
                 'src_name': SourceName.CHEMIDPLUS.value
             })

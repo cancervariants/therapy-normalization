@@ -27,7 +27,7 @@ def penicillin_v():
     ChemIDplus stores a long list of aliases, but the DB record should
     truncate them to 0.
     """
-    params = {
+    return Drug(**{
         "concept_id": "chemidplus:87-08-1",
         "label": "Penicillin V",
         "aliases": [],
@@ -38,14 +38,13 @@ def penicillin_v():
         "xrefs": [
             "fda:Z61I075U2W",
         ]
-    }
-    return Drug(**params)
+    })
 
 
 @pytest.fixture(scope='module')
 def imatinib():
     """Build test fixture for Imatinib."""
-    return {
+    return Drug(**{
         "concept_id": "chemidplus:152459-95-5",
         "label": "Imatinib",
         "aliases": [
@@ -59,18 +58,18 @@ def imatinib():
         "xrefs": [
             "fda:BKJ8M8G5HI",
         ]
-    }
+    })
 
 
 def compare_records(actual_record: Dict, fixture_record: Drug):
     """Check that records are identical."""
-    assert actual_record['concept_id'] == fixture_record.concept_id
-    assert actual_record['label'] == fixture_record.label
-    assert set(actual_record['trade_names']) == set(fixture_record.trade_names)
-    assert set(actual_record['other_identifiers']) == \
+    assert actual_record.concept_id == fixture_record.concept_id
+    assert actual_record.label == fixture_record.label
+    assert set(actual_record.trade_names) == set(fixture_record.trade_names)
+    assert set(actual_record.other_identifiers) == \
         set(fixture_record.other_identifiers)
-    assert set(actual_record['xrefs']) == set(fixture_record.xrefs)
-    assert actual_record['approval_status'] == fixture_record.approval_status
+    assert set(actual_record.xrefs) == set(fixture_record.xrefs)
+    assert actual_record.approval_status == fixture_record.approval_status
 
 
 def test_concept_id_match(chemidplus, penicillin_v):
@@ -78,17 +77,15 @@ def test_concept_id_match(chemidplus, penicillin_v):
     response = chemidplus.normalize('chemidplus:87-08-1')
     assert response['match_type'] == MatchType.CONCEPT_ID
     assert len(response['records']) == 1
-    compare_records(response[0], penicillin_v)
+    compare_records(response['records'][0], penicillin_v)
 
     response = chemidplus.normalize('CHemidplus:87-08-1')
     assert response['match_type'] == MatchType.CONCEPT_ID
     assert len(response['records']) == 1
-    compare_records(response[0], penicillin_v)
+    compare_records(response['records'][0], penicillin_v)
 
     response = chemidplus.normalize('87-08-1')
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    assert len(response['records']) == 1
-    compare_records(response[0], penicillin_v)
+    assert response['match_type'] == MatchType.NO_MATCH
 
     response = chemidplus.normalize('87081')
     assert response['match_type'] == MatchType.NO_MATCH
@@ -99,17 +96,17 @@ def test_label_match(chemidplus, imatinib, penicillin_v):
     response = chemidplus.normalize('Penicillin V')
     assert response['match_type'] == MatchType.LABEL
     assert len(response['records']) == 1
-    compare_records(response[0], penicillin_v)
+    compare_records(response['records'][0], penicillin_v)
 
     response = chemidplus.normalize('Imatinib')
     assert response['match_type'] == MatchType.LABEL
     assert len(response['records']) == 1
-    compare_records(response[0], penicillin_v)
+    compare_records(response['records'][0], imatinib)
 
     response = chemidplus.normalize('imatiniB')
     assert response['match_type'] == MatchType.LABEL
     assert len(response['records']) == 1
-    compare_records(response[0], penicillin_v)
+    compare_records(response['records'][0], imatinib)
 
     response = chemidplus.normalize('PenicillinV')
     assert response['match_type'] == MatchType.NO_MATCH
@@ -120,12 +117,12 @@ def test_alias_match(chemidplus, imatinib):
     response = chemidplus.normalize('CCRIS 9076')
     assert response['match_type'] == MatchType.ALIAS
     assert len(response['records']) == 1
-    compare_records(response[0], penicillin_v)
+    compare_records(response['records'][0], imatinib)
 
     response = chemidplus.normalize('CGP-57148')
     assert response['match_type'] == MatchType.ALIAS
     assert len(response['records']) == 1
-    compare_records(response[0], penicillin_v)
+    compare_records(response['records'][0], imatinib)
 
 
 def test_meta(chemidplus):
