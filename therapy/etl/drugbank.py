@@ -175,8 +175,8 @@ class DrugBank(Base):
     def _load_cas_number(self, element, params):
         """Load cas number as other identifiers."""
         if element.text:
-            params['xrefs'].append(
-                f"{IDENTIFIER_PREFIXES['casRegistry']}:"
+            params['other_identifiers'].append(
+                f"{IDENTIFIER_PREFIXES['ChemIDplus']}:"
                 f"{element.text}")
 
     def _load_external_identifiers(self, element, params, xmlns,
