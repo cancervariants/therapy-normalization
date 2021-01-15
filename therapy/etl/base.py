@@ -2,6 +2,7 @@
 from abc import ABC, abstractmethod
 from therapy.schemas import NamespacePrefix
 from therapy.database import Database
+from typing import Set
 
 # prefixes for translating ID namespaces
 IDENTIFIER_PREFIXES = {
@@ -23,6 +24,15 @@ class Base(ABC):
         """Extract from sources."""
         self.database = database
         self._load_data(*args, **kwargs)
+
+    @abstractmethod
+    def perform_etl(self) -> Set[str]:
+        """Public-facing method to begin ETL procedures on given data.
+
+        :return: Set of concept IDs which were successfully processed and
+            uploaded.
+        """
+        raise NotImplementedError
 
     @abstractmethod
     def _extract_data(self, *args, **kwargs):
