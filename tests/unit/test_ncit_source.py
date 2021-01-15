@@ -28,8 +28,8 @@ def voglibose():
         'aliases': ['3,4-Dideoxy-4-((2-Hydroxy-1-(Hydroxymethyl)Ethyl)Amino)-2-C-(Hydroxymethyl)-D-Epi-Inositol',  # noqa F401
                     'A-71100', 'AO-128', 'Basen',
                     'N-(1,3-Dihydroxy-2-Propyl)Valiolamine', 'VOGLIBOSE'],
-        'other_identifiers': [],
-        'xrefs': ['chemidplus:83480-29-9', 'fda:S77P977AG8', 'umls:C0532578'],
+        'other_identifiers': ['chemidplus:83480-29-9'],
+        'xrefs': ['fda:S77P977AG8', 'umls:C0532578'],
         'approval_status': None,
         'trade_names': []
     }
@@ -44,8 +44,8 @@ def apricoxib():
         'concept_id': 'ncit:C74021',
         'aliases': ['APRICOXIB', 'COX-2 Inhibitor TG01', 'CS-706', 'R-109339',
                     'TG01', 'TP2001'],
-        'other_identifiers': [],
-        'xrefs': ['chemidplus:197904-84-0', 'fda:5X5HB3VZ3Z', 'umls:C1737955'],
+        'other_identifiers': ['chemidplus:197904-84-0'],
+        'xrefs': ['fda:5X5HB3VZ3Z', 'umls:C1737955'],
         'approval_status': None,
         'trade_names': []
     }
@@ -60,8 +60,8 @@ def trastuzumab():
         'label': 'Trastuzumab',
         'concept_id': 'ncit:C1647',
         'aliases': [],
-        'other_identifiers': [],
-        'xrefs': ['umls:C0728747', 'chemidplus:180288-69-1', 'fda:P188ANX8CK'],
+        'other_identifiers': ['chemidplus:180288-69-1'],
+        'xrefs': ['umls:C0728747', 'fda:P188ANX8CK'],
         'approval_status': None,
         'trade_names': []
     }
@@ -394,6 +394,8 @@ def test_meta_info(voglibose, ncit):
     assert normalizer_response['meta_'].data_url == \
         "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/"  # noqa: E501
     assert normalizer_response['meta_'].rdp_url == 'http://reusabledata.org/ncit.html'  # noqa: E501
-    assert not normalizer_response['meta_'].non_commercial
-    assert not normalizer_response['meta_'].share_alike
-    assert normalizer_response['meta_'].attribution
+    assert normalizer_response['meta_'].data_license_attributes == {
+        "non_commercial": False,
+        "share_alike": False,
+        "attribution": True
+    }

@@ -462,6 +462,8 @@ def test_meta_info(cisplatin, chembl):
     assert normalizer_response['meta_'].data_url == \
            'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501
     assert normalizer_response['meta_'].rdp_url == 'http://reusabledata.org/chembl.html'  # noqa: E501
-    assert not normalizer_response['meta_'].non_commercial
-    assert normalizer_response['meta_'].share_alike
-    assert normalizer_response['meta_'].attribution
+    assert normalizer_response['meta_'].data_license_attributes == {
+        "non_commercial": False,
+        "share_alike": True,
+        "attribution": True
+    }
