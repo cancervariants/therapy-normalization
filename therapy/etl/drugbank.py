@@ -112,8 +112,8 @@ class DrugBank(Base):
     def _load_data(self, *args, **kwargs):
         """Load the DrugBank source into normalized database."""
         self._extract_data()
+        self._load_meta()
         self._transform_data()
-        self._add_meta()
 
     def _load_therapy(self, batch, params):
         """Filter out trade names and aliases that exceed 20 and add item to
@@ -245,7 +245,7 @@ class DrugBank(Base):
             }
             batch.put_item(Item=trade_name)
 
-    def _add_meta(self):
+    def _load_meta(self):
         """Add DrugBank metadata."""
         meta = Meta(data_license='CC BY-NC 4.0',
                     data_license_url='https://creativecommons.org/licenses/by-nc/4.0/legalcode',  # noqa: E501

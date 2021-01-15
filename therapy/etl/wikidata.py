@@ -51,7 +51,7 @@ class Wikidata(Base):
         """Initialize wikidata ETL class"""
         self.database = database
         self._extract_data(*args, **kwargs)
-        self._add_meta()
+        self._load_meta()
         self._transform_data()
 
     def _extract_data(self, *args, **kwargs):
@@ -67,7 +67,7 @@ class Wikidata(Base):
                 raise FileNotFoundError  # TODO wikidata update function here
         self._version = self._data_src.stem.split('_')[1]
 
-    def _add_meta(self):
+    def _load_meta(self):
         """Add Wikidata metadata."""
         metadata = Meta(src_name=SourceName.WIKIDATA.value,
                         data_license='CC0 1.0',

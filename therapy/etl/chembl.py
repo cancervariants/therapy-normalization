@@ -46,7 +46,7 @@ class ChEMBL(Base):
 
     def _load_data(self, *args, **kwargs):
         """Load the ChEMBL source into database."""
-        self._add_meta()
+        self._load_meta()
         self._extract_data()
         self._transform_data()
         self._load_json()
@@ -261,7 +261,7 @@ class ChEMBL(Base):
 
             record['trade_names'] = list(set(record['trade_names']))
 
-    def _add_meta(self, *args, **kwargs):
+    def _load_meta(self, *args, **kwargs):
         """Add ChEMBL metadata."""
         metadata = Meta(data_license='CC BY-SA 3.0',
                         data_license_url='https://creativecommons.org/licenses/by-sa/3.0/',  # noqa: E501
