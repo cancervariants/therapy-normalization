@@ -199,21 +199,24 @@ class RxNorm(Base):
         term = row[14]
         term_type = row[12]
 
-        # TODO: Include Foreign Syn, British Syn?
-        # Foreign Syn, Designated Alias, Designated Syn, Tall Man Syn,
-        # British Syn, Clinical drug name in abbreviated
-        # format, Clinical drug name in concatenated format,
-        # Clinical drug name in delimited format, Machine permutation
-        aliases = ['FSY', 'SYN', 'SY', 'TMSY', 'SYGB', 'CDA', 'CDC',
-                   'CDD', 'PM']
+        # Designated Alias, Designated Syn, Tall Man Syn,
+        # Clinical drug name in abbreviated format,
+        # Clinical drug name in concatenated format,
+        # Clinical drug name in delimited format, Machine permutation,
+        # RxNorm Created CDC
+        aliases = ['SYN', 'SY', 'TMSY', 'CDA', 'CDC', 'CDD', 'PM',
+                   'MTH_RXN_CDC']
 
         # Fully-specified drug brand name that can be prescribed
         # Fully-specified drug brand name that can not be prescribed,
-        trade_names = ['BD', 'BN']
+        # RxNorm Created BD, Semantic branded drug
+        trade_names = ['BD', 'BN', 'MTH_RXN_BD', 'SBD']
 
         # Generic Drug Name, Designated Preferred Name, Preferred Entry Term,
-        # Clinical Drug, Entry Term, Full form descriptor
-        other_labels = ['GN', 'PT', 'PEP', 'CD', 'ET', 'FN']
+        # Clinical Drug, Entry Term, Full form descriptor, RxNorm Created CD,
+        # Rxnorm Preferred
+        other_labels = ['GN', 'PT', 'PEP', 'CD', 'ET', 'FN', 'MTH_RXN_CD',
+                        'RXN_PT']
         if term_type in aliases + other_labels:
             self._add_term(params, term, 'aliases')
         elif term_type in trade_names:

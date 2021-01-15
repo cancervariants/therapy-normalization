@@ -97,7 +97,6 @@ def cisplatin():
         'label': 'Cisplatin',
         'concept_id': 'rxcui:2555',
         'aliases': [
-            'cisplatino',
             'Cisplatin-containing product',
             'Diaminedichloroplatinum',
             'cis-Platinum',
