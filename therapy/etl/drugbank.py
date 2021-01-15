@@ -187,8 +187,8 @@ class DrugBank(Base):
     def _load_cas_number(self, element, params):
         """Load cas number as other identifiers."""
         if element.text:
-            params['xrefs'].append(
-                f"{IDENTIFIER_PREFIXES['casRegistry']}:"
+            params['other_identifiers'].append(
+                f"{IDENTIFIER_PREFIXES['ChemIDplus']}:"
                 f"{element.text}")
 
     def _load_external_identifiers(self, element, params, xmlns,
@@ -264,9 +264,11 @@ class DrugBank(Base):
                     version='5.1.7',
                     data_url='https://go.drugbank.com/releases/5-1-7/downloads/all-full-database',  # noqa: E501
                     rdp_url='http://reusabledata.org/drugbank.html',
-                    non_commercial=True,
-                    share_alike=False,
-                    attribution=True)
+                    data_license_attributes={
+                        'non_commercial': True,
+                        'share_alike': False,
+                        'attribution': True
+                    })
         params = dict(meta)
         params['src_name'] = SourceName.DRUGBANK.value
         self.database.metadata.put_item(Item=params)

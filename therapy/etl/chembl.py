@@ -280,9 +280,11 @@ class ChEMBL(Base):
                         version='27',
                         data_url='http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
                         rdp_url='http://reusabledata.org/chembl.html',
-                        non_commercial=False,
-                        share_alike=True,
-                        attribution=True)
+                        data_license_attributes={
+                            'non_commercial': False,
+                            'share_alike': True,
+                            'attribution': True
+                        })
         params = dict(metadata)
         params['src_name'] = SourceName.CHEMBL.value
         self.database.metadata.put_item(Item=params)

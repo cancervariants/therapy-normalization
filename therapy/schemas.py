@@ -2,7 +2,7 @@
 therapy records.
 """
 from typing import List, Optional, Dict, Union, Any, Type
-from pydantic import BaseModel
+from pydantic import BaseModel, StrictBool
 from enum import Enum, IntEnum
 
 
@@ -11,8 +11,8 @@ class Therapy(BaseModel):
 
     label: str
     concept_id: str
-    aliases: List[str]
-    other_identifiers: List[str]
+    aliases: Optional[List[str]]
+    other_identifiers: Optional[List[str]]
     xrefs: Optional[List[str]]
 
     class Config:
@@ -176,6 +176,8 @@ class SourceName(Enum):
     CHEMBL = "ChEMBL"
     NCIT = "NCIt"
     DRUGBANK = "DrugBank"
+    CHEMIDPLUS = "ChemIDplus"
+    RXNORM = "RxNorm"
 
 
 class SourceIDAfterNamespace(Enum):
@@ -185,12 +187,15 @@ class SourceIDAfterNamespace(Enum):
     CHEMBL = "CHEMBL"
     DRUGBANK = "DB"
     NCIT = "C"
+    CHEMIDPLUS = ""
+    RXNORM = ""
 
 
 class NamespacePrefix(Enum):
     """Define string constraints for namespace prefixes on concept IDs."""
 
     CASREGISTRY = "chemidplus"
+    CHEMIDPLUS = "chemidplus"
     PUBCHEMCOMPOUND = "pubchem.compound"
     PUBCHEMSUBSTANCE = "pubchem.substance"
     CHEMBL = "chembl"
@@ -212,6 +217,27 @@ class NamespacePrefix(Enum):
     THERAPEUTICTARGETSDB = "ttd"
     IUPHAR = "iuphar"
     GUIDETOPHARMACOLOGY = "gtopdb"
+    ATC = "atc"
+    CVX = "cvx"
+    GS = "gsddb"  # Gold Standard Drug Database
+    MDDB = "mmddb"  # Medi-Span Master Drug Database
+    MMSL = "mmsl"  # Multum MediSource Lexicon
+    MMX = "mmx"  # Micromedex RED BOOK
+    MSH = "msh"  # Medical Subject Headings
+    MTHCMSFRF = "mthcmsfrf"  # CMS Formulary Reference File
+    MTHSPL = "mthspl"  # FDA Structured Product Labels
+    NDDF = "fdbmk"  # FDB MedKnowledge (Formerly NDDF Plus)
+    SNOMEDCT_US = "snomedct"  # US Edition of SNOMED CT
+    USP = "usp"  # USP Compendial Nomenclature
+    VANDF = "vandf"  # Veterans Health Administration National Drug File
+
+
+class DataLicenseAttributes(BaseModel):
+    """Define constraints for data license attributes."""
+
+    non_commercial: StrictBool
+    share_alike: StrictBool
+    attribution: StrictBool
 
 
 class Meta(BaseModel):
@@ -222,9 +248,7 @@ class Meta(BaseModel):
     version: str
     data_url: Optional[str]
     rdp_url: Optional[str]
-    non_commercial: Optional[bool]
-    share_alike: Optional[bool]
-    attribution: Optional[bool]
+    data_license_attributes: Dict[str, StrictBool]
 
     class Config:
         """Enables orm_mode"""
@@ -245,9 +269,11 @@ class Meta(BaseModel):
                 'data_url':
                     'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
                 'rdp_url': 'http://reusabledata.org/chembl.html',
-                'non-commercial': False,
-                'share_alike': True,
-                'attribution': True
+                'data_license_attributes': {
+                    'non_commercial': False,
+                    'share_alike': True,
+                    'attribution': True
+                }
             }
 
 
@@ -282,9 +308,11 @@ class MatchesKeyed(BaseModel):
                     'data_url':
                         'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
                     'rdp_url': 'http://reusabledata.org/chembl.html',
-                    'non-commercial': False,
-                    'share_alike': True,
-                    'attribution': True
+                    'data_license_attributes': {
+                        'non_commercial': False,
+                        'share_alike': True,
+                        'attribution': True
+                    }
                 },
             }
 
@@ -322,9 +350,11 @@ class MatchesListed(BaseModel):
                     'data_url':
                         'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
                     'rdp_url': 'http://reusabledata.org/chembl.html',
-                    'non-commercial': False,
-                    'share_alike': True,
-                    'attribution': True
+                    'data_license_attributes': {
+                        'non_commercial': False,
+                        'share_alike': True,
+                        'attribution': True
+                    }
                 },
             }
 
@@ -369,9 +399,11 @@ class Service(BaseModel):
                     'data_url':
                         'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
                     'rdp_url': 'http://reusabledata.org/chembl.html',
-                    'non-commercial': False,
-                    'share_alike': True,
-                    'attribution': True
+                    'data_license_attributes': {
+                        'non_commercial': False,
+                        'share_alike': True,
+                        'attribution': True
+                    }
                 }
             }
 

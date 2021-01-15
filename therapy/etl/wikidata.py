@@ -84,9 +84,11 @@ class Wikidata(Base):
                         version=self._version,
                         data_url=None,
                         rdp_url=None,
-                        non_commercial=False,
-                        share_alike=False,
-                        attribution=False)
+                        data_license_attributes={
+                            'non_commercial': False,
+                            'share_alike': False,
+                            'attribution': False
+                        })
         params = dict(metadata)
         params['src_name'] = SourceName.WIKIDATA.value
         self.database.metadata.put_item(Item=params)
@@ -116,7 +118,9 @@ class Wikidata(Base):
                         if key in record.keys():
                             other_id = record[key]
 
-                            # get other_ids
+                            if key.upper() == 'CASREGISTRY':
+                                key = SourceName.CHEMIDPLUS.value
+
                             if key.upper() in normalizer_srcs:
                                 if key != 'chembl':
                                     fmted_other_id = \

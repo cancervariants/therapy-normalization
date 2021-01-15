@@ -25,7 +25,7 @@ def test_query(normalizer):
     assert resp['query'] == 'cisplatin'
     matches = resp['source_matches']
     assert isinstance(matches, list)
-    assert len(matches) == 4
+    assert len(matches) == 6
     wikidata = list(filter(lambda m: m['source'] == 'Wikidata',
                            matches))[0]
     assert len(wikidata['records']) == 1
@@ -35,12 +35,12 @@ def test_query(normalizer):
 
 def test_query_keyed(normalizer):
     """Test that query structures matches as dict when requested."""
-    resp = normalizer.normalize('cisplatin', keyed=True)
+    resp = normalizer.normalize('penicillin v', keyed=True)
     matches = resp['source_matches']
     assert isinstance(matches, dict)
-    wikidata = matches['Wikidata']
-    wikidata_record = wikidata['records'][0]
-    assert wikidata_record.label == 'cisplatin'
+    chemidplus = matches['ChemIDplus']
+    chemidplus_record = chemidplus['records'][0]
+    assert chemidplus_record.label == 'Penicillin V'
 
 
 def test_query_specify_normalizers(normalizer):
@@ -48,7 +48,7 @@ def test_query_specify_normalizers(normalizer):
     # test blank params
     resp = normalizer.normalize('cisplatin', keyed=True)
     matches = resp['source_matches']
-    assert len(matches) == 4
+    assert len(matches) == 6
     assert 'Wikidata' in matches
     assert 'ChEMBL' in matches
     assert 'NCIt' in matches
@@ -64,23 +64,25 @@ def test_query_specify_normalizers(normalizer):
     assert 'DrugBank' not in matches
 
     # test full inclusion
+    sources = 'chembl,ncit,drugbank,wikidata,rxnorm,chemidplus'
     resp = normalizer.normalize('cisplatin', keyed=True,
-                                incl='chembl,wikidata', excl='')
+                                incl=sources, excl='')
     matches = resp['source_matches']
-    assert len(matches) == 2
+    assert len(matches) == 6
     assert 'Wikidata' in matches
     assert 'ChEMBL' in matches
 
     # test partial exclusion
-    resp = normalizer.normalize('cisplatin', keyed=True, excl='chembl')
+    resp = normalizer.normalize('cisplatin', keyed=True, excl='chemidplus')
     matches = resp['source_matches']
-    assert len(matches) == 3
+    assert len(matches) == 5
     assert 'Wikidata' in matches
-    assert 'ChEMBL' not in matches
+    assert 'ChemIDplus' not in matches
 
     # test full exclusion
     resp = normalizer.normalize('cisplatin', keyed=True,
-                                excl='chembl, wikidata, drugbank, ncit')
+                                excl='chembl, wikidata, drugbank, ncit, '
+                                     'rxnorm, chemidplus')
     matches = resp['source_matches']
     assert len(matches) == 0
     assert 'Wikidata' not in matches
