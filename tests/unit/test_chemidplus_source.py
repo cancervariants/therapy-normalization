@@ -48,8 +48,8 @@ def imatinib():
         "concept_id": "chemidplus:152459-95-5",
         "label": "Imatinib",
         "aliases": [
-            "GGP 57148", "Imatinib", "CCRIS 9076", "UNII-BKJ8M8G5HI",
-            "ST1571", "ST 1571", "CGP-57148"
+            "GGP 57148", "CCRIS 9076", "UNII-BKJ8M8G5HI", "ST1571", "ST 1571",
+            "CGP-57148"
         ],
         "trade_names": [],
         "other_identifiers": [
