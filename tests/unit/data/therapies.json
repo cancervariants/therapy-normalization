@@ -346,7 +346,12 @@
         "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate"
     ],
     "xrefs": [
-        "rxcui:1223"
+      "rxcui:1223",
+      "pubchem.compound:174174",
+      "chemidplus:51-55-8"
+    ],
+    "other_identifiers": [
+      "drugbank:DB00572"
     ],
     "src_name": "Wikidata"
   },
