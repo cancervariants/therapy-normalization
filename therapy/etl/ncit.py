@@ -40,6 +40,7 @@ class NCIt(Base):
         self._SRC_DIR = src_dir
         self._SRC_FNAME = src_fname
         self._extract_data()
+        self._load_meta()
         self._transform_data()
 
     def _download_data(self):
@@ -138,7 +139,6 @@ class NCIt(Base):
         """Get data from file and construct objects for loading"""
         ncit = owl.get_ontology(self._data_src.absolute().as_uri())
         ncit.load()
-        self._add_meta()
         uq_nodes = set()
         uq_nodes = self.get_desc_nodes(ncit.C1909, uq_nodes)
         uq_nodes = self.get_typed_nodes(uq_nodes, ncit)
@@ -179,7 +179,7 @@ class NCIt(Base):
                                   xrefs=xrefs)
                 self._load_therapy(therapy, batch)
 
-    def _add_meta(self):
+    def _load_meta(self):
         """Load metadata"""
         metadata = Meta(data_license="CC BY 4.0",
                         data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401

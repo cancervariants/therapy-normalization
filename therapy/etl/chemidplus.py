@@ -39,8 +39,8 @@ class ChemIDplus(Base):
         self._src_fname = src_fname
         # perform ETL
         self._extract_data(data_path)
+        self._load_meta()
         self._transform_data()
-        self._add_meta()
 
     def _download_data(self):
         """Download source data from default location."""
@@ -155,7 +155,7 @@ class ChemIDplus(Base):
         id_record['label_and_type'] = f'{record.concept_id.lower()}##identity'
         batch.put_item(Item=id_record)
 
-    def _add_meta(self):
+    def _load_meta(self):
         """Add source metadata."""
         meta = Meta(data_license="custom",
                     data_license_url="https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501

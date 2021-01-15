@@ -252,7 +252,7 @@ class RxNorm(Base):
             else:
                 logger.info(f"{other_id_xref} not in NameSpacePrefix.")
 
-    def _add_meta(self):
+    def _load_meta(self):
         """Add RxNorm metadata."""
         meta = Meta(data_license='UMLS Metathesaurus',
                     data_license_url='https://www.nlm.nih.gov/research/umls/'
@@ -272,5 +272,5 @@ class RxNorm(Base):
     def _load_data(self):
         """Load the RxNorm source into database."""
         self._extract_data()
-        self._add_meta()
+        self._load_meta()
         self._transform_data()
