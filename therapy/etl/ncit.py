@@ -228,7 +228,7 @@ class NCIt(Base):
             del therapy['label']
         item['label_and_type'] = f"{concept_id_lower}##identity"
         item['src_name'] = SourceName.NCIT.value
-        del item['other_identifiers']
-        if not item['xrefs']:
-            del item['xrefs']
+        for element in ['other_identifiers', 'xrefs']:
+            if not item[element]:
+                del item[element]
         batch.put_item(Item=item)
