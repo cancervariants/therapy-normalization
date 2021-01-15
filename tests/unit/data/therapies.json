@@ -458,37 +458,37 @@
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "UNII-BKJ8M8G5HI##label",
+    "label_and_type": "imatinib##label",
     "concept_id": "chemidplus:152459-95-5",
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "CGP 57148##alias",
+    "label_and_type": "cgp 57148##alias",
     "concept_id": "chemidplus:152459-95-5",
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "ST1571##alias",
+    "label_and_type": "st1571##alias",
     "concept_id": "chemidplus:152459-95-5",
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "CCRIS 9076##alias",
+    "label_and_type": "ccris 9076##alias",
     "concept_id": "chemidplus:152459-95-5",
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "CGP-57148##alias",
+    "label_and_type": "cgp-57148##alias",
     "concept_id": "chemidplus:152459-95-5",
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "ST 1571##alias",
+    "label_and_type": "st 1571##alias",
     "concept_id": "chemidplus:152459-95-5",
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "Imatinib##alias",
+    "label_and_type": "unii-bkj8m8g5hi##alias",
     "concept_id": "chemidplus:152459-95-5",
     "src_name": "ChemIDplus"
   },
