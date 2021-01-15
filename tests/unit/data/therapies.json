@@ -91,9 +91,12 @@
       "Platin"
     ],
     "approval_status": "approved",
-    "other_identifiers": ["chembl:CHEMBL2068237"],
-    "xrefs": [
+    "other_identifiers": [
       "chemidplus:15663-27-1",
+      "chembl:CHEMBL2068237",
+      "rxcui:2555"
+    ],
+    "xrefs": [
       "chebi:27899",
       "pubchem.compound:2767",
       "pubchem.substance:46504561",
@@ -103,8 +106,7 @@
       "bindingdb:50028111",
       "pharmgkb.drug:PA449014",
       "pdb:CPT",
-      "ttd:DAP000215",
-      "rxcui:2555"
+      "ttd:DAP000215"
     ],
     "trade_names": [
       "CISplatin",
@@ -163,9 +165,12 @@
     "concept_id": "drugbank:DB00522",
     "aliases": ["APRD00818", "Bentiromide", "BTPABA", "PFT", "PFD"],
     "approval_status": "withdrawn",
-    "other_identifiers": ["chembl:CHEMBL1200368"],
-    "xrefs": [
+    "other_identifiers": [
       "chemidplus:37106-97-1",
+      "rxcui:18896",
+      "chembl:CHEMBL1200368"
+    ],
+    "xrefs": [
       "chebi:31263",
       "pubchem.compound:6957673",
       "pubchem.substance:46508175",
@@ -173,8 +178,7 @@
       "chemspider:5329364",
       "bindingdb:50240073",
       "pharmgkb.drug:PA164750572",
-      "zinc:ZINC000000608204",
-      "rxcui:18896"
+      "zinc:ZINC000000608204"
     ],
     "src_name": "DrugBank"
   },
@@ -203,14 +207,16 @@
     "label": "2,2'-Dibenzothiazyl disulfide",
     "concept_id": "drugbank:DB14201",
     "approval_status": "approved",
-    "other_identifiers": ["chembl:CHEMBL508112"],
-    "xrefs": [
+    "other_identifiers": [
       "chemidplus:120-78-5",
+      "chembl:CHEMBL508112",
+      "rxcui:1306112"
+    ],
+    "xrefs": [
       "chemspider:8139",
       "bindingdb:50444458",
       "chebi:53239",
-      "zinc:ZINC000001555224",
-      "rxcui:1306112"
+      "zinc:ZINC000001555224"
     ],
     "trade_names": ["T.R.U.E. Test Thin-Layer Rapid Use Patch Test"],
     "src_name": "DrugBank"
@@ -237,12 +243,13 @@
       "Platinol",
       "Platinol-AQ"
     ],
-    "other_identifiers": ["chembl:CHEMBL11359", "drugbank:DB00515"],
-    "xrefs": [
-      "rxcui:2555",
+    "other_identifiers": [
       "chemidplus:15663-27-1",
-      "pubchem.compound:5702198"
+      "chembl:CHEMBL11359",
+      "drugbank:DB00515",
+      "rxcui:2555"
     ],
+    "xrefs": ["pubchem.compound:5702198"],
     "src_name": "Wikidata"
   },
   {
@@ -270,8 +277,13 @@
       "Recombinant Consensus Interferon",
       "Recombinant methionyl human consensus interferon"
     ],
-    "other_identifiers": ["chembl:CHEMBL1201557", "drugbank:DB00069"],
-    "xrefs": ["rxcui:59744", "chemidplus:118390-30-0"],
+    "other_identifiers": [
+      "chembl:CHEMBL1201557",
+      "drugbank:DB00069",
+      "rxcui:59744",
+      "chemidplus:118390-30-0"
+    ],
+    "xrefs": [],
     "src_name": "Wikidata"
   },
   {
@@ -283,8 +295,13 @@
     "label_and_type": "wikidata:q191924##identity",
     "label": "D-methamphetamine",
     "concept_id": "wikidata:Q191924",
-    "other_identifiers": ["chembl:CHEMBL1201201", "drugbank:DB01577"],
-    "xrefs": ["chemidplus:537-46-2", "pubchem.compound:10836", "rxcui:6816"],
+    "other_identifiers": [
+      "chemidplus:537-46-2",
+      "chembl:CHEMBL1201201",
+      "drugbank:DB01577",
+      "rxcui:6816"
+    ],
+    "xrefs": ["pubchem.compound:10836"],
     "src_name": "Wikidata"
   },
   {
@@ -311,7 +328,8 @@
       "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl 3-hydroxy-2-phenylpropanoate",
       "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate"
     ],
-    "xrefs": ["rxcui:1223"],
+    "xrefs": [],
+    "other_identifiers": ["rxcui:1223"],
     "src_name": "Wikidata"
   },
   {
@@ -341,7 +359,8 @@
       "N-(1,3-Dihydroxy-2-Propyl)Valiolamine",
       "VOGLIBOSE"
     ],
-    "xrefs": ["chemidplus:83480-29-9", "fda:S77P977AG8", "umls:C0532578"],
+    "other_identifiers": ["chemidplus:83480-29-9"],
+    "xrefs": ["fda:S77P977AG8", "umls:C0532578"],
     "src_name": "NCIt"
   },
   {
@@ -371,7 +390,8 @@
       "TG01",
       "TP2001"
     ],
-    "xrefs": ["chemidplus:197904-84-0", "fda:5X5HB3VZ3Z", "umls:C1737955"],
+    "other_identifiers": ["chemidplus:197904-84-0"],
+    "xrefs": ["fda:5X5HB3VZ3Z", "umls:C1737955"],
     "src_name": "NCIt"
   },
   {
@@ -383,7 +403,8 @@
     "label_and_type": "ncit:c1647##identity",
     "label": "Trastuzumab",
     "concept_id": "ncit:C1647",
-    "xrefs": ["umls:C0728747", "chemidplus:180288-69-1", "fda:P188ANX8CK"],
+    "other_identifiers": ["chemidplus:180288-69-1"],
+    "xrefs": ["umls:C0728747", "fda:P188ANX8CK"],
     "src_name": "NCIt"
   },
   {
@@ -395,7 +416,8 @@
     "label_and_type": "ncit:c376##identity",
     "label": "Cisplatin",
     "concept_id": "ncit:C376",
-    "xrefs": ["umls:C0008838", "chemidplus:15663-27-1", "fda:Q20Q21Q62"],
+    "other_identifiers": ["chemidplus:15663-27-1"],
+    "xrefs": ["umls:C0008838", "fda:Q20Q21Q62"],
     "src_name": "NCIt"
   },
   {
@@ -444,9 +466,7 @@
       "17-hydroxycorticosteroid",
       "17-hydroxycorticosteroid (substance)"
     ],
-    "xrefs": [
-      "snomedct:112116001"
-    ],
+    "xrefs": ["snomedct:112116001"],
     "src_name": "RxNorm"
   },
   {
@@ -473,14 +493,8 @@
     "label_and_type": "rxcui:91837##identity",
     "label": "Aquanil Lotion, topical lotion",
     "concept_id": "rxcui:91837",
-    "aliases": [
-      "AQUANIL LOTION"
-    ],
-    "xrefs": [
-      "mmsl:5035",
-      "vandf:4010585",
-      "mmx:106710"
-    ],
+    "aliases": ["AQUANIL LOTION"],
+    "xrefs": ["mmsl:5035", "vandf:4010585", "mmx:106710"],
     "trade_names": [
       "Lotion, Multi Ingredient Topical application Lotion [AQUANIL]"
     ],
@@ -505,17 +519,9 @@
     "label_and_type": "rxcui:100213##identity",
     "label": "Bifidobacterium infantis",
     "concept_id": "rxcui:100213",
-    "aliases": [
-      "bifidobacterium infantis"
-    ],
-    "other_identifiers": [
-      "drugbank:DB14222"
-    ],
-    "xrefs": [
-      "gsddb:4931",
-      "mmsl:d07347",
-      "fdbmk:001165"
-    ],
+    "aliases": ["bifidobacterium infantis"],
+    "other_identifiers": ["drugbank:DB14222"],
+    "xrefs": ["gsddb:4931", "mmsl:d07347", "fdbmk:001165"],
     "src_name": "RxNorm"
   },
   {
@@ -554,10 +560,7 @@
       "Cis-DDP",
       "Product containing cisplatin (medicinal product)"
     ],
-    "other_identifiers": [
-      "drugbank:DB00515",
-      "drugbank:DB12117"
-    ],
+    "other_identifiers": ["drugbank:DB00515", "drugbank:DB12117"],
     "xrefs": [
       "usp:m17910",
       "gsddb:862",
@@ -572,9 +575,7 @@
       "mmsl:4456",
       "snomedct:387318005"
     ],
-    "trade_names": [
-      "Cisplatin"
-    ],
+    "trade_names": ["Cisplatin"],
     "src_name": "RxNorm"
   }
 ]
