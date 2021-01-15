@@ -153,10 +153,9 @@ class NamespacePrefix(Enum):
     THERAPEUTICTARGETSDB = "ttd"
     IUPHAR = "iuphar"
     GUIDETOPHARMACOLOGY = "gtopdb"
-    ATC = "atc"
-    CVX = "cvx"
+    ATC = "atc"  # Anatomical Therapeutic Chemical Classification System
+    CVX = "cvx"  # Vaccines Administered
     GS = "gsddb"  # Gold Standard Drug Database
-    MDDB = "mmddb"  # Medi-Span Master Drug Database
     MMSL = "mmsl"  # Multum MediSource Lexicon
     MMX = "mmx"  # Micromedex RED BOOK
     MSH = "msh"  # Medical Subject Headings
