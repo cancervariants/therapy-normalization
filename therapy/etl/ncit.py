@@ -154,12 +154,13 @@ class NCIt(Base):
                     aliases.remove(label)
 
                 xrefs = []
+                other_ids = []
                 if node.P207:
                     xrefs.append(f"{NamespacePrefix.UMLS.value}:"
                                  f"{node.P207.first()}")
                 if node.P210:
-                    xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:"
-                                 f"{node.P210.first()}")
+                    other_ids.append(f"{NamespacePrefix.CASREGISTRY.value}:"
+                                     f"{node.P210.first()}")
                 if node.P319:
                     xrefs.append(f"{NamespacePrefix.FDA.value}:"
                                  f"{node.P319.first()}")
@@ -174,7 +175,7 @@ class NCIt(Base):
                                   src_name=SourceName.NCIT.value,
                                   label=label,
                                   aliases=aliases,
-                                  other_identifiers=[],
+                                  other_identifiers=other_ids,
                                   xrefs=xrefs)
                 self._load_therapy(therapy, batch)
 

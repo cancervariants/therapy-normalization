@@ -458,6 +458,41 @@
     "src_name": "ChemIDplus"
   },
   {
+    "label_and_type": "UNII-BKJ8M8G5HI##label",
+    "concept_id": "chemidplus:152459-95-5",
+    "src_name": "ChemIDplus"
+  },
+  {
+    "label_and_type": "CGP 57148##alias",
+    "concept_id": "chemidplus:152459-95-5",
+    "src_name": "ChemIDplus"
+  },
+  {
+    "label_and_type": "ST1571##alias",
+    "concept_id": "chemidplus:152459-95-5",
+    "src_name": "ChemIDplus"
+  },
+  {
+    "label_and_type": "CCRIS 9076##alias",
+    "concept_id": "chemidplus:152459-95-5",
+    "src_name": "ChemIDplus"
+  },
+  {
+    "label_and_type": "CGP-57148##alias",
+    "concept_id": "chemidplus:152459-95-5",
+    "src_name": "ChemIDplus"
+  },
+  {
+    "label_and_type": "ST 1571##alias",
+    "concept_id": "chemidplus:152459-95-5",
+    "src_name": "ChemIDplus"
+  },
+  {
+    "label_and_type": "Imatinib##alias",
+    "concept_id": "chemidplus:152459-95-5",
+    "src_name": "ChemIDplus"
+  },
+  {
     "label_and_type": "rxcui:19##identity",
     "label": "17-hydrocorticosteroid",
     "concept_id": "rxcui:19",
