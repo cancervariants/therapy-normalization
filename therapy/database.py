@@ -1,6 +1,13 @@
 """This module creates the database."""
 import boto3
 from os import environ
+from botocore.exceptions import ClientError
+from typing import Optional, Dict
+import logging
+from boto3.dynamodb.conditions import Key
+
+logger = logging.getLogger('therapy')
+logger.setLevel(logging.DEBUG)
 
 
 class Database:
@@ -112,3 +119,51 @@ class Database:
                     'WriteCapacityUnits': 10
                 }
             )
+
+    def get_record_by_id(self, concept_id: str,
+                         case_sensitive: bool = True) -> Optional[Dict]:
+        """Fetch record corresponding to provided concept ID
+
+        :param str concept_id: concept ID for therapy record
+        :param bool case_sensitive: if true, performs exact lookup, which is
+            more efficient. Otherwise, performs filter operation, which
+            doesn't require correct casing.
+        :return: complete therapy record, if match is found; None otherwise
+        """
+        try:
+            pk = f'{concept_id.lower()}##identity'
+            if case_sensitive:
+                match = self.therapies.get_item(Key={
+                    'label_and_type': pk,
+                    'concept_id': concept_id
+                })
+                return match['Item']
+            else:
+                exp = Key('label_and_type').eq(pk)
+                response = self.therapies.query(KeyConditionExpression=exp)
+                return response['Items'][0]
+        except ClientError as e:
+            logger.error(e.response['Error']['Message'])
+            return None
+        except KeyError:
+            return None
+
+    def get_merged_record(self, merge_ref) -> Optional[Dict]:
+        """Fetch merged record from given reference.
+
+        :param str merge_ref: key for merged record, formated as a string
+            of grouped concept IDs separated by vertical bars, ending with
+            `##merger`. Must be correctly-cased.
+        :return: complete merged record if lookup successful, None otherwise
+        """
+        try:
+            match = self.therapies.get_item(Key={
+                'label_and_type': merge_ref,
+                'concept_id': merge_ref
+            })
+            return match['Item']
+        except ClientError as e:
+            logger.error(e.response['Error']['Message'])
+            return None
+        except KeyError:
+            return None
