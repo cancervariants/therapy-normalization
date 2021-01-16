@@ -15,6 +15,7 @@ from bs4 import BeautifulSoup
 import datetime
 import logging
 import botocore
+from typing import Set
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -35,7 +36,7 @@ class RxNorm(Base):
         self._xref_srcs = {src for src in NamespacePrefix.__members__}
         self._data_url = data_url
         self.database = database
-        self._load_data()
+        self._added_ids = set()
 
     def _extract_data(self, *args, **kwargs):
         """Extract data from the RxNorm source."""
@@ -137,6 +138,7 @@ class RxNorm(Base):
         params['label_and_type'] = f"{params['concept_id'].lower()}##identity"
         try:
             batch.put_item(Item=params)
+            self._added_ids.add(params['concept_id'])
         except botocore.exceptions.ClientError:
             if (len((params['label_and_type']).encode('utf-8')) >= 2048) or \
                     (len((params['concept_id']).encode('utf-8')) >= 1024):
@@ -269,8 +271,13 @@ class RxNorm(Base):
         params['src_name'] = SourceName.RXNORM.value
         self.database.metadata.put_item(Item=params)
 
-    def _load_data(self):
-        """Load the RxNorm source into database."""
+    def perform_etl(self) -> Set[str]:
+        """Load the RxNorm source into database.
+
+        :return: Set of concept IDs which were successfully processed and
+            uploaded.
+        """
         self._extract_data()
         self._load_meta()
         self._transform_data()
+        return self._added_ids
