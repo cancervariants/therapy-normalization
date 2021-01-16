@@ -335,3 +335,22 @@ class Service(BaseModel):
                     }
                 }
             }
+
+
+class MergedDrug(BaseModel):
+    """Structure of merged drug object as provided to end user."""
+
+    concept_id_group: List[str]
+    label: Optional[str]
+    approval_status: Optional[ApprovalStatus]
+    trade_names: Optional[List[str]]
+    aliases: Optional[List[str]]
+    xrefs: Optional[List[str]]
+
+
+class MergedService(BaseModel):
+    """Response schema for grouped matching endpoint."""
+
+    query: str
+    warnings: Optional[Dict]
+    match: MergedDrug
