@@ -5,6 +5,8 @@ import logging
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, Meta
 from therapy.etl.base import IDENTIFIER_PREFIXES
 from lxml import etree
+from typing import Set
+from pathlib import Path
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -31,16 +33,32 @@ DRUGBANK_IDENTIFIER_PREFIXES = {
 class DrugBank(Base):
     """ETL the DrugBank source into therapy.db."""
 
-    def _extract_data(self, *args, **kwargs):
+    def __init__(self, data_path: Path = PROJECT_ROOT / 'data' / 'drugbank'):
+        """Initialize ETL class instance.
+
+        :param Path data_path: directory containing source data
+        """
+        self._data_path = data_path
+        self._added_ids = set()
+
+    def perform_etl(self) -> Set[str]:
+        """Public-facing method to begin ETL procedures on given data.
+
+        :return: Set of concept IDs which were successfully processed and
+            uploaded.
+        """
+        self._extract_data()
+        self._load_meta()
+        self._transform_data()
+        return self._added_ids
+
+    def _extract_data(self):
         """Extract data from the DrugBank source."""
-        if 'data_path' in kwargs:
-            self._data_src = kwargs['data_path']
-        else:
-            wd_dir = PROJECT_ROOT / 'data' / 'drugbank'
-            try:
-                self._data_src = sorted(list(wd_dir.iterdir()))[-1]
-            except IndexError:
-                raise FileNotFoundError  # TODO drugbank update function here
+        self._data_path.mkdir(exist_ok=True, parents=True)
+        try:
+            self._data_src = sorted(list(self._data_path.iterdir()))[-1]
+        except IndexError:
+            raise FileNotFoundError  # TODO drugbank update function here
 
     def _transform_data(self):
         """Transform the DrugBank source."""
@@ -109,12 +127,6 @@ class DrugBank(Base):
                     self._load_trade_names(params['trade_names'],
                                            params['concept_id'], batch)
 
-    def _load_data(self, *args, **kwargs):
-        """Load the DrugBank source into normalized database."""
-        self._extract_data()
-        self._load_meta()
-        self._transform_data()
-
     def _load_therapy(self, batch, params):
         """Filter out trade names and aliases that exceed 20 and add item to
         therapies table.
@@ -130,6 +142,7 @@ class DrugBank(Base):
                         {a.casefold() for a in params[label_type]}) > 20:
                     del params[label_type]
         batch.put_item(Item=params)
+        self._added_ids.add(params['concept_id'])
 
     def _load_drugbank_id(self, element, params):
         """Load drugbank id as concept id or alias."""

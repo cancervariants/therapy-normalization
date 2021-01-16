@@ -23,7 +23,7 @@ class Base(ABC):
     def __init__(self, database: Database, *args, **kwargs):
         """Extract from sources."""
         self.database = database
-        self._load_data(*args, **kwargs)
+        self._added_ids = set()
 
     @abstractmethod
     def perform_etl(self) -> Set[str]:

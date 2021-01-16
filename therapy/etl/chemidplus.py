@@ -1,5 +1,6 @@
 """ETL methods for ChemIDPlus source."""
 from .base import Base
+from typing import Set
 from therapy import PROJECT_ROOT
 from therapy.database import Database
 from therapy.schemas import Drug, NamespacePrefix, Meta, SourceName, \
@@ -35,12 +36,22 @@ class ChemIDplus(Base):
         it's unnecessary to provide `src_dir` and `src_fname` args.
         """
         self.database = database
+        self._data_path = data_path
         self._src_dir = src_dir
         self._src_fname = src_fname
+        self._added_ids = set()
+
+    def perform_etl(self) -> Set[str]:
+        """Public-facing method to begin ETL procedures on given data.
+
+        :return: Set of concept IDs which were successfully processed and
+            uploaded.
+        """
         # perform ETL
-        self._extract_data(data_path)
+        self._extract_data()
         self._load_meta()
         self._transform_data()
+        return self._added_ids
 
     def _download_data(self):
         """Download source data from default location."""
@@ -56,16 +67,13 @@ class ChemIDplus(Base):
         out_path.rename(f'chemidplus_{version}.xml')
         logger.info('Finished downloading ChemIDplus data')
 
-    def _extract_data(self, data_dir: Path):
-        """Acquire ChemIDplus dataset.
-
-        :arg pathlib.Path data_dir: directory containing source data
-        """
-        data_dir.mkdir(exist_ok=True, parents=True)
-        dir_files = list(data_dir.iterdir())
+    def _extract_data(self):
+        """Acquire ChemIDplus dataset."""
+        self._data_path.mkdir(exist_ok=True, parents=True)
+        dir_files = list(self._data_path.iterdir())
         if len(dir_files) == 0:
             self._download_data()
-            dir_files = list(data_dir.iterdir())
+            dir_files = list(self._data_path.iterdir())
         file = sorted([f for f in dir_files
                        if f.name.startswith('chemidplus')])
         self._data_src = file[-1]
@@ -154,6 +162,7 @@ class ChemIDplus(Base):
         id_record['src_name'] = SourceName.CHEMIDPLUS.value
         id_record['label_and_type'] = f'{record.concept_id.lower()}##identity'
         batch.put_item(Item=id_record)
+        self._added_ids.add(record.concept_id)
 
     def _load_meta(self):
         """Add source metadata."""

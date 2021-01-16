@@ -6,6 +6,7 @@ import logging
 import tarfile  # noqa: F401
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, Meta
 import sqlite3
+from typing import Set
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -14,13 +15,33 @@ logger.setLevel(logging.DEBUG)
 class ChEMBL(Base):
     """ETL the ChEMBL source into therapy.db."""
 
-    def _extract_data(self, *args, **kwargs):
+    def __init__(self,
+                 data_path=PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27.db'):
+        """Initialize CHEMBl ETL instance.
+
+        :param Path data_path: path to CHEMBl source SQLite3 database file.
+        """
+        self._data_path = data_path
+        self._added_ids = set()
+
+    def perform_etl(self) -> Set[str]:
+        """Public-facing method to begin ETL procedures on given data.
+
+        :return: Set of concept IDs which were successfully processed and
+            uploaded.
+        """
+        self._load_meta()
+        self._extract_data()
+        self._transform_data()
+        self._load_json()
+        self._conn.commit()
+        self._conn.close()
+        return self._added_ids
+        return self._added_ids
+
+    def _extract_data(self):
         """Extract data from the ChEMBL source."""
-        if 'data_path' in kwargs:
-            chembl_db = kwargs['data_path']
-        else:
-            chembl_db = PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27.db'
-        if not chembl_db.exists():
+        if not self._data_path.exists():
             raise FileNotFoundError  # TODO: update download methods
             # chembl_archive = PROJECT_ROOT / 'data' / \
             #   'chembl_27_sqlite.tar.gz'
@@ -29,11 +50,11 @@ class ChEMBL(Base):
             # tar = tarfile.open(chembl_archive)
             # tar.extractall()
             # tar.close()
-        conn = sqlite3.connect(chembl_db)
+        conn = sqlite3.connect(self._data_path)
         conn.row_factory = sqlite3.Row
         self._conn = conn
         self._cursor = conn.cursor()
-        assert chembl_db.exists()
+        assert self._data_path.exists()
 
     def _transform_data(self, *args, **kwargs):
         """Transform SQLite data to JSON."""
@@ -43,15 +64,6 @@ class ChEMBL(Base):
 
         self._cursor.execute("DROP TABLE DictionarySynonyms;")
         self._cursor.execute("DROP TABLE TradeNames;")
-
-    def _load_data(self, *args, **kwargs):
-        """Load the ChEMBL source into database."""
-        self._load_meta()
-        self._extract_data()
-        self._transform_data()
-        self._load_json()
-        self._conn.commit()
-        self._conn.close()
 
     @staticmethod
     def _download_chembl_27(filepath):
@@ -207,6 +219,7 @@ class ChEMBL(Base):
         record['label_and_type'] = \
             f"{record['concept_id'].lower()}##identity"
         batch.put_item(Item=record)
+        self._added_ids.add(record['concept_id'])
 
     def _load_label(self, record, batch):
         """Load label record into DynamoDB."""
