@@ -38,6 +38,17 @@ class RxNorm(Base):
         self.database = database
         self._added_ids = set()
 
+    def perform_etl(self) -> Set[str]:
+        """Load the RxNorm source into database.
+
+        :return: Set of concept IDs which were successfully processed and
+            uploaded.
+        """
+        self._extract_data()
+        self._load_meta()
+        self._transform_data()
+        return self._added_ids
+
     def _extract_data(self, *args, **kwargs):
         """Extract data from the RxNorm source."""
         logger.info('Extracting RxNorm...')
@@ -270,14 +281,3 @@ class RxNorm(Base):
         params = dict(meta)
         params['src_name'] = SourceName.RXNORM.value
         self.database.metadata.put_item(Item=params)
-
-    def perform_etl(self) -> Set[str]:
-        """Load the RxNorm source into database.
-
-        :return: Set of concept IDs which were successfully processed and
-            uploaded.
-        """
-        self._extract_data()
-        self._load_meta()
-        self._transform_data()
-        return self._added_ids

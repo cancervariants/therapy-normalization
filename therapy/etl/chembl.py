@@ -25,7 +25,7 @@ class ChEMBL(Base):
         self._added_ids = set()
 
     def perform_etl(self) -> Set[str]:
-        """Public-facing method to begin ETL procedures on given data.
+        """Public-facing method to initiate ETL procedures on given data.
 
         :return: Set of concept IDs which were successfully processed and
             uploaded.
