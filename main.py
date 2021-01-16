@@ -1,13 +1,13 @@
 """Main application for FastAPI"""
-from therapy.query import Normalizer, InvalidParameterException
-from therapy.schemas import Service
+from therapy.query import QueryHandler, InvalidParameterException
+from therapy.schemas import Service, MergedService
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.openapi.utils import get_openapi
 import html
 from typing import Optional
 
 
-normalizer = Normalizer()
+query_handler = QueryHandler()
 app = FastAPI(docs_url='/therapy', openapi_url='/therapy/openapi.json')
 
 
@@ -37,9 +37,9 @@ def custom_openapi():
 app.openapi = custom_openapi
 
 # endpoint description text
-read_query_summary = """Given query, provide highest matches from
+get_matches_summary = """Given query, provide highest matches from
                      aggregated sources."""
-response_description = "A response to a validly-formed query."
+response_descr = "A response to a validly-formed query."
 q_descr = "Therapy to normalize."
 keyed_descr = """Optional. If true, return response as key-value pairs of
               sources to source matches. False by default"""
@@ -54,15 +54,16 @@ excl_descr = """Optional. Comma-separated list of source names to exclude in
 
 
 @app.get("/therapy/search",
-         summary=read_query_summary,
+         summary=get_matches_summary,
          operation_id="getQueryResponse",
-         response_description=response_description,
+         response_description=response_descr,
          response_model=Service)
-def read_query(q: str = Query(..., description=q_descr),
-               keyed: Optional[bool] = Query(False, description=keyed_descr),
-               incl: Optional[str] = Query('', description=incl_descr),
-               excl: Optional[str] = Query('', description=excl_descr)):
-    """Return strongest match concepts to query string provided by user.
+def get_matches(q: str = Query(..., description=q_descr),
+                keyed: Optional[bool] = Query(False, description=keyed_descr),
+                incl: Optional[str] = Query('', description=incl_descr),
+                excl: Optional[str] = Query('', description=excl_descr)):
+    """For each source, return strongest-match concepts for query string
+    provided by user.
 
     :param q: therapy search term
     :param keyed: if true, response is structured as key/value pair of
@@ -75,9 +76,33 @@ def read_query(q: str = Query(..., description=q_descr),
     :returns: JSON response with matched records and source metadata
     """
     try:
-        resp = normalizer.normalize(html.unescape(q), keyed=keyed, incl=incl,
-                                    excl=excl)
+        resp = query_handler.search_sources(html.unescape(q), keyed=keyed,
+                                            incl=incl, excl=excl)
     except InvalidParameterException as e:
         raise HTTPException(status_code=422, detail=str(e))
 
     return resp
+
+
+merged_matches_summary = """Given query, provide merged record from given
+                            sources."""
+merged_response_descr = ""
+merged_q_descr = ""
+
+
+@app.get("/therapy/normalize",
+         summary=merged_matches_summary,
+         operation_id="getQuerymergedResponse",
+         response_description=merged_response_descr,
+         response_model=MergedService)
+def get_merged_matches(q: str = Query(..., description=merged_q_descr)):
+    """Return merged strongest-match concept for query string provided by
+    user.
+
+    :param q: therapy search term
+    """
+    try:
+        response = query_handler.search_groups()
+    except InvalidParameterException as e:
+        raise HTTPException(status_code=422, detail=str(e))
+    return response
