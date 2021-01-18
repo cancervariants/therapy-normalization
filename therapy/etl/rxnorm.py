@@ -6,15 +6,17 @@ Library of Medicine (NLM), National Institutes of Health, Department of Health
  endorse or recommend this or any other product."
 """
 from .base import Base
-from therapy import PROJECT_ROOT
+from therapy import PROJECT_ROOT, DownloadException
 from therapy.database import Database
 from therapy.schemas import SourceName, NamespacePrefix, Meta, Drug
 import csv
-import requests
-from bs4 import BeautifulSoup
 import datetime
 import logging
 import botocore
+from os import environ, remove
+import subprocess
+import shutil
+import zipfile
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -48,6 +50,8 @@ class RxNorm(Base):
             rxn_files = list(rxn_dir.iterdir())
             if len(rxn_files) == 0:
                 self._download_data(rxn_dir)
+
+            # file might already exist
             files = sorted([fn for fn in rxn_dir.iterdir() if fn.name.
                            startswith('rxnorm_') and fn.name.endswith('.RRF')],
                            reverse=True)
@@ -63,28 +67,47 @@ class RxNorm(Base):
                 except ValueError:
                     pass
             if not file_found:
-                logger.error('RxNorm file not found.')
-                raise FileNotFoundError('Could not find RxNorm file.')
-            else:
-                logger.info('Successfully extracted RxNorm.')
+                self._download_data(rxn_dir)
+        logger.info('Successfully extracted RxNorm.')
 
-    def _download_data(self, *args, **kwargs):
+    def _download_data(self, rxn_dir):
         """Download RxNorm data file."""
         logger.info('Downloading RxNorm...')
-        self._get_file_url_version()
-        # TODO
+        if 'RXNORM_API_KEY' in environ.keys():
+            uri = 'https://download.nlm.nih.gov/umls/kss/' \
+                  'rxnorm/RxNorm_full_current.zip'
 
-    def _get_file_url_version(self):
-        """Get RxNorm's latest file and version."""
-        r = requests.get(self._data_url)
-        if r.status_code == 200:
-            soup = BeautifulSoup(r.text, 'html.parser')
-            releases_soup = soup.find('table', {"class": "current"})
-            self._data_file_url =\
-                releases_soup.find_all('td')[0].find_all('a')[0]['href']
-            version = self._data_file_url.split('_')[-1].split('.')[0]
+            # Source:
+            # https://documentation.uts.nlm.nih.gov/automating-downloads.html
+            subprocess.call(['bash', f'{PROJECT_ROOT}/therapy/etl/'
+                                     f'rxnorm_download.sh', uri])
+
+            zip_path = rxn_dir / 'RxNorm_full_current.zip'
+            shutil.move(PROJECT_ROOT / 'RxNorm_full_current.zip', zip_path)
+
+            with zipfile.ZipFile(zip_path, 'r') as zf:
+                zf.extractall(rxn_dir)
+
+            remove(zip_path)
+            shutil.rmtree(rxn_dir / 'prescribe')
+            shutil.rmtree(rxn_dir / 'scripts')
+
+            # get version
+            readme = sorted([fn for fn in rxn_dir.iterdir() if fn.name.
+                            startswith('Readme')])[0]
+            version = str(readme).split('.')[0].split('_')[-1]
             self._version = datetime.datetime.strptime(
                 version, '%m%d%Y').strftime('%Y%m%d')
+            remove(readme)
+
+            temp_file = rxn_dir / 'rrf' / 'RXNCONSO.RRF'
+            self._data_src = rxn_dir / f"rxnorm_{self._version}.RRF"
+            shutil.move(temp_file, self._data_src)
+            shutil.rmtree(rxn_dir / 'rrf')
+        else:
+            logger.error('Could not find RXNORM_API_KEY in environment '
+                         'variables.')
+            raise DownloadException("RXNORM_API_KEY not found.")
 
     def _transform_data(self):
         """Transform the RxNorm source."""
