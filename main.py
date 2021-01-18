@@ -38,7 +38,7 @@ app.openapi = custom_openapi
 
 # endpoint description text
 get_matches_summary = """Given query, provide highest matches from
-                     aggregated sources."""
+                     each source."""
 response_descr = "A response to a validly-formed query."
 q_descr = "Therapy to normalize."
 keyed_descr = """Optional. If true, return response as key-value pairs of
@@ -102,7 +102,7 @@ def get_merged_matches(q: str = Query(..., description=merged_q_descr)):
     :param q: therapy search term
     """
     try:
-        response = query_handler.search_groups()
+        response = query_handler.search_groups(q)
     except InvalidParameterException as e:
         raise HTTPException(status_code=422, detail=str(e))
     return response
