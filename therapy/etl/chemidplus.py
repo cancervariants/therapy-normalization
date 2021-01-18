@@ -37,6 +37,7 @@ class ChemIDplus(Base):
         self.database = database
         self._src_dir = src_dir
         self._src_fname = src_fname
+        self._added_ids = set()
         # perform ETL
         self._extract_data(data_path)
         self._transform_data()
@@ -132,28 +133,31 @@ class ChemIDplus(Base):
             instance
         :param therapy.schemas.Drug record: complete drug record to upload
         """
-        for alias in record.aliases:
-            batch.put_item(Item={
-                'label_and_type': f'{alias.lower()}##alias',
-                'concept_id': record.concept_id.lower(),
-                'src_name': SourceName.CHEMIDPLUS.value
-            })
-        for trade_name in record.trade_names:
-            batch.put_item(Item={
-                'label_and_type': f'{trade_name.lower()}##trade_name',
-                'concept_id': record.concept_id.lower(),
-                'src_name': SourceName.CHEMIDPLUS.value
-            })
-        if record.label:
-            batch.put_item(Item={
-                'label_and_type': f'{record.label.lower()}##label',
-                'concept_id': record.concept_id.lower(),
-                'src_name': SourceName.CHEMIDPLUS.value
-            })
-        id_record = dict(record)
-        id_record['src_name'] = SourceName.CHEMIDPLUS.value
-        id_record['label_and_type'] = f'{record.concept_id.lower()}##identity'
-        batch.put_item(Item=id_record)
+        concept_id = record.concept_id
+        if concept_id not in self._added_ids:
+            self._added_ids.add(concept_id)
+            for alias in {a.lower() for a in record.aliases}:
+                batch.put_item(Item={
+                    'label_and_type': f'{alias}##alias',
+                    'concept_id': concept_id.lower(),
+                    'src_name': SourceName.CHEMIDPLUS.value
+                })
+            for trade_name in {t.lower() for t in record.trade_names}:
+                batch.put_item(Item={
+                    'label_and_type': f'{trade_name}##trade_name',
+                    'concept_id': concept_id.lower(),
+                    'src_name': SourceName.CHEMIDPLUS.value
+                })
+            if record.label:
+                batch.put_item(Item={
+                    'label_and_type': f'{record.label.lower()}##label',
+                    'concept_id': concept_id.lower(),
+                    'src_name': SourceName.CHEMIDPLUS.value
+                })
+            id_record = dict(record)
+            id_record['src_name'] = SourceName.CHEMIDPLUS.value
+            id_record['label_and_type'] = f'{concept_id.lower()}##identity'
+            batch.put_item(Item=id_record)
 
     def _add_meta(self):
         """Add source metadata."""
