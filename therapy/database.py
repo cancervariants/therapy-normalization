@@ -1,10 +1,11 @@
 """This module creates the database."""
 import boto3
-from os import environ
 from botocore.exceptions import ClientError
-from typing import Optional, Dict
-import logging
 from boto3.dynamodb.conditions import Key
+from therapy.schemas import MatchType
+from os import environ
+from typing import Optional, Dict, Set
+import logging
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -147,6 +148,25 @@ class Database:
             return None
         except KeyError:
             return None
+
+    def get_records_by_type(self, query: str,
+                            match_type: MatchType) -> Set:
+        """Retrieve records for given query and match type.
+
+        :param query: string to match against
+        :param MatchType match_type: type of match to look for. Should be one
+            of MatchType.ALIAS, MatchType.TRADE_NAME, or MatchType.LABEL.
+        :return: set of matching records. Empty if lookup fails.
+        """
+        pk = f'{query}##{match_type.name.lower()}'
+        filter_exp = Key('label_and_type').eq(pk)
+        try:
+            matches = self.therapies.query(KeyConditionExpression=filter_exp)
+            if 'Items' in matches.keys():
+                return set(matches.get('Items', {None}))
+        except ClientError as e:
+            logger(e.response['Error']['Message'])
+            return set()
 
     def get_merged_record(self, merge_ref) -> Optional[Dict]:
         """Fetch merged record from given reference.
