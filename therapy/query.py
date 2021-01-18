@@ -357,7 +357,29 @@ class QueryHandler:
 
         return resp
 
-    def search_groups(self, query_str):
+    def add_merged_record(self, response: Dict, merge_ref: str) -> Dict:
+        """Add referenced concept ID group to response object.
+
+        :param Dict response: in-progress response object. Should have
+            match_type attribute filled in already.
+        :param str merge_ref: primary key for concept ID group lookup.
+        :return: completed response object.
+        """
+        merged_record = self.db.get_merged_record(merge_ref)
+        if not merged_record:
+            logger.error(f"Could not retrieve merged record for concept"
+                         f"ID group {merge_ref}"
+                         f"by way of query {response['query']}")
+            response['match_type'] = MatchType.NO_MATCH
+            return response
+        del merged_record['label_and_type']
+        concept_ids_combined = merged_record['concept_id'][:-8].split('|')
+        merged_record['concept_id_group'] = concept_ids_combined
+        del merged_record['concept_id']
+        response['record'] = merged_record
+        return response
+
+    def search_groups(self, query_str: str):
         """Return merged, normalized concept for given search term.
 
         :param str query_str: string to search against
@@ -375,19 +397,8 @@ class QueryHandler:
         # check concept ID match
         record = self.db.get_record_by_id(query_str, case_sensitive=False)
         if record:
-            merged_record = self.db.get_merged_record(record['merge_ref'])
-            if not merged_record:
-                logger.error(f"Could not retrieve merged record for concept"
-                             f"ID group {record['merge_ref']}"
-                             f"by way of concept ID {query_str}")
-                response['match_type'] = MatchType.NO_MATCH
-                return response
-            del merged_record['label_and_type']
-            concept_ids_combined = merged_record['concept_id'][:-8].split('|')
-            merged_record['concept_id_group'] = concept_ids_combined
-            del merged_record['concept_id']
             response['match_type'] = MatchType.CONCEPT_ID
-            response['record'] = merged_record
+            response = self.add_merged_record(response, record['merge_ref'])
             return response
 
         # check other match types
@@ -411,9 +422,9 @@ class QueryHandler:
                 else:
                     return 4
             matches.sort(key=record_order)
-
+            merge_ref = matches[0]['merge_ref']
             response['match_type'] = type_matched
-            response['record'] = matches[0]
+            response = self.add_merged_record(response, merge_ref)
         else:
             response['match_type'] = MatchType.NO_MATCH
         return response
