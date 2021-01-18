@@ -575,5 +575,87 @@
       "Cisplatin"
     ],
     "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:91691##identity",
+    "label": "nifedipine 10 MG Oral Capsule [Adalat]",
+    "concept_id": "rxcui:91691",
+    "aliases": [
+      "NIFEdipine 10 MG Oral Capsule [Adalat]",
+      "Adalat 10 MG Oral Capsule"
+    ],
+    "xrefs": [
+      "gsddb:18734",
+      "mmx:102718",
+      "mmsl:2735"
+    ],
+    "trade_names": [
+      "Adalat 10mg Capsule",
+      "Nifedipine 10 MG Oral Capsule, Liquid Filled [ADALAT]",
+      "Adalat, 10 mg oral capsule"
+    ],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:1298837##identity",
+    "label": "amiloride hydrochloride, anhydrous",
+    "concept_id": "rxcui:1298837",
+    "aliases": [
+      "aMILoride hydrochloride, anhydrous",
+      "Anhydrous Amiloride Hydrochloride",
+      "Hydrochloride, Anhydrous Amiloride",
+      "Amiloride Hydrochloride, Anhydrous"
+    ],
+    "xrefs": [
+      "msh:D000584",
+      "mthspl:7M458Q65S3"
+    ],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:1191##identity",
+    "label": "Aspirin",
+    "concept_id": "rxcui:1191",
+    "aliases": [
+      "Aspirin-containing product",
+      "Salicylic acid acetate",
+      "Aspirin",
+      "aspirin",
+      "Acetylsalicylic acid",
+      "Acid, Acetylsalicylic",
+      "Aspirin (substance)",
+      "2-(Acetyloxy)benzoic Acid",
+      "Acetylsalicylic Acid",
+      "2-Acetoxybenzenecarboxylic acid",
+      "ASA",
+      "O-acetylsalicylic acid",
+      "2-Acetoxybenzoic acid",
+      "o-acetoxybenzoic acid",
+      "o-carboxyphenyl acetate",
+      "Product containing aspirin (medicinal product)"
+    ],
+    "other_identifiers": ["drugbank:DB00945"],
+    "xrefs": [
+      "usp:m6240",
+      "gsddb:181",
+      "snomedct:7947003",
+      "snomedct:387458008",
+      "vandf:4017536",
+      "mmsl:34512",
+      "mmsl:4223",
+      "mmsl:d00170",
+      "mmsl:244",
+      "mthspl:R16CO5Y76E",
+      "fdbmk:001587",
+      "msh:D001241",
+      "atc:A01AD05",
+      "atc:B01AC06",
+      "atc:N02BA01"
+    ],
+    "trade_names": [
+      "Acetylsalicylic Acid",
+      "Aspirin"
+    ],
+    "src_name": "RxNorm"
   }
 ]
