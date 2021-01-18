@@ -33,7 +33,7 @@ class InvalidParameterException(Exception):
         super().__init__(message)
 
 
-class Normalizer:
+class QueryHandler:
     """Class for normalizer management. Stores reference to database instance
     and normalizes query input.
     """
@@ -41,8 +41,8 @@ class Normalizer:
     def __init__(self, db_url: str = '', db_region: str = 'us-east-2'):
         """Initialize Normalizer instance.
 
-        :param db_url: URL to database source.
-        :param db_region: AWS default region.
+        :param str db_url: URL to database source.
+        :param str db_region: AWS default region.
         """
         self.db = Database(db_url=db_url, region_name=db_region)
 
@@ -297,7 +297,7 @@ class Normalizer:
 
         return response_dict
 
-    def normalize(self, query_str, keyed=False, incl='', excl='', **params):
+    def search_sources(self, query_str, keyed=False, incl='', excl=''):
         """Fetch normalized therapy objects.
 
         :param str query_str: query, a string, to search for
@@ -356,3 +356,64 @@ class Normalizer:
             resp = self.response_list(query_str, query_sources)
 
         return resp
+
+    def search_groups(self, query_str):
+        """Return merged, normalized concept for given search term.
+
+        :param str query_str: string to search against
+        """
+        # prepare basic response
+        response = {
+            'query': query_str,
+            'warnings': self._emit_warnings(query_str),
+        }
+        if query_str == '':
+            response['match_type'] = MatchType.NO_MATCH
+            return response
+        query_str = query_str.lower()
+
+        # check concept ID match
+        record = self.db.get_record_by_id(query_str, case_sensitive=False)
+        if record:
+            merged_record = self.db.get_merged_record(record['merge_ref'])
+            if not merged_record:
+                logger.error(f"Could not retrieve merged record for concept"
+                             f"ID group {record['merge_ref']}"
+                             f"by way of concept ID {query_str}")
+                response['match_type'] = MatchType.NO_MATCH
+                return response
+            del merged_record['label_and_type']
+            concept_ids_combined = merged_record['concept_id'][:-8].split('|')
+            merged_record['concept_id_group'] = concept_ids_combined
+            del merged_record['concept_id']
+            response['match_type'] = MatchType.CONCEPT_ID
+            response['record'] = merged_record
+            return response
+
+        # check other match types
+        for match_type in [MatchType.LABEL, MatchType.ALIAS,
+                           MatchType.TRADE_NAME]:
+            matches = self.db.get_records_by_type(query_str, match_type)
+            if matches:
+                type_matched = match_type
+                break
+        if matches:
+            def record_order(record: Dict):
+                """Construct priority order for matching."""
+                # TODO where to add chemidplus/rxnorm?
+                src = record['src_name']
+                if src == SourceName.NCIT:
+                    return 1
+                elif src == SourceName.CHEMBL:
+                    return 2
+                elif src == SourceName.DRUGBANK:
+                    return 3
+                else:
+                    return 4
+            matches.sort(key=record_order)
+
+            response['match_type'] = type_matched
+            response['record'] = matches[0]
+        else:
+            response['match_type'] = MatchType.NO_MATCH
+        return response
