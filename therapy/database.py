@@ -2,7 +2,6 @@
 import boto3
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
-from therapy.schemas import MatchType
 from os import environ
 from typing import Optional, Dict, List
 import logging
@@ -150,15 +149,15 @@ class Database:
             return None
 
     def get_records_by_type(self, query: str,
-                            match_type: MatchType) -> List[Dict]:
+                            match_type: str) -> List[Dict]:
         """Retrieve records for given query and match type.
 
         :param query: string to match against
-        :param MatchType match_type: type of match to look for. Should be one
-            of MatchType.ALIAS, MatchType.TRADE_NAME, or MatchType.LABEL.
+        :param str match_type: type of match to look for. Should be one
+            of "alias", "trade_name", or "label".
         :return: list of matching records. Empty if lookup fails.
         """
-        pk = f'{query}##{match_type.name.lower()}'
+        pk = f'{query}##{match_type}'
         filter_exp = Key('label_and_type').eq(pk)
         try:
             matches = self.therapies.query(KeyConditionExpression=filter_exp)

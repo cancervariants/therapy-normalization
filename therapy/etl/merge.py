@@ -18,7 +18,7 @@ class Merge:
             and creation.
         """
         self._database = database
-        self._merged_groups = {}  # dict keying concept IDs to group Sets
+        self._groups = {}  # dict keying concept IDs to group Sets
 
     def create_merged_concepts(self, record_ids: Set[str]):
         """Create concept groups, generate merged concept records, and
@@ -36,8 +36,24 @@ class Merge:
          * When computing groups, how to handle cases where new group
            additions are discovered in subsequent passes?
          * Order that ChemIDplus/RxNorm go relative to other sources?
+         * still need to adjust serialization name schema thing -- handle
+           multiple IDs from same source
         """
-        raise NotImplementedError
+        for record_id in record_ids:
+            new_group = self._create_record_id_set(record_id)
+            for other_id in new_group:
+                self._groups[other_id] = new_group
+
+        uploaded_ids = set()
+        for record_id, group in self._groups.items():
+            if record_id in uploaded_ids:
+                continue
+            merged_record = self._generate_merged_record(group)  # noqa
+            # add group merger item to DB
+            for concept_id in group:
+                pass
+                # add group ref to each db item
+            uploaded_ids |= group
 
     def _create_record_id_set(self, record_id: str,
                               observed_id_set: Set = set()) -> Set[str]:
@@ -68,7 +84,10 @@ class Merge:
         """Generate merged record from provided concept ID group.
         Where attributes are sets, they should be merged, and where they are
         scalars, assign from the highest-priority source where that attribute
-        is non-null. Priority is NCIt > ChEMBL > DrugBank > Wikidata.
+        is non-null.
+
+        Priority is RxNorm > NCIt > ChEMBL > DrugBank > ChemIDplus > Wikidata.
+
 
         :param Set record_id_set: group of concept IDs
         :return: completed merged drug object to be stored in DB

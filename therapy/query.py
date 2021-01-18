@@ -80,12 +80,12 @@ class QueryHandler:
                 self.db.cached_sources[src_name] = response
                 return response
             except ClientError as e:
-                print(e.response['Error']['Message'])
+                logger.error(e.response['Error']['Message'])
 
     def _add_record(self,
                     response: Dict[str, Dict],
                     item: Dict,
-                    match_type: MatchType) -> (Dict, str):
+                    match_type: str) -> (Dict, str):
         """Add individual record (i.e. Item in DynamoDB) to response object
 
         :param Dict[str, Dict] response: in-progress response object to return
@@ -109,19 +109,19 @@ class QueryHandler:
             pass
         elif matches[src_name] is None:
             matches[src_name] = {
-                'match_type': match_type,
+                'match_type': MatchType[match_type.upper()],
                 'records': [drug],
                 'meta_': self._fetch_meta(src_name)
             }
-        elif matches[src_name]['match_type'].value == match_type.value:
+        elif matches[src_name]['match_type'] == MatchType[match_type.upper()]:
             matches[src_name]['records'].append(drug)
 
         return (response, src_name)
 
     def _fetch_records(self,
                        response: Dict[str, Dict],
-                       concept_ids: List[str],
-                       match_type: MatchType) -> (Dict, Set):
+                       concept_ids: Set[str],
+                       match_type: str) -> (Dict, Set):
         """Return matched Drug records as a structured response for a given
         collection of concept IDs.
 
@@ -129,7 +129,7 @@ class QueryHandler:
             to client.
         :param List[str] concept_ids: List of concept IDs to build from.
             Should be all lower-case.
-        :param MatchType match_type: record should be assigned this type of
+        :param str match_type: record should be assigned this type of
             match.
         :return: response Dict with records filled in via provided concept
             IDs, and Set of source names of matched records
@@ -142,7 +142,7 @@ class QueryHandler:
                 (response, src) = self._add_record(response, match, match_type)
                 matched_sources.add(src)
             except ClientError as e:
-                print(e.response['Error']['Message'])
+                logger.error(e.response['Error']['Message'])
 
         return (response, matched_sources)
 
@@ -211,18 +211,19 @@ class QueryHandler:
                           query: str,
                           resp: Dict,
                           sources: Set[str],
-                          match_type: MatchType) -> (Dict, Set):
+                          match_type: str) -> (Dict, Set):
         """Check query for selected match type.
         :param str query: search string
         :param Dict resp: in-progress response object to return to client
         :param Set[str] sources: remaining unmatched sources
-        :param MatchType match_type: Match type to check for
+        :param str match_type: Match type to check for. Should be one of
+            ['trade_name', 'label', 'alias']
         :return: Tuple with updated resp object and updated set of unmatched
                  sources
         """
         matches = self.db.get_records_by_type(query, match_type)
         if matches:
-            concept_ids = [i['concept_id'] for i in matches]
+            concept_ids = {i['concept_id'] for i in matches}
             (resp, matched_srcs) = self._fetch_records(resp, concept_ids,
                                                        match_type)
             sources = sources - matched_srcs
@@ -253,7 +254,7 @@ class QueryHandler:
         if len(sources) == 0:
             return response
 
-        match_types = [MatchType.LABEL, MatchType.TRADE_NAME, MatchType.ALIAS]
+        match_types = ['label', 'trade_name', 'alias']
         for match_type in match_types:
             (response, sources) = self._check_match_type(
                 query, response, sources, match_type)
@@ -261,9 +262,7 @@ class QueryHandler:
                 return response
 
         # remaining sources get no match
-        response = self._fill_no_matches(response)
-
-        return response
+        return self._fill_no_matches(response)
 
     def _response_list(self, query: str, sources: List[str]) -> Dict:
         """Return response as list, where the first key-value in each item
@@ -341,11 +340,11 @@ class QueryHandler:
         query_str = query_str.strip()
 
         if keyed:
-            resp = self._response_keyed(query_str, query_sources)
+            response = self._response_keyed(query_str, query_sources)
         else:
-            resp = self._response_list(query_str, query_sources)
+            response = self._response_list(query_str, query_sources)
 
-        return resp
+        return response
 
     def _add_merged_record(self, response: Dict, merge_ref: str) -> Dict:
         """Add referenced concept ID group to response object.
