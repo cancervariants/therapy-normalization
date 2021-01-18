@@ -137,12 +137,8 @@ class QueryHandler:
         matched_sources = set()
         for concept_id in concept_ids:
             try:
-                pk = f'{concept_id.lower()}##identity'
-                filter_exp = Key('label_and_type').eq(pk)
-                result = self.db.therapies.query(
-                    KeyConditionExpression=filter_exp
-                )
-                match = result['Items'][0]
+                match = self.db.get_record_by_id(concept_id.lower(),
+                                                 case_sensitive=False)
                 (response, src) = self.add_record(response, match, match_type)
                 matched_sources.add(src)
             except ClientError as e:
@@ -172,6 +168,7 @@ class QueryHandler:
                          sources: Set[str]) -> (Dict, Set):
         """Check query for concept ID match. Should only find 0 or 1 matches,
         but stores them as a collection to be safe.
+        # TODO is that ^ safe?
 
         :param str query: search string
         :param Dict resp: in-progress response object to return to client
@@ -214,28 +211,21 @@ class QueryHandler:
                          query: str,
                          resp: Dict,
                          sources: Set[str],
-                         match: str) -> (Dict, Set):
+                         match_type: MatchType) -> (Dict, Set):
         """Check query for selected match type.
         :param str query: search string
         :param Dict resp: in-progress response object to return to client
         :param Set[str] sources: remaining unmatched sources
-        :param str match: Match type name
+        :param MatchType match_type: Match type to check for
         :return: Tuple with updated resp object and updated set of unmatched
                  sources
         """
-        filter_exp = Key('label_and_type').eq(f'{query}##{match}')
-        try:
-            db_response = self.db.therapies.query(
-                KeyConditionExpression=filter_exp
-            )
-            if 'Items' in db_response.keys():
-                concept_ids = [i['concept_id'] for i in db_response['Items']]
-                (resp, matched_srcs) = self.fetch_records(
-                    resp, concept_ids, MatchType[match.upper()]
-                )
-                sources = sources - matched_srcs
-        except ClientError as e:
-            print(e.response['Error']['Message'])
+        matches = self.db.get_records_by_type(query, match_type)
+        if matches:
+            concept_ids = [i['concept_id'] for i in matches]
+            (resp, matched_srcs) = self.fetch_records(resp, concept_ids,
+                                                      match_type)
+            sources = sources - matched_srcs
         return (resp, sources)
 
     def response_keyed(self, query: str, sources: Set[str]) -> Dict:
@@ -246,7 +236,7 @@ class QueryHandler:
         :param Set[str] sources: sources to match from
         :return: completed response object to return to client
         """
-        resp = {
+        response = {
             'query': query,
             'warnings': self.emit_warnings(query),
             'source_matches': {
@@ -254,26 +244,26 @@ class QueryHandler:
             }
         }
         if query == '':
-            resp = self.fill_no_matches(resp)
-            return resp
-        query_l = query.lower()
+            response = self.fill_no_matches(response)
+            return response
+        query = query.lower()
 
         # check if concept ID match
-        (resp, sources) = self.check_concept_id(query_l, resp, sources)
+        (response, sources) = self.check_concept_id(query, response, sources)
         if len(sources) == 0:
-            return resp
+            return response
 
-        match_types = ['label', 'trade_name', 'alias']
-        for match in match_types:
-            (resp, sources) = self.check_match_type(
-                query_l, resp, sources, match)
+        match_types = [MatchType.LABEL, MatchType.TRADE_NAME, MatchType.ALIAS]
+        for match_type in match_types:
+            (response, sources) = self.check_match_type(
+                query, response, sources, match_type)
             if len(sources) == 0:
-                return resp
+                return response
 
         # remaining sources get no match
-        resp = self.fill_no_matches(resp)
+        response = self.fill_no_matches(response)
 
-        return resp
+        return response
 
     def response_list(self, query: str, sources: List[str]) -> Dict:
         """Return response as list, where the first key-value in each item
@@ -297,7 +287,7 @@ class QueryHandler:
 
         return response_dict
 
-    def search_sources(self, query_str, keyed=False, incl='', excl=''):
+    def search_sources(self, query_str, keyed=False, incl='', excl='') -> Dict:
         """Fetch normalized therapy objects.
 
         :param str query_str: query, a string, to search for
@@ -379,7 +369,7 @@ class QueryHandler:
         response['record'] = merged_record
         return response
 
-    def search_groups(self, query_str: str):
+    def search_groups(self, query_str: str) -> Dict:
         """Return merged, normalized concept for given search term.
 
         :param str query_str: string to search against
