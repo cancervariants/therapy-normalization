@@ -353,4 +353,5 @@ class MergedService(BaseModel):
 
     query: str
     warnings: Optional[Dict]
-    match: MergedDrug
+    match_type: MatchType
+    match: Optional[MergedDrug]
