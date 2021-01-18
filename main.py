@@ -76,12 +76,11 @@ def get_matches(q: str = Query(..., description=q_descr),
     :returns: JSON response with matched records and source metadata
     """
     try:
-        resp = query_handler.search_sources(html.unescape(q), keyed=keyed,
-                                            incl=incl, excl=excl)
+        response = query_handler.search_sources(html.unescape(q), keyed=keyed,
+                                                incl=incl, excl=excl)
     except InvalidParameterException as e:
         raise HTTPException(status_code=422, detail=str(e))
-
-    return resp
+    return response
 
 
 merged_matches_summary = """Given query, provide merged record from given
