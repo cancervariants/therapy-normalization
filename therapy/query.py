@@ -220,7 +220,7 @@ class QueryHandler:
         :return: Tuple with updated resp object and updated set of unmatched
                  sources
         """
-        matches = self.db._get_records_by_type(query, match_type)
+        matches = self.db.get_records_by_type(query, match_type)
         if matches:
             concept_ids = [i['concept_id'] for i in matches]
             (resp, matched_srcs) = self._fetch_records(resp, concept_ids,
