@@ -13,39 +13,48 @@ logger.setLevel(logging.DEBUG)
 class Database:
     """The database class."""
 
-    def __init__(self, db_url='', region_name='us-east-2'):
-        """Initialize Database class."""
+    def __init__(self, db_url: str = '', region_name: str = 'us-east-2'):
+        """Initialize Database class.
+
+        :param str db_url: database endpoint URL to connect to
+        :param str region_name: AWS region name to use
+        """
         if db_url:
-            self.ddb = boto3.resource('dynamodb', region_name=region_name,
-                                      endpoint_url=db_url)
-            self.ddb_client = boto3.client('dynamodb',
-                                           region_name=region_name,
-                                           endpoint_url=db_url)
+            boto_params = {
+                'region_name': region_name,
+                'endpoint_url': db_url
+            }
         elif 'THERAPY_NORM_DB_URL' in environ.keys():
-            db_url = environ['THERAPY_NORM_DB_URL']
-            self.ddb = boto3.resource('dynamodb', region_name=region_name,
-                                      endpoint_url=db_url)
-            self.ddb_client = boto3.client('dynamodb',
-                                           region_name=region_name,
-                                           endpoint_url=db_url)
+            boto_params = {
+                'region_name': region_name,
+                'endpoint_url': environ['THERAPY_NORM_DB_URL']
+            }
         else:
-            self.ddb = boto3.resource('dynamodb', region_name=region_name)
-            self.ddb_client = boto3.client('dynamodb',
-                                           region_name=region_name)
+            boto_params = {
+                'region_name': region_name
+            }
+        self.dynamodb = boto3.resource('dynamodb', **boto_params)
+        self.dynamodb_client = boto3.client('dynamodb', **boto_params)
+
+        # create tables if nonexistant if not connecting to remote database
         if db_url or 'THERAPY_NORM_DB_URL' in environ.keys():
-            existing_tables = self.ddb_client.list_tables()['TableNames']
+            existing_tables = self.dynamodb_client.list_tables()['TableNames']
             self.create_therapies_table(existing_tables)
             self.create_meta_data_table(existing_tables)
 
-        self.therapies = self.ddb.Table('therapy_concepts')
-        self.metadata = self.ddb.Table('therapy_metadata')
+        self.therapies = self.dynamodb.Table('therapy_concepts')
+        self.metadata = self.dynamodb.Table('therapy_metadata')
+        self.batch = self.therapies.batch_writer()
         self.cached_sources = {}
 
-    def create_therapies_table(self, existing_tables):
-        """Create Therapies table if not exists."""
+    def create_therapies_table(self, existing_tables: List):
+        """Create Therapies table if it doesn't already exist.
+
+        :param List existing_tables: list of existing table names
+        """
         table_name = 'therapy_concepts'
         if table_name not in existing_tables:
-            self.ddb.create_table(
+            self.dynamodb.create_table(
                 TableName=table_name,
                 KeySchema=[
                     {
@@ -96,11 +105,14 @@ class Database:
                 }
             )
 
-    def create_meta_data_table(self, existing_tables):
-        """Create MetaData table if not exists."""
+    def create_meta_data_table(self, existing_tables: List):
+        """Create MetaData table if not exists.
+
+        :param List existing_tables: list of existing table names
+        """
         table_name = 'therapy_metadata'
         if table_name not in existing_tables:
-            self.ddb.create_table(
+            self.dynamodb.create_table(
                 TableName=table_name,
                 KeySchema=[
                     {

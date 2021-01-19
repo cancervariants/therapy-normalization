@@ -20,7 +20,7 @@ IDENTIFIER_PREFIXES = {
 class Base(ABC):
     """The ETL base class."""
 
-    def __init__(self, database: Database, *args, **kwargs):
+    def __init__(self, database: Database):
         """Extract from sources."""
         self.database = database
         self._added_ids = set()
