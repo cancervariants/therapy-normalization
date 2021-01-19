@@ -1,5 +1,5 @@
 """Create concept groups and merged records."""
-from therapy.schemas import SourceName
+from therapy.schemas import SourceName, NamespacePrefix
 from therapy.database import Database
 from typing import Set, Dict
 import logging
@@ -54,6 +54,24 @@ class Merge:
                                              merged_record['label_and_type'])
             uploaded_ids |= group
 
+    def _get_other_ids(self, record: Dict) -> Set[str]:
+        """Extract references to entries in other sources from a record.
+        Crucially, filter to allowed sources only.
+
+        :param Dict record: record to process
+        :return: Set of other_identifier values
+        :rtype: Set
+        """
+        disallowed_sources = {NamespacePrefix.DRUGBANK.value,
+                              NamespacePrefix.CHEMBL.value}
+        other_ids = set()
+        for other_id in record['other_identifiers']:
+            for prefix in disallowed_sources:
+                if other_id.startswith(prefix):
+                    continue
+            other_ids.add(other_id)
+        return other_ids
+
     def _create_record_id_set(self, record_id: str,
                               observed_id_set: Set = set()) -> Set[str]:
         """Create concept ID group for an individual record ID.
@@ -70,7 +88,7 @@ class Merge:
                              f"in ID set: {observed_id_set}")
                 return observed_id_set | {record_id}
 
-            local_id_set = {db_record['other_identifiers']}
+            local_id_set = self._get_other_ids(db_record)
             merged_id_set = local_id_set | observed_id_set | \
                 {db_record['concept_id']}
 
