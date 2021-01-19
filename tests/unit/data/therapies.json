@@ -456,6 +456,11 @@
     "src_name": "ChemIDplus"
   },
   {
+    "label_and_type": "Phenoxymethylpenicillin",
+    "concept_id": "chemidplus:152459-95-5",
+    "src_name": "ChemIDplus"
+  },
+  {
     "label_and_type": "chemidplus:15663-27-1##identity",
     "concept_id": "chemidplus:15663-27-1",
     "label": "Cisplatin",
@@ -479,7 +484,7 @@
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "1,2-Diaminocyclohexaneplatinum II citrate",
+    "label_and_type": "1,2-Diaminocyclohexaneplatinum II citrate##alias",
     "concept_id": "chemidplus:15663-27-1",
     "src_name": "ChemIDplus"
   },
