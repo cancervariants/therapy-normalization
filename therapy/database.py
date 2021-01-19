@@ -198,8 +198,12 @@ class Database:
             'label_and_type': f'{concept_id.lower()}##identity',
             'concept_id': concept_id
         }
-        self.therapies.update_item(Key=key, AttributeUpdates={
+        update = {
             'Value': {
                 field: value
             }
-        })
+        }
+        try:
+            self.therapies.update_item(Key=key, AttributeUpdates=update)
+        except ClientError as e:
+            logger.error(e.response['Error']['Message'])
