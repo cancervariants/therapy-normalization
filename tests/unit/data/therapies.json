@@ -445,12 +445,7 @@
     "concept_id": "chemidplus:152459-95-5",
     "label": "Imatinib",
     "aliases": [
-      "GGP 57148",
-      "CCRIS 9076",
-      "UNII-BKJ8M8G5HI",
-      "ST1571",
-      "ST 1571",
-      "CGP-57148"
+        "Phenoxymethylpenicillin"
     ],
     "trade_names": [],
     "other_identifiers": ["drugbank:DB00619"],
@@ -459,36 +454,6 @@
   },
   {
     "label_and_type": "imatinib##label",
-    "concept_id": "chemidplus:152459-95-5",
-    "src_name": "ChemIDplus"
-  },
-  {
-    "label_and_type": "cgp 57148##alias",
-    "concept_id": "chemidplus:152459-95-5",
-    "src_name": "ChemIDplus"
-  },
-  {
-    "label_and_type": "st1571##alias",
-    "concept_id": "chemidplus:152459-95-5",
-    "src_name": "ChemIDplus"
-  },
-  {
-    "label_and_type": "ccris 9076##alias",
-    "concept_id": "chemidplus:152459-95-5",
-    "src_name": "ChemIDplus"
-  },
-  {
-    "label_and_type": "cgp-57148##alias",
-    "concept_id": "chemidplus:152459-95-5",
-    "src_name": "ChemIDplus"
-  },
-  {
-    "label_and_type": "st 1571##alias",
-    "concept_id": "chemidplus:152459-95-5",
-    "src_name": "ChemIDplus"
-  },
-  {
-    "label_and_type": "unii-bkj8m8g5hi##alias",
     "concept_id": "chemidplus:152459-95-5",
     "src_name": "ChemIDplus"
   },

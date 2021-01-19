@@ -22,15 +22,13 @@ def chemidplus():
 
 @pytest.fixture(scope='module')
 def penicillin_v():
-    """Build test fixture for Penicillin V drug.
-
-    ChemIDplus stores a long list of aliases, but the DB record should
-    truncate them to 0.
-    """
+    """Build test fixture for Penicillin V drug."""
     return Drug(**{
         "concept_id": "chemidplus:87-08-1",
         "label": "Penicillin V",
-        "aliases": [],
+        "aliases": [
+            'Phenoxymethylpenicillin'
+        ],
         "trade_names": [],
         "other_identifiers": [
             "drugbank:DB00417",
@@ -47,10 +45,7 @@ def imatinib():
     return Drug(**{
         "concept_id": "chemidplus:152459-95-5",
         "label": "Imatinib",
-        "aliases": [
-            "GGP 57148", "CCRIS 9076", "UNII-BKJ8M8G5HI", "ST1571", "ST 1571",
-            "CGP-57148"
-        ],
+        "aliases": [],
         "trade_names": [],
         "other_identifiers": [
             "drugbank:DB00619",
