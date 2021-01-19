@@ -15,7 +15,6 @@ import requests
 import logging
 from typing import Dict
 from boto3.dynamodb.table import BatchWriter
-from timeit import default_timer as timer
 import re
 
 
@@ -51,7 +50,6 @@ class ChemIDplus(Base):
         self._added_ids = set()
         # perform ETL
         self.added_num = 0
-        self.start = timer()
         self._extract_data(data_path)
         self._transform_data()
         self._add_meta()
@@ -151,12 +149,6 @@ class ChemIDplus(Base):
                 'concept_id': concept_id_l,
                 'src_name': SourceName.CHEMIDPLUS.value
             })
-        for trade_name in {t.lower() for t in record['trade_names']}:
-            batch.put_item(Item={
-                'label_and_type': f'{trade_name}##trade_name',
-                'concept_id': concept_id_l,
-                'src_name': SourceName.CHEMIDPLUS.value
-            })
         if 'label' in record:
             batch.put_item(Item={
                 'label_and_type': f'{record["label"].lower()}##label',
@@ -167,11 +159,6 @@ class ChemIDplus(Base):
         record['label_and_type'] = f'{concept_id_l}##identity'
         batch.put_item(Item=record)
         self._added_ids.add(record['concept_id'])
-        self.added_num += 1
-        if self.added_num % 1000 == 0:
-            self.stop = timer()
-            print(self.stop - self.start)
-            self.start = timer()
 
     def _add_meta(self):
         """Add source metadata."""
