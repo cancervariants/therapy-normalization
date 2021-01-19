@@ -1,9 +1,4 @@
-"""ETL methods for ChemIDPlus source.
-TODO?
- * Speed up
- * restrict alias from equalling label/etc?
- * include extra 'label'ish values as additional aliases
-"""
+"""ETL methods for ChemIDPlus source."""
 from .base import Base
 from therapy import PROJECT_ROOT
 from therapy.database import Database
