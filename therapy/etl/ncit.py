@@ -64,7 +64,7 @@ class NCIt(Base):
         for chunk in response.iter_content(chunk_size=512):
             if chunk:
                 handle.write(chunk)
-        print(zip_path)
+        logger.info(zip_path)
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
             zip_ref.extractall(self._data_path)
         remove(zip_path)
@@ -82,8 +82,8 @@ class NCIt(Base):
         self._data_file = sorted(dir_files)[-1]
         self._version = self._data_file.stem.split('_')[1]
 
-    def get_desc_nodes(self, node: ThingClass,
-                       uq_nodes: Set[ThingClass]) -> Set[ThingClass]:
+    def _get_desc_nodes(self, node: ThingClass,
+                        uq_nodes: Set[ThingClass]) -> Set[ThingClass]:
         """Create set of unique subclasses of node parameter.
         Should be originally called on ncit:C1909: Pharmacologic Substance.
 
@@ -103,8 +103,8 @@ class NCIt(Base):
                     self.get_desc_nodes(child_node, uq_nodes)
         return uq_nodes
 
-    def get_typed_nodes(self, uq_nodes: Set[ThingClass],
-                        ncit: owl.namespace.Ontology) -> Set[ThingClass]:
+    def _get_typed_nodes(self, uq_nodes: Set[ThingClass],
+                         ncit: owl.namespace.Ontology) -> Set[ThingClass]:
         """Get all nodes with semantic_type Pharmacologic Substance
 
         :param Set[owlready2.entity.ThingClass] uq_nodes: set of unique class
@@ -207,7 +207,8 @@ class NCIt(Base):
         """
         item = therapy.dict()
         concept_id_lower = item['concept_id'].lower()
-        if len({a.casefold(): a for a in item['aliases']}) > 20 or not item['aliases']:  # noqa: E501
+        if len({a.casefold(): a for a in item['aliases']}) > 20 \
+                or not item['aliases']:
             del item['aliases']
         else:
             if 'aliases' in item:
@@ -228,7 +229,7 @@ class NCIt(Base):
                 'src_name': SourceName.NCIT.value
             })
         else:
-            del therapy['label']
+            del therapy.label
         item['label_and_type'] = f"{concept_id_lower}##identity"
         item['src_name'] = SourceName.NCIT.value
         for element in ['other_identifiers', 'xrefs']:

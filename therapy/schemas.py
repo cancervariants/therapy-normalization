@@ -90,6 +90,24 @@ class Drug(Therapy):
             }
 
 
+class MergedDrug(BaseModel):
+    """A merged record for a single concept drawn from multiple individual
+    records.
+    """
+
+    concept_id: str
+    label: Optional[str]
+    approval_status: Optional[ApprovalStatus]
+    aliases: List[str]
+    xrefs: Optional[List[str]]
+    trade_names: Optional[List[str]]
+
+    class Config:
+        """Pydantic config"""
+
+        extra = 'forbid'
+
+
 class DrugGroup(Therapy):
     """A grouping of drugs based on common pharmacological attributes."""
 
@@ -298,6 +316,17 @@ class MatchesListed(BaseModel):
             }
 
 
+class MergedMatch(BaseModel):
+    """Represent merged concept in response to client."""
+
+    concept_ids: List[str]
+    aliases: List[str]
+    trade_names: Optional[List[str]]
+    xrefs: Optional[List[str]]
+    label: Optional[str]
+    approval_status: Optional[ApprovalStatus]
+
+
 class Service(BaseModel):
     """Core response schema containing matches for each source"""
 
@@ -336,21 +365,12 @@ class Service(BaseModel):
             }
 
 
-class MergedDrug(BaseModel):
-    """Structure of merged drug object as provided to end user."""
-
-    concept_id_group: List[str]
-    label: Optional[str]
-    approval_status: Optional[ApprovalStatus]
-    trade_names: Optional[List[str]]
-    aliases: Optional[List[str]]
-    xrefs: Optional[List[str]]
-
-
-class MergedService(BaseModel):
-    """Response schema for grouped matching endpoint."""
+class NormalizationService(BaseModel):
+    """Response containing one or more merged records and relevant source
+    data.
+    """
 
     query: str
     warnings: Optional[Dict]
-    match_type: MatchType
-    match: Optional[MergedDrug]
+    matches: List[MergedMatch]
+    meta_: Dict[SourceName, Meta]

@@ -114,8 +114,8 @@ class Wikidata(Base):
                     item['concept_id'] = concept_id
                     item['src_name'] = SourceName.WIKIDATA.value
 
-                    other_ids = []
-                    xrefs = []
+                    other_ids = list()
+                    xrefs = list()
                     for key in IDENTIFIER_PREFIXES.keys():
                         if key in record.keys():
                             other_id = record[key]

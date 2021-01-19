@@ -293,14 +293,13 @@ class QueryHandler:
         :param bool keyed: if true, return response as dict keying source names
             to source objects; otherwise, return list of source objects
         :param str incl: str containing comma-separated names of sources to
-            use. Will exclude all other sources. Case-insensitive. Raises
-            InvalidParameterException if both incl and excl args are
-            provided, or if invalid source names are given.
+            use. Will exclude all other sources. Case-insensitive.
         :param str excl: str containing comma-separated names of source to
-            exclude. Will include all other source. Case-insensitive. Raises
-            InvalidParameterException if both incl and excl args are
-            provided, or if invalid source names are given.
+            exclude. Will include all other source. Case-insensitive.
         :return: dict containing all matches found in sources.
+        :rtype: dict
+        :raises InvalidParameterException: if both incl and excl args are
+            provided, or if invalid source names are given.
         """
         sources = {name.value.lower(): name.value for name in
                    SourceName.__members__.values()}

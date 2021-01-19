@@ -1,6 +1,6 @@
 """Main application for FastAPI"""
 from therapy.query import QueryHandler, InvalidParameterException
-from therapy.schemas import Service, MergedService
+from therapy.schemas import Service, NormalizationService
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.openapi.utils import get_openapi
 import html
@@ -93,7 +93,7 @@ merged_q_descr = ""
          summary=merged_matches_summary,
          operation_id="getQuerymergedResponse",
          response_description=merged_response_descr,
-         response_model=MergedService)
+         response_model=NormalizationService)
 def get_merged_matches(q: str = Query(..., description=merged_q_descr)):
     """Return merged strongest-match concept for query string provided by
     user.
