@@ -35,7 +35,6 @@ class Merge:
            records remain after an other_identifier is removed?
          * When computing groups, how to handle cases where new group
            additions are discovered in subsequent passes?
-         * Order that ChemIDplus/RxNorm go relative to other sources?
          * still need to adjust serialization name schema thing -- handle
            multiple IDs from same source
         """
@@ -51,8 +50,8 @@ class Merge:
             merged_record = self._generate_merged_record(group)  # noqa
             # add group merger item to DB
             for concept_id in group:
-                pass
-                # add group ref to each db item
+                self._database.update_record(concept_id, 'merge_ref',
+                                             merged_record['label_and_type'])
             uploaded_ids |= group
 
     def _create_record_id_set(self, record_id: str,
@@ -101,16 +100,21 @@ class Merge:
                 logger.error(f"Could not retrieve record for {record_id}"
                              f"in {record_id_set}")
 
-        def record_order(record_to_order):
-            src = record_to_order['src_name']
-            if src == SourceName.NCIT:
-                return 1
+        def record_order(record):
+            src = record['src_name']
+            if src == SourceName.RXNORM:
+                source_rank = 1
+            elif src == SourceName.NCIT:
+                source_rank = 2
             elif src == SourceName.CHEMBL:
-                return 2
+                source_rank = 3
             elif src == SourceName.DRUGBANK:
-                return 3
+                source_rank = 4
+            elif src == SourceName.CHEMIDPLUS:
+                source_rank = 5
             else:
-                return 4
+                source_rank = 6
+            return (source_rank, record['concept_id'])
         records.sort(key=record_order)
 
         attrs = {'aliases': set(), 'concept_id': '',
