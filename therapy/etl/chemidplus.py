@@ -44,7 +44,6 @@ class ChemIDplus(Base):
         self._src_fname = src_fname
         self._added_ids = set()
         # perform ETL
-        self.added_num = 0
         self._extract_data(data_path)
         self._transform_data()
         self._add_meta()
