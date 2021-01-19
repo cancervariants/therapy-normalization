@@ -429,7 +429,7 @@
     "label_and_type": "chemidplus:87-08-1##identity",
     "concept_id": "chemidplus:87-08-1",
     "label": "Penicillin V",
-    "aliases": [],
+    "aliases": ["Phenoxymethylpenicillin"],
     "trade_names": [],
     "other_identifiers": ["drugbank:DB00417"],
     "xrefs": ["fda:Z61I075U2W"],
@@ -441,10 +441,15 @@
     "src_name": "ChemIDplus"
   },
   {
+    "label_and_type": "Phenoxymethylpenicillin",
+    "concept_id": "chemidplus:87-08-1",
+    "src_name": "ChemIDplus"
+  },
+  {
     "label_and_type": "chemidplus:152459-95-5##identity",
     "concept_id": "chemidplus:152459-95-5",
     "label": "Imatinib",
-    "aliases": ["Phenoxymethylpenicillin"],
+    "aliases": [],
     "trade_names": [],
     "other_identifiers": ["drugbank:DB00619"],
     "xrefs": ["fda:BKJ8M8G5HI"],
@@ -452,11 +457,6 @@
   },
   {
     "label_and_type": "imatinib##label",
-    "concept_id": "chemidplus:152459-95-5",
-    "src_name": "ChemIDplus"
-  },
-  {
-    "label_and_type": "Phenoxymethylpenicillin",
     "concept_id": "chemidplus:152459-95-5",
     "src_name": "ChemIDplus"
   },
