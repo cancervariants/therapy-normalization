@@ -97,7 +97,6 @@ def cisplatin():
         'label': 'Cisplatin',
         'concept_id': 'rxcui:2555',
         'aliases': [
-            'cisplatino',
             'Cisplatin-containing product',
             'Diaminedichloroplatinum',
             'cis-Platinum',
@@ -144,6 +143,108 @@ def cisplatin():
         ],
         'trade_names': [
             'Cisplatin'
+        ]
+    }
+    return Drug(**params)
+
+
+@pytest.fixture(scope='module')
+def nifedipine():
+    """Create nifedipine 10 MG Oral Capsule [Adalat] drug fixture."""
+    params = {
+        'label': 'nifedipine 10 MG Oral Capsule [Adalat]',
+        'concept_id': 'rxcui:91691',
+        'aliases': [
+            'NIFEdipine 10 MG Oral Capsule [Adalat]',
+            'Adalat 10 MG Oral Capsule'
+        ],
+        'approval_status': None,
+        'other_identifiers': [],
+        'xrefs': [
+            'gsddb:18734',
+            'mmx:102718',
+            'mmsl:2735'
+        ],
+        'trade_names': [
+            'Adalat 10mg Capsule',
+            'Nifedipine 10 MG Oral Capsule, Liquid Filled [ADALAT]',
+            'Adalat, 10 mg oral capsule'
+        ]
+    }
+    return Drug(**params)
+
+
+@pytest.fixture(scope='module')
+def amiloride():
+    """Create amiloride hydrochloride, anhydrous drug fixture."""
+    params = {
+        'label': 'amiloride hydrochloride, anhydrous',
+        'concept_id': 'rxcui:1298837',
+        'aliases': [
+            'aMILoride hydrochloride, anhydrous',
+            'Anhydrous Amiloride Hydrochloride',
+            'Hydrochloride, Anhydrous Amiloride',
+            'Amiloride Hydrochloride, Anhydrous'
+        ],
+        'approval_status': None,
+        'other_identifiers': [],
+        'xrefs': [
+            'msh:D000584',
+            'mthspl:7M458Q65S3'
+        ],
+        'trade_names': []
+    }
+    return Drug(**params)
+
+
+@pytest.fixture(scope='module')
+def aspirin():
+    """Create aspirin drug fixture."""
+    params = {
+        'label': 'Aspirin',
+        'concept_id': 'rxcui:1191',
+        'aliases': [
+            'Aspirin-containing product',
+            'Salicylic acid acetate',
+            'Aspirin',
+            'aspirin',
+            'Acetylsalicylic acid',
+            'Acid, Acetylsalicylic',
+            'Aspirin (substance)',
+            '2-(Acetyloxy)benzoic Acid',
+            'Acetylsalicylic Acid',
+            '2-Acetoxybenzenecarboxylic acid',
+            'ASA',
+            'O-acetylsalicylic acid',
+            '2-Acetoxybenzoic acid',
+            'o-acetoxybenzoic acid',
+            'o-carboxyphenyl acetate',
+            'Product containing aspirin (medicinal product)'
+        ],
+        'approval_status': None,
+        'other_identifiers': [
+            'drugbank:DB00945'
+        ],
+        'xrefs': [
+            'usp:m6240',
+            'gsddb:181',
+            'snomedct:7947003',
+            'snomedct:387458008',
+            'vandf:4017536',
+            'mmsl:34512',
+            'mmsl:4223',
+            'mmsl:d00170',
+            'mmsl:244',
+            'mthspl:R16CO5Y76E',
+            'fdbmk:001587',
+            'msh:D001241',
+            'atc:A01AD05',
+            'atc:B01AC06',
+            'atc:N02BA01'
+        ],
+        'trade_names': [
+            'Acetylsalicylic Acid',
+            'Aspirin'
         ]
     }
     return Drug(**params)
@@ -354,11 +455,87 @@ def test_cisplatin(cisplatin, rxnorm):
            cisplatin.approval_status
 
 
+def test_nifedipine(nifedipine, rxnorm):
+    """Test that nifedipine drug normalizes to correct drug concept."""
+    # Concept ID Match
+    normalizer_response = rxnorm.normalize('RxCUI:91691')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == nifedipine.label
+    assert normalized_drug.concept_id == nifedipine.concept_id
+    assert set(normalized_drug.aliases) == \
+           set(nifedipine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(nifedipine.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(nifedipine.xrefs)
+    assert set(normalized_drug.trade_names) == \
+           set(nifedipine.trade_names)
+    assert normalized_drug.approval_status == \
+           nifedipine.approval_status
+
+
+def test_amiloride(amiloride, rxnorm):
+    """Test that amiloride hydrochloride, anhydrous drug normalizes to
+    correct drug concept.
+    """
+    # Concept ID Match
+    normalizer_response = rxnorm.normalize('RxcUI:1298837')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == amiloride.label
+    assert normalized_drug.concept_id == amiloride.concept_id
+    assert set(normalized_drug.aliases) == \
+           set(amiloride.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(amiloride.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(amiloride.xrefs)
+    assert set(normalized_drug.trade_names) == \
+           set(amiloride.trade_names)
+    assert normalized_drug.approval_status == \
+           amiloride.approval_status
+
+
+def test_aspirin(aspirin, rxnorm):
+    """Test that aspirin drug normalizes to correct drug concept."""
+    # Concept ID Match
+    normalizer_response = rxnorm.normalize('RxcUI:1191')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == aspirin.label
+    assert normalized_drug.concept_id == aspirin.concept_id
+    assert set(normalized_drug.aliases) == \
+           set(aspirin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(aspirin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(aspirin.xrefs)
+    assert set(normalized_drug.trade_names) == \
+           set(aspirin.trade_names)
+    assert normalized_drug.approval_status == \
+           aspirin.approval_status
+
+
 def test_no_match(rxnorm):
     """Test that a term normalizes to correct drug concept as a NO match."""
+    # Misspelled name
     normalizer_response = rxnorm.normalize('17-hydroxycorticosteroi')
     assert normalizer_response['match_type'] == MatchType.NO_MATCH
     assert len(normalizer_response['records']) == 0
+
+    # Not storing foreign synonyms
+    normalizer_response = rxnorm.normalize('cisplatino')
+    assert normalizer_response['match_type'] == MatchType.NO_MATCH
+    assert len(normalizer_response['records']) == 0
+
+    # Wrong Namespace
+    normalizer_response = rxnorm.normalize('rxnorm:3')
+    assert normalizer_response['match_type'] == MatchType.NO_MATCH
+
+    # Not including TTY = IN (Ingredient)
+    normalizer_response = rxnorm.normalize('electrolytes for oral solution')
+    assert normalizer_response['match_type'] == MatchType.NO_MATCH
 
     # Test white space in between id
     normalizer_response = rxnorm.normalize('rxcui: 3')

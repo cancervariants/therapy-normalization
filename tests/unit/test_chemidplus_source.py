@@ -22,15 +22,13 @@ def chemidplus():
 
 @pytest.fixture(scope='module')
 def penicillin_v():
-    """Build test fixture for Penicillin V drug.
-
-    ChemIDplus stores a long list of aliases, but the DB record should
-    truncate them to 0.
-    """
+    """Build test fixture for Penicillin V drug."""
     return Drug(**{
         "concept_id": "chemidplus:87-08-1",
         "label": "Penicillin V",
-        "aliases": [],
+        "aliases": [
+            'Phenoxymethylpenicillin'
+        ],
         "trade_names": [],
         "other_identifiers": [
             "drugbank:DB00417",
@@ -47,16 +45,33 @@ def imatinib():
     return Drug(**{
         "concept_id": "chemidplus:152459-95-5",
         "label": "Imatinib",
-        "aliases": [
-            "GGP 57148", "CCRIS 9076", "UNII-BKJ8M8G5HI", "ST1571", "ST 1571",
-            "CGP-57148"
-        ],
+        "aliases": [],
         "trade_names": [],
         "other_identifiers": [
             "drugbank:DB00619",
         ],
         "xrefs": [
             "fda:BKJ8M8G5HI",
+        ]
+    })
+
+
+@pytest.fixture(scope='module')
+def cisplatin():
+    """Build test fixture for cisplatin."""
+    return Drug(**{
+        'concept_id': 'chemidplus:15663-27-1',
+        'label': 'Cisplatin',
+        'aliases': [
+            'cis-Diaminedichloroplatinum',
+            '1,2-Diaminocyclohexaneplatinum II citrate'
+        ],
+        'trade_names': [],
+        'other_identifiers': [
+            'drugbank:DB00515'
+        ],
+        "xrefs": [
+            'fda:Q20Q21Q62J'
         ]
     })
 
@@ -112,17 +127,20 @@ def test_label_match(chemidplus, imatinib, penicillin_v):
     assert response['match_type'] == MatchType.NO_MATCH
 
 
-def test_alias_match(chemidplus, imatinib):
+def test_alias_match(chemidplus, penicillin_v, cisplatin):
     """Test that records are retrieved by alias correctly."""
-    response = chemidplus.normalize('CCRIS 9076')
+    response = chemidplus.normalize('cis-Diaminedichloroplatinum')
     assert response['match_type'] == MatchType.ALIAS
     assert len(response['records']) == 1
-    compare_records(response['records'][0], imatinib)
+    compare_records(response['records'][0], cisplatin)
 
-    response = chemidplus.normalize('CGP-57148')
+    response = chemidplus.normalize('Phenoxymethylpenicillin')
     assert response['match_type'] == MatchType.ALIAS
     assert len(response['records']) == 1
-    compare_records(response['records'][0], imatinib)
+    compare_records(response['records'][0], penicillin_v)
+
+    response = chemidplus.normalize('Cisplatine')
+    assert response['match_type'] == MatchType.NO_MATCH
 
 
 def test_meta(chemidplus):
