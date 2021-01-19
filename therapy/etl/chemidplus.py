@@ -115,8 +115,9 @@ class ChemIDplus(Base):
                 name_list = chemical.find('NameList')
                 if name_list:
                     for name in name_list.findall('NameOfSubstance'):
-                        if name != display_name and name.lower() != label_l:
-                            aliases.append(name)
+                        text = name.text
+                        if text != display_name and text.lower() != label_l:
+                            aliases.append(text)
                 params['aliases'] = aliases
 
                 # get other_ids and xrefs
