@@ -444,9 +444,7 @@
     "label_and_type": "chemidplus:152459-95-5##identity",
     "concept_id": "chemidplus:152459-95-5",
     "label": "Imatinib",
-    "aliases": [
-        "Phenoxymethylpenicillin"
-    ],
+    "aliases": ["Phenoxymethylpenicillin"],
     "trade_names": [],
     "other_identifiers": ["drugbank:DB00619"],
     "xrefs": ["fda:BKJ8M8G5HI"],
@@ -455,6 +453,34 @@
   {
     "label_and_type": "imatinib##label",
     "concept_id": "chemidplus:152459-95-5",
+    "src_name": "ChemIDplus"
+  },
+  {
+    "label_and_type": "chemidplus:15663-27-1##identity",
+    "concept_id": "chemidplus:15663-27-1",
+    "label": "Cisplatin",
+    "aliases": [
+      "cis-Diaminedichloroplatinum",
+      "1,2-Diaminocyclohexaneplatinum II citrate"
+    ],
+    "trade_names": [],
+    "other_identifiers": ["drugbank:DB00515"],
+    "xrefs": ["fda:Q20Q21Q62J"],
+    "src_name": "ChemIDplus"
+  },
+  {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "chemidplus:15663-27-1",
+    "src_name": "ChemIDplus"
+  },
+  {
+    "label_and_type": "cis-Diaminedichloroplatinum##alias",
+    "concept_id": "chemidplus:15663-27-1",
+    "src_name": "ChemIDplus"
+  },
+  {
+    "label_and_type": "1,2-Diaminocyclohexaneplatinum II citrate",
+    "concept_id": "chemidplus:15663-27-1",
     "src_name": "ChemIDplus"
   },
   {
@@ -585,11 +611,7 @@
       "NIFEdipine 10 MG Oral Capsule [Adalat]",
       "Adalat 10 MG Oral Capsule"
     ],
-    "xrefs": [
-      "gsddb:18734",
-      "mmx:102718",
-      "mmsl:2735"
-    ],
+    "xrefs": ["gsddb:18734", "mmx:102718", "mmsl:2735"],
     "trade_names": [
       "Adalat 10mg Capsule",
       "Nifedipine 10 MG Oral Capsule, Liquid Filled [ADALAT]",
@@ -607,10 +629,7 @@
       "Hydrochloride, Anhydrous Amiloride",
       "Amiloride Hydrochloride, Anhydrous"
     ],
-    "xrefs": [
-      "msh:D000584",
-      "mthspl:7M458Q65S3"
-    ],
+    "xrefs": ["msh:D000584", "mthspl:7M458Q65S3"],
     "src_name": "RxNorm"
   },
   {
@@ -653,10 +672,7 @@
       "atc:B01AC06",
       "atc:N02BA01"
     ],
-    "trade_names": [
-      "Acetylsalicylic Acid",
-      "Aspirin"
-    ],
+    "trade_names": ["Acetylsalicylic Acid", "Aspirin"],
     "src_name": "RxNorm"
   }
 ]
