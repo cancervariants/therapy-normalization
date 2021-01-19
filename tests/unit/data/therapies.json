@@ -441,7 +441,7 @@
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "Phenoxymethylpenicillin",
+    "label_and_type": "phenoxymethylpenicillin",
     "concept_id": "chemidplus:87-08-1",
     "src_name": "ChemIDplus"
   },
@@ -479,12 +479,12 @@
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "cis-Diaminedichloroplatinum##alias",
+    "label_and_type": "cis-diaminedichloroplatinum##alias",
     "concept_id": "chemidplus:15663-27-1",
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "1,2-Diaminocyclohexaneplatinum II citrate##alias",
+    "label_and_type": "1,2-diaminocyclohexaneplatinum ii citrate##alias",
     "concept_id": "chemidplus:15663-27-1",
     "src_name": "ChemIDplus"
   },
