@@ -127,7 +127,7 @@ def test_label_match(chemidplus, imatinib, penicillin_v):
     assert response['match_type'] == MatchType.NO_MATCH
 
 
-def test_alias_match(chemidplus, imatinib, cisplatin):
+def test_alias_match(chemidplus, penicillin_v, cisplatin):
     """Test that records are retrieved by alias correctly."""
     response = chemidplus.normalize('cis-Diaminedichloroplatinum')
     assert response['match_type'] == MatchType.ALIAS
@@ -137,7 +137,7 @@ def test_alias_match(chemidplus, imatinib, cisplatin):
     response = chemidplus.normalize('Phenoxymethylpenicillin')
     assert response['match_type'] == MatchType.ALIAS
     assert len(response['records']) == 1
-    compare_records(response['records'][0], imatinib)
+    compare_records(response['records'][0], penicillin_v)
 
     response = chemidplus.normalize('Cisplatine')
     assert response['match_type'] == MatchType.NO_MATCH
