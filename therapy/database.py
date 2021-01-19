@@ -3,7 +3,7 @@ import boto3
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
 from os import environ
-from typing import Optional, Dict, List
+from typing import Optional, Dict, List, Any
 import logging
 
 logger = logging.getLogger('therapy')
@@ -186,3 +186,20 @@ class Database:
             return None
         except KeyError:
             return None
+
+    def update_record(self, concept_id: str, field: str, value: Any):
+        """Update the field of an individual record to a new value.
+
+        :param str concept_id: record to update
+        :param str field: name of field to update
+        :parm str value: new value
+        """
+        key = {
+            'label_and_type': f'{concept_id.lower()}##identity',
+            'concept_id': concept_id
+        }
+        self.therapies.update_item(Key=key, AttributeUpdates={
+            'Value': {
+                field: value
+            }
+        })
