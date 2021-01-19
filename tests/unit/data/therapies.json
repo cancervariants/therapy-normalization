@@ -441,7 +441,7 @@
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "phenoxymethylpenicillin",
+    "label_and_type": "phenoxymethylpenicillin##alias",
     "concept_id": "chemidplus:87-08-1",
     "src_name": "ChemIDplus"
   },
