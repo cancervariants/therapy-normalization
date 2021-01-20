@@ -103,7 +103,7 @@ class Merge:
         scalars, assign from the highest-priority source where that attribute
         is non-null.
 
-        Priority is RxNorm > NCIt > ChEMBL > DrugBank > ChemIDplus > Wikidata.
+        Priority is RxNorm > NCIt > ChemIDplus > Wikidata.
 
 
         :param Set record_id_set: group of concept IDs
@@ -124,10 +124,6 @@ class Merge:
                 source_rank = 1
             elif src == SourceName.NCIT:
                 source_rank = 2
-            elif src == SourceName.CHEMBL:
-                source_rank = 3
-            elif src == SourceName.DRUGBANK:
-                source_rank = 4
             elif src == SourceName.CHEMIDPLUS:
                 source_rank = 5
             else:
