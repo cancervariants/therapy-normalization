@@ -90,24 +90,6 @@ class Drug(Therapy):
             }
 
 
-class MergedDrug(BaseModel):
-    """A merged record for a single concept drawn from multiple individual
-    records.
-    """
-
-    concept_id: str
-    label: Optional[str]
-    approval_status: Optional[ApprovalStatus]
-    aliases: List[str]
-    xrefs: Optional[List[str]]
-    trade_names: Optional[List[str]]
-
-    class Config:
-        """Pydantic config"""
-
-        extra = 'forbid'
-
-
 class DrugGroup(Therapy):
     """A grouping of drugs based on common pharmacological attributes."""
 
