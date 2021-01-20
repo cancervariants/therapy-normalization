@@ -15,8 +15,8 @@ def wikidata():
             self.query_handler = QueryHandler()
 
         def normalize(self, query_str):
-            resp = self.query_handler.search(query_str, keyed=True,
-                                             incl='wikidata')
+            resp = self.query_handler.search_sources(query_str, keyed=True,
+                                                     incl='wikidata')
             return resp['source_matches']['Wikidata']
     return QueryGetter()
 

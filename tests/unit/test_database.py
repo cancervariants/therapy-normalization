@@ -32,11 +32,11 @@ def db():
                         batch.put_item(Item=m)
                 f.close()
 
-    return DB().dynamodb
+    return DB()
 
 
 def test_tables_created(db):
     """Check that therapy_concepts and therapy_metadata are created."""
-    existing_tables = db.dynamodb_client.list_tables()['TableNames']
+    existing_tables = db.db.dynamodb_client.list_tables()['TableNames']
     assert 'therapy_concepts' in existing_tables
     assert 'therapy_metadata' in existing_tables

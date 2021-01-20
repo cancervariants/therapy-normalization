@@ -12,8 +12,9 @@ def normalizer():
             self.query_handler = QueryHandler()
 
         def normalize(self, query_str, keyed=False, incl='', excl=''):
-            resp = self.query_handler.search(query_str=query_str, keyed=keyed,
-                                             incl=incl, excl=excl)
+            resp = self.query_handler.search_sources(query_str=query_str,
+                                                     keyed=keyed,
+                                                     incl=incl, excl=excl)
             return resp
 
     return QueryGetter()
