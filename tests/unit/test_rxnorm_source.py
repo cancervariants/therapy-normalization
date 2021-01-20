@@ -1,7 +1,7 @@
 """Test that the therapy normalizer works as intended for the RxNorm source."""
 import pytest
 from therapy.schemas import Drug, MatchType
-from therapy.query import Normalizer
+from therapy.query import QueryHandler
 
 
 @pytest.fixture(scope='module')
@@ -10,11 +10,11 @@ def rxnorm():
     class QueryGetter:
 
         def __init__(self):
-            self.normalizer = Normalizer()
+            self.normalizer = QueryHandler()
 
         def normalize(self, query_str):
-            resp = self.normalizer.normalize(query_str, keyed=True,
-                                             incl='rxnorm')
+            resp = self.normalizer.search_sources(query_str, keyed=True,
+                                                  incl='rxnorm')
             return resp['source_matches']['RxNorm']
 
         def fetch_meta(self):
