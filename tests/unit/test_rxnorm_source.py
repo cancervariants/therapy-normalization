@@ -24,57 +24,14 @@ def rxnorm():
 
 
 @pytest.fixture(scope='module')
-def hydrocorticosteroid():
-    """Create a 17-hydrocorticosteroid drug fixture."""
-    params = {
-        'label': '17-hydrocorticosteroid',
-        'concept_id': 'rxcui:19',
-        'aliases': [
-            '17-hydroxycorticoid',
-            '17-hydroxycorticosteroid',
-            '17-hydroxycorticosteroid (substance)'
-        ],
-        'approval_status': None,
-        'other_identifiers': [],
-        'xrefs': [
-            'snomedct:112116001'
-        ],
-        'trade_names': []
-    }
-    return Drug(**params)
-
-
-@pytest.fixture(scope='module')
-def aquanil_lotion():
-    """Create AQUANIL LOTION drug fixture."""
-    params = {
-        'label': 'Aquanil Lotion, topical lotion',
-        'concept_id': 'rxcui:91837',
-        'aliases': [
-            'AQUANIL LOTION'
-        ],
-        'approval_status': None,
-        'other_identifiers': [],
-        'xrefs': [
-            'mmsl:5035',
-            'vandf:4010585',
-            'mmx:106710'
-        ],
-        'trade_names': [
-            'Lotion, Multi Ingredient Topical application Lotion [AQUANIL]'
-        ]
-    }
-    return Drug(**params)
-
-
-@pytest.fixture(scope='module')
 def bifidobacterium_infantis():
     """Create bifidobacterium infantis drug fixture."""
     params = {
-        'label': 'Bifidobacterium infantis',
+        'label': 'Bifidobacterium Infantis',
         'concept_id': 'rxcui:100213',
         'aliases': [
-            'bifidobacterium infantis'
+            'bifidobacterium infantis',
+            'Bifidobacterium infantis'
         ],
         'approval_status': None,
         'other_identifiers': [
@@ -85,7 +42,10 @@ def bifidobacterium_infantis():
             'mmsl:d07347',
             'fdbmk:001165'
         ],
-        'trade_names': []
+        'trade_names': [
+            'Align',
+            'Evivo'
+        ]
     }
     return Drug(**params)
 
@@ -94,7 +54,7 @@ def bifidobacterium_infantis():
 def cisplatin():
     """Create cisplatin drug fixture."""
     params = {
-        'label': 'Cisplatin',
+        'label': 'cisplatin',
         'concept_id': 'rxcui:2555',
         'aliases': [
             'Cisplatin-containing product',
@@ -110,7 +70,6 @@ def cisplatin():
             'cis-Diaminedichloroplatinum',
             'cis-Platinum II',
             'DDP',
-            'Cisplatin (substance)',
             'Dichlorodiammineplatinum',
             'cis-Diamminedichloroplatinum',
             'cis-Dichlorodiammineplatinum(II)',
@@ -120,7 +79,6 @@ def cisplatin():
             'cis-diamminedichloroplatinum(II)',
             'CDDP',
             'Cis-DDP',
-            'Product containing cisplatin (medicinal product)'
         ],
         'approval_status': None,
         'other_identifiers': [
@@ -149,235 +107,107 @@ def cisplatin():
 
 
 @pytest.fixture(scope='module')
-def nifedipine():
-    """Create nifedipine 10 MG Oral Capsule [Adalat] drug fixture."""
-    params = {
-        'label': 'nifedipine 10 MG Oral Capsule [Adalat]',
-        'concept_id': 'rxcui:91691',
-        'aliases': [
-            'NIFEdipine 10 MG Oral Capsule [Adalat]',
-            'Adalat 10 MG Oral Capsule'
-        ],
-        'approval_status': None,
-        'other_identifiers': [],
-        'xrefs': [
-            'gsddb:18734',
-            'mmx:102718',
-            'mmsl:2735'
-        ],
-        'trade_names': [
-            'Adalat 10mg Capsule',
-            'Nifedipine 10 MG Oral Capsule, Liquid Filled [ADALAT]',
-            'Adalat, 10 mg oral capsule'
-        ]
-    }
-    return Drug(**params)
-
-
-@pytest.fixture(scope='module')
 def amiloride():
     """Create amiloride hydrochloride, anhydrous drug fixture."""
     params = {
-        'label': 'amiloride hydrochloride, anhydrous',
-        'concept_id': 'rxcui:1298837',
+        'label': 'amiloride',
+        'concept_id': 'rxcui:644',
         'aliases': [
-            'aMILoride hydrochloride, anhydrous',
-            'Anhydrous Amiloride Hydrochloride',
-            'Hydrochloride, Anhydrous Amiloride',
-            'Amiloride Hydrochloride, Anhydrous'
-        ],
-        'approval_status': None,
-        'other_identifiers': [],
-        'xrefs': [
-            'msh:D000584',
-            'mthspl:7M458Q65S3'
-        ],
-        'trade_names': []
-    }
-    return Drug(**params)
-
-
-@pytest.fixture(scope='module')
-def aspirin():
-    """Create aspirin drug fixture."""
-    params = {
-        'label': 'Aspirin',
-        'concept_id': 'rxcui:1191',
-        'aliases': [
-            'Aspirin-containing product',
-            'Salicylic acid acetate',
-            'Aspirin',
-            'aspirin',
-            'Acetylsalicylic acid',
-            'Acid, Acetylsalicylic',
-            'Aspirin (substance)',
-            '2-(Acetyloxy)benzoic Acid',
-            'Acetylsalicylic Acid',
-            '2-Acetoxybenzenecarboxylic acid',
-            'ASA',
-            'O-acetylsalicylic acid',
-            '2-Acetoxybenzoic acid',
-            'o-acetoxybenzoic acid',
-            'o-carboxyphenyl acetate',
-            'Product containing aspirin (medicinal product)'
+            '3,5-diamino-N-carbamimidoyl-6-chloropyrazine-2-carboxamide',
+            'Amiloride-containing product',
+            'Amiloride',
+            'aMILoride',
+            'Amipramidin',
+            'Amipramidine',
+            'N-amidino-3,5-diamino-6-chloropyrazinecarboxamide',
+            'Amyloride'
         ],
         'approval_status': None,
         'other_identifiers': [
-            'drugbank:DB00945'
+            'drugbank:DB00594'
         ],
         'xrefs': [
-            'usp:m6240',
-            'gsddb:181',
-            'snomedct:7947003',
-            'snomedct:387458008',
-            'vandf:4017536',
-            'mmsl:34512',
-            'mmsl:4223',
-            'mmsl:d00170',
-            'mmsl:244',
-            'mthspl:R16CO5Y76E',
-            'fdbmk:001587',
-            'msh:D001241',
-            'atc:A01AD05',
-            'atc:B01AC06',
-            'atc:N02BA01'
+            'gsddb:3993',
+            'snomedct:387503008',
+            'msh:D000584',
+            'vandf:4019603',
+            'fdbmk:004861',
+            'mthspl:7DZO8EB0Z3',
+            'mmsl:d00169',
+            'atc:C03DB01',
+            'snomedct:87395005'
         ],
         'trade_names': [
-            'Acetylsalicylic Acid',
-            'Aspirin'
+            'Midamor'
         ]
     }
     return Drug(**params)
 
 
-def test_hydrocorticosteroid(hydrocorticosteroid, rxnorm):
-    """Test that hydrocorticosteroid drug normalizes to correct drug
-    concept.
+@pytest.fixture(scope='module')
+def timolol():
+    """Create timolol drug fixture."""
+    params = {
+        'label': 'timolol',
+        'concept_id': 'rxcui:10600',
+        'aliases': [
+            '(S)-1-((1,1-Dimethylethyl)amino)-3-((4-(4-morpholinyl)'
+            '-1,2,5-thiadazol-3-yl)oxy)-2-propanol',
+            '2-Propanol, 1-((1,1-dimethylethyl)amino)-3-((4-(4-morpholi'
+            'nyl)-1,2,5-thiadiazol-3-yl)oxy)-, (S)-',
+            'Timolol-containing product',
+            'Timolol',
+            'timolol',
+            '(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol'
+            '-3-yl)oxy]propan-2-ol'
+        ],
+        'approval_status': None,
+        'other_identifiers': [
+            'drugbank:DB00373'
+        ],
+        'xrefs': [
+            'vandf:4019949',
+            'mthspl:817W3C6175',
+            'snomedct:372880004',
+            'msh:D013999',
+            'mmsl:d00139',
+            'atc:C07AA06',
+            'atc:S01ED01',
+            'fdbmk:004741',
+            'snomedct:85591001'
+        ],
+        'trade_names': [
+            'Betimol',
+            'Timoptic'
+        ]
+    }
+    return Drug(**params)
+
+
+@pytest.fixture(scope='module')
+def lymphocyte():
+    """Create lymphocyte immune globulin, anti-thymocyte globulin drug
+    fixture.
     """
-    # Concept ID Match
-    normalizer_response = rxnorm.normalize('rxcui:19')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == hydrocorticosteroid.label
-    assert normalized_drug.concept_id == hydrocorticosteroid.concept_id
-    assert set(normalized_drug.aliases) == set(hydrocorticosteroid.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(hydrocorticosteroid.other_identifiers)
-    assert set(normalized_drug.xrefs) == set(hydrocorticosteroid.xrefs)
-    assert set(normalized_drug.trade_names) == \
-           set(hydrocorticosteroid.trade_names)
-    assert normalized_drug.approval_status \
-           == hydrocorticosteroid.approval_status
-
-    # Label Match
-    normalizer_response = rxnorm.normalize('17-hydrocorticosteroid')
-    assert normalizer_response['match_type'] == MatchType.LABEL
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == hydrocorticosteroid.label
-    assert normalized_drug.concept_id == hydrocorticosteroid.concept_id
-    assert set(normalized_drug.aliases) == set(hydrocorticosteroid.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(hydrocorticosteroid.other_identifiers)
-    assert set(normalized_drug.xrefs) == set(hydrocorticosteroid.xrefs)
-    assert set(normalized_drug.trade_names) == \
-           set(hydrocorticosteroid.trade_names)
-    assert normalized_drug.approval_status \
-           == hydrocorticosteroid.approval_status
-
-    # Alias Match
-    normalizer_response = rxnorm.normalize('17-hydroxycorticoid')
-    assert normalizer_response['match_type'] == MatchType.ALIAS
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == hydrocorticosteroid.label
-    assert normalized_drug.concept_id == hydrocorticosteroid.concept_id
-    assert set(normalized_drug.aliases) == set(hydrocorticosteroid.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(hydrocorticosteroid.other_identifiers)
-    assert set(normalized_drug.xrefs) == set(hydrocorticosteroid.xrefs)
-    assert set(normalized_drug.trade_names) == \
-           set(hydrocorticosteroid.trade_names)
-    assert normalized_drug.approval_status \
-           == hydrocorticosteroid.approval_status
-
-    normalizer_response = rxnorm.normalize('17-hydroxycorticosteroid')
-    assert normalizer_response['match_type'] == MatchType.ALIAS
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == hydrocorticosteroid.label
-    assert normalized_drug.concept_id == hydrocorticosteroid.concept_id
-    assert set(normalized_drug.aliases) == set(hydrocorticosteroid.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(hydrocorticosteroid.other_identifiers)
-    assert set(normalized_drug.xrefs) == set(hydrocorticosteroid.xrefs)
-    assert set(normalized_drug.trade_names) == \
-           set(hydrocorticosteroid.trade_names)
-    assert normalized_drug.approval_status \
-           == hydrocorticosteroid.approval_status
-
-    normalizer_response = \
-        rxnorm.normalize('17-hydroxycorticosteroid (substance)')
-    assert normalizer_response['match_type'] == MatchType.ALIAS
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == hydrocorticosteroid.label
-    assert normalized_drug.concept_id == hydrocorticosteroid.concept_id
-    assert set(normalized_drug.aliases) == set(hydrocorticosteroid.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(hydrocorticosteroid.other_identifiers)
-    assert set(normalized_drug.xrefs) == set(hydrocorticosteroid.xrefs)
-    assert set(normalized_drug.trade_names) == \
-           set(hydrocorticosteroid.trade_names)
-    assert normalized_drug.approval_status \
-           == hydrocorticosteroid.approval_status
-
-
-def test_aquanil_lotion(aquanil_lotion, rxnorm):
-    """Test that aquanil_lotion drug normalizes to correct drug concept."""
-    # Concept ID Match
-    normalizer_response = rxnorm.normalize('RXCUI:91837')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == aquanil_lotion.label
-    assert normalized_drug.concept_id == aquanil_lotion.concept_id
-    assert set(normalized_drug.aliases) == set(aquanil_lotion.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(aquanil_lotion.other_identifiers)
-    assert set(normalized_drug.xrefs) == set(aquanil_lotion.xrefs)
-    assert set(normalized_drug.trade_names) == set(aquanil_lotion.trade_names)
-    assert normalized_drug.approval_status == aquanil_lotion.approval_status
-
-    # Label Match
-    normalizer_response = rxnorm.normalize('Aquanil Lotion, topical lotion  ')
-    assert normalizer_response['match_type'] == MatchType.LABEL
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == aquanil_lotion.label
-    assert normalized_drug.concept_id == aquanil_lotion.concept_id
-    assert set(normalized_drug.aliases) == set(aquanil_lotion.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(aquanil_lotion.other_identifiers)
-    assert set(normalized_drug.xrefs) == set(aquanil_lotion.xrefs)
-    assert set(normalized_drug.trade_names) == set(aquanil_lotion.trade_names)
-    assert normalized_drug.approval_status == aquanil_lotion.approval_status
-
-    # Trade Name Match
-    normalizer_response = rxnorm.normalize('Lotion, Multi Ingredient Topical '
-                                           'application Lotion [AQUANIL]')
-    assert normalizer_response['match_type'] == MatchType.TRADE_NAME
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == aquanil_lotion.label
-    assert normalized_drug.concept_id == aquanil_lotion.concept_id
-    assert set(normalized_drug.aliases) == set(aquanil_lotion.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(aquanil_lotion.other_identifiers)
-    assert set(normalized_drug.xrefs) == set(aquanil_lotion.xrefs)
-    assert set(normalized_drug.trade_names) == set(aquanil_lotion.trade_names)
-    assert normalized_drug.approval_status == aquanil_lotion.approval_status
+    params = {
+        'label': 'lymphocyte immune globulin, anti-thymocyte globulin',
+        'concept_id': 'rxcui:1011',
+        'aliases': [
+        ],
+        'approval_status': None,
+        'other_identifiers': [],
+        'xrefs': [
+            'snomedct:768651008',
+            'msh:D000961',
+            'vandf:4022194',
+            'vandf:4018097',
+            'mmsl:d01141',
+            'mmsl:5001'
+        ],
+        'trade_names': [
+        ]
+    }
+    return Drug(**params)
 
 
 def test_bifidobacterium_infantis(bifidobacterium_infantis, rxnorm):
@@ -455,32 +285,12 @@ def test_cisplatin(cisplatin, rxnorm):
            cisplatin.approval_status
 
 
-def test_nifedipine(nifedipine, rxnorm):
-    """Test that nifedipine drug normalizes to correct drug concept."""
-    # Concept ID Match
-    normalizer_response = rxnorm.normalize('RxCUI:91691')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == nifedipine.label
-    assert normalized_drug.concept_id == nifedipine.concept_id
-    assert set(normalized_drug.aliases) == \
-           set(nifedipine.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(nifedipine.other_identifiers)
-    assert set(normalized_drug.xrefs) == set(nifedipine.xrefs)
-    assert set(normalized_drug.trade_names) == \
-           set(nifedipine.trade_names)
-    assert normalized_drug.approval_status == \
-           nifedipine.approval_status
-
-
 def test_amiloride(amiloride, rxnorm):
     """Test that amiloride hydrochloride, anhydrous drug normalizes to
     correct drug concept.
     """
     # Concept ID Match
-    normalizer_response = rxnorm.normalize('RxcUI:1298837')
+    normalizer_response = rxnorm.normalize('RxcUI:644')
     assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
@@ -497,24 +307,24 @@ def test_amiloride(amiloride, rxnorm):
            amiloride.approval_status
 
 
-def test_aspirin(aspirin, rxnorm):
-    """Test that aspirin drug normalizes to correct drug concept."""
+def test_timolol(timolol, rxnorm):
+    """Test that timolol drug normalizes to correct drug concept."""
     # Concept ID Match
-    normalizer_response = rxnorm.normalize('RxcUI:1191')
+    normalizer_response = rxnorm.normalize('RxcUI:10600')
     assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == aspirin.label
-    assert normalized_drug.concept_id == aspirin.concept_id
+    assert normalized_drug.label == timolol.label
+    assert normalized_drug.concept_id == timolol.concept_id
     assert set(normalized_drug.aliases) == \
-           set(aspirin.aliases)
+           set(timolol.aliases)
     assert set(normalized_drug.other_identifiers) == \
-           set(aspirin.other_identifiers)
-    assert set(normalized_drug.xrefs) == set(aspirin.xrefs)
+           set(timolol.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(timolol.xrefs)
     assert set(normalized_drug.trade_names) == \
-           set(aspirin.trade_names)
+           set(timolol.trade_names)
     assert normalized_drug.approval_status == \
-           aspirin.approval_status
+           timolol.approval_status
 
 
 def test_no_match(rxnorm):
@@ -533,12 +343,12 @@ def test_no_match(rxnorm):
     normalizer_response = rxnorm.normalize('rxnorm:3')
     assert normalizer_response['match_type'] == MatchType.NO_MATCH
 
-    # Not including TTY = IN (Ingredient)
-    normalizer_response = rxnorm.normalize('electrolytes for oral solution')
-    assert normalizer_response['match_type'] == MatchType.NO_MATCH
-
     # Test white space in between id
     normalizer_response = rxnorm.normalize('rxcui: 3')
+    assert normalizer_response['match_type'] == MatchType.NO_MATCH
+
+    # Should not store brand name concepts as identity record
+    normalizer_response = rxnorm.normalize('rxcui:202433')
     assert normalizer_response['match_type'] == MatchType.NO_MATCH
 
     # Test empty query

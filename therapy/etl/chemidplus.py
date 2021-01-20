@@ -40,8 +40,8 @@ class ChemIDplus(Base):
         self._added_ids = set()
         # perform ETL
         self._extract_data(data_path)
-        self._transform_data()
         self._add_meta()
+        self._transform_data()
 
     def _download_data(self):
         """Download source data from default location."""
