@@ -113,23 +113,38 @@ class RxNorm(Base):
         """Transform the RxNorm source."""
         with open(self._data_src) as f:
             rff_data = csv.reader(f, delimiter='|')
+            brand_to_concept = dict()  # links brand to concept
             data = dict()
             for row in rff_data:
                 concept_id = f"{NamespacePrefix.RXNORM.value}:{row[0]}"
-                if concept_id in data.keys():
-                    params = data[concept_id]
-                    self._add_str_field(params, row)
-                    self._add_other_ids_xrefs(params, row)
-                else:
-                    # Create new gene record
+                if concept_id not in data.keys():
+                    # TODO: Check logic
                     params = dict()
                     params['concept_id'] = concept_id
-                    params['label'] = row[14]
-                    self._add_other_ids_xrefs(params, row)
+                    self._add_str_field(params, row)
+                    src_id = self._add_other_ids_xrefs(params, row)
+                    if 'msh' in src_id and 'msh' not in params:
+                        params['msh'] = src_id.split(':')[-1]
                     data[concept_id] = params
+                else:
+                    # Concept already created
+                    params = data[concept_id]
+                    self._add_str_field(params, row)
+                    src_id = self._add_other_ids_xrefs(params, row)
+                    if 'msh' in src_id and 'msh' not in params:
+                        params['msh'] = src_id.split(':')[-1]
+                if row[12] == 'PEP' and row[11] == 'MSH':
+                    # brand name
+                    self._add_term(brand_to_concept, row[14], row[13])
 
             with self.database.therapies.batch_writer() as batch:
                 for key, value in data.items():
+                    if 'msh' in value:
+                        msh_id = value['msh']
+                        if msh_id in brand_to_concept:
+                            brand_names = brand_to_concept[msh_id]
+                            for bn in brand_names:
+                                self._add_term(value, bn, 'trade_names')
                     params = Drug(
                         concept_id=value['concept_id'],
                         label=value['label'] if 'label' in value else None,
@@ -176,12 +191,12 @@ class RxNorm(Base):
         :param dict params: A transformed therapy record.
         :param BatchWriter batch: Object to write data to DynamoDB
         """
-        if 'aliases' in params:
-            self._load_label_type(params, batch, 'alias', 'aliases')
-        if 'trade_names' in params:
-            self._load_label_type(params, batch, 'trade_name', 'trade_names')
         if 'label' in params:
             self._load_label_type(params, batch, 'label', 'label')
+        if 'trade_names' in params:
+            self._load_label_type(params, batch, 'trade_name', 'trade_names')
+        if 'aliases' in params:
+            self._load_label_type(params, batch, 'alias', 'aliases')
 
     def _load_label_type(self, params, batch, label_type_sing, label_type_pl):
         """Insert alias, trade_name, or label data into the database.
@@ -212,6 +227,7 @@ class RxNorm(Base):
                                 "values must be under 2048 bytes, and range"
                                 " primary key values must be under 1024"
                                 " bytes.")
+        return terms
 
     def _add_str_field(self, params, row):
         """Differentiate STR field.
@@ -221,26 +237,22 @@ class RxNorm(Base):
         """
         term = row[14]
         term_type = row[12]
+        source = row[11]
 
-        # Designated Alias, Designated Syn, Tall Man Syn,
-        # Clinical drug name in abbreviated format,
-        # Clinical drug name in concatenated format,
-        # Clinical drug name in delimited format, Machine permutation,
-        # RxNorm Created CDC
-        aliases = ['SYN', 'SY', 'TMSY', 'CDA', 'CDC', 'CDD', 'PM',
-                   'MTH_RXN_CDC']
+        # Designated Alias, Designated Syn, Tall Man Syn, Machine permutation
+        # Generic Drug Name, Designated Preferred Name, Preferred Entry Term,
+        # Clinical Drug, Entry Term, Rxnorm Preferred
+        aliases = ['SYN', 'SY', 'TMSY', 'PM',
+                   'GN', 'PT', 'PEP', 'CD', 'ET', 'RXN_PT']
 
         # Fully-specified drug brand name that can be prescribed
         # Fully-specified drug brand name that can not be prescribed,
-        # RxNorm Created BD, Semantic branded drug
-        trade_names = ['BD', 'BN', 'MTH_RXN_BD', 'SBD']
+        # Semantic branded drug
+        trade_names = ['BD', 'BN', 'SBD']
 
-        # Generic Drug Name, Designated Preferred Name, Preferred Entry Term,
-        # Clinical Drug, Entry Term, Full form descriptor, RxNorm Created CD,
-        # Rxnorm Preferred
-        other_labels = ['GN', 'PT', 'PEP', 'CD', 'ET', 'FN', 'MTH_RXN_CD',
-                        'RXN_PT']
-        if term_type in aliases + other_labels:
+        if term_type == 'IN' and source == 'RXNORM':
+            params['label'] = term
+        elif term_type in aliases:
             self._add_term(params, term, 'aliases')
         elif term_type in trade_names:
             self._add_term(params, term, 'trade_names')
@@ -264,19 +276,21 @@ class RxNorm(Base):
         :param dict params: A transformed therapy record.
         :param list row: A row in the RxNorm data file.
         """
+        source_id = None
         if row[11]:
             other_id_xref = row[11].upper()
             if other_id_xref in self._other_id_srcs:
-                other_id =\
+                source_id =\
                     f"{NamespacePrefix[other_id_xref].value}:{row[13]}"
-                if other_id != params['concept_id']:
+                if source_id != params['concept_id']:
                     # Sometimes concept_id is included in the source field
-                    self._add_term(params, other_id, 'other_identifiers')
+                    self._add_term(params, source_id, 'other_identifiers')
             elif other_id_xref in self._xref_srcs:
-                xref = f"{NamespacePrefix[other_id_xref].value}:{row[13]}"
-                self._add_term(params, xref, 'xrefs')
+                source_id = f"{NamespacePrefix[other_id_xref].value}:{row[13]}"
+                self._add_term(params, source_id, 'xrefs')
             else:
                 logger.info(f"{other_id_xref} not in NameSpacePrefix.")
+        return source_id
 
     def _add_meta(self):
         """Add RxNorm metadata."""
