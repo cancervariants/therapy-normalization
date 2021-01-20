@@ -400,13 +400,12 @@ class QueryHandler:
         if matches:
             def record_order(record: Dict):
                 """Construct priority order for matching."""
-                # TODO where to add chemidplus/rxnorm?
                 src = record['src_name']
-                if src == SourceName.NCIT:
+                if src == SourceName.RXNORM:
                     return 1
-                elif src == SourceName.CHEMBL:
+                elif src == SourceName.NCIT:
                     return 2
-                elif src == SourceName.DRUGBANK:
+                elif src == SourceName.CHEMIDPLUS:
                     return 3
                 else:
                     return 4
