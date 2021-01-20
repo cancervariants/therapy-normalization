@@ -13,8 +13,8 @@ def ncit():
             self.query_handler = QueryHandler()
 
         def normalize(self, query_str):
-            resp = self.query_handler.search(query_str, keyed=True,
-                                             incl='ncit')
+            resp = self.query_handler.search_sources(query_str, keyed=True,
+                                                     incl='ncit')
             return resp['source_matches']['NCIt']
     return QueryGetter()
 

@@ -15,12 +15,12 @@ def drugbank():
             self.query_handler = QueryHandler()
 
         def normalize(self, query_str):
-            resp = self.query_handler.search(query_str, keyed=True,
-                                             incl='drugbank')
+            resp = self.query_handler.search_sources(query_str, keyed=True,
+                                                     incl='drugbank')
             return resp['source_matches']['DrugBank']
 
         def fetch_meta(self):
-            return self.query_handler.fetch_meta('DrugBank')
+            return self.query_handler._fetch_meta('DrugBank')
 
     return QueryGetter()
 

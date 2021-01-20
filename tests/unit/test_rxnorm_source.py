@@ -18,7 +18,7 @@ def rxnorm():
             return resp['source_matches']['RxNorm']
 
         def fetch_meta(self):
-            return self.normalizer.fetch_meta('RxNorm')
+            return self.normalizer._fetch_meta('RxNorm')
 
     return QueryGetter()
 
