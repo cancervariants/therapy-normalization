@@ -203,7 +203,7 @@ class QueryHandler:
 
         for item in concept_id_items:
             (resp, src_name) = self._add_record(resp, item,
-                                                MatchType.CONCEPT_ID)
+                                                MatchType.CONCEPT_ID.name)
             sources = sources - {src_name}
         return (resp, sources)
 
@@ -221,6 +221,7 @@ class QueryHandler:
         :return: Tuple with updated resp object and updated set of unmatched
                  sources
         """
+        print(match_type)
         matches = self.db.get_records_by_type(query, match_type)
         if matches:
             concept_ids = {i['concept_id'] for i in matches}
@@ -256,8 +257,8 @@ class QueryHandler:
 
         match_types = ['label', 'trade_name', 'alias']
         for match_type in match_types:
-            (response, sources) = self._check_match_type(
-                query, response, sources, match_type)
+            (response, sources) = self._check_match_type(query, response,
+                                                         sources, match_type)
             if len(sources) == 0:
                 return response
 
