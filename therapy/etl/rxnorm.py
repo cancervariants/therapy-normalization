@@ -145,18 +145,20 @@ class RxNorm(Base):
                             brand_names = brand_to_concept[msh_id]
                             for bn in brand_names:
                                 self._add_term(value, bn, 'trade_names')
-                    params = Drug(
-                        concept_id=value['concept_id'],
-                        label=value['label'] if 'label' in value else None,
-                        aliases=value['aliases'] if 'aliases' in value else [],
-                        other_identifiers=value[
-                            'other_identifiers'] if 'other_identifiers'
-                                                    in value else [],
-                        xrefs=value['xrefs'] if 'xrefs' in value else [],
-                        trade_names=value['trade_names'] if 'trade_names'
-                                                            in value else []
-                    )
-                    self._load_therapy(params, batch)
+                    if 'label' in value:
+                        params = Drug(
+                            concept_id=value['concept_id'],
+                            label=value['label'] if 'label' in value else None,
+                            aliases=value['aliases'] if 'aliases' in
+                                                        value else [],
+                            other_identifiers=value[
+                                'other_identifiers'] if 'other_identifiers'
+                                                        in value else [],
+                            xrefs=value['xrefs'] if 'xrefs' in value else [],
+                            trade_names=value['trade_names'] if 'trade_names'
+                                                                in value else []  # noqa: E501
+                        )
+                        self._load_therapy(params, batch)
 
     def _load_therapy(self, params, batch):
         """Load therapy record into the database.
