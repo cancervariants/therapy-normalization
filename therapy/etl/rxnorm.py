@@ -113,39 +113,41 @@ class RxNorm(Base):
         """Transform the RxNorm source."""
         with open(self._data_src) as f:
             rff_data = csv.reader(f, delimiter='|')
-            brand_to_concept = dict()  # links brand to concept
+            ingredient_brands = dict()
             data = dict()
             for row in rff_data:
                 concept_id = f"{NamespacePrefix.RXNORM.value}:{row[0]}"
-                if concept_id not in data.keys():
-                    # TODO: Check logic
-                    params = dict()
-                    params['concept_id'] = concept_id
-                    self._add_str_field(params, row)
-                    src_id = self._add_other_ids_xrefs(params, row)
-                    if 'msh' in src_id and 'msh' not in params:
-                        params['msh'] = src_id.split(':')[-1]
-                    data[concept_id] = params
+                # SBDC: Ingredient + Strength + Brand Name
+                if row[12] == 'SBDC':
+                    term = row[14]
+                    brand = term.split('[')[-1].split(']')[0]
+                    ingredient_strength = \
+                        term.replace(term.split()[-1], '').strip()
+                    ingredient_brands[ingredient_strength] = brand
                 else:
-                    # Concept already created
-                    params = data[concept_id]
-                    self._add_str_field(params, row)
-                    src_id = self._add_other_ids_xrefs(params, row)
-                    if 'msh' in src_id and 'msh' not in params:
-                        params['msh'] = src_id.split(':')[-1]
-                if row[12] == 'PEP' and row[11] == 'MSH':
-                    # brand name
-                    self._add_term(brand_to_concept, row[14], row[13])
+                    if concept_id not in data.keys():
+                        # TODO: Check logic
+                        params = dict()
+                        params['concept_id'] = concept_id
+                        self._add_str_field(params, row)
+                        self._add_other_ids_xrefs(params, row)
+                        data[concept_id] = params
+                    else:
+                        # Concept already created
+                        params = data[concept_id]
+                        self._add_str_field(params, row)
+                        self._add_other_ids_xrefs(params, row)
 
             with self.database.therapies.batch_writer() as batch:
                 for key, value in data.items():
-                    if 'msh' in value:
-                        msh_id = value['msh']
-                        if msh_id in brand_to_concept:
-                            brand_names = brand_to_concept[msh_id]
-                            for bn in brand_names:
-                                self._add_term(value, bn, 'trade_names')
                     if 'label' in value:
+                        label = value['label'].lower()
+                        trade_names = \
+                            [val for key, val in ingredient_brands.items()
+                             if label in key.lower()]
+                        for tn in trade_names:
+                            self._add_term(value, tn, 'trade_names')
+
                         params = Drug(
                             concept_id=value['concept_id'],
                             label=value['label'] if 'label' in value else None,
@@ -278,7 +280,6 @@ class RxNorm(Base):
         :param dict params: A transformed therapy record.
         :param list row: A row in the RxNorm data file.
         """
-        source_id = None
         if row[11]:
             other_id_xref = row[11].upper()
             if other_id_xref in self._other_id_srcs:
@@ -292,7 +293,6 @@ class RxNorm(Base):
                 self._add_term(params, source_id, 'xrefs')
             else:
                 logger.info(f"{other_id_xref} not in NameSpacePrefix.")
-        return source_id
 
     def _add_meta(self):
         """Add RxNorm metadata."""
