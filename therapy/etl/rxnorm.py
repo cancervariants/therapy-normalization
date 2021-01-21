@@ -18,9 +18,21 @@ import subprocess
 import shutil
 import zipfile
 import re
+import yaml
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
+
+# Designated Alias, Designated Syn, Tall Man Syn, Machine permutation
+# Generic Drug Name, Designated Preferred Name, Preferred Entry Term,
+# Clinical Drug, Entry Term, Rxnorm Preferred
+ALIASES = ['SYN', 'SY', 'TMSY', 'PM',
+           'GN', 'PT', 'PEP', 'CD', 'ET', 'RXN_PT']
+
+# Fully-specified drug brand name that can be prescribed
+# Fully-specified drug brand name that can not be prescribed,
+# Semantic branded drug
+TRADE_NAMES = ['BD', 'BN', 'SBD']
 
 
 class RxNorm(Base):
@@ -69,6 +81,7 @@ class RxNorm(Base):
                     pass
             if not file_found:
                 self._download_data(rxn_dir)
+            self._create_drug_form_yaml(rxn_dir)
         logger.info('Successfully extracted RxNorm.')
 
     def _download_data(self, rxn_dir):
@@ -110,20 +123,38 @@ class RxNorm(Base):
                          'variables.')
             raise DownloadException("RXNORM_API_KEY not found.")
 
+    def _create_drug_form_yaml(self, rxn_dir):
+        self._drug_forms_file = rxn_dir / 'drug_forms.yaml'
+        if not self._drug_forms_file.exists():
+            dfs = list()
+            with open(self._data_src) as f:
+                data = csv.reader(f, delimiter='|')
+                for row in data:
+                    if row[12] == 'DF' and row[11] == 'RXNORM':
+                        if row[14] not in dfs:
+                            dfs.append(row[14])
+
+            with open(self._drug_forms_file, 'w') as file:
+                yaml.dump(dfs, file)
+
     def _transform_data(self):
         """Transform the RxNorm source."""
+        with open(self._drug_forms_file, 'r') as file:
+            drug_forms = yaml.safe_load(file)
+
         with open(self._data_src) as f:
             rff_data = csv.reader(f, delimiter='|')
             ingredient_brands = dict()
             precise_ingredient = dict()
             data = dict()
+            sbdfs = dict()
             for row in rff_data:
                 concept_id = f"{NamespacePrefix.RXNORM.value}:{row[0]}"
                 if row[12] == 'SBDC':
                     # SBDC: Ingredient + Strength + Brand Name
                     term = row[14]
                     ingredients_brand = \
-                        re.sub(r"(\d*)(\d*\.)?\d+ (MG|UNT?)(/(ML|HR|MG))?",
+                        re.sub(r"(\d*)(\d*\.)?\d+ (MG|UNT|ML)?(/(ML|HR|MG))?",
                                "", term)
                     brand = term.split('[')[-1].split(']')[0]
                     ingredients = ingredients_brand.replace(f"[{brand}]", '')
@@ -139,19 +170,22 @@ class RxNorm(Base):
                     if concept_id not in data.keys():
                         params = dict()
                         params['concept_id'] = concept_id
-                        self._add_str_field(params, row, precise_ingredient)
+                        self._add_str_field(params, row, precise_ingredient,
+                                            drug_forms, sbdfs)
                         self._add_other_ids_xrefs(params, row)
                         data[concept_id] = params
                     else:
                         # Concept already created
                         params = data[concept_id]
-                        self._add_str_field(params, row, precise_ingredient)
+                        self._add_str_field(params, row, precise_ingredient,
+                                            drug_forms, sbdfs)
                         self._add_other_ids_xrefs(params, row)
 
             with self.database.therapies.batch_writer() as batch:
                 for key, value in data.items():
                     if 'label' in value:
-                        labels = [value['label'].lower()]
+                        record_label = value['label'].lower()
+                        labels = [record_label]
                         if 'PIN' in value and value['PIN'] \
                                 in precise_ingredient:
                             for pin in precise_ingredient[value['PIN']]:
@@ -163,6 +197,10 @@ class RxNorm(Base):
                             trade_names = {val for sublist in trade_names
                                            for val in sublist}
                             for tn in trade_names:
+                                self._add_term(value, tn, 'trade_names')
+
+                        if record_label in sbdfs:
+                            for tn in sbdfs[record_label]:
                                 self._add_term(value, tn, 'trade_names')
 
                         params = Drug(
@@ -250,7 +288,8 @@ class RxNorm(Base):
                                 " bytes.")
         return terms
 
-    def _add_str_field(self, params, row, precise_ingredient):
+    def _add_str_field(self, params, row, precise_ingredient, drug_forms,
+                       sbdfs):
         """Differentiate STR field.
 
         :param dict params: A transformed therapy record.
@@ -261,25 +300,25 @@ class RxNorm(Base):
         term_type = row[12]
         source = row[11]
 
-        # Designated Alias, Designated Syn, Tall Man Syn, Machine permutation
-        # Generic Drug Name, Designated Preferred Name, Preferred Entry Term,
-        # Clinical Drug, Entry Term, Rxnorm Preferred
-        aliases = ['SYN', 'SY', 'TMSY', 'PM',
-                   'GN', 'PT', 'PEP', 'CD', 'ET', 'RXN_PT']
-
-        # Fully-specified drug brand name that can be prescribed
-        # Fully-specified drug brand name that can not be prescribed,
-        # Semantic branded drug
-        trade_names = ['BD', 'BN', 'SBD']
-
         if term_type == 'IN' and source == 'RXNORM':
             params['label'] = term
-        elif term_type in aliases:
+        elif term_type in ALIASES:
             self._add_term(params, term, 'aliases')
-        elif term_type in trade_names:
+        elif term_type in TRADE_NAMES:
             self._add_term(params, term, 'trade_names')
 
         # Precise Ingredient
+        if source == 'RXNORM':
+            if term_type == 'SBDF':
+                brand = term.split('[')[-1].split(']')[0]
+                ingredient_strength = term.replace(f"[{brand}]", '')
+                for df in drug_forms:
+                    if df in ingredient_strength:
+                        ingredient = \
+                            ingredient_strength.replace(df, '').strip()
+                        self._add_term(sbdfs, brand, ingredient.lower())
+                        break
+
         if source == 'MSH':
             if term_type == 'MH':
                 # Get ID for accessing precise ingredient
