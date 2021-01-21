@@ -299,14 +299,17 @@ class MatchesListed(BaseModel):
 
 
 class MergedMatch(BaseModel):
-    """Represent merged concept in response to client."""
+    """Represent merged concept in response to client.
+
+    Currently, does not include ApprovalStatus data because no included
+    sources provide it.
+    """
 
     concept_ids: List[str]
     aliases: List[str]
     trade_names: Optional[List[str]]
     xrefs: Optional[List[str]]
     label: Optional[str]
-    approval_status: Optional[ApprovalStatus]
 
 
 class Service(BaseModel):
