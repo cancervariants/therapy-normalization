@@ -3,14 +3,18 @@ import pytest
 from therapy.etl.merge import Merge
 from therapy.database import Database
 from therapy.schemas import MergedMatch
+from typing import Dict
 
 
 @pytest.fixture(scope='module')
-def get_merge():
+def merge_handler():
     """Provide Merge instance to test cases."""
     class MergeHandler():
         def __init__(self):
             self.merge = Merge(Database())
+
+        def get_merge(self):
+            return self.merge
 
         def create_merged_concepts(self, record_ids):
             return self.merge.create_merged_concepts(record_ids)
@@ -23,15 +27,33 @@ def get_merge():
     return MergeHandler()
 
 
+def compare_merged_records(actual_record: Dict, fixture_record: Dict):
+    """Check that records are identical."""
+    print(actual_record)
+    print(fixture_record)
+    assert actual_record['concept_id'] == fixture_record['concept_id']
+    assert actual_record.label == fixture_record.label
+    assert set(actual_record.trade_names) == set(fixture_record.trade_names)
+    assert set(actual_record.xrefs) == set(fixture_record.xrefs)
+
+
+def match_to_db_record(merged_match: MergedMatch) -> Dict:
+    """Transform MergedMatch object into record as stored in DB."""
+    merged_record = merged_match.dict()
+    merged_record['concept_id'] = f"{'|'.join(merged_record['concept_ids'])}##merger"  # noqa: E501
+    del merged_record['concept_ids']
+    return merged_record
+
+
 @pytest.fixture(scope='module')
-def phenobarbital():
+def phenobarbital_merged():
     """Create phenobarbital fixture."""
     return MergedMatch(**{
         "concept_ids": [
-            "wikidata:Q407241",
-            "chemidplus:50-06-6",
             "rxcui:8134",
             "ncit:C739"
+            "chemidplus:50-06-6",
+            "wikidata:Q407241",
         ],
         "aliases": [
             '5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione',
@@ -92,7 +114,7 @@ def phenobarbital():
 
 
 @pytest.fixture(scope='module')
-def cisplatin():
+def cisplatin_merged():
     """Create cisplatin fixture."""
     return MergedMatch(**{
         "concept_ids": [
@@ -152,7 +174,7 @@ def cisplatin():
 
 
 @pytest.fixture(scope='module')
-def hydrocorticosteroid():
+def hydrocorticosteroid_merged():
     """Create fixture for 17-hydrocorticosteroid, which should merge only
     from RxNorm.
     """
@@ -175,7 +197,7 @@ def hydrocorticosteroid():
 
 
 @pytest.fixture(scope='module')
-def spiramycin():
+def spiramycin_merged():
     """Create fixture for spiramycin. The RxNorm entry should be inaccessible
     to this group.
     """
@@ -201,6 +223,104 @@ def spiramycin():
     })
 
 
-def test_merge(get_merge, phenobarbital):
-    """Test end-to-end merge function."""
-    assert True
+@pytest.fixture(scope='module')
+def record_id_groups():
+    """Create fixture for concept group sets."""
+    return {
+        "rxcui:19": {
+            "rxcui:19"
+        },
+        "chemidplus:50-06-6": {
+            "rxcui:8134",
+            "ncit:C739",
+            "chemidplus:50-06-6",
+            "wikidata:Q407241",
+        },
+        "ncit:C739": {
+            "rxcui:8134",
+            "ncit:C739",
+            "chemidplus:50-06-6",
+            "wikidata:Q407241",
+        },
+        "ncit:C839": {
+            "ncit:C839",
+            "chemidplus:8025-81-8",
+        },
+        "rxcui:8134": {
+            "rxcui:8134",
+            "ncit:C739",
+            "chemidplus:50-06-6",
+            "wikidata:Q407241",
+        },
+        "wikidata:Q407241": {
+            "rxcui:8134",
+            "ncit:C739",
+            "chemidplus:50-06-6",
+            "wikidata:Q407241",
+        },
+        "chemidplus:15663-27-1": {
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415"
+        },
+        "chemidplus:8025-81-8": {
+            "ncit:C839",
+            "chemidplus:8025-81-8",
+        },
+        "rxcui:2555": {
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415"
+        },
+        "ncit:C376": {
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415"
+        },
+        "wikidata:Q412415": {
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415"
+        },
+    }
+
+
+def test_create_record_id_set(merge_handler, record_id_groups):
+    """Test creation of record ID sets."""
+    for record_id in record_id_groups.keys():
+        new_group = merge_handler.create_record_id_set(record_id)
+        for concept_id in new_group:
+            merge_handler.merge._groups[concept_id] = new_group
+    groups = merge_handler.merge._groups
+    assert len(groups) == len(record_id_groups)
+    for concept_id in groups.keys():
+        assert groups[concept_id] == record_id_groups[concept_id]
+
+
+def test_generate_merged_record(merge_handler,
+                                phenobarbital_merged, cisplatin_merged,
+                                hydrocorticosteroid_merged, spiramycin_merged):
+    """Test generation of merged record method."""
+    phenobarbital_ids = {}
+    merge_response = merge_handler.generate_merged_record(phenobarbital_ids)
+    assert compare_merged_records(merge_response,
+                                  match_to_db_record(phenobarbital_merged))
+
+    cisplatin_ids = {}
+    merge_response = merge_handler.generate_merged_record(cisplatin_ids)
+    assert compare_merged_records(merge_response,
+                                  match_to_db_record(cisplatin_merged))
+
+    hydrocorticosteroid_ids = {}
+    merge_response = merge_handler.generate_merged_record(hydrocorticosteroid_ids)  # noqa: E501
+    assert compare_merged_records(merge_response,
+                                  match_to_db_record(hydrocorticosteroid_merged))  # noqa: E501
+
+    spiramycin_ids = {'ncit:C389', 'chemidplus:8025-81-8'}
+    merge_response = merge_handler.generate_merged_record(spiramycin_ids)
+    assert compare_merged_records(merge_response,
+                                  match_to_db_record(spiramycin_merged))
