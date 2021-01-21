@@ -429,7 +429,7 @@
     "label_and_type": "chemidplus:87-08-1##identity",
     "concept_id": "chemidplus:87-08-1",
     "label": "Penicillin V",
-    "aliases": [],
+    "aliases": ["Phenoxymethylpenicillin"],
     "trade_names": [],
     "other_identifiers": ["drugbank:DB00417"],
     "xrefs": ["fda:Z61I075U2W"],
@@ -441,17 +441,15 @@
     "src_name": "ChemIDplus"
   },
   {
+    "label_and_type": "phenoxymethylpenicillin##alias",
+    "concept_id": "chemidplus:87-08-1",
+    "src_name": "ChemIDplus"
+  },
+  {
     "label_and_type": "chemidplus:152459-95-5##identity",
     "concept_id": "chemidplus:152459-95-5",
     "label": "Imatinib",
-    "aliases": [
-      "GGP 57148",
-      "CCRIS 9076",
-      "UNII-BKJ8M8G5HI",
-      "ST1571",
-      "ST 1571",
-      "CGP-57148"
-    ],
+    "aliases": [],
     "trade_names": [],
     "other_identifiers": ["drugbank:DB00619"],
     "xrefs": ["fda:BKJ8M8G5HI"],
@@ -463,33 +461,31 @@
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "cgp 57148##alias",
-    "concept_id": "chemidplus:152459-95-5",
+    "label_and_type": "chemidplus:15663-27-1##identity",
+    "concept_id": "chemidplus:15663-27-1",
+    "label": "Cisplatin",
+    "aliases": [
+      "cis-Diaminedichloroplatinum",
+      "1,2-Diaminocyclohexaneplatinum II citrate"
+    ],
+    "trade_names": [],
+    "other_identifiers": ["drugbank:DB00515"],
+    "xrefs": ["fda:Q20Q21Q62J"],
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "st1571##alias",
-    "concept_id": "chemidplus:152459-95-5",
+    "label_and_type": "cisplatin##label",
+    "concept_id": "chemidplus:15663-27-1",
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "ccris 9076##alias",
-    "concept_id": "chemidplus:152459-95-5",
+    "label_and_type": "cis-diaminedichloroplatinum##alias",
+    "concept_id": "chemidplus:15663-27-1",
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "cgp-57148##alias",
-    "concept_id": "chemidplus:152459-95-5",
-    "src_name": "ChemIDplus"
-  },
-  {
-    "label_and_type": "st 1571##alias",
-    "concept_id": "chemidplus:152459-95-5",
-    "src_name": "ChemIDplus"
-  },
-  {
-    "label_and_type": "unii-bkj8m8g5hi##alias",
-    "concept_id": "chemidplus:152459-95-5",
+    "label_and_type": "1,2-diaminocyclohexaneplatinum ii citrate##alias",
+    "concept_id": "chemidplus:15663-27-1",
     "src_name": "ChemIDplus"
   },
   {

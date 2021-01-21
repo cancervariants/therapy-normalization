@@ -8,11 +8,16 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 import requests
 import logging
+from typing import Dict
 from boto3.dynamodb.table import BatchWriter
+import re
 
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
+
+
+TAGS_REGEX = r' \[.*\]'
 
 
 class ChemIDplus(Base):
@@ -78,86 +83,76 @@ class ChemIDplus(Base):
         root = tree.getroot()
         with self.database.therapies.batch_writer() as batch:
             for chemical in root:
+                if 'displayName' not in chemical.attrib:
+                    continue
+
+                # initial setup and get label
+                display_name = chemical.attrib['displayName']
+                if not display_name or not re.search(TAGS_REGEX, display_name):
+                    continue
+                label = re.sub(TAGS_REGEX, '', display_name)
+                params = {
+                    'label': label
+                }
+
                 # get concept ID
                 reg_no = chemical.find('NumberList').find("CASRegistryNumber")
                 if not reg_no:
                     continue
-                concept_id = f'{NamespacePrefix.CASREGISTRY.value}:{reg_no.text}'  # noqa: E501
-                # get names
-                name_element = chemical.find('NameList')
-                if name_element.find('NameOfSubstance'):
-                    label = name_element.find('NameOfSubstance').text
-                elif name_element.find('SystematicName'):
-                    label = name_element.find('SystematicName').text
-                elif 'displayName' in chemical.attrib:
-                    label = chemical.attrib['displayName']
-                else:
-                    label = None
-                trade_names = set()
-                mixture_names = name_element.findall('MixtureName')
-                if mixture_names:
-                    trade_names = {n.text for n in mixture_names}
-                alias_elms = [e for e in name_element if e.tag == 'Synonyms']
-                if len(alias_elms) > 20:
-                    aliases = set()
-                else:
-                    aliases = {e.text for e in alias_elms
-                               if e.text.lower() != label.lower()}
+                params['concept_id'] = f'{NamespacePrefix.CASREGISTRY.value}:{reg_no.text}'  # noqa: E501
+
+                # get aliases
+                aliases = []
+                label_l = label.lower()
+                name_list = chemical.find('NameList')
+                if name_list:
+                    for name in name_list.findall('NameOfSubstance'):
+                        text = name.text
+                        if text != display_name and text.lower() != label_l:
+                            aliases.append(re.sub(TAGS_REGEX, '', text))
+                params['aliases'] = aliases
+
                 # get other_ids and xrefs
-                other_identifiers = set()
-                xrefs = set()
+                params['other_identifiers'] = list()
+                params['xrefs'] = list()
                 locator_list = chemical.find('LocatorList')
                 if locator_list:
-                    urls = [loc.attrib['url'] for loc in locator_list
-                            if 'url' in loc.attrib]
-                    for url in urls:
-                        if 'drugbank' in url.lower():
-                            db = f'{NamespacePrefix.DRUGBANK.value}:{url.split("/")[-1]}'  # noqa: E501
-                            other_identifiers.add(db)
-                        elif 'fdasis' in url.lower():
-                            fda = f'{NamespacePrefix.FDA.value}:{url.split("/")[-1]}'  # noqa: E501
-                            xrefs.add(fda)
-                # load completed record
-                record = Drug(concept_id=concept_id,
-                              aliases=list(aliases),
-                              trade_names=list(trade_names),
-                              label=label,
-                              other_identifiers=list(other_identifiers),
-                              xrefs=list(xrefs))
-                self._load_record(batch, record)
+                    for loc in locator_list.findall('InternetLocator'):
+                        if loc.text == 'DrugBank':
+                            db = f'{NamespacePrefix.DRUGBANK.value}:{loc.attrib["url"].split("/")[-1]}'  # noqa: E501
+                            params['other_identifiers'].append(db)
+                        elif loc.text == 'FDA SRS':
+                            fda = f'{NamespacePrefix.FDA.value}:{loc.attrib["url"].split("/")[-1]}'  # noqa: E501
+                            params['xrefs'].append(fda)
 
-    def _load_record(self, batch: BatchWriter, record: Drug):
+                # double-check and load full record
+                assert Drug(**params)
+                self._load_record(batch, params)
+
+    def _load_record(self, batch: BatchWriter, record: Dict):
         """Load individual record into database.
 
         :param boto3.dynamodb.table.BatchWriter batch: dynamodb batch writer
             instance
         :param therapy.schemas.Drug record: complete drug record to upload
         """
-        concept_id = record.concept_id
-        if concept_id not in self._added_ids:
-            self._added_ids.add(concept_id)
-            for alias in {a.lower() for a in record.aliases}:
-                batch.put_item(Item={
-                    'label_and_type': f'{alias}##alias',
-                    'concept_id': concept_id.lower(),
-                    'src_name': SourceName.CHEMIDPLUS.value
-                })
-            for trade_name in {t.lower() for t in record.trade_names}:
-                batch.put_item(Item={
-                    'label_and_type': f'{trade_name}##trade_name',
-                    'concept_id': concept_id.lower(),
-                    'src_name': SourceName.CHEMIDPLUS.value
-                })
-            if record.label:
-                batch.put_item(Item={
-                    'label_and_type': f'{record.label.lower()}##label',
-                    'concept_id': concept_id.lower(),
-                    'src_name': SourceName.CHEMIDPLUS.value
-                })
-            id_record = dict(record)
-            id_record['src_name'] = SourceName.CHEMIDPLUS.value
-            id_record['label_and_type'] = f'{concept_id.lower()}##identity'
-            batch.put_item(Item=id_record)
+        concept_id_l = record['concept_id'].lower()
+        for alias in {a.lower() for a in record['aliases']}:
+            batch.put_item(Item={
+                'label_and_type': f'{alias}##alias',
+                'concept_id': concept_id_l,
+                'src_name': SourceName.CHEMIDPLUS.value
+            })
+        if 'label' in record:
+            batch.put_item(Item={
+                'label_and_type': f'{record["label"].lower()}##label',
+                'concept_id': concept_id_l,
+                'src_name': SourceName.CHEMIDPLUS.value
+            })
+        record['src_name'] = SourceName.CHEMIDPLUS.value
+        record['label_and_type'] = f'{concept_id_l}##identity'
+        batch.put_item(Item=record)
+        self._added_ids.add(record['concept_id'])
 
     def _add_meta(self):
         """Add source metadata."""
