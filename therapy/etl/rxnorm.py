@@ -17,6 +17,7 @@ from os import environ, remove
 import subprocess
 import shutil
 import zipfile
+import re
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -114,41 +115,56 @@ class RxNorm(Base):
         with open(self._data_src) as f:
             rff_data = csv.reader(f, delimiter='|')
             ingredient_brands = dict()
+            precise_ingredient = dict()
             data = dict()
             for row in rff_data:
                 concept_id = f"{NamespacePrefix.RXNORM.value}:{row[0]}"
-                # SBDC: Ingredient + Strength + Brand Name
                 if row[12] == 'SBDC':
+                    # SBDC: Ingredient + Strength + Brand Name
                     term = row[14]
+                    ingredients_brand = \
+                        re.sub(r"(\d*)(\d*\.)?\d+ (MG|UNT?)(/(ML|HR|MG))?",
+                               "", term)
                     brand = term.split('[')[-1].split(']')[0]
-                    ingredient_strength = term.replace(
-                        f"[{term.split('[')[-1]}", '').strip()
-                    self._add_term(ingredient_brands, brand,
-                                   ingredient_strength)
+                    ingredients = ingredients_brand.replace(f"[{brand}]", '')
+                    if '/' in ingredients:
+                        ingredients = ingredients.split('/')
+                        for ingredient in ingredients:
+                            self._add_term(ingredient_brands, brand,
+                                           ingredient.strip())
+                    else:
+                        self._add_term(ingredient_brands, brand,
+                                       ingredients.strip())
                 else:
                     if concept_id not in data.keys():
                         params = dict()
                         params['concept_id'] = concept_id
-                        self._add_str_field(params, row)
+                        self._add_str_field(params, row, precise_ingredient)
                         self._add_other_ids_xrefs(params, row)
                         data[concept_id] = params
                     else:
                         # Concept already created
                         params = data[concept_id]
-                        self._add_str_field(params, row)
+                        self._add_str_field(params, row, precise_ingredient)
                         self._add_other_ids_xrefs(params, row)
 
             with self.database.therapies.batch_writer() as batch:
                 for key, value in data.items():
                     if 'label' in value:
-                        label = value['label'].lower()
-                        trade_names = \
-                            [val for key, val in ingredient_brands.items()
-                             if label in key.lower()]
-                        trade_names = {val for sublist in trade_names
-                                       for val in sublist}
-                        for tn in trade_names:
-                            self._add_term(value, tn, 'trade_names')
+                        labels = [value['label'].lower()]
+                        if 'PIN' in value and value['PIN'] \
+                                in precise_ingredient:
+                            for pin in precise_ingredient[value['PIN']]:
+                                labels.append(pin.lower())
+                        for label in labels:
+                            trade_names = \
+                                [val for key, val in ingredient_brands.items()
+                                 if label == key.lower()]
+                            trade_names = {val for sublist in trade_names
+                                           for val in sublist}
+                            for tn in trade_names:
+                                self._add_term(value, tn, 'trade_names')
+
                         params = Drug(
                             concept_id=value['concept_id'],
                             label=value['label'] if 'label' in value else None,
@@ -234,11 +250,12 @@ class RxNorm(Base):
                                 " bytes.")
         return terms
 
-    def _add_str_field(self, params, row):
+    def _add_str_field(self, params, row, precise_ingredient):
         """Differentiate STR field.
 
         :param dict params: A transformed therapy record.
         :param list row: A row in the RxNorm data file.
+        :param dict precise_ingredient: Precise ingredient information
         """
         term = row[14]
         term_type = row[12]
@@ -261,6 +278,14 @@ class RxNorm(Base):
             self._add_term(params, term, 'aliases')
         elif term_type in trade_names:
             self._add_term(params, term, 'trade_names')
+
+        # Precise Ingredient
+        if source == 'MSH':
+            if term_type == 'MH':
+                # Get ID for accessing precise ingredient
+                params['PIN'] = row[13]
+            elif term_type == 'PEP':
+                self._add_term(precise_ingredient, term, row[13])
 
     def _add_term(self, params, term, label_type):
         """Add a single term to a therapy record in an associated field.
