@@ -45,6 +45,7 @@ class RxNorm(Base):
         """Initialize the RxNorm ETL class.
 
         :param Database database: Access to DynamoDB.
+        :param str data_url: URL to RxNorm data files.
         """
         self._other_id_srcs = {src for src in SourceName.__members__}
         self._xref_srcs = {src for src in NamespacePrefix.__members__}
@@ -85,7 +86,10 @@ class RxNorm(Base):
         logger.info('Successfully extracted RxNorm.')
 
     def _download_data(self, rxn_dir):
-        """Download RxNorm data file."""
+        """Download RxNorm data file.
+
+        :param Path rxn_dir: Path to RxNorm data directory.
+        """
         logger.info('Downloading RxNorm...')
         if 'RXNORM_API_KEY' in environ.keys():
             uri = 'https://download.nlm.nih.gov/umls/kss/' \
@@ -124,6 +128,10 @@ class RxNorm(Base):
             raise DownloadException("RXNORM_API_KEY not found.")
 
     def _create_drug_form_yaml(self, rxn_dir):
+        """Create a YAML file containing RxNorm drug form values.
+
+        :param Path rxn_dir: Path to RxNorm data directory.
+        """
         self._drug_forms_file = rxn_dir / 'drug_forms.yaml'
         if not self._drug_forms_file.exists():
             dfs = list()
@@ -144,28 +152,15 @@ class RxNorm(Base):
 
         with open(self._data_src) as f:
             rff_data = csv.reader(f, delimiter='|')
-            ingredient_brands = dict()
-            precise_ingredient = dict()
-            data = dict()
-            sbdfs = dict()
+            ingredient_brands = dict()  # Link ingredient to brand
+            precise_ingredient = dict()  # Link precise ingredient to get brand
+            data = dict()  # Transformed therapy records
+            sbdfs = dict()  # Link ingredient to brand
             for row in rff_data:
                 concept_id = f"{NamespacePrefix.RXNORM.value}:{row[0]}"
                 if row[12] == 'SBDC':
-                    # SBDC: Ingredient + Strength + Brand Name
-                    term = row[14]
-                    ingredients_brand = \
-                        re.sub(r"(\d*)(\d*\.)?\d+ (MG|UNT|ML)?(/(ML|HR|MG))?",
-                               "", term)
-                    brand = term.split('[')[-1].split(']')[0]
-                    ingredients = ingredients_brand.replace(f"[{brand}]", '')
-                    if '/' in ingredients:
-                        ingredients = ingredients.split('/')
-                        for ingredient in ingredients:
-                            self._add_term(ingredient_brands, brand,
-                                           ingredient.strip())
-                    else:
-                        self._add_term(ingredient_brands, brand,
-                                       ingredients.strip())
+                    # Semantic Branded Drug Component
+                    self._get_brands(row, ingredient_brands)
                 else:
                     if concept_id not in data.keys():
                         params = dict()
@@ -184,25 +179,8 @@ class RxNorm(Base):
             with self.database.therapies.batch_writer() as batch:
                 for key, value in data.items():
                     if 'label' in value:
-                        record_label = value['label'].lower()
-                        labels = [record_label]
-                        if 'PIN' in value and value['PIN'] \
-                                in precise_ingredient:
-                            for pin in precise_ingredient[value['PIN']]:
-                                labels.append(pin.lower())
-                        for label in labels:
-                            trade_names = \
-                                [val for key, val in ingredient_brands.items()
-                                 if label == key.lower()]
-                            trade_names = {val for sublist in trade_names
-                                           for val in sublist}
-                            for tn in trade_names:
-                                self._add_term(value, tn, 'trade_names')
-
-                        if record_label in sbdfs:
-                            for tn in sbdfs[record_label]:
-                                self._add_term(value, tn, 'trade_names')
-
+                        self._get_trade_names(value, precise_ingredient,
+                                              ingredient_brands, sbdfs)
                         params = Drug(
                             concept_id=value['concept_id'],
                             label=value['label'] if 'label' in value else None,
@@ -288,6 +266,58 @@ class RxNorm(Base):
                                 " bytes.")
         return terms
 
+    def _get_brands(self, row, ingredient_brands):
+        """Add ingredient and brand to ingredient_brands.
+
+        :param list row: A row in the RxNorm data file.
+        :param dict ingredient_brands: Store brands for each ingredient
+        """
+        # SBDC: Ingredient(s) + Strength + [Brand Name]
+        term = row[14]
+        ingredients_brand = \
+            re.sub(r"(\d*)(\d*\.)?\d+ (MG|UNT|ML)?(/(ML|HR|MG))?",
+                   "", term)
+        brand = term.split('[')[-1].split(']')[0]
+        ingredients = ingredients_brand.replace(f"[{brand}]", '')
+        if '/' in ingredients:
+            ingredients = ingredients.split('/')
+            for ingredient in ingredients:
+                self._add_term(ingredient_brands, brand,
+                               ingredient.strip())
+        else:
+            self._add_term(ingredient_brands, brand,
+                           ingredients.strip())
+
+    def _get_trade_names(self, value, precise_ingredient, ingredient_brands,
+                         sbdfs):
+        """Get trade names for a given ingredient.
+
+        :param dict value: Therapy attributes
+        :param dict precise_ingredient: Brand names for precise ingredient
+        :param dict ingredient_brands: Brand names for ingredient
+        :param dict sbdfs: Brand names for ingredient from SBDF row
+        """
+        record_label = value['label'].lower()
+        labels = [record_label]
+
+        if 'PIN' in value and value['PIN'] \
+                in precise_ingredient:
+            for pin in precise_ingredient[value['PIN']]:
+                labels.append(pin.lower())
+
+        for label in labels:
+            trade_names = \
+                [val for key, val in ingredient_brands.items()
+                 if label == key.lower()]
+            trade_names = {val for sublist in trade_names
+                           for val in sublist}
+            for tn in trade_names:
+                self._add_term(value, tn, 'trade_names')
+
+        if record_label in sbdfs:
+            for tn in sbdfs[record_label]:
+                self._add_term(value, tn, 'trade_names')
+
     def _add_str_field(self, params, row, precise_ingredient, drug_forms,
                        sbdfs):
         """Differentiate STR field.
@@ -295,6 +325,8 @@ class RxNorm(Base):
         :param dict params: A transformed therapy record.
         :param list row: A row in the RxNorm data file.
         :param dict precise_ingredient: Precise ingredient information
+        :param list drug_forms: RxNorm Drug Form values
+        :param dict precise_ingredient: Brand names for precise ingredient
         """
         term = row[14]
         term_type = row[12]
@@ -307,7 +339,6 @@ class RxNorm(Base):
         elif term_type in TRADE_NAMES:
             self._add_term(params, term, 'trade_names')
 
-        # Precise Ingredient
         if source == 'RXNORM':
             if term_type == 'SBDF':
                 brand = term.split('[')[-1].split(']')[0]
