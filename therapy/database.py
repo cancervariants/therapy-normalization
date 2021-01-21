@@ -157,7 +157,9 @@ class Database:
         except ClientError as e:
             logger.error(e.response['Error']['Message'])
             return None
-        except IndexError:
+        except KeyError:  # record doesn't exist
+            return None
+        except IndexError:  # record doesn't exist
             return None
 
     def get_records_by_type(self, query: str,
