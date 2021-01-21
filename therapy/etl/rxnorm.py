@@ -121,12 +121,12 @@ class RxNorm(Base):
                 if row[12] == 'SBDC':
                     term = row[14]
                     brand = term.split('[')[-1].split(']')[0]
-                    ingredient_strength = \
-                        term.replace(term.split()[-1], '').strip()
-                    ingredient_brands[ingredient_strength] = brand
+                    ingredient_strength = term.replace(
+                        f"[{term.split('[')[-1]}", '').strip()
+                    self._add_term(ingredient_brands, brand,
+                                   ingredient_strength)
                 else:
                     if concept_id not in data.keys():
-                        # TODO: Check logic
                         params = dict()
                         params['concept_id'] = concept_id
                         self._add_str_field(params, row)
@@ -145,9 +145,10 @@ class RxNorm(Base):
                         trade_names = \
                             [val for key, val in ingredient_brands.items()
                              if label in key.lower()]
+                        trade_names = {val for sublist in trade_names
+                                       for val in sublist}
                         for tn in trade_names:
                             self._add_term(value, tn, 'trade_names')
-
                         params = Drug(
                             concept_id=value['concept_id'],
                             label=value['label'] if 'label' in value else None,
