@@ -650,7 +650,7 @@
     "src_name": "RxNorm"
   },
   {
-    "label_and_type": "3,5-diamino-N-carbamimidoyl-6-chloropyrazine-2-carboxamide##alias",
+    "label_and_type": "3,5-diamino-n-carbamimidoyl-6-chloropyrazine-2-carboxamide##alias",
     "concept_id": "rxcui:644",
     "src_name": "RxNorm"
   },
@@ -707,7 +707,7 @@
     "src_name": "RxNorm"
   },
   {
-    "label_and_type": "(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol-3-yl)oxy]propan-2-ol##alias",
+    "label_and_type": "(s)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol-3-yl)oxy]propan-2-ol##alias",
     "concept_id": "rxcui:10600",
     "src_name": "RxNorm"
   },
