@@ -119,6 +119,7 @@ class Merge:
                              f"in {record_id_set}")
 
         def record_order(record):
+            """Provide priority values of concepts for sort function."""
             src = record['src_name']
             if src == SourceName.RXNORM:
                 source_rank = 1
@@ -131,22 +132,21 @@ class Merge:
             return (source_rank, record['concept_id'])
         records.sort(key=record_order)
 
-        attrs = {'aliases': set(), 'concept_id': '',
-                 'trade_names': set(), 'xrefs': set()}
+        merged_attrs = {'aliases': set(), 'concept_id': '',
+                        'trade_names': set(), 'xrefs': set()}
         set_fields = ['aliases', 'trade_names', 'xrefs']
         for record in records:
             for field in set_fields:
                 if field in record:
-                    attrs[field] |= set(record[field])
-            new_id_grp = f'{attrs["concept_id"]}|{record["concept_id"]}'
-            attrs['concept_id'] = new_id_grp
-            for field in ['label', 'approval_status']:
-                if field not in attrs:
-                    value = record.get(field, None)
-                    if value:
-                        attrs[field] = value
+                    merged_attrs[field] |= set(record[field])
+            new_id_grp = f'{merged_attrs["concept_id"]}|{record["concept_id"]}'
+            merged_attrs['concept_id'] = new_id_grp
+            if 'label' not in merged_attrs \
+                    and 'label' in record and record['label']:
+                merged_attrs['label'] = record.get('label')
         for field in set_fields:
-            attrs[field] = list(attrs[field])
+            merged_attrs[field] = list(merged_attrs[field])
 
-        attrs['label_and_type'] = f'{attrs["concept_id"].lower()}##merger'
-        return attrs
+        ref = f'{merged_attrs["concept_id"].lower()}##merger'
+        merged_attrs['label_and_type'] = ref
+        return merged_attrs
