@@ -100,7 +100,8 @@ def cisplatin():
             'snomedct:387318005'
         ],
         'trade_names': [
-            'Cisplatin'
+            'Cisplatin',
+            'Platinol'
         ]
     }
     return Drug(**params)
@@ -138,7 +139,13 @@ def amiloride():
             'snomedct:87395005'
         ],
         'trade_names': [
-            'Midamor'
+            'Midamor',
+            'Frusemek',
+            'Moduret',
+            'Aridil',
+            'Zida-Co',
+            'Amilamont',
+            'Moduretic'
         ]
     }
     return Drug(**params)
@@ -178,7 +185,17 @@ def timolol():
         ],
         'trade_names': [
             'Betimol',
-            'Timoptic'
+            'Timoptic',
+            'Istalol',
+            'Combigan',
+            'Cosopt',
+            'Timoptol LA',
+            'Blocadren',
+            'Timolide',
+            'Betim',
+            'Glau-Opt',
+            'Glaucol',
+            'Timoptol'
         ]
     }
     return Drug(**params)
@@ -193,6 +210,21 @@ def lymphocyte():
         'label': 'lymphocyte immune globulin, anti-thymocyte globulin',
         'concept_id': 'rxcui:1011',
         'aliases': [
+            'Antithymocyte immunoglobulin',
+            'Lymphocyte Immune Globulin, Anti-Thymocyte Globulin',
+            'Anti-Thymocyte Globulin',
+            'Antithymocyte Globulin',
+            'Antithymoglobulin',
+            'Lymphocyte Immune Globulin, Anti Thymocyte Globulin',
+            'Globulins, Antithymocyte',
+            'Antithymocyte Globulins',
+            'Antithymoglobulins',
+            'Anti-Thymocyte Globulins',
+            'Globulins, Anti-Thymocyte',
+            'Globulin, Antithymocyte',
+            'Anti Thymocyte Globulin',
+            'Globulin, Anti-Thymocyte',
+            'lymphocyte immune globulin, anti-thy (obs)'
         ],
         'approval_status': None,
         'other_identifiers': [],
@@ -205,6 +237,8 @@ def lymphocyte():
             'mmsl:5001'
         ],
         'trade_names': [
+            'ATGAM',
+            'Thymoglobulin'
         ]
     }
     return Drug(**params)
@@ -264,6 +298,39 @@ def test_bifidobacterium_infantis(bifidobacterium_infantis, rxnorm):
     assert normalized_drug.approval_status == \
            bifidobacterium_infantis.approval_status
 
+    # Trade Name Match
+    normalizer_response = rxnorm.normalize('ALIGN')
+    assert normalizer_response['match_type'] == MatchType.TRADE_NAME
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == bifidobacterium_infantis.label
+    assert normalized_drug.concept_id == bifidobacterium_infantis.concept_id
+    assert set(normalized_drug.aliases) == \
+           set(bifidobacterium_infantis.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(bifidobacterium_infantis.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(bifidobacterium_infantis.xrefs)
+    assert set(normalized_drug.trade_names) == \
+           set(bifidobacterium_infantis.trade_names)
+    assert normalized_drug.approval_status == \
+           bifidobacterium_infantis.approval_status
+
+    normalizer_response = rxnorm.normalize('evivo')
+    assert normalizer_response['match_type'] == MatchType.TRADE_NAME
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == bifidobacterium_infantis.label
+    assert normalized_drug.concept_id == bifidobacterium_infantis.concept_id
+    assert set(normalized_drug.aliases) == \
+           set(bifidobacterium_infantis.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(bifidobacterium_infantis.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(bifidobacterium_infantis.xrefs)
+    assert set(normalized_drug.trade_names) == \
+           set(bifidobacterium_infantis.trade_names)
+    assert normalized_drug.approval_status == \
+           bifidobacterium_infantis.approval_status
+
 
 def test_cisplatin(cisplatin, rxnorm):
     """Test that cisplatin drug normalizes to correct drug concept."""
@@ -274,15 +341,80 @@ def test_cisplatin(cisplatin, rxnorm):
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == cisplatin.label
     assert normalized_drug.concept_id == cisplatin.concept_id
-    assert set(normalized_drug.aliases) == \
-           set(cisplatin.aliases)
+    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(cisplatin.other_identifiers)
     assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
-    assert set(normalized_drug.trade_names) == \
-           set(cisplatin.trade_names)
-    assert normalized_drug.approval_status == \
-           cisplatin.approval_status
+    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert normalized_drug.approval_status == cisplatin.approval_status
+
+    # Label Match
+    normalizer_response = rxnorm.normalize('CISPLATIN')
+    assert normalizer_response['match_type'] == MatchType.LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == cisplatin.label
+    assert normalized_drug.concept_id == cisplatin.concept_id
+    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(cisplatin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
+    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert normalized_drug.approval_status == cisplatin.approval_status
+
+    # Alias Match
+    normalizer_response = rxnorm.normalize('Cis-DDP')
+    assert normalizer_response['match_type'] == MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == cisplatin.label
+    assert normalized_drug.concept_id == cisplatin.concept_id
+    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(cisplatin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
+    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert normalized_drug.approval_status == cisplatin.approval_status
+
+    normalizer_response = rxnorm.normalize('Diaminedichloroplatinum')
+    assert normalizer_response['match_type'] == MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == cisplatin.label
+    assert normalized_drug.concept_id == cisplatin.concept_id
+    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(cisplatin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
+    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert normalized_drug.approval_status == cisplatin.approval_status
+
+    normalizer_response = rxnorm.normalize('cis Platinum')
+    assert normalizer_response['match_type'] == MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == cisplatin.label
+    assert normalized_drug.concept_id == cisplatin.concept_id
+    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(cisplatin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
+    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert normalized_drug.approval_status == cisplatin.approval_status
+
+    # Trade Name Match
+    normalizer_response = rxnorm.normalize('platinol')
+    assert normalizer_response['match_type'] == MatchType.TRADE_NAME
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == cisplatin.label
+    assert normalized_drug.concept_id == cisplatin.concept_id
+    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(cisplatin.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
+    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
+    assert normalized_drug.approval_status == cisplatin.approval_status
 
 
 def test_amiloride(amiloride, rxnorm):
@@ -296,15 +428,68 @@ def test_amiloride(amiloride, rxnorm):
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == amiloride.label
     assert normalized_drug.concept_id == amiloride.concept_id
-    assert set(normalized_drug.aliases) == \
-           set(amiloride.aliases)
+    assert set(normalized_drug.aliases) == set(amiloride.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(amiloride.other_identifiers)
     assert set(normalized_drug.xrefs) == set(amiloride.xrefs)
-    assert set(normalized_drug.trade_names) == \
-           set(amiloride.trade_names)
-    assert normalized_drug.approval_status == \
-           amiloride.approval_status
+    assert set(normalized_drug.trade_names) == set(amiloride.trade_names)
+    assert normalized_drug.approval_status == amiloride.approval_status
+
+    # Label Match
+    normalizer_response = rxnorm.normalize('amiloride')
+    assert normalizer_response['match_type'] == MatchType.LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == amiloride.label
+    assert normalized_drug.concept_id == amiloride.concept_id
+    assert set(normalized_drug.aliases) == set(amiloride.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(amiloride.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(amiloride.xrefs)
+    assert set(normalized_drug.trade_names) == set(amiloride.trade_names)
+    assert normalized_drug.approval_status == amiloride.approval_status
+
+    # Alias Match
+    normalizer_response = rxnorm.normalize('Amyloride')
+    assert normalizer_response['match_type'] == MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == amiloride.label
+    assert normalized_drug.concept_id == amiloride.concept_id
+    assert set(normalized_drug.aliases) == set(amiloride.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(amiloride.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(amiloride.xrefs)
+    assert set(normalized_drug.trade_names) == set(amiloride.trade_names)
+    assert normalized_drug.approval_status == amiloride.approval_status
+
+    normalizer_response = rxnorm.normalize('3,5-diamino-N-carbamimidoyl-6-'
+                                           'chloropyrazine-2-carboxamide')
+    assert normalizer_response['match_type'] == MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == amiloride.label
+    assert normalized_drug.concept_id == amiloride.concept_id
+    assert set(normalized_drug.aliases) == set(amiloride.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(amiloride.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(amiloride.xrefs)
+    assert set(normalized_drug.trade_names) == set(amiloride.trade_names)
+    assert normalized_drug.approval_status == amiloride.approval_status
+
+    # Trade Name Match
+    normalizer_response = rxnorm.normalize('Midamor')
+    assert normalizer_response['match_type'] == MatchType.TRADE_NAME
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == amiloride.label
+    assert normalized_drug.concept_id == amiloride.concept_id
+    assert set(normalized_drug.aliases) == set(amiloride.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(amiloride.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(amiloride.xrefs)
+    assert set(normalized_drug.trade_names) == set(amiloride.trade_names)
+    assert normalized_drug.approval_status == amiloride.approval_status
 
 
 def test_timolol(timolol, rxnorm):
@@ -316,15 +501,142 @@ def test_timolol(timolol, rxnorm):
     normalized_drug = normalizer_response['records'][0]
     assert normalized_drug.label == timolol.label
     assert normalized_drug.concept_id == timolol.concept_id
-    assert set(normalized_drug.aliases) == \
-           set(timolol.aliases)
+    assert set(normalized_drug.aliases) == set(timolol.aliases)
     assert set(normalized_drug.other_identifiers) == \
            set(timolol.other_identifiers)
     assert set(normalized_drug.xrefs) == set(timolol.xrefs)
-    assert set(normalized_drug.trade_names) == \
-           set(timolol.trade_names)
-    assert normalized_drug.approval_status == \
-           timolol.approval_status
+    assert set(normalized_drug.trade_names) == set(timolol.trade_names)
+    assert normalized_drug.approval_status == timolol.approval_status
+
+    # Label Match
+    normalizer_response = rxnorm.normalize('timolol')
+    assert normalizer_response['match_type'] == MatchType.LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == timolol.label
+    assert normalized_drug.concept_id == timolol.concept_id
+    assert set(normalized_drug.aliases) == set(timolol.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(timolol.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(timolol.xrefs)
+    assert set(normalized_drug.trade_names) == set(timolol.trade_names)
+    assert normalized_drug.approval_status == timolol.approval_status
+
+    # Alias Match
+    normalizer_response = rxnorm.normalize('(S)-1-(tert-butylamino)-3-[(4-'
+                                           'morpholin-4-yl-1,2,5-thiadiazol'
+                                           '-3-yl)oxy]propan-2-ol')
+    assert normalizer_response['match_type'] == MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == timolol.label
+    assert normalized_drug.concept_id == timolol.concept_id
+    assert set(normalized_drug.aliases) == set(timolol.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(timolol.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(timolol.xrefs)
+    assert set(normalized_drug.trade_names) == set(timolol.trade_names)
+    assert normalized_drug.approval_status == timolol.approval_status
+
+    # Trade Name Match
+    normalizer_response = rxnorm.normalize('Betimol')
+    assert normalizer_response['match_type'] == MatchType.TRADE_NAME
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == timolol.label
+    assert normalized_drug.concept_id == timolol.concept_id
+    assert set(normalized_drug.aliases) == set(timolol.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(timolol.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(timolol.xrefs)
+    assert set(normalized_drug.trade_names) == set(timolol.trade_names)
+    assert normalized_drug.approval_status == timolol.approval_status
+
+
+def test_lymphocyten(lymphocyte, rxnorm):
+    """Test that lymphocyte drug normalizes to correct drug concept."""
+    # Concept ID Match
+    normalizer_response = rxnorm.normalize('RxCUI:1011')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == lymphocyte.label
+    assert normalized_drug.concept_id == lymphocyte.concept_id
+    assert set(normalized_drug.aliases) == set(lymphocyte.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(lymphocyte.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(lymphocyte.xrefs)
+    assert set(normalized_drug.trade_names) == set(lymphocyte.trade_names)
+    assert normalized_drug.approval_status == lymphocyte.approval_status
+
+    # Label Match
+    normalizer_response = rxnorm.normalize('lymphocyte immune globulin, '
+                                           'anti-thymocyte globulin')
+    assert normalizer_response['match_type'] == MatchType.LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == lymphocyte.label
+    assert normalized_drug.concept_id == lymphocyte.concept_id
+    assert set(normalized_drug.aliases) == set(lymphocyte.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(lymphocyte.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(lymphocyte.xrefs)
+    assert set(normalized_drug.trade_names) == set(lymphocyte.trade_names)
+    assert normalized_drug.approval_status == lymphocyte.approval_status
+
+    # Alias Match
+    normalizer_response = rxnorm.normalize('Anti Thymocyte Globulin')
+    assert normalizer_response['match_type'] == MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == lymphocyte.label
+    assert normalized_drug.concept_id == lymphocyte.concept_id
+    assert set(normalized_drug.aliases) == set(lymphocyte.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(lymphocyte.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(lymphocyte.xrefs)
+    assert set(normalized_drug.trade_names) == set(lymphocyte.trade_names)
+    assert normalized_drug.approval_status == lymphocyte.approval_status
+
+    normalizer_response = rxnorm.normalize('Antithymoglobulin')
+    assert normalizer_response['match_type'] == MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == lymphocyte.label
+    assert normalized_drug.concept_id == lymphocyte.concept_id
+    assert set(normalized_drug.aliases) == set(lymphocyte.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(lymphocyte.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(lymphocyte.xrefs)
+    assert set(normalized_drug.trade_names) == set(lymphocyte.trade_names)
+    assert normalized_drug.approval_status == lymphocyte.approval_status
+
+    # Trade Name Match
+    normalizer_response = rxnorm.normalize('Thymoglobulin')
+    assert normalizer_response['match_type'] == MatchType.TRADE_NAME
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == lymphocyte.label
+    assert normalized_drug.concept_id == lymphocyte.concept_id
+    assert set(normalized_drug.aliases) == set(lymphocyte.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(lymphocyte.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(lymphocyte.xrefs)
+    assert set(normalized_drug.trade_names) == set(lymphocyte.trade_names)
+    assert normalized_drug.approval_status == lymphocyte.approval_status
+
+    normalizer_response = rxnorm.normalize('ATGAM')
+    assert normalizer_response['match_type'] == MatchType.TRADE_NAME
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == lymphocyte.label
+    assert normalized_drug.concept_id == lymphocyte.concept_id
+    assert set(normalized_drug.aliases) == set(lymphocyte.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(lymphocyte.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(lymphocyte.xrefs)
+    assert set(normalized_drug.trade_names) == set(lymphocyte.trade_names)
+    assert normalized_drug.approval_status == lymphocyte.approval_status
 
 
 def test_no_match(rxnorm):
