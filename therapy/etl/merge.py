@@ -79,8 +79,8 @@ class Merge:
         :param str record_id: concept ID for record to build group from
         :return: set of related identifiers pertaining to a common concept.
         """
-        if record_id in self._merged_groups:
-            return self._merged_groups[record_id]
+        if record_id in self._groups:
+            return self._groups[record_id]
         else:
             db_record = self._database.get_record_by_id(record_id)
             if not db_record or 'other_identifiers' not in db_record:
