@@ -493,70 +493,23 @@
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "rxcui:19##identity",
-    "label": "17-hydrocorticosteroid",
-    "concept_id": "rxcui:19",
-    "aliases": [
-      "17-hydroxycorticoid",
-      "17-hydroxycorticosteroid",
-      "17-hydroxycorticosteroid (substance)"
-    ],
-    "xrefs": ["snomedct:112116001"],
-    "src_name": "RxNorm"
-  },
-  {
-    "label_and_type": "17-hydrocorticosteroid##label",
-    "concept_id": "rxcui:19",
-    "src_name": "RxNorm"
-  },
-  {
-    "label_and_type": "17-hydroxycorticoid##alias",
-    "concept_id": "rxcui:19",
-    "src_name": "RxNorm"
-  },
-  {
-    "label_and_type": "17-hydroxycorticosteroid (substance)##alias",
-    "concept_id": "rxcui:19",
-    "src_name": "RxNorm"
-  },
-  {
-    "label_and_type": "17-hydroxycorticosteroid##alias",
-    "concept_id": "rxcui:19",
-    "src_name": "RxNorm"
-  },
-  {
-    "label_and_type": "rxcui:91837##identity",
-    "label": "Aquanil Lotion, topical lotion",
-    "concept_id": "rxcui:91837",
-    "aliases": ["AQUANIL LOTION"],
-    "xrefs": ["mmsl:5035", "vandf:4010585", "mmx:106710"],
-    "trade_names": [
-      "Lotion, Multi Ingredient Topical application Lotion [AQUANIL]"
-    ],
-    "src_name": "RxNorm"
-  },
-  {
-    "label_and_type": "aquanil lotion, topical lotion##label",
-    "concept_id": "rxcui:91837",
-    "src_name": "RxNorm"
-  },
-  {
-    "label_and_type": "aquanil lotion, topical lotion##trade_name",
-    "concept_id": "rxcui:91837",
-    "src_name": "RxNorm"
-  },
-  {
-    "label_and_type": "lotion, multi ingredient topical application lotion [aquanil]##trade_name",
-    "concept_id": "rxcui:91837",
-    "src_name": "RxNorm"
-  },
-  {
     "label_and_type": "rxcui:100213##identity",
-    "label": "Bifidobacterium infantis",
     "concept_id": "rxcui:100213",
-    "aliases": ["bifidobacterium infantis"],
+    "label": "Bifidobacterium Infantis",
+    "aliases": [
+      "bifidobacterium infantis",
+      "Bifidobacterium infantis"
+    ],
+    "trade_names": [
+      "Align",
+      "Evivo"
+    ],
     "other_identifiers": ["drugbank:DB14222"],
-    "xrefs": ["gsddb:4931", "mmsl:d07347", "fdbmk:001165"],
+    "xrefs": [
+      "gsddb:4931",
+      "mmsl:d07347",
+      "fdbmk:001165"
+    ],
     "src_name": "RxNorm"
   },
   {
@@ -565,9 +518,19 @@
     "src_name": "RxNorm"
   },
   {
+    "label_and_type": "align##trade_name",
+    "concept_id": "rxcui:100213",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "evivo##trade_name",
+    "concept_id": "rxcui:100213",
+    "src_name": "RxNorm"
+  },
+  {
     "label_and_type": "rxcui:2555##identity",
-    "label": "Cisplatin",
     "concept_id": "rxcui:2555",
+    "label": "cisplatin",
     "aliases": [
       "Cisplatin-containing product",
       "Diaminedichloroplatinum",
@@ -582,7 +545,6 @@
       "cis-Diaminedichloroplatinum",
       "cis-Platinum II",
       "DDP",
-      "Cisplatin (substance)",
       "Dichlorodiammineplatinum",
       "cis-Diamminedichloroplatinum",
       "cis-Dichlorodiammineplatinum(II)",
@@ -591,10 +553,16 @@
       "cis-Platinum",
       "cis-diamminedichloroplatinum(II)",
       "CDDP",
-      "Cis-DDP",
-      "Product containing cisplatin (medicinal product)"
+      "Cis-DDP"
     ],
-    "other_identifiers": ["drugbank:DB00515", "drugbank:DB12117"],
+    "trade_names": [
+      "Cisplatin",
+      "Platinol"
+    ],
+    "other_identifiers": [
+      "drugbank:DB00515",
+      "drugbank:DB12117"
+    ],
     "xrefs": [
       "usp:m17910",
       "gsddb:862",
@@ -609,89 +577,207 @@
       "mmsl:4456",
       "snomedct:387318005"
     ],
-    "trade_names": ["Cisplatin"],
     "src_name": "RxNorm"
   },
   {
-    "label_and_type": "rxcui:91691##identity",
-    "label": "nifedipine 10 MG Oral Capsule [Adalat]",
-    "concept_id": "rxcui:91691",
+    "label_and_type": "cisplatin##label",
+    "concept_id": "rxcui:2555",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "cis-ddp##alias",
+    "concept_id": "rxcui:2555",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "diaminedichloroplatinum##alias",
+    "concept_id": "rxcui:2555",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "cis platinum##alias",
+    "concept_id": "rxcui:2555",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "platinol##trade_name",
+    "concept_id": "rxcui:2555",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:644##identity",
+    "concept_id": "rxcui:644",
+    "label": "amiloride",
     "aliases": [
-      "NIFEdipine 10 MG Oral Capsule [Adalat]",
-      "Adalat 10 MG Oral Capsule"
-    ],
-    "xrefs": [
-      "gsddb:18734",
-      "mmx:102718",
-      "mmsl:2735"
+      "3,5-diamino-N-carbamimidoyl-6-chloropyrazine-2-carboxamide",
+      "Amiloride-containing product",
+      "Amiloride",
+      "aMILoride",
+      "Amipramidin",
+      "Amipramidine",
+      "N-amidino-3,5-diamino-6-chloropyrazinecarboxamide",
+      "Amyloride"
     ],
     "trade_names": [
-      "Adalat 10mg Capsule",
-      "Nifedipine 10 MG Oral Capsule, Liquid Filled [ADALAT]",
-      "Adalat, 10 mg oral capsule"
+      "Midamor",
+      "Frusemek",
+      "Moduret",
+      "Aridil",
+      "Zida-Co",
+      "Amilamont",
+      "Moduretic"
     ],
-    "src_name": "RxNorm"
-  },
-  {
-    "label_and_type": "rxcui:1298837##identity",
-    "label": "amiloride hydrochloride, anhydrous",
-    "concept_id": "rxcui:1298837",
-    "aliases": [
-      "aMILoride hydrochloride, anhydrous",
-      "Anhydrous Amiloride Hydrochloride",
-      "Hydrochloride, Anhydrous Amiloride",
-      "Amiloride Hydrochloride, Anhydrous"
+    "other_identifiers": [
+      "drugbank:DB00594"
     ],
     "xrefs": [
+      "gsddb:3993",
+      "snomedct:387503008",
       "msh:D000584",
-      "mthspl:7M458Q65S3"
+      "vandf:4019603",
+      "fdbmk:004861",
+      "mthspl:7DZO8EB0Z3",
+      "mmsl:d00169",
+      "atc:C03DB01",
+      "snomedct:87395005"
     ],
     "src_name": "RxNorm"
   },
   {
-    "label_and_type": "rxcui:1191##identity",
-    "label": "Aspirin",
-    "concept_id": "rxcui:1191",
+    "label_and_type": "amiloride##label",
+    "concept_id": "rxcui:644",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "amyloride##alias",
+    "concept_id": "rxcui:644",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "3,5-diamino-N-carbamimidoyl-6-chloropyrazine-2-carboxamide##alias",
+    "concept_id": "rxcui:644",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "midamor##trade_name",
+    "concept_id": "rxcui:644",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:10600##identity",
+    "concept_id": "rxcui:10600",
+    "label": "timolol",
     "aliases": [
-      "Aspirin-containing product",
-      "Salicylic acid acetate",
-      "Aspirin",
-      "aspirin",
-      "Acetylsalicylic acid",
-      "Acid, Acetylsalicylic",
-      "Aspirin (substance)",
-      "2-(Acetyloxy)benzoic Acid",
-      "Acetylsalicylic Acid",
-      "2-Acetoxybenzenecarboxylic acid",
-      "ASA",
-      "O-acetylsalicylic acid",
-      "2-Acetoxybenzoic acid",
-      "o-acetoxybenzoic acid",
-      "o-carboxyphenyl acetate",
-      "Product containing aspirin (medicinal product)"
-    ],
-    "other_identifiers": ["drugbank:DB00945"],
-    "xrefs": [
-      "usp:m6240",
-      "gsddb:181",
-      "snomedct:7947003",
-      "snomedct:387458008",
-      "vandf:4017536",
-      "mmsl:34512",
-      "mmsl:4223",
-      "mmsl:d00170",
-      "mmsl:244",
-      "mthspl:R16CO5Y76E",
-      "fdbmk:001587",
-      "msh:D001241",
-      "atc:A01AD05",
-      "atc:B01AC06",
-      "atc:N02BA01"
+      "(S)-1-((1,1-Dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadazol-3-yl)oxy)-2-propanol",
+      "2-Propanol, 1-((1,1-dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadiazol-3-yl)oxy)-, (S)-",
+      "Timolol-containing product",
+      "Timolol",
+      "timolol",
+      "(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol-3-yl)oxy]propan-2-ol"
     ],
     "trade_names": [
-      "Acetylsalicylic Acid",
-      "Aspirin"
+      "Betimol",
+      "Timoptic",
+      "Istalol",
+      "Combigan",
+      "Cosopt",
+      "Timoptol LA",
+      "Blocadren",
+      "Timolide",
+      "Betim",
+      "Glau-Opt",
+      "Glaucol",
+      "Timoptol"
     ],
+    "other_identifiers": [
+      "drugbank:DB00373"
+    ],
+    "xrefs": [
+      "vandf:4019949",
+      "mthspl:817W3C6175",
+      "snomedct:372880004",
+      "msh:D013999",
+      "mmsl:d00139",
+      "atc:C07AA06",
+      "atc:S01ED01",
+      "fdbmk:004741",
+      "snomedct:85591001"
+    ],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "timolol##label",
+    "concept_id": "rxcui:10600",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol-3-yl)oxy]propan-2-ol##alias",
+    "concept_id": "rxcui:10600",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "betimol##trade_name",
+    "concept_id": "rxcui:10600",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:1011##identity",
+    "concept_id": "rxcui:1011",
+    "label": "lymphocyte immune globulin, anti-thymocyte globulin",
+    "aliases": [
+      "Antithymocyte immunoglobulin",
+      "Lymphocyte Immune Globulin, Anti-Thymocyte Globulin",
+      "Anti-Thymocyte Globulin",
+      "Antithymocyte Globulin",
+      "Antithymoglobulin",
+      "Lymphocyte Immune Globulin, Anti Thymocyte Globulin",
+      "Globulins, Antithymocyte",
+      "Antithymocyte Globulins",
+      "Antithymoglobulins",
+      "Anti-Thymocyte Globulins",
+      "Globulins, Anti-Thymocyte",
+      "Globulin, Antithymocyte",
+      "Anti Thymocyte Globulin",
+      "Globulin, Anti-Thymocyte",
+      "lymphocyte immune globulin, anti-thy (obs)"
+    ],
+    "trade_names": [
+      "ATGAM",
+      "Thymoglobulin"
+    ],
+    "xrefs": [
+      "snomedct:768651008",
+      "msh:D000961",
+      "vandf:4022194",
+      "vandf:4018097",
+      "mmsl:d01141",
+      "mmsl:5001"
+    ],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "lymphocyte immune globulin, anti-thymocyte globulin##label",
+    "concept_id": "rxcui:1011",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "anti thymocyte globulin##alias",
+    "concept_id": "rxcui:1011",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "antithymoglobulin##alias",
+    "concept_id": "rxcui:1011",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "thymoglobulin##trade_name",
+    "concept_id": "rxcui:1011",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "atgam##trade_name",
+    "concept_id": "rxcui:1011",
     "src_name": "RxNorm"
   }
 ]
