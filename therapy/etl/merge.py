@@ -7,6 +7,9 @@ import logging
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
 
+DISALLOWED_SOURCES = {NamespacePrefix.DRUGBANK.value,
+                      NamespacePrefix.CHEMBL.value}
+
 
 class Merge:
     """Handles record merging."""
@@ -33,21 +36,18 @@ class Merge:
            merged record already found?
          * When updating existing records, how to ensure that no dangling
            records remain after an other_identifier is removed?
-         * When computing groups, how to handle cases where new group
-           additions are discovered in subsequent passes?
-         * still need to adjust serialization name schema thing -- handle
-           multiple IDs from same source
         """
         for record_id in record_ids:
             new_group = self._create_record_id_set(record_id)
-            for other_id in new_group:
-                self._groups[other_id] = new_group
+            for concept_id in new_group:
+                self._groups[concept_id] = new_group
 
         uploaded_ids = set()
         for record_id, group in self._groups.items():
             if record_id in uploaded_ids:
                 continue
             merged_record = self._generate_merged_record(group)  # noqa
+
             # add group merger item to DB
             for concept_id in group:
                 self._database.update_record(concept_id, 'merge_ref',
@@ -62,14 +62,15 @@ class Merge:
         :return: Set of other_identifier values
         :rtype: Set
         """
-        disallowed_sources = {NamespacePrefix.DRUGBANK.value,
-                              NamespacePrefix.CHEMBL.value}
         other_ids = set()
         for other_id in record['other_identifiers']:
-            for prefix in disallowed_sources:
+            allowed = True
+            for prefix in DISALLOWED_SOURCES:
                 if other_id.startswith(prefix):
+                    allowed = False
                     continue
-            other_ids.add(other_id)
+            if allowed:
+                other_ids.add(other_id)
         return other_ids
 
     def _create_record_id_set(self, record_id: str,
@@ -83,14 +84,17 @@ class Merge:
             return self._groups[record_id]
         else:
             db_record = self._database.get_record_by_id(record_id)
-            if not db_record or 'other_identifiers' not in db_record:
-                logger.error(f"Could not retrieve record for {record_id}"
+
+            if not db_record:
+                logger.error(f"Could not retrieve record for {record_id} "
                              f"in ID set: {observed_id_set}")
+                return observed_id_set | {record_id}
+            elif 'other_identifiers' not in db_record:
                 return observed_id_set | {record_id}
 
             local_id_set = self._get_other_ids(db_record)
             merged_id_set = local_id_set | observed_id_set | \
-                {db_record['concept_id']}
+                {record_id}
 
             for local_record_id in local_id_set - observed_id_set:
                 merged_id_set |= self._create_record_id_set(local_record_id,
@@ -127,8 +131,11 @@ class Merge:
                 source_rank = 2
             elif src == SourceName.CHEMIDPLUS:
                 source_rank = 5
-            else:
+            elif src == SourceName.WIKIDATA:
                 source_rank = 6
+            else:
+                raise Exception(f"Prohibited source: {src} in concept_id "
+                                f"{record['concept_id']}")
             return (source_rank, record['concept_id'])
         records.sort(key=record_order)
 
@@ -139,11 +146,14 @@ class Merge:
             for field in set_fields:
                 if field in record:
                     merged_attrs[field] |= set(record[field])
+
             new_id_grp = f'{merged_attrs["concept_id"]}|{record["concept_id"]}'
             merged_attrs['concept_id'] = new_id_grp
+
             if 'label' not in merged_attrs \
                     and 'label' in record and record['label']:
                 merged_attrs['label'] = record.get('label')
+
         for field in set_fields:
             merged_attrs[field] = list(merged_attrs[field])
 
