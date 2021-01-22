@@ -2,7 +2,6 @@
 import pytest
 from therapy.etl.merge import Merge
 from therapy.database import Database
-from therapy.schemas import MergedMatch
 from typing import Dict
 
 
@@ -29,32 +28,28 @@ def merge_handler():
 
 def compare_merged_records(actual_record: Dict, fixture_record: Dict):
     """Check that records are identical."""
-    print(actual_record)
-    print(fixture_record)
     assert actual_record['concept_id'] == fixture_record['concept_id']
-    assert actual_record.label == fixture_record.label
-    assert set(actual_record.trade_names) == set(fixture_record.trade_names)
-    assert set(actual_record.xrefs) == set(fixture_record.xrefs)
-
-
-def match_to_db_record(merged_match: MergedMatch) -> Dict:
-    """Transform MergedMatch object into record as stored in DB."""
-    merged_record = merged_match.dict()
-    merged_record['concept_id'] = f"{'|'.join(merged_record['concept_ids'])}##merger"  # noqa: E501
-    del merged_record['concept_ids']
-    return merged_record
+    assert actual_record['label_and_type'] == fixture_record['label_and_type']
+    assert ('label' in actual_record) == ('label' in fixture_record)
+    if 'label' in actual_record:
+        assert actual_record['label'] == fixture_record['label']
+    assert ('trade_names' in actual_record) == ('trade_names' in fixture_record)  # noqa: E501
+    if 'trade_names' in actual_record:
+        assert set(actual_record['trade_names']) == set(fixture_record['trade_names'])  # noqa: E501
+    assert ('aliases' in actual_record) == ('aliases' in fixture_record)
+    if 'aliases' in actual_record:
+        assert set(actual_record['aliases']) == set(fixture_record['aliases'])
+    assert ('xrefs' in actual_record) == ('xrefs' in fixture_record)
+    if 'xrefs' in actual_record:
+        assert set(actual_record['xrefs']) == set(fixture_record['xrefs'])
 
 
 @pytest.fixture(scope='module')
 def phenobarbital_merged():
     """Create phenobarbital fixture."""
-    return MergedMatch(**{
-        "concept_ids": [
-            "rxcui:8134",
-            "ncit:C739"
-            "chemidplus:50-06-6",
-            "wikidata:Q407241",
-        ],
+    return {
+        "label_and_type": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241##merger",  # noqa: E501
+        "concept_id": "rxcui:8134|ncit:C739|chemidplus:50-06-6|wikidata:Q407241",  # noqa: E501
         "aliases": [
             '5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione',
             '5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione',
@@ -110,19 +105,15 @@ def phenobarbital_merged():
 
         ],
         "label": "Phenobarbital"
-    })
+    }
 
 
 @pytest.fixture(scope='module')
 def cisplatin_merged():
     """Create cisplatin fixture."""
-    return MergedMatch(**{
-        "concept_ids": [
-            "rxcui:2555",
-            "ncit:C376",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415"
-        ],
+    return {
+        "label_and_type": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415##merger",  # noqa: E501
+        "concept_id": "rxcui:2555|ncit:C376|chemidplus:15663-27-1|wikidata:Q412415",  # noqa: E501
         "trade_names": [
             "Cisplatin",
         ],
@@ -131,6 +122,7 @@ def cisplatin_merged():
             'CDDP',
             'CISplatin',
             'Cis-DDP',
+            'CIS-DDP',
             'Cisplatin',
             'Cisplatin (substance)',
             'Cisplatin-containing product',
@@ -150,7 +142,9 @@ def cisplatin_merged():
             'cis-Platinum',
             'cis-Platinum II',
             'cis-Platinum compound',
-            'cis-diamminedichloroplatinum(II)'
+            'cis-diamminedichloroplatinum(II)',
+            'Platinol-AQ',
+            'Platinol'
         ],
         "label": "Cisplatin",
         "xrefs": [
@@ -168,9 +162,10 @@ def cisplatin_merged():
             "fdbmk:002641",
             "atc:L01XA01",
             "mmsl:31747",
-            "mmsl:4456"
+            "mmsl:4456",
+            "pubchem.compound:5702198"
         ]
-    })
+    }
 
 
 @pytest.fixture(scope='module')
@@ -178,22 +173,19 @@ def hydrocorticosteroid_merged():
     """Create fixture for 17-hydrocorticosteroid, which should merge only
     from RxNorm.
     """
-    return MergedMatch(**{
-        "concept_ids": [
-            "rxcui:19"
-        ],
+    return {
+        "label_and_type": "rxcui:19##merger",
+        "concept_id": "rxcui:19",
         "label": "17-hydrocorticosteroid",
         "aliases": [
             "17-hydroxycorticoid",
             "17-hydroxycorticosteroid",
             "17-hydroxycorticosteroid (substance)"
         ],
-        "other_identifiers": [],
         "xrefs": [
             "snomedct:112116001"
         ],
-        "approval_status": None
-    })
+    }
 
 
 @pytest.fixture(scope='module')
@@ -201,11 +193,9 @@ def spiramycin_merged():
     """Create fixture for spiramycin. The RxNorm entry should be inaccessible
     to this group.
     """
-    return MergedMatch(**{
-        "concept_ids": [
-            "ncit:C839",
-            "chemidplus:8025-81-8",
-        ],
+    return {
+        "label_and_type": "ncit:c839|chemidplus:8025-81-8##merger",
+        "concept_id": "ncit:C839|chemidplus:8025-81-8",
         "label": "Spiramycin",
         "aliases": [
             "SPIRAMYCIN",
@@ -219,8 +209,7 @@ def spiramycin_merged():
             "umls:C0037962",
             "fda:71ODY0V87H",
         ],
-        "approval_status": None
-    })
+    }
 
 
 @pytest.fixture(scope='module')
@@ -301,26 +290,22 @@ def test_create_record_id_set(merge_handler, record_id_groups):
         assert groups[concept_id] == record_id_groups[concept_id]
 
 
-def test_generate_merged_record(merge_handler,
+def test_generate_merged_record(merge_handler, record_id_groups,
                                 phenobarbital_merged, cisplatin_merged,
                                 hydrocorticosteroid_merged, spiramycin_merged):
     """Test generation of merged record method."""
-    phenobarbital_ids = {}
+    phenobarbital_ids = record_id_groups['rxcui:8134']
     merge_response = merge_handler.generate_merged_record(phenobarbital_ids)
-    assert compare_merged_records(merge_response,
-                                  match_to_db_record(phenobarbital_merged))
+    compare_merged_records(merge_response, phenobarbital_merged)
 
-    cisplatin_ids = {}
+    cisplatin_ids = record_id_groups['rxcui:2555']
     merge_response = merge_handler.generate_merged_record(cisplatin_ids)
-    assert compare_merged_records(merge_response,
-                                  match_to_db_record(cisplatin_merged))
+    compare_merged_records(merge_response, cisplatin_merged)
 
-    hydrocorticosteroid_ids = {}
+    hydrocorticosteroid_ids = record_id_groups['rxcui:19']
     merge_response = merge_handler.generate_merged_record(hydrocorticosteroid_ids)  # noqa: E501
-    assert compare_merged_records(merge_response,
-                                  match_to_db_record(hydrocorticosteroid_merged))  # noqa: E501
+    compare_merged_records(merge_response, hydrocorticosteroid_merged)
 
-    spiramycin_ids = {'ncit:C389', 'chemidplus:8025-81-8'}
+    spiramycin_ids = record_id_groups['ncit:C839']
     merge_response = merge_handler.generate_merged_record(spiramycin_ids)
-    assert compare_merged_records(merge_response,
-                                  match_to_db_record(spiramycin_merged))
+    compare_merged_records(merge_response, spiramycin_merged)
