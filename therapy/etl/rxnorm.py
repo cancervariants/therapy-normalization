@@ -8,7 +8,8 @@ Library of Medicine (NLM), National Institutes of Health, Department of Health
 from .base import Base
 from therapy import PROJECT_ROOT, DownloadException
 from therapy.database import Database
-from therapy.schemas import SourceName, NamespacePrefix, Meta, Drug
+from therapy.schemas import SourceName, NamespacePrefix, Meta, Drug, \
+    ApprovalStatus
 import csv
 import datetime
 import logging
@@ -184,6 +185,9 @@ class RxNorm(Base):
                         params = Drug(
                             concept_id=value['concept_id'],
                             label=value['label'] if 'label' in value else None,
+                            approval_status=value[
+                                'approval_status'] if 'approval_status'
+                                                      in value else None,
                             aliases=value['aliases'] if 'aliases' in
                                                         value else [],
                             other_identifiers=value[
@@ -350,6 +354,8 @@ class RxNorm(Base):
 
         if term_type == 'IN' and source == 'RXNORM':
             params['label'] = term
+            if row[17] == '4096':
+                params['approval_status'] = ApprovalStatus.APPROVED.value
         elif term_type in ALIASES:
             if term_type == 'PT' and source == 'SNOMEDCT_US':
                 if 'containing' not in term:
