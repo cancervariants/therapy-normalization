@@ -134,8 +134,8 @@ class SourceIDAfterNamespace(Enum):
 class NamespacePrefix(Enum):
     """Define string constraints for namespace prefixes on concept IDs."""
 
-    CASREGISTRY = "chemidplus"
     CHEMIDPLUS = "chemidplus"
+    CASREGISTRY = CHEMIDPLUS
     PUBCHEMCOMPOUND = "pubchem.compound"
     PUBCHEMSUBSTANCE = "pubchem.substance"
     CHEMBL = "chembl"
