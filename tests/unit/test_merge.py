@@ -193,7 +193,6 @@ def cisplatin_merged():
         "xrefs": [
             "umls:C0008838",
             "fda:Q20Q21Q62J",
-            "chebi:CHEBI:27899",
             "usp:m17910",
             "gsddb:862",
             "snomedct:57066004",
