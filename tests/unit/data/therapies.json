@@ -503,9 +503,7 @@
     ],
     "other_identifiers": ["drugbank:DB14222"],
     "xrefs": [
-      "gsddb:4931",
-      "mmsl:d07347",
-      "fdbmk:001165"
+      "mmsl:d07347"
     ],
     "src_name": "RxNorm"
   },
@@ -561,13 +559,11 @@
     ],
     "xrefs": [
       "usp:m17910",
-      "gsddb:862",
       "snomedct:57066004",
       "vandf:4018139",
       "msh:D002945",
       "mthspl:Q20Q21Q62J",
       "mmsl:d00195",
-      "fdbmk:002641",
       "atc:L01XA01",
       "mmsl:31747",
       "mmsl:4456",
@@ -627,11 +623,9 @@
       "drugbank:DB00594"
     ],
     "xrefs": [
-      "gsddb:3993",
       "snomedct:387503008",
       "msh:D000584",
       "vandf:4019603",
-      "fdbmk:004861",
       "mthspl:7DZO8EB0Z3",
       "mmsl:d00169",
       "atc:C03DB01",
@@ -695,7 +689,6 @@
       "mmsl:d00139",
       "atc:C07AA06",
       "atc:S01ED01",
-      "fdbmk:004741",
       "snomedct:85591001"
     ],
     "src_name": "RxNorm"
@@ -800,12 +793,10 @@
     ],
     "xrefs": [
       "usp:m6240",
-      "gsddb:181",
       "snomedct:7947003",
       "vandf:4017536",
       "mmsl:34512",
       "mthspl:R16CO5Y76E",
-      "fdbmk:001587",
       "mmsl:244",
       "snomedct:387458008",
       "msh:D001241",
@@ -853,13 +844,11 @@
     ],
     "xrefs": [
       "usp:m49500",
-      "gsddb:1950",
       "snomedct:108821000",
       "snomedct:386922000",
       "msh:D015080",
       "vandf:4019477",
       "mthspl:NR7O1405Q9",
-      "fdbmk:002678",
       "atc:R05CB05",
       "atc:V03AF01",
       "mmsl:41498",
@@ -904,7 +893,6 @@
       "snomedct:70587000",
       "msh:D015091",
       "vandf:4028377",
-      "fdbmk:006175",
       "mthspl:11P2JDE17B"
     ],
     "src_name": "RxNorm"
@@ -931,8 +919,7 @@
       "Dihydroxyprogesterone"
     ],
     "xrefs": [
-      "msh:D000523",
-      "fdbmk:006132"
+      "msh:D000523"
     ],
     "src_name": "RxNorm"
   },
@@ -978,15 +965,12 @@
     ],
     "xrefs": [
       "snomedct:768532006",
-      "gsddb:4423",
       "snomedct:73187006",
       "vandf:4022126",
       "msh:D013974",
       "mmsl:d00278",
       "mthspl:Q51BO43MG4",
-      "fdbmk:005896",
       "snomedct:710809001",
-      "fdbmk:004881",
       "snomedct:38076006"
     ],
     "src_name": "RxNorm"

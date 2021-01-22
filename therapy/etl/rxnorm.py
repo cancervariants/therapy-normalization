@@ -4,6 +4,12 @@
 Library of Medicine (NLM), National Institutes of Health, Department of Health
  and Human Services; NLM is not responsible for the product and does not
  endorse or recommend this or any other product."
+
+ "This material includes SNOMED Clinical Terms® (SNOMED CT®) which is used by
+ permission of the International Health Terminology Standards Development
+ Organisation (IHTSDO). All rights reserved. SNOMED CT®, was originally
+ created by The College of American Pathologists. "SNOMED" and "SNOMED CT"
+ are registered trademarks of the IHTSDO."
 """
 from .base import Base
 from therapy import PROJECT_ROOT, DownloadException
@@ -34,6 +40,10 @@ ALIASES = ['SYN', 'SY', 'TMSY', 'PM',
 # Fully-specified drug brand name that can not be prescribed,
 # Semantic branded drug
 TRADE_NAMES = ['BD', 'BN', 'SBD']
+
+# Allowed xrefs
+XREFS = ['ATC', 'CVX', 'DRUGBANK', 'MMSL', 'MSH', 'MTHCMSFRF', 'MTHSPL',
+         'RXNORM', 'SNOMEDCT_US', 'USP', 'VANDF']
 
 
 class RxNorm(Base):
@@ -158,24 +168,27 @@ class RxNorm(Base):
             data = dict()  # Transformed therapy records
             sbdfs = dict()  # Link ingredient to brand
             for row in rff_data:
-                concept_id = f"{NamespacePrefix.RXNORM.value}:{row[0]}"
-                if row[12] == 'SBDC':
-                    # Semantic Branded Drug Component
-                    self._get_brands(row, ingredient_brands)
-                else:
-                    if concept_id not in data.keys():
-                        params = dict()
-                        params['concept_id'] = concept_id
-                        self._add_str_field(params, row, precise_ingredient,
-                                            drug_forms, sbdfs)
-                        self._add_other_ids_xrefs(params, row)
-                        data[concept_id] = params
+                if row[11] in XREFS:
+                    concept_id = f"{NamespacePrefix.RXNORM.value}:{row[0]}"
+                    if row[12] == 'SBDC':
+                        # Semantic Branded Drug Component
+                        self._get_brands(row, ingredient_brands)
                     else:
-                        # Concept already created
-                        params = data[concept_id]
-                        self._add_str_field(params, row, precise_ingredient,
-                                            drug_forms, sbdfs)
-                        self._add_other_ids_xrefs(params, row)
+                        if concept_id not in data.keys():
+                            params = dict()
+                            params['concept_id'] = concept_id
+                            self._add_str_field(params, row,
+                                                precise_ingredient,
+                                                drug_forms, sbdfs)
+                            self._add_other_ids_xrefs(params, row)
+                            data[concept_id] = params
+                        else:
+                            # Concept already created
+                            params = data[concept_id]
+                            self._add_str_field(params, row,
+                                                precise_ingredient,
+                                                drug_forms, sbdfs)
+                            self._add_other_ids_xrefs(params, row)
 
             with self.database.therapies.batch_writer() as batch:
                 for key, value in data.items():
