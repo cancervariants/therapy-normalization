@@ -60,7 +60,6 @@ def cisplatin():
             'Diaminedichloroplatinum',
             'cis-Platinum',
             'CISplatin',
-            'Cisplatin',
             'cis Diamminedichloroplatinum',
             'cis Platinum',
             'Diamminodichloride, Platinum',
@@ -161,7 +160,6 @@ def timolol():
             '2-Propanol, 1-((1,1-dimethylethyl)amino)-3-((4-(4-morpholi'
             'nyl)-1,2,5-thiadiazol-3-yl)oxy)-, (S)-',
             'Timolol',
-            'timolol',
             '(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol'
             '-3-yl)oxy]propan-2-ol'
         ],
@@ -250,7 +248,6 @@ def aspirin():
         'aliases': [
             'Salicylic acid acetate',
             'Aspirin',
-            'aspirin',
             'Acetylsalicylic acid',
             'Acid, Acetylsalicylic',
             '2-(Acetyloxy)benzoic Acid',
@@ -301,9 +298,7 @@ def mesna():
             'Ethanesulfonic acid, 2-mercapto-, monosodium salt',
             'Sodium 2-Mercaptoethanesulphonate',
             '2-Mercaptoethanesulphonate, Sodium',
-            'Sodium 2-Mercaptoethanesulphonate',
-            'mesna',
-            'Mesna'
+            'Sodium 2-Mercaptoethanesulphonate'
         ],
         'approval_status': None,
         'other_identifiers': [],
