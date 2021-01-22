@@ -679,5 +679,136 @@
     ],
     "trade_names": ["Acetylsalicylic Acid", "Aspirin"],
     "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:8134##identity",
+    "label": "Phenobarbital",
+    "concept_id": "rxcui:8134",
+    "aliases": [
+      "Phenylethylmalonylurea",
+      "Phenobarbital-containing product",
+      "Phenobarbital",
+      "Phenobarbitone",
+      "Acid, Phenylethylbarbituric",
+      "Phenobarbital (substance)",
+      "PHENobarbital",
+      "Phenylethylbarbituric Acid",
+      "Phenylbarbital",
+      "Phenemal",
+      "Phenylethylbarbiturate",
+      "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
+      "5-Phenyl-5-ethylbarbituric acid",
+      "5-Ethyl-5-phenylbarbituric acid",
+      "Phenobarbituric Acid",
+      "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+      "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
+      "Phenobarbitol",
+      "Product containing phenobarbital (medicinal product)"
+    ],
+    "other_identifiers": ["drugbank:DB01174"],
+    "xrefs": [
+      "usp:m63400",
+      "gsddb:2179",
+      "snomedct:51073002",
+      "vandf:4017422",
+      "mmsl:2390",
+      "msh:D010634",
+      "snomedct:373505007",
+      "mmsl:5272",
+      "mthspl:YQE403BP4D",
+      "fdbmk:001406",
+      "mmsl:d00340",
+      "atc:N03AA02"
+    ],
+    "approval_status": null,
+    "trade_names": ["Phenobarbital"]
+  },
+  {
+    "label_and_type": "chemidplus:50-06-6##identity",
+    "label": "Phenobarbital",
+    "concept_id": "chemidplus:50-06-6",
+    "aliases": [],
+    "other_identifiers": ["drugbank:DB01174"],
+    "xrefs": ["fda:YQE403BP4D"],
+    "approval_status": null,
+    "trade_names": []
+  },
+  {
+    "label": "Spiramycin",
+    "label_and_type": "chemidplus:8025-81-8##identity",
+    "concept_id": "chemidplus:8025-81-8",
+    "aliases": [],
+    "other_identifiers": [],
+    "xrefs": ["fda:71ODY0V87H"],
+    "approval_status": null,
+    "trade_names": []
+  },
+  {
+    "label": "phenobarbital",
+    "label_and_type": "wikidata:q407241##identity",
+    "concept_id": "wikidata:Q407241",
+    "aliases": [
+      "phenylethylbarbiturate",
+      "fenobarbital",
+      "Phenobarbitol",
+      "Phenylethylbarbituric Acid",
+      "5-Ethyl-5-phenylbarbituric acid",
+      "Phenylethylbarbiturate",
+      "Phenylethylbarbitursaeure",
+      "Phenylethylmalonylurea",
+      "Phenobarbital",
+      "Phenobarbitone",
+      "Phenylaethylbarbitursaeure",
+      "5-Phenyl-5-ethylbarbituric acid",
+      "Phenobarbituric Acid",
+      "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
+      "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+      "Luminal®",
+      "phenobarbital sodium",
+      "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
+      "PHENYLETHYLMALONYLUREA"
+    ],
+    "other_identifiers": [
+      "chemidplus:50-06-6",
+      "chembl:CHEMBL40",
+      "rxcui:8134",
+      "drugbank:DB01174"
+    ],
+    "xrefs": ["pubchem.compound:4763"],
+    "approval_status": null,
+    "trade_names": []
+  },
+  {
+    "label": "Phenobarbital",
+    "label_and_type": "ncit:c739##identity",
+    "concept_id": "ncit:C739",
+    "aliases": [
+      "5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+      "phenobarbital",
+      "PHENOBARBITAL",
+      "PHENO"
+    ],
+    "other_identifiers": ["chemidplus:50-06-6"],
+    "xrefs": ["umls:C0031412", "fda:YQE403BP4D", "chebi:CHEBI:8069"],
+    "approval_status": null,
+    "trade_names": []
+  },
+  {
+    "label": "Spiramycin",
+    "label_and_type": "ncit:c839##identity",
+    "concept_id": "ncit:C839",
+    "aliases": [
+      "SPIRAMYCIN",
+      "Antibiotic 799",
+      "Rovamycin",
+      "Provamycin",
+      "Rovamycine",
+      "RP 5337",
+      "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"
+    ],
+    "other_identifiers": ["chemidplus:8025-81-8"],
+    "xrefs": ["umls:C0037962", "fda:71ODY0V87H"],
+    "approval_status": null,
+    "trade_names": []
   }
 ]
