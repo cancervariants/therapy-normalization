@@ -445,6 +445,7 @@ class RxNorm(Base):
                     })
         params = dict(meta)
         params['src_name'] = SourceName.RXNORM.value
+        params['snomedct_version'] = '20200731'
         self.database.metadata.put_item(Item=params)
 
     def _load_data(self):
