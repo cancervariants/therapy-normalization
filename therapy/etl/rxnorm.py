@@ -207,6 +207,13 @@ class RxNorm(Base):
             if not params[label_type]:
                 del params[label_type]
 
+        # 20 cutoff for aliases / trade names
+        for attr in ['aliases', 'trade_names']:
+            if attr in params and len(params[attr]) > 20:
+                logger.debug(f"{params['concept_id']} has more than 20"
+                             f" {attr}.")
+                del params[attr]
+
         self._load_label_types(params, batch)
         params['src_name'] = SourceName.RXNORM.value
         params['label_and_type'] = f"{params['concept_id'].lower()}##identity"
@@ -335,7 +342,12 @@ class RxNorm(Base):
         if term_type == 'IN' and source == 'RXNORM':
             params['label'] = term
         elif term_type in ALIASES:
-            self._add_term(params, term, 'aliases')
+            if term_type == 'PT' and source == 'SNOMEDCT_US':
+                if 'containing' not in term:
+                    # Dont want to store aliases that have "-containing ..."
+                    self._add_term(params, term, 'aliases')
+            else:
+                self._add_term(params, term, 'aliases')
         elif term_type in TRADE_NAMES:
             self._add_term(params, term, 'trade_names')
 
