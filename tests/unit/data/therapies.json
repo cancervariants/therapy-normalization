@@ -528,7 +528,6 @@
     "concept_id": "rxcui:2555",
     "label": "cisplatin",
     "aliases": [
-      "Cisplatin-containing product",
       "Diaminedichloroplatinum",
       "cis-Platinum",
       "CISplatin",
@@ -606,7 +605,6 @@
     "label": "amiloride",
     "aliases": [
       "3,5-diamino-N-carbamimidoyl-6-chloropyrazine-2-carboxamide",
-      "Amiloride-containing product",
       "Amiloride",
       "aMILoride",
       "Amipramidin",
@@ -666,7 +664,6 @@
     "aliases": [
       "(S)-1-((1,1-Dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadazol-3-yl)oxy)-2-propanol",
       "2-Propanol, 1-((1,1-dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadiazol-3-yl)oxy)-, (S)-",
-      "Timolol-containing product",
       "Timolol",
       "timolol",
       "(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol-3-yl)oxy]propan-2-ol"
@@ -774,6 +771,234 @@
   {
     "label_and_type": "atgam##trade_name",
     "concept_id": "rxcui:1011",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:1191##identity",
+    "concept_id": "rxcui:1191",
+    "label": "aspirin",
+    "aliases": [
+      "Salicylic acid acetate",
+      "Aspirin",
+      "aspirin",
+      "Acetylsalicylic acid",
+      "Acid, Acetylsalicylic",
+      "2-(Acetyloxy)benzoic Acid",
+      "2-Acetoxybenzenecarboxylic acid",
+      "ASA",
+      "O-acetylsalicylic acid",
+      "2-Acetoxybenzoic acid",
+      "o-acetoxybenzoic acid",
+      "o-carboxyphenyl acetate",
+      "Acetylsalicylic Acid"
+    ],
+    "other_identifiers": [
+      "drugbank:DB00945"
+    ],
+    "xrefs": [
+      "usp:m6240",
+      "gsddb:181",
+      "snomedct:7947003",
+      "vandf:4017536",
+      "mmsl:34512",
+      "mthspl:R16CO5Y76E",
+      "fdbmk:001587",
+      "mmsl:244",
+      "snomedct:387458008",
+      "msh:D001241",
+      "mmsl:4223",
+      "mmsl:d00170",
+      "atc:A01AD05",
+      "atc:B01AC06",
+      "atc:N02BA01",
+      "snomedct:7947003"
+    ],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "aspirin##label",
+    "concept_id": "rxcui:1191",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "acetylsalicylic acid##alias",
+    "concept_id": "rxcui:1191",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "asa##alias",
+    "concept_id": "rxcui:1191",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:44##identity",
+    "concept_id": "rxcui:44",
+    "label": "mesna",
+    "aliases": [
+      "Sodium 2-mercaptoethanesulfonate",
+      "Mesnum",
+      "Ethanesulfonic acid, 2-mercapto-, monosodium salt",
+      "Sodium 2-Mercaptoethanesulphonate",
+      "2-Mercaptoethanesulphonate, Sodium",
+      "Sodium 2-Mercaptoethanesulphonate",
+      "mesna",
+      "Mesna"
+    ],
+    "trade_names": [
+      "Mesna",
+      "Mesnex",
+      "Mesna Nova Plus"
+    ],
+    "xrefs": [
+      "usp:m49500",
+      "gsddb:1950",
+      "snomedct:108821000",
+      "snomedct:386922000",
+      "msh:D015080",
+      "vandf:4019477",
+      "mthspl:NR7O1405Q9",
+      "fdbmk:002678",
+      "atc:R05CB05",
+      "atc:V03AF01",
+      "mmsl:41498",
+      "snomedct:386922000",
+      "mmsl:5057",
+      "mmsl:d01411"
+    ],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "mesna##label",
+    "concept_id": "rxcui:44",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "mesnum##alias",
+    "concept_id": "rxcui:44",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "ethanesulfonic acid, 2-mercapto-, monosodium salt##alias",
+    "concept_id": "rxcui:44",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "mesnex##trade_name",
+    "concept_id": "rxcui:44",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:61##identity",
+    "concept_id": "rxcui:61",
+    "label": "beta-alanine",
+    "aliases": [
+      "Beta alanine",
+      "beta Alanine",
+      "3 Aminopropionic Acid",
+      "3-Aminopropionic Acid"
+    ],
+    "xrefs": [
+      "snomedct:70587000",
+      "msh:D015091",
+      "vandf:4028377",
+      "fdbmk:006175",
+      "mthspl:11P2JDE17B"
+    ],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "beta-alanine##label",
+    "concept_id": "rxcui:61",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "3 aminopropionic acid##alias",
+    "concept_id": "rxcui:61",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:595##identity",
+    "concept_id": "rxcui:595",
+    "label": "algestone",
+    "aliases": [
+      "Pregn-4-ene-3,20-dione, 16,17-dihydroxy-, (16alpha)-",
+      "16 alpha,17-Dihydroxypregn-4-ene-3,20-dione",
+      "Alphasone",
+      "Dihydroxyprogesterone"
+    ],
+    "xrefs": [
+      "msh:D000523",
+      "fdbmk:006132"
+    ],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "algestone##label",
+    "concept_id": "rxcui:595",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "pregn-4-ene-3,20-dione, 16,17-dihydroxy-, (16alpha)-##alias",
+    "concept_id": "rxcui:595",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:10582##identity",
+    "concept_id": "rxcui:10582",
+    "label": "levothyroxine",
+    "trade_names": [
+      "Eltroxin",
+     "Estre",
+     "Euthyrox",
+     "Leventa",
+     "Levo-T",
+     "Levocrine",
+     "Levotabs",
+     "Levothroid",
+     "Levothyroid",
+     "Levoxyl",
+     "Novothyrox",
+     "SOLOXINE",
+     "Synthroid",
+     "Thyro-Tabs",
+     "ThyroKare",
+     "ThyroMed",
+     "Thyrolar",
+     "Thyrox",
+     "Tirosint",
+     "Unithroid"
+    ],
+    "other_identifiers": [
+      "drugbank:DB00451"
+    ],
+    "xrefs": [
+      "snomedct:768532006",
+      "gsddb:4423",
+      "snomedct:73187006",
+      "vandf:4022126",
+      "msh:D013974",
+      "mmsl:d00278",
+      "mthspl:Q51BO43MG4",
+      "fdbmk:005896",
+      "snomedct:710809001",
+      "fdbmk:004881",
+      "snomedct:38076006"
+    ],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "levothyroxine##label",
+    "concept_id": "rxcui:10582",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "unithroid##trade_name",
+    "concept_id": "rxcui:10582",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "euthyrox##trade_name",
+    "concept_id": "rxcui:10582",
     "src_name": "RxNorm"
   }
 ]
