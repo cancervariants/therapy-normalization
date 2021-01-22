@@ -36,6 +36,7 @@ class Merge:
            merged record already found?
          * When updating existing records, how to ensure that no dangling
            records remain after an other_identifier is removed?
+         * How to handle invalid or nonexistent other_identifiers?
         """
         for record_id in record_ids:
             new_group = self._create_record_id_set(record_id)
@@ -101,7 +102,7 @@ class Merge:
                                                             merged_id_set)
             return merged_id_set
 
-    def _generate_merged_record(self, record_id_set: Set) -> Dict:
+    def _generate_merged_record(self, record_id_set: Set[str]) -> Dict:
         """Generate merged record from provided concept ID group.
         Where attributes are sets, they should be merged, and where they are
         scalars, assign from the highest-priority source where that attribute
@@ -125,13 +126,13 @@ class Merge:
         def record_order(record):
             """Provide priority values of concepts for sort function."""
             src = record['src_name']
-            if src == SourceName.RXNORM:
+            if src == SourceName.RXNORM.value:
                 source_rank = 1
-            elif src == SourceName.NCIT:
+            elif src == SourceName.NCIT.value:
                 source_rank = 2
-            elif src == SourceName.CHEMIDPLUS:
+            elif src == SourceName.CHEMIDPLUS.value:
                 source_rank = 5
-            elif src == SourceName.WIKIDATA:
+            elif src == SourceName.WIKIDATA.value:
                 source_rank = 6
             else:
                 raise Exception(f"Prohibited source: {src} in concept_id "
@@ -146,16 +147,21 @@ class Merge:
             for field in set_fields:
                 if field in record:
                     merged_attrs[field] |= set(record[field])
-
-            new_id_grp = f'{merged_attrs["concept_id"]}|{record["concept_id"]}'
-            merged_attrs['concept_id'] = new_id_grp
+            if merged_attrs['concept_id'] == '':
+                merged_attrs['concept_id'] = record['concept_id']
+            else:
+                merged_attrs['concept_id'] += f"|{record['concept_id']}"
 
             if 'label' not in merged_attrs \
                     and 'label' in record and record['label']:
                 merged_attrs['label'] = record.get('label')
 
         for field in set_fields:
-            merged_attrs[field] = list(merged_attrs[field])
+            field_value = merged_attrs[field]
+            if field_value:
+                merged_attrs[field] = list(field_value)
+            else:
+                del merged_attrs[field]
 
         ref = f'{merged_attrs["concept_id"].lower()}##merger'
         merged_attrs['label_and_type'] = ref
