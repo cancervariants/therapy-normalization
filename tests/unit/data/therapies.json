@@ -417,7 +417,7 @@
     "label": "Cisplatin",
     "concept_id": "ncit:C376",
     "other_identifiers": ["chemidplus:15663-27-1"],
-    "xrefs": ["umls:C0008838", "fda:Q20Q21Q62"],
+    "xrefs": ["umls:C0008838", "fda:Q20Q21Q62J"],
     "src_name": "NCIt"
   },
   {
@@ -721,7 +721,8 @@
       "atc:N03AA02"
     ],
     "approval_status": null,
-    "trade_names": ["Phenobarbital"]
+    "trade_names": ["Phenobarbital"],
+    "src_name": "RxNorm"
   },
   {
     "label_and_type": "chemidplus:50-06-6##identity",
@@ -731,7 +732,8 @@
     "other_identifiers": ["drugbank:DB01174"],
     "xrefs": ["fda:YQE403BP4D"],
     "approval_status": null,
-    "trade_names": []
+    "trade_names": [],
+    "src_name": "ChemIDplus"
   },
   {
     "label": "Spiramycin",
@@ -741,7 +743,8 @@
     "other_identifiers": [],
     "xrefs": ["fda:71ODY0V87H"],
     "approval_status": null,
-    "trade_names": []
+    "trade_names": [],
+    "src_name": "ChemIDplus"
   },
   {
     "label": "phenobarbital",
@@ -776,7 +779,8 @@
     ],
     "xrefs": ["pubchem.compound:4763"],
     "approval_status": null,
-    "trade_names": []
+    "trade_names": [],
+    "src_name": "Wikidata"
   },
   {
     "label": "Phenobarbital",
@@ -791,7 +795,8 @@
     "other_identifiers": ["chemidplus:50-06-6"],
     "xrefs": ["umls:C0031412", "fda:YQE403BP4D", "chebi:CHEBI:8069"],
     "approval_status": null,
-    "trade_names": []
+    "trade_names": [],
+    "src_name": "NCIt"
   },
   {
     "label": "Spiramycin",
@@ -809,6 +814,7 @@
     "other_identifiers": ["chemidplus:8025-81-8"],
     "xrefs": ["umls:C0037962", "fda:71ODY0V87H"],
     "approval_status": null,
-    "trade_names": []
+    "trade_names": [],
+    "src_name": "NCIt"
   }
 ]
