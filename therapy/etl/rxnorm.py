@@ -207,12 +207,21 @@ class RxNorm(Base):
             if not params[label_type]:
                 del params[label_type]
 
-        # 20 cutoff for aliases / trade names
-        for attr in ['aliases', 'trade_names']:
-            if attr in params and len(params[attr]) > 20:
-                logger.debug(f"{params['concept_id']} has more than 20"
-                             f" {attr}.")
-                del params[attr]
+        for attr in ['trade_names', 'aliases']:
+            # Remove duplicates
+            if attr in params:
+                if 'label' in params:
+                    params[attr] = list(set(params[attr]) - {params['label']})
+
+                if attr == 'aliases' and 'trade_names' in params:
+                    params[attr] = \
+                        list(set(params[attr]) - set(params['trade_names']))
+
+                # 20 cutoff for aliases / trade names
+                if len(params[attr]) > 20:
+                    logger.debug(f"{params['concept_id']} has more than 20"
+                                 f" {attr}.")
+                    del params[attr]
 
         self._load_label_types(params, batch)
         params['src_name'] = SourceName.RXNORM.value
