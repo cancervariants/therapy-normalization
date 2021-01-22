@@ -33,7 +33,7 @@ def bifidobacterium_infantis():
             'bifidobacterium infantis',
             'Bifidobacterium infantis'
         ],
-        'approval_status': None,
+        'approval_status': 'approved',
         'other_identifiers': [
             'drugbank:DB14222'
         ],
@@ -78,7 +78,7 @@ def cisplatin():
             'CDDP',
             'Cis-DDP',
         ],
-        'approval_status': None,
+        'approval_status': 'approved',
         'other_identifiers': [
             'drugbank:DB00515',
             'drugbank:DB12117'
@@ -120,7 +120,7 @@ def amiloride():
             'N-amidino-3,5-diamino-6-chloropyrazinecarboxamide',
             'Amyloride'
         ],
-        'approval_status': None,
+        'approval_status': 'approved',
         'other_identifiers': [
             'drugbank:DB00594'
         ],
@@ -163,7 +163,7 @@ def timolol():
             '(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol'
             '-3-yl)oxy]propan-2-ol'
         ],
-        'approval_status': None,
+        'approval_status': 'approved',
         'other_identifiers': [
             'drugbank:DB00373'
         ],
@@ -221,7 +221,7 @@ def lymphocyte():
             'Globulin, Anti-Thymocyte',
             'lymphocyte immune globulin, anti-thy (obs)'
         ],
-        'approval_status': None,
+        'approval_status': 'approved',
         'other_identifiers': [],
         'xrefs': [
             'snomedct:768651008',
@@ -259,7 +259,7 @@ def aspirin():
             'o-carboxyphenyl acetate',
             'Acetylsalicylic Acid'
         ],
-        'approval_status': None,
+        'approval_status': 'approved',
         'other_identifiers': [
             'drugbank:DB00945'
         ],
@@ -300,7 +300,7 @@ def mesna():
             '2-Mercaptoethanesulphonate, Sodium',
             'Sodium 2-Mercaptoethanesulphonate'
         ],
-        'approval_status': None,
+        'approval_status': 'approved',
         'other_identifiers': [],
         'xrefs': [
             'usp:m49500',
@@ -339,7 +339,7 @@ def beta_alanine():
             '3 Aminopropionic Acid',
             '3-Aminopropionic Acid'
         ],
-        'approval_status': None,
+        'approval_status': 'approved',
         'other_identifiers': [],
         'xrefs': [
             'snomedct:70587000',
@@ -383,7 +383,7 @@ def levothyroxine():
         'label': 'levothyroxine',
         'concept_id': 'rxcui:10582',
         'aliases': [],
-        'approval_status': None,
+        'approval_status': 'approved',
         'other_identifiers': [
             'drugbank:DB00451'
         ],

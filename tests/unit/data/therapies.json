@@ -492,6 +492,7 @@
     "label_and_type": "rxcui:100213##identity",
     "concept_id": "rxcui:100213",
     "label": "Bifidobacterium Infantis",
+    "approval_status": "approved",
     "aliases": [
       "bifidobacterium infantis",
       "Bifidobacterium infantis"
@@ -527,6 +528,7 @@
     "label_and_type": "rxcui:2555##identity",
     "concept_id": "rxcui:2555",
     "label": "cisplatin",
+    "approval_status": "approved",
     "aliases": [
       "Diaminedichloroplatinum",
       "cis-Platinum",
@@ -602,6 +604,7 @@
     "label_and_type": "rxcui:644##identity",
     "concept_id": "rxcui:644",
     "label": "amiloride",
+    "approval_status": "approved",
     "aliases": [
       "3,5-diamino-N-carbamimidoyl-6-chloropyrazine-2-carboxamide",
       "Amiloride",
@@ -660,6 +663,7 @@
     "label_and_type": "rxcui:10600##identity",
     "concept_id": "rxcui:10600",
     "label": "timolol",
+    "approval_status": "approved",
     "aliases": [
       "(S)-1-((1,1-Dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadazol-3-yl)oxy)-2-propanol",
       "2-Propanol, 1-((1,1-dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadiazol-3-yl)oxy)-, (S)-",
@@ -715,6 +719,7 @@
     "label_and_type": "rxcui:1011##identity",
     "concept_id": "rxcui:1011",
     "label": "lymphocyte immune globulin, anti-thymocyte globulin",
+    "approval_status": "approved",
     "aliases": [
       "Antithymocyte immunoglobulin",
       "Lymphocyte Immune Globulin, Anti-Thymocyte Globulin",
@@ -775,6 +780,7 @@
     "label_and_type": "rxcui:1191##identity",
     "concept_id": "rxcui:1191",
     "label": "aspirin",
+    "approval_status": "approved",
     "aliases": [
       "Salicylic acid acetate",
       "Aspirin",
@@ -831,6 +837,7 @@
     "label_and_type": "rxcui:44##identity",
     "concept_id": "rxcui:44",
     "label": "mesna",
+    "approval_status": "approved",
     "aliases": [
       "Sodium 2-mercaptoethanesulfonate",
       "Mesnum",
@@ -886,6 +893,7 @@
     "label_and_type": "rxcui:61##identity",
     "concept_id": "rxcui:61",
     "label": "beta-alanine",
+    "approval_status": "approved",
     "aliases": [
       "Beta alanine",
       "beta Alanine",
@@ -915,6 +923,7 @@
     "label_and_type": "rxcui:595##identity",
     "concept_id": "rxcui:595",
     "label": "algestone",
+    "approval_status": null,
     "aliases": [
       "Pregn-4-ene-3,20-dione, 16,17-dihydroxy-, (16alpha)-",
       "16 alpha,17-Dihydroxypregn-4-ene-3,20-dione",
@@ -941,6 +950,7 @@
     "label_and_type": "rxcui:10582##identity",
     "concept_id": "rxcui:10582",
     "label": "levothyroxine",
+    "approval_status": "approved",
     "trade_names": [
       "Eltroxin",
      "Estre",
