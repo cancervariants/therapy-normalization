@@ -382,6 +382,10 @@ def test_generate_merged_record(merge_handler, record_id_groups,
     merge_response = merge_handler.generate_merged_record(spiramycin_ids)
     compare_merged_records(merge_response, spiramycin_merged)
 
+    # test correct handling of dead references
+    spiramycin_plus_fake = spiramycin_ids.copy()
+    spiramycin_plus_fake.add('ncit:zzzzzzz')
+
 
 def test_create_merged_concepts(merge_handler, record_id_groups,
                                 phenobarbital_merged, cisplatin_merged,
