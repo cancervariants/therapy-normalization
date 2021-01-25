@@ -1,4 +1,7 @@
-"""ETL methods for ChemIDPlus source."""
+"""ETL methods for ChemIDPlus® source.
+
+Courtesy of the U.S. National Library of Medicine.
+"""
 from .base import Base
 from typing import Set
 from therapy import PROJECT_ROOT
@@ -6,8 +9,8 @@ from therapy.database import Database
 from therapy.schemas import Drug, NamespacePrefix, Meta, SourceName, \
     DataLicenseAttributes
 from pathlib import Path
+from ftplib import FTP
 import xml.etree.ElementTree as ET
-import requests
 import logging
 from typing import Dict
 from boto3.dynamodb.table import BatchWriter
@@ -27,14 +30,16 @@ class ChemIDplus(Base):
     def __init__(self,
                  database: Database,
                  data_path: Path = PROJECT_ROOT / 'data' / 'chemidplus',
-                 src_dir: str = 'ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/',  # noqa: E501
+                 src_server: str = 'ftp.nlm.nih.gov',
+                 src_dir_path: str = 'nlmdata/.chemidlease/',
                  src_fname: str = 'CurrentChemID.xml'):
         """Initialize class instance.
 
         :param therapy.database.Database database: database instance to use
         :param Path data_path: path to chemidplus subdirectory in application
             data folder
-        :param str src_dir: URL to remote directory containing source file
+        :param str src_server: The NLM domain
+        :param str src_dir_path: The directory to the chemidplus release
         :param str src_fname: name of file as stored in src_dir.
 
         If the source file is provided locally in the data_path directory,
@@ -42,7 +47,8 @@ class ChemIDplus(Base):
         """
         self.database = database
         self._data_path = data_path
-        self._src_dir = src_dir
+        self._src_server = src_server
+        self._src_dir_path = src_dir_path
         self._src_fname = src_fname
         self._added_ids = set()
 
@@ -57,31 +63,49 @@ class ChemIDplus(Base):
         self._transform_data()
         return self._added_ids
 
-    def _download_data(self):
+    def _download_data(self, data_path: Path):
         """Download source data from default location."""
         logger.info('Downloading ChemIDplus data...')
-        url = self._src_dir + self._src_fname
-        out_path = PROJECT_ROOT / 'data' / 'chemidplus' / self._src_fname
-        response = requests.get(url, stream=True)
-        handle = open(out_path, "wb")
-        for chunk in response.iter_content(chunk_size=512):
-            if chunk:
-                handle.write(chunk)
-        version = ET.parse(out_path).getroot().attrib['date'].replace('-', '')
-        out_path.rename(f'chemidplus_{version}.xml')
+        outfile_path = data_path / self._src_fname
+        try:
+            with FTP(self._src_server) as ftp:
+                ftp.login()
+                logger.debug('FTP login successful.')
+                ftp.cwd(self._src_dir_path)
+                with open(outfile_path, 'wb') as fp:
+                    ftp.retrbinary(f'RETR {self._src_fname}', fp.write)
+            logger.info('Downloaded ChemIDplus source file.')
+        except TimeoutError:
+            logger.error('Connection to EBI FTP server timed out.')
+        date = ET.parse(outfile_path).getroot().attrib['date']
+        version = date.replace('-', '')
+        outfile_path.rename(data_path / f'chemidplus_{version}.xml')
         logger.info('Finished downloading ChemIDplus data')
 
-    def _extract_data(self):
-        """Acquire ChemIDplus dataset."""
-        self._data_path.mkdir(exist_ok=True, parents=True)
-        dir_files = list(self._data_path.iterdir())
+    def _extract_data(self, data_path: Path):
+        """Acquire ChemIDplus dataset.
+
+        :arg pathlib.Path data_path: directory containing source data
+        """
+        data_path.mkdir(exist_ok=True, parents=True)
+        dir_files = list(data_path.iterdir())
+
         if len(dir_files) == 0:
-            self._download_data()
-            dir_files = list(self._data_path.iterdir())
-        file = sorted([f for f in dir_files
-                       if f.name.startswith('chemidplus')])
+            file = self._get_file(data_path)
+        else:
+            file = sorted([f for f in dir_files
+                           if f.name.startswith('chemidplus')])
+            if not file:
+                file = self._get_file(data_path)
+
         self._data_src = file[-1]
         self._version = self._data_src.stem.split('_')[1]
+
+    def _get_file(self, data_dir):
+        self._download_data()
+        dir_files = list(data_dir.iterdir())
+        return sorted([f for f in dir_files
+                       if f.names.startswith('chemidplus')])
 
     def _transform_data(self):
         """Open dataset and prepare for loading into database."""
@@ -170,7 +194,7 @@ class ChemIDplus(Base):
                     data_license_attributes=DataLicenseAttributes(
                         non_commercial=False,
                         share_alike=False,
-                        attribution=True
+                        attribution=False
                     ))
         item = dict(meta)
         item['src_name'] = SourceName.CHEMIDPLUS.value
