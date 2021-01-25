@@ -8,17 +8,28 @@ import json
 
 
 class MockDatabase(Database):
-    """`Mock` database object to use in test cases."""
+    """Mock database object to use in test cases."""
 
     def __init__(self):
-        """Initialize mock database object.
+        """Initialize mock database object. This class's method's shadow the
+        actual Database class methods.
 
-        self.records contains
+        `self.records` loads preexisting DB items.
+        `self.added_records` stores add record requests, with the concept_id
+        as the key and the complete record as the value.
+        `self.updates` stores update requests, with the concept_id as the key
+        and the updated attribute and new value as the value.
         """
         infile = PROJECT_ROOT / 'tests' / 'unit' / 'data' / 'therapies.json'
+        self.records = {}
         with open(infile, 'r') as f:
-            self.records = json.load(f)
-        self.updates = {}
+            records_json = json.load(f)
+            for record in records_json:
+                self.records[record['label_and_type']] = {
+                    record['concept_id']: record
+                }
+        self.added_records: Dict[str, Dict[Any, Any]] = {}
+        self.updates: Dict[str, Dict[Any, Any]] = {}
 
     def get_record_by_id(self, record_id: str) -> Optional[Dict]:
         """Fetch record corresponding to provided concept ID.
@@ -29,23 +40,31 @@ class MockDatabase(Database):
             doesn't require correct casing.
         :return: complete therapy record, if match is found; None otherwise
         """
-        key = f'{record_id.lower()}##identity'
-        for record in self.records:
-            if record['label_and_type'] == key:
-                return record
-        return None
+        label_and_type = f'{record_id.lower()}##identity'
+        record_lookup = self.records.get(label_and_type, None)
+        if record_lookup:
+            return record_lookup.get(record_id, None)
+        else:
+            return None
 
-    def update_record(self, concept_id: str, attribute: str, value: Any):
+    def add_record(self, record: Dict, record_type: str):
+        """Store add record request sent to database.
+
+        :param Dict record: record (of any type) to upload. Must include
+            `concept_id` key. If record is of the `identity` type, the
+            concept_id must be correctly-cased.
+        :param str record_type: ignored by this function
+        """
+        self.added_records[record['concept_id']] = record
+
+    def update_record(self, concept_id: str, attribute: str, new_value: Any):
         """Store update request sent to database.
 
         :param str concept_id: record to update
         :param str field: name of field to update
-        :parm str value: new value
+        :parm str new_value: new value
         """
-        self.updates[concept_id] = {
-            'concept_id': concept_id,
-            attribute: value
-        }
+        self.updates[concept_id] = {attribute: new_value}
 
 
 @pytest.fixture(scope='module')
@@ -61,11 +80,18 @@ def merge_handler():
         def create_merged_concepts(self, record_ids):
             return self.merge.create_merged_concepts(record_ids)
 
+        def get_added_records(self):
+            return self.merge._database.added_records
+
+        def get_updates(self):
+            return self.merge._database.updates
+
         def create_record_id_set(self, record_id):
             return self.merge._create_record_id_set(record_id)
 
         def generate_merged_record(self, record_id_set):
             return self.merge._generate_merged_record(record_id_set)
+
     return MergeHandler()
 
 
@@ -74,16 +100,16 @@ def compare_merged_records(actual_record: Dict, fixture_record: Dict):
     assert actual_record['concept_id'] == fixture_record['concept_id']
     assert actual_record['label_and_type'] == fixture_record['label_and_type']
     assert ('label' in actual_record) == ('label' in fixture_record)
-    if 'label' in actual_record:
+    if 'label' in actual_record or 'label' in fixture_record:
         assert actual_record['label'] == fixture_record['label']
     assert ('trade_names' in actual_record) == ('trade_names' in fixture_record)  # noqa: E501
-    if 'trade_names' in actual_record:
+    if 'trade_names' in actual_record or 'trade_names' in fixture_record:
         assert set(actual_record['trade_names']) == set(fixture_record['trade_names'])  # noqa: E501
     assert ('aliases' in actual_record) == ('aliases' in fixture_record)
-    if 'aliases' in actual_record:
+    if 'aliases' in actual_record or 'aliases' in fixture_record:
         assert set(actual_record['aliases']) == set(fixture_record['aliases'])
     assert ('xrefs' in actual_record) == ('xrefs' in fixture_record)
-    if 'xrefs' in actual_record:
+    if 'xrefs' in actual_record or 'xrefs' in fixture_record:
         assert set(actual_record['xrefs']) == set(fixture_record['xrefs'])
 
 
@@ -331,6 +357,10 @@ def test_create_record_id_set(merge_handler, record_id_groups):
     for concept_id in groups.keys():
         assert groups[concept_id] == record_id_groups[concept_id]
 
+    # test dead reference
+    dead_group = merge_handler.create_record_id_set('ncit:c000000')
+    assert {'ncit:c000000'} == dead_group
+
 
 def test_generate_merged_record(merge_handler, record_id_groups,
                                 phenobarbital_merged, cisplatin_merged,
@@ -351,3 +381,32 @@ def test_generate_merged_record(merge_handler, record_id_groups,
     spiramycin_ids = record_id_groups['ncit:C839']
     merge_response = merge_handler.generate_merged_record(spiramycin_ids)
     compare_merged_records(merge_response, spiramycin_merged)
+
+
+def test_create_merged_concepts(merge_handler, record_id_groups,
+                                phenobarbital_merged, cisplatin_merged,
+                                hydrocorticosteroid_merged, spiramycin_merged):
+    """Test end-to-end creation and upload of merged concepts."""
+    record_ids = record_id_groups.keys()
+    merge_handler.create_merged_concepts(record_ids)
+    added_records = merge_handler.get_added_records()
+    assert len(added_records) == 4
+
+    phenobarb_merged_id = phenobarbital_merged['concept_id']
+    assert phenobarb_merged_id in added_records.keys()
+    compare_merged_records(added_records[phenobarb_merged_id],
+                           phenobarbital_merged)
+
+    cispl_merged_id = cisplatin_merged['concept_id']
+    assert cispl_merged_id in added_records.keys()
+    compare_merged_records(added_records[cispl_merged_id], cisplatin_merged)
+
+    hydro_merged_id = hydrocorticosteroid_merged['concept_id']
+    assert hydro_merged_id in added_records.keys()
+    compare_merged_records(added_records[hydro_merged_id],
+                           hydrocorticosteroid_merged)
+
+    spira_merged_id = spiramycin_merged['concept_id']
+    assert spira_merged_id in added_records.keys()
+    compare_merged_records(added_records[spira_merged_id],
+                           spiramycin_merged)

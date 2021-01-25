@@ -816,5 +816,11 @@
     "approval_status": null,
     "trade_names": [],
     "src_name": "NCIt"
+  },
+  {
+    "label": "fake_therapy_used_to_test_dead_other_id_link",
+    "label_and_type": "ncit:c000000##identity",
+    "concept_id": "ncit:C000000",
+    "other_identifiers": ["chemidplus:9999999"]
   }
 ]
