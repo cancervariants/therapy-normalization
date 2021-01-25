@@ -101,7 +101,8 @@ class CLI:
                        f"{delete_time:.5f} seconds.\n")
             click.echo(f"Loading {n}...")
             start_load = timer()
-            sources[n](database=db)
+            source = sources[n](database=db)
+            source.perform_etl()
             end_load = timer()
             load_time = end_load - start_load
             click.echo(f"Loaded {n} in {load_time:.5f} seconds.")
