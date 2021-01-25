@@ -298,19 +298,28 @@ def test_create_merged_concepts(merge_handler, record_id_groups,
     """Test end-to-end creation and upload of merged concepts."""
     record_ids = record_id_groups.keys()
     merge_handler.create_merged_concepts(record_ids)
+
+    # check merged record generation and storage
     added_records = merge_handler.get_added_records()
     assert len(added_records) == 3
-
     phenobarb_merged_id = phenobarbital_merged['concept_id']
     assert phenobarb_merged_id in added_records.keys()
     compare_merged_records(added_records[phenobarb_merged_id],
                            phenobarbital_merged)
-
     cispl_merged_id = cisplatin_merged['concept_id']
     assert cispl_merged_id in added_records.keys()
     compare_merged_records(added_records[cispl_merged_id], cisplatin_merged)
-
     spira_merged_id = spiramycin_merged['concept_id']
     assert spira_merged_id in added_records.keys()
     compare_merged_records(added_records[spira_merged_id],
                            spiramycin_merged)
+
+    # check merged record reference updating
+    updates = merge_handler.get_updates()
+    assert len(updates) == len(record_id_groups)
+    for concept_id in record_id_groups['rxcui:8134']:
+        assert updates[concept_id] == phenobarb_merged_id
+    for concept_id in record_id_groups['rxcui:2555']:
+        assert updates[concept_id] == cispl_merged_id
+    for concept_id in record_id_groups['ncit:C839']:
+        assert updates[concept_id] == spira_merged_id
