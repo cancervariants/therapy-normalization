@@ -355,6 +355,7 @@ class QueryHandler:
         :return: completed response object.
         """
         merged_record = self.db.get_merged_record(merge_ref)
+        print(merged_record)
         if not merged_record:
             logger.error(f"Could not retrieve merged record for concept"
                          f"ID group {merge_ref}"
@@ -391,28 +392,33 @@ class QueryHandler:
             return response
 
         # check other match types
-        for match_type in [MatchType.LABEL, MatchType.ALIAS,
-                           MatchType.TRADE_NAME]:
-            matches = self.db.get_records_by_type(query_str, match_type)
-            if matches:
-                type_matched = match_type
-                break
-        if matches:
+        for match_type in ['label', 'alias', 'trade_name']:
+            query_matches = self.db.get_records_by_type(query_str, match_type)
+            query_matches = [m for m in query_matches
+                             if m['src_name'] in (SourceName.CHEMBL.value,
+                                                  SourceName.DRUGBANK.value)]
+
             def record_order(record: Dict):
                 """Construct priority order for matching."""
                 src = record['src_name']
-                if src == SourceName.RXNORM:
-                    return 1
-                elif src == SourceName.NCIT:
-                    return 2
-                elif src == SourceName.CHEMIDPLUS:
-                    return 3
+                if src == SourceName.RXNORM.value:
+                    source_rank = 1
+                elif src == SourceName.NCIT.value:
+                    source_rank = 2
+                elif src == SourceName.CHEMIDPLUS.value:
+                    source_rank = 3
                 else:
-                    return 4
-            matches.sort(key=record_order)
-            merge_ref = matches[0]['merge_ref']
-            response['match_type'] = type_matched
-            response = self._add_merged_record(response, merge_ref)
-        else:
+                    source_rank = 4
+                return (source_rank, record['concept_id'])
+            query_matches.sort(key=record_order)
+
+            for match in query_matches:
+                record = self.db.get_record_by_id(match['concept_id'], False)
+                if record:
+                    merge_ref = record.get('merge_ref', None)
+                    if merge_ref:
+                        response['match_type'] = match_type
+                        return self._add_merged_record(response, merge_ref)
+        if not query_matches:
             response['match_type'] = MatchType.NO_MATCH
         return response
