@@ -134,8 +134,8 @@ class SourceIDAfterNamespace(Enum):
 class NamespacePrefix(Enum):
     """Define string constraints for namespace prefixes on concept IDs."""
 
-    CASREGISTRY = "chemidplus"
     CHEMIDPLUS = "chemidplus"
+    CASREGISTRY = CHEMIDPLUS
     PUBCHEMCOMPOUND = "pubchem.compound"
     PUBCHEMSUBSTANCE = "pubchem.substance"
     CHEMBL = "chembl"
@@ -159,13 +159,10 @@ class NamespacePrefix(Enum):
     GUIDETOPHARMACOLOGY = "gtopdb"
     ATC = "atc"  # Anatomical Therapeutic Chemical Classification System
     CVX = "cvx"  # Vaccines Administered
-    GS = "gsddb"  # Gold Standard Drug Database
     MMSL = "mmsl"  # Multum MediSource Lexicon
-    MMX = "mmx"  # Micromedex RED BOOK
     MSH = "msh"  # Medical Subject Headings
     MTHCMSFRF = "mthcmsfrf"  # CMS Formulary Reference File
     MTHSPL = "mthspl"  # FDA Structured Product Labels
-    NDDF = "fdbmk"  # FDB MedKnowledge (Formerly NDDF Plus)
     SNOMEDCT_US = "snomedct"  # US Edition of SNOMED CT
     USP = "usp"  # USP Compendial Nomenclature
     VANDF = "vandf"  # Veterans Health Administration National Drug File
