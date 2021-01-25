@@ -58,8 +58,8 @@ class ChemIDplus(Base):
         :return: Set of concept IDs which were successfully processed and
             uploaded.
         """
-        self._load_meta()
         self._extract_data()
+        self._load_meta()
         self._transform_data()
         return self._added_ids
 
@@ -82,21 +82,21 @@ class ChemIDplus(Base):
         outfile_path.rename(data_path / f'chemidplus_{version}.xml')
         logger.info('Finished downloading ChemIDplus data')
 
-    def _extract_data(self, data_path: Path):
+    def _extract_data(self):
         """Acquire ChemIDplus dataset.
 
         :arg pathlib.Path data_path: directory containing source data
         """
-        data_path.mkdir(exist_ok=True, parents=True)
-        dir_files = list(data_path.iterdir())
+        self._data_path.mkdir(exist_ok=True, parents=True)
+        dir_files = list(self._data_path.iterdir())
 
         if len(dir_files) == 0:
-            file = self._get_file(data_path)
+            file = self._get_file(self._data_path)
         else:
             file = sorted([f for f in dir_files
                            if f.name.startswith('chemidplus')])
             if not file:
-                file = self._get_file(data_path)
+                file = self._get_file(self._data_path)
 
         self._data_src = file[-1]
         self._version = self._data_src.stem.split('_')[1]
