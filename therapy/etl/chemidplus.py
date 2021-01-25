@@ -1,4 +1,7 @@
-"""ETL methods for ChemIDPlus source."""
+"""ETL methods for ChemIDPlus source.
+
+Courtesy of the U.S. National Library of Medicine.
+"""
 from .base import Base
 from therapy import PROJECT_ROOT
 from therapy.database import Database
