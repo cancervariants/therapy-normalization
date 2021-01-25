@@ -4,8 +4,8 @@ import pytest
 
 
 @pytest.fixture(scope='module')
-def normalizer():
-    """Build normalizer test fixture."""
+def query_handler():
+    """Build query handler test fixture."""
     class QueryGetter:
 
         def __init__(self):
@@ -20,9 +20,23 @@ def normalizer():
     return QueryGetter()
 
 
-def test_query(normalizer):
+@pytest.fixture(scope='module')
+def merge_query_handler(mock_database):
+    """Provide Merge instance to test cases."""
+    class QueryGetter():
+        def __init__(self):
+            self.query_handler = QueryHandler(db_url='zzz - nonsense')
+            self.query_handler._database = mock_database()
+
+        def search_groups(self, query_str):
+            return self.query_handler.search_groups(query_str)
+
+    return QueryGetter()
+
+
+def test_query(query_handler):
     """Test that query returns properly-structured response."""
-    resp = normalizer.normalize('cisplatin', keyed=False)
+    resp = query_handler.normalize('cisplatin', keyed=False)
     assert resp['query'] == 'cisplatin'
     matches = resp['source_matches']
     assert isinstance(matches, list)
@@ -34,9 +48,9 @@ def test_query(normalizer):
     assert wikidata_record.label == 'cisplatin'
 
 
-def test_query_keyed(normalizer):
+def test_query_keyed(query_handler):
     """Test that query structures matches as dict when requested."""
-    resp = normalizer.normalize('penicillin v', keyed=True)
+    resp = query_handler.normalize('penicillin v', keyed=True)
     matches = resp['source_matches']
     assert isinstance(matches, dict)
     chemidplus = matches['ChemIDplus']
@@ -44,10 +58,10 @@ def test_query_keyed(normalizer):
     assert chemidplus_record.label == 'Penicillin V'
 
 
-def test_query_specify_normalizers(normalizer):
-    """Test inclusion and exclusion of normalizers in query."""
+def test_query_specify_query_handlers(normalizer):
+    """Test inclusion and exclusion of sources in query."""
     # test blank params
-    resp = normalizer.normalize('cisplatin', keyed=True)
+    resp = query_handler.normalize('cisplatin', keyed=True)
     matches = resp['source_matches']
     assert len(matches) == 6
     assert 'Wikidata' in matches
@@ -56,7 +70,7 @@ def test_query_specify_normalizers(normalizer):
     assert 'DrugBank' in matches
 
     # test partial inclusion
-    resp = normalizer.normalize('cisplatin', keyed=True, incl='chembl,ncit')
+    resp = query_handler.normalize('cisplatin', keyed=True, incl='chembl,ncit')
     matches = resp['source_matches']
     assert len(matches) == 2
     assert 'Wikidata' not in matches
@@ -66,24 +80,24 @@ def test_query_specify_normalizers(normalizer):
 
     # test full inclusion
     sources = 'chembl,ncit,drugbank,wikidata,rxnorm,chemidplus'
-    resp = normalizer.normalize('cisplatin', keyed=True,
-                                incl=sources, excl='')
+    resp = query_handler.normalize('cisplatin', keyed=True,
+                                   incl=sources, excl='')
     matches = resp['source_matches']
     assert len(matches) == 6
     assert 'Wikidata' in matches
     assert 'ChEMBL' in matches
 
     # test partial exclusion
-    resp = normalizer.normalize('cisplatin', keyed=True, excl='chemidplus')
+    resp = query_handler.normalize('cisplatin', keyed=True, excl='chemidplus')
     matches = resp['source_matches']
     assert len(matches) == 5
     assert 'Wikidata' in matches
     assert 'ChemIDplus' not in matches
 
     # test full exclusion
-    resp = normalizer.normalize('cisplatin', keyed=True,
-                                excl='chembl, wikidata, drugbank, ncit, '
-                                     'rxnorm, chemidplus')
+    resp = query_handler.normalize('cisplatin', keyed=True,
+                                   excl='chembl, wikidata, drugbank, ncit, '
+                                   'rxnorm, chemidplus')
     matches = resp['source_matches']
     assert len(matches) == 0
     assert 'Wikidata' not in matches
@@ -92,21 +106,28 @@ def test_query_specify_normalizers(normalizer):
     assert 'DrugBank' not in matches
 
     # test case insensitive
-    resp = normalizer.normalize('cisplatin', keyed=True, excl='ChEmBl')
+    resp = query_handler.normalize('cisplatin', keyed=True, excl='ChEmBl')
     matches = resp['source_matches']
     assert 'Wikidata' in matches
     assert 'ChEMBL' not in matches
-    resp = normalizer.normalize('cisplatin', keyed=True,
-                                incl='wIkIdAtA,cHeMbL')
+    resp = query_handler.normalize('cisplatin', keyed=True,
+                                   incl='wIkIdAtA,cHeMbL')
     matches = resp['source_matches']
     assert 'Wikidata' in matches
     assert 'ChEMBL' in matches
 
-    # test error on invalid normalizer names
+    # test error on invalid source names
     with pytest.raises(InvalidParameterException):
-        resp = normalizer.normalize('cisplatin', keyed=True, incl='chambl')
+        resp = query_handler.normalize('cisplatin', keyed=True, incl='chambl')
 
     # test error for supplying both incl and excl args
     with pytest.raises(InvalidParameterException):
-        resp = normalizer.normalize('cisplatin', keyed=True, incl='chembl',
-                                    excl='wikidata')
+        resp = query_handler.normalize('cisplatin', keyed=True, incl='chembl',
+                                       excl='wikidata')
+
+
+def test_query_merged(query_handler):
+    """Test that the merged concept endpoint handles queries correctly."""
+    test_query = "cisplatin"
+    response = query_handler.search_groups(test_query)
+    assert response['query'] == test_query
