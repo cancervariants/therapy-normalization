@@ -1,5 +1,6 @@
 """This module creates the database."""
 import boto3
+from therapy.schemas import NamespacePrefix, SourceName
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
 from os import environ
@@ -8,6 +9,12 @@ import logging
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
+
+
+# should this be located in a shared module
+PREFIX_LOOKUP = {v.value: SourceName[k].value
+                 for k, v in NamespacePrefix.__members__.items()
+                 if k in SourceName.__members__.keys()}
 
 
 class Database:
@@ -202,20 +209,35 @@ class Database:
         except KeyError:
             return None
 
-    def update_record(self, concept_id: str, field: str, value: Any):
+    def add_record(self, record: Dict, record_type: str):
+        """Add new record to database.
+
+        :param Dict record: record (of any type) to upload. Must include
+            `concept_id` key. If record is of the `identity` type, the
+            concept_id must be correctly-cased.
+        :param str record_type: one of 'identity', 'label', 'alias',
+            'trade_name', or 'merger'.
+        """
+        if record_type in ('label', 'trade_name', 'alias', 'identity'):
+            prefix = record['concept_id'].split(':')[0]
+            record['src_name'] = PREFIX_LOOKUP[prefix]
+        record['label_and_type'] = f'{record["concept_id"].lower()}##{record_type}'  # noqa: E501
+        self.batch.put_item(Item=record)
+
+    def update_record(self, concept_id: str, field: str, new_value: Any):
         """Update the field of an individual record to a new value.
 
         :param str concept_id: record to update
         :param str field: name of field to update
-        :parm str value: new value
+        :parm str new_value: new value
         """
         key = {
             'label_and_type': f'{concept_id.lower()}##identity',
             'concept_id': concept_id
         }
         update = {
-            'Value': {
-                field: value
+            'new_value': {
+                field: new_value
             }
         }
         try:
