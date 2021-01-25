@@ -11,8 +11,8 @@ class Therapy(BaseModel):
 
     label: str
     concept_id: str
-    aliases: List[str]
-    other_identifiers: List[str]
+    aliases: Optional[List[str]]
+    other_identifiers: Optional[List[str]]
     xrefs: Optional[List[str]]
 
     class Config:
@@ -116,6 +116,8 @@ class SourceName(Enum):
     CHEMBL = "ChEMBL"
     NCIT = "NCIt"
     DRUGBANK = "DrugBank"
+    CHEMIDPLUS = "ChemIDplus"
+    RXNORM = "RxNorm"
 
 
 class SourceIDAfterNamespace(Enum):
@@ -125,12 +127,15 @@ class SourceIDAfterNamespace(Enum):
     CHEMBL = "CHEMBL"
     DRUGBANK = "DB"
     NCIT = "C"
+    CHEMIDPLUS = ""
+    RXNORM = ""
 
 
 class NamespacePrefix(Enum):
     """Define string constraints for namespace prefixes on concept IDs."""
 
-    CASREGISTRY = "chemidplus"
+    CHEMIDPLUS = "chemidplus"
+    CASREGISTRY = CHEMIDPLUS
     PUBCHEMCOMPOUND = "pubchem.compound"
     PUBCHEMSUBSTANCE = "pubchem.substance"
     CHEMBL = "chembl"
@@ -152,6 +157,15 @@ class NamespacePrefix(Enum):
     THERAPEUTICTARGETSDB = "ttd"
     IUPHAR = "iuphar"
     GUIDETOPHARMACOLOGY = "gtopdb"
+    ATC = "atc"  # Anatomical Therapeutic Chemical Classification System
+    CVX = "cvx"  # Vaccines Administered
+    MMSL = "mmsl"  # Multum MediSource Lexicon
+    MSH = "msh"  # Medical Subject Headings
+    MTHCMSFRF = "mthcmsfrf"  # CMS Formulary Reference File
+    MTHSPL = "mthspl"  # FDA Structured Product Labels
+    SNOMEDCT_US = "snomedct"  # US Edition of SNOMED CT
+    USP = "usp"  # USP Compendial Nomenclature
+    VANDF = "vandf"  # Veterans Health Administration National Drug File
 
 
 class DataLicenseAttributes(BaseModel):
