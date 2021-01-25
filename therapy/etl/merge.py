@@ -27,13 +27,11 @@ class Merge:
         """Create concept groups, generate merged concept records, and
         update database.
 
-        :param Set[str] record_ids: concept identifiers to create groups of
+        :param Set[str] record_ids: concept identifiers from which groups
+            should be generated
 
         TODO
-         * Consider moving update method calls into database object
          * Make final call on how to handle dangling IDs
-         * When generating merged records, should poll other_id_set if
-           merged record already found?
          * When updating existing records, how to ensure that no dangling
            records remain after an other_identifier is removed?
          * How to handle invalid or nonexistent other_identifiers?
@@ -50,6 +48,9 @@ class Merge:
             merged_record = self._generate_merged_record(group)  # noqa
 
             # add group merger item to DB
+            self._database.add_record(merged_record, 'merger')
+
+            # add updated references
             for concept_id in group:
                 self._database.update_record(concept_id, 'merge_ref',
                                              merged_record['label_and_type'])
