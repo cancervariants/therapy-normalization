@@ -493,18 +493,10 @@
     "concept_id": "rxcui:100213",
     "label": "Bifidobacterium Infantis",
     "approval_status": "approved",
-    "aliases": [
-      "bifidobacterium infantis",
-      "Bifidobacterium infantis"
-    ],
-    "trade_names": [
-      "Align",
-      "Evivo"
-    ],
+    "aliases": ["bifidobacterium infantis", "Bifidobacterium infantis"],
+    "trade_names": ["Align", "Evivo"],
     "other_identifiers": ["drugbank:DB14222"],
-    "xrefs": [
-      "mmsl:d07347"
-    ],
+    "xrefs": ["mmsl:d07347"],
     "src_name": "RxNorm"
   },
   {
@@ -549,14 +541,8 @@
       "CDDP",
       "Cis-DDP"
     ],
-    "trade_names": [
-      "Cisplatin",
-      "Platinol"
-    ],
-    "other_identifiers": [
-      "drugbank:DB00515",
-      "drugbank:DB12117"
-    ],
+    "trade_names": ["Cisplatin", "Platinol"],
+    "other_identifiers": ["drugbank:DB00515", "drugbank:DB12117"],
     "xrefs": [
       "usp:m17910",
       "snomedct:57066004",
@@ -619,9 +605,7 @@
       "Amilamont",
       "Moduretic"
     ],
-    "other_identifiers": [
-      "drugbank:DB00594"
-    ],
+    "other_identifiers": ["drugbank:DB00594"],
     "xrefs": [
       "snomedct:387503008",
       "msh:D000584",
@@ -678,9 +662,7 @@
       "Glaucol",
       "Timoptol"
     ],
-    "other_identifiers": [
-      "drugbank:DB00373"
-    ],
+    "other_identifiers": ["drugbank:DB00373"],
     "xrefs": [
       "vandf:4019949",
       "mthspl:817W3C6175",
@@ -730,10 +712,7 @@
       "Globulin, Anti-Thymocyte",
       "lymphocyte immune globulin, anti-thy (obs)"
     ],
-    "trade_names": [
-      "ATGAM",
-      "Thymoglobulin"
-    ],
+    "trade_names": ["ATGAM", "Thymoglobulin"],
     "xrefs": [
       "snomedct:768651008",
       "msh:D000961",
@@ -788,9 +767,7 @@
       "o-carboxyphenyl acetate",
       "Acetylsalicylic Acid"
     ],
-    "other_identifiers": [
-      "drugbank:DB00945"
-    ],
+    "other_identifiers": ["drugbank:DB00945"],
     "xrefs": [
       "usp:m6240",
       "snomedct:7947003",
@@ -837,11 +814,7 @@
       "2-Mercaptoethanesulphonate, Sodium",
       "Sodium 2-Mercaptoethanesulphonate"
     ],
-    "trade_names": [
-      "Mesna",
-      "Mesnex",
-      "Mesna Nova Plus"
-    ],
+    "trade_names": ["Mesna", "Mesnex", "Mesna Nova Plus"],
     "xrefs": [
       "usp:m49500",
       "snomedct:108821000",
@@ -918,9 +891,7 @@
       "Alphasone",
       "Dihydroxyprogesterone"
     ],
-    "xrefs": [
-      "msh:D000523"
-    ],
+    "xrefs": ["msh:D000523"],
     "src_name": "RxNorm"
   },
   {
@@ -940,29 +911,27 @@
     "approval_status": "approved",
     "trade_names": [
       "Eltroxin",
-     "Estre",
-     "Euthyrox",
-     "Leventa",
-     "Levo-T",
-     "Levocrine",
-     "Levotabs",
-     "Levothroid",
-     "Levothyroid",
-     "Levoxyl",
-     "Novothyrox",
-     "SOLOXINE",
-     "Synthroid",
-     "Thyro-Tabs",
-     "ThyroKare",
-     "ThyroMed",
-     "Thyrolar",
-     "Thyrox",
-     "Tirosint",
-     "Unithroid"
+      "Estre",
+      "Euthyrox",
+      "Leventa",
+      "Levo-T",
+      "Levocrine",
+      "Levotabs",
+      "Levothroid",
+      "Levothyroid",
+      "Levoxyl",
+      "Novothyrox",
+      "SOLOXINE",
+      "Synthroid",
+      "Thyro-Tabs",
+      "ThyroKare",
+      "ThyroMed",
+      "Thyrolar",
+      "Thyrox",
+      "Tirosint",
+      "Unithroid"
     ],
-    "other_identifiers": [
-      "drugbank:DB00451"
-    ],
+    "other_identifiers": ["drugbank:DB00451"],
     "xrefs": [
       "snomedct:768532006",
       "snomedct:73187006",
@@ -1132,5 +1101,61 @@
     "label_and_type": "ncit:c000000##identity",
     "concept_id": "ncit:C000000",
     "other_identifiers": ["chemidplus:9999999"]
+  },
+  {
+    "label_and_type": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241##merger",
+    "concept_id": "rxcui:8134|ncit:C739|chemidplus:50-06-6|wikidata:Q407241",
+    "aliases": [
+      "5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+      "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
+      "5-Ethyl-5-phenylbarbituric acid",
+      "5-Phenyl-5-ethylbarbituric acid",
+      "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+      "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
+      "Acid, Phenylethylbarbituric",
+      "Luminal®",
+      "PHENO",
+      "PHENOBARBITAL",
+      "PHENYLETHYLMALONYLUREA",
+      "PHENobarbital",
+      "Phenemal",
+      "Phenobarbital",
+      "Phenobarbital (substance)",
+      "Phenobarbital-containing product",
+      "Phenobarbitol",
+      "Phenobarbitone",
+      "Phenobarbituric Acid",
+      "Phenylaethylbarbitursaeure",
+      "Phenylbarbital",
+      "Phenylethylbarbiturate",
+      "Phenylethylbarbituric Acid",
+      "Phenylethylbarbitursaeure",
+      "Phenylethylmalonylurea",
+      "Product containing phenobarbital (medicinal product)",
+      "fenobarbital",
+      "phenobarbital",
+      "phenobarbital sodium",
+      "phenylethylbarbiturate"
+    ],
+    "trade_names": ["Phenobarbital"],
+    "xrefs": [
+      "pubchem.compound:4763",
+      "usp:m63400",
+      "gsddb:2179",
+      "snomedct:51073002",
+      "vandf:4017422",
+      "mmsl:2390",
+      "msh:D010634",
+      "snomedct:373505007",
+      "mmsl:5272",
+      "mthspl:YQE403BP4D",
+      "fdbmk:001406",
+      "mmsl:d00340",
+      "atc:N03AA02",
+      "fda:YQE403BP4D",
+      "umls:C0031412",
+      "chebi:CHEBI:8069"
+    ],
+    "label": "Phenobarbital"
   }
 ]
