@@ -37,18 +37,19 @@ class ChemIDplus(Base):
         :param therapy.database.Database database: database instance to use
         :param Path data_path: path to chemidplus subdirectory in application
             data folder
-        :param str src_dir: URL to remote directory containing source file
+        :param str src_server: The NLM domain
+        :param str src_dir_path: The directory to the chemidplus release
         :param str src_fname: name of file as stored in src_dir.
 
         If the source file is provided locally in the data_path directory,
         it's unnecessary to provide `src_dir` and `src_fname` args.
         """
         self.database = database
-        # self._src_dir = src_dir
         self._src_server = src_server
         self._src_dir_path = src_dir_path
         self._src_fname = src_fname
         self._added_ids = set()
+
         # perform ETL
         self._extract_data(data_path)
         self._add_meta()
@@ -182,7 +183,7 @@ class ChemIDplus(Base):
                     data_license_attributes=DataLicenseAttributes(
                         non_commercial=False,
                         share_alike=False,
-                        attribution=True
+                        attribution=False
                     ))
         item = dict(meta)
         item['src_name'] = SourceName.CHEMIDPLUS.value
