@@ -50,8 +50,11 @@ def add_xrefs(db):
             if '##identity' in record_identity:
                 if 'other_identifiers' in record:
                     prev_other_ids = record['other_identifiers']['L']
+                    if 'xrefs' in record:
+                        xrefs = record['xrefs']['L']
+                    else:
+                        xrefs = []
                     other_ids = []
-                    xrefs = []
                     for prev_other_id in prev_other_ids:
                         prev_other_id = prev_other_id['S']
                         if prev_other_id.split(':')[0] in normalizer_srcs:
