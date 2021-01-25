@@ -318,8 +318,14 @@ def test_create_merged_concepts(merge_handler, record_id_groups,
     updates = merge_handler.get_updates()
     assert len(updates) == len(record_id_groups)
     for concept_id in record_id_groups['rxcui:8134']:
-        assert updates[concept_id] == phenobarb_merged_id
+        assert updates[concept_id] == {
+            'merge_ref': phenobarbital_merged['label_and_type']
+        }
     for concept_id in record_id_groups['rxcui:2555']:
-        assert updates[concept_id] == cispl_merged_id
+        assert updates[concept_id] == {
+            'merge_ref': cisplatin_merged['label_and_type']
+        }
     for concept_id in record_id_groups['ncit:C839']:
-        assert updates[concept_id] == spira_merged_id
+        assert updates[concept_id] == {
+            'merge_ref': spiramycin_merged['label_and_type']
+        }
