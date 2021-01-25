@@ -87,6 +87,8 @@ class ChemIDplus(Base):
         else:
             file = sorted([f for f in dir_files
                            if f.name.startswith('chemidplus')])
+            if not file:
+                file = self._get_file(data_path)
         self._data_src = file[-1]
         self._version = self._data_src.stem.split('_')[1]
 
