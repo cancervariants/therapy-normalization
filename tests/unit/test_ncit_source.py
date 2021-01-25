@@ -28,8 +28,8 @@ def voglibose():
         'aliases': ['3,4-Dideoxy-4-((2-Hydroxy-1-(Hydroxymethyl)Ethyl)Amino)-2-C-(Hydroxymethyl)-D-Epi-Inositol',  # noqa F401
                     'A-71100', 'AO-128', 'Basen',
                     'N-(1,3-Dihydroxy-2-Propyl)Valiolamine', 'VOGLIBOSE'],
-        'other_identifiers': [],
-        'xrefs': ['chemidplus:83480-29-9', 'fda:S77P977AG8', 'umls:C0532578'],
+        'other_identifiers': ['chemidplus:83480-29-9'],
+        'xrefs': ['fda:S77P977AG8', 'umls:C0532578'],
         'approval_status': None,
         'trade_names': []
     }
@@ -44,8 +44,8 @@ def apricoxib():
         'concept_id': 'ncit:C74021',
         'aliases': ['APRICOXIB', 'COX-2 Inhibitor TG01', 'CS-706', 'R-109339',
                     'TG01', 'TP2001'],
-        'other_identifiers': [],
-        'xrefs': ['chemidplus:197904-84-0', 'fda:5X5HB3VZ3Z', 'umls:C1737955'],
+        'other_identifiers': ['chemidplus:197904-84-0'],
+        'xrefs': ['fda:5X5HB3VZ3Z', 'umls:C1737955'],
         'approval_status': None,
         'trade_names': []
     }
@@ -60,8 +60,8 @@ def trastuzumab():
         'label': 'Trastuzumab',
         'concept_id': 'ncit:C1647',
         'aliases': [],
-        'other_identifiers': [],
-        'xrefs': ['umls:C0728747', 'chemidplus:180288-69-1', 'fda:P188ANX8CK'],
+        'other_identifiers': ['chemidplus:180288-69-1'],
+        'xrefs': ['umls:C0728747', 'fda:P188ANX8CK'],
         'approval_status': None,
         'trade_names': []
     }

@@ -111,7 +111,9 @@ class Wikidata(Base):
                         if key in record.keys():
                             other_id = record[key]
 
-                            # get other_ids
+                            if key.upper() == 'CASREGISTRY':
+                                key = SourceName.CHEMIDPLUS.value
+
                             if key.upper() in normalizer_srcs:
                                 if key != 'chembl':
                                     fmted_other_id = \

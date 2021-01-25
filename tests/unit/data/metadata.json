@@ -17,8 +17,6 @@
     "data_license": "CC0 1.0",
     "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
     "version": "20200812",
-    "data_url": null,
-    "rdp_url": null,
     "data_license_attributes": {
       "non_commercial": false,
       "share_alike": false,
@@ -49,6 +47,31 @@
       "non_commercial": true,
       "share_alike": false,
       "attribution": true
+    }
+  },
+  {
+    "src_name": "ChemIDplus",
+    "data_license": "custom",
+    "data_license_url": "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",
+    "version": "20200327",
+    "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
+    "rdp_url": null,
+    "data_license_attributes": {
+      "non_commercial": false,
+      "share_alike": false,
+      "attribution": false
+    }
+  },
+  {
+    "src_name": "RxNorm",
+    "data_license": "UMLS Metathesaurus",
+    "data_license_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",
+    "version": "20210104",
+    "data_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/rxnormfiles.html",
+    "data_license_attributes": {
+      "non_commercial": false,
+      "share_alike": false,
+      "attribution": false
     }
   }
 ]
