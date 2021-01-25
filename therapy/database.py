@@ -199,7 +199,7 @@ class Database:
         """
         try:
             match = self.therapies.get_item(Key={
-                'label_and_type': merge_ref,
+                'label_and_type': merge_ref.lower(),
                 'concept_id': merge_ref
             })
             return match['Item']
