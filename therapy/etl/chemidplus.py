@@ -1,4 +1,4 @@
-"""ETL methods for ChemIDPlus source.
+"""ETL methods for ChemIDPlus® source.
 
 Courtesy of the U.S. National Library of Medicine.
 """
