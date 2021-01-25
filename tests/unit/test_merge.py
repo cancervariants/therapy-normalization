@@ -1,78 +1,15 @@
 """Test merged record generation."""
 import pytest
 from therapy.etl.merge import Merge
-from therapy.database import Database
-from therapy import PROJECT_ROOT
-from typing import Dict, Any, Optional
-import json
-
-
-class MockDatabase(Database):
-    """Mock database object to use in test cases."""
-
-    def __init__(self):
-        """Initialize mock database object. This class's method's shadow the
-        actual Database class methods.
-
-        `self.records` loads preexisting DB items.
-        `self.added_records` stores add record requests, with the concept_id
-        as the key and the complete record as the value.
-        `self.updates` stores update requests, with the concept_id as the key
-        and the updated attribute and new value as the value.
-        """
-        infile = PROJECT_ROOT / 'tests' / 'unit' / 'data' / 'therapies.json'
-        self.records = {}
-        with open(infile, 'r') as f:
-            records_json = json.load(f)
-            for record in records_json:
-                self.records[record['label_and_type']] = {
-                    record['concept_id']: record
-                }
-        self.added_records: Dict[str, Dict[Any, Any]] = {}
-        self.updates: Dict[str, Dict[Any, Any]] = {}
-
-    def get_record_by_id(self, record_id: str) -> Optional[Dict]:
-        """Fetch record corresponding to provided concept ID.
-
-        :param str concept_id: concept ID for therapy record
-        :param bool case_sensitive: if true, performs exact lookup, which is
-            more efficient. Otherwise, performs filter operation, which
-            doesn't require correct casing.
-        :return: complete therapy record, if match is found; None otherwise
-        """
-        label_and_type = f'{record_id.lower()}##identity'
-        record_lookup = self.records.get(label_and_type, None)
-        if record_lookup:
-            return record_lookup.get(record_id, None)
-        else:
-            return None
-
-    def add_record(self, record: Dict, record_type: str):
-        """Store add record request sent to database.
-
-        :param Dict record: record (of any type) to upload. Must include
-            `concept_id` key. If record is of the `identity` type, the
-            concept_id must be correctly-cased.
-        :param str record_type: ignored by this function
-        """
-        self.added_records[record['concept_id']] = record
-
-    def update_record(self, concept_id: str, attribute: str, new_value: Any):
-        """Store update request sent to database.
-
-        :param str concept_id: record to update
-        :param str field: name of field to update
-        :parm str new_value: new value
-        """
-        self.updates[concept_id] = {attribute: new_value}
+from typing import Dict
 
 
 @pytest.fixture(scope='module')
-def merge_handler():
+def merge_handler(mock_database):
     """Provide Merge instance to test cases."""
     class MergeHandler():
         def __init__(self):
-            self.merge = Merge(MockDatabase())
+            self.merge = Merge(mock_database())
 
         def get_merge(self):
             return self.merge
@@ -185,6 +122,7 @@ def cisplatin_merged():
         "concept_id": "rxcui:2555|ncit:C376|chemidplus:15663-27-1|wikidata:Q412415",  # noqa: E501
         "trade_names": [
             "Cisplatin",
+            "Platinol"
         ],
         "aliases": [
             '1,2-Diaminocyclohexaneplatinum II citrate',
@@ -192,15 +130,11 @@ def cisplatin_merged():
             'CISplatin',
             'Cis-DDP',
             'CIS-DDP',
-            'Cisplatin',
-            'Cisplatin (substance)',
-            'Cisplatin-containing product',
             'DDP',
             'Diaminedichloroplatinum',
             'Diamminodichloride, Platinum',
             'Dichlorodiammineplatinum',
             'Platinum Diamminodichloride',
-            'Product containing cisplatin (medicinal product)',
             'cis Diamminedichloroplatinum',
             'cis Platinum',
             'cis-DDP',
@@ -215,44 +149,22 @@ def cisplatin_merged():
             'Platinol-AQ',
             'Platinol'
         ],
-        "label": "Cisplatin",
+        "label": "cisplatin",
         "xrefs": [
             "umls:C0008838",
             "fda:Q20Q21Q62J",
             "usp:m17910",
-            "gsddb:862",
             "snomedct:57066004",
             "vandf:4018139",
             "msh:D002945",
             "mthspl:Q20Q21Q62J",
             "snomedct:387318005",
             "mmsl:d00195",
-            "fdbmk:002641",
             "atc:L01XA01",
             "mmsl:31747",
             "mmsl:4456",
             "pubchem.compound:5702198"
         ]
-    }
-
-
-@pytest.fixture(scope='module')
-def hydrocorticosteroid_merged():
-    """Create fixture for 17-hydrocorticosteroid, which should merge only
-    from RxNorm.
-    """
-    return {
-        "label_and_type": "rxcui:19##merger",
-        "concept_id": "rxcui:19",
-        "label": "17-hydrocorticosteroid",
-        "aliases": [
-            "17-hydroxycorticoid",
-            "17-hydroxycorticosteroid",
-            "17-hydroxycorticosteroid (substance)"
-        ],
-        "xrefs": [
-            "snomedct:112116001"
-        ],
     }
 
 
@@ -284,9 +196,6 @@ def spiramycin_merged():
 def record_id_groups():
     """Create fixture for concept group sets."""
     return {
-        "rxcui:19": {
-            "rxcui:19"
-        },
         "chemidplus:50-06-6": {
             "rxcui:8134",
             "ncit:C739",
@@ -364,7 +273,7 @@ def test_create_record_id_set(merge_handler, record_id_groups):
 
 def test_generate_merged_record(merge_handler, record_id_groups,
                                 phenobarbital_merged, cisplatin_merged,
-                                hydrocorticosteroid_merged, spiramycin_merged):
+                                spiramycin_merged):
     """Test generation of merged record method."""
     phenobarbital_ids = record_id_groups['rxcui:8134']
     merge_response = merge_handler.generate_merged_record(phenobarbital_ids)
@@ -373,10 +282,6 @@ def test_generate_merged_record(merge_handler, record_id_groups,
     cisplatin_ids = record_id_groups['rxcui:2555']
     merge_response = merge_handler.generate_merged_record(cisplatin_ids)
     compare_merged_records(merge_response, cisplatin_merged)
-
-    hydrocorticosteroid_ids = record_id_groups['rxcui:19']
-    merge_response = merge_handler.generate_merged_record(hydrocorticosteroid_ids)  # noqa: E501
-    compare_merged_records(merge_response, hydrocorticosteroid_merged)
 
     spiramycin_ids = record_id_groups['ncit:C839']
     merge_response = merge_handler.generate_merged_record(spiramycin_ids)
@@ -389,12 +294,12 @@ def test_generate_merged_record(merge_handler, record_id_groups,
 
 def test_create_merged_concepts(merge_handler, record_id_groups,
                                 phenobarbital_merged, cisplatin_merged,
-                                hydrocorticosteroid_merged, spiramycin_merged):
+                                spiramycin_merged):
     """Test end-to-end creation and upload of merged concepts."""
     record_ids = record_id_groups.keys()
     merge_handler.create_merged_concepts(record_ids)
     added_records = merge_handler.get_added_records()
-    assert len(added_records) == 4
+    assert len(added_records) == 3
 
     phenobarb_merged_id = phenobarbital_merged['concept_id']
     assert phenobarb_merged_id in added_records.keys()
@@ -404,11 +309,6 @@ def test_create_merged_concepts(merge_handler, record_id_groups,
     cispl_merged_id = cisplatin_merged['concept_id']
     assert cispl_merged_id in added_records.keys()
     compare_merged_records(added_records[cispl_merged_id], cisplatin_merged)
-
-    hydro_merged_id = hydrocorticosteroid_merged['concept_id']
-    assert hydro_merged_id in added_records.keys()
-    compare_merged_records(added_records[hydro_merged_id],
-                           hydrocorticosteroid_merged)
 
     spira_merged_id = spiramycin_merged['concept_id']
     assert spira_merged_id in added_records.keys()
