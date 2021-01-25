@@ -28,8 +28,8 @@ class Merge:
         update database.
 
         :param Set[str] record_ids: concept identifiers from which groups
-            should be generated
-
+            should be generated. Should *not* include any records from
+            excluded sources.
         TODO
          * Make final call on how to handle dangling IDs
          * When updating existing records, how to ensure that no dangling
