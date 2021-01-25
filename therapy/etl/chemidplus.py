@@ -80,13 +80,20 @@ class ChemIDplus(Base):
         """
         data_path.mkdir(exist_ok=True, parents=True)
         dir_files = list(data_path.iterdir())
+
         if len(dir_files) == 0:
-            self._download_data(data_path)
-            dir_files = list(data_path.iterdir())
-        file = sorted([f for f in dir_files
-                       if f.name.startswith('chemidplus')])
+            file = self._get_file(data_path)
+        else:
+            file = sorted([f for f in dir_files
+                           if f.name.startswith('chemidplus')])
         self._data_src = file[-1]
         self._version = self._data_src.stem.split('_')[1]
+
+    def _get_file(self, data_dir):
+        self._download_data()
+        dir_files = list(data_dir.iterdir())
+        return sorted([f for f in dir_files
+                       if f.names.startswith('chemidplus')])
 
     def _transform_data(self):
         """Open dataset and prepare for loading into database."""
