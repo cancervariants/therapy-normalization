@@ -28,6 +28,8 @@ def main():
             items = response['Items']
             for item in items:
                 if item['label_and_type'].endswith('##identity'):
+                    if 'src_name' not in item:
+                        print(item)
                     if item['src_name'] != SourceName.CHEMBL.value and \
                             item['src_name'] != SourceName.DRUGBANK.value:
                         concept_ids.append(item['concept_id'])
@@ -39,6 +41,7 @@ def main():
                 print(concept_id, file=f)
 
     print("Concept ID scan successful.")
+    print(f"{len(concept_ids)} concept IDs gathered.")
 
     merge = Merge(db)
 
