@@ -100,7 +100,7 @@ class NCIt(Base):
             for child_node in children:
                 if child_node is not node:
                     uq_nodes.add(child_node)
-                    self.get_desc_nodes(child_node, uq_nodes)
+                    self._get_desc_nodes(child_node, uq_nodes)
         return uq_nodes
 
     def _get_typed_nodes(self, uq_nodes: Set[ThingClass],
