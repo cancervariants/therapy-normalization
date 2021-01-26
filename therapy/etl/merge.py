@@ -35,6 +35,7 @@ class Merge:
          * When updating existing records, how to ensure that no dangling
            records remain after an other_identifier is removed?
          * How to handle invalid or nonexistent other_identifiers?
+         * How to handle source updating
         """
         for record_id in record_ids:
             new_group = self._create_record_id_set(record_id)

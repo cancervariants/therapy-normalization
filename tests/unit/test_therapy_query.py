@@ -25,8 +25,8 @@ def merge_query_handler(mock_database):
     """Provide Merge instance to test cases."""
     class QueryGetter():
         def __init__(self):
-            self.query_handler = QueryHandler(db_url='zzz - nonsense')
-            self.query_handler._database = mock_database()
+            self.query_handler = QueryHandler(db_url='http://localhost:8000')
+            self.query_handler.db = mock_database()
 
         def search_groups(self, query_str):
             return self.query_handler.search_groups(query_str)
@@ -126,8 +126,10 @@ def test_query_specify_query_handlers(normalizer):
                                        excl='wikidata')
 
 
-def test_query_merged(query_handler):
+def test_query_merged(merge_query_handler):
     """Test that the merged concept endpoint handles queries correctly."""
-    test_query = "cisplatin"
-    response = query_handler.search_groups(test_query)
+    test_query = "phenobarbital"
+    response = merge_query_handler.search_groups(test_query)
     assert response['query'] == test_query
+    assert response['warnings'] is None
+    assert response['record']['label'] == 'phenobarbital'

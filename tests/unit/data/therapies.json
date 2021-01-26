@@ -1001,7 +1001,8 @@
     ],
     "approval_status": null,
     "trade_names": ["Phenobarbital"],
-    "src_name": "RxNorm"
+    "src_name": "RxNorm",
+    "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241##merger"
   },
   {
     "label_and_type": "chemidplus:50-06-6##identity",
@@ -1012,7 +1013,8 @@
     "xrefs": ["fda:YQE403BP4D"],
     "approval_status": null,
     "trade_names": [],
-    "src_name": "ChemIDplus"
+    "src_name": "ChemIDplus",
+    "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241##merger"
   },
   {
     "label": "Spiramycin",
@@ -1059,7 +1061,8 @@
     "xrefs": ["pubchem.compound:4763"],
     "approval_status": null,
     "trade_names": [],
-    "src_name": "Wikidata"
+    "src_name": "Wikidata",
+    "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241##merger"
   },
   {
     "label": "Phenobarbital",
@@ -1075,7 +1078,8 @@
     "xrefs": ["umls:C0031412", "fda:YQE403BP4D", "chebi:CHEBI:8069"],
     "approval_status": null,
     "trade_names": [],
-    "src_name": "NCIt"
+    "src_name": "NCIt",
+    "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241##merger"
   },
   {
     "label": "Spiramycin",
