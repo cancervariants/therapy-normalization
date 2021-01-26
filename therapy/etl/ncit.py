@@ -141,7 +141,7 @@ class NCIt(Base):
 
     def _transform_data(self):
         """Get data from file and construct objects for loading"""
-        ncit = owl.get_ontology(self._data_src.absolute().as_uri())
+        ncit = owl.get_ontology(self._data_file.absolute().as_uri())
         ncit.load()
         uq_nodes = set()
         uq_nodes = self.get_desc_nodes(ncit.C1909, uq_nodes)
