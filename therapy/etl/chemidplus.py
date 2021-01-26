@@ -185,7 +185,7 @@ class ChemIDplus(Base):
                     data_license_attributes=DataLicenseAttributes(
                         non_commercial=False,
                         share_alike=False,
-                        attribution=False
+                        attribution=True
                     ))
         item = dict(meta)
         item['src_name'] = SourceName.CHEMIDPLUS.value

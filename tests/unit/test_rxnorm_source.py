@@ -55,23 +55,17 @@ def cisplatin():
         'label': 'cisplatin',
         'concept_id': 'rxcui:2555',
         'aliases': [
-            'Diaminedichloroplatinum',
             'cis-Platinum',
             'CISplatin',
             'cis Diamminedichloroplatinum',
             'cis Platinum',
             'Diamminodichloride, Platinum',
-            'cis-Platinum compound',
-            'cis-DDP',
-            'cis-Diaminedichloroplatinum',
-            'cis-Platinum II',
+            'cis-Diamminedichloroplatinum',
             'DDP',
             'Dichlorodiammineplatinum',
-            'cis-Diamminedichloroplatinum',
             'cis-Dichlorodiammineplatinum(II)',
             'Platinum Diamminodichloride',
             'cis-Diamminedichloroplatinum(II)',
-            'cis-Platinum',
             'cis-diamminedichloroplatinum(II)',
             'CDDP',
             'Cis-DDP',
@@ -83,15 +77,13 @@ def cisplatin():
         ],
         'xrefs': [
             'usp:m17910',
-            'snomedct:57066004',
             'vandf:4018139',
-            'msh:D002945',
+            'mesh:D002945',
             'mthspl:Q20Q21Q62J',
             'mmsl:d00195',
             'atc:L01XA01',
             'mmsl:31747',
             'mmsl:4456',
-            'snomedct:387318005'
         ],
         'trade_names': [
             'Cisplatin',
@@ -109,7 +101,6 @@ def amiloride():
         'concept_id': 'rxcui:644',
         'aliases': [
             '3,5-diamino-N-carbamimidoyl-6-chloropyrazine-2-carboxamide',
-            'Amiloride',
             'aMILoride',
             'Amipramidin',
             'Amipramidine',
@@ -121,13 +112,11 @@ def amiloride():
             'drugbank:DB00594'
         ],
         'xrefs': [
-            'snomedct:387503008',
-            'msh:D000584',
+            'mesh:D000584',
             'vandf:4019603',
             'mthspl:7DZO8EB0Z3',
             'mmsl:d00169',
-            'atc:C03DB01',
-            'snomedct:87395005'
+            'atc:C03DB01'
         ],
         'trade_names': [
             'Midamor',
@@ -153,7 +142,6 @@ def timolol():
             '-1,2,5-thiadazol-3-yl)oxy)-2-propanol',
             '2-Propanol, 1-((1,1-dimethylethyl)amino)-3-((4-(4-morpholi'
             'nyl)-1,2,5-thiadiazol-3-yl)oxy)-, (S)-',
-            'Timolol',
             '(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol'
             '-3-yl)oxy]propan-2-ol'
         ],
@@ -164,12 +152,10 @@ def timolol():
         'xrefs': [
             'vandf:4019949',
             'mthspl:817W3C6175',
-            'snomedct:372880004',
-            'msh:D013999',
+            'mesh:D013999',
             'mmsl:d00139',
             'atc:C07AA06',
-            'atc:S01ED01',
-            'snomedct:85591001'
+            'atc:S01ED01'
         ],
         'trade_names': [
             'Betimol',
@@ -198,7 +184,6 @@ def lymphocyte():
         'label': 'lymphocyte immune globulin, anti-thymocyte globulin',
         'concept_id': 'rxcui:1011',
         'aliases': [
-            'Antithymocyte immunoglobulin',
             'Lymphocyte Immune Globulin, Anti-Thymocyte Globulin',
             'Anti-Thymocyte Globulin',
             'Antithymocyte Globulin',
@@ -217,8 +202,7 @@ def lymphocyte():
         'approval_status': 'approved',
         'other_identifiers': [],
         'xrefs': [
-            'snomedct:768651008',
-            'msh:D000961',
+            'mesh:D000961',
             'vandf:4022194',
             'vandf:4018097',
             'mmsl:d01141',
@@ -241,7 +225,6 @@ def aspirin():
         'aliases': [
             'Salicylic acid acetate',
             'Aspirin',
-            'Acetylsalicylic acid',
             'Acid, Acetylsalicylic',
             '2-(Acetyloxy)benzoic Acid',
             '2-Acetoxybenzenecarboxylic acid',
@@ -258,19 +241,16 @@ def aspirin():
         ],
         'xrefs': [
             'usp:m6240',
-            'snomedct:7947003',
             'vandf:4017536',
             'mmsl:34512',
             'mthspl:R16CO5Y76E',
             'mmsl:244',
-            'snomedct:387458008',
-            'msh:D001241',
+            'mesh:D001241',
             'mmsl:4223',
             'mmsl:d00170',
             'atc:A01AD05',
             'atc:B01AC06',
-            'atc:N02BA01',
-            'snomedct:7947003'
+            'atc:N02BA01'
         ],
         'trade_names': []
     }
@@ -284,7 +264,6 @@ def mesna():
         'label': 'mesna',
         'concept_id': 'rxcui:44',
         'aliases': [
-            'Sodium 2-mercaptoethanesulfonate',
             'Mesnum',
             'Ethanesulfonic acid, 2-mercapto-, monosodium salt',
             'Sodium 2-Mercaptoethanesulphonate',
@@ -295,15 +274,12 @@ def mesna():
         'other_identifiers': [],
         'xrefs': [
             'usp:m49500',
-            'snomedct:108821000',
-            'snomedct:386922000',
-            'msh:D015080',
+            'mesh:D015080',
             'vandf:4019477',
             'mthspl:NR7O1405Q9',
             'atc:R05CB05',
             'atc:V03AF01',
             'mmsl:41498',
-            'snomedct:386922000',
             'mmsl:5057',
             'mmsl:d01411'
         ],
@@ -323,7 +299,6 @@ def beta_alanine():
         'label': 'beta-alanine',
         'concept_id': 'rxcui:61',
         'aliases': [
-            'Beta alanine',
             'beta Alanine',
             '3 Aminopropionic Acid',
             '3-Aminopropionic Acid'
@@ -331,8 +306,7 @@ def beta_alanine():
         'approval_status': 'approved',
         'other_identifiers': [],
         'xrefs': [
-            'snomedct:70587000',
-            'msh:D015091',
+            'mesh:D015091',
             'vandf:4028377',
             'mthspl:11P2JDE17B'
         ],
@@ -356,7 +330,7 @@ def algestone():
         'approval_status': None,
         'other_identifiers': [],
         'xrefs': [
-            'msh:D000523'
+            'mesh:D000523'
         ],
         'trade_names': []
     }
@@ -369,20 +343,34 @@ def levothyroxine():
     params = {
         'label': 'levothyroxine',
         'concept_id': 'rxcui:10582',
-        'aliases': [],
+        'aliases': [
+            '3,5,3\',5\'-Tetraiodo-L-thyronine',
+            'Thyroxine',
+            'thyroxine',
+            'Thyroid Hormone, T4',
+            'Thyroxin',
+            'T4 Thyroid Hormone',
+            'O-(4-Hydroxy-3,5-diiodophenyl)-3,5-diiodotyrosine',
+            '3,5,3\',5\'-Tetraiodothyronine',
+            'O-(4-Hydroxy-3,5-diiodophenyl)-3,5-diiodo-L-tyrosine',
+            'L-T4',
+            'LT4',
+            'T4',
+            '3,3\',5,5\'-Tetraiodo-L-thyronine',
+            'L-Thyroxine',
+            'O-(4-Hydroxy-3,5-diidophenyl)-3,5-diiodo-L-tyrosine',
+            '4-(4-Hydroxy-3,5-diiodophenoxy)-3,5-diiodo-L-phenylalanine',
+            'Levothyroxin'
+        ],
         'approval_status': 'approved',
         'other_identifiers': [
             'drugbank:DB00451'
         ],
         'xrefs': [
-            'snomedct:768532006',
-            'snomedct:73187006',
             'vandf:4022126',
-            'msh:D013974',
+            'mesh:D013974',
             'mmsl:d00278',
-            'mthspl:Q51BO43MG4',
-            'snomedct:710809001',
-            'snomedct:38076006'
+            'mthspl:Q51BO43MG4'
         ],
         'trade_names': [
             'Eltroxin',
@@ -542,7 +530,7 @@ def test_cisplatin(cisplatin, rxnorm):
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
-    normalizer_response = rxnorm.normalize('Diaminedichloroplatinum')
+    normalizer_response = rxnorm.normalize('Dichlorodiammineplatinum')
     assert normalizer_response['match_type'] == MatchType.ALIAS
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
@@ -1062,6 +1050,33 @@ def test_levothyroxine(levothyroxine, rxnorm):
     assert set(normalized_drug.trade_names) == set(levothyroxine.trade_names)
     assert normalized_drug.approval_status == levothyroxine.approval_status
 
+    # Alias Match
+    normalizer_response = rxnorm.normalize('Thyroxin')
+    assert normalizer_response['match_type'] == MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == levothyroxine.label
+    assert normalized_drug.concept_id == levothyroxine.concept_id
+    assert set(normalized_drug.aliases) == set(levothyroxine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(levothyroxine.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(levothyroxine.xrefs)
+    assert set(normalized_drug.trade_names) == set(levothyroxine.trade_names)
+    assert normalized_drug.approval_status == levothyroxine.approval_status
+
+    normalizer_response = rxnorm.normalize('LT4')
+    assert normalizer_response['match_type'] == MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == levothyroxine.label
+    assert normalized_drug.concept_id == levothyroxine.concept_id
+    assert set(normalized_drug.aliases) == set(levothyroxine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(levothyroxine.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(levothyroxine.xrefs)
+    assert set(normalized_drug.trade_names) == set(levothyroxine.trade_names)
+    assert normalized_drug.approval_status == levothyroxine.approval_status
+
     # Trade Name Match
     normalizer_response = rxnorm.normalize('Unithroid')
     assert normalizer_response['match_type'] == MatchType.TRADE_NAME
@@ -1134,5 +1149,5 @@ def test_meta_info(rxnorm):
     assert normalizer_response.data_license_attributes == {
         "non_commercial": False,
         "share_alike": False,
-        "attribution": False
+        "attribution": True
     }
