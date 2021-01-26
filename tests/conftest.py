@@ -1,7 +1,7 @@
 """Pytest test config tools."""
 from therapy.database import Database
 from therapy import PROJECT_ROOT
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 import json
 import pytest
 
@@ -27,14 +27,15 @@ def mock_database():
             self.records = {}
             with open(infile, 'r') as f:
                 records_json = json.load(f)
-                for record in records_json:
-                    self.records[record['label_and_type']] = {
-                        record['concept_id']: record
-                    }
+            for record in records_json:
+                self.records[record['label_and_type']] = {
+                    record['concept_id']: record
+                }
             self.added_records: Dict[str, Dict[Any, Any]] = {}
             self.updates: Dict[str, Dict[Any, Any]] = {}
 
-        def get_record_by_id(self, record_id: str) -> Optional[Dict]:
+        def get_record_by_id(self, record_id: str,
+                             case_sensitive: bool = True) -> Optional[Dict]:
             """Fetch record corresponding to provided concept ID.
 
             :param str concept_id: concept ID for therapy record
@@ -49,6 +50,39 @@ def mock_database():
                 return record_lookup.get(record_id, None)
             else:
                 return None
+
+        def get_records_by_type(self, query: str,
+                                match_type: str) -> List[Dict]:
+            """Retrieve records for given query and match type.
+
+            :param query: string to match against
+            :param str match_type: type of match to look for. Should be one
+                of "alias", "trade_name", or "label" (use get_record_by_id for
+                concept ID lookup)
+            :return: list of matching records. Empty if lookup fails.
+            """
+            label_and_type = f'{query}##{match_type.lower()}'
+            records_lookup = self.records.get(label_and_type, None)
+            if records_lookup:
+                return [v for k, v in records_lookup.items()]
+            else:
+                return []
+
+        def get_merged_record(self, merge_ref) -> Optional[Dict]:
+            """Fetch merged record from given reference.
+
+            :param str merge_ref: key for merged record, formated as a string
+                of grouped concept IDs separated by vertical bars, ending with
+                `##merger`. Must be correctly-cased.
+            :return: complete merged record if lookup successful, None
+                otherwise
+            """
+            record_lookup = self.records.get(merge_ref, None)
+            if record_lookup:
+                vals = list(record_lookup.values())
+                if vals:
+                    return vals[0].copy()
+            return None
 
         def add_record(self, record: Dict, record_type: str):
             """Store add record request sent to database.
