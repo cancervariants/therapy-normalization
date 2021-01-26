@@ -345,6 +345,21 @@ class QueryHandler:
 
         return response
 
+    def _add_merged_meta(self, response: Dict) -> Dict:
+        """Add source metadata to response object.
+
+        :param Dict response: in-progress response object
+        :return: completed resopnse object.
+        """
+        sources_meta = {}
+        for concept_id in response['record']['concept_ids']:
+            prefix = concept_id.split(':')[0]
+            src_name = PREFIX_LOOKUP[prefix]
+            if src_name not in sources_meta:
+                sources_meta[src_name] = self._fetch_meta(src_name)
+        response['meta_'] = sources_meta
+        return response
+
     def _add_merged_record(self, response: Dict, merge_ref: str) -> Dict:
         """Add referenced concept ID group to response object.
 
@@ -355,18 +370,17 @@ class QueryHandler:
         """
         merged_record = self.db.get_merged_record(merge_ref)
         if not merged_record:
-            logger.error(f"Could not retrieve merged record for concept"
-                         f"ID group {merge_ref}"
+            logger.error(f"Could not retrieve merged record for concept "
+                         f"ID group {merge_ref} "
                          f"by way of query {response['query']}")
             response['match_type'] = MatchType.NO_MATCH
             return response
         del merged_record['label_and_type']
-        # concept_ids_combined = merged_record['concept_id'][:-8].split('|')
         concept_ids_combined = merged_record['concept_id'].split('|')
         merged_record['concept_ids'] = concept_ids_combined
         del merged_record['concept_id']
         response['record'] = merged_record
-        return response
+        return self._add_merged_meta(response)
 
     def _record_order(self, record: Dict) -> (int, str):
         """Construct priority order for matching. Only called by sort().
@@ -408,13 +422,14 @@ class QueryHandler:
             return response
 
         # check other match types
-        for match_type in ['label', 'alias', 'trade_name']:
+        for match_type in ['label', 'trade_name', 'alias']:
             # get matches list for match tier
+            prohibited_sources = (SourceName.CHEMBL.value,
+                                  SourceName.DRUGBANK.value)
             query_matches = self.db.get_records_by_type(query_str, match_type)
             query_matches = [self.db.get_record_by_id(m['concept_id'], False)
-                             for m in query_matches if m['src_name'] not in
-                             (SourceName.CHEMBL.value,
-                             SourceName.DRUGBANK.value)]
+                             for m in query_matches
+                             if m['src_name'] not in prohibited_sources]
             query_matches.sort(key=self._record_order)
 
             # attempt merge ref resolution until successful
@@ -425,6 +440,7 @@ class QueryHandler:
                     if merge_ref:
                         response['match_type'] = MatchType[match_type.upper()]
                         return self._add_merged_record(response, merge_ref)
+
         if not query_matches:
             response['match_type'] = MatchType.NO_MATCH
         return response

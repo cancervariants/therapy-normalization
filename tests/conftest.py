@@ -33,6 +33,80 @@ def mock_database():
                 }
             self.added_records: Dict[str, Dict[Any, Any]] = {}
             self.updates: Dict[str, Dict[Any, Any]] = {}
+            self.cached_sources = {
+                'Wikidata': {
+                    "data_license": "CC0 1.0",
+                    "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",  # noqa: E501
+                    "version": "20200812",
+                    "data_url": None,
+                    "rdp_url": None,
+                    "data_license_attributes": {
+                        "non_commercial": False,
+                        "attribution": False,
+                        "share_alike": False
+                    }
+                },
+                'ChemIDplus': {
+                    "data_license": "custom",
+                    "data_license_url": "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501
+                    "version": "20200327",
+                    "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
+                    "rdp_url": None,
+                    "data_license_attributes": {
+                        "non_commercial": False,
+                        "attribution": False,
+                        "share_alike": False
+                    }
+                },
+                'RxNorm': {
+                    "data_license": "UMLS Metathesaurus",
+                    "data_license_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",  # noqa: E501
+                    "version": "20210104",
+                    "data_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/rxnormfiles.html",  # noqa: E501
+                    "rdp_url": None,
+                    "data_license_attributes": {
+                        "non_commercial": False,
+                        "attribution": False,
+                        "share_alike": False
+                    }
+                },
+                'DrugBank': {
+                    "data_license": "CC BY-NC 4.0",
+                    "data_license_url": "https://creativecommons.org/licenses/by-nc/4.0/legalcode",  # noqa: E501
+                    "version": "5.1.7",
+                    "data_url": "https://go.drugbank.com/releases/5-1-7/downloads/all-full-database",  # noqa: E501
+                    "rdp_url": "http://reusabledata.org/drugbank.html",
+                    "data_license_attributes": {
+                        "non_commercial": True,
+                        "attribution": True,
+                        "share_alike": False,
+                    }
+                },
+                'NCIt': {
+                    "data_license": "CC BY 4.0",
+                    "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa: E501
+                    "version": "20.09d",
+                    "data_url": "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/",  # noqa: E501
+                    "rdp_url": "http://reusabledata.org/ncit.html",
+                    "data_license_attributes": {
+                        "non_commercial": False,
+                        "attribution": True,
+                        "share_alike": False
+                    }
+                },
+                'ChEMBL': {
+                    "data_license": "CC BY-SA 3.0",
+                    "data_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",  # noqa: E501
+                    "version": "27",
+                    "data_url": "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",  # noqa: E501
+                    "rdp_url": "http://reusabledata.org/chembl.html",
+                    "data_license_attributes": {
+                        "non_commercial": False,
+                        "attribution": True,
+                        "share_alike": True
+                    }
+                }
+            }
 
         def get_record_by_id(self, record_id: str,
                              case_sensitive: bool = True) -> Optional[Dict]:
