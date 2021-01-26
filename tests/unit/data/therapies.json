@@ -250,7 +250,8 @@
       "rxcui:2555"
     ],
     "xrefs": ["pubchem.compound:5702198"],
-    "src_name": "Wikidata"
+    "src_name": "Wikidata",
+    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415##merger"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -418,7 +419,8 @@
     "concept_id": "ncit:C376",
     "other_identifiers": ["chemidplus:15663-27-1"],
     "xrefs": ["umls:C0008838", "fda:Q20Q21Q62J"],
-    "src_name": "NCIt"
+    "src_name": "NCIt",
+    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415##merger"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -471,7 +473,8 @@
     "trade_names": [],
     "other_identifiers": ["drugbank:DB00515"],
     "xrefs": ["fda:Q20Q21Q62J"],
-    "src_name": "ChemIDplus"
+    "src_name": "ChemIDplus",
+    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415##merger"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -555,7 +558,8 @@
       "mmsl:4456",
       "snomedct:387318005"
     ],
-    "src_name": "RxNorm"
+    "src_name": "RxNorm",
+    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415##merger"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -1005,6 +1009,31 @@
     "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241##merger"
   },
   {
+    "label_and_type": "phenobarbital##label",
+    "concept_id": "rxcui:8134",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "phenobarbital##trade_name",
+    "concept_id": "rxcui:8134",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "phenemal##alias",
+    "concept_id": "rxcui:8134",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "phenobarbital##alias",
+    "concept_id": "rxcui:8134",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "cis diamminedichloroplatinum##alias",
+    "concept_id": "rxcui:2555",
+    "src_name": "RxNorm"
+  },
+  {
     "label_and_type": "chemidplus:50-06-6##identity",
     "label": "Phenobarbital",
     "concept_id": "chemidplus:50-06-6",
@@ -1025,7 +1054,8 @@
     "xrefs": ["fda:71ODY0V87H"],
     "approval_status": null,
     "trade_names": [],
-    "src_name": "ChemIDplus"
+    "src_name": "ChemIDplus",
+    "merge_ref": "ncit:c839|chemidplus:8025-81-8##merger"
   },
   {
     "label": "phenobarbital",
@@ -1098,6 +1128,12 @@
     "xrefs": ["umls:C0037962", "fda:71ODY0V87H"],
     "approval_status": null,
     "trade_names": [],
+    "src_name": "NCIt",
+    "merge_ref": "ncit:c839|chemidplus:8025-81-8##merger"
+  },
+  {
+    "label_and_type": "rovamycine##alias",
+    "concept_id": "ncit:C839",
     "src_name": "NCIt"
   },
   {
@@ -1161,5 +1197,66 @@
       "chebi:CHEBI:8069"
     ],
     "label": "Phenobarbital"
+  },
+  {
+    "label_and_type": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415##merger",
+    "concept_id": "rxcui:2555|ncit:C376|chemidplus:15663-27-1|wikidata:Q412415",
+    "trade_names": ["Cisplatin", "Platinol"],
+    "aliases": [
+      "1,2-Diaminocyclohexaneplatinum II citrate",
+      "CDDP",
+      "CISplatin",
+      "Cis-DDP",
+      "CIS-DDP",
+      "DDP",
+      "Diaminedichloroplatinum",
+      "Diamminodichloride, Platinum",
+      "Dichlorodiammineplatinum",
+      "Platinum Diamminodichloride",
+      "cis Diamminedichloroplatinum",
+      "cis Platinum",
+      "cis-DDP",
+      "cis-Diaminedichloroplatinum",
+      "cis-Diamminedichloroplatinum",
+      "cis-Diamminedichloroplatinum(II)",
+      "cis-Dichlorodiammineplatinum(II)",
+      "cis-Platinum",
+      "cis-Platinum II",
+      "cis-Platinum compound",
+      "cis-diamminedichloroplatinum(II)",
+      "Platinol-AQ",
+      "Platinol"
+    ],
+    "label": "cisplatin",
+    "xrefs": [
+      "umls:C0008838",
+      "fda:Q20Q21Q62J",
+      "usp:m17910",
+      "snomedct:57066004",
+      "vandf:4018139",
+      "msh:D002945",
+      "mthspl:Q20Q21Q62J",
+      "snomedct:387318005",
+      "mmsl:d00195",
+      "atc:L01XA01",
+      "mmsl:31747",
+      "mmsl:4456",
+      "pubchem.compound:5702198"
+    ]
+  },
+  {
+    "label_and_type": "ncit:c839|chemidplus:8025-81-8##merger",
+    "concept_id": "ncit:C839|chemidplus:8025-81-8",
+    "label": "Spiramycin",
+    "aliases": [
+      "SPIRAMYCIN",
+      "Antibiotic 799",
+      "Rovamycin",
+      "Provamycin",
+      "Rovamycine",
+      "RP 5337",
+      "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"
+    ],
+    "xrefs": ["umls:C0037962", "fda:71ODY0V87H"]
   }
 ]

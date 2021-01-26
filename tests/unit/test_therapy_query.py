@@ -1,5 +1,6 @@
 """Test the therapy querying method."""
 from therapy.query import QueryHandler, InvalidParameterException
+from therapy.schemas import MatchType
 import pytest
 
 
@@ -34,6 +35,156 @@ def merge_query_handler(mock_database):
     return QueryGetter()
 
 
+@pytest.fixture(scope='module')
+def phenobarbital():
+    """Create phenobarbital fixture."""
+    return {
+        "concept_ids": [
+            "rxcui:8134",
+            "ncit:C739",
+            "chemidplus:50-06-6",
+            "wikidata:Q407241"
+        ],
+        "aliases": [
+            '5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione',
+            '5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione',
+            '5-Ethyl-5-phenylbarbituric acid',
+            '5-Phenyl-5-ethylbarbituric acid',
+            '5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione',
+            '5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione',
+            'Acid, Phenylethylbarbituric',
+            'Luminal®',
+            'PHENO',
+            'PHENOBARBITAL',
+            'PHENYLETHYLMALONYLUREA',
+            'PHENobarbital',
+            'Phenemal',
+            'Phenobarbital',
+            'Phenobarbital (substance)',
+            'Phenobarbital-containing product',
+            'Phenobarbitol',
+            'Phenobarbitone',
+            'Phenobarbituric Acid',
+            'Phenylaethylbarbitursaeure',
+            'Phenylbarbital',
+            'Phenylethylbarbiturate',
+            'Phenylethylbarbituric Acid',
+            'Phenylethylbarbitursaeure',
+            'Phenylethylmalonylurea',
+            'Product containing phenobarbital (medicinal product)',
+            'fenobarbital',
+            'phenobarbital',
+            'phenobarbital sodium',
+            'phenylethylbarbiturate'
+        ],
+        "trade_names": [
+            "Phenobarbital",
+        ],
+        "xrefs": [
+            "pubchem.compound:4763",
+            "usp:m63400",
+            "gsddb:2179",
+            "snomedct:51073002",
+            "vandf:4017422",
+            "mmsl:2390",
+            "msh:D010634",
+            "snomedct:373505007",
+            "mmsl:5272",
+            "mthspl:YQE403BP4D",
+            "fdbmk:001406",
+            "mmsl:d00340",
+            "atc:N03AA02",
+            "fda:YQE403BP4D",
+            "umls:C0031412",
+            "chebi:CHEBI:8069"
+
+        ],
+        "label": "Phenobarbital"
+    }
+
+
+@pytest.fixture(scope='module')
+def cisplatin():
+    """Create cisplatin fixture."""
+    return {
+        "concept_ids": [
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415"
+        ],
+        "trade_names": [
+            "Cisplatin",
+            "Platinol"
+        ],
+        "aliases": [
+            '1,2-Diaminocyclohexaneplatinum II citrate',
+            'CDDP',
+            'CISplatin',
+            'Cis-DDP',
+            'CIS-DDP',
+            'DDP',
+            'Diaminedichloroplatinum',
+            'Diamminodichloride, Platinum',
+            'Dichlorodiammineplatinum',
+            'Platinum Diamminodichloride',
+            'cis Diamminedichloroplatinum',
+            'cis Platinum',
+            'cis-DDP',
+            'cis-Diaminedichloroplatinum',
+            'cis-Diamminedichloroplatinum',
+            'cis-Diamminedichloroplatinum(II)',
+            'cis-Dichlorodiammineplatinum(II)',
+            'cis-Platinum',
+            'cis-Platinum II',
+            'cis-Platinum compound',
+            'cis-diamminedichloroplatinum(II)',
+            'Platinol-AQ',
+            'Platinol'
+        ],
+        "label": "cisplatin",
+        "xrefs": [
+            "umls:C0008838",
+            "fda:Q20Q21Q62J",
+            "usp:m17910",
+            "snomedct:57066004",
+            "vandf:4018139",
+            "msh:D002945",
+            "mthspl:Q20Q21Q62J",
+            "snomedct:387318005",
+            "mmsl:d00195",
+            "atc:L01XA01",
+            "mmsl:31747",
+            "mmsl:4456",
+            "pubchem.compound:5702198"
+        ]
+    }
+
+
+@pytest.fixture(scope='module')
+def spiramycin():
+    """Create fixture for spiramycin."""
+    return {
+        "concept_ids": [
+            "ncit:C839",
+            "chemidplus:8025-81-8"
+        ],
+        "label": "Spiramycin",
+        "aliases": [
+            "SPIRAMYCIN",
+            "Antibiotic 799",
+            "Rovamycin",
+            "Provamycin",
+            "Rovamycine",
+            "RP 5337",
+            "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"],  # noqa: E501
+        "xrefs": [
+            "umls:C0037962",
+            "fda:71ODY0V87H",
+        ],
+    }
+
+
 def test_query(query_handler):
     """Test that query returns properly-structured response."""
     resp = query_handler.normalize('cisplatin', keyed=False)
@@ -58,7 +209,7 @@ def test_query_keyed(query_handler):
     assert chemidplus_record.label == 'Penicillin V'
 
 
-def test_query_specify_query_handlers(normalizer):
+def test_query_specify_query_handlers(query_handler):
     """Test inclusion and exclusion of sources in query."""
     # test blank params
     resp = query_handler.normalize('cisplatin', keyed=True)
@@ -126,10 +277,71 @@ def test_query_specify_query_handlers(normalizer):
                                        excl='wikidata')
 
 
-def test_query_merged(merge_query_handler):
+def compare_records(test_record, record_fixture):
+    """Assert equality of test record against correct record.
+
+    :param Dict test_record: record produced in test case
+    :param Dict record_fixture: expected record output
+    """
+    assert test_record['concept_ids'] == record_fixture['concept_ids']
+    if 'aliases' in test_record or 'aliases' in record_fixture:
+        assert set(test_record['aliases']) == set(record_fixture['aliases'])
+    if 'trade_names' in test_record or 'trade_names' in record_fixture:
+        assert set(test_record['trade_names']) == set(record_fixture['trade_names'])  # noqa: E501
+    if 'xrefs' in test_record or 'xrefs' in record_fixture:
+        assert set(test_record['xrefs']) == set(record_fixture['xrefs'])
+    assert test_record['label'] == record_fixture['label']
+
+
+def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
+                      spiramycin):
     """Test that the merged concept endpoint handles queries correctly."""
+    # test concept id match
+    test_query = "chemidplus:50-06-6"
+    response = merge_query_handler.search_groups(test_query)
+    assert response['query'] == test_query
+    assert response['warnings'] is None
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    compare_records(response['record'], phenobarbital)
+
+    # # test label match
     test_query = "phenobarbital"
     response = merge_query_handler.search_groups(test_query)
     assert response['query'] == test_query
     assert response['warnings'] is None
-    assert response['record']['label'] == 'phenobarbital'
+    assert response['match_type'] == MatchType.LABEL
+    compare_records(response['record'], phenobarbital)
+
+    # test trade name match
+    test_query = "Platinol"
+    response = merge_query_handler.search_groups(test_query)
+    assert response['query'] == test_query
+    assert response['warnings'] is None
+    assert response['match_type'] == MatchType.TRADE_NAME
+    compare_records(response['record'], cisplatin)
+
+    # test alias match
+    test_query = "cis Diamminedichloroplatinum"
+    response = merge_query_handler.search_groups(test_query)
+    assert response['query'] == test_query
+    assert response['warnings'] is None
+    assert response['match_type'] == MatchType.ALIAS
+    compare_records(response['record'], cisplatin)
+
+    print('-------')
+    test_query = "Rovamycine"
+    response = merge_query_handler.search_groups(test_query)
+    assert response['query'] == test_query
+    assert response['warnings'] is None
+    assert response['match_type'] == MatchType.ALIAS
+    compare_records(response['record'], spiramycin)
+
+    # # test no match
+    test_query = "zzzz fake therapy zzzz"
+    response = merge_query_handler.search_groups(test_query)
+    assert response['query'] == test_query
+    assert response['warnings'] is None
+    assert 'record' not in response
+    assert response['match_type'] == MatchType.NO_MATCH
+
+    # test merge group with single member  TODO
