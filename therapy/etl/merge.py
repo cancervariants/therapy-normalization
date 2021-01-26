@@ -37,11 +37,13 @@ class Merge:
          * How to handle invalid or nonexistent other_identifiers?
          * How to handle source updating
         """
+        logger.info('Generating record ID sets...')
         for record_id in record_ids:
             new_group = self._create_record_id_set(record_id)
             for concept_id in new_group:
                 self._groups[concept_id] = new_group
 
+        logger.info('Creating merged records and updating database...')
         uploaded_ids = set()
         for record_id, group in self._groups.items():
             if record_id in uploaded_ids:
@@ -56,6 +58,7 @@ class Merge:
                 self._database.update_record(concept_id, 'merge_ref',
                                              merged_record['label_and_type'])
             uploaded_ids |= group
+        logger.info('Merged concept generation successful.')
 
     def _get_other_ids(self, record: Dict) -> Set[str]:
         """Extract references to entries in other sources from a record.
