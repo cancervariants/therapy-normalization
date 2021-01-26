@@ -328,7 +328,6 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['match_type'] == MatchType.ALIAS
     compare_records(response['record'], cisplatin)
 
-    print('-------')
     test_query = "Rovamycine"
     response = merge_query_handler.search_groups(test_query)
     assert response['query'] == test_query
@@ -345,3 +344,24 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['match_type'] == MatchType.NO_MATCH
 
     # test merge group with single member  TODO
+
+    # test that term with multiple possible resolutions resolves at highest
+    # match  TODO
+
+
+def test_merged_meta(merge_query_handler):
+    """Test population of source metadata in merged querying."""
+    test_query = "pheno"
+    response = merge_query_handler.search_groups(test_query)
+    print(response.keys())
+    meta_items = response['meta_']
+    assert 'RxNorm' in meta_items.keys()
+    assert 'Wikidata' in meta_items.keys()
+    assert 'NCIt' in meta_items.keys()
+    assert 'ChemIDplus' in meta_items.keys()
+
+    test_query = "RP 5337"
+    response = merge_query_handler.search_groups(test_query)
+    meta_items = response['meta_']
+    assert 'NCIt' in meta_items.keys()
+    assert 'ChemIDplus' in meta_items.keys()

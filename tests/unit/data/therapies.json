@@ -1112,6 +1112,11 @@
     "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241##merger"
   },
   {
+    "label_and_type": "pheno##alias",
+    "concept_id": "ncit:c739",
+    "src_name": "NCIt"
+  },
+  {
     "label": "Spiramycin",
     "label_and_type": "ncit:c839##identity",
     "concept_id": "ncit:C839",
@@ -1130,6 +1135,11 @@
     "trade_names": [],
     "src_name": "NCIt",
     "merge_ref": "ncit:c839|chemidplus:8025-81-8##merger"
+  },
+  {
+    "label_and_type": "rp 5337##alias",
+    "concept_id": "ncit:C839",
+    "src_name": "NCIt"
   },
   {
     "label_and_type": "rovamycine##alias",
