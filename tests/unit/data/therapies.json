@@ -528,23 +528,17 @@
     "label": "cisplatin",
     "approval_status": "approved",
     "aliases": [
-      "Diaminedichloroplatinum",
       "cis-Platinum",
       "CISplatin",
       "cis Diamminedichloroplatinum",
       "cis Platinum",
       "Diamminodichloride, Platinum",
-      "cis-Platinum compound",
-      "cis-DDP",
-      "cis-Diaminedichloroplatinum",
-      "cis-Platinum II",
+      "cis-Diamminedichloroplatinum",
       "DDP",
       "Dichlorodiammineplatinum",
-      "cis-Diamminedichloroplatinum",
       "cis-Dichlorodiammineplatinum(II)",
       "Platinum Diamminodichloride",
       "cis-Diamminedichloroplatinum(II)",
-      "cis-Platinum",
       "cis-diamminedichloroplatinum(II)",
       "CDDP",
       "Cis-DDP"
@@ -559,15 +553,13 @@
     ],
     "xrefs": [
       "usp:m17910",
-      "snomedct:57066004",
       "vandf:4018139",
-      "msh:D002945",
+      "mesh:D002945",
       "mthspl:Q20Q21Q62J",
       "mmsl:d00195",
       "atc:L01XA01",
       "mmsl:31747",
-      "mmsl:4456",
-      "snomedct:387318005"
+      "mmsl:4456"
     ],
     "src_name": "RxNorm"
   },
@@ -603,7 +595,6 @@
     "approval_status": "approved",
     "aliases": [
       "3,5-diamino-N-carbamimidoyl-6-chloropyrazine-2-carboxamide",
-      "Amiloride",
       "aMILoride",
       "Amipramidin",
       "Amipramidine",
@@ -623,13 +614,11 @@
       "drugbank:DB00594"
     ],
     "xrefs": [
-      "snomedct:387503008",
-      "msh:D000584",
+      "mesh:D000584",
       "vandf:4019603",
       "mthspl:7DZO8EB0Z3",
       "mmsl:d00169",
-      "atc:C03DB01",
-      "snomedct:87395005"
+      "atc:C03DB01"
     ],
     "src_name": "RxNorm"
   },
@@ -661,7 +650,6 @@
     "aliases": [
       "(S)-1-((1,1-Dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadazol-3-yl)oxy)-2-propanol",
       "2-Propanol, 1-((1,1-dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadiazol-3-yl)oxy)-, (S)-",
-      "Timolol",
       "(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol-3-yl)oxy]propan-2-ol"
     ],
     "trade_names": [
@@ -684,12 +672,10 @@
     "xrefs": [
       "vandf:4019949",
       "mthspl:817W3C6175",
-      "snomedct:372880004",
-      "msh:D013999",
+      "mesh:D013999",
       "mmsl:d00139",
       "atc:C07AA06",
-      "atc:S01ED01",
-      "snomedct:85591001"
+      "atc:S01ED01"
     ],
     "src_name": "RxNorm"
   },
@@ -714,7 +700,6 @@
     "label": "lymphocyte immune globulin, anti-thymocyte globulin",
     "approval_status": "approved",
     "aliases": [
-      "Antithymocyte immunoglobulin",
       "Lymphocyte Immune Globulin, Anti-Thymocyte Globulin",
       "Anti-Thymocyte Globulin",
       "Antithymocyte Globulin",
@@ -735,8 +720,7 @@
       "Thymoglobulin"
     ],
     "xrefs": [
-      "snomedct:768651008",
-      "msh:D000961",
+      "mesh:D000961",
       "vandf:4022194",
       "vandf:4018097",
       "mmsl:d01141",
@@ -777,7 +761,6 @@
     "aliases": [
       "Salicylic acid acetate",
       "Aspirin",
-      "Acetylsalicylic acid",
       "Acid, Acetylsalicylic",
       "2-(Acetyloxy)benzoic Acid",
       "2-Acetoxybenzenecarboxylic acid",
@@ -793,19 +776,16 @@
     ],
     "xrefs": [
       "usp:m6240",
-      "snomedct:7947003",
       "vandf:4017536",
       "mmsl:34512",
       "mthspl:R16CO5Y76E",
       "mmsl:244",
-      "snomedct:387458008",
-      "msh:D001241",
+      "mesh:D001241",
       "mmsl:4223",
       "mmsl:d00170",
       "atc:A01AD05",
       "atc:B01AC06",
-      "atc:N02BA01",
-      "snomedct:7947003"
+      "atc:N02BA01"
     ],
     "src_name": "RxNorm"
   },
@@ -830,7 +810,6 @@
     "label": "mesna",
     "approval_status": "approved",
     "aliases": [
-      "Sodium 2-mercaptoethanesulfonate",
       "Mesnum",
       "Ethanesulfonic acid, 2-mercapto-, monosodium salt",
       "Sodium 2-Mercaptoethanesulphonate",
@@ -844,15 +823,12 @@
     ],
     "xrefs": [
       "usp:m49500",
-      "snomedct:108821000",
-      "snomedct:386922000",
-      "msh:D015080",
+      "mesh:D015080",
       "vandf:4019477",
       "mthspl:NR7O1405Q9",
       "atc:R05CB05",
       "atc:V03AF01",
       "mmsl:41498",
-      "snomedct:386922000",
       "mmsl:5057",
       "mmsl:d01411"
     ],
@@ -884,14 +860,12 @@
     "label": "beta-alanine",
     "approval_status": "approved",
     "aliases": [
-      "Beta alanine",
       "beta Alanine",
       "3 Aminopropionic Acid",
       "3-Aminopropionic Acid"
     ],
     "xrefs": [
-      "snomedct:70587000",
-      "msh:D015091",
+      "mesh:D015091",
       "vandf:4028377",
       "mthspl:11P2JDE17B"
     ],
@@ -919,7 +893,7 @@
       "Dihydroxyprogesterone"
     ],
     "xrefs": [
-      "msh:D000523"
+      "mesh:D000523"
     ],
     "src_name": "RxNorm"
   },
@@ -938,40 +912,55 @@
     "concept_id": "rxcui:10582",
     "label": "levothyroxine",
     "approval_status": "approved",
+    "aliases": [
+      "3,5,3',5'-Tetraiodo-L-thyronine",
+      "Thyroxine",
+      "thyroxine",
+      "Thyroid Hormone, T4",
+      "Thyroxin",
+      "T4 Thyroid Hormone",
+      "O-(4-Hydroxy-3,5-diiodophenyl)-3,5-diiodotyrosine",
+      "3,5,3',5'-Tetraiodothyronine",
+      "O-(4-Hydroxy-3,5-diiodophenyl)-3,5-diiodo-L-tyrosine",
+      "L-T4",
+      "LT4",
+      "T4",
+      "3,3',5,5'-Tetraiodo-L-thyronine",
+      "L-Thyroxine",
+      "O-(4-Hydroxy-3,5-diidophenyl)-3,5-diiodo-L-tyrosine",
+      "4-(4-Hydroxy-3,5-diiodophenoxy)-3,5-diiodo-L-phenylalanine",
+      "Levothyroxin"
+    ],
     "trade_names": [
       "Eltroxin",
-     "Estre",
-     "Euthyrox",
-     "Leventa",
-     "Levo-T",
-     "Levocrine",
-     "Levotabs",
-     "Levothroid",
-     "Levothyroid",
-     "Levoxyl",
-     "Novothyrox",
-     "SOLOXINE",
-     "Synthroid",
-     "Thyro-Tabs",
-     "ThyroKare",
-     "ThyroMed",
-     "Thyrolar",
-     "Thyrox",
-     "Tirosint",
-     "Unithroid"
+      "Estre",
+      "Euthyrox",
+      "Leventa",
+      "Levo-T",
+      "Levocrine",
+      "Levotabs",
+      "Levothroid",
+      "Levothyroid",
+      "Levoxyl",
+      "Novothyrox",
+      "SOLOXINE",
+      "Synthroid",
+      "Thyro-Tabs",
+      "ThyroKare",
+      "ThyroMed",
+      "Thyrolar",
+      "Thyrox",
+      "Tirosint",
+      "Unithroid"
     ],
     "other_identifiers": [
       "drugbank:DB00451"
     ],
     "xrefs": [
-      "snomedct:768532006",
-      "snomedct:73187006",
       "vandf:4022126",
-      "msh:D013974",
+      "mesh:D013974",
       "mmsl:d00278",
-      "mthspl:Q51BO43MG4",
-      "snomedct:710809001",
-      "snomedct:38076006"
+      "mthspl:Q51BO43MG4"
     ],
     "src_name": "RxNorm"
   },
@@ -987,6 +976,16 @@
   },
   {
     "label_and_type": "euthyrox##trade_name",
+    "concept_id": "rxcui:10582",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "thyroxin##alias",
+    "concept_id": "rxcui:10582",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "lt4##alias",
     "concept_id": "rxcui:10582",
     "src_name": "RxNorm"
   }
