@@ -47,7 +47,10 @@ def mock_database():
             label_and_type = f'{record_id.lower()}##identity'
             record_lookup = self.records.get(label_and_type, None)
             if record_lookup:
-                return record_lookup.get(record_id, None)
+                if case_sensitive:
+                    return record_lookup.get(record_id, None)
+                elif record_lookup.values():
+                    return list(record_lookup.values())[0]
             else:
                 return None
 
