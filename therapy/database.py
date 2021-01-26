@@ -235,12 +235,11 @@ class Database:
             'label_and_type': f'{concept_id.lower()}##identity',
             'concept_id': concept_id
         }
-        update = {
-            'new_value': {
-                field: new_value
-            }
-        }
+        update_expression = f"set {field} = :r"
+        update_values = {':r': new_value}
         try:
-            self.therapies.update_item(Key=key, AttributeUpdates=update)
+            self.therapies.update_item(Key=key,
+                                       UpdateExpression=update_expression,
+                                       ExpressionAttributeValues=update_values)
         except ClientError as e:
             logger.error(e.response['Error']['Message'])
