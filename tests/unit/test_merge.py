@@ -329,3 +329,5 @@ def test_create_merged_concepts(merge_handler, record_id_groups,
         assert updates[concept_id] == {
             'merge_ref': spiramycin_merged['label_and_type']
         }
+
+    # TODO check ncit:c107245
