@@ -4,12 +4,6 @@
 Library of Medicine (NLM), National Institutes of Health, Department of Health
  and Human Services; NLM is not responsible for the product and does not
  endorse or recommend this or any other product."
-
- "This material includes SNOMED Clinical Terms® (SNOMED CT®) which is used by
- permission of the International Health Terminology Standards Development
- Organisation (IHTSDO). All rights reserved. SNOMED CT®, was originally
- created by The College of American Pathologists. "SNOMED" and "SNOMED CT"
- are registered trademarks of the IHTSDO."
 """
 from .base import Base
 from therapy import PROJECT_ROOT, DownloadException
@@ -41,9 +35,9 @@ ALIASES = ['SYN', 'SY', 'TMSY', 'PM',
 # Semantic branded drug
 TRADE_NAMES = ['BD', 'BN', 'SBD']
 
-# Allowed xrefs
+# Allowed xrefs that have Source Level Restriction 0 or 1
 XREFS = ['ATC', 'CVX', 'DRUGBANK', 'MMSL', 'MSH', 'MTHCMSFRF', 'MTHSPL',
-         'RXNORM', 'SNOMEDCT_US', 'USP', 'VANDF']
+         'RXNORM', 'USP', 'VANDF']
 
 
 class RxNorm(Base):
@@ -370,12 +364,7 @@ class RxNorm(Base):
             if row[17] == '4096':
                 params['approval_status'] = ApprovalStatus.APPROVED.value
         elif term_type in ALIASES:
-            if term_type == 'PT' and source == 'SNOMEDCT_US':
-                if 'containing' not in term:
-                    # Dont want to store aliases that have "-containing ..."
-                    self._add_term(params, term, 'aliases')
-            else:
-                self._add_term(params, term, 'aliases')
+            self._add_term(params, term, 'aliases')
         elif term_type in TRADE_NAMES:
             self._add_term(params, term, 'trade_names')
 
@@ -441,11 +430,10 @@ class RxNorm(Base):
                     data_license_attributes={
                         'non_commercial': False,
                         'share_alike': False,
-                        'attribution': False
+                        'attribution': True
                     })
         params = dict(meta)
         params['src_name'] = SourceName.RXNORM.value
-        params['snomedct_version'] = '20200731'
         self.database.metadata.put_item(Item=params)
 
     def _load_data(self):

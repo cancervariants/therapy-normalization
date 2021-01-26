@@ -154,5 +154,5 @@ def test_meta(chemidplus):
     assert response['meta_'].data_license_attributes == {
         "non_commercial": False,
         "share_alike": False,
-        "attribution": False
+        "attribution": True
     }
