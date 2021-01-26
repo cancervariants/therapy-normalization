@@ -221,7 +221,6 @@ class QueryHandler:
         :return: Tuple with updated resp object and updated set of unmatched
                  sources
         """
-        print(match_type)
         matches = self.db.get_records_by_type(query, match_type)
         if matches:
             concept_ids = {i['concept_id'] for i in matches}
@@ -355,7 +354,6 @@ class QueryHandler:
         :return: completed response object.
         """
         merged_record = self.db.get_merged_record(merge_ref)
-        print(merged_record)
         if not merged_record:
             logger.error(f"Could not retrieve merged record for concept"
                          f"ID group {merge_ref}"
@@ -363,11 +361,29 @@ class QueryHandler:
             response['match_type'] = MatchType.NO_MATCH
             return response
         del merged_record['label_and_type']
-        concept_ids_combined = merged_record['concept_id'][:-8].split('|')
-        merged_record['concept_id_group'] = concept_ids_combined
+        # concept_ids_combined = merged_record['concept_id'][:-8].split('|')
+        concept_ids_combined = merged_record['concept_id'].split('|')
+        merged_record['concept_ids'] = concept_ids_combined
         del merged_record['concept_id']
         response['record'] = merged_record
         return response
+
+    def _record_order(self, record: Dict) -> (int, str):
+        """Construct priority order for matching. Only called by sort().
+
+        :param Dict record: individual record item in iterable to sort
+        :return: tuple with rank value and concept ID
+        """
+        src = record['src_name']
+        if src == SourceName.RXNORM.value:
+            source_rank = 1
+        elif src == SourceName.NCIT.value:
+            source_rank = 2
+        elif src == SourceName.CHEMIDPLUS.value:
+            source_rank = 3
+        else:
+            source_rank = 4
+        return (source_rank, record['concept_id'])
 
     def search_groups(self, query_str: str) -> Dict:
         """Return merged, normalized concept for given search term.
@@ -393,31 +409,21 @@ class QueryHandler:
 
         # check other match types
         for match_type in ['label', 'alias', 'trade_name']:
+            # get matches list for match tier
             query_matches = self.db.get_records_by_type(query_str, match_type)
-            query_matches = [m for m in query_matches
-                             if m['src_name'] in (SourceName.CHEMBL.value,
-                                                  SourceName.DRUGBANK.value)]
+            query_matches = [self.db.get_record_by_id(m['concept_id'], False)
+                             for m in query_matches if m['src_name'] not in
+                             (SourceName.CHEMBL.value,
+                             SourceName.DRUGBANK.value)]
+            query_matches.sort(key=self._record_order)
 
-            def record_order(record: Dict):
-                """Construct priority order for matching."""
-                src = record['src_name']
-                if src == SourceName.RXNORM.value:
-                    source_rank = 1
-                elif src == SourceName.NCIT.value:
-                    source_rank = 2
-                elif src == SourceName.CHEMIDPLUS.value:
-                    source_rank = 3
-                else:
-                    source_rank = 4
-                return (source_rank, record['concept_id'])
-            query_matches.sort(key=record_order)
-
+            # attempt merge ref resolution until successful
             for match in query_matches:
                 record = self.db.get_record_by_id(match['concept_id'], False)
                 if record:
-                    merge_ref = record.get('merge_ref', None)
+                    merge_ref = record['merge_ref']
                     if merge_ref:
-                        response['match_type'] = match_type
+                        response['match_type'] = MatchType[match_type.upper()]
                         return self._add_merged_record(response, merge_ref)
         if not query_matches:
             response['match_type'] = MatchType.NO_MATCH

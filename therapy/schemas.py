@@ -355,5 +355,5 @@ class NormalizationService(BaseModel):
     query: str
     warnings: Optional[Dict]
     match_type: MatchType
-    record: MergedMatch
+    record: Optional[MergedMatch]
     meta_: Dict[SourceName, Meta]
