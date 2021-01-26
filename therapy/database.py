@@ -235,7 +235,7 @@ class Database:
             'label_and_type': f'{concept_id.lower()}##identity',
             'concept_id': concept_id
         }
-        update_expression = f"set {field} = :r"
+        update_expression = f"set {field}=:r"
         update_values = {':r': new_value}
         try:
             self.therapies.update_item(Key=key,
