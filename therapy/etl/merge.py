@@ -3,6 +3,7 @@ from therapy.schemas import SourceName, NamespacePrefix
 from therapy.database import Database
 from typing import Set, Dict
 import logging
+from timeit import default_timer as timer
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -38,11 +39,15 @@ class Merge:
          * How to handle source updating
         """
         logger.info('Generating record ID sets...')
+        start = timer()
         for record_id in record_ids:
             new_group = self._create_record_id_set(record_id)
             for concept_id in new_group:
                 self._groups[concept_id] = new_group
+        end = timer()
+        logger.debug(f'Built record ID sets in {end - start} seconds')
 
+        start = timer()
         logger.info('Creating merged records and updating database...')
         uploaded_ids = set()
         for record_id, group in self._groups.items():
@@ -59,6 +64,8 @@ class Merge:
                                              merged_record['label_and_type'])
             uploaded_ids |= group
         logger.info('Merged concept generation successful.')
+        end = timer()
+        logger.debug(f'Built record ID sets in {end - start} seconds')
 
     def _get_other_ids(self, record: Dict) -> Set[str]:
         """Extract references to entries in other sources from a record.
