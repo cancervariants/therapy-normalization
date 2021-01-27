@@ -108,6 +108,10 @@ def mock_database():
                 }
             }
 
+        def flush(self):
+            self.added_records = {}
+            self.updates = {}
+
         def get_record_by_id(self, record_id: str,
                              case_sensitive: bool = True,
                              merge: bool = False) -> Optional[Dict]:
@@ -117,6 +121,7 @@ def mock_database():
             :param bool case_sensitive: if true, performs exact lookup, which
                 is more efficient. Otherwise, performs filter operation, which
                 doesn't require correct casing.
+            :param bool merge: if true, retrieve merged record
             :return: complete therapy record, if match is found; None otherwise
             """
             if merge:
@@ -145,6 +150,7 @@ def mock_database():
                 concept ID lookup)
             :return: list of matching records. Empty if lookup fails.
             """
+            assert match_type in ('alias', 'trade_name', 'label')
             label_and_type = f'{query}##{match_type.lower()}'
             records_lookup = self.records.get(label_and_type, None)
             if records_lookup:
@@ -186,6 +192,7 @@ def mock_database():
             :param str field: name of field to update
             :parm str new_value: new value
             """
+            assert f'{concept_id.lower()}##identity' in self.records
             self.updates[concept_id] = {attribute: new_value}
 
     return MockDatabase
