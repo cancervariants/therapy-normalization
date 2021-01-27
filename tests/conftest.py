@@ -109,7 +109,8 @@ def mock_database():
             }
 
         def get_record_by_id(self, record_id: str,
-                             case_sensitive: bool = True) -> Optional[Dict]:
+                             case_sensitive: bool = True,
+                             merge: bool = False) -> Optional[Dict]:
             """Fetch record corresponding to provided concept ID.
 
             :param str concept_id: concept ID for therapy record
@@ -118,15 +119,21 @@ def mock_database():
                 doesn't require correct casing.
             :return: complete therapy record, if match is found; None otherwise
             """
-            label_and_type = f'{record_id.lower()}##identity'
+            if merge:
+                label_and_type = f'{record_id.lower()}##merger'
+            else:
+                label_and_type = f'{record_id.lower()}##identity'
             record_lookup = self.records.get(label_and_type, None)
             if record_lookup:
                 if case_sensitive:
-                    return record_lookup.get(record_id, None)
+                    record = record_lookup.get(record_id, None)
+                    if record:
+                        return record.copy()
+                    else:
+                        return None
                 elif record_lookup.values():
-                    return list(record_lookup.values())[0]
-            else:
-                return None
+                    return list(record_lookup.values())[0].copy()
+            return None
 
         def get_records_by_type(self, query: str,
                                 match_type: str) -> List[Dict]:
@@ -141,7 +148,7 @@ def mock_database():
             label_and_type = f'{query}##{match_type.lower()}'
             records_lookup = self.records.get(label_and_type, None)
             if records_lookup:
-                return [v for k, v in records_lookup.items()]
+                return [v.copy() for k, v in records_lookup.items()]
             else:
                 return []
 
