@@ -988,5 +988,15 @@
     "label_and_type": "lt4##alias",
     "concept_id": "rxcui:10582",
     "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:1041527##rx_brand",
+    "concept_id": "rxcui:161",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:218330##rx_brand",
+    "concept_id": "rxcui:44",
+    "src_name": "RxNorm"
   }
 ]
