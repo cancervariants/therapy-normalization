@@ -84,8 +84,7 @@ class Merge:
                     allowed = False
                     continue
             if allowed:
-                if self._database.get_record_by_id(other_id, True):
-                    other_ids.add(other_id)
+                other_ids.add(other_id)
         return other_ids
 
     def _create_record_id_set(self, record_id: str,
@@ -108,7 +107,7 @@ class Merge:
                 return observed_id_set | {record_id}
 
             local_id_set = self._get_other_ids(db_record)
-            merged_id_set = local_id_set | {record_id} | observed_id_set
+            merged_id_set = {record_id} | observed_id_set
             for local_record_id in local_id_set - observed_id_set:
                 merged_id_set |= self._create_record_id_set(local_record_id,
                                                             merged_id_set)
