@@ -83,8 +83,7 @@ def get_matches(q: str = Query(..., description=q_descr),
     return response
 
 
-merged_matches_summary = """Given query, provide merged record from given
-                            sources."""
+merged_matches_summary = """Given query, provide merged normalized record."""
 merged_response_descr = ""
 merged_q_descr = ""
 
