@@ -360,6 +360,19 @@ class QueryHandler:
         response['meta_'] = sources_meta
         return response
 
+    def _format_merged_record(self, merged_record: Dict) -> Dict:
+        """Transform merged record (as served by DB) into response object
+        format.
+
+        :param Dict merged_record: merged record as returned by DB call
+        :return: formatted record
+        """
+        del merged_record['label_and_type']
+        concept_ids_combined = merged_record['concept_id'].split('|')
+        merged_record['concept_ids'] = concept_ids_combined
+        del merged_record['concept_id']
+        return merged_record
+
     def _add_merged_record(self, response: Dict, merge_ref: str) -> Dict:
         """Add referenced concept ID group to response object.
 
@@ -375,12 +388,9 @@ class QueryHandler:
                          f"by way of query {response['query']}")
             response['match_type'] = MatchType.NO_MATCH
             return response
-        del merged_record['label_and_type']
-        concept_ids_combined = merged_record['concept_id'].split('|')
-        merged_record['concept_ids'] = concept_ids_combined
-        del merged_record['concept_id']
-        response['record'] = merged_record
-        return self._add_merged_meta(response)
+        response['record'] = self._format_merged_record(merged_record)
+        response = self._add_merged_meta(response)
+        return response
 
     def _record_order(self, record: Dict) -> (int, str):
         """Construct priority order for matching. Only called by sort().
@@ -413,6 +423,15 @@ class QueryHandler:
             response['match_type'] = MatchType.NO_MATCH
             return response
         query_str = query_str.lower()
+
+        # check merged concept ID match
+        record = self.db.get_record_by_id(query_str, case_sensitive=False,
+                                          merge=True)
+        if record:
+            response['match_type'] = MatchType.CONCEPT_ID
+            response['record'] = self._format_merged_record(record)
+            response = self._add_merged_meta(response)
+            return response
 
         # check concept ID match
         record = self.db.get_record_by_id(query_str, case_sensitive=False)

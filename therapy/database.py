@@ -140,17 +140,22 @@ class Database:
             )
 
     def get_record_by_id(self, concept_id: str,
-                         case_sensitive: bool = True) -> Optional[Dict]:
+                         case_sensitive: bool = True,
+                         merge: bool = False) -> Optional[Dict]:
         """Fetch record corresponding to provided concept ID
 
         :param str concept_id: concept ID for therapy record
         :param bool case_sensitive: if true, performs exact lookup, which is
             more efficient. Otherwise, performs filter operation, which
             doesn't require correct casing.
+        :param bool merge: if true, look for merged concept
         :return: complete therapy record, if match is found; None otherwise
         """
         try:
-            pk = f'{concept_id.lower()}##identity'
+            if merge:
+                pk = f'{concept_id.lower()}##merger'
+            else:
+                pk = f'{concept_id.lower()}##identity'
             if case_sensitive:
                 match = self.therapies.get_item(Key={
                     'label_and_type': pk,
