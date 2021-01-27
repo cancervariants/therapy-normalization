@@ -2,6 +2,9 @@
 import pytest
 from therapy.schemas import Drug, MatchType
 from therapy.query import Normalizer
+from therapy.database import Database
+import os
+from boto3.dynamodb.conditions import Key
 
 
 @pytest.fixture(scope='module')
@@ -11,6 +14,12 @@ def rxnorm():
 
         def __init__(self):
             self.normalizer = Normalizer()
+            if 'THERAPY_NORM_DB_URL' in os.environ:
+                db_url = os.environ['THERAPY_NORM_DB_URL']
+            else:
+                db_url = 'http://localhost:8000'
+
+            self.db = Database(db_url=db_url)
 
         def normalize(self, query_str):
             resp = self.normalizer.normalize(query_str, keyed=True,
@@ -1133,6 +1142,23 @@ def test_no_match(rxnorm):
     normalizer_response = rxnorm.normalize('')
     assert normalizer_response['match_type'] == MatchType.NO_MATCH
     assert len(normalizer_response['records']) == 0
+
+
+def test_brand_name_to_concept(rxnorm):
+    """Test that brand names are correctly linked to identity concept."""
+    r = rxnorm.db.therapies.query(
+        KeyConditionExpression=Key('label_and_type').eq(
+            'rxcui:1041527##rx_brand')
+    )
+    assert r['Items'][0]['concept_id'] == 'rxcui:161'
+    assert r['Items'][0]['concept_id'] != 'rxcui:1041527'
+
+    r = rxnorm.db.therapies.query(
+        KeyConditionExpression=Key('label_and_type').eq(
+            'rxcui:218330##rx_brand')
+    )
+    assert r['Items'][0]['concept_id'] == 'rxcui:44'
+    assert r['Items'][0]['concept_id'] != 'rxcui:218330'
 
 
 def test_meta_info(rxnorm):
