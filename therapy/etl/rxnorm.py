@@ -63,7 +63,7 @@ class RxNorm(Base):
         self._xref_srcs = {src for src in NamespacePrefix.__members__}
         self._data_url = data_url
         self.database = database
-        self._added_ids = set()
+        self._added_ids = []
 
     def perform_etl(self) -> Set[str]:
         """Load the RxNorm source into database.
@@ -257,7 +257,7 @@ class RxNorm(Base):
         params['label_and_type'] = f"{params['concept_id'].lower()}##identity"
         try:
             batch.put_item(Item=params)
-            self._added_ids.add(params['concept_id'])
+            self._added_ids.append(params['concept_id'])
         except botocore.exceptions.ClientError:
             if (len((params['label_and_type']).encode('utf-8')) >= 2048) or \
                     (len((params['concept_id']).encode('utf-8')) >= 1024):

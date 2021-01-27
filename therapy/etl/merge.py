@@ -61,6 +61,9 @@ class Merge:
 
             # add updated references
             for concept_id in group:
+                if not self._database.get_record_by_id(concept_id, False):
+                    logger.error(f"Updating nonexistant record: {concept_id}"
+                                 f"for {merged_record['label_and_type']}")
                 self._database.update_record(concept_id, 'merge_ref',
                                              merged_record['label_and_type'])
             uploaded_ids |= group
@@ -100,8 +103,9 @@ class Merge:
             db_record = self._database.get_record_by_id(record_id)
 
             if not db_record:
-                logger.error(f"Record ID set creator could not retrieve record"
-                             f" for {record_id} in ID set: {observed_id_set}")
+                logger.warning(f"Record ID set creator could not retrieve "
+                               f"record for {record_id} in ID set: "
+                               "{observed_id_set}")
                 return observed_id_set - {record_id}
             elif 'other_identifiers' not in db_record:
                 return observed_id_set | {record_id}
@@ -119,8 +123,8 @@ class Merge:
         scalars, assign from the highest-priority source where that attribute
         is non-null.
 
-        Priority is RxNorm > NCIt > ChemIDplus > Wikidata.
-
+        Priority is RxNorm > NCIt > ChemIDplus > Wikidata. ChEMBL and DrugBank
+        identifiers should not be passed in record_id_set.
 
         :param Set record_id_set: group of concept IDs
         :return: completed merged drug object to be stored in DB

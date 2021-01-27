@@ -39,7 +39,7 @@ class DrugBank(Base):
         :param Path data_path: directory containing source data
         """
         self._data_path = data_path
-        self._added_ids = set()
+        self._added_ids = []
 
     def perform_etl(self) -> Set[str]:
         """Public-facing method to initiate ETL procedures on given data.
@@ -142,7 +142,7 @@ class DrugBank(Base):
                         {a.casefold() for a in params[label_type]}) > 20:
                     del params[label_type]
         batch.put_item(Item=params)
-        self._added_ids.add(params['concept_id'])
+        self._added_ids.append(params['concept_id'])
 
     def _load_drugbank_id(self, element, params):
         """Load drugbank id as concept id or alias."""

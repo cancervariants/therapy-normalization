@@ -58,7 +58,7 @@ class Wikidata(Base):
         """
         self.database = database
         self._data_path = data_path
-        self._added_ids = set()
+        self._added_ids = []
 
     def perform_etl(self) -> Set[str]:
         """Public-facing method to initiate ETL procedures on given data.
@@ -166,7 +166,7 @@ class Wikidata(Base):
                 del item['aliases']
 
         batch.put_item(Item=item)
-        self._added_ids.add(item['concept_id'])
+        self._added_ids.append(item['concept_id'])
         concept_id_lower = item['concept_id'].lower()
 
         if 'aliases' in item.keys():

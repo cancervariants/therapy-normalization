@@ -22,7 +22,7 @@ class ChEMBL(Base):
         :param Path data_path: path to CHEMBl source SQLite3 database file.
         """
         self._data_path = data_path
-        self._added_ids = set()
+        self._added_ids = []
 
     def perform_etl(self) -> Set[str]:
         """Public-facing method to initiate ETL procedures on given data.
@@ -36,7 +36,6 @@ class ChEMBL(Base):
         self._load_json()
         self._conn.commit()
         self._conn.close()
-        return self._added_ids
         return self._added_ids
 
     def _extract_data(self):
@@ -219,7 +218,7 @@ class ChEMBL(Base):
         record['label_and_type'] = \
             f"{record['concept_id'].lower()}##identity"
         batch.put_item(Item=record)
-        self._added_ids.add(record['concept_id'])
+        self._added_ids.append(record['concept_id'])
 
     def _load_label(self, record, batch):
         """Load label record into DynamoDB."""
