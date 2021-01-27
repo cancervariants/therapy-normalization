@@ -47,9 +47,9 @@ class Merge:
         end = timer()
         logger.debug(f'Built record ID sets in {end - start} seconds')
 
-        start = timer()
         logger.info('Creating merged records and updating database...')
         uploaded_ids = set()
+        start = timer()
         for record_id, group in self._groups.items():
             if record_id in uploaded_ids:
                 continue
@@ -65,7 +65,7 @@ class Merge:
             uploaded_ids |= group
         logger.info('Merged concept generation successful.')
         end = timer()
-        logger.debug(f'Built record ID sets in {end - start} seconds')
+        logger.debug(f'Generated and added concepts in {end - start} seconds')
 
     def _get_other_ids(self, record: Dict) -> Set[str]:
         """Extract references to entries in other sources from a record.
@@ -99,8 +99,8 @@ class Merge:
             db_record = self._database.get_record_by_id(record_id)
 
             if not db_record:
-                logger.error(f"Could not retrieve record for {record_id} "
-                             f"in ID set: {observed_id_set}")
+                logger.error(f"Record ID set creator could not retrieve record"
+                             f" for {record_id} in ID set: {observed_id_set}")
                 return observed_id_set | {record_id}
             elif 'other_identifiers' not in db_record:
                 return observed_id_set | {record_id}
@@ -132,8 +132,8 @@ class Merge:
             if record:
                 records.append(record)
             else:
-                logger.error(f"Could not retrieve record for {record_id}"
-                             f"in {record_id_set}")
+                logger.error(f"Merge record generator could not retrieve "
+                             f"record for {record_id} in {record_id_set}")
 
         def record_order(record):
             """Provide priority values of concepts for sort function."""
