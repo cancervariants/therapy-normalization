@@ -381,7 +381,7 @@ class RxNorm(Base):
         term_type = row[12]
         source = row[11]
 
-        if term_type == 'IN' and source == 'RXNORM':
+        if (term_type == 'IN' or term_type == 'PIN') and source == 'RXNORM':
             params['label'] = term
             if row[17] == '4096':
                 params['approval_status'] = ApprovalStatus.APPROVED.value

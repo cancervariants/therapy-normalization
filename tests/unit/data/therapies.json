@@ -998,5 +998,111 @@
     "label_and_type": "rxcui:218330##rx_brand",
     "concept_id": "rxcui:44",
     "src_name": "RxNorm"
-  }
+  },
+  {
+    "label_and_type": "rxcui:142424##identity",
+    "concept_id": "rxcui:142424",
+    "label": "amiloride hydrochloride",
+    "approval_status": "approved",
+    "aliases": [
+      "aMILoride hydrochloride",
+      "Amiloride Hydrochloride",
+      "Hydrochloride, Amiloride"
+    ],
+    "xrefs": [
+      "usp:m2650",
+      "mthspl:FZJ37245UC",
+      "mmsl:2658",
+      "mesh:D000584",
+      "mmsl:4166",
+      "vandf:4017935"
+    ],
+    "trade_names": [
+      "AMILoride Hydrochloride",
+      "Midamor",
+      "Aridil",
+      "Frusemek",
+      "Midamor",
+      "Moduret",
+      "Moduretic",
+      "Zida-Co"
+    ],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "amiloride hydrochloride##label",
+    "concept_id": "rxcui:142424",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "midamor##trade_name",
+    "concept_id": "rxcui:142424",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:4493##identity",
+    "concept_id": "rxcui:4493",
+    "label": "fluoxetine",
+    "approval_status": "approved",
+    "aliases": [
+      "FLUoxetine",
+      "N-Methyl-gamma-(4-(trifluoromethyl)phenoxy)benzenepropanamine",
+      "Fluoxetin",
+      "(+-)-N-Methyl-gamma-(4-(trifluoromethyl)phenoxy)benzenepropanamine",
+      "(+-)-N-Methyl-3-phenyl-3-((alpha,alpha,alpha-trifluoro-P-tolyl)oxy)propylamine"
+    ],
+    "other_identifiers": ["drugbank:DB00472"],
+    "xrefs": [
+      "mesh:D005473",
+      "mmsl:17711",
+      "vandf:4019761",
+      "mmsl:d00236",
+      "atc:N06AB03",
+      "mthspl:01K63SUP8D"
+    ],
+    "trade_names": [
+      "Prozac",
+      "RECONCILE",
+      "Sarafem",
+      "Symbyax",
+      "Rapiflux",
+      "Selfemra"
+    ],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "fluoxetine##label",
+    "concept_id": "rxcui:4493",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:227224##identity",
+    "concept_id": "rxcui:227224",
+    "label": "fluoxetine hydrochloride",
+    "approval_status": "approved",
+    "aliases": [
+      "FLUoxetine hydrochloride",
+      "Fluoxetine Hydrochloride"
+    ],
+    "xrefs": [
+      "usp:m33780",
+      "mthspl:I9W7N6B1KJ",
+      "mmsl:4746",
+      "vandf:4019389",
+      "mmsl:41730",
+      "mmsl:37675",
+      "mesh:D005473"
+    ],
+    "trade_names": [
+      "FLUoxetine HCl",
+      "FLUoxetine Hydrochloride",
+      "RECONCILE"
+    ],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "fluoxetine hydrochloride##label",
+    "concept_id": "rxcui:227224",
+    "src_name": "RxNorm"
+  },
 ]
