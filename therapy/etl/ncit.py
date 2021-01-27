@@ -29,7 +29,8 @@ class NCIt(Base):
                  database: Database,
                  src_dir: str = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/",  # noqa F401
                  src_fname: str = "Thesaurus_20.09d.OWL.zip",
-                 data_path: Path = PROJECT_ROOT / 'data' / 'ncit'):
+                 data_path: Path = PROJECT_ROOT / 'data' / 'ncit',
+                 chemidplus_path: Path = PROJECT_ROOT / 'data' / 'chemidplus'):
         """Override base class init method. Call ETL methods.
 
         :param therapy.database.Database database: app database instance
@@ -38,10 +39,11 @@ class NCIt(Base):
         :param pathlib.Path data_path: path to local NCIt data directory
         """
         self.database = database
-        self._data_path = data_path
         self._SRC_DIR = src_dir
         self._SRC_FNAME = src_fname
-        self._added_ids = set()
+        self._data_path = data_path
+        self._chemidplus_path = chemidplus_path
+        self._added_ids = []
 
     def perform_etl(self) -> Set[str]:
         """Public-facing method to initiate ETL procedures on given data.
@@ -236,4 +238,4 @@ class NCIt(Base):
             if not item[element]:
                 del item[element]
         batch.put_item(Item=item)
-        self._added_ids.add(item['concept_id'])
+        self._added_ids.append(item['concept_id'])

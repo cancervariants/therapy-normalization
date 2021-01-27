@@ -50,7 +50,7 @@ class ChemIDplus(Base):
         self._src_server = src_server
         self._src_dir_path = src_dir_path
         self._src_fname = src_fname
-        self._added_ids = set()
+        self._added_ids = []
 
     def perform_etl(self) -> Set[str]:
         """Public-facing method to initiate ETL procedures on given data.
@@ -182,7 +182,7 @@ class ChemIDplus(Base):
         record['src_name'] = SourceName.CHEMIDPLUS.value
         record['label_and_type'] = f'{concept_id_l}##identity'
         batch.put_item(Item=record)
-        self._added_ids.add(record['concept_id'])
+        self._added_ids.append(record['concept_id'])
 
     def _load_meta(self):
         """Add source metadata."""
