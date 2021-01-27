@@ -108,10 +108,6 @@ def mock_database():
                 }
             }
 
-        def flush(self):
-            self.added_records = {}
-            self.updates = {}
-
         def get_record_by_id(self, record_id: str,
                              case_sensitive: bool = True,
                              merge: bool = False) -> Optional[Dict]:

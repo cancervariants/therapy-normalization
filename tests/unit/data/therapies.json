@@ -1147,12 +1147,6 @@
     "src_name": "NCIt"
   },
   {
-    "label": "fake_therapy_used_to_test_dead_other_id_link",
-    "label_and_type": "ncit:c000000##identity",
-    "concept_id": "ncit:C000000",
-    "other_identifiers": ["chemidplus:9999999"]
-  },
-  {
     "label_and_type": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241##merger",
     "concept_id": "rxcui:8134|ncit:C739|chemidplus:50-06-6|wikidata:Q407241",
     "aliases": [
@@ -1268,5 +1262,29 @@
       "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"
     ],
     "xrefs": ["umls:C0037962", "fda:71ODY0V87H"]
+  },
+  {
+    "label_and_type": "ncit:c107245##identity",
+    "concept_id": "ncit:C107245",
+    "label": "Agerafenib",
+    "aliases": [
+      "AGERAFENIB",
+      "CEP-32496",
+      "AC013773",
+      "RXDX-105",
+      "1-(3-(6,7-Dimethoxyquinazolin-4-yloxy)phenyl)-3-(5-(1,1,1-trifluoro-2-methylpropan-2-yl)isoxazol-3-yl)urea Hydrochloride"
+    ],
+    "other_identifiers": ["chemidplus:1188910-76-0"],
+    "xrefs": ["fda:78I4VEX88N"]
+  },
+  {
+    "label_and_type": "agerafenib##label",
+    "concept_id": "ncit:C107245",
+    "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "agerafenib##alias",
+    "concept_id": "ncit:C107245",
+    "src_name": "NCIt"
   }
 ]

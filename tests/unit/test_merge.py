@@ -267,8 +267,9 @@ def test_create_record_id_set(merge_handler, record_id_groups):
         assert groups[concept_id] == record_id_groups[concept_id]
 
     # test dead reference
-    dead_group = merge_handler.create_record_id_set('ncit:c000000')
-    assert {'ncit:c000000'} == dead_group
+    has_dead_ref = 'ncit:C107245'
+    dead_group = merge_handler.create_record_id_set(has_dead_ref)
+    assert dead_group == {has_dead_ref}
 
 
 def test_generate_merged_record(merge_handler, record_id_groups,
@@ -287,16 +288,13 @@ def test_generate_merged_record(merge_handler, record_id_groups,
     merge_response = merge_handler.generate_merged_record(spiramycin_ids)
     compare_merged_records(merge_response, spiramycin_merged)
 
-    # test correct handling of dead references
-    spiramycin_plus_fake = spiramycin_ids.copy()
-    spiramycin_plus_fake.add('ncit:zzzzzzz')
-
 
 def test_create_merged_concepts(merge_handler, record_id_groups,
                                 phenobarbital_merged, cisplatin_merged,
                                 spiramycin_merged):
     """Test end-to-end creation and upload of merged concepts."""
     record_ids = record_id_groups.keys()
+    print(merge_handler.get_merge()._database.records.keys())
     merge_handler.create_merged_concepts(record_ids)
 
     # check merged record generation and storage
@@ -329,5 +327,3 @@ def test_create_merged_concepts(merge_handler, record_id_groups,
         assert updates[concept_id] == {
             'merge_ref': spiramycin_merged['label_and_type']
         }
-
-    # TODO check ncit:c107245

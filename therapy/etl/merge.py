@@ -42,8 +42,9 @@ class Merge:
         start = timer()
         for record_id in record_ids:
             new_group = self._create_record_id_set(record_id)
-            for concept_id in new_group:
-                self._groups[concept_id] = new_group
+            if new_group:
+                for concept_id in new_group:
+                    self._groups[concept_id] = new_group
         end = timer()
         logger.debug(f'Built record ID sets in {end - start} seconds')
 
@@ -83,7 +84,8 @@ class Merge:
                     allowed = False
                     continue
             if allowed:
-                other_ids.add(other_id)
+                if self._database.get_record_by_id(other_id, True):
+                    other_ids.add(other_id)
         return other_ids
 
     def _create_record_id_set(self, record_id: str,
@@ -101,14 +103,12 @@ class Merge:
             if not db_record:
                 logger.error(f"Record ID set creator could not retrieve record"
                              f" for {record_id} in ID set: {observed_id_set}")
-                return observed_id_set | {record_id}
+                return observed_id_set - {record_id}
             elif 'other_identifiers' not in db_record:
                 return observed_id_set | {record_id}
 
             local_id_set = self._get_other_ids(db_record)
-            merged_id_set = local_id_set | observed_id_set | \
-                {record_id}
-
+            merged_id_set = local_id_set | {record_id} | observed_id_set
             for local_record_id in local_id_set - observed_id_set:
                 merged_id_set |= self._create_record_id_set(local_record_id,
                                                             merged_id_set)
