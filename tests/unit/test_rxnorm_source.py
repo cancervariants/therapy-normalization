@@ -2,6 +2,9 @@
 import pytest
 from therapy.schemas import Drug, MatchType
 from therapy.query import Normalizer
+from therapy.database import Database
+import os
+from boto3.dynamodb.conditions import Key
 
 
 @pytest.fixture(scope='module')
@@ -11,6 +14,12 @@ def rxnorm():
 
         def __init__(self):
             self.normalizer = Normalizer()
+            if 'THERAPY_NORM_DB_URL' in os.environ:
+                db_url = os.environ['THERAPY_NORM_DB_URL']
+            else:
+                db_url = 'http://localhost:8000'
+
+            self.db = Database(db_url=db_url)
 
         def normalize(self, query_str):
             resp = self.normalizer.normalize(query_str, keyed=True,
@@ -94,8 +103,43 @@ def cisplatin():
 
 
 @pytest.fixture(scope='module')
+def amiloride_hydrochloride():
+    """Create amiloride hydrochloride drug fixture."""
+    params = {
+        'label': 'amiloride hydrochloride',
+        'concept_id': 'rxcui:142424',
+        'aliases': [
+            'aMILoride hydrochloride',
+            'Amiloride Hydrochloride',
+            'Hydrochloride, Amiloride'
+        ],
+        'approval_status': 'approved',
+        'other_identifiers': [],
+        'xrefs': [
+            'usp:m2650',
+            'mthspl:FZJ37245UC',
+            'mmsl:2658',
+            'mesh:D000584',
+            'mmsl:4166',
+            'vandf:4017935'
+        ],
+        'trade_names': [
+            'AMILoride Hydrochloride',
+            'Midamor',
+            'Aridil',
+            'Frusemek',
+            'Midamor',
+            'Moduret',
+            'Moduretic',
+            'Zida-Co'
+        ]
+    }
+    return Drug(**params)
+
+
+@pytest.fixture(scope='module')
 def amiloride():
-    """Create amiloride hydrochloride, anhydrous drug fixture."""
+    """Create amiloride drug fixture."""
     params = {
         'label': 'amiloride',
         'concept_id': 'rxcui:644',
@@ -398,6 +442,76 @@ def levothyroxine():
     return Drug(**params)
 
 
+@pytest.fixture(scope='module')
+def fluoxetine():
+    """Create fluoxetine drug fixture."""
+    params = {
+        'label': 'fluoxetine',
+        'concept_id': 'rxcui:4493',
+        'aliases': [
+            'FLUoxetine',
+            'N-Methyl-gamma-(4-(trifluoromethyl)phenoxy)'
+            'benzenepropanamine',
+            'Fluoxetin',
+            '(+-)-N-Methyl-gamma-(4-(trifluoromethyl)phenoxy)'
+            'benzenepropanamine',
+            '(+-)-N-Methyl-3-phenyl-3-((alpha,alpha,alpha-trifluoro-'
+            'P-tolyl)oxy)propylamine'
+        ],
+        'approval_status': 'approved',
+        'other_identifiers': [
+            'drugbank:DB00472'
+        ],
+        'xrefs': [
+            'mesh:D005473',
+            'mmsl:17711',
+            'vandf:4019761',
+            'mmsl:d00236',
+            'atc:N06AB03',
+            'mthspl:01K63SUP8D'
+        ],
+        'trade_names': [
+            'Prozac',
+            'RECONCILE',
+            'Sarafem',
+            'Symbyax',
+            'Rapiflux',
+            'Selfemra'
+        ]
+    }
+    return Drug(**params)
+
+
+@pytest.fixture(scope='module')
+def fluoxetine_hydrochloride():
+    """Create fluoxetine hydrochloride drug fixture."""
+    params = {
+        'label': 'fluoxetine hydrochloride',
+        'concept_id': 'rxcui:227224',
+        'aliases': [
+            'FLUoxetine hydrochloride',
+            'Fluoxetine Hydrochloride'
+        ],
+        'approval_status': 'approved',
+        'other_identifiers': [],
+        'xrefs': [
+            'usp:m33780',
+            'mthspl:I9W7N6B1KJ',
+            'mmsl:4746',
+            'vandf:4019389',
+            'mmsl:41730',
+            'mmsl:37675',
+            'mesh:D005473'
+        ],
+        'trade_names': [
+            'FLUoxetine HCl',
+            'FLUoxetine Hydrochloride',
+            'RECONCILE'
+        ]
+    }
+    return Drug(**params)
+
+
 def test_bifidobacterium_infantis(bifidobacterium_infantis, rxnorm):
     """Test that bifidobacterium_ nfantis drug normalizes to
     correct drug concept.
@@ -571,6 +685,48 @@ def test_cisplatin(cisplatin, rxnorm):
     assert normalized_drug.approval_status == cisplatin.approval_status
 
 
+def test_amiloride_hydrochloride(amiloride_hydrochloride, rxnorm):
+    """Test that amiloride_hydrochloride hydrochloride, anhydrous drug
+    normalizes to correct drug concept.
+    """
+    # Concept ID Match
+    normalizer_response = rxnorm.normalize('RxcUI:142424')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == amiloride_hydrochloride.label
+    assert normalized_drug.concept_id == amiloride_hydrochloride.concept_id
+    assert set(normalized_drug.aliases) == set(amiloride_hydrochloride.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(amiloride_hydrochloride.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(amiloride_hydrochloride.xrefs)
+    assert set(normalized_drug.trade_names) == \
+           set(amiloride_hydrochloride.trade_names)
+    assert normalized_drug.approval_status == \
+           amiloride_hydrochloride.approval_status
+
+    # Label Match
+    normalizer_response = rxnorm.normalize('amiloride hydrochloride')
+    assert normalizer_response['match_type'] == MatchType.LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == amiloride_hydrochloride.label
+    assert normalized_drug.concept_id == amiloride_hydrochloride.concept_id
+    assert set(normalized_drug.aliases) == set(amiloride_hydrochloride.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(amiloride_hydrochloride.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(amiloride_hydrochloride.xrefs)
+    assert set(normalized_drug.trade_names) == \
+           set(amiloride_hydrochloride.trade_names)
+    assert normalized_drug.approval_status == \
+           amiloride_hydrochloride.approval_status
+
+    # Trade Name Match
+    normalizer_response = rxnorm.normalize('Midamor')
+    assert normalizer_response['match_type'] == MatchType.LABEL
+    assert len(normalizer_response['records']) == 2
+
+
 def test_amiloride(amiloride, rxnorm):
     """Test that amiloride hydrochloride, anhydrous drug normalizes to
     correct drug concept.
@@ -634,16 +790,7 @@ def test_amiloride(amiloride, rxnorm):
     # Trade Name Match
     normalizer_response = rxnorm.normalize('Midamor')
     assert normalizer_response['match_type'] == MatchType.TRADE_NAME
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == amiloride.label
-    assert normalized_drug.concept_id == amiloride.concept_id
-    assert set(normalized_drug.aliases) == set(amiloride.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(amiloride.other_identifiers)
-    assert set(normalized_drug.xrefs) == set(amiloride.xrefs)
-    assert set(normalized_drug.trade_names) == set(amiloride.trade_names)
-    assert normalized_drug.approval_status == amiloride.approval_status
+    assert len(normalizer_response['records']) == 2
 
 
 def test_timolol(timolol, rxnorm):
@@ -768,29 +915,9 @@ def test_lymphocyte(lymphocyte, rxnorm):
     # Trade Name Match
     normalizer_response = rxnorm.normalize('Thymoglobulin')
     assert normalizer_response['match_type'] == MatchType.TRADE_NAME
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == lymphocyte.label
-    assert normalized_drug.concept_id == lymphocyte.concept_id
-    assert set(normalized_drug.aliases) == set(lymphocyte.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(lymphocyte.other_identifiers)
-    assert set(normalized_drug.xrefs) == set(lymphocyte.xrefs)
-    assert set(normalized_drug.trade_names) == set(lymphocyte.trade_names)
-    assert normalized_drug.approval_status == lymphocyte.approval_status
 
     normalizer_response = rxnorm.normalize('ATGAM')
     assert normalizer_response['match_type'] == MatchType.TRADE_NAME
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == lymphocyte.label
-    assert normalized_drug.concept_id == lymphocyte.concept_id
-    assert set(normalized_drug.aliases) == set(lymphocyte.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(lymphocyte.other_identifiers)
-    assert set(normalized_drug.xrefs) == set(lymphocyte.xrefs)
-    assert set(normalized_drug.trade_names) == set(lymphocyte.trade_names)
-    assert normalized_drug.approval_status == lymphocyte.approval_status
 
 
 def test_aspirin(aspirin, rxnorm):
@@ -1105,6 +1232,76 @@ def test_levothyroxine(levothyroxine, rxnorm):
     assert normalized_drug.approval_status == levothyroxine.approval_status
 
 
+def test_fluoxetine(fluoxetine, rxnorm):
+    """Test that fluoxetine drug normalizes to correct drug concept."""
+    # Concept ID Match
+    normalizer_response = rxnorm.normalize('RxCUI:4493')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == fluoxetine.label
+    assert normalized_drug.concept_id == fluoxetine.concept_id
+    assert set(normalized_drug.aliases) == set(fluoxetine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(fluoxetine.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(fluoxetine.xrefs)
+    assert set(normalized_drug.trade_names) == set(fluoxetine.trade_names)
+    assert normalized_drug.approval_status == fluoxetine.approval_status
+
+    # Label Match
+    normalizer_response = rxnorm.normalize('fluoxetine')
+    assert normalizer_response['match_type'] == MatchType.LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == fluoxetine.label
+    assert normalized_drug.concept_id == fluoxetine.concept_id
+    assert set(normalized_drug.aliases) == set(fluoxetine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(fluoxetine.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(fluoxetine.xrefs)
+    assert set(normalized_drug.trade_names) == set(fluoxetine.trade_names)
+    assert normalized_drug.approval_status == fluoxetine.approval_status
+
+
+def test_fluoxetine_hydrochloride(fluoxetine_hydrochloride, rxnorm):
+    """Test that fluoxetine_hydrochloride drug normalizes to correct drug
+    concept.
+    """
+    # Concept ID Match
+    normalizer_response = rxnorm.normalize('RxCUI:227224')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == fluoxetine_hydrochloride.label
+    assert normalized_drug.concept_id == fluoxetine_hydrochloride.concept_id
+    assert set(normalized_drug.aliases) == \
+           set(fluoxetine_hydrochloride.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(fluoxetine_hydrochloride.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(fluoxetine_hydrochloride.xrefs)
+    assert set(normalized_drug.trade_names) == \
+           set(fluoxetine_hydrochloride.trade_names)
+    assert normalized_drug.approval_status == \
+           fluoxetine_hydrochloride.approval_status
+
+    # Label Match
+    normalizer_response = rxnorm.normalize('fluoxetine hydrochloride')
+    assert normalizer_response['match_type'] == MatchType.LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == fluoxetine_hydrochloride.label
+    assert normalized_drug.concept_id == fluoxetine_hydrochloride.concept_id
+    assert set(normalized_drug.aliases) == \
+           set(fluoxetine_hydrochloride.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(fluoxetine_hydrochloride.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(fluoxetine_hydrochloride.xrefs)
+    assert set(normalized_drug.trade_names) == \
+           set(fluoxetine_hydrochloride.trade_names)
+    assert normalized_drug.approval_status == \
+           fluoxetine_hydrochloride.approval_status
+
+
 def test_no_match(rxnorm):
     """Test that a term normalizes to correct drug concept as a NO match."""
     # Misspelled name
@@ -1133,6 +1330,23 @@ def test_no_match(rxnorm):
     normalizer_response = rxnorm.normalize('')
     assert normalizer_response['match_type'] == MatchType.NO_MATCH
     assert len(normalizer_response['records']) == 0
+
+
+def test_brand_name_to_concept(rxnorm):
+    """Test that brand names are correctly linked to identity concept."""
+    r = rxnorm.db.therapies.query(
+        KeyConditionExpression=Key('label_and_type').eq(
+            'rxcui:1041527##rx_brand')
+    )
+    assert r['Items'][0]['concept_id'] == 'rxcui:161'
+    assert r['Items'][0]['concept_id'] != 'rxcui:1041527'
+
+    r = rxnorm.db.therapies.query(
+        KeyConditionExpression=Key('label_and_type').eq(
+            'rxcui:218330##rx_brand')
+    )
+    assert r['Items'][0]['concept_id'] == 'rxcui:44'
+    assert r['Items'][0]['concept_id'] != 'rxcui:218330'
 
 
 def test_meta_info(rxnorm):
