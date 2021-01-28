@@ -107,7 +107,7 @@ class Merge:
             if not db_record:
                 logger.warning(f"Record ID set creator could not retrieve "
                                f"record for {record_id} in ID set: "
-                               "{observed_id_set}")
+                               f"{observed_id_set}")
                 return observed_id_set - {record_id}
             elif 'other_identifiers' not in db_record:
                 return observed_id_set | {record_id}
