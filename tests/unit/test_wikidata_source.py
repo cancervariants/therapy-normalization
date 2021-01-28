@@ -40,11 +40,11 @@ def cisplatin():
         'approval_status': None,
         'other_identifiers': [
             'chembl:CHEMBL11359',
-            'drugbank:DB00515'
-        ],
-        'xrefs': [
+            'drugbank:DB00515',
             'rxcui:2555',
             'chemidplus:15663-27-1',
+        ],
+        'xrefs': [
             'pubchem.compound:5702198'
         ],
         'trade_names': []
@@ -72,12 +72,11 @@ def interferon_alfacon_1():
         'approval_status': None,
         'other_identifiers': [
             'chembl:CHEMBL1201557',
-            'drugbank:DB00069'
-        ],
-        'xrefs': [
+            'drugbank:DB00069',
             'rxcui:59744',
             'chemidplus:118390-30-0'
         ],
+        'xrefs': [],
         'trade_names': []
     }
     return Drug(**params)
@@ -94,12 +93,12 @@ def d_methamphetamine():
         'approval_status': None,
         'other_identifiers': [
             'chembl:CHEMBL1201201',
-            'drugbank:DB01577'
+            'drugbank:DB01577',
+            'rxcui:6816',
+            'chemidplus:537-46-2',
         ],
         'xrefs': [
-            'chemidplus:537-46-2',
             'pubchem.compound:10836',
-            'rxcui:6816'
         ],
         'trade_names': []
     }
@@ -132,12 +131,12 @@ def atropine():
         ],
         'approval_status': None,
         'other_identifiers': [
-            'drugbank:DB00572'
+            'drugbank:DB00572',
+            'chemidplus:51-55-8',
+            'rxcui:1223'
         ],
         'xrefs': [
-            'rxcui:1223',
             'pubchem.compound:174174',
-            'chemidplus:51-55-8'
         ],
         'trade_names': []
     }
@@ -616,3 +615,9 @@ def test_meta_info(cisplatin, wikidata):
            'https://creativecommons.org/publicdomain/zero/1.0/'
     assert datetime.strptime(normalizer_response['meta_'].version, "%Y%m%d")
     assert normalizer_response['meta_'].data_url is None
+    assert not normalizer_response['meta_'].rdp_url
+    assert normalizer_response['meta_'].data_license_attributes == {
+        "non_commercial": False,
+        "share_alike": False,
+        "attribution": False
+    }

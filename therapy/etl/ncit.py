@@ -153,12 +153,13 @@ class NCIt(Base):
                     aliases.remove(label)
 
                 xrefs = []
+                other_ids = []
                 if node.P207:
                     xrefs.append(f"{NamespacePrefix.UMLS.value}:"
                                  f"{node.P207.first()}")
                 if node.P210:
-                    xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:"
-                                 f"{node.P210.first()}")
+                    other_ids.append(f"{NamespacePrefix.CASREGISTRY.value}:"
+                                     f"{node.P210.first()}")
                 if node.P319:
                     xrefs.append(f"{NamespacePrefix.FDA.value}:"
                                  f"{node.P319.first()}")
@@ -173,7 +174,7 @@ class NCIt(Base):
                                   src_name=SourceName.NCIT.value,
                                   label=label,
                                   aliases=aliases,
-                                  other_identifiers=[],
+                                  other_identifiers=other_ids,
                                   xrefs=xrefs)
                 self._load_therapy(therapy, batch)
 
@@ -182,14 +183,16 @@ class NCIt(Base):
         metadata = Meta(data_license="CC BY 4.0",
                         data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
                         version=self._version,
-                        data_url=self._SRC_DIR)
-        self.database.metadata.put_item(Item={
-            'src_name': SourceName.NCIT.value,
-            'data_license': metadata.data_license,
-            'data_license_url': metadata.data_license_url,
-            'version': metadata.version,
-            'data_url': metadata.data_url
-        })
+                        data_url=self._SRC_DIR,
+                        rdp_url='http://reusabledata.org/ncit.html',
+                        data_license_attributes={
+                            'non_commercial': False,
+                            'share_alike': False,
+                            'attribution': True
+                        })
+        params = dict(metadata)
+        params['src_name'] = SourceName.NCIT.value
+        self.database.metadata.put_item(Item=params)
 
     def _load_therapy(self, therapy: Therapy, batch):
         """Load individual therapy into dynamodb table
@@ -224,7 +227,7 @@ class NCIt(Base):
             del therapy['label']
         item['label_and_type'] = f"{concept_id_lower}##identity"
         item['src_name'] = SourceName.NCIT.value
-        del item['other_identifiers']
-        if not item['xrefs']:
-            del item['xrefs']
+        for element in ['other_identifiers', 'xrefs']:
+            if not item[element]:
+                del item[element]
         batch.put_item(Item=item)

@@ -2,7 +2,7 @@
 from therapy.etl.base import Base
 from therapy import PROJECT_ROOT
 import logging
-from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus
+from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, Meta
 from therapy.etl.base import IDENTIFIER_PREFIXES
 from lxml import etree
 import requests
@@ -238,8 +238,8 @@ class DrugBank(Base):
     def _load_cas_number(self, element, params):
         """Load cas number as other identifiers."""
         if element.text:
-            params['xrefs'].append(
-                f"{IDENTIFIER_PREFIXES['casRegistry']}:"
+            params['other_identifiers'].append(
+                f"{IDENTIFIER_PREFIXES['ChemIDplus']}:"
                 f"{element.text}")
 
     def _load_external_identifiers(self, element, params, xmlns,
@@ -308,13 +308,16 @@ class DrugBank(Base):
 
     def _add_meta(self):
         """Add DrugBank metadata."""
-        self._database.metadata.put_item(
-            Item={
-                'src_name': SourceName.DRUGBANK.value,
-                'data_license': 'CC BY-NC 4.0',
-                'data_license_url':
-                    'https://creativecommons.org/licenses/by-nc/4.0/legalcode',
-                'version': self._version,
-                'data_url': self._data_url
-            }
-        )
+        meta = Meta(data_license='CC BY-NC 4.0',
+                    data_license_url='https://creativecommons.org/licenses/by-nc/4.0/legalcode',  # noqa: E501
+                    version=self._version,
+                    data_url=self._data_url,
+                    rdp_url='http://reusabledata.org/drugbank.html',
+                    data_license_attributes={
+                        'non_commercial': True,
+                        'share_alike': False,
+                        'attribution': True
+                    })
+        params = dict(meta)
+        params['src_name'] = SourceName.DRUGBANK.value
+        self._database.metadata.put_item(Item=params)
