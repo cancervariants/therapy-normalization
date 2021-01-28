@@ -31,6 +31,3 @@ websockets = "*"
 httptools = "*"
 typing-extensions = "*"
 wikibaseintegrator = "*"
-
-[requires]
-python_version = "3.8"
