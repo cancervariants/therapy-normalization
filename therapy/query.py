@@ -381,7 +381,10 @@ class QueryHandler:
         :param str merge_ref: primary key for concept ID group lookup.
         :return: completed response object.
         """
-        merged_record = self.db.get_merged_record(merge_ref)
+        print(merge_ref)
+        merged_record = self.db.get_record_by_id(merge_ref, False, True)
+        # merged_record = self.db.get_merged_record(merge_ref,
+        #                                           case_sensitive=False)
         if not merged_record:
             logger.error(f"Could not retrieve merged record for concept "
                          f"ID group {merge_ref} "
@@ -425,6 +428,7 @@ class QueryHandler:
         query_str = query_str.lower()
 
         # check merged concept ID match
+        print(query_str)
         record = self.db.get_record_by_id(query_str, case_sensitive=False,
                                           merge=True)
         if record:

@@ -251,7 +251,7 @@
     ],
     "xrefs": ["pubchem.compound:5702198"],
     "src_name": "Wikidata",
-    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415##merger"
+    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -420,7 +420,7 @@
     "other_identifiers": ["chemidplus:15663-27-1"],
     "xrefs": ["umls:C0008838", "fda:Q20Q21Q62J"],
     "src_name": "NCIt",
-    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415##merger"
+    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -474,7 +474,7 @@
     "other_identifiers": ["drugbank:DB00515"],
     "xrefs": ["fda:Q20Q21Q62J"],
     "src_name": "ChemIDplus",
-    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415##merger"
+    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -559,7 +559,7 @@
       "snomedct:387318005"
     ],
     "src_name": "RxNorm",
-    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415##merger"
+    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -1006,7 +1006,7 @@
     "approval_status": null,
     "trade_names": ["Phenobarbital"],
     "src_name": "RxNorm",
-    "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241##merger"
+    "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241"
   },
   {
     "label_and_type": "phenobarbital##label",
@@ -1043,7 +1043,7 @@
     "approval_status": null,
     "trade_names": [],
     "src_name": "ChemIDplus",
-    "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241##merger"
+    "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241"
   },
   {
     "label": "Spiramycin",
@@ -1055,7 +1055,7 @@
     "approval_status": null,
     "trade_names": [],
     "src_name": "ChemIDplus",
-    "merge_ref": "ncit:c839|chemidplus:8025-81-8##merger"
+    "merge_ref": "ncit:c839|chemidplus:8025-81-8"
   },
   {
     "label": "phenobarbital",
@@ -1092,7 +1092,7 @@
     "approval_status": null,
     "trade_names": [],
     "src_name": "Wikidata",
-    "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241##merger"
+    "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241"
   },
   {
     "label": "Phenobarbital",
@@ -1109,7 +1109,7 @@
     "approval_status": null,
     "trade_names": [],
     "src_name": "NCIt",
-    "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241##merger"
+    "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241"
   },
   {
     "label_and_type": "pheno##alias",
@@ -1134,7 +1134,7 @@
     "approval_status": null,
     "trade_names": [],
     "src_name": "NCIt",
-    "merge_ref": "ncit:c839|chemidplus:8025-81-8##merger"
+    "merge_ref": "ncit:c839|chemidplus:8025-81-8"
   },
   {
     "label_and_type": "rp 5337##alias",
