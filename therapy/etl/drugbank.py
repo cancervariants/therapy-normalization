@@ -10,8 +10,6 @@ from requests.auth import HTTPBasicAuth
 from os import environ
 import zipfile
 import shutil
-from bs4 import BeautifulSoup
-import datetime
 from io import BytesIO
 
 logger = logging.getLogger('therapy')
@@ -39,7 +37,27 @@ DRUGBANK_IDENTIFIER_PREFIXES = {
 class DrugBank(Base):
     """ETL the DrugBank source into therapy.db."""
 
-    def _download_data(self, db_dir):
+    def __init__(self,
+                 database,
+                 version='5.1.7',
+                 data_url='https://go.drugbank.com/releases/5-1-7/'
+                          'downloads/all-full-database',
+                 data_dir=PROJECT_ROOT / 'data' / 'drugbank'
+                 ):
+        """Initialize DrugBank class.
+
+        :param Database database: DynamoDB object
+        :param str version: DrugBank version to use
+        :param str data_url: URL to DrugBank data file
+        :param Path data_dir: Path to DrugBank data directory
+        """
+        self._database = database
+        self._version = version
+        self._data_url = data_url
+        self._data_dir = data_dir
+        self._load_data()
+
+    def _download_data(self):
         """Download DrugBank database XML file.
 
         :param PosixPath db_dir: The path to the DrugBank data directory
@@ -47,18 +65,16 @@ class DrugBank(Base):
         logger.info("Downloading DrugBank file...")
         if 'DRUGBANK_USER' in environ.keys() and \
                 'DRUGBANK_PWD' in environ.keys():
-            r = requests.get("https://go.drugbank.com/releases/"
-                             f"{self._version.replace('.', '-')}/downloads/"
-                             f"all-full-database",
+            r = requests.get(self._data_url,
                              auth=HTTPBasicAuth(environ['DRUGBANK_USER'],
                                                 environ['DRUGBANK_PWD'])
                              )
             if r.status_code == 200:
                 zip_file = zipfile.ZipFile(BytesIO(r.content))
-                temp_dir = db_dir / 'temp_drugbank'
+                temp_dir = self._data_dir / 'temp_drugbank'
                 zip_file.extractall(temp_dir)
                 temp_file = temp_dir / 'full database.xml'
-                db_xml_file = db_dir / f"drugbank_{self._version_date}.xml"
+                db_xml_file = self._data_dir / f"drugbank_{self._version}.xml"
                 shutil.move(temp_file, db_xml_file)
                 shutil.rmtree(temp_dir)
             else:
@@ -76,43 +92,17 @@ class DrugBank(Base):
                            "and DRUGBANK_PWD.")
         logger.info("Successfully downloaded DrugBank file.")
 
-    def _get_version(self):
-        """Get DrugBank version and version date."""
-        r = requests.get("https://go.drugbank.com/releases")
-        if r.status_code == 200:
-            soup = BeautifulSoup(r.text, 'html.parser')
-            releases_soup = soup.find('div', {"class": "download-table"})
-            latest_release = [node for node in
-                              releases_soup.find_all('tr')][1].find_all('td')
-            self._version = latest_release[0].text
-            self._version_date = datetime.datetime.strptime(
-                latest_release[1].text, '%Y-%m-%d').strftime('%Y%m%d')
-        else:
-            logger.error("DrugBank version retrieval failed with status code:"
-                         f" {r.status_code}")
-
     def _extract_data(self, *args, **kwargs):
         """Extract data from the DrugBank source."""
         logger.info("Extracting DrugBank file...")
         if 'data_path' in kwargs:
             self._data_src = kwargs['data_path']
         else:
-            db_dir = PROJECT_ROOT / 'data' / 'drugbank'
-            db_dir.mkdir(exist_ok=True, parents=True)
-            db_files = list(db_dir.iterdir())
-            self._get_version()
-            if len(db_files) == 0:
-                self._download_data(db_dir)
-                db_files = list(db_dir.iterdir())
-            else:
-                # We want to use the most recent version
-                if not str(sorted(db_files)[-1]).endswith(
-                        f"{self._version_date}.xml"):
-                    self._download_data(db_dir)
-                    db_files = list(db_dir.iterdir())
-            self._data_src = sorted(db_files)[-1]
-            if not str(self._data_src).endswith('xml'):
-                raise FileNotFoundError("Could not find DrugBank XML file.")
+            self._data_dir.mkdir(exist_ok=True, parents=True)
+            file_path = self._data_dir / f"drugbank_{self._version}.xml"
+            if not file_path.exists():
+                self._download_data()
+            self._data_src = file_path
         logger.info(f"Extracted {self._data_src}.")
 
     def _transform_data(self):
@@ -120,7 +110,7 @@ class DrugBank(Base):
         xmlns = "{http://www.drugbank.ca}"
         tree = etree.parse(f"{self._data_src}")
         root = tree.getroot()
-        batch = self.database.therapies.batch_writer()
+        batch = self._database.therapies.batch_writer()
         normalizer_srcs = {
             NamespacePrefix[src].value for src in SourceName.__members__}
 
@@ -318,14 +308,13 @@ class DrugBank(Base):
 
     def _add_meta(self):
         """Add DrugBank metadata."""
-        self.database.metadata.put_item(
+        self._database.metadata.put_item(
             Item={
                 'src_name': SourceName.DRUGBANK.value,
                 'data_license': 'CC BY-NC 4.0',
                 'data_license_url':
                     'https://creativecommons.org/licenses/by-nc/4.0/legalcode',
                 'version': self._version,
-                'data_url':
-                    'https://go.drugbank.com/releases/5-1-7/downloads/all-full-database'  # noqa E501
+                'data_url': self._data_url
             }
         )
