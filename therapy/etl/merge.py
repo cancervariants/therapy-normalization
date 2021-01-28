@@ -31,12 +31,6 @@ class Merge:
         :param Set[str] record_ids: concept identifiers from which groups
             should be generated. Should *not* include any records from
             excluded sources.
-        TODO
-         * Make final call on how to handle dangling IDs
-         * When updating existing records, how to ensure that no dangling
-           records remain after an other_identifier is removed?
-         * How to handle invalid or nonexistent other_identifiers?
-         * How to handle source updating
         """
         logger.info('Generating record ID sets...')
         start = timer()
@@ -62,7 +56,7 @@ class Merge:
             # add updated references
             for concept_id in group:
                 if not self._database.get_record_by_id(concept_id, False):
-                    logger.error(f"Updating nonexistant record: {concept_id}"
+                    logger.error(f"Updating nonexistant record: {concept_id} "
                                  f"for {merged_record['label_and_type']}")
                 else:
                     merge_ref = merged_record['concept_id'].lower()
@@ -82,7 +76,7 @@ class Merge:
         :rtype: Set
         """
         other_ids = set()
-        for other_id in record['other_identifiers']:
+        for other_id in record.get('other_identifiers', None):
             allowed = True
             for prefix in DISALLOWED_SOURCES:
                 if other_id.startswith(prefix):
@@ -103,16 +97,25 @@ class Merge:
             return self._groups[record_id]
         else:
             db_record = self._database.get_record_by_id(record_id)
-
             if not db_record:
-                logger.warning(f"Record ID set creator could not retrieve "
-                               f"record for {record_id} in ID set: "
-                               f"{observed_id_set}")
-                return observed_id_set - {record_id}
-            elif 'other_identifiers' not in db_record:
-                return observed_id_set | {record_id}
+                # attempt RxNorm brand lookup
+                brand_lookup = self._database.get_records_by_type(record_id,
+                                                                  'rx_brand')
+                if len(brand_lookup) == 1:
+                    lookup_id = brand_lookup[0]['concept_id']
+                    db_record = self._database.get_record_by_id(lookup_id,
+                                                                False)
+                    if not db_record:
+                        return observed_id_set - {record_id}
+                else:
+                    logger.warning(f"Record ID set creator could not resolve "
+                                   f"lookup for {record_id} in ID set: "
+                                   f"{observed_id_set}")
+                    return observed_id_set - {record_id}
 
             local_id_set = self._get_other_ids(db_record)
+            if not local_id_set:
+                return observed_id_set | {db_record['concept_id']}
             merged_id_set = {record_id} | observed_id_set
             for local_record_id in local_id_set - observed_id_set:
                 merged_id_set |= self._create_record_id_set(local_record_id,

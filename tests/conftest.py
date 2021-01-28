@@ -146,7 +146,7 @@ def mock_database():
                 concept ID lookup)
             :return: list of matching records. Empty if lookup fails.
             """
-            assert match_type in ('alias', 'trade_name', 'label')
+            assert match_type in ('alias', 'trade_name', 'label', 'rx_brand')
             label_and_type = f'{query}##{match_type.lower()}'
             records_lookup = self.records.get(label_and_type, None)
             if records_lookup:
