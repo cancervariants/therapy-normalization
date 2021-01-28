@@ -4,12 +4,6 @@
 Library of Medicine (NLM), National Institutes of Health, Department of Health
  and Human Services; NLM is not responsible for the product and does not
  endorse or recommend this or any other product."
-
- "This material includes SNOMED Clinical Terms® (SNOMED CT®) which is used by
- permission of the International Health Terminology Standards Development
- Organisation (IHTSDO). All rights reserved. SNOMED CT®, was originally
- created by The College of American Pathologists. "SNOMED" and "SNOMED CT"
- are registered trademarks of the IHTSDO."
 """
 from .base import Base
 from therapy import PROJECT_ROOT, DownloadException
@@ -42,9 +36,9 @@ ALIASES = ['SYN', 'SY', 'TMSY', 'PM',
 # Semantic branded drug
 TRADE_NAMES = ['BD', 'BN', 'SBD']
 
-# Allowed xrefs
+# Allowed xrefs that have Source Level Restriction 0 or 1
 XREFS = ['ATC', 'CVX', 'DRUGBANK', 'MMSL', 'MSH', 'MTHCMSFRF', 'MTHSPL',
-         'RXNORM', 'SNOMEDCT_US', 'USP', 'VANDF']
+         'RXNORM', 'USP', 'VANDF']
 
 
 class RxNorm(Base):
@@ -179,10 +173,13 @@ class RxNorm(Base):
             precise_ingredient = dict()  # Link precise ingredient to get brand
             data = dict()  # Transformed therapy records
             sbdfs = dict()  # Link ingredient to brand
+            brands = dict()  # Get RXNORM|BN to concept_id
             for row in rff_data:
                 if row[11] in XREFS:
                     concept_id = f"{NamespacePrefix.RXNORM.value}:{row[0]}"
-                    if row[12] == 'SBDC':
+                    if row[12] == 'BN' and row[11] == 'RXNORM':
+                        brands[row[14]] = concept_id
+                    if row[12] == 'SBDC' and row[11] == 'RXNORM':
                         # Semantic Branded Drug Component
                         self._get_brands(row, ingredient_brands)
                     else:
@@ -207,6 +204,8 @@ class RxNorm(Base):
                     if 'label' in value:
                         self._get_trade_names(value, precise_ingredient,
                                               ingredient_brands, sbdfs)
+                        self._load_brand_concepts(value, brands, batch)
+
                         params = Drug(
                             concept_id=value['concept_id'],
                             label=value['label'] if 'label' in value else None,
@@ -364,6 +363,23 @@ class RxNorm(Base):
             for tn in sbdfs[record_label]:
                 self._add_term(value, tn, 'trade_names')
 
+    def _load_brand_concepts(self, value, brands, batch):
+        """Connect brand names to a concept and load into the database.
+
+        :params dict value: A transformed therapy record
+        :params dict brands: Connects brand names to concept records
+        :param BatchWriter batch: Object to write data to DynamoDB.
+        """
+        if 'trade_names' in value:
+            for tn in value['trade_names']:
+                if brands.get(tn):
+                    batch.put_item(Item={
+                        'label_and_type':
+                            f"{brands.get(tn)}##rx_brand",
+                        'concept_id': value['concept_id'],
+                        'src_name': SourceName.RXNORM.value
+                    })
+
     def _add_str_field(self, params, row, precise_ingredient, drug_forms,
                        sbdfs):
         """Differentiate STR field.
@@ -378,17 +394,12 @@ class RxNorm(Base):
         term_type = row[12]
         source = row[11]
 
-        if term_type == 'IN' and source == 'RXNORM':
+        if (term_type == 'IN' or term_type == 'PIN') and source == 'RXNORM':
             params['label'] = term
             if row[17] == '4096':
                 params['approval_status'] = ApprovalStatus.APPROVED.value
         elif term_type in ALIASES:
-            if term_type == 'PT' and source == 'SNOMEDCT_US':
-                if 'containing' not in term:
-                    # Dont want to store aliases that have "-containing ..."
-                    self._add_term(params, term, 'aliases')
-            else:
-                self._add_term(params, term, 'aliases')
+            self._add_term(params, term, 'aliases')
         elif term_type in TRADE_NAMES:
             self._add_term(params, term, 'trade_names')
 
@@ -454,9 +465,8 @@ class RxNorm(Base):
                     data_license_attributes={
                         'non_commercial': False,
                         'share_alike': False,
-                        'attribution': False
+                        'attribution': True
                     })
         params = dict(meta)
         params['src_name'] = SourceName.RXNORM.value
-        params['snomedct_version'] = '20200731'
         self.database.metadata.put_item(Item=params)

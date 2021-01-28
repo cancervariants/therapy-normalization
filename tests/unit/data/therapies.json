@@ -523,23 +523,17 @@
     "label": "cisplatin",
     "approval_status": "approved",
     "aliases": [
-      "Diaminedichloroplatinum",
       "cis-Platinum",
       "CISplatin",
       "cis Diamminedichloroplatinum",
       "cis Platinum",
       "Diamminodichloride, Platinum",
-      "cis-Platinum compound",
-      "cis-DDP",
-      "cis-Diaminedichloroplatinum",
-      "cis-Platinum II",
+      "cis-Diamminedichloroplatinum",
       "DDP",
       "Dichlorodiammineplatinum",
-      "cis-Diamminedichloroplatinum",
       "cis-Dichlorodiammineplatinum(II)",
       "Platinum Diamminodichloride",
       "cis-Diamminedichloroplatinum(II)",
-      "cis-Platinum",
       "cis-diamminedichloroplatinum(II)",
       "CDDP",
       "Cis-DDP"
@@ -548,15 +542,13 @@
     "other_identifiers": ["drugbank:DB00515", "drugbank:DB12117"],
     "xrefs": [
       "usp:m17910",
-      "snomedct:57066004",
       "vandf:4018139",
-      "msh:D002945",
+      "mesh:D002945",
       "mthspl:Q20Q21Q62J",
       "mmsl:d00195",
       "atc:L01XA01",
       "mmsl:31747",
-      "mmsl:4456",
-      "snomedct:387318005"
+      "mmsl:4456"
     ],
     "src_name": "RxNorm",
     "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415"
@@ -572,7 +564,7 @@
     "src_name": "RxNorm"
   },
   {
-    "label_and_type": "diaminedichloroplatinum##alias",
+    "label_and_type": "dichlorodiammineplatinum##alias",
     "concept_id": "rxcui:2555",
     "src_name": "RxNorm"
   },
@@ -593,7 +585,6 @@
     "approval_status": "approved",
     "aliases": [
       "3,5-diamino-N-carbamimidoyl-6-chloropyrazine-2-carboxamide",
-      "Amiloride",
       "aMILoride",
       "Amipramidin",
       "Amipramidine",
@@ -611,13 +602,11 @@
     ],
     "other_identifiers": ["drugbank:DB00594"],
     "xrefs": [
-      "snomedct:387503008",
-      "msh:D000584",
+      "mesh:D000584",
       "vandf:4019603",
       "mthspl:7DZO8EB0Z3",
       "mmsl:d00169",
-      "atc:C03DB01",
-      "snomedct:87395005"
+      "atc:C03DB01"
     ],
     "src_name": "RxNorm"
   },
@@ -649,7 +638,6 @@
     "aliases": [
       "(S)-1-((1,1-Dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadazol-3-yl)oxy)-2-propanol",
       "2-Propanol, 1-((1,1-dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadiazol-3-yl)oxy)-, (S)-",
-      "Timolol",
       "(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol-3-yl)oxy]propan-2-ol"
     ],
     "trade_names": [
@@ -670,12 +658,10 @@
     "xrefs": [
       "vandf:4019949",
       "mthspl:817W3C6175",
-      "snomedct:372880004",
-      "msh:D013999",
+      "mesh:D013999",
       "mmsl:d00139",
       "atc:C07AA06",
-      "atc:S01ED01",
-      "snomedct:85591001"
+      "atc:S01ED01"
     ],
     "src_name": "RxNorm"
   },
@@ -700,7 +686,6 @@
     "label": "lymphocyte immune globulin, anti-thymocyte globulin",
     "approval_status": "approved",
     "aliases": [
-      "Antithymocyte immunoglobulin",
       "Lymphocyte Immune Globulin, Anti-Thymocyte Globulin",
       "Anti-Thymocyte Globulin",
       "Antithymocyte Globulin",
@@ -718,8 +703,7 @@
     ],
     "trade_names": ["ATGAM", "Thymoglobulin"],
     "xrefs": [
-      "snomedct:768651008",
-      "msh:D000961",
+      "mesh:D000961",
       "vandf:4022194",
       "vandf:4018097",
       "mmsl:d01141",
@@ -760,7 +744,6 @@
     "aliases": [
       "Salicylic acid acetate",
       "Aspirin",
-      "Acetylsalicylic acid",
       "Acid, Acetylsalicylic",
       "2-(Acetyloxy)benzoic Acid",
       "2-Acetoxybenzenecarboxylic acid",
@@ -774,19 +757,16 @@
     "other_identifiers": ["drugbank:DB00945"],
     "xrefs": [
       "usp:m6240",
-      "snomedct:7947003",
       "vandf:4017536",
       "mmsl:34512",
       "mthspl:R16CO5Y76E",
       "mmsl:244",
-      "snomedct:387458008",
-      "msh:D001241",
+      "mesh:D001241",
       "mmsl:4223",
       "mmsl:d00170",
       "atc:A01AD05",
       "atc:B01AC06",
-      "atc:N02BA01",
-      "snomedct:7947003"
+      "atc:N02BA01"
     ],
     "src_name": "RxNorm"
   },
@@ -811,7 +791,6 @@
     "label": "mesna",
     "approval_status": "approved",
     "aliases": [
-      "Sodium 2-mercaptoethanesulfonate",
       "Mesnum",
       "Ethanesulfonic acid, 2-mercapto-, monosodium salt",
       "Sodium 2-Mercaptoethanesulphonate",
@@ -821,15 +800,12 @@
     "trade_names": ["Mesna", "Mesnex", "Mesna Nova Plus"],
     "xrefs": [
       "usp:m49500",
-      "snomedct:108821000",
-      "snomedct:386922000",
-      "msh:D015080",
+      "mesh:D015080",
       "vandf:4019477",
       "mthspl:NR7O1405Q9",
       "atc:R05CB05",
       "atc:V03AF01",
       "mmsl:41498",
-      "snomedct:386922000",
       "mmsl:5057",
       "mmsl:d01411"
     ],
@@ -861,17 +837,11 @@
     "label": "beta-alanine",
     "approval_status": "approved",
     "aliases": [
-      "Beta alanine",
       "beta Alanine",
       "3 Aminopropionic Acid",
       "3-Aminopropionic Acid"
     ],
-    "xrefs": [
-      "snomedct:70587000",
-      "msh:D015091",
-      "vandf:4028377",
-      "mthspl:11P2JDE17B"
-    ],
+    "xrefs": ["mesh:D015091", "vandf:4028377", "mthspl:11P2JDE17B"],
     "src_name": "RxNorm"
   },
   {
@@ -895,7 +865,7 @@
       "Alphasone",
       "Dihydroxyprogesterone"
     ],
-    "xrefs": ["msh:D000523"],
+    "xrefs": ["mesh:D000523"],
     "src_name": "RxNorm"
   },
   {
@@ -913,6 +883,25 @@
     "concept_id": "rxcui:10582",
     "label": "levothyroxine",
     "approval_status": "approved",
+    "aliases": [
+      "3,5,3',5'-Tetraiodo-L-thyronine",
+      "Thyroxine",
+      "thyroxine",
+      "Thyroid Hormone, T4",
+      "Thyroxin",
+      "T4 Thyroid Hormone",
+      "O-(4-Hydroxy-3,5-diiodophenyl)-3,5-diiodotyrosine",
+      "3,5,3',5'-Tetraiodothyronine",
+      "O-(4-Hydroxy-3,5-diiodophenyl)-3,5-diiodo-L-tyrosine",
+      "L-T4",
+      "LT4",
+      "T4",
+      "3,3',5,5'-Tetraiodo-L-thyronine",
+      "L-Thyroxine",
+      "O-(4-Hydroxy-3,5-diidophenyl)-3,5-diiodo-L-tyrosine",
+      "4-(4-Hydroxy-3,5-diiodophenoxy)-3,5-diiodo-L-phenylalanine",
+      "Levothyroxin"
+    ],
     "trade_names": [
       "Eltroxin",
       "Estre",
@@ -937,14 +926,10 @@
     ],
     "other_identifiers": ["drugbank:DB00451"],
     "xrefs": [
-      "snomedct:768532006",
-      "snomedct:73187006",
       "vandf:4022126",
-      "msh:D013974",
+      "mesh:D013974",
       "mmsl:d00278",
-      "mthspl:Q51BO43MG4",
-      "snomedct:710809001",
-      "snomedct:38076006"
+      "mthspl:Q51BO43MG4"
     ],
     "src_name": "RxNorm"
   },
@@ -1286,5 +1271,124 @@
     "label_and_type": "agerafenib##alias",
     "concept_id": "ncit:C107245",
     "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "thyroxin##alias",
+    "concept_id": "rxcui:10582",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "lt4##alias",
+    "concept_id": "rxcui:10582",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:1041527##rx_brand",
+    "concept_id": "rxcui:161",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:218330##rx_brand",
+    "concept_id": "rxcui:44",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:142424##identity",
+    "concept_id": "rxcui:142424",
+    "label": "amiloride hydrochloride",
+    "approval_status": "approved",
+    "aliases": [
+      "aMILoride hydrochloride",
+      "Amiloride Hydrochloride",
+      "Hydrochloride, Amiloride"
+    ],
+    "xrefs": [
+      "usp:m2650",
+      "mthspl:FZJ37245UC",
+      "mmsl:2658",
+      "mesh:D000584",
+      "mmsl:4166",
+      "vandf:4017935"
+    ],
+    "trade_names": [
+      "AMILoride Hydrochloride",
+      "Midamor",
+      "Aridil",
+      "Frusemek",
+      "Midamor",
+      "Moduret",
+      "Moduretic",
+      "Zida-Co"
+    ],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "amiloride hydrochloride##label",
+    "concept_id": "rxcui:142424",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "midamor##trade_name",
+    "concept_id": "rxcui:142424",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:4493##identity",
+    "concept_id": "rxcui:4493",
+    "label": "fluoxetine",
+    "approval_status": "approved",
+    "aliases": [
+      "FLUoxetine",
+      "N-Methyl-gamma-(4-(trifluoromethyl)phenoxy)benzenepropanamine",
+      "Fluoxetin",
+      "(+-)-N-Methyl-gamma-(4-(trifluoromethyl)phenoxy)benzenepropanamine",
+      "(+-)-N-Methyl-3-phenyl-3-((alpha,alpha,alpha-trifluoro-P-tolyl)oxy)propylamine"
+    ],
+    "other_identifiers": ["drugbank:DB00472"],
+    "xrefs": [
+      "mesh:D005473",
+      "mmsl:17711",
+      "vandf:4019761",
+      "mmsl:d00236",
+      "atc:N06AB03",
+      "mthspl:01K63SUP8D"
+    ],
+    "trade_names": [
+      "Prozac",
+      "RECONCILE",
+      "Sarafem",
+      "Symbyax",
+      "Rapiflux",
+      "Selfemra"
+    ],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "fluoxetine##label",
+    "concept_id": "rxcui:4493",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "rxcui:227224##identity",
+    "concept_id": "rxcui:227224",
+    "label": "fluoxetine hydrochloride",
+    "approval_status": "approved",
+    "aliases": ["FLUoxetine hydrochloride", "Fluoxetine Hydrochloride"],
+    "xrefs": [
+      "usp:m33780",
+      "mthspl:I9W7N6B1KJ",
+      "mmsl:4746",
+      "vandf:4019389",
+      "mmsl:41730",
+      "mmsl:37675",
+      "mesh:D005473"
+    ],
+    "trade_names": ["FLUoxetine HCl", "FLUoxetine Hydrochloride", "RECONCILE"],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "fluoxetine hydrochloride##label",
+    "concept_id": "rxcui:227224",
+    "src_name": "RxNorm"
   }
 ]

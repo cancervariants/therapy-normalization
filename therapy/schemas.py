@@ -160,10 +160,9 @@ class NamespacePrefix(Enum):
     ATC = "atc"  # Anatomical Therapeutic Chemical Classification System
     CVX = "cvx"  # Vaccines Administered
     MMSL = "mmsl"  # Multum MediSource Lexicon
-    MSH = "msh"  # Medical Subject Headings
+    MSH = "mesh"  # Medical Subject Headings
     MTHCMSFRF = "mthcmsfrf"  # CMS Formulary Reference File
     MTHSPL = "mthspl"  # FDA Structured Product Labels
-    SNOMEDCT_US = "snomedct"  # US Edition of SNOMED CT
     USP = "usp"  # USP Compendial Nomenclature
     VANDF = "vandf"  # Veterans Health Administration National Drug File
 
