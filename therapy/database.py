@@ -180,16 +180,15 @@ class Database:
 
         :param query: string to match against
         :param str match_type: type of match to look for. Should be one
-            of "alias", "trade_name", or "label" (use get_record_by_id for
-            concept ID lookup)
+            of "alias", "trade_name", "label", or "rx_brand" (use
+            `get_record_by_id` for concept ID lookup)
         :return: list of matching records. Empty if lookup fails.
         """
         pk = f'{query}##{match_type.lower()}'
         filter_exp = Key('label_and_type').eq(pk)
         try:
             matches = self.therapies.query(KeyConditionExpression=filter_exp)
-            if 'Items' in matches.keys():
-                return matches.get('Items', {None})
+            return matches.get('Items', None)
         except ClientError as e:
             logger(e.response['Error']['Message'])
             return []

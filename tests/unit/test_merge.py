@@ -131,20 +131,16 @@ def cisplatin_merged():
             'Cis-DDP',
             'CIS-DDP',
             'DDP',
-            'Diaminedichloroplatinum',
             'Diamminodichloride, Platinum',
             'Dichlorodiammineplatinum',
             'Platinum Diamminodichloride',
             'cis Diamminedichloroplatinum',
             'cis Platinum',
-            'cis-DDP',
             'cis-Diaminedichloroplatinum',
             'cis-Diamminedichloroplatinum',
             'cis-Diamminedichloroplatinum(II)',
             'cis-Dichlorodiammineplatinum(II)',
             'cis-Platinum',
-            'cis-Platinum II',
-            'cis-Platinum compound',
             'cis-diamminedichloroplatinum(II)',
             'Platinol-AQ',
             'Platinol'
@@ -154,11 +150,9 @@ def cisplatin_merged():
             "umls:C0008838",
             "fda:Q20Q21Q62J",
             "usp:m17910",
-            "snomedct:57066004",
             "vandf:4018139",
-            "msh:D002945",
+            "mesh:D002945",
             "mthspl:Q20Q21Q62J",
-            "snomedct:387318005",
             "mmsl:d00195",
             "atc:L01XA01",
             "mmsl:31747",
@@ -252,6 +246,14 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415"
         },
+        "rxcui:4126": {
+            "rxcui:4126",
+            "wikidata:Q47521576"
+        },
+        "wikidata:Q47521576": {
+            "rxcui:4126",
+            "wikidata:Q47521576"
+        },
     }
 
 
@@ -262,9 +264,10 @@ def test_create_record_id_set(merge_handler, record_id_groups):
         for concept_id in new_group:
             merge_handler.merge._groups[concept_id] = new_group
     groups = merge_handler.merge._groups
-    assert len(groups) == len(record_id_groups)
+
     for concept_id in groups.keys():
         assert groups[concept_id] == record_id_groups[concept_id]
+    assert len(groups) == len(record_id_groups)  # check if any are missing
 
     # test dead reference
     has_dead_ref = 'ncit:C107245'
@@ -294,12 +297,11 @@ def test_create_merged_concepts(merge_handler, record_id_groups,
                                 spiramycin_merged):
     """Test end-to-end creation and upload of merged concepts."""
     record_ids = record_id_groups.keys()
-    print(merge_handler.get_merge()._database.records.keys())
     merge_handler.create_merged_concepts(record_ids)
 
     # check merged record generation and storage
     added_records = merge_handler.get_added_records()
-    assert len(added_records) == 3
+    assert len(added_records) == 4
     phenobarb_merged_id = phenobarbital_merged['concept_id']
     assert phenobarb_merged_id in added_records.keys()
     compare_merged_records(added_records[phenobarb_merged_id],
@@ -317,13 +319,13 @@ def test_create_merged_concepts(merge_handler, record_id_groups,
     assert len(updates) == len(record_id_groups)
     for concept_id in record_id_groups['rxcui:8134']:
         assert updates[concept_id] == {
-            'merge_ref': phenobarbital_merged['label_and_type']
+            'merge_ref': phenobarbital_merged['concept_id'].lower()
         }
     for concept_id in record_id_groups['rxcui:2555']:
         assert updates[concept_id] == {
-            'merge_ref': cisplatin_merged['label_and_type']
+            'merge_ref': cisplatin_merged['concept_id'].lower()
         }
     for concept_id in record_id_groups['ncit:C839']:
         assert updates[concept_id] == {
-            'merge_ref': spiramycin_merged['label_and_type']
+            'merge_ref': spiramycin_merged['concept_id'].lower()
         }
