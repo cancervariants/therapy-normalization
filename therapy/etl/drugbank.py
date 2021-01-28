@@ -103,11 +103,13 @@ class DrugBank(Base):
             self._get_version()
             if len(db_files) == 0:
                 self._download_data(db_dir)
+                db_files = list(db_dir.iterdir())
             else:
                 # We want to use the most recent version
                 if not str(sorted(db_files)[-1]).endswith(
                         f"{self._version_date}.xml"):
                     self._download_data(db_dir)
+                    db_files = list(db_dir.iterdir())
             self._data_src = sorted(db_files)[-1]
             if not str(self._data_src).endswith('xml'):
                 raise FileNotFoundError("Could not find DrugBank XML file.")
@@ -183,8 +185,8 @@ class DrugBank(Base):
     def _load_data(self, *args, **kwargs):
         """Load the DrugBank source into normalized database."""
         self._extract_data()
-        self._transform_data()
         self._add_meta()
+        self._transform_data()
 
     def _load_therapy(self, batch, params):
         """Filter out trade names and aliases that exceed 20 and add item to
@@ -266,8 +268,6 @@ class DrugBank(Base):
                     params['xrefs'].append(
                         f"{DRUGBANK_IDENTIFIER_PREFIXES[src]}:"
                         f"{identifier}")
-            else:
-                logger.info(f"{src} not in DrugBank identifier prefixes.")
 
     def _load_products(self, element, params, xmlns):
         """Load products as trade names."""
