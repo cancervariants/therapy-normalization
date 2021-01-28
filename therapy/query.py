@@ -386,9 +386,9 @@ class QueryHandler:
         # merged_record = self.db.get_merged_record(merge_ref,
         #                                           case_sensitive=False)
         if not merged_record:
-            logger.error(f"Could not retrieve merged record for concept "
-                         f"ID group {merge_ref} "
-                         f"by way of query {response['query']}")
+            logger.warning(f"Could not retrieve merged record for concept "
+                           f"ID group {merge_ref} "
+                           f"by way of query {response['query']}")
             response['match_type'] = MatchType.NO_MATCH
             return response
         response['record'] = self._format_merged_record(merged_record)
