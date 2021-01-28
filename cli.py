@@ -11,6 +11,10 @@ import sys
 from os import environ
 
 
+MERGE_SOURCES = {SourceName.WIKIDATA.value, SourceName.RXNORM.value,
+                 SourceName.NCIT.value, SourceName.CHEMIDPLUS.value}
+
+
 class CLI:
     """Class for updating the normalizer database via Click"""
 
@@ -104,7 +108,9 @@ class CLI:
             click.echo(f"Loading {n}...")
             start_load = timer()
             source = sources[n](database=db)
-            processed_ids += source.perform_etl()
+            source_ids = source.perform_etl()
+            if source.__class__name in MERGE_SOURCES:
+                processed_ids += source_ids
             end_load = timer()
             load_time = end_load - start_load
             click.echo(f"Loaded {n} in {load_time:.5f} seconds.")

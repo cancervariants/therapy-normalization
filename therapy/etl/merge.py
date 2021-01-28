@@ -76,7 +76,7 @@ class Merge:
         :rtype: Set
         """
         other_ids = set()
-        for other_id in record.get('other_identifiers', None):
+        for other_id in record.get('other_identifiers', []):
             allowed = True
             for prefix in DISALLOWED_SOURCES:
                 if other_id.startswith(prefix):
