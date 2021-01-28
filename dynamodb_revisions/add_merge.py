@@ -13,7 +13,7 @@ def main():
 
     concept_ids_path = PROJECT_ROOT / 'dynamodb_revisions' / 'concept_ids.txt'
     if concept_ids_path.exists():
-        with open(concept_ids_path) as f:
+        with open(concept_ids_path, 'r') as f:
             concept_ids = f.read().splitlines()
     else:
         print("Compiling concept IDs...")
