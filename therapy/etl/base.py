@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 from therapy.schemas import NamespacePrefix
 from therapy.database import Database
-from typing import Set
+from typing import List
 
 # prefixes for translating ID namespaces
 IDENTIFIER_PREFIXES = {
@@ -23,13 +23,16 @@ class Base(ABC):
     def __init__(self, database: Database):
         """Extract from sources."""
         self.database = database
-        self._added_ids = set()
+        self._added_ids = []
 
     @abstractmethod
-    def perform_etl(self) -> Set[str]:
+    def perform_etl(self) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
 
-        :return: Set of concept IDs which were successfully processed and
+        Returned concept IDs can be passed to Merge method for computing
+        merged concepts.
+
+        :return: list of concept IDs which were successfully processed and
             uploaded.
         """
         raise NotImplementedError
