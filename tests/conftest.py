@@ -150,7 +150,7 @@ def mock_database():
             label_and_type = f'{query}##{match_type.lower()}'
             records_lookup = self.records.get(label_and_type, None)
             if records_lookup:
-                return [v.copy() for k, v in records_lookup.items()]
+                return [v.copy() for v in records_lookup.values()]
             else:
                 return []
 
