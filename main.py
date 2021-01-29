@@ -40,7 +40,7 @@ app.openapi = custom_openapi
 get_matches_summary = """Given query, provide highest matches from
                      each source."""
 response_descr = "A response to a validly-formed query."
-q_descr = "Therapy to normalize."
+q_descr = "Therapy to search."
 keyed_descr = """Optional. If true, return response as key-value pairs of
               sources to source matches. False by default"""
 incl_descr = """Optional. Comma-separated list of source names to include in
@@ -84,8 +84,8 @@ def get_matches(q: str = Query(..., description=q_descr),
 
 
 merged_matches_summary = """Given query, provide merged normalized record."""
-merged_response_descr = ""
-merged_q_descr = ""
+merged_response_descr = "A response to a validly-formed query."
+merged_q_descr = "Therapy to normalize."
 
 
 @app.get("/therapy/normalize",
