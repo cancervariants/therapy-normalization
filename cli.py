@@ -109,7 +109,7 @@ class CLI:
             start_load = timer()
             source = sources[n](database=db)
             source_ids = source.perform_etl()
-            if source.__class__name in MERGE_SOURCES:
+            if source.__class__.__name__ in MERGE_SOURCES:
                 processed_ids += source_ids
             end_load = timer()
             load_time = end_load - start_load

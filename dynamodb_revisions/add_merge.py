@@ -3,6 +3,9 @@ from therapy.database import Database
 from therapy.etl.merge import Merge
 from timeit import default_timer as timer
 from therapy.schemas import SourceName
+import environ
+import click
+import sys
 
 
 def main():
@@ -40,4 +43,11 @@ def main():
 
 
 if __name__ == '__main__':
+    if 'THERAPY_NORM_DB_URL' not in environ.keys():
+        if click.confirm("Are you sure you want to update"
+                         " the production database?", default=False):
+            click.echo("Updating production db...")
+        else:
+            click.echo("Exiting.")
+            sys.exit()
     main()
