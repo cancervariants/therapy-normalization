@@ -1,6 +1,8 @@
 """Test that the therapy normalizer works as intended for the
 Wikidata source.
 """
+from datetime import datetime
+
 import pytest
 from therapy.schemas import Drug, MatchType
 from therapy.query import Normalizer
@@ -129,9 +131,13 @@ def atropine():
         ],
         'approval_status': None,
         'other_identifiers': [
+            'drugbank:DB00572',
+            'chemidplus:51-55-8',
             'rxcui:1223'
         ],
-        'xrefs': [],
+        'xrefs': [
+            'pubchem.compound:174174',
+        ],
         'trade_names': []
     }
     return Drug(**params)
@@ -607,7 +613,7 @@ def test_meta_info(cisplatin, wikidata):
     assert normalizer_response['meta_'].data_license == 'CC0 1.0'
     assert normalizer_response['meta_'].data_license_url == \
            'https://creativecommons.org/publicdomain/zero/1.0/'
-    assert normalizer_response['meta_'].version == '20200812'
+    assert datetime.strptime(normalizer_response['meta_'].version, "%Y%m%d")
     assert normalizer_response['meta_'].data_url is None
     assert not normalizer_response['meta_'].rdp_url
     assert normalizer_response['meta_'].data_license_attributes == {
