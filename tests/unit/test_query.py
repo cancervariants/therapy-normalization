@@ -381,7 +381,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert 'record' not in response
     assert response['match_type'] == MatchType.NO_MATCH
 
-    # test merge group with single member  TODO
+    # test merge group with single member
     test_query = "Betimol"
     response = merge_query_handler.search_groups(test_query)
     assert response['query'] == test_query
