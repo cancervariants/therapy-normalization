@@ -7,7 +7,7 @@ import logging
 import tarfile  # noqa: F401
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, Meta
 import sqlite3
-from typing import Set
+from typing import List
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -27,10 +27,10 @@ class ChEMBL(Base):
         self._data_path = data_path
         self._added_ids = []
 
-    def perform_etl(self) -> Set[str]:
+    def perform_etl(self) -> List[str]:
         """Public-facing method to initiate ETL procedures on given data.
 
-        :return: Set of concept IDs which were successfully processed and
+        :return: List of concept IDs which were successfully processed and
             uploaded.
         """
         self._load_meta()

@@ -14,7 +14,7 @@ import csv
 import datetime
 import logging
 import botocore
-from typing import Set
+from typing import List
 from os import environ, remove
 import subprocess
 import shutil
@@ -59,10 +59,10 @@ class RxNorm(Base):
         self.database = database
         self._added_ids = []
 
-    def perform_etl(self) -> Set[str]:
+    def perform_etl(self) -> List[str]:
         """Load the RxNorm source into database.
 
-        :return: Set of concept IDs which were successfully processed and
+        :return: List of concept IDs which were successfully processed and
             uploaded.
         """
         self._extract_data()

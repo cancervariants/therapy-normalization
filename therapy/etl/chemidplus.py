@@ -3,7 +3,7 @@
 Courtesy of the U.S. National Library of Medicine.
 """
 from .base import Base
-from typing import Set
+from typing import List, Dict
 from therapy import PROJECT_ROOT
 from therapy.database import Database
 from therapy.schemas import Drug, NamespacePrefix, Meta, SourceName, \
@@ -12,7 +12,6 @@ from pathlib import Path
 from ftplib import FTP
 import xml.etree.ElementTree as ET
 import logging
-from typing import Dict
 from boto3.dynamodb.table import BatchWriter
 import re
 
@@ -52,10 +51,10 @@ class ChemIDplus(Base):
         self._src_fname = src_fname
         self._added_ids = []
 
-    def perform_etl(self) -> Set[str]:
+    def perform_etl(self) -> List[str]:
         """Public-facing method to initiate ETL procedures on given data.
 
-        :return: Set of concept IDs which were successfully processed and
+        :return: List of concept IDs which were successfully processed and
             uploaded.
         """
         self._extract_data()
