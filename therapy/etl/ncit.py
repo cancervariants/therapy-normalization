@@ -6,7 +6,7 @@ from therapy.database import Database
 import logging
 import owlready2 as owl
 from owlready2.entity import ThingClass
-from typing import Set
+from typing import List, Set
 from pathlib import Path
 import requests
 import zipfile
@@ -45,10 +45,10 @@ class NCIt(Base):
         self._chemidplus_path = chemidplus_path
         self._added_ids = []
 
-    def perform_etl(self) -> Set[str]:
+    def perform_etl(self) -> List[str]:
         """Public-facing method to initiate ETL procedures on given data.
 
-        :return: Set of concept IDs which were successfully processed and
+        :return: List of concept IDs which were successfully processed and
             uploaded.
         """
         self._extract_data()

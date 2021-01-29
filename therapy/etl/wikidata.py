@@ -1,12 +1,12 @@
 """This module defines the Wikidata ETL methods."""
 from .base import Base, IDENTIFIER_PREFIXES
 from therapy import PROJECT_ROOT
-import json
 from therapy.schemas import SourceName, NamespacePrefix, \
     SourceIDAfterNamespace, Meta
 from therapy.database import Database
+import json
 import logging
-from typing import Dict, Set
+from typing import Dict, List
 from pathlib import Path
 
 logger = logging.getLogger('therapy')
@@ -60,10 +60,10 @@ class Wikidata(Base):
         self._data_path = data_path
         self._added_ids = []
 
-    def perform_etl(self) -> Set[str]:
+    def perform_etl(self) -> List[str]:
         """Public-facing method to initiate ETL procedures on given data.
 
-        :return: Set of concept IDs which were successfully processed and
+        :return: List of concept IDs which were successfully processed and
             uploaded.
         """
         self._extract_data()
