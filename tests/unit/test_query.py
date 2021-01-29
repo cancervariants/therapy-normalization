@@ -27,7 +27,7 @@ def merge_query_handler(mock_database):
     class QueryGetter():
         def __init__(self):
             self.query_handler = QueryHandler(db_url='http://localhost:8000')
-            self.query_handler.db = mock_database()
+            self.query_handler.db = mock_database()  # replace initial DB
 
         def search_groups(self, query_str):
             return self.query_handler.search_groups(query_str)
@@ -337,7 +337,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['match_type'] == MatchType.ALIAS
     compare_records(response['record'], spiramycin)
 
-    # # test no match
+    # test no match
     test_query = "zzzz fake therapy zzzz"
     response = merge_query_handler.search_groups(test_query)
     assert response['query'] == test_query
@@ -348,7 +348,10 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     # test merge group with single member  TODO
 
     # test that term with multiple possible resolutions resolves at highest
-    # match  TODO
+    # match
+    test_query = "Cisplatin"
+    response = merge_query_handler.search_groups(test_query)
+    assert response['match_type'] == MatchType.LABEL
 
 
 def test_merged_meta(merge_query_handler):
