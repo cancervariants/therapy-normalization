@@ -37,20 +37,20 @@ def custom_openapi():
 app.openapi = custom_openapi
 
 # endpoint description text
-get_matches_summary = """Given query, provide highest matches from
-                     each source."""
+get_matches_summary = ("Given query, provide highest matches from "
+                       "each source.")
 response_descr = "A response to a validly-formed query."
 q_descr = "Therapy to search."
-keyed_descr = """If true, return response as key-value pairs of
-              sources to source matches. False by default"""
-incl_descr = """Comma-separated list of source names to include in
-             response. Will exclude all other sources. Will return HTTP
-             status code 422: Unprocessable Entity if both 'incl' and
-             'excl' parameters are given."""
-excl_descr = """Comma-separated list of source names to exclude in
-             response. Will include all other sources. Will return HTTP
-             status code 422: Unprocessable Entity if both 'incl' and
-             'excl' parameters are given."""
+keyed_descr = ("If true, return response as key-value pairs of "
+               "sources to source matches. False by default")
+incl_descr = ("Comma-separated list of source names to include in "
+              "response. Will exclude all other sources. Will return HTTP "
+              "status code 422: Unprocessable Entity if both 'incl' and "
+              "'excl' parameters are given.")
+excl_descr = ("Comma-separated list of source names to exclude in "
+              "response. Will include all other sources. Will return HTTP "
+              "status code 422: Unprocessable Entity if both 'incl' and"
+              "'excl' parameters are given.")
 
 
 @app.get("/therapy/search",
@@ -58,10 +58,10 @@ excl_descr = """Comma-separated list of source names to exclude in
          operation_id="getQueryResponse",
          response_description=response_descr,
          response_model=Service)
-def get_matches(q: str = Query(..., description=q_descr),
-                keyed: Optional[bool] = Query(False, description=keyed_descr),
-                incl: Optional[str] = Query('', description=incl_descr),
-                excl: Optional[str] = Query('', description=excl_descr)):
+def search(q: str = Query(..., description=q_descr),
+           keyed: Optional[bool] = Query(False, description=keyed_descr),
+           incl: Optional[str] = Query('', description=incl_descr),
+           excl: Optional[str] = Query('', description=excl_descr)):
     """For each source, return strongest-match concepts for query string
     provided by user.
 
@@ -83,7 +83,7 @@ def get_matches(q: str = Query(..., description=q_descr),
     return response
 
 
-merged_matches_summary = """Given query, provide merged normalized record."""
+merged_matches_summary = "Given query, provide merged normalized record."
 merged_response_descr = "A response to a validly-formed query."
 merged_q_descr = "Therapy to normalize."
 
@@ -93,7 +93,7 @@ merged_q_descr = "Therapy to normalize."
          operation_id="getQuerymergedResponse",
          response_description=merged_response_descr,
          response_model=NormalizationService)
-def get_merged_matches(q: str = Query(..., description=merged_q_descr)):
+def normalize(q: str = Query(..., description=merged_q_descr)):
     """Return merged strongest-match concept for query string provided by
     user.
 
