@@ -1,8 +1,7 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
 from botocore.exceptions import ClientError
-from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm, \
-    Merge
+from therapy.etl import Merge
 from therapy.schemas import SourceName
 from timeit import default_timer as timer
 from therapy.database import Database
@@ -13,6 +12,9 @@ from os import environ
 
 MERGE_SOURCES = {SourceName.WIKIDATA.value, SourceName.RXNORM.value,
                  SourceName.NCIT.value, SourceName.CHEMIDPLUS.value}
+
+SOURCES = {s.value.lower(): eval(s.value)
+           for s in SourceName.__members__.values()}
 
 
 class CLI:
@@ -39,15 +41,6 @@ class CLI:
     )
     def update_normalizer_db(normalizer, dev, db_url, update_all):
         """Update select normalizer source(s) in the therapy database."""
-        sources = {
-            'chembl': ChEMBL,
-            'ncit': NCIt,
-            'wikidata': Wikidata,
-            'drugbank': DrugBank,
-            'chemidplus': ChemIDplus,
-            'rxnorm': RxNorm,
-        }
-
         if dev:
             db: Database = Database(db_url='http://localhost:8000')
         elif db_url:
@@ -65,22 +58,22 @@ class CLI:
                 sys.exit()
 
         if update_all:
-            normalizers = list(src for src in sources)
-            CLI()._update_normalizers(normalizers, sources, db)
+            normalizers = list(src for src in SOURCES)
+            CLI()._update_normalizers(normalizers, db)
         elif not normalizer:
             CLI()._help_msg()
         else:
-            normalizers = normalizer.lower().split()
+            normalizers = str(normalizer).lower().split()
 
             if len(normalizers) == 0:
                 CLI()._help_msg()
 
-            non_sources = CLI()._check_norm_srcs_match(sources, normalizers)
+            non_sources = CLI()._check_norm_srcs_match(normalizers)
 
             if len(non_sources) != 0:
                 raise Exception(f"Not valid source(s): {non_sources}")
 
-            CLI()._update_normalizers(normalizers, sources, db)
+            CLI()._update_normalizers(normalizers, db)
 
     def _help_msg(self):
         """Display help message."""
@@ -90,11 +83,11 @@ class CLI:
         click.echo(ctx.get_help())
         ctx.exit()
 
-    def _check_norm_srcs_match(self, sources, normalizers):
+    def _check_norm_srcs_match(self, normalizers):
         """Check that entered normalizers are actual sources."""
-        return set(normalizers) - {src for src in sources}
+        return set(normalizers) - {src for src in SOURCES}
 
-    def _update_normalizers(self, normalizers, sources, db):
+    def _update_normalizers(self, normalizers, db):
         """Update selected normalizer sources."""
         processed_ids = []
         for n in normalizers:
@@ -107,7 +100,7 @@ class CLI:
                        f"{delete_time:.5f} seconds.\n")
             click.echo(f"Loading {n}...")
             start_load = timer()
-            source = sources[n](database=db)
+            source = SOURCES[n](database=db)
             source_ids = source.perform_etl()
             if source.__class__.__name__ in MERGE_SOURCES:
                 processed_ids += source_ids
