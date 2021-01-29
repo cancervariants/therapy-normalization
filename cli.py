@@ -117,12 +117,13 @@ class CLI:
             click.echo(f"Total time for {n}: "
                        f"{(delete_time + load_time):.5f} seconds.")
 
-        click.echo("Generating merged concepts...")
-        start = timer()
-        merge = Merge(db)
-        merge.create_merged_concepts(processed_ids)
-        end = timer()
-        click.echo(f"Generated merged concepts in {end - start:.5f} seconds.")
+        if processed_ids:
+            click.echo("Generating merged concepts...")
+            start = timer()
+            merge = Merge(db)
+            merge.create_merged_concepts(processed_ids)
+            end = timer()
+            click.echo(f"Generated merged concepts in {end - start:.5f} seconds.")  # noqa: E501
 
     def _delete_data(self, source, database):
         # Delete source's metadata
