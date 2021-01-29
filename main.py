@@ -84,8 +84,8 @@ def get_matches(q: str = Query(..., description=q_descr),
 
 
 merged_matches_summary = """Given query, provide merged normalized record."""
-merged_response_descr = ""
-merged_q_descr = ""
+merged_response_descr = "A response to a validly-formed query."
+merged_q_descr = "Therapy to normalize."
 
 
 @app.get("/therapy/normalize",
