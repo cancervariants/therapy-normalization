@@ -1,7 +1,7 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
 from botocore.exceptions import ClientError
-from therapy.etl import Merge
+from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm, Merge  # noqa: F401, E501
 from therapy.schemas import SourceName
 from timeit import default_timer as timer
 from therapy.database import Database
