@@ -190,7 +190,7 @@ class Database:
             matches = self.therapies.query(KeyConditionExpression=filter_exp)
             return matches.get('Items', None)
         except ClientError as e:
-            logger(e.response['Error']['Message'])
+            logger.error(e.response['Error']['Message'])
             return []
 
     def get_merged_record(self, merge_ref) -> Optional[Dict]:

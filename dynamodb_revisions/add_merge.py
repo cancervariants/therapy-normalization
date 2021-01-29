@@ -9,7 +9,7 @@ from therapy import PROJECT_ROOT
 def main():
     """Execute scan on DB to gather concept IDs and add merged concepts."""
     start = timer()
-    db = Database(db_url='http://localhost:8000')
+    db = Database()
 
     concept_ids_path = PROJECT_ROOT / 'dynamodb_revisions' / 'concept_ids.txt'
     if concept_ids_path.exists():
@@ -51,4 +51,11 @@ def main():
 
 
 if __name__ == '__main__':
+    if 'THERAPY_NORM_DB_URL' not in environ.keys():
+        if click.confirm("Are you sure you want to update"
+                         " the production database?", default=False):
+            click.echo("Updating production db...")
+        else:
+            click.echo("Exiting.")
+            sys.exit()
     main()
