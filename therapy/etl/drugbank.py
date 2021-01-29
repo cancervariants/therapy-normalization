@@ -1,9 +1,9 @@
 """This module defines the DrugBank ETL methods."""
-from therapy.etl.base import Base
 from therapy import PROJECT_ROOT
-import logging
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, Meta
-from therapy.etl.base import IDENTIFIER_PREFIXES
+from therapy.etl.base import IDENTIFIER_PREFIXES, Base
+from therapy.database import Database
+import logging
 from lxml import etree
 from typing import Set
 from pathlib import Path
@@ -33,11 +33,14 @@ DRUGBANK_IDENTIFIER_PREFIXES = {
 class DrugBank(Base):
     """ETL the DrugBank source into therapy.db."""
 
-    def __init__(self, data_path: Path = PROJECT_ROOT / 'data' / 'drugbank'):
+    def __init__(self,
+                 database: Database,
+                 data_path: Path = PROJECT_ROOT / 'data' / 'drugbank'):
         """Initialize ETL class instance.
 
         :param Path data_path: directory containing source data
         """
+        self.database = database
         self._data_path = data_path
         self._added_ids = []
 

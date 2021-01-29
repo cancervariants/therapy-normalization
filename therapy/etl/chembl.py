@@ -1,6 +1,7 @@
 """This module defines the ChEMBL ETL methods."""
 from .base import Base
 from therapy import PROJECT_ROOT
+from therapy.database import Database
 from ftplib import FTP
 import logging
 import tarfile  # noqa: F401
@@ -16,11 +17,13 @@ class ChEMBL(Base):
     """ETL the ChEMBL source into therapy.db."""
 
     def __init__(self,
+                 database: Database,
                  data_path=PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27.db'):
         """Initialize CHEMBl ETL instance.
 
         :param Path data_path: path to CHEMBl source SQLite3 database file.
         """
+        self.database = database
         self._data_path = data_path
         self._added_ids = []
 
