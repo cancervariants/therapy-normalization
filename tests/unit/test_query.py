@@ -179,6 +179,42 @@ def spiramycin():
     }
 
 
+@pytest.fixture(scope='module')
+def timolol():
+    """Create fixture for timolol."""
+    return {
+        "concept_ids": ["rxcui:10600"],
+        "aliases": [
+            "(S)-1-((1,1-Dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadazol-3-yl)oxy)-2-propanol",  # noqa: E501
+            "2-Propanol, 1-((1,1-dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadiazol-3-yl)oxy)-, (S)-",  # noqa: E501
+            "(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol-3-yl)oxy]propan-2-ol"  # noqa: E501
+        ],
+        "trade_names": [
+            "Timoptol",
+            "Timolide",
+            "Betimol",
+            "Betim",
+            "Timoptic",
+            "Combigan",
+            "Istalol",
+            "Glaucol",
+            "Cosopt",
+            "Blocadren",
+            "Timoptol LA",
+            "Glau-Opt"
+        ],
+        "xrefs": [
+            "atc:C07AA06",
+            "mthspl:817W3C6175",
+            "vandf:4019949",
+            "atc:S01ED01",
+            "mesh:D013999",
+            "mmsl:d00139"
+        ],
+        "label": "timolol"
+    }
+
+
 def test_query(query_handler):
     """Test that query returns properly-structured response."""
     resp = query_handler.normalize('cisplatin', keyed=False)
@@ -288,7 +324,7 @@ def compare_records(test_record, record_fixture):
 
 
 def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
-                      spiramycin):
+                      spiramycin, timolol):
     """Test that the merged concept endpoint handles queries correctly."""
     # test merged id match
     test_query = "rxcui:2555|ncit:C376|chemidplus:15663-27-1|wikidata:Q412415"
@@ -346,19 +382,27 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['match_type'] == MatchType.NO_MATCH
 
     # test merge group with single member  TODO
+    test_query = "Betimol"
+    response = merge_query_handler.search_groups(test_query)
+    assert response['query'] == test_query
+    assert response['warnings'] is None
+    assert response['match_type'] == MatchType.TRADE_NAME
+    compare_records(response['record'], timolol)
 
     # test that term with multiple possible resolutions resolves at highest
     # match
     test_query = "Cisplatin"
     response = merge_query_handler.search_groups(test_query)
+    assert response['query'] == test_query
+    assert response['warnings'] is None
     assert response['match_type'] == MatchType.LABEL
+    compare_records(response['record'], cisplatin)
 
 
 def test_merged_meta(merge_query_handler):
     """Test population of source metadata in merged querying."""
     test_query = "pheno"
     response = merge_query_handler.search_groups(test_query)
-    print(response.keys())
     meta_items = response['meta_']
     assert 'RxNorm' in meta_items.keys()
     assert 'Wikidata' in meta_items.keys()
