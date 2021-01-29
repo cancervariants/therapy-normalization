@@ -425,7 +425,6 @@ class QueryHandler:
         query_str = query_str.lower()
 
         # check merged concept ID match
-        print(query_str)
         record = self.db.get_record_by_id(query_str, case_sensitive=False,
                                           merge=True)
         if record:
