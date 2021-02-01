@@ -3,7 +3,7 @@ from therapy.database import Database
 from therapy.etl.merge import Merge
 from timeit import default_timer as timer
 from therapy.schemas import SourceName
-import environ
+from os import environ
 import click
 import sys
 
