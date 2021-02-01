@@ -79,10 +79,10 @@ class DrugBank(Base):
                              )
             if r.status_code == 200:
                 zip_file = zipfile.ZipFile(BytesIO(r.content))
-                temp_dir = self._data_dir / 'temp_drugbank'
+                temp_dir = self._data_path / 'temp_drugbank'
                 zip_file.extractall(temp_dir)
                 temp_file = temp_dir / 'full database.xml'
-                db_xml_file = self._data_dir / f"drugbank_{self._version}.xml"
+                db_xml_file = self._data_path / f"drugbank_{self._version}.xml"
                 shutil.move(temp_file, db_xml_file)
                 shutil.rmtree(temp_dir)
             else:
