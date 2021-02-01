@@ -1,8 +1,8 @@
 """Add merged records and references to database."""
+from therapy import ACCEPTED_SOURCES
 from therapy.database import Database
 from therapy.etl.merge import Merge
 from timeit import default_timer as timer
-from therapy.schemas import SourceName
 import environ
 import click
 import sys
@@ -25,8 +25,7 @@ def main():
         items = response['Items']
         for item in items:
             if item['label_and_type'].endswith('##identity'):
-                if item['src_name'] != SourceName.CHEMBL.value and \
-                        item['src_name'] != SourceName.DRUGBANK.value:
+                if item['src_name'].lower() in ACCEPTED_SOURCES:
                     concept_ids.append(item['concept_id'])
 
         start_key = response.get('LastEvaluatedKey', None)
