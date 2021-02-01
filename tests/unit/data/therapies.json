@@ -251,7 +251,7 @@
     ],
     "xrefs": ["pubchem.compound:5702198"],
     "src_name": "Wikidata",
-    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415"
+    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415|wikidata:q47522001"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -315,23 +315,21 @@
     "label": "atropine",
     "concept_id": "wikidata:Q26272",
     "aliases": [
-        "dl-Hyoscyamine",
-        "dl-tropyltropate",
-        "Mydriasine",
-        "Tropine tropate",
-        "(±)-atropine",
-        "(±)-hyoscyamine",
-        "(+-)-Atropine",
-        "(+-)-Hyoscyamine",
-        "(+,-)-Tropyl tropate",
-        "(3-Endo)-8-methyl-8-azabicyclo[3.2.1]oct-3-yl tropate",
-        "[(1S,5R)-8-Methyl-8-azabicyclo[3.2.1]oct-3-yl] 3-hydroxy-2-phenyl-propanoate",
-        "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl 3-hydroxy-2-phenylpropanoate",
-        "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate"
+      "dl-Hyoscyamine",
+      "dl-tropyltropate",
+      "Mydriasine",
+      "Tropine tropate",
+      "(±)-atropine",
+      "(±)-hyoscyamine",
+      "(+-)-Atropine",
+      "(+-)-Hyoscyamine",
+      "(+,-)-Tropyl tropate",
+      "(3-Endo)-8-methyl-8-azabicyclo[3.2.1]oct-3-yl tropate",
+      "[(1S,5R)-8-Methyl-8-azabicyclo[3.2.1]oct-3-yl] 3-hydroxy-2-phenyl-propanoate",
+      "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl 3-hydroxy-2-phenylpropanoate",
+      "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate"
     ],
-    "xrefs": [
-      "pubchem.compound:174174"
-    ],
+    "xrefs": ["pubchem.compound:174174"],
     "other_identifiers": [
       "drugbank:DB00572",
       "rxcui:1223",
@@ -426,7 +424,7 @@
     "other_identifiers": ["chemidplus:15663-27-1"],
     "xrefs": ["umls:C0008838", "fda:Q20Q21Q62J"],
     "src_name": "NCIt",
-    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415"
+    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415|wikidata:q47522001"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -480,7 +478,7 @@
     "other_identifiers": ["drugbank:DB00515"],
     "xrefs": ["fda:Q20Q21Q62J"],
     "src_name": "ChemIDplus",
-    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415"
+    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415|wikidata:q47522001"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -557,7 +555,7 @@
       "mmsl:4456"
     ],
     "src_name": "RxNorm",
-    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415"
+    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415|wikidata:q47522001"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -1195,8 +1193,8 @@
     "label": "Phenobarbital"
   },
   {
-    "label_and_type": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415##merger",
-    "concept_id": "rxcui:2555|ncit:C376|chemidplus:15663-27-1|wikidata:Q412415",
+    "label_and_type": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415|wikidata:q47522001##merger",
+    "concept_id": "rxcui:2555|ncit:C376|chemidplus:15663-27-1|wikidata:Q412415|wikidata:Q47522001",
     "trade_names": ["Cisplatin", "Platinol"],
     "aliases": [
       "1,2-Diaminocyclohexaneplatinum II citrate",
@@ -1458,5 +1456,19 @@
       "mmsl:d00139"
     ],
     "label": "timolol"
+  },
+  {
+    "concept_id": "rxcui:2555",
+    "label_and_type": "rxcui:202856##rx_brand",
+    "src_name": "RxNorm"
+  },
+  {
+    "merge_ref": "wikidata:q47522001",
+    "concept_id": "wikidata:Q47522001",
+    "label_and_type": "wikidata:q47522001##identity",
+    "xrefs": [],
+    "label": "Platinol",
+    "src_name": "Wikidata",
+    "other_identifiers": ["rxcui:202856"]
   }
 ]
