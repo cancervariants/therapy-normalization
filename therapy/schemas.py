@@ -109,6 +109,15 @@ class MatchType(IntEnum):
     NO_MATCH = 0
 
 
+class SourcePriority(IntEnum):
+    """Define constraints for Source Priority Rankings."""
+
+    RXNORM = 1
+    NCIT = 2
+    CHEMIDPLUS = 5
+    WIKIDATA = 6
+
+
 class SourceName(Enum):
     """Define string constraints to ensure consistent capitalization."""
 
