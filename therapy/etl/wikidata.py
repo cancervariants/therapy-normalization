@@ -7,6 +7,8 @@ import json
 import logging
 from typing import Dict, List
 from pathlib import Path
+from wikibaseintegrator import wbi_core
+import datetime
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -24,9 +26,7 @@ IDENTIFIER_PREFIXES = {
 }
 
 
-class Wikidata(Base):
-    """Extract, transform, and load the Wikidata source into therapy.db.
-    SPARQL_QUERY:
+SPARQL_QUERY = """
     SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound
            ?pubchemSubstance ?chembl
            ?rxnorm ?drugbank ?alias WHERE {
@@ -57,7 +57,11 @@ class Wikidata(Base):
         bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
       }
     }
-    """
+"""
+
+
+class Wikidata(Base):
+    """Extract, transform, and load the Wikidata source into therapy.db."""
 
     def __init__(self,
                  database,
@@ -85,11 +89,23 @@ class Wikidata(Base):
     def _extract_data(self):
         """Extract data from the Wikidata source."""
         self._data_path.mkdir(exist_ok=True, parents=True)
-        try:
-            self._data_src = sorted(list(self._data_path.iterdir()))[-1]
-        except IndexError:
-            raise FileNotFoundError  # TODO call download function here
-        self._version = self._data_src.stem.split('_')[1]
+
+        data = (wbi_core.ItemEngine.execute_sparql_query(
+            SPARQL_QUERY))['results']['bindings']
+
+        transformed_data = list()
+        for item in data:
+            params = dict()
+            for attr in item:
+                params[attr] = item[attr]['value']
+            transformed_data.append(params)
+
+        self._version = datetime.datetime.today().strftime('%Y%m%d')
+        with open(f"{self._data_path}/wikidata_{self._version}.json",
+                  'w+') as f:
+            json.dump(transformed_data, f)
+        self._data_src = sorted(list(self._data_path.iterdir()))[-1]
+        logger.info('Successfully extracted Wikidata.')
 
     def _load_meta(self):
         """Add Wikidata metadata."""
