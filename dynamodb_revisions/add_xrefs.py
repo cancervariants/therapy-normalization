@@ -14,7 +14,7 @@ from therapy.database import Database  # noqa: E402
 from therapy.schemas import NamespacePrefix, SourceName  # noqa: E402
 
 
-def add_xrefs(db):
+def update_xrefs_other_ids(db):
     """Add xrefs attribute to therapy identity concepts.
 
     :param Database db: DynamoDB object
@@ -48,24 +48,27 @@ def add_xrefs(db):
             record_identity = record['label_and_type']['S']
             record_concept_id = record['concept_id']['S']
             if '##identity' in record_identity:
-                if 'other_identifiers' in record:
-                    prev_other_ids = record['other_identifiers']['L']
-                    if 'xrefs' in record:
-                        xrefs = record['xrefs']['L']
-                    else:
-                        xrefs = []
-                    other_ids = []
-                    for prev_other_id in prev_other_ids:
-                        prev_other_id = prev_other_id['S']
-                        if prev_other_id.split(':')[0] in normalizer_srcs:
-                            other_ids.append(prev_other_id)
-                        else:
-                            xrefs.append(prev_other_id)
-                    update_item(db, record_identity, record_concept_id,
-                                other_ids, xrefs)
+                other_ids = []
+                xrefs = []
+                for attr in ['other_identifiers', 'xrefs']:
+                    _add_xrefs_other_ids(record, attr, other_ids, xrefs,
+                                         normalizer_srcs)
+                update_item(db, record_identity, record_concept_id,
+                            other_ids, xrefs)
 
         if not last_evaluated_key:
             break
+
+
+def _add_xrefs_other_ids(record, attr, other_ids, xrefs, normalizer_srcs):
+    if attr in record:
+        prev_ids = record[attr]['L']
+        for prev_id in prev_ids:
+            other_id_xref = prev_id['S']
+            if other_id_xref.split(':')[0] in normalizer_srcs:
+                other_ids.append(other_id_xref)
+            else:
+                xrefs.append(other_id_xref)
 
 
 def update_item(db, record_identity, record_concept_id, other_ids, xrefs):
@@ -79,43 +82,18 @@ def update_item(db, record_identity, record_concept_id, other_ids, xrefs):
     :param list other_ids: The other identifiers for the therapy concept
     :param list xrefs: The xrefs for the therapy concept
     """
-    if xrefs and other_ids:
-        db.therapies.update_item(
-            Key={
-                'label_and_type': record_identity,
-                'concept_id': record_concept_id
-            },
-            UpdateExpression="set other_identifiers=:o, xrefs=:x",
-            ExpressionAttributeValues={
-                ':o': other_ids,
-                ':x': xrefs,
-            },
-            ReturnValues="UPDATED_NEW"
-        )
-    elif other_ids and not xrefs:
-        db.therapies.update_item(
-            Key={
-                'label_and_type': record_identity,
-                'concept_id': record_concept_id
-            },
-            UpdateExpression="set other_identifiers=:o",
-            ExpressionAttributeValues={
-                ':o': other_ids,
-            },
-            ReturnValues="UPDATED_NEW"
-        )
-    elif xrefs and not other_ids:
-        db.therapies.update_item(
-            Key={
-                'label_and_type': record_identity,
-                'concept_id': record_concept_id
-            },
-            UpdateExpression="remove other_identifiers set xrefs=:x",
-            ExpressionAttributeValues={
-                ':x': xrefs,
-            },
-            ReturnValues="UPDATED_NEW"
-        )
+    db.therapies.update_item(
+        Key={
+            'label_and_type': record_identity,
+            'concept_id': record_concept_id
+        },
+        UpdateExpression="set other_identifiers=:o, xrefs=:x",
+        ExpressionAttributeValues={
+            ':o': other_ids,
+            ':x': xrefs,
+        },
+        ReturnValues="UPDATED_NEW"
+    )
 
 
 if __name__ == '__main__':
@@ -128,6 +106,6 @@ if __name__ == '__main__':
             sys.exit()
     click.echo("Adding xrefs attribute...")
     start = timer()
-    add_xrefs(Database())
+    update_xrefs_other_ids(Database())
     end = timer()
     click.echo(f"Added xrefs attribute in {end-start} seconds.")
