@@ -5,7 +5,6 @@ Courtesy of the U.S. National Library of Medicine.
 from .base import Base
 from typing import List, Dict
 from therapy import PROJECT_ROOT
-from therapy.database import Database
 from therapy.schemas import Drug, NamespacePrefix, Meta, SourceName, \
     DataLicenseAttributes
 from pathlib import Path
@@ -27,7 +26,7 @@ class ChemIDplus(Base):
     """Core ChemIDplus ETL class."""
 
     def __init__(self,
-                 database: Database,
+                 database,
                  data_path: Path = PROJECT_ROOT / 'data' / 'chemidplus',
                  src_server: str = 'ftp.nlm.nih.gov',
                  src_dir_path: str = 'nlmdata/.chemidlease/',
@@ -101,7 +100,7 @@ class ChemIDplus(Base):
         self._version = self._data_src.stem.split('_')[1]
 
     def _get_file(self, data_dir):
-        self._download_data()
+        self._download_data(data_dir)
         dir_files = list(data_dir.iterdir())
         return sorted([f for f in dir_files
                        if f.names.startswith('chemidplus')])

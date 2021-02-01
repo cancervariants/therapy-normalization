@@ -131,6 +131,15 @@ class SourceIDAfterNamespace(Enum):
     RXNORM = ""
 
 
+class ProhibitedSources(Enum):
+    """Define constraints for sources that are prohibited in normalize
+    endpoint.
+    """
+
+    CHEMBL = SourceName.CHEMBL.value
+    DRUGBANK = SourceName.DRUGBANK.value
+
+
 class NamespacePrefix(Enum):
     """Define string constraints for namespace prefixes on concept IDs."""
 

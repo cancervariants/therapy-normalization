@@ -1,20 +1,15 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
 from botocore.exceptions import ClientError
-from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm, Merge  # noqa: F401, E501
-from therapy.schemas import SourceName
 from timeit import default_timer as timer
-from therapy.database import Database
 from boto3.dynamodb.conditions import Key
 import sys
 from os import environ
-
-
-MERGE_SOURCES = {SourceName.WIKIDATA.value, SourceName.RXNORM.value,
-                 SourceName.NCIT.value, SourceName.CHEMIDPLUS.value}
-
-SOURCES = {s.value.lower(): eval(s.value)
-           for s in SourceName.__members__.values()}
+from therapy.schemas import SourceName
+from therapy.etl import Merge
+from therapy import SOURCES_CLASS, ACCEPTED_SOURCES
+from therapy import SOURCES
+from therapy.database import Database
 
 
 class CLI:
@@ -68,7 +63,7 @@ class CLI:
             if len(normalizers) == 0:
                 CLI()._help_msg()
 
-            non_sources = CLI()._check_norm_srcs_match(normalizers)
+            non_sources = set(normalizers) - {src for src in SOURCES}
 
             if len(non_sources) != 0:
                 raise Exception(f"Not valid source(s): {non_sources}")
@@ -83,10 +78,6 @@ class CLI:
         click.echo(ctx.get_help())
         ctx.exit()
 
-    def _check_norm_srcs_match(self, normalizers):
-        """Check that entered normalizers are actual sources."""
-        return set(normalizers) - {src for src in SOURCES}
-
     def _update_normalizers(self, normalizers, db):
         """Update selected normalizer sources."""
         processed_ids = []
@@ -100,9 +91,9 @@ class CLI:
                        f"{delete_time:.5f} seconds.\n")
             click.echo(f"Loading {n}...")
             start_load = timer()
-            source = SOURCES[n](database=db)
+            source = SOURCES_CLASS[n](database=db)
             source_ids = source.perform_etl()
-            if source.__class__.__name__ in MERGE_SOURCES:
+            if n in ACCEPTED_SOURCES:
                 processed_ids += source_ids
             end_load = timer()
             load_time = end_load - start_load

@@ -1,5 +1,6 @@
 """Create concept groups and merged records."""
-from therapy.schemas import SourceName, NamespacePrefix
+from therapy import PROHIBITED_SOURCES
+from therapy.schemas import SourceName
 from therapy.database import Database
 from typing import Set, Dict
 import logging
@@ -7,9 +8,6 @@ from timeit import default_timer as timer
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
-
-DISALLOWED_SOURCES = {NamespacePrefix.DRUGBANK.value,
-                      NamespacePrefix.CHEMBL.value}
 
 
 class Merge:
@@ -78,7 +76,7 @@ class Merge:
         other_ids = set()
         for other_id in record.get('other_identifiers', []):
             allowed = True
-            for prefix in DISALLOWED_SOURCES:
+            for prefix in PROHIBITED_SOURCES:
                 if other_id.startswith(prefix):
                     allowed = False
                     continue
