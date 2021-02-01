@@ -1,8 +1,7 @@
 """This module defines the DrugBank ETL methods."""
 from therapy import PROJECT_ROOT
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, Meta
-from therapy.etl.base import IDENTIFIER_PREFIXES, Base
-from therapy.database import Database
+from therapy.etl.base import Base
 import logging
 from lxml import etree
 from typing import List
@@ -34,7 +33,7 @@ class DrugBank(Base):
     """ETL the DrugBank source into therapy.db."""
 
     def __init__(self,
-                 database: Database,
+                 database,
                  data_path: Path = PROJECT_ROOT / 'data' / 'drugbank'):
         """Initialize ETL class instance.
 
@@ -192,7 +191,7 @@ class DrugBank(Base):
         """Load cas number as other identifiers."""
         if element.text:
             params['other_identifiers'].append(
-                f"{IDENTIFIER_PREFIXES['ChemIDplus']}:"
+                f"{NamespacePrefix.CHEMIDPLUS.value}:"
                 f"{element.text}")
 
     def _load_external_identifiers(self, element, params, xmlns,

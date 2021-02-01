@@ -1,6 +1,6 @@
 """This module creates the database."""
 import boto3
-from therapy.schemas import NamespacePrefix, SourceName
+from therapy import PREFIX_LOOKUP
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
 from os import environ
@@ -9,12 +9,6 @@ import logging
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
-
-
-# should this be located in a shared module
-PREFIX_LOOKUP = {v.value: SourceName[k].value
-                 for k, v in NamespacePrefix.__members__.items()
-                 if k in SourceName.__members__.keys()}
 
 
 class Database:
