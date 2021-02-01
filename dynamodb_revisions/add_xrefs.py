@@ -62,13 +62,14 @@ def update_xrefs_other_ids(db):
 
 def _add_xrefs_other_ids(record, attr, other_ids, xrefs, normalizer_srcs):
     if attr in record:
-        prev_ids = record[attr]['L']
-        for prev_id in prev_ids:
-            other_id_xref = prev_id['S']
-            if other_id_xref.split(':')[0] in normalizer_srcs:
-                other_ids.append(other_id_xref)
-            else:
-                xrefs.append(other_id_xref)
+        if 'NULL' not in record[attr]:
+            prev_ids = record[attr]['L']
+            for prev_id in prev_ids:
+                other_id_xref = prev_id['S']
+                if other_id_xref.split(':')[0] in normalizer_srcs:
+                    other_ids.append(other_id_xref)
+                else:
+                    xrefs.append(other_id_xref)
 
 
 def update_item(db, record_identity, record_concept_id, other_ids, xrefs):
@@ -94,6 +95,26 @@ def update_item(db, record_identity, record_concept_id, other_ids, xrefs):
         },
         ReturnValues="UPDATED_NEW"
     )
+
+    if not xrefs:
+        db.therapies.update_item(
+            Key={
+                'label_and_type': record_identity,
+                'concept_id': record_concept_id
+            },
+            UpdateExpression="remove xrefs",
+            ReturnValues="UPDATED_NEW"
+        )
+
+    if not other_ids:
+        db.therapies.update_item(
+            Key={
+                'label_and_type': record_identity,
+                'concept_id': record_concept_id
+            },
+            UpdateExpression="remove other_identifiers",
+            ReturnValues="UPDATED_NEW"
+        )
 
 
 if __name__ == '__main__':
