@@ -222,7 +222,8 @@ def record_id_groups():
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
-            "wikidata:Q412415"
+            "wikidata:Q412415",
+            "wikidata:Q47522001"
         },
         "chemidplus:8025-81-8": {
             "ncit:C839",
@@ -232,19 +233,29 @@ def record_id_groups():
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
-            "wikidata:Q412415"
+            "wikidata:Q412415",
+            "wikidata:Q47522001"
         },
         "ncit:C376": {
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
-            "wikidata:Q412415"
+            "wikidata:Q412415",
+            "wikidata:Q47522001"
         },
         "wikidata:Q412415": {
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
-            "wikidata:Q412415"
+            "wikidata:Q412415",
+            "wikidata:Q47522001"
+        },
+        "wikidata:Q47522001": {
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415",
+            "wikidata:Q47522001"
         },
         "rxcui:4126": {
             "rxcui:4126",
