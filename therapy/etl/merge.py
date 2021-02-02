@@ -183,6 +183,6 @@ class Merge:
             else:
                 del merged_attrs[field]
 
-        ref = f'{merged_attrs["concept_id"].lower()}##merger'
-        merged_attrs['label_and_type'] = ref
+        merged_attrs['label_and_type'] = \
+            f'{merged_attrs["concept_id"].lower()}##merger'
         return merged_attrs
