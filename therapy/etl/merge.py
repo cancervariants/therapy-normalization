@@ -77,12 +77,7 @@ class Merge:
         """
         other_ids = set()
         for other_id in record.get('other_identifiers', []):
-            allowed = True
-            for prefix in DISALLOWED_SOURCES:
-                if other_id.startswith(prefix):
-                    allowed = False
-                    continue
-            if allowed:
+            if other_id.split(':')[0] not in DISALLOWED_SOURCES:
                 other_ids.add(other_id)
         return other_ids
 
