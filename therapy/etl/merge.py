@@ -48,7 +48,7 @@ class Merge:
         for record_id, group in self._groups.items():
             if record_id in uploaded_ids:
                 continue
-            merged_record = self._generate_merged_record(group)  # noqa
+            merged_record = self._generate_merged_record(group)
 
             # add group merger item to DB
             self._database.add_record(merged_record, 'merger')
