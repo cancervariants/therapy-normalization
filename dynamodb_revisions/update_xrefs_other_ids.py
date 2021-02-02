@@ -1,6 +1,4 @@
-"""Add xrefs attribute to therapy concepts in the therapy_concepts
-DynamoDB Table.
-"""
+"""Update xrefs and other_identifiers attribute."""
 import sys
 from pathlib import Path
 import click
@@ -13,15 +11,18 @@ sys.path.append(f"{PROJECT_ROOT}")
 from therapy.database import Database  # noqa: E402
 from therapy.schemas import NamespacePrefix, SourceName  # noqa: E402
 
+# TODO: Replace once issue-90 is merged
+PREFIX_LOOKUP = {v.value: SourceName[k].value
+                 for k, v in NamespacePrefix.__members__.items()
+                 if k in SourceName.__members__.keys()}
+
 
 def update_xrefs_other_ids(db):
-    """Add xrefs attribute to therapy identity concepts.
+    """Update xrefs and other_identifiers in therapy identity concepts.
 
     :param Database db: DynamoDB object
     """
     last_evaluated_key = None
-    normalizer_srcs = {
-        NamespacePrefix[src].value for src in SourceName.__members__}
 
     while True:
         if last_evaluated_key:
@@ -51,8 +52,7 @@ def update_xrefs_other_ids(db):
                 other_ids = []
                 xrefs = []
                 for attr in ['other_identifiers', 'xrefs']:
-                    _add_xrefs_other_ids(record, attr, other_ids, xrefs,
-                                         normalizer_srcs)
+                    _add_xrefs_other_ids(record, attr, other_ids, xrefs)
                 update_item(db, record_identity, record_concept_id,
                             other_ids, xrefs)
 
@@ -60,13 +60,20 @@ def update_xrefs_other_ids(db):
             break
 
 
-def _add_xrefs_other_ids(record, attr, other_ids, xrefs, normalizer_srcs):
+def _add_xrefs_other_ids(record, attr, other_ids, xrefs):
+    """Add xrefs or other_identifiers to the corresponding list.
+
+    :param dict record: The therapy identity concept
+    :param str attr: `other_identifiers` or `xrefs`
+    :param list other_ids: The other identifiers for the therapy concept
+    :param list xrefs: The xrefs for the therapy concept
+    """
     if attr in record:
         if 'NULL' not in record[attr]:
             prev_ids = record[attr]['L']
             for prev_id in prev_ids:
                 other_id_xref = prev_id['S']
-                if other_id_xref.split(':')[0] in normalizer_srcs:
+                if other_id_xref.split(':')[0] in PREFIX_LOOKUP:
                     other_ids.append(other_id_xref)
                 else:
                     xrefs.append(other_id_xref)
@@ -95,6 +102,8 @@ def update_item(db, record_identity, record_concept_id, other_ids, xrefs):
         },
         ReturnValues="UPDATED_NEW"
     )
+
+    # Delete empty lists
 
     if not xrefs:
         db.therapies.update_item(
