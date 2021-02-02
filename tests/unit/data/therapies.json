@@ -1463,7 +1463,7 @@
     "src_name": "RxNorm"
   },
   {
-    "merge_ref": "wikidata:q47522001",
+    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415|wikidata:q47522001##merger",
     "concept_id": "wikidata:Q47522001",
     "label_and_type": "wikidata:q47522001##identity",
     "xrefs": [],
