@@ -2,6 +2,9 @@
 import pytest
 from therapy.schemas import Drug, MatchType
 from therapy.query import Normalizer
+from therapy.database import Database
+import os
+from boto3.dynamodb.conditions import Key
 
 
 @pytest.fixture(scope='module')
@@ -11,6 +14,12 @@ def rxnorm():
 
         def __init__(self):
             self.normalizer = Normalizer()
+            if 'THERAPY_NORM_DB_URL' in os.environ:
+                db_url = os.environ['THERAPY_NORM_DB_URL']
+            else:
+                db_url = 'http://localhost:8000'
+
+            self.db = Database(db_url=db_url)
 
         def normalize(self, query_str):
             resp = self.normalizer.normalize(query_str, keyed=True,
@@ -55,23 +64,17 @@ def cisplatin():
         'label': 'cisplatin',
         'concept_id': 'rxcui:2555',
         'aliases': [
-            'Diaminedichloroplatinum',
             'cis-Platinum',
             'CISplatin',
             'cis Diamminedichloroplatinum',
             'cis Platinum',
             'Diamminodichloride, Platinum',
-            'cis-Platinum compound',
-            'cis-DDP',
-            'cis-Diaminedichloroplatinum',
-            'cis-Platinum II',
+            'cis-Diamminedichloroplatinum',
             'DDP',
             'Dichlorodiammineplatinum',
-            'cis-Diamminedichloroplatinum',
             'cis-Dichlorodiammineplatinum(II)',
             'Platinum Diamminodichloride',
             'cis-Diamminedichloroplatinum(II)',
-            'cis-Platinum',
             'cis-diamminedichloroplatinum(II)',
             'CDDP',
             'Cis-DDP',
@@ -83,15 +86,13 @@ def cisplatin():
         ],
         'xrefs': [
             'usp:m17910',
-            'snomedct:57066004',
             'vandf:4018139',
-            'msh:D002945',
+            'mesh:D002945',
             'mthspl:Q20Q21Q62J',
             'mmsl:d00195',
             'atc:L01XA01',
             'mmsl:31747',
             'mmsl:4456',
-            'snomedct:387318005'
         ],
         'trade_names': [
             'Cisplatin',
@@ -102,14 +103,48 @@ def cisplatin():
 
 
 @pytest.fixture(scope='module')
+def amiloride_hydrochloride():
+    """Create amiloride hydrochloride drug fixture."""
+    params = {
+        'label': 'amiloride hydrochloride',
+        'concept_id': 'rxcui:142424',
+        'aliases': [
+            'aMILoride hydrochloride',
+            'Amiloride Hydrochloride',
+            'Hydrochloride, Amiloride'
+        ],
+        'approval_status': 'approved',
+        'other_identifiers': [],
+        'xrefs': [
+            'usp:m2650',
+            'mthspl:FZJ37245UC',
+            'mmsl:2658',
+            'mesh:D000584',
+            'mmsl:4166',
+            'vandf:4017935'
+        ],
+        'trade_names': [
+            'AMILoride Hydrochloride',
+            'Midamor',
+            'Aridil',
+            'Frusemek',
+            'Midamor',
+            'Moduret',
+            'Moduretic',
+            'Zida-Co'
+        ]
+    }
+    return Drug(**params)
+
+
+@pytest.fixture(scope='module')
 def amiloride():
-    """Create amiloride hydrochloride, anhydrous drug fixture."""
+    """Create amiloride drug fixture."""
     params = {
         'label': 'amiloride',
         'concept_id': 'rxcui:644',
         'aliases': [
             '3,5-diamino-N-carbamimidoyl-6-chloropyrazine-2-carboxamide',
-            'Amiloride',
             'aMILoride',
             'Amipramidin',
             'Amipramidine',
@@ -121,13 +156,11 @@ def amiloride():
             'drugbank:DB00594'
         ],
         'xrefs': [
-            'snomedct:387503008',
-            'msh:D000584',
+            'mesh:D000584',
             'vandf:4019603',
             'mthspl:7DZO8EB0Z3',
             'mmsl:d00169',
-            'atc:C03DB01',
-            'snomedct:87395005'
+            'atc:C03DB01'
         ],
         'trade_names': [
             'Midamor',
@@ -153,7 +186,6 @@ def timolol():
             '-1,2,5-thiadazol-3-yl)oxy)-2-propanol',
             '2-Propanol, 1-((1,1-dimethylethyl)amino)-3-((4-(4-morpholi'
             'nyl)-1,2,5-thiadiazol-3-yl)oxy)-, (S)-',
-            'Timolol',
             '(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol'
             '-3-yl)oxy]propan-2-ol'
         ],
@@ -164,12 +196,10 @@ def timolol():
         'xrefs': [
             'vandf:4019949',
             'mthspl:817W3C6175',
-            'snomedct:372880004',
-            'msh:D013999',
+            'mesh:D013999',
             'mmsl:d00139',
             'atc:C07AA06',
-            'atc:S01ED01',
-            'snomedct:85591001'
+            'atc:S01ED01'
         ],
         'trade_names': [
             'Betimol',
@@ -198,7 +228,6 @@ def lymphocyte():
         'label': 'lymphocyte immune globulin, anti-thymocyte globulin',
         'concept_id': 'rxcui:1011',
         'aliases': [
-            'Antithymocyte immunoglobulin',
             'Lymphocyte Immune Globulin, Anti-Thymocyte Globulin',
             'Anti-Thymocyte Globulin',
             'Antithymocyte Globulin',
@@ -217,8 +246,7 @@ def lymphocyte():
         'approval_status': 'approved',
         'other_identifiers': [],
         'xrefs': [
-            'snomedct:768651008',
-            'msh:D000961',
+            'mesh:D000961',
             'vandf:4022194',
             'vandf:4018097',
             'mmsl:d01141',
@@ -241,7 +269,6 @@ def aspirin():
         'aliases': [
             'Salicylic acid acetate',
             'Aspirin',
-            'Acetylsalicylic acid',
             'Acid, Acetylsalicylic',
             '2-(Acetyloxy)benzoic Acid',
             '2-Acetoxybenzenecarboxylic acid',
@@ -258,19 +285,16 @@ def aspirin():
         ],
         'xrefs': [
             'usp:m6240',
-            'snomedct:7947003',
             'vandf:4017536',
             'mmsl:34512',
             'mthspl:R16CO5Y76E',
             'mmsl:244',
-            'snomedct:387458008',
-            'msh:D001241',
+            'mesh:D001241',
             'mmsl:4223',
             'mmsl:d00170',
             'atc:A01AD05',
             'atc:B01AC06',
-            'atc:N02BA01',
-            'snomedct:7947003'
+            'atc:N02BA01'
         ],
         'trade_names': []
     }
@@ -284,7 +308,6 @@ def mesna():
         'label': 'mesna',
         'concept_id': 'rxcui:44',
         'aliases': [
-            'Sodium 2-mercaptoethanesulfonate',
             'Mesnum',
             'Ethanesulfonic acid, 2-mercapto-, monosodium salt',
             'Sodium 2-Mercaptoethanesulphonate',
@@ -295,15 +318,12 @@ def mesna():
         'other_identifiers': [],
         'xrefs': [
             'usp:m49500',
-            'snomedct:108821000',
-            'snomedct:386922000',
-            'msh:D015080',
+            'mesh:D015080',
             'vandf:4019477',
             'mthspl:NR7O1405Q9',
             'atc:R05CB05',
             'atc:V03AF01',
             'mmsl:41498',
-            'snomedct:386922000',
             'mmsl:5057',
             'mmsl:d01411'
         ],
@@ -323,7 +343,6 @@ def beta_alanine():
         'label': 'beta-alanine',
         'concept_id': 'rxcui:61',
         'aliases': [
-            'Beta alanine',
             'beta Alanine',
             '3 Aminopropionic Acid',
             '3-Aminopropionic Acid'
@@ -331,8 +350,7 @@ def beta_alanine():
         'approval_status': 'approved',
         'other_identifiers': [],
         'xrefs': [
-            'snomedct:70587000',
-            'msh:D015091',
+            'mesh:D015091',
             'vandf:4028377',
             'mthspl:11P2JDE17B'
         ],
@@ -356,7 +374,7 @@ def algestone():
         'approval_status': None,
         'other_identifiers': [],
         'xrefs': [
-            'msh:D000523'
+            'mesh:D000523'
         ],
         'trade_names': []
     }
@@ -369,20 +387,34 @@ def levothyroxine():
     params = {
         'label': 'levothyroxine',
         'concept_id': 'rxcui:10582',
-        'aliases': [],
+        'aliases': [
+            '3,5,3\',5\'-Tetraiodo-L-thyronine',
+            'Thyroxine',
+            'thyroxine',
+            'Thyroid Hormone, T4',
+            'Thyroxin',
+            'T4 Thyroid Hormone',
+            'O-(4-Hydroxy-3,5-diiodophenyl)-3,5-diiodotyrosine',
+            '3,5,3\',5\'-Tetraiodothyronine',
+            'O-(4-Hydroxy-3,5-diiodophenyl)-3,5-diiodo-L-tyrosine',
+            'L-T4',
+            'LT4',
+            'T4',
+            '3,3\',5,5\'-Tetraiodo-L-thyronine',
+            'L-Thyroxine',
+            'O-(4-Hydroxy-3,5-diidophenyl)-3,5-diiodo-L-tyrosine',
+            '4-(4-Hydroxy-3,5-diiodophenoxy)-3,5-diiodo-L-phenylalanine',
+            'Levothyroxin'
+        ],
         'approval_status': 'approved',
         'other_identifiers': [
             'drugbank:DB00451'
         ],
         'xrefs': [
-            'snomedct:768532006',
-            'snomedct:73187006',
             'vandf:4022126',
-            'msh:D013974',
+            'mesh:D013974',
             'mmsl:d00278',
-            'mthspl:Q51BO43MG4',
-            'snomedct:710809001',
-            'snomedct:38076006'
+            'mthspl:Q51BO43MG4'
         ],
         'trade_names': [
             'Eltroxin',
@@ -405,6 +437,76 @@ def levothyroxine():
             'Thyrox',
             'Tirosint',
             'Unithroid'
+        ]
+    }
+    return Drug(**params)
+
+
+@pytest.fixture(scope='module')
+def fluoxetine():
+    """Create fluoxetine drug fixture."""
+    params = {
+        'label': 'fluoxetine',
+        'concept_id': 'rxcui:4493',
+        'aliases': [
+            'FLUoxetine',
+            'N-Methyl-gamma-(4-(trifluoromethyl)phenoxy)'
+            'benzenepropanamine',
+            'Fluoxetin',
+            '(+-)-N-Methyl-gamma-(4-(trifluoromethyl)phenoxy)'
+            'benzenepropanamine',
+            '(+-)-N-Methyl-3-phenyl-3-((alpha,alpha,alpha-trifluoro-'
+            'P-tolyl)oxy)propylamine'
+        ],
+        'approval_status': 'approved',
+        'other_identifiers': [
+            'drugbank:DB00472'
+        ],
+        'xrefs': [
+            'mesh:D005473',
+            'mmsl:17711',
+            'vandf:4019761',
+            'mmsl:d00236',
+            'atc:N06AB03',
+            'mthspl:01K63SUP8D'
+        ],
+        'trade_names': [
+            'Prozac',
+            'RECONCILE',
+            'Sarafem',
+            'Symbyax',
+            'Rapiflux',
+            'Selfemra'
+        ]
+    }
+    return Drug(**params)
+
+
+@pytest.fixture(scope='module')
+def fluoxetine_hydrochloride():
+    """Create fluoxetine hydrochloride drug fixture."""
+    params = {
+        'label': 'fluoxetine hydrochloride',
+        'concept_id': 'rxcui:227224',
+        'aliases': [
+            'FLUoxetine hydrochloride',
+            'Fluoxetine Hydrochloride'
+        ],
+        'approval_status': 'approved',
+        'other_identifiers': [],
+        'xrefs': [
+            'usp:m33780',
+            'mthspl:I9W7N6B1KJ',
+            'mmsl:4746',
+            'vandf:4019389',
+            'mmsl:41730',
+            'mmsl:37675',
+            'mesh:D005473'
+        ],
+        'trade_names': [
+            'FLUoxetine HCl',
+            'FLUoxetine Hydrochloride',
+            'RECONCILE'
         ]
     }
     return Drug(**params)
@@ -542,7 +644,7 @@ def test_cisplatin(cisplatin, rxnorm):
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
-    normalizer_response = rxnorm.normalize('Diaminedichloroplatinum')
+    normalizer_response = rxnorm.normalize('Dichlorodiammineplatinum')
     assert normalizer_response['match_type'] == MatchType.ALIAS
     assert len(normalizer_response['records']) == 1
     normalized_drug = normalizer_response['records'][0]
@@ -581,6 +683,48 @@ def test_cisplatin(cisplatin, rxnorm):
     assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert normalized_drug.approval_status == cisplatin.approval_status
+
+
+def test_amiloride_hydrochloride(amiloride_hydrochloride, rxnorm):
+    """Test that amiloride_hydrochloride hydrochloride, anhydrous drug
+    normalizes to correct drug concept.
+    """
+    # Concept ID Match
+    normalizer_response = rxnorm.normalize('RxcUI:142424')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == amiloride_hydrochloride.label
+    assert normalized_drug.concept_id == amiloride_hydrochloride.concept_id
+    assert set(normalized_drug.aliases) == set(amiloride_hydrochloride.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(amiloride_hydrochloride.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(amiloride_hydrochloride.xrefs)
+    assert set(normalized_drug.trade_names) == \
+           set(amiloride_hydrochloride.trade_names)
+    assert normalized_drug.approval_status == \
+           amiloride_hydrochloride.approval_status
+
+    # Label Match
+    normalizer_response = rxnorm.normalize('amiloride hydrochloride')
+    assert normalizer_response['match_type'] == MatchType.LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == amiloride_hydrochloride.label
+    assert normalized_drug.concept_id == amiloride_hydrochloride.concept_id
+    assert set(normalized_drug.aliases) == set(amiloride_hydrochloride.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(amiloride_hydrochloride.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(amiloride_hydrochloride.xrefs)
+    assert set(normalized_drug.trade_names) == \
+           set(amiloride_hydrochloride.trade_names)
+    assert normalized_drug.approval_status == \
+           amiloride_hydrochloride.approval_status
+
+    # Trade Name Match
+    normalizer_response = rxnorm.normalize('Midamor')
+    assert normalizer_response['match_type'] == MatchType.LABEL
+    assert len(normalizer_response['records']) == 2
 
 
 def test_amiloride(amiloride, rxnorm):
@@ -646,16 +790,7 @@ def test_amiloride(amiloride, rxnorm):
     # Trade Name Match
     normalizer_response = rxnorm.normalize('Midamor')
     assert normalizer_response['match_type'] == MatchType.TRADE_NAME
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == amiloride.label
-    assert normalized_drug.concept_id == amiloride.concept_id
-    assert set(normalized_drug.aliases) == set(amiloride.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(amiloride.other_identifiers)
-    assert set(normalized_drug.xrefs) == set(amiloride.xrefs)
-    assert set(normalized_drug.trade_names) == set(amiloride.trade_names)
-    assert normalized_drug.approval_status == amiloride.approval_status
+    assert len(normalizer_response['records']) == 2
 
 
 def test_timolol(timolol, rxnorm):
@@ -780,29 +915,9 @@ def test_lymphocyte(lymphocyte, rxnorm):
     # Trade Name Match
     normalizer_response = rxnorm.normalize('Thymoglobulin')
     assert normalizer_response['match_type'] == MatchType.TRADE_NAME
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == lymphocyte.label
-    assert normalized_drug.concept_id == lymphocyte.concept_id
-    assert set(normalized_drug.aliases) == set(lymphocyte.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(lymphocyte.other_identifiers)
-    assert set(normalized_drug.xrefs) == set(lymphocyte.xrefs)
-    assert set(normalized_drug.trade_names) == set(lymphocyte.trade_names)
-    assert normalized_drug.approval_status == lymphocyte.approval_status
 
     normalizer_response = rxnorm.normalize('ATGAM')
     assert normalizer_response['match_type'] == MatchType.TRADE_NAME
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == lymphocyte.label
-    assert normalized_drug.concept_id == lymphocyte.concept_id
-    assert set(normalized_drug.aliases) == set(lymphocyte.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(lymphocyte.other_identifiers)
-    assert set(normalized_drug.xrefs) == set(lymphocyte.xrefs)
-    assert set(normalized_drug.trade_names) == set(lymphocyte.trade_names)
-    assert normalized_drug.approval_status == lymphocyte.approval_status
 
 
 def test_aspirin(aspirin, rxnorm):
@@ -1062,6 +1177,33 @@ def test_levothyroxine(levothyroxine, rxnorm):
     assert set(normalized_drug.trade_names) == set(levothyroxine.trade_names)
     assert normalized_drug.approval_status == levothyroxine.approval_status
 
+    # Alias Match
+    normalizer_response = rxnorm.normalize('Thyroxin')
+    assert normalizer_response['match_type'] == MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == levothyroxine.label
+    assert normalized_drug.concept_id == levothyroxine.concept_id
+    assert set(normalized_drug.aliases) == set(levothyroxine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(levothyroxine.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(levothyroxine.xrefs)
+    assert set(normalized_drug.trade_names) == set(levothyroxine.trade_names)
+    assert normalized_drug.approval_status == levothyroxine.approval_status
+
+    normalizer_response = rxnorm.normalize('LT4')
+    assert normalizer_response['match_type'] == MatchType.ALIAS
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == levothyroxine.label
+    assert normalized_drug.concept_id == levothyroxine.concept_id
+    assert set(normalized_drug.aliases) == set(levothyroxine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(levothyroxine.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(levothyroxine.xrefs)
+    assert set(normalized_drug.trade_names) == set(levothyroxine.trade_names)
+    assert normalized_drug.approval_status == levothyroxine.approval_status
+
     # Trade Name Match
     normalizer_response = rxnorm.normalize('Unithroid')
     assert normalizer_response['match_type'] == MatchType.TRADE_NAME
@@ -1088,6 +1230,76 @@ def test_levothyroxine(levothyroxine, rxnorm):
     assert set(normalized_drug.xrefs) == set(levothyroxine.xrefs)
     assert set(normalized_drug.trade_names) == set(levothyroxine.trade_names)
     assert normalized_drug.approval_status == levothyroxine.approval_status
+
+
+def test_fluoxetine(fluoxetine, rxnorm):
+    """Test that fluoxetine drug normalizes to correct drug concept."""
+    # Concept ID Match
+    normalizer_response = rxnorm.normalize('RxCUI:4493')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == fluoxetine.label
+    assert normalized_drug.concept_id == fluoxetine.concept_id
+    assert set(normalized_drug.aliases) == set(fluoxetine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(fluoxetine.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(fluoxetine.xrefs)
+    assert set(normalized_drug.trade_names) == set(fluoxetine.trade_names)
+    assert normalized_drug.approval_status == fluoxetine.approval_status
+
+    # Label Match
+    normalizer_response = rxnorm.normalize('fluoxetine')
+    assert normalizer_response['match_type'] == MatchType.LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == fluoxetine.label
+    assert normalized_drug.concept_id == fluoxetine.concept_id
+    assert set(normalized_drug.aliases) == set(fluoxetine.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(fluoxetine.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(fluoxetine.xrefs)
+    assert set(normalized_drug.trade_names) == set(fluoxetine.trade_names)
+    assert normalized_drug.approval_status == fluoxetine.approval_status
+
+
+def test_fluoxetine_hydrochloride(fluoxetine_hydrochloride, rxnorm):
+    """Test that fluoxetine_hydrochloride drug normalizes to correct drug
+    concept.
+    """
+    # Concept ID Match
+    normalizer_response = rxnorm.normalize('RxCUI:227224')
+    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == fluoxetine_hydrochloride.label
+    assert normalized_drug.concept_id == fluoxetine_hydrochloride.concept_id
+    assert set(normalized_drug.aliases) == \
+           set(fluoxetine_hydrochloride.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(fluoxetine_hydrochloride.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(fluoxetine_hydrochloride.xrefs)
+    assert set(normalized_drug.trade_names) == \
+           set(fluoxetine_hydrochloride.trade_names)
+    assert normalized_drug.approval_status == \
+           fluoxetine_hydrochloride.approval_status
+
+    # Label Match
+    normalizer_response = rxnorm.normalize('fluoxetine hydrochloride')
+    assert normalizer_response['match_type'] == MatchType.LABEL
+    assert len(normalizer_response['records']) == 1
+    normalized_drug = normalizer_response['records'][0]
+    assert normalized_drug.label == fluoxetine_hydrochloride.label
+    assert normalized_drug.concept_id == fluoxetine_hydrochloride.concept_id
+    assert set(normalized_drug.aliases) == \
+           set(fluoxetine_hydrochloride.aliases)
+    assert set(normalized_drug.other_identifiers) == \
+           set(fluoxetine_hydrochloride.other_identifiers)
+    assert set(normalized_drug.xrefs) == set(fluoxetine_hydrochloride.xrefs)
+    assert set(normalized_drug.trade_names) == \
+           set(fluoxetine_hydrochloride.trade_names)
+    assert normalized_drug.approval_status == \
+           fluoxetine_hydrochloride.approval_status
 
 
 def test_no_match(rxnorm):
@@ -1120,6 +1332,23 @@ def test_no_match(rxnorm):
     assert len(normalizer_response['records']) == 0
 
 
+def test_brand_name_to_concept(rxnorm):
+    """Test that brand names are correctly linked to identity concept."""
+    r = rxnorm.db.therapies.query(
+        KeyConditionExpression=Key('label_and_type').eq(
+            'rxcui:1041527##rx_brand')
+    )
+    assert r['Items'][0]['concept_id'] == 'rxcui:161'
+    assert r['Items'][0]['concept_id'] != 'rxcui:1041527'
+
+    r = rxnorm.db.therapies.query(
+        KeyConditionExpression=Key('label_and_type').eq(
+            'rxcui:218330##rx_brand')
+    )
+    assert r['Items'][0]['concept_id'] == 'rxcui:44'
+    assert r['Items'][0]['concept_id'] != 'rxcui:218330'
+
+
 def test_meta_info(rxnorm):
     """Test that the meta field is correct."""
     normalizer_response = rxnorm.fetch_meta()
@@ -1134,5 +1363,5 @@ def test_meta_info(rxnorm):
     assert normalizer_response.data_license_attributes == {
         "non_commercial": False,
         "share_alike": False,
-        "attribution": False
+        "attribution": True
     }

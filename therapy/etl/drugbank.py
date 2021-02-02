@@ -5,6 +5,12 @@ import logging
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, Meta
 from therapy.etl.base import IDENTIFIER_PREFIXES
 from lxml import etree
+import requests
+from requests.auth import HTTPBasicAuth
+from os import environ
+import zipfile
+import shutil
+from io import BytesIO
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -31,23 +37,80 @@ DRUGBANK_IDENTIFIER_PREFIXES = {
 class DrugBank(Base):
     """ETL the DrugBank source into therapy.db."""
 
+    def __init__(self,
+                 database,
+                 version='5.1.7',
+                 data_url='https://go.drugbank.com/releases/5-1-7/'
+                          'downloads/all-full-database',
+                 data_dir=PROJECT_ROOT / 'data' / 'drugbank'
+                 ):
+        """Initialize DrugBank class.
+
+        :param Database database: DynamoDB object
+        :param str version: DrugBank version to use
+        :param str data_url: URL to DrugBank data file
+        :param Path data_dir: Path to DrugBank data directory
+        """
+        self._database = database
+        self._version = version
+        self._data_url = data_url
+        self._data_dir = data_dir
+        self._load_data()
+
+    def _download_data(self):
+        """Download DrugBank database XML file.
+
+        :param PosixPath db_dir: The path to the DrugBank data directory
+        """
+        logger.info("Downloading DrugBank file...")
+        if 'DRUGBANK_USER' in environ.keys() and \
+                'DRUGBANK_PWD' in environ.keys():
+            r = requests.get(self._data_url,
+                             auth=HTTPBasicAuth(environ['DRUGBANK_USER'],
+                                                environ['DRUGBANK_PWD'])
+                             )
+            if r.status_code == 200:
+                zip_file = zipfile.ZipFile(BytesIO(r.content))
+                temp_dir = self._data_dir / 'temp_drugbank'
+                zip_file.extractall(temp_dir)
+                temp_file = temp_dir / 'full database.xml'
+                db_xml_file = self._data_dir / f"drugbank_{self._version}.xml"
+                shutil.move(temp_file, db_xml_file)
+                shutil.rmtree(temp_dir)
+            else:
+                if r.status_code == 401:
+                    logger.error("Lacks valid DrugBank authentication "
+                                 "credentials.")
+                    raise requests.HTTPError("401 Unauthorized")
+                logger.error("DrugBank download failed with status code:"
+                             f" {r.status_code}.")
+                raise requests.HTTPError(r.status_code)
+        else:
+            logger.error('Must enter credentials to download DrugBank '
+                         'database.')
+            raise KeyError("Must have environment variables DRUGBANK_USER "
+                           "and DRUGBANK_PWD.")
+        logger.info("Successfully downloaded DrugBank file.")
+
     def _extract_data(self, *args, **kwargs):
         """Extract data from the DrugBank source."""
+        logger.info("Extracting DrugBank file...")
         if 'data_path' in kwargs:
             self._data_src = kwargs['data_path']
         else:
-            wd_dir = PROJECT_ROOT / 'data' / 'drugbank'
-            try:
-                self._data_src = sorted(list(wd_dir.iterdir()))[-1]
-            except IndexError:
-                raise FileNotFoundError  # TODO drugbank update function here
+            self._data_dir.mkdir(exist_ok=True, parents=True)
+            file_path = self._data_dir / f"drugbank_{self._version}.xml"
+            if not file_path.exists():
+                self._download_data()
+            self._data_src = file_path
+        logger.info(f"Extracted {self._data_src}.")
 
     def _transform_data(self):
         """Transform the DrugBank source."""
         xmlns = "{http://www.drugbank.ca}"
         tree = etree.parse(f"{self._data_src}")
         root = tree.getroot()
-        batch = self.database.therapies.batch_writer()
+        batch = self._database.therapies.batch_writer()
         normalizer_srcs = {
             NamespacePrefix[src].value for src in SourceName.__members__}
 
@@ -112,8 +175,8 @@ class DrugBank(Base):
     def _load_data(self, *args, **kwargs):
         """Load the DrugBank source into normalized database."""
         self._extract_data()
-        self._transform_data()
         self._add_meta()
+        self._transform_data()
 
     def _load_therapy(self, batch, params):
         """Filter out trade names and aliases that exceed 20 and add item to
@@ -195,8 +258,6 @@ class DrugBank(Base):
                     params['xrefs'].append(
                         f"{DRUGBANK_IDENTIFIER_PREFIXES[src]}:"
                         f"{identifier}")
-            else:
-                logger.info(f"{src} not in DrugBank identifier prefixes.")
 
     def _load_products(self, element, params, xmlns):
         """Load products as trade names."""
@@ -249,8 +310,8 @@ class DrugBank(Base):
         """Add DrugBank metadata."""
         meta = Meta(data_license='CC BY-NC 4.0',
                     data_license_url='https://creativecommons.org/licenses/by-nc/4.0/legalcode',  # noqa: E501
-                    version='5.1.7',
-                    data_url='https://go.drugbank.com/releases/5-1-7/downloads/all-full-database',  # noqa: E501
+                    version=self._version,
+                    data_url=self._data_url,
                     rdp_url='http://reusabledata.org/drugbank.html',
                     data_license_attributes={
                         'non_commercial': True,
@@ -259,4 +320,4 @@ class DrugBank(Base):
                     })
         params = dict(meta)
         params['src_name'] = SourceName.DRUGBANK.value
-        self.database.metadata.put_item(Item=params)
+        self._database.metadata.put_item(Item=params)
