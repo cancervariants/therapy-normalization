@@ -53,6 +53,21 @@ def cisplatin():
 
 
 @pytest.fixture(scope='module')
+def platinol():
+    """Create a platinol drug fixture."""
+    params = {
+        'label': 'Platinol',
+        'concept_id': 'wikidata:Q47522001',
+        'aliases': [],
+        'trade_names': [],
+        'approval_status': None,
+        'other_identifiers': ['rxcui:202856'],
+        'xrefs': []
+    }
+    return Drug(**params)
+
+
+@pytest.fixture(scope='module')
 def interferon_alfacon_1():
     """Create an Interferon alfacon-1 drug fixture."""
     params = {
@@ -230,6 +245,10 @@ def test_primary_label_cisplatin(cisplatin, wikidata):
     assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
     assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
+
+    normalizer_response = wikidata.normalize('platinol')
+    assert normalizer_response['match_type'] == \
+        MatchType.LABEL  # should hit platinol
 
 
 def test_alias_cisplatin(cisplatin, wikidata):
