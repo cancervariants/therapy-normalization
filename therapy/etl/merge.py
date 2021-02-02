@@ -105,8 +105,13 @@ class Merge:
                     lookup_id = brand_lookup[0]['concept_id']
                     db_record = self._database.get_record_by_id(lookup_id,
                                                                 False)
-                    if not db_record:
+                    if db_record:
+                        record_id = db_record['concept_id']
+                        return self._create_record_id_set(record_id,
+                                                          observed_id_set)
+                    else:
                         return observed_id_set - {record_id}
+
                 else:
                     logger.warning(f"Record ID set creator could not resolve "
                                    f"lookup for {record_id} in ID set: "
