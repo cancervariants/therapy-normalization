@@ -160,14 +160,14 @@ class Merge:
             return (source_rank, record['concept_id'])
         records.sort(key=record_order)
 
-        merged_attrs = {'aliases': set(), 'concept_id': '',
+        merged_attrs = {'aliases': set(), 'concept_id': None,
                         'trade_names': set(), 'xrefs': set()}
         set_fields = ['aliases', 'trade_names', 'xrefs']
         for record in records:
             for field in set_fields:
                 if field in record:
                     merged_attrs[field] |= set(record[field])
-            if merged_attrs['concept_id'] == '':
+            if not merged_attrs['concept_id']:
                 merged_attrs['concept_id'] = record['concept_id']
             else:
                 merged_attrs['concept_id'] += f"|{record['concept_id']}"
