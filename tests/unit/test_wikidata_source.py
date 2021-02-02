@@ -247,8 +247,8 @@ def test_primary_label_cisplatin(cisplatin, wikidata):
     assert normalized_drug.approval_status == cisplatin.approval_status
 
     normalizer_response = wikidata.normalize('platinol')
-    assert normalizer_response['match_type'] == \
-        MatchType.LABEL  # should hit platinol
+    # should hit platinol, not cisplatin
+    assert normalizer_response['match_type'] == MatchType.LABEL
 
 
 def test_alias_cisplatin(cisplatin, wikidata):
