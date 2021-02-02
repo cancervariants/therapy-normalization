@@ -56,7 +56,7 @@ class Merge:
             # add updated references
             for concept_id in group:
                 if not self._database.get_record_by_id(concept_id, False):
-                    logger.error(f"Updating nonexistant record: {concept_id} "
+                    logger.error(f"Updating nonexistent record: {concept_id} "
                                  f"for {merged_record['label_and_type']}")
                 else:
                     merge_ref = merged_record['concept_id'].lower()
