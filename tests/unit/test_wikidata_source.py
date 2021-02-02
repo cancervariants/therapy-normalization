@@ -246,10 +246,6 @@ def test_primary_label_cisplatin(cisplatin, wikidata):
     assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
     assert normalized_drug.approval_status == cisplatin.approval_status
 
-    normalizer_response = wikidata.normalize('platinol')
-    # should hit platinol, not cisplatin
-    assert normalizer_response['match_type'] == MatchType.LABEL
-
 
 def test_alias_cisplatin(cisplatin, wikidata):
     """Test that alias term normalizes to correct drug concept as an
