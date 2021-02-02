@@ -48,7 +48,7 @@ class Merge:
         for record_id, group in self._groups.items():
             if record_id in uploaded_ids:
                 continue
-            merged_record = self._generate_merged_record(group)  # noqa
+            merged_record = self._generate_merged_record(group)
 
             # add group merger item to DB
             self._database.add_record(merged_record, 'merger')
@@ -56,7 +56,7 @@ class Merge:
             # add updated references
             for concept_id in group:
                 if not self._database.get_record_by_id(concept_id, False):
-                    logger.error(f"Updating nonexistant record: {concept_id} "
+                    logger.error(f"Updating nonexistent record: {concept_id} "
                                  f"for {merged_record['label_and_type']}")
                 else:
                     merge_ref = merged_record['concept_id'].lower()
@@ -165,14 +165,14 @@ class Merge:
             return (source_rank, record['concept_id'])
         records.sort(key=record_order)
 
-        merged_attrs = {'aliases': set(), 'concept_id': '',
+        merged_attrs = {'aliases': set(), 'concept_id': None,
                         'trade_names': set(), 'xrefs': set()}
         set_fields = ['aliases', 'trade_names', 'xrefs']
         for record in records:
             for field in set_fields:
                 if field in record:
                     merged_attrs[field] |= set(record[field])
-            if merged_attrs['concept_id'] == '':
+            if not merged_attrs['concept_id']:
                 merged_attrs['concept_id'] = record['concept_id']
             else:
                 merged_attrs['concept_id'] += f"|{record['concept_id']}"
@@ -188,6 +188,6 @@ class Merge:
             else:
                 del merged_attrs[field]
 
-        ref = f'{merged_attrs["concept_id"].lower()}##merger'
-        merged_attrs['label_and_type'] = ref
+        merged_attrs['label_and_type'] = \
+            f'{merged_attrs["concept_id"].lower()}##merger'
         return merged_attrs
