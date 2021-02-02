@@ -111,7 +111,8 @@ def cisplatin():
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
-            "wikidata:Q412415"
+            "wikidata:Q412415",
+            "wikidata:Q47522001"
         ],
         "trade_names": [
             "Cisplatin",
@@ -327,7 +328,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
                       spiramycin, timolol):
     """Test that the merged concept endpoint handles queries correctly."""
     # test merged id match
-    test_query = "rxcui:2555|ncit:C376|chemidplus:15663-27-1|wikidata:Q412415"
+    test_query = "rxcui:2555|ncit:C376|chemidplus:15663-27-1|wikidata:Q412415|wikidata:Q47522001"  # noqa: E501
     response = merge_query_handler.search_groups(test_query)
     assert response['query'] == test_query
     assert response['warnings'] is None
