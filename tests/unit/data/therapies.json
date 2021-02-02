@@ -1470,5 +1470,10 @@
     "label": "Platinol",
     "src_name": "Wikidata",
     "other_identifiers": ["rxcui:202856"]
+  },
+  {
+    "concept_id": "wikidata:q47522001",
+    "label_and_type": "platinol##alias",
+    "src_name": "Wikidata"
   }
 ]
