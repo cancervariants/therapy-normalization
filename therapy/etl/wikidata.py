@@ -7,14 +7,13 @@ from therapy.schemas import SourceName, NamespacePrefix, \
 from therapy.database import Database
 import logging
 from typing import Dict
+from wikibaseintegrator import wbi_core
+import datetime
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
 
-
-class Wikidata(Base):
-    """Extract, transform, and load the Wikidata source into therapy.db.
-    SPARQL_QUERY:
+SPARQL_QUERY = """
     SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound
            ?pubchemSubstance ?chembl
            ?rxnorm ?drugbank ?alias WHERE {
@@ -45,7 +44,11 @@ class Wikidata(Base):
         bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en".
       }
     }
-    """
+"""
+
+
+class Wikidata(Base):
+    """Extract, transform, and load the Wikidata source into therapy.db."""
 
     def __init__(self, database: Database, *args, **kwargs):
         """Initialize wikidata ETL class"""
@@ -56,16 +59,28 @@ class Wikidata(Base):
 
     def _extract_data(self, *args, **kwargs):
         """Extract data from the Wikidata source."""
+        logger.info('Extracting Wikidata...')
         if 'data_path' in kwargs:
             self._data_src = kwargs['data_path']
         else:
             wd_dir = PROJECT_ROOT / 'data' / 'wikidata'
-            wd_dir.mkdir(exist_ok=True, parents=True)  # TODO needed?
-            try:
-                self._data_src = sorted(list(wd_dir.iterdir()))[-1]
-            except IndexError:
-                raise FileNotFoundError  # TODO wikidata update function here
-        self._version = self._data_src.stem.split('_')[1]
+            wd_dir.mkdir(exist_ok=True, parents=True)
+
+            data = (wbi_core.ItemEngine.execute_sparql_query(
+                SPARQL_QUERY))['results']['bindings']
+
+            transformed_data = list()
+            for item in data:
+                params = dict()
+                for attr in item:
+                    params[attr] = item[attr]['value']
+                transformed_data.append(params)
+
+            self._version = datetime.datetime.today().strftime('%Y%m%d')
+            with open(f"{wd_dir}/wikidata_{self._version}.json", 'w+') as f:
+                json.dump(transformed_data, f)
+            self._data_src = sorted(list(wd_dir.iterdir()))[-1]
+        logger.info('Successfully extracted Wikidata.')
 
     def _add_meta(self):
         """Add Wikidata metadata."""
