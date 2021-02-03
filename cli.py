@@ -6,9 +6,7 @@ from boto3.dynamodb.conditions import Key
 import sys
 from os import environ
 from therapy.schemas import SourceName
-from therapy.etl import Merge
-from therapy import SOURCES_CLASS, ACCEPTED_SOURCES
-from therapy import SOURCES
+from therapy import SOURCES_CLASS, SOURCES
 from therapy.database import Database
 
 
@@ -80,7 +78,6 @@ class CLI:
 
     def _update_normalizers(self, normalizers, db):
         """Update selected normalizer sources."""
-        processed_ids = []
         for n in normalizers:
             click.echo(f"\nDeleting {n}...")
             start_delete = timer()
@@ -92,22 +89,12 @@ class CLI:
             click.echo(f"Loading {n}...")
             start_load = timer()
             source = SOURCES_CLASS[n](database=db)
-            source_ids = source.perform_etl()
-            if n in ACCEPTED_SOURCES:
-                processed_ids += source_ids
+            source.perform_etl()
             end_load = timer()
             load_time = end_load - start_load
             click.echo(f"Loaded {n} in {load_time:.5f} seconds.")
             click.echo(f"Total time for {n}: "
                        f"{(delete_time + load_time):.5f} seconds.")
-
-        if processed_ids:
-            click.echo("Generating merged concepts...")
-            start = timer()
-            merge = Merge(db)
-            merge.create_merged_concepts(processed_ids)
-            end = timer()
-            click.echo(f"Generated merged concepts in {end - start:.5f} seconds.")  # noqa: E501
 
     def _delete_data(self, source, database):
         # Delete source's metadata
