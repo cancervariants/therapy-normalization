@@ -99,7 +99,10 @@ class DrugGroup(Therapy):
 
 
 class MatchType(IntEnum):
-    """Define string constraints for use in Match Type attributes."""
+    """Define string constraints for use in Match Type attributes.
+
+    Concept_ID=100; Label=80; Trade Name=80; Alias=60; Fuzzy=20; No Match=0
+    """
 
     CONCEPT_ID = 100
     LABEL = 80
@@ -109,7 +112,7 @@ class MatchType(IntEnum):
     NO_MATCH = 0
 
 
-class SourceName(Enum):
+class SourceName(str, Enum):
     """Define string constraints to ensure consistent capitalization."""
 
     WIKIDATA = "Wikidata"
