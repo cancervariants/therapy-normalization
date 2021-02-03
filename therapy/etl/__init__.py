@@ -5,3 +5,4 @@ from .ncit import NCIt  # noqa: F401
 from .drugbank import DrugBank  # noqa: F401
 from .chemidplus import ChemIDplus  # noqa: F401
 from .rxnorm import RxNorm  # noqa: F401
+from .merge import Merge  # noqa: F401

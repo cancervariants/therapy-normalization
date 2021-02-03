@@ -1,10 +1,12 @@
 """This module defines the DrugBank ETL methods."""
-from therapy.etl.base import Base
 from therapy import PROJECT_ROOT
-import logging
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, Meta
-from therapy.etl.base import IDENTIFIER_PREFIXES
+from therapy.etl.base import IDENTIFIER_PREFIXES, Base
+from therapy.database import Database
+import logging
 from lxml import etree
+from typing import List
+from pathlib import Path
 import requests
 from requests.auth import HTTPBasicAuth
 from os import environ
@@ -38,24 +40,31 @@ class DrugBank(Base):
     """ETL the DrugBank source into therapy.db."""
 
     def __init__(self,
-                 database,
-                 version='5.1.7',
-                 data_url='https://go.drugbank.com/releases/5-1-7/'
-                          'downloads/all-full-database',
-                 data_dir=PROJECT_ROOT / 'data' / 'drugbank'
-                 ):
-        """Initialize DrugBank class.
+                 database: Database,
+                 data_path: Path = PROJECT_ROOT / 'data' / 'drugbank',
+                 data_url: str = 'https://go.drugbank.com/releases/5-1-7/'
+                                 'downloads/all-full-database',
+                 version: str = '5.1.7'):
+        """Initialize ETL class instance.
 
-        :param Database database: DynamoDB object
-        :param str version: DrugBank version to use
-        :param str data_url: URL to DrugBank data file
-        :param Path data_dir: Path to DrugBank data directory
+        :param Path data_path: directory containing source data
         """
         self._database = database
-        self._version = version
+        self._data_path = data_path
         self._data_url = data_url
-        self._data_dir = data_dir
-        self._load_data()
+        self._version = version
+        self._added_ids = []
+
+    def perform_etl(self) -> List[str]:
+        """Public-facing method to initiate ETL procedures on given data.
+
+        :return: List of concept IDs which were successfully processed and
+            uploaded.
+        """
+        self._extract_data()
+        self._load_meta()
+        self._transform_data()
+        return self._added_ids
 
     def _download_data(self):
         """Download DrugBank database XML file.
@@ -92,17 +101,14 @@ class DrugBank(Base):
                            "and DRUGBANK_PWD.")
         logger.info("Successfully downloaded DrugBank file.")
 
-    def _extract_data(self, *args, **kwargs):
+    def _extract_data(self):
         """Extract data from the DrugBank source."""
         logger.info("Extracting DrugBank file...")
-        if 'data_path' in kwargs:
-            self._data_src = kwargs['data_path']
-        else:
-            self._data_dir.mkdir(exist_ok=True, parents=True)
-            file_path = self._data_dir / f"drugbank_{self._version}.xml"
-            if not file_path.exists():
-                self._download_data()
-            self._data_src = file_path
+        self._data_path.mkdir(exist_ok=True, parents=True)
+        file_path = self._data_path / f"drugbank_{self._version}.xml"
+        if not file_path.exists():
+            self._download_data()
+        self._data_src = file_path
         logger.info(f"Extracted {self._data_src}.")
 
     def _transform_data(self):
@@ -172,12 +178,6 @@ class DrugBank(Base):
                     self._load_trade_names(params['trade_names'],
                                            params['concept_id'], batch)
 
-    def _load_data(self, *args, **kwargs):
-        """Load the DrugBank source into normalized database."""
-        self._extract_data()
-        self._add_meta()
-        self._transform_data()
-
     def _load_therapy(self, batch, params):
         """Filter out trade names and aliases that exceed 20 and add item to
         therapies table.
@@ -193,6 +193,7 @@ class DrugBank(Base):
                         {a.casefold() for a in params[label_type]}) > 20:
                     del params[label_type]
         batch.put_item(Item=params)
+        self._added_ids.append(params['concept_id'])
 
     def _load_drugbank_id(self, element, params):
         """Load drugbank id as concept id or alias."""
@@ -306,7 +307,7 @@ class DrugBank(Base):
             }
             batch.put_item(Item=trade_name)
 
-    def _add_meta(self):
+    def _load_meta(self):
         """Add DrugBank metadata."""
         meta = Meta(data_license='CC BY-NC 4.0',
                     data_license_url='https://creativecommons.org/licenses/by-nc/4.0/legalcode',  # noqa: E501

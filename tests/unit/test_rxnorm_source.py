@@ -1,7 +1,7 @@
 """Test that the therapy normalizer works as intended for the RxNorm source."""
 import pytest
 from therapy.schemas import Drug, MatchType
-from therapy.query import Normalizer
+from therapy.query import QueryHandler
 from therapy.database import Database
 import os
 from boto3.dynamodb.conditions import Key
@@ -13,21 +13,20 @@ def rxnorm():
     class QueryGetter:
 
         def __init__(self):
-            self.normalizer = Normalizer()
+            self.normalizer = QueryHandler()
             if 'THERAPY_NORM_DB_URL' in os.environ:
                 db_url = os.environ['THERAPY_NORM_DB_URL']
             else:
                 db_url = 'http://localhost:8000'
-
             self.db = Database(db_url=db_url)
 
         def normalize(self, query_str):
-            resp = self.normalizer.normalize(query_str, keyed=True,
-                                             incl='rxnorm')
+            resp = self.normalizer.search_sources(query_str, keyed=True,
+                                                  incl='rxnorm')
             return resp['source_matches']['RxNorm']
 
         def fetch_meta(self):
-            return self.normalizer.fetch_meta('RxNorm')
+            return self.normalizer._fetch_meta('RxNorm')
 
     return QueryGetter()
 

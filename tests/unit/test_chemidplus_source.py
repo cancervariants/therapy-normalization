@@ -1,5 +1,5 @@
 """Test ChemIDplus ETL methods."""
-from therapy.query import Normalizer
+from therapy.query import QueryHandler
 from therapy.schemas import Drug, MatchType
 import pytest
 from typing import Dict
@@ -11,11 +11,11 @@ def chemidplus():
     class QueryGetter:
 
         def __init__(self):
-            self.normalizer = Normalizer()
+            self.normalizer = QueryHandler()
 
         def normalize(self, query_str):
-            resp = self.normalizer.normalize(query_str, keyed=True,
-                                             incl='chemidplus')
+            resp = self.normalizer.search_sources(query_str, keyed=True,
+                                                  incl='chemidplus')
             return resp['source_matches']['ChemIDplus']
     return QueryGetter()
 

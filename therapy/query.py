@@ -33,7 +33,7 @@ class InvalidParameterException(Exception):
         super().__init__(message)
 
 
-class Normalizer:
+class QueryHandler:
     """Class for normalizer management. Stores reference to database instance
     and normalizes query input.
     """
@@ -41,12 +41,12 @@ class Normalizer:
     def __init__(self, db_url: str = '', db_region: str = 'us-east-2'):
         """Initialize Normalizer instance.
 
-        :param db_url: URL to database source.
-        :param db_region: AWS default region.
+        :param str db_url: URL to database source.
+        :param str db_region: AWS default region.
         """
         self.db = Database(db_url=db_url, region_name=db_region)
 
-    def emit_warnings(self, query_str) -> Optional[Dict]:
+    def _emit_warnings(self, query_str) -> Optional[Dict]:
         """Emit warnings if query contains non breaking space characters.
 
         :param str query_str: query string
@@ -63,7 +63,7 @@ class Normalizer:
             )
         return warnings
 
-    def fetch_meta(self, src_name: str) -> Meta:
+    def _fetch_meta(self, src_name: str) -> Meta:
         """Fetch metadata for src_name.
 
         :param str src_name: name of source to get metadata for
@@ -80,12 +80,12 @@ class Normalizer:
                 self.db.cached_sources[src_name] = response
                 return response
             except ClientError as e:
-                print(e.response['Error']['Message'])
+                logger.error(e.response['Error']['Message'])
 
-    def add_record(self,
-                   response: Dict[str, Dict],
-                   item: Dict,
-                   match_type: MatchType) -> (Dict, str):
+    def _add_record(self,
+                    response: Dict[str, Dict],
+                    item: Dict,
+                    match_type: str) -> (Dict, str):
         """Add individual record (i.e. Item in DynamoDB) to response object
 
         :param Dict[str, Dict] response: in-progress response object to return
@@ -109,19 +109,19 @@ class Normalizer:
             pass
         elif matches[src_name] is None:
             matches[src_name] = {
-                'match_type': match_type,
+                'match_type': MatchType[match_type.upper()],
                 'records': [drug],
-                'meta_': self.fetch_meta(src_name)
+                'meta_': self._fetch_meta(src_name)
             }
-        elif matches[src_name]['match_type'].value == match_type.value:
+        elif matches[src_name]['match_type'] == MatchType[match_type.upper()]:
             matches[src_name]['records'].append(drug)
 
         return (response, src_name)
 
-    def fetch_records(self,
-                      response: Dict[str, Dict],
-                      concept_ids: List[str],
-                      match_type: MatchType) -> (Dict, Set):
+    def _fetch_records(self,
+                       response: Dict[str, Dict],
+                       concept_ids: Set[str],
+                       match_type: str) -> (Dict, Set):
         """Return matched Drug records as a structured response for a given
         collection of concept IDs.
 
@@ -129,7 +129,7 @@ class Normalizer:
             to client.
         :param List[str] concept_ids: List of concept IDs to build from.
             Should be all lower-case.
-        :param MatchType match_type: record should be assigned this type of
+        :param str match_type: record should be assigned this type of
             match.
         :return: response Dict with records filled in via provided concept
             IDs, and Set of source names of matched records
@@ -137,20 +137,16 @@ class Normalizer:
         matched_sources = set()
         for concept_id in concept_ids:
             try:
-                pk = f'{concept_id.lower()}##identity'
-                filter_exp = Key('label_and_type').eq(pk)
-                result = self.db.therapies.query(
-                    KeyConditionExpression=filter_exp
-                )
-                match = result['Items'][0]
-                (response, src) = self.add_record(response, match, match_type)
+                match = self.db.get_record_by_id(concept_id.lower(),
+                                                 case_sensitive=False)
+                (response, src) = self._add_record(response, match, match_type)
                 matched_sources.add(src)
             except ClientError as e:
-                print(e.response['Error']['Message'])
+                logger.error(e.response['Error']['Message'])
 
         return (response, matched_sources)
 
-    def fill_no_matches(self, resp: Dict[str, Dict]) -> Dict:
+    def _fill_no_matches(self, resp: Dict[str, Dict]) -> Dict:
         """Fill all empty source_matches slots with NO_MATCH results.
 
         :param Dict[str, Dict] resp: incoming response object
@@ -162,16 +158,17 @@ class Normalizer:
                 resp['source_matches'][src_name] = {
                     'match_type': MatchType.NO_MATCH,
                     'records': [],
-                    'meta_': self.fetch_meta(src_name)
+                    'meta_': self._fetch_meta(src_name)
                 }
         return resp
 
-    def check_concept_id(self,
-                         query: str,
-                         resp: Dict,
-                         sources: Set[str]) -> (Dict, Set):
+    def _check_concept_id(self,
+                          query: str,
+                          resp: Dict,
+                          sources: Set[str]) -> (Dict, Set):
         """Check query for concept ID match. Should only find 0 or 1 matches,
         but stores them as a collection to be safe.
+        # TODO is that ^ safe?
 
         :param str query: search string
         :param Dict resp: in-progress response object to return to client
@@ -190,7 +187,7 @@ class Normalizer:
                 if len(result['Items']) > 0:
                     concept_id_items += result['Items']
             except ClientError as e:
-                print(e.response['Error']['Message'])
+                logger.error(e.response['Error']['Message'])
         for prefix in [p for p in NAMESPACE_LOOKUP.keys()
                        if query.startswith(p)]:
             pk = f'{NAMESPACE_LOOKUP[prefix].lower()}:{query}##identity'
@@ -202,43 +199,37 @@ class Normalizer:
                 if len(result['Items']) > 0:  # TODO remove check?
                     concept_id_items += result['Items']
             except ClientError as e:
-                print(e.response['Error']['Message'])
+                logger(e.response['Error']['Message'])
 
         for item in concept_id_items:
-            (resp, src_name) = self.add_record(resp, item,
-                                               MatchType.CONCEPT_ID)
+            (resp, src_name) = self._add_record(resp, item,
+                                                MatchType.CONCEPT_ID.name)
             sources = sources - {src_name}
         return (resp, sources)
 
-    def check_match_type(self,
-                         query: str,
-                         resp: Dict,
-                         sources: Set[str],
-                         match: str) -> (Dict, Set):
+    def _check_match_type(self,
+                          query: str,
+                          resp: Dict,
+                          sources: Set[str],
+                          match_type: str) -> (Dict, Set):
         """Check query for selected match type.
         :param str query: search string
         :param Dict resp: in-progress response object to return to client
         :param Set[str] sources: remaining unmatched sources
-        :param str match: Match type name
+        :param str match_type: Match type to check for. Should be one of
+            ['trade_name', 'label', 'alias']
         :return: Tuple with updated resp object and updated set of unmatched
                  sources
         """
-        filter_exp = Key('label_and_type').eq(f'{query}##{match}')
-        try:
-            db_response = self.db.therapies.query(
-                KeyConditionExpression=filter_exp
-            )
-            if 'Items' in db_response.keys():
-                concept_ids = [i['concept_id'] for i in db_response['Items']]
-                (resp, matched_srcs) = self.fetch_records(
-                    resp, concept_ids, MatchType[match.upper()]
-                )
-                sources = sources - matched_srcs
-        except ClientError as e:
-            print(e.response['Error']['Message'])
+        matches = self.db.get_records_by_type(query, match_type)
+        if matches:
+            concept_ids = {i['concept_id'] for i in matches}
+            (resp, matched_srcs) = self._fetch_records(resp, concept_ids,
+                                                       match_type)
+            sources = sources - matched_srcs
         return (resp, sources)
 
-    def response_keyed(self, query: str, sources: Set[str]) -> Dict:
+    def _response_keyed(self, query: str, sources: Set[str]) -> Dict:
         """Return response as dict where key is source name and value
         is a list of records. Corresponds to `keyed=true` API parameter.
 
@@ -246,36 +237,34 @@ class Normalizer:
         :param Set[str] sources: sources to match from
         :return: completed response object to return to client
         """
-        resp = {
+        response = {
             'query': query,
-            'warnings': self.emit_warnings(query),
+            'warnings': self._emit_warnings(query),
             'source_matches': {
                 source: None for source in sources
             }
         }
         if query == '':
-            resp = self.fill_no_matches(resp)
-            return resp
-        query_l = query.lower()
+            response = self._fill_no_matches(response)
+            return response
+        query = query.lower()
 
         # check if concept ID match
-        (resp, sources) = self.check_concept_id(query_l, resp, sources)
+        (response, sources) = self._check_concept_id(query, response, sources)
         if len(sources) == 0:
-            return resp
+            return response
 
         match_types = ['label', 'trade_name', 'alias']
-        for match in match_types:
-            (resp, sources) = self.check_match_type(
-                query_l, resp, sources, match)
+        for match_type in match_types:
+            (response, sources) = self._check_match_type(query, response,
+                                                         sources, match_type)
             if len(sources) == 0:
-                return resp
+                return response
 
         # remaining sources get no match
-        resp = self.fill_no_matches(resp)
+        return self._fill_no_matches(response)
 
-        return resp
-
-    def response_list(self, query: str, sources: List[str]) -> Dict:
+    def _response_list(self, query: str, sources: List[str]) -> Dict:
         """Return response as list, where the first key-value in each item
         is the source name. Corresponds to `keyed=false` API parameter.
 
@@ -283,7 +272,7 @@ class Normalizer:
         :param List[str] sources: sources to match from
         :return: Completed response object to return to client
         """
-        response_dict = self.response_keyed(query, sources)
+        response_dict = self._response_keyed(query, sources)
         source_list = []
         for src_name in response_dict['source_matches'].keys():
             src = {
@@ -297,21 +286,20 @@ class Normalizer:
 
         return response_dict
 
-    def normalize(self, query_str, keyed=False, incl='', excl='', **params):
+    def search_sources(self, query_str, keyed=False, incl='', excl='') -> Dict:
         """Fetch normalized therapy objects.
 
         :param str query_str: query, a string, to search for
         :param bool keyed: if true, return response as dict keying source names
             to source objects; otherwise, return list of source objects
         :param str incl: str containing comma-separated names of sources to
-            use. Will exclude all other sources. Case-insensitive. Raises
-            InvalidParameterException if both incl and excl args are
-            provided, or if invalid source names are given.
+            use. Will exclude all other sources. Case-insensitive.
         :param str excl: str containing comma-separated names of source to
-            exclude. Will include all other source. Case-insensitive. Raises
-            InvalidParameterException if both incl and excl args are
-            provided, or if invalid source names are given.
+            exclude. Will include all other source. Case-insensitive.
         :return: dict containing all matches found in sources.
+        :rtype: dict
+        :raises InvalidParameterException: if both incl and excl args are
+            provided, or if invalid source names are given.
         """
         sources = {name.value.lower(): name.value for name in
                    SourceName.__members__.values()}
@@ -351,8 +339,126 @@ class Normalizer:
         query_str = query_str.strip()
 
         if keyed:
-            resp = self.response_keyed(query_str, query_sources)
+            response = self._response_keyed(query_str, query_sources)
         else:
-            resp = self.response_list(query_str, query_sources)
+            response = self._response_list(query_str, query_sources)
 
-        return resp
+        return response
+
+    def _add_merged_meta(self, response: Dict) -> Dict:
+        """Add source metadata to response object.
+
+        :param Dict response: in-progress response object
+        :return: completed resopnse object.
+        """
+        sources_meta = {}
+        for concept_id in response['record']['concept_ids']:
+            prefix = concept_id.split(':')[0]
+            src_name = PREFIX_LOOKUP[prefix]
+            if src_name not in sources_meta:
+                sources_meta[src_name] = self._fetch_meta(src_name)
+        response['meta_'] = sources_meta
+        return response
+
+    def _format_merged_record(self, merged_record: Dict) -> Dict:
+        """Transform merged record (as served by DB) into response object
+        format.
+
+        :param Dict merged_record: merged record as returned by DB call
+        :return: formatted record
+        """
+        del merged_record['label_and_type']
+        merged_record['concept_ids'] = merged_record['concept_id'].split('|')
+        del merged_record['concept_id']
+        return merged_record
+
+    def _add_merged_record(self, response: Dict, merge_ref: str) -> Dict:
+        """Add referenced concept ID group to response object.
+
+        :param Dict response: in-progress response object. Should have
+            match_type attribute filled in already.
+        :param str merge_ref: primary key for concept ID group lookup.
+        :return: completed response object.
+        """
+        merged_record = self.db.get_record_by_id(merge_ref, False, True)
+        if not merged_record:
+            logger.warning(f"Could not retrieve merged record for concept "
+                           f"ID group {merge_ref} "
+                           f"by way of query {response['query']}")
+            response['match_type'] = MatchType.NO_MATCH
+            return response
+        response['record'] = self._format_merged_record(merged_record)
+        response = self._add_merged_meta(response)
+        return response
+
+    def _record_order(self, record: Dict) -> (int, str):
+        """Construct priority order for matching. Only called by sort().
+
+        :param Dict record: individual record item in iterable to sort
+        :return: tuple with rank value and concept ID
+        """
+        src = record['src_name']
+        if src == SourceName.RXNORM.value:
+            source_rank = 1
+        elif src == SourceName.NCIT.value:
+            source_rank = 2
+        elif src == SourceName.CHEMIDPLUS.value:
+            source_rank = 3
+        else:
+            source_rank = 4
+        return (source_rank, record['concept_id'])
+
+    def search_groups(self, query_str: str) -> Dict:
+        """Return merged, normalized concept for given search term.
+
+        :param str query_str: string to search against
+        """
+        # prepare basic response
+        response = {
+            'query': query_str,
+            'warnings': self._emit_warnings(query_str),
+        }
+        if query_str == '':
+            response['match_type'] = MatchType.NO_MATCH
+            return response
+        query_str = query_str.lower()
+
+        # check merged concept ID match
+        record = self.db.get_record_by_id(query_str, case_sensitive=False,
+                                          merge=True)
+        if record:
+            response['match_type'] = MatchType.CONCEPT_ID
+            response['record'] = self._format_merged_record(record)
+            response = self._add_merged_meta(response)
+            return response
+
+        # check concept ID match
+        record = self.db.get_record_by_id(query_str, case_sensitive=False)
+        if record:
+            response['match_type'] = MatchType.CONCEPT_ID
+            response = self._add_merged_record(response, record['merge_ref'])
+            return response
+
+        # check other match types
+        for match_type in ['label', 'trade_name', 'alias']:
+            # get matches list for match tier
+            prohibited_sources = (SourceName.CHEMBL.value,
+                                  SourceName.DRUGBANK.value)
+            query_matches = self.db.get_records_by_type(query_str, match_type)
+            query_matches = [self.db.get_record_by_id(m['concept_id'], False)
+                             for m in query_matches
+                             if m['src_name'] not in prohibited_sources]
+            query_matches.sort(key=self._record_order)
+
+            # attempt merge ref resolution until successful
+            for match in query_matches:
+                record = self.db.get_record_by_id(match['concept_id'], False)
+                if record:
+                    merge_ref = record['merge_ref']
+                    if merge_ref:
+                        response['match_type'] = MatchType[match_type.upper()]
+                        return self._add_merged_record(response, merge_ref)
+
+        if not query_matches:
+            response['match_type'] = MatchType.NO_MATCH
+        return response

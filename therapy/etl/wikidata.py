@@ -1,12 +1,13 @@
 """This module defines the Wikidata ETL methods."""
 from .base import Base, IDENTIFIER_PREFIXES
 from therapy import PROJECT_ROOT
-import json
 from therapy.schemas import SourceName, NamespacePrefix, \
     SourceIDAfterNamespace, Meta
 from therapy.database import Database
+import json
 import logging
-from typing import Dict
+from typing import Dict, List
+from pathlib import Path
 from wikibaseintegrator import wbi_core
 import datetime
 
@@ -50,39 +51,51 @@ SPARQL_QUERY = """
 class Wikidata(Base):
     """Extract, transform, and load the Wikidata source into therapy.db."""
 
-    def __init__(self, database: Database, *args, **kwargs):
-        """Initialize wikidata ETL class"""
+    def __init__(self,
+                 database: Database,
+                 data_path: Path = PROJECT_ROOT / 'data' / 'wikidata'):
+        """Initialize wikidata ETL class.
+
+        :param therapy.database.Database: DB instance to use
+        :param pathlib.Path data_path: path to wikidata data directory
+        """
         self.database = database
-        self._extract_data(*args, **kwargs)
-        self._add_meta()
+        self._data_path = data_path
+        self._added_ids = []
+
+    def perform_etl(self) -> List[str]:
+        """Public-facing method to initiate ETL procedures on given data.
+
+        :return: List of concept IDs which were successfully processed and
+            uploaded.
+        """
+        self._extract_data()
+        self._load_meta()
         self._transform_data()
+        return self._added_ids
 
-    def _extract_data(self, *args, **kwargs):
+    def _extract_data(self):
         """Extract data from the Wikidata source."""
-        logger.info('Extracting Wikidata...')
-        if 'data_path' in kwargs:
-            self._data_src = kwargs['data_path']
-        else:
-            wd_dir = PROJECT_ROOT / 'data' / 'wikidata'
-            wd_dir.mkdir(exist_ok=True, parents=True)
+        self._data_path.mkdir(exist_ok=True, parents=True)
 
-            data = (wbi_core.ItemEngine.execute_sparql_query(
-                SPARQL_QUERY))['results']['bindings']
+        data = (wbi_core.ItemEngine.execute_sparql_query(
+            SPARQL_QUERY))['results']['bindings']
 
-            transformed_data = list()
-            for item in data:
-                params = dict()
-                for attr in item:
-                    params[attr] = item[attr]['value']
-                transformed_data.append(params)
+        transformed_data = list()
+        for item in data:
+            params = dict()
+            for attr in item:
+                params[attr] = item[attr]['value']
+            transformed_data.append(params)
 
-            self._version = datetime.datetime.today().strftime('%Y%m%d')
-            with open(f"{wd_dir}/wikidata_{self._version}.json", 'w+') as f:
-                json.dump(transformed_data, f)
-            self._data_src = sorted(list(wd_dir.iterdir()))[-1]
+        self._version = datetime.datetime.today().strftime('%Y%m%d')
+        with open(f"{self._data_path}/wikidata_{self._version}.json",
+                  'w+') as f:
+            json.dump(transformed_data, f)
+        self._data_src = sorted(list(self._data_path.iterdir()))[-1]
         logger.info('Successfully extracted Wikidata.')
 
-    def _add_meta(self):
+    def _load_meta(self):
         """Add Wikidata metadata."""
         metadata = Meta(src_name=SourceName.WIKIDATA.value,
                         data_license='CC0 1.0',
@@ -100,11 +113,7 @@ class Wikidata(Base):
         self.database.metadata.put_item(Item=params)
 
     def _transform_data(self):
-        """Transform the Wikidata source data.
-        Currently, gather all items in memory and then batch-load into
-        DynamoDB. Worth considering whether adding record directly and then
-        issuing update statements to append additional aliases would be better.
-        """
+        """Transform the Wikidata source data."""
         with open(self._data_src, 'r') as f:
             records = json.load(f)
 
@@ -120,8 +129,8 @@ class Wikidata(Base):
                     item['concept_id'] = concept_id
                     item['src_name'] = SourceName.WIKIDATA.value
 
-                    other_ids = []
-                    xrefs = []
+                    other_ids = list()
+                    xrefs = list()
                     for key in IDENTIFIER_PREFIXES.keys():
                         if key in record.keys():
                             other_id = record[key]
@@ -159,11 +168,11 @@ class Wikidata(Base):
                 self._load_therapy(item, batch)
 
     def _load_therapy(self, item: Dict, batch):
-        """Load individual therapy record into DynamoDB
-        Args:
-            item: dict containing, at minimum, label_and_type and concept_id
-                keys.
-            batch: boto3 batch writer
+        """Load individual therapy record into database.
+
+        :param Dict item: containing, at minimum, label_and_type and concept_id
+            keys.
+        :param batch: boto3 batch writer
         """
         if 'aliases' in item:
             item['aliases'] = list(set(item['aliases']))
@@ -172,6 +181,7 @@ class Wikidata(Base):
                 del item['aliases']
 
         batch.put_item(Item=item)
+        self._added_ids.append(item['concept_id'])
         concept_id_lower = item['concept_id'].lower()
 
         if 'aliases' in item.keys():
@@ -191,14 +201,3 @@ class Wikidata(Base):
                 'concept_id': concept_id_lower,
                 'src_name': SourceName.WIKIDATA.value
             })
-
-    def _sqlite_str(self, string):
-        """Sanitizes string to use as value in SQL statement.
-        Some wikidata entries include items with single quotes,
-        like wikidata:Q80863 alias: 5'-(Tetrahydrogen triphosphate) Adenosine
-        """
-        if string == "NULL":
-            return "NULL"
-        else:
-            sanitized = string.replace("'", "''")
-            return f"{sanitized}"
