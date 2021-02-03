@@ -99,7 +99,10 @@ class DrugGroup(Therapy):
 
 
 class MatchType(IntEnum):
-    """Define string constraints for use in Match Type attributes."""
+    """Define string constraints for use in Match Type attributes.
+
+    Concept_ID=100; Label=80; Trade Name=80; Alias=60; Fuzzy=20; No Match=0
+    """
 
     CONCEPT_ID = 100
     LABEL = 80
@@ -118,7 +121,7 @@ class SourcePriority(IntEnum):
     WIKIDATA = 6
 
 
-class SourceName(Enum):
+class SourceName(str, Enum):
     """Define string constraints to ensure consistent capitalization."""
 
     WIKIDATA = "Wikidata"
@@ -319,11 +322,71 @@ class MergedMatch(BaseModel):
     sources provide it.
     """
 
+    label: Optional[str]
     concept_ids: List[str]
-    aliases: List[str]
+    aliases: Optional[List[str]]
     trade_names: Optional[List[str]]
     xrefs: Optional[List[str]]
-    label: Optional[str]
+
+    class Config:
+        """Enables orm_mode"""
+
+        @staticmethod
+        def schema_extra(schema: Dict[str, Any],
+                         model: Type['MergedMatch']) -> None:
+            """Configure OpenAPI schema"""
+            if 'title' in schema.keys():
+                schema.pop('title', None)
+            for prop in schema.get('properties', {}).values():
+                prop.pop('title', None)
+            schema['example'] = {
+                "label": "cisplatin",
+                "concept_ids": [
+                    "rxcui:2555",
+                    "ncit:C376",
+                    "chemidplus:15663-27-1",
+                    "wikidata:Q412415",
+                    "wikidata:Q47522001"
+                ],
+                "aliases": [
+                    "cis Platinum",
+                    "cis-Diaminedichloroplatinum",
+                    "cis-Dichlorodiammineplatinum(II)",
+                    "CDDP",
+                    "Platinol",
+                    "cis-Diamminedichloroplatinum",
+                    "Platinol-AQ",
+                    "cis-Diamminedichloroplatinum(II)",
+                    "CISplatin",
+                    "Diamminodichloride, Platinum",
+                    "cis Diamminedichloroplatinum",
+                    "Platinum Diamminodichloride",
+                    "cis-diamminedichloroplatinum(II)",
+                    "DDP",
+                    "CIS-DDP",
+                    "1,2-Diaminocyclohexaneplatinum II citrate",
+                    "Cis-DDP",
+                    "Dichlorodiammineplatinum",
+                    "cis-Platinum"
+                ],
+                "trade_names": [
+                    "Platinol",
+                    "Cisplatin"
+                ],
+                "xrefs": [
+                    "pubchem.compound:5702198",
+                    "atc:L01XA01",
+                    "fda:Q20Q21Q62J",
+                    "mesh:D002945",
+                    "usp:m17910",
+                    "mthspl:Q20Q21Q62J",
+                    "vandf:4018139",
+                    "umls:C0008838",
+                    "mmsl:d00195",
+                    "mmsl:31747",
+                    "mmsl:4456"
+                ]
+            }
 
 
 class Service(BaseModel):
@@ -374,3 +437,118 @@ class NormalizationService(BaseModel):
     match_type: MatchType
     record: Optional[MergedMatch]
     meta_: Optional[Dict[SourceName, Meta]]
+
+    class Config:
+        """Enables orm_mode"""
+
+        @staticmethod
+        def schema_extra(schema: Dict[str, Any],
+                         model: Type['NormalizationService']) -> None:
+            """Configure OpenAPI schema"""
+            if 'title' in schema.keys():
+                schema.pop('title', None)
+            for prop in schema.get('properties', {}).values():
+                prop.pop('title', None)
+            schema['example'] = {
+                "query": "cisplatin",
+                "warnings": None,
+                "match_type": 80,
+                "record": {
+                    "label": "cisplatin",
+                    "concept_ids": [
+                        "rxcui:2555",
+                        "ncit:C376",
+                        "chemidplus:15663-27-1",
+                        "wikidata:Q412415",
+                        "wikidata:Q47522001"
+                    ],
+                    "aliases": [
+                        "cis Platinum",
+                        "cis-Diaminedichloroplatinum",
+                        "cis-Dichlorodiammineplatinum(II)",
+                        "CDDP",
+                        "Platinol",
+                        "cis-Diamminedichloroplatinum",
+                        "Platinol-AQ",
+                        "cis-Diamminedichloroplatinum(II)",
+                        "CISplatin",
+                        "Diamminodichloride, Platinum",
+                        "cis Diamminedichloroplatinum",
+                        "Platinum Diamminodichloride",
+                        "cis-diamminedichloroplatinum(II)",
+                        "DDP",
+                        "CIS-DDP",
+                        "1,2-Diaminocyclohexaneplatinum II citrate",
+                        "Cis-DDP",
+                        "Dichlorodiammineplatinum",
+                        "cis-Platinum"
+                    ],
+                    "trade_names": [
+                        "Platinol",
+                        "Cisplatin"
+                    ],
+                    "xrefs": [
+                        "pubchem.compound:5702198",
+                        "atc:L01XA01",
+                        "fda:Q20Q21Q62J",
+                        "mesh:D002945",
+                        "usp:m17910",
+                        "mthspl:Q20Q21Q62J",
+                        "vandf:4018139",
+                        "umls:C0008838",
+                        "mmsl:d00195",
+                        "mmsl:31747",
+                        "mmsl:4456"
+                    ]
+                },
+                "meta_": {
+                    "RxNorm": {
+                        "data_license": "UMLS Metathesaurus",
+                        "data_license_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",  # noqa: E501
+                        "version": "20210104",
+                        "data_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/rxnormfiles.html",  # noqa: E501
+                        "rdp_url": None,
+                        "data_license_attributes": {
+                            "non_commercial": False,
+                            "attribution": True,
+                            "share_alike": False
+                        }
+                    },
+                    "NCIt": {
+                        "data_license": "CC BY 4.0",
+                        "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa: E501
+                        "version": "20.09d",
+                        "data_url": "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/",  # noqa: E501
+                        "rdp_url": "http://reusabledata.org/ncit.html",
+                        "data_license_attributes": {
+                            "non_commercial": False,
+                            "attribution": True,
+                            "share_alike": False
+                        }
+                    },
+                    "ChemIDplus": {
+                        "data_license": "custom",
+                        "data_license_url": "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501
+                        "version": "20200327",
+                        "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",  # noqa: E501
+                        "rdp_url": None,
+                        "data_license_attributes": {
+                            "non_commercial": False,
+                            "attribution": True,
+                            "share_alike": False
+                        }
+                    },
+                    "Wikidata": {
+                        "data_license": "CC0 1.0",
+                        "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",  # noqa: E501
+                        "version": "20200812",
+                        "data_url": None,
+                        "rdp_url": None,
+                        "data_license_attributes": {
+                            "non_commercial": False,
+                            "attribution": False,
+                            "share_alike": False
+                        }
+                    }
+                }
+            }

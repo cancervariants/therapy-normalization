@@ -353,8 +353,7 @@ class QueryHandler:
         :return: formatted record
         """
         del merged_record['label_and_type']
-        concept_ids_combined = merged_record['concept_id'].split('|')
-        merged_record['concept_ids'] = concept_ids_combined
+        merged_record['concept_ids'] = merged_record['concept_id'].split('|')
         del merged_record['concept_id']
         return merged_record
 

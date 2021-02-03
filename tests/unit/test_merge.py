@@ -118,8 +118,8 @@ def phenobarbital_merged():
 def cisplatin_merged():
     """Create cisplatin fixture."""
     return {
-        "label_and_type": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415##merger",  # noqa: E501
-        "concept_id": "rxcui:2555|ncit:C376|chemidplus:15663-27-1|wikidata:Q412415",  # noqa: E501
+        "label_and_type": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415|wikidata:q47522001##merger",  # noqa: E501
+        "concept_id": "rxcui:2555|ncit:C376|chemidplus:15663-27-1|wikidata:Q412415|wikidata:Q47522001",  # noqa: E501
         "trade_names": [
             "Cisplatin",
             "Platinol"
@@ -222,7 +222,8 @@ def record_id_groups():
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
-            "wikidata:Q412415"
+            "wikidata:Q412415",
+            "wikidata:Q47522001"
         },
         "chemidplus:8025-81-8": {
             "ncit:C839",
@@ -232,19 +233,29 @@ def record_id_groups():
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
-            "wikidata:Q412415"
+            "wikidata:Q412415",
+            "wikidata:Q47522001"
         },
         "ncit:C376": {
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
-            "wikidata:Q412415"
+            "wikidata:Q412415",
+            "wikidata:Q47522001"
         },
         "wikidata:Q412415": {
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
-            "wikidata:Q412415"
+            "wikidata:Q412415",
+            "wikidata:Q47522001"
+        },
+        "wikidata:Q47522001": {
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415",
+            "wikidata:Q47522001"
         },
         "rxcui:4126": {
             "rxcui:4126",
