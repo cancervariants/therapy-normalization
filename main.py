@@ -42,7 +42,7 @@ get_matches_summary = ("Given query, provide highest matches from "
 response_descr = "A response to a validly-formed query."
 q_descr = "Therapy to search."
 keyed_descr = ("If true, return response as key-value pairs of "
-               "sources to source matches. False by default")
+               "sources to source matches.")
 incl_descr = ("Comma-separated list of source names to include in "
               "response. Will exclude all other sources. Will return HTTP "
               "status code 422: Unprocessable Entity if both 'incl' and "
@@ -60,20 +60,10 @@ excl_descr = ("Comma-separated list of source names to exclude in "
          response_model=Service)
 def search(q: str = Query(..., description=q_descr),
            keyed: Optional[bool] = Query(False, description=keyed_descr),
-           incl: Optional[str] = Query('', description=incl_descr),
-           excl: Optional[str] = Query('', description=excl_descr)):
+           incl: Optional[str] = Query(None, description=incl_descr),
+           excl: Optional[str] = Query(None, description=excl_descr)):
     """For each source, return strongest-match concepts for query string
     provided by user.
-
-    :param q: therapy search term
-    :param keyed: if true, response is structured as key/value pair of
-        sources to source match lists.
-    :param incl: comma-separated list of sources to include, with all others
-        excluded. Raises HTTPException if both `incl` and `excl` are given.
-    :param excl: comma-separated list of sources exclude, with all others
-        included. Raises HTTPException if both `incl` and `excl` are given.
-
-    :returns: JSON response with matched records and source metadata
     """
     try:
         response = query_handler.search_sources(html.unescape(q), keyed=keyed,
@@ -96,8 +86,6 @@ merged_q_descr = "Therapy to normalize."
 def normalize(q: str = Query(..., description=merged_q_descr)):
     """Return merged strongest-match concept for query string provided by
     user.
-
-    :param q: therapy search term
     """
     try:
         response = query_handler.search_groups(q)
