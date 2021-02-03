@@ -302,7 +302,7 @@ class MergedMatch(BaseModel):
     """
 
     concept_ids: List[str]
-    aliases: List[str]
+    aliases: Optional[List[str]]
     trade_names: Optional[List[str]]
     xrefs: Optional[List[str]]
     label: Optional[str]
