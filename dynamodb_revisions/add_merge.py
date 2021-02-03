@@ -1,11 +1,16 @@
 """Add merged records and references to database."""
-from therapy.database import Database
-from therapy.etl.merge import Merge
 from timeit import default_timer as timer
-from therapy.schemas import SourceName
+from pathlib import Path
 from os import environ
 import click
 import sys
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(f"{PROJECT_ROOT}")
+
+from therapy.database import Database  # noqa: E402
+from therapy.schemas import SourceName  # noqa: E402
+from therapy.etl.merge import Merge  # noqa: E402
 
 
 def main():
