@@ -1,11 +1,20 @@
 """Add merged records and references to database."""
-from therapy.database import Database
-from therapy.etl.merge import Merge
 from timeit import default_timer as timer
-from therapy.schemas import SourceName
+from pathlib import Path
 from os import environ
 import click
 import sys
+import logging
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+sys.path.append(f"{PROJECT_ROOT}")
+
+from therapy.database import Database  # noqa: E402
+from therapy.schemas import SourceName  # noqa: E402
+from therapy.etl.merge import Merge  # noqa: E402
+
+logger = logging.getLogger('therapy')
+logger.setLevel(logging.DEBUG)
 
 
 def main():
@@ -13,7 +22,7 @@ def main():
     start = timer()
     db = Database()
 
-    print("Compiling concept IDs...")
+    logger.info("Compiling concept IDs...")
     concept_ids = []
     done = False
     start_key = None
@@ -32,14 +41,14 @@ def main():
         start_key = response.get('LastEvaluatedKey', None)
         done = start_key is None
 
-    print("Concept ID scan successful.")
-    print(f"{len(concept_ids)} concept IDs gathered.")
+    logger.info("Concept ID scan successful.")
+    logger.info(f"{len(concept_ids)} concept IDs gathered.")
 
     merge = Merge(db)
 
     merge.create_merged_concepts(concept_ids)
     end = timer()
-    print(f"Merge generation successful, time: {end - start}")
+    logger.info(f"Merge generation successful, time: {end - start}")
 
 
 if __name__ == '__main__':
