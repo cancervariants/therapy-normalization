@@ -51,19 +51,34 @@ excl_descr = ("Comma-separated list of source names to exclude in "
               "response. Will include all other sources. Will return HTTP "
               "status code 422: Unprocessable Entity if both 'incl' and"
               "'excl' parameters are given.")
+search_description = ("For each source, return strongest-match concepts "
+                      "for query string provided by user")
+normalize_description = ("Return merged strongest-match concept for query "
+                         "string provided by user.")
 
 
 @app.get("/therapy/search",
          summary=get_matches_summary,
          operation_id="getQueryResponse",
          response_description=response_descr,
-         response_model=Service)
+         response_model=Service,
+         description=search_description)
 def search(q: str = Query(..., description=q_descr),
            keyed: Optional[bool] = Query(False, description=keyed_descr),
            incl: Optional[str] = Query(None, description=incl_descr),
            excl: Optional[str] = Query(None, description=excl_descr)):
     """For each source, return strongest-match concepts for query string
     provided by user.
+
+        :param q: therapy search term
+        :param keyed: if true, response is structured as key/value pair of
+            sources to source match lists.
+        :param incl: comma-separated list of sources to include, with all
+            others excluded. Raises HTTPException if both `incl` and
+            `excl` are given.
+        :param excl: comma-separated list of sources exclude, with all others
+            included. Raises HTTPException if both `incl` and `excl` are given.
+        :returns: JSON response with matched records and source metadata
     """
     try:
         response = query_handler.search_sources(html.unescape(q), keyed=keyed,
@@ -82,10 +97,13 @@ merged_q_descr = "Therapy to normalize."
          summary=merged_matches_summary,
          operation_id="getQuerymergedResponse",
          response_description=merged_response_descr,
-         response_model=NormalizationService)
+         response_model=NormalizationService,
+         description=normalize_description)
 def normalize(q: str = Query(..., description=merged_q_descr)):
     """Return merged strongest-match concept for query string provided by
     user.
+
+    :param q: therapy search term
     """
     try:
         response = query_handler.search_groups(q)
