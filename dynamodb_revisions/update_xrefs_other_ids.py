@@ -26,7 +26,7 @@ def update_xrefs_other_ids(db):
 
     while True:
         if last_evaluated_key:
-            response = db.ddb_client.scan(
+            response = db.dynamodb_client.scan(
                 TableName=db.therapies.name,
                 ExclusiveStartKey=last_evaluated_key,
                 FilterExpression='src_name <> :src_name',
@@ -35,7 +35,7 @@ def update_xrefs_other_ids(db):
                 }
             )
         else:
-            response = db.ddb_client.scan(
+            response = db.dynamodb_client.scan(
                 TableName=db.therapies.name,
                 FilterExpression='src_name <> :src_name',
                 ExpressionAttributeValues={
@@ -134,8 +134,8 @@ if __name__ == '__main__':
         else:
             click.echo("Exiting.")
             sys.exit()
-    click.echo("Adding xrefs attribute...")
+    click.echo("Updating xrefs and other_identifiers...")
     start = timer()
     update_xrefs_other_ids(Database())
     end = timer()
-    click.echo(f"Added xrefs attribute in {end-start} seconds.")
+    click.echo(f"Updated xrefs and other_identifiers in {end-start} seconds.")
