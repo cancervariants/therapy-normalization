@@ -3,6 +3,7 @@
 Courtesy of the U.S. National Library of Medicine.
 """
 from .base import Base
+from typing import List, Dict
 from therapy import PROJECT_ROOT
 from therapy.database import Database
 from therapy.schemas import Drug, NamespacePrefix, Meta, SourceName, \
@@ -11,7 +12,6 @@ from pathlib import Path
 from ftplib import FTP
 import xml.etree.ElementTree as ET
 import logging
-from typing import Dict
 from boto3.dynamodb.table import BatchWriter
 import re
 
@@ -45,15 +45,22 @@ class ChemIDplus(Base):
         it's unnecessary to provide `src_dir` and `src_fname` args.
         """
         self.database = database
+        self._data_path = data_path
         self._src_server = src_server
         self._src_dir_path = src_dir_path
         self._src_fname = src_fname
-        self._added_ids = set()
+        self._added_ids = []
 
-        # perform ETL
-        self._extract_data(data_path)
-        self._add_meta()
+    def perform_etl(self) -> List[str]:
+        """Public-facing method to initiate ETL procedures on given data.
+
+        :return: List of concept IDs which were successfully processed and
+            uploaded.
+        """
+        self._extract_data()
+        self._load_meta()
         self._transform_data()
+        return self._added_ids
 
     def _download_data(self, data_path: Path):
         """Download source data from default location."""
@@ -74,21 +81,22 @@ class ChemIDplus(Base):
         outfile_path.rename(data_path / f'chemidplus_{version}.xml')
         logger.info('Finished downloading ChemIDplus data')
 
-    def _extract_data(self, data_path: Path):
+    def _extract_data(self):
         """Acquire ChemIDplus dataset.
 
         :arg pathlib.Path data_path: directory containing source data
         """
-        data_path.mkdir(exist_ok=True, parents=True)
-        dir_files = list(data_path.iterdir())
+        self._data_path.mkdir(exist_ok=True, parents=True)
+        dir_files = list(self._data_path.iterdir())
 
         if len(dir_files) == 0:
-            file = self._get_file(data_path)
+            file = self._get_file(self._data_path)
         else:
             file = sorted([f for f in dir_files
                            if f.name.startswith('chemidplus')])
             if not file:
-                file = self._get_file(data_path)
+                file = self._get_file(self._data_path)
+
         self._data_src = file[-1]
         self._version = self._data_src.stem.split('_')[1]
 
@@ -173,9 +181,9 @@ class ChemIDplus(Base):
         record['src_name'] = SourceName.CHEMIDPLUS.value
         record['label_and_type'] = f'{concept_id_l}##identity'
         batch.put_item(Item=record)
-        self._added_ids.add(record['concept_id'])
+        self._added_ids.append(record['concept_id'])
 
-    def _add_meta(self):
+    def _load_meta(self):
         """Add source metadata."""
         meta = Meta(data_license="custom",
                     data_license_url="https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501

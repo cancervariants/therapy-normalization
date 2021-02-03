@@ -1,13 +1,18 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
 from botocore.exceptions import ClientError
-from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm
+from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm, \
+    Merge
 from therapy.schemas import SourceName
 from timeit import default_timer as timer
 from therapy.database import Database
 from boto3.dynamodb.conditions import Key
 import sys
 from os import environ
+
+
+MERGE_SOURCES = {SourceName.WIKIDATA.value, SourceName.RXNORM.value,
+                 SourceName.NCIT.value, SourceName.CHEMIDPLUS.value}
 
 
 class CLI:
@@ -91,6 +96,7 @@ class CLI:
 
     def _update_normalizers(self, normalizers, sources, db):
         """Update selected normalizer sources."""
+        processed_ids = []
         for n in normalizers:
             click.echo(f"\nDeleting {n}...")
             start_delete = timer()
@@ -101,12 +107,23 @@ class CLI:
                        f"{delete_time:.5f} seconds.\n")
             click.echo(f"Loading {n}...")
             start_load = timer()
-            sources[n](database=db)
+            source = sources[n](database=db)
+            source_ids = source.perform_etl()
+            if source.__class__.__name__ in MERGE_SOURCES:
+                processed_ids += source_ids
             end_load = timer()
             load_time = end_load - start_load
             click.echo(f"Loaded {n} in {load_time:.5f} seconds.")
             click.echo(f"Total time for {n}: "
                        f"{(delete_time + load_time):.5f} seconds.")
+
+        if processed_ids:
+            click.echo("Generating merged concepts...")
+            start = timer()
+            merge = Merge(db)
+            merge.create_merged_concepts(processed_ids)
+            end = timer()
+            click.echo(f"Generated merged concepts in {end - start:.5f} seconds.")  # noqa: E501
 
     def _delete_data(self, source, database):
         # Delete source's metadata

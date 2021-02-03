@@ -294,6 +294,20 @@ class MatchesListed(BaseModel):
             }
 
 
+class MergedMatch(BaseModel):
+    """Represent merged concept in response to client.
+
+    Currently, does not include ApprovalStatus data because no included
+    sources provide it.
+    """
+
+    concept_ids: List[str]
+    aliases: List[str]
+    trade_names: Optional[List[str]]
+    xrefs: Optional[List[str]]
+    label: Optional[str]
+
+
 class Service(BaseModel):
     """Core response schema containing matches for each source"""
 
@@ -330,3 +344,15 @@ class Service(BaseModel):
                     }
                 }
             }
+
+
+class NormalizationService(BaseModel):
+    """Response containing one or more merged records and relevant source
+    data.
+    """
+
+    query: str
+    warnings: Optional[Dict]
+    match_type: MatchType
+    record: Optional[MergedMatch]
+    meta_: Optional[Dict[SourceName, Meta]]

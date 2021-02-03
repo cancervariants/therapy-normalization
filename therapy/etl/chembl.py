@@ -1,10 +1,12 @@
 """This module defines the ChEMBL ETL methods."""
 from .base import Base
 from therapy import PROJECT_ROOT
+from therapy.database import Database
+from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, Meta
+from typing import List
 from ftplib import FTP
 import logging
 import tarfile
-from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, Meta
 import sqlite3
 import os
 import shutil
@@ -15,6 +17,31 @@ logger.setLevel(logging.DEBUG)
 
 class ChEMBL(Base):
     """ETL the ChEMBL source into therapy.db."""
+
+    def __init__(self,
+                 database: Database,
+                 data_path=PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27.db'):
+        """Initialize CHEMBl ETL instance.
+
+        :param Path data_path: path to CHEMBl source SQLite3 database file.
+        """
+        self.database = database
+        self._data_path = data_path
+        self._added_ids = []
+
+    def perform_etl(self) -> List[str]:
+        """Public-facing method to initiate ETL procedures on given data.
+
+        :return: List of concept IDs which were successfully processed and
+            uploaded.
+        """
+        self._load_meta()
+        self._extract_data()
+        self._transform_data()
+        self._load_json()
+        self._conn.commit()
+        self._conn.close()
+        return self._added_ids
 
     def _extract_data(self, *args, **kwargs):
         """Extract data from the ChEMBL source."""
@@ -55,15 +82,6 @@ class ChEMBL(Base):
 
         self._cursor.execute("DROP TABLE DictionarySynonyms;")
         self._cursor.execute("DROP TABLE TradeNames;")
-
-    def _load_data(self, *args, **kwargs):
-        """Load the ChEMBL source into database."""
-        self._add_meta()
-        self._extract_data()
-        self._transform_data()
-        self._load_json()
-        self._conn.commit()
-        self._conn.close()
 
     @staticmethod
     def _download_chembl_27(filepath):
@@ -220,6 +238,7 @@ class ChEMBL(Base):
         record['label_and_type'] = \
             f"{record['concept_id'].lower()}##identity"
         batch.put_item(Item=record)
+        self._added_ids.append(record['concept_id'])
 
     def _load_label(self, record, batch):
         """Load label record into DynamoDB."""
@@ -274,7 +293,7 @@ class ChEMBL(Base):
 
             record['trade_names'] = list(set(record['trade_names']))
 
-    def _add_meta(self, *args, **kwargs):
+    def _load_meta(self, *args, **kwargs):
         """Add ChEMBL metadata."""
         metadata = Meta(data_license='CC BY-SA 3.0',
                         data_license_url='https://creativecommons.org/licenses/by-sa/3.0/',  # noqa: E501

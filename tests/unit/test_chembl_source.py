@@ -1,7 +1,7 @@
 """Test that the therapy normalizer works as intended for the ChEMBL source."""
 import pytest
 from therapy.schemas import Drug, MatchType
-from therapy.query import Normalizer
+from therapy.query import QueryHandler
 
 
 @pytest.fixture(scope='module')
@@ -10,11 +10,11 @@ def chembl():
     class QueryGetter:
 
         def __init__(self):
-            self.normalizer = Normalizer()
+            self.query_handler = QueryHandler()
 
         def normalize(self, query_str):
-            resp = self.normalizer.normalize(query_str, keyed=True,
-                                             incl='chembl')
+            resp = self.query_handler.search_sources(query_str, keyed=True,
+                                                     incl='chembl')
             return resp['source_matches']['ChEMBL']
     return QueryGetter()
 
