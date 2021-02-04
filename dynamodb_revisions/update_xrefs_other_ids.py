@@ -8,12 +8,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(f"{PROJECT_ROOT}")
 
 from therapy.database import Database  # noqa: E402
-from therapy.schemas import NamespacePrefix, SourceName  # noqa: E402
-
-# TODO: Replace once issue-90 is merged
-PREFIX_LOOKUP = {v.value: SourceName[k].value
-                 for k, v in NamespacePrefix.__members__.items()
-                 if k in SourceName.__members__.keys()}
+from therapy import PREFIX_LOOKUP  # noqa: E402
 
 
 def update_xrefs_other_ids(db):
