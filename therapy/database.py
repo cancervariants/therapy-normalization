@@ -6,6 +6,8 @@ from boto3.dynamodb.conditions import Key
 from os import environ
 from typing import Optional, Dict, List, Any
 import logging
+import click
+import sys
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -31,13 +33,21 @@ class Database:
                 'endpoint_url': environ['THERAPY_NORM_DB_URL']
             }
         else:
+            if click.confirm("Are you sure you want to update "
+                             "the production database?", default=False):
+                click.echo("Updating the production database...")
+            else:
+                click.echo("Exiting.")
+                sys.exit()
+
             boto_params = {
                 'region_name': region_name
             }
+
         self.dynamodb = boto3.resource('dynamodb', **boto_params)
         self.dynamodb_client = boto3.client('dynamodb', **boto_params)
 
-        # create tables if nonexistant if not connecting to remote database
+        # create tables if nonexistent if not connecting to remote database
         if db_url or 'THERAPY_NORM_DB_URL' in environ.keys():
             existing_tables = self.dynamodb_client.list_tables()['TableNames']
             self.create_therapies_table(existing_tables)
