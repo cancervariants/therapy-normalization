@@ -3,8 +3,6 @@ import click
 from botocore.exceptions import ClientError
 from timeit import default_timer as timer
 from boto3.dynamodb.conditions import Key
-import sys
-from os import environ
 from therapy.schemas import SourceName
 from therapy import SOURCES_CLASS, SOURCES
 from therapy.database import Database
@@ -38,17 +36,8 @@ class CLI:
             db: Database = Database(db_url='http://localhost:8000')
         elif db_url:
             db: Database = Database(db_url=db_url)
-        elif 'THERAPY_NORM_DB_URL' in environ.keys():
-            # environment variable will be picked up by DB instance
-            db: Database = Database()
         else:
-            if click.confirm("Are you sure you want to update"
-                             " the production database?", default=False):
-                click.echo("Updating production db...")
-                db: Database = Database()
-            else:
-                click.echo("Exiting CLI.")
-                sys.exit()
+            db: Database = Database()
 
         if update_all:
             normalizers = list(src for src in SOURCES)
