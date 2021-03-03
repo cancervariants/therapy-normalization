@@ -9,6 +9,8 @@ logging.basicConfig(
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
 
+__version__ = "0.2.0"
+
 
 class DownloadException(Exception):
     """Exception for failures relating to source file downloads."""
