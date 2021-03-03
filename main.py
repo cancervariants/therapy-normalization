@@ -1,4 +1,5 @@
 """Main application for FastAPI"""
+from therapy import __version__
 from therapy.query import QueryHandler, InvalidParameterException
 from therapy.schemas import Service, NormalizationService
 from fastapi import FastAPI, HTTPException, Query
@@ -17,7 +18,7 @@ def custom_openapi():
         return app.openapi_schema
     openapi_schema = get_openapi(
         title="The VICC Therapy Normalizer",
-        version="0.1.0",
+        version=__version__,
         openapi_version="3.0.3",
         description="Normalize drugs and other therapy terms.",
         routes=app.routes
