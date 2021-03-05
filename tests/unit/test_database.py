@@ -1,7 +1,7 @@
 """Test DynamoDB"""
 import pytest
 from therapy.database import Database
-from therapy import PROJECT_ROOT
+from therapy import TEST_ROOT
 import json
 import os
 
@@ -16,7 +16,7 @@ def db():
                 self.load_test_data()
 
         def load_test_data(self):
-            with open(f'{PROJECT_ROOT}/tests/unit/'
+            with open(f'{TEST_ROOT}/tests/unit/'
                       f'data/therapies.json', 'r') as f:
                 therapies = json.load(f)
                 with self.db.therapies.batch_writer() as batch:
@@ -24,7 +24,7 @@ def db():
                         batch.put_item(Item=therapy)
                 f.close()
 
-            with open(f'{PROJECT_ROOT}/tests/unit/'
+            with open(f'{TEST_ROOT}/tests/unit/'
                       f'data/metadata.json', 'r') as f:
                 metadata = json.load(f)
                 with self.db.metadata.batch_writer() as batch:
