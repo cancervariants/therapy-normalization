@@ -1,9 +1,12 @@
 """Pytest test config tools."""
 from therapy.database import Database
-from therapy import TEST_ROOT
 from typing import Dict, Any, Optional, List
 import json
 import pytest
+from pathlib import Path
+
+
+TEST_ROOT = Path(__file__).resolve().parents[1]
 
 
 @pytest.fixture(scope='module')
