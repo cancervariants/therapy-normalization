@@ -1,7 +1,7 @@
 """Test DynamoDB"""
 import pytest
 from therapy.database import Database
-from therapy import TEST_ROOT
+from tests.conftest import TEST_ROOT
 import json
 import os
 
