@@ -2,14 +2,14 @@
 from pathlib import Path
 import logging
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = Path(__file__).resolve().parents[0]
 logging.basicConfig(
     filename='therapy.log',
     format='[%(asctime)s] %(levelname)s : %(message)s')
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 
 class DownloadException(Exception):
