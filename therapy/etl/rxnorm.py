@@ -6,6 +6,7 @@ Library of Medicine (NLM), National Institutes of Health, Department of Health
  endorse or recommend this or any other product."
 """
 from .base import Base
+import therapy
 from therapy import PROJECT_ROOT, DownloadException
 from therapy.database import Database
 from therapy.schemas import SourceName, NamespacePrefix, Meta, Drug, \
@@ -21,6 +22,7 @@ import shutil
 import zipfile
 import re
 import yaml
+from pathlib import Path
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -112,13 +114,19 @@ class RxNorm(Base):
             uri = 'https://download.nlm.nih.gov/umls/kss/' \
                   'rxnorm/RxNorm_full_current.zip'
 
+            if 'DEV' not in environ:
+                RXNORM_PATH = str(Path(therapy.__file__).resolve().parents[0] / 'data' / 'rxnorm' / 'RxNorm_full_current.zip')  # noqa: E501
+                environ['RXNORM_PATH'] = RXNORM_PATH
+                zip_path = RXNORM_PATH
+
             # Source:
             # https://documentation.uts.nlm.nih.gov/automating-downloads.html
-            subprocess.call(['bash', f'{PROJECT_ROOT}/therapy/etl/'
+            subprocess.call(['bash', f'{PROJECT_ROOT}/etl/'
                                      f'rxnorm_download.sh', uri])
 
-            zip_path = rxn_dir / 'RxNorm_full_current.zip'
-            shutil.move(PROJECT_ROOT / 'RxNorm_full_current.zip', zip_path)
+            if 'DEV' in environ:
+                zip_path = rxn_dir / 'RxNorm_full_current.zip'
+                shutil.move(PROJECT_ROOT / 'RxNorm_full_current.zip', zip_path)
 
             with zipfile.ZipFile(zip_path, 'r') as zf:
                 zf.extractall(rxn_dir)
@@ -127,10 +135,12 @@ class RxNorm(Base):
             shutil.rmtree(rxn_dir / 'prescribe')
             shutil.rmtree(rxn_dir / 'scripts')
 
-            # get version
             readme = sorted([fn for fn in rxn_dir.iterdir() if fn.name.
                             startswith('Readme')])[0]
-            version = str(readme).split('.')[0].split('_')[-1]
+
+            # get version
+            version = str(readme).split('/')[-1].split('.')[0].split('_')[-1]
+
             self._version = datetime.datetime.strptime(
                 version, '%m%d%Y').strftime('%Y%m%d')
             remove(readme)
