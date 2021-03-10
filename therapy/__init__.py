@@ -9,7 +9,7 @@ logging.basicConfig(
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
 
-__version__ = "0.2.2"
+__version__ = "0.2.3"
 
 
 class DownloadException(Exception):
