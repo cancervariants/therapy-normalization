@@ -2,6 +2,7 @@
 import click
 from botocore.exceptions import ClientError
 from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm
+from therapy.etl.merge import Merge
 from therapy.schemas import SourceName
 from timeit import default_timer as timer
 from therapy.database import Database
@@ -32,7 +33,14 @@ class CLI:
         is_flag=True,
         help='Update all normalizer sources.'
     )
-    def update_normalizer_db(normalizer, dev, db_url, update_all):
+    @click.option(
+        '--update_merged',
+        is_flag=True,
+        help='Update concepts for normalize endpoint. Must select either'
+             '--update_all or include Mondo as a normalizer source argument.'
+    )
+    def update_normalizer_db(normalizer, dev, db_url, update_all,
+                             update_merged):
         """Update select normalizer source(s) in the therapy database."""
         sources = {
             'chembl': ChEMBL,
@@ -61,7 +69,7 @@ class CLI:
 
         if update_all:
             normalizers = list(src for src in sources)
-            CLI()._update_normalizers(normalizers, sources, db)
+            CLI()._update_normalizers(normalizers, sources, db, update_merged)
         elif not normalizer:
             CLI()._help_msg()
         else:
@@ -75,7 +83,7 @@ class CLI:
             if len(non_sources) != 0:
                 raise Exception(f"Not valid source(s): {non_sources}")
 
-            CLI()._update_normalizers(normalizers, sources, db)
+            CLI()._update_normalizers(normalizers, sources, db, update_merged)
 
     def _help_msg(self):
         """Display help message."""
@@ -89,8 +97,9 @@ class CLI:
         """Check that entered normalizers are actual sources."""
         return set(normalizers) - {src for src in sources}
 
-    def _update_normalizers(self, normalizers, sources, db):
+    def _update_normalizers(self, normalizers, sources, db, update_merged):
         """Update selected normalizer sources."""
+        processed_ids = list()
         for n in normalizers:
             click.echo(f"\nDeleting {n}...")
             start_delete = timer()
@@ -102,12 +111,25 @@ class CLI:
             click.echo(f"Loading {n}...")
             start_load = timer()
             source = sources[n](database=db)
-            source.perform_etl()
+            # TODO: Replace with constant once issue-90 merged
+            if n not in ['chembl', 'drugbank']:
+                processed_ids += source.perform_etl()
+            else:
+                source.perform_etl()
             end_load = timer()
             load_time = end_load - start_load
             click.echo(f"Loaded {n} in {load_time:.5f} seconds.")
             click.echo(f"Total time for {n}: "
                        f"{(delete_time + load_time):.5f} seconds.")
+
+        if update_merged and processed_ids:
+            click.echo("Generating merged concepts...")
+            start_merge = timer()
+            merge = Merge(database=db)
+            merge.create_merged_concepts(processed_ids)
+            end_merge = timer()
+            click.echo(f"Merged concept generation completed in"
+                       f" {(end_merge - start_merge):.5f} seconds.")
 
     def _delete_data(self, source, database):
         # Delete source's metadata
