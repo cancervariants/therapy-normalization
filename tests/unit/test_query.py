@@ -414,7 +414,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
                       spiramycin, timolol):
     """Test that the merged concept endpoint handles queries correctly."""
     # test merged id match
-    test_query = "rxcui:2555|ncit:C376|chemidplus:15663-27-1|wikidata:Q412415|wikidata:Q47522001"  # noqa: E501
+    test_query = "rxcui:2555"
     response = merge_query_handler.search_groups(test_query)
     assert response['query'] == test_query
     assert response['warnings'] is None
@@ -498,9 +498,8 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
 
 def test_merged_meta(merge_query_handler):
     """Test population of source metadata in merged querying."""
-    test_query = "phenobarbital"
+    test_query = "pheno"
     response = merge_query_handler.search_groups(test_query)
-    print(response)
     meta_items = response['meta_']
     assert 'RxNorm' in meta_items.keys()
     assert 'Wikidata' in meta_items.keys()
