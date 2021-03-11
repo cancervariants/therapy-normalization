@@ -124,6 +124,8 @@ def mock_database():
             """
             if merge:
                 label_and_type = f'{record_id.lower()}##merger'
+                record_lookup = self.records.get(label_and_type, None)
+                return record_lookup.copy()
             else:
                 label_and_type = f'{record_id.lower()}##identity'
             record_lookup = self.records.get(label_and_type, None)
@@ -155,22 +157,6 @@ def mock_database():
                 return [v.copy() for v in records_lookup.values()]
             else:
                 return []
-
-        def get_merged_record(self, merge_ref) -> Optional[Dict]:
-            """Fetch merged record from given reference.
-
-            :param str merge_ref: key for merged record, formated as a string
-                of grouped concept IDs separated by vertical bars, ending with
-                `##merger`. Must be correctly-cased.
-            :return: complete merged record if lookup successful, None
-                otherwise
-            """
-            record_lookup = self.records.get(merge_ref, None)
-            if record_lookup:
-                vals = list(record_lookup.values())
-                if vals:
-                    return vals[0].copy()
-            return None
 
         def add_record(self, record: Dict, record_type: str):
             """Store add record request sent to database.
