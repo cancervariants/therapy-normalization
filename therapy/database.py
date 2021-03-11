@@ -39,8 +39,8 @@ class Database:
                 'endpoint_url': environ['THERAPY_NORM_DB_URL']
             }
         else:
-            if 'DISEASE_NORM_PROD' not in environ \
-                    or environ['DISEASE_NORM_PROD'] == 'false':
+            if 'THERAPY_NORM_PROD' not in environ \
+                    or environ['THERAPY_NORM_PROD'] == 'false':
                 if click.confirm("Are you sure you want to update "
                                  "the production database?", default=False):
                     click.echo("Updating the production database...")
