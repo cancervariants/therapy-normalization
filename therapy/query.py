@@ -7,7 +7,6 @@ from therapy.database import Database
 from therapy.schemas import Drug, Meta, MatchType, SourceName, \
     NamespacePrefix, SourceIDAfterNamespace
 from botocore.exceptions import ClientError
-from boto3.dynamodb.conditions import Key
 from urllib.parse import quote
 
 # use to fetch source name from schema based on concept id namespace
@@ -167,9 +166,7 @@ class QueryHandler:
                           query: str,
                           resp: Dict,
                           sources: Set[str]) -> (Dict, Set):
-        """Check query for concept ID match. Should only find 0 or 1 matches,
-        but stores them as a collection to be safe.
-        # TODO is that ^ safe?
+        """Check query for concept ID match. Should only find 0 or 1 matches.
 
         :param str query: search string
         :param Dict resp: in-progress response object to return to client
@@ -179,29 +176,15 @@ class QueryHandler:
         """
         concept_id_items = []
         if [p for p in PREFIX_LOOKUP.keys() if query.startswith(p)]:
-            pk = f'{query}##identity'
-            filter_exp = Key('label_and_type').eq(pk)
-            try:
-                result = self.db.therapies.query(
-                    KeyConditionExpression=filter_exp
-                )
-                if len(result['Items']) > 0:
-                    concept_id_items += result['Items']
-            except ClientError as e:
-                logger.error(e.response['Error']['Message'])
+            record = self.db.get_record_by_id(query, False)
+            if record:
+                concept_id_items.append(record)
         for prefix in [p for p in NAMESPACE_LOOKUP.keys()
                        if query.startswith(p)]:
-            pk = f'{NAMESPACE_LOOKUP[prefix].lower()}:{query}##identity'
-            filter_exp = Key('label_and_type').eq(pk)
-            try:
-                result = self.db.therapies.query(
-                    KeyConditionExpression=filter_exp
-                )
-                if len(result['Items']) > 0:  # TODO remove check?
-                    concept_id_items += result['Items']
-            except ClientError as e:
-                logger(e.response['Error']['Message'])
-
+            concept_id = f'{NAMESPACE_LOOKUP[prefix]}:{query}'
+            id_lookup = self.db.get_record_by_id(concept_id, False)
+            if id_lookup:
+                concept_id_items.append(id_lookup)
         for item in concept_id_items:
             (resp, src_name) = self._add_record(resp, item,
                                                 MatchType.CONCEPT_ID.name)
@@ -350,12 +333,11 @@ class QueryHandler:
         """Add source metadata to response object.
 
         :param Dict response: in-progress response object
-        :return: completed resopnse object.
+        :return: completed response object.
         """
         sources_meta = {}
         vod = response['value_object_descriptor']
-        ids = [vod['value']['therapy_id']]
-        ids += vod.get('xrefs', [])
+        ids = [vod['value']['therapy_id']] + vod.get('xrefs', [])
         for concept_id in ids:
             prefix = concept_id.split(':')[0]
             src_name = PREFIX_LOOKUP[prefix.lower()]
@@ -413,22 +395,36 @@ class QueryHandler:
                 'value': trade_names
             })
         if 'xrefs' in record and record['xrefs']:
-            vod['extensions'].append({
-                'type': 'Extension',
-                'name': 'associated_with',
-                'value': record['xrefs']
-            })
+            vod['extensions'].append(
+                {
+                    'type': 'Extension',
+                    'name': 'associated_with',
+                    'value': record['xrefs']
+                }
+            )
         if not vod['extensions']:
             del vod['extensions']
         response['match_type'] = match_type
         response['value_object_descriptor'] = vod
         response = self._add_merged_meta(response)
+
+    def _handle_failed_merge_ref(self, record, response, query) -> Dict:
+        """Log + fill out response for a failed merge reference lookup.
+
+        :param Dict record: record containing failed merge_ref
+        :param Dict response: in-progress response object
+        :param str query: original query value
+        :return: response with no match
+        """
+        logger.error(f"Merge ref lookup failed for ref {record['merge_ref']} "
+                     f"in record {record['concept_id']} from query {query}")
+        response['match_type'] = MatchType.NO_MATCH
         return response
 
     def search_groups(self, query: str) -> Dict:
         """Return merged, normalized concept for given search term.
 
-        :param str query_str: string to search against
+        :param str query: string to search against
         """
         # prepare basic response
         response = {
@@ -450,17 +446,14 @@ class QueryHandler:
         # check concept ID match
         record = self.db.get_record_by_id(query_str, case_sensitive=False)
         if record:
-            record = self.db.get_record_by_id(record['merge_ref'],
-                                              case_sensitive=False,
-                                              merge=True)
-            if record is None:
-                logger.error(f"Merge ref lookup failed for ref"
-                             f"{record['merge_ref']} in record"
-                             f"{record['concept_id']} from query {query}")
-                response['match_type'] = MatchType.NO_MATCH
-                return response
-            return self._add_vod(response, record, query,
-                                 MatchType.CONCEPT_ID)
+            merge = self.db.get_record_by_id(record['merge_ref'],
+                                             case_sensitive=False,
+                                             merge=True)
+            if merge is None:
+                return self._handle_failed_merge_ref(record, response, query)
+            else:
+                return self._add_vod(response, record, query,
+                                     MatchType.CONCEPT_ID)
 
         # check other match types
         for match_type in ['label', 'trade_name', 'alias']:
@@ -478,18 +471,14 @@ class QueryHandler:
             for match in matching_records:
                 record = self.db.get_record_by_id(match['concept_id'], False)
                 if record:
-                    record = self.db.get_record_by_id(record['merge_ref'],
-                                                      case_sensitive=False,
-                                                      merge=True)
-                    if record is None:
-                        logger.error(f"Merge ref lookup failed for ref"
-                                     f"{record['merge_ref']} in record"
-                                     f"{record['concept_id']} from query"
-                                     f"{query}")
-                        response['match_type'] = MatchType.NO_MATCH
-                        return response
-                    return self._add_vod(response, record, query,
-                                         MatchType[match_type.upper()])
+                    merge = self.db.get_record_by_id(record['merge_ref'],
+                                                     case_sensitive=False,
+                                                     merge=True)
+                    if merge is None:
+                        self._handle_failed_merge_ref(record, response, query)
+                    else:
+                        return self._add_vod(response, record, query,
+                                             MatchType[match_type.upper()])
 
         if not matching_records:  # TODO if check not needed?
             response['match_type'] = MatchType.NO_MATCH
