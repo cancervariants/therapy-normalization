@@ -407,6 +407,7 @@ class QueryHandler:
         response['match_type'] = match_type
         response['value_object_descriptor'] = vod
         response = self._add_merged_meta(response)
+        return response
 
     def _handle_failed_merge_ref(self, record, response, query) -> Dict:
         """Log + fill out response for a failed merge reference lookup.

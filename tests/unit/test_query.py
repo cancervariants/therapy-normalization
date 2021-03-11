@@ -419,7 +419,10 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['query'] == test_query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.CONCEPT_ID
-    compare_vod(response['record'], cisplatin)
+    cisplatin_copy = cisplatin.copy()
+    cisplatin_copy['id'] = 'normalize:rxcui%3A2555'
+    print(response)
+    compare_vod(response['value_object_descriptor'], cisplatin_copy)
 
     # test concept id match
     test_query = "chemidplus:50-06-6"
@@ -429,7 +432,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['match_type'] == MatchType.CONCEPT_ID
     pheno_copy = phenobarbital.copy()
     pheno_copy['id'] = 'normalize:chemidplus%3A50-06-6'
-    compare_vod(response['record'], pheno_copy)
+    compare_vod(response['value_object_descriptor'], pheno_copy)
 
     # test label match
     test_query = "Phenobarbital"
@@ -437,7 +440,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['query'] == test_query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.LABEL
-    compare_vod(response['record'], phenobarbital)
+    compare_vod(response['value_object_descriptor'], phenobarbital)
 
     # test trade name match
     test_query = "Platinol"
@@ -447,7 +450,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['match_type'] == MatchType.TRADE_NAME
     cisplatin_copy = cisplatin.copy()
     cisplatin_copy['id'] = 'normalize:Platinol'
-    compare_vod(response['record'], cisplatin_copy)
+    compare_vod(response['value_object_descriptor'], cisplatin_copy)
 
     # test alias match
     test_query = "cis Diamminedichloroplatinum"
@@ -457,7 +460,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['match_type'] == MatchType.ALIAS
     cisplatin_copy = cisplatin.copy()
     cisplatin_copy['id'] = 'normalize:cis Diamminedichloroplatinum'
-    compare_vod(response['record'], cisplatin_copy)
+    compare_vod(response['value_object_descriptor'], cisplatin_copy)
 
     test_query = "Rovamycine"
     response = merge_query_handler.search_groups(test_query)
@@ -466,7 +469,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['match_type'] == MatchType.ALIAS
     spiramycin_copy = spiramycin.copy()
     spiramycin_copy['id'] = 'normalize:Rovamycine'
-    compare_vod(response['record'], spiramycin_copy)
+    compare_vod(response['value_object_descriptor'], spiramycin_copy)
 
     # test merge group with single member
     test_query = "Betimol"
@@ -476,7 +479,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['match_type'] == MatchType.TRADE_NAME
     timolol_copy = timolol.copy()
     timolol_copy['id'] = 'normalize:Betimol'
-    compare_vod(response['record'], timolol_copy)
+    compare_vod(response['value_object_descriptor'], timolol_copy)
 
     # test that term with multiple possible resolutions resolves at highest
     # match
@@ -485,7 +488,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['query'] == test_query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.LABEL
-    compare_vod(response['record'], cisplatin)
+    compare_vod(response['value_object_descriptor'], cisplatin)
 
     # test no match
     test_query = "zzzz fake therapy zzzz"
