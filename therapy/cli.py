@@ -35,7 +35,7 @@ class CLI:
     @click.option(
         '--update_merged',
         is_flag=True,
-        help='Update concepts for normalize endpoint. Must select either'
+        help='Update concepts for normalize endpoint. Must select either '
              '--update_all or include Mondo as a normalizer source argument.'
     )
     def update_normalizer_db(normalizer, prod, db_url, update_all,
