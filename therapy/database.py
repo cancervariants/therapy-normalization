@@ -164,9 +164,9 @@ class Database:
         """
         try:
             if merge:
-                pk = f'{concept_id.lower()}##merger'
+                pk = f'{concept_id}##merger'
             else:
-                pk = f'{concept_id.lower()}##identity'
+                pk = f'{concept_id}##identity'
             if case_sensitive:
                 match = self.therapies.get_item(Key={
                     'label_and_type': pk,
@@ -174,7 +174,7 @@ class Database:
                 })
                 return match['Item']
             else:
-                exp = Key('label_and_type').eq(pk)
+                exp = Key('label_and_type').eq(pk.lower())
                 response = self.therapies.query(KeyConditionExpression=exp)
                 return response['Items'][0]
         except ClientError as e:
