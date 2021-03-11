@@ -7,7 +7,6 @@ from therapy.schemas import SourceName
 from timeit import default_timer as timer
 from therapy.database import Database
 from boto3.dynamodb.conditions import Key
-import sys
 from os import environ
 
 
@@ -20,9 +19,9 @@ class CLI:
         help="The normalizer(s) you wish to update separated by spaces."
     )
     @click.option(
-        '--dev',
+        '--prod',
         is_flag=True,
-        help="Working in development environment on localhost port 8000."
+        help="Working in production environment."
     )
     @click.option(
         '--db_url',
@@ -39,7 +38,7 @@ class CLI:
         help='Update concepts for normalize endpoint. Must select either'
              '--update_all or include Mondo as a normalizer source argument.'
     )
-    def update_normalizer_db(normalizer, dev, db_url, update_all,
+    def update_normalizer_db(normalizer, prod, db_url, update_all,
                              update_merged):
         """Update select normalizer source(s) in the therapy database."""
         sources = {
@@ -51,21 +50,17 @@ class CLI:
             'rxnorm': RxNorm,
         }
 
-        if dev:
-            db: Database = Database(db_url='http://localhost:8000')
-        elif db_url:
-            db: Database = Database(db_url=db_url)
-        elif 'THERAPY_NORM_DB_URL' in environ.keys():
-            # environment variable will be picked up by DB instance
+        if prod:
+            environ['THERAPY_NORM_PROD'] = "TRUE"
             db: Database = Database()
         else:
-            if click.confirm("Are you sure you want to update"
-                             " the production database?", default=False):
-                click.echo("Updating production db...")
-                db: Database = Database()
+            if db_url:
+                endpoint_url = db_url
+            elif 'THERAPY_NORM_DB_URL' in environ.keys():
+                endpoint_url = environ['THERAPY_NORM_DB_URL']
             else:
-                click.echo("Exiting CLI.")
-                sys.exit()
+                endpoint_url = 'http://localhost:8000'
+            db: Database = Database(db_url=endpoint_url)
 
         if update_all:
             normalizers = list(src for src in sources)
