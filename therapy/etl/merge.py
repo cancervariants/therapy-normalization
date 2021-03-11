@@ -129,7 +129,8 @@ class Merge:
         is non-null.
 
         Priority is RxNorm > NCIt > ChemIDplus > Wikidata. ChEMBL and DrugBank
-        identifiers should not be passed in record_id_set.
+        identifiers should not be included in record_id_set; doing so will
+        cause problems.
 
         :param Set record_id_set: group of concept IDs
         :return: completed merged drug object to be stored in DB
@@ -160,28 +161,34 @@ class Merge:
             return (source_rank, record['concept_id'])
         records.sort(key=record_order)
 
-        merged_attrs = {'aliases': set(), 'concept_id': None,
-                        'trade_names': set(), 'xrefs': set()}
+        # initialize merged record
+        merged_attrs = {
+            'concept_id': records[0]['concept_id'],
+            'label': None,
+            'aliases': set(),
+            'trade_names': set(),
+            'xrefs': set()
+        }
+        if len(records) > 1:
+            merged_attrs['other_ids'] = [r['concept_id'] for r in records[1:]]
+
+        # merge from constituent records
         set_fields = ['aliases', 'trade_names', 'xrefs']
         for record in records:
             for field in set_fields:
-                if field in record:
-                    merged_attrs[field] |= set(record[field])
-            if not merged_attrs['concept_id']:
-                merged_attrs['concept_id'] = record['concept_id']
-            else:
-                merged_attrs['concept_id'] += f"|{record['concept_id']}"
-
-            if 'label' not in merged_attrs \
-                    and 'label' in record and record['label']:
+                merged_attrs[field] |= set(record.get(field, {}))
+            if merged_attrs['label'] is None:
                 merged_attrs['label'] = record.get('label')
 
+        # clear unused fields
         for field in set_fields:
             field_value = merged_attrs[field]
             if field_value:
                 merged_attrs[field] = list(field_value)
             else:
                 del merged_attrs[field]
+        if merged_attrs['label'] is None:
+            del merged_attrs['label']
 
         merged_attrs['label_and_type'] = \
             f'{merged_attrs["concept_id"].lower()}##merger'
