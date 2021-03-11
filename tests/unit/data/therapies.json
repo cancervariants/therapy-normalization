@@ -1137,8 +1137,13 @@
     "src_name": "NCIt"
   },
   {
-    "label_and_type": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241##merger",
-    "concept_id": "rxcui:8134|ncit:C739|chemidplus:50-06-6|wikidata:Q407241",
+    "label_and_type": "rxcui:8134##merger",
+    "concept_id": "rxcui:8134",
+    "other_ids": [
+      "ncit:C739",
+      "chemidplus:50-06-6",
+      "wikidata:Q407241"
+    ],
     "aliases": [
       "5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
       "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
@@ -1193,8 +1198,14 @@
     "label": "Phenobarbital"
   },
   {
-    "label_and_type": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415|wikidata:q47522001##merger",
-    "concept_id": "rxcui:2555|ncit:C376|chemidplus:15663-27-1|wikidata:Q412415|wikidata:Q47522001",
+    "label_and_type": "rxcui:2555##merger",
+    "concept_id": "rxcui:2555",
+    "other_ids": [
+      "ncit:C376",
+      "chemidplus:15663-27-1",
+      "wikidata:Q412415",
+      "wikidata:Q47522001"
+    ],
     "trade_names": ["Cisplatin", "Platinol"],
     "aliases": [
       "1,2-Diaminocyclohexaneplatinum II citrate",
@@ -1233,8 +1244,9 @@
     ]
   },
   {
-    "label_and_type": "ncit:c839|chemidplus:8025-81-8##merger",
-    "concept_id": "ncit:C839|chemidplus:8025-81-8",
+    "label_and_type": "ncit:c839##merger",
+    "concept_id": "ncit:C839",
+    "other_ids": ["chemidplus:8025-81-8"],
     "label": "Spiramycin",
     "aliases": [
       "SPIRAMYCIN",
