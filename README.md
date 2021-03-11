@@ -11,7 +11,7 @@ for direction on installing pipenv in your compute environment.
  
 Once installed, from the project root dir, just run:
 
-```shell script
+```commandline
 pipenv sync
 ```
 
@@ -34,7 +34,7 @@ This ensures:
 
 Before first commit run:
 
-```
+```commandline
 pre-commit install
 ```
 
@@ -43,11 +43,11 @@ pre-commit install
 
 Running unit tests is as easy as pytest.
 
-```
+```commandline
 pipenv run pytest
 ```
 
-### Updating the gene normalization database
+### Updating the therapy normalization database
 
 Before you use the CLI to update the database, run the following in a separate terminal to start DynamoDB on `port 8000`:
 
@@ -58,11 +58,6 @@ java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
 To change the port, simply add `-port value`.
 
 ### Setting Environment Variables
-If you have cloned the repo, you must set an environmental variable. If you have installed via pip, you can ignore this step.
-```shell script
-export DEV="true"
-```
-
 RxNorm requires a UMLS license, which you can register for one [here](https://www.nlm.nih.gov/research/umls/index.html).
 You must set the `RxNORM_API_KEY` environment variable to your API key. This can be found in the [UTS 'My Profile' area](https://uts.nlm.nih.gov/uts/profile) after singing in.
 ```shell script
@@ -76,7 +71,7 @@ To update one source, simply set `--normalizer` to the source you wish to update
 
 From the project root, run the following to update the ChEMBL source:
 
-```
+```commandline
 python3 -m therapy.cli --normalizer="chembl"
 ```
 
@@ -88,31 +83,30 @@ To update all sources, use the `--update_all` flag.
 
 From the project root, run the following to update all sources:
 
-```
+```commandline
 python3 -m therapy.cli --update_all
 ```
 
 #### Specifying the database URL endpoint
+The default URL endpoint is `http://localhost:8000`.
+There are two different ways to specify the database URL endpoint.
 
-To specify the database URL endpoint, simply set `--db_url` to the endpoint you want to use. You must also include `--normalizer` or `--update_all`.
-
-From the project root, run the following to update all sources from the database with URL endpoint `http://localhost:8001`:
-
-```
+The first way is to set the `--db_url` flag to the URL endpoint.
+```commandline
 python3 -m therapy.cli --update_all --db_url="http://localhost:8001"
 ```
 
-From the project root, run the following to update all sources from the database with URL endpoint `http://localhost:8000`:
+The second way is to set the `THERAPY_NORM_DB_URL` to the URL endpoint.
+```commandline
+export THERAPY_NORM_DB_URL="http://localhost:8001"
+python3 -m therapy.cli --update_all
 ```
-python3 -m therapy.cli --update_all --dev
-```
-
 
 ### Starting the therapy normalization service
 
 From the project root, run the following:
 
-```shell script
+```commandline
  uvicorn therapy.main:app --reload
 ```
 
