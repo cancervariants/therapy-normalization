@@ -58,11 +58,6 @@ java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
 To change the port, simply add `-port value`.
 
 ### Setting Environment Variables
-If you have cloned the repo, you must set an environmental variable. If you have installed via pip, you can ignore this step.
-```shell script
-export DEV="true"
-```
-
 RxNorm requires a UMLS license, which you can register for one [here](https://www.nlm.nih.gov/research/umls/index.html).
 You must set the `RxNORM_API_KEY` environment variable to your API key. This can be found in the [UTS 'My Profile' area](https://uts.nlm.nih.gov/uts/profile) after singing in.
 ```shell script

@@ -114,24 +114,18 @@ class RxNorm(Base):
             uri = 'https://download.nlm.nih.gov/umls/kss/' \
                   'rxnorm/RxNorm_full_current.zip'
 
-            if 'DEV' not in environ:
-                RXNORM_PATH = str(Path(therapy.__file__).resolve().parents[0] / 'data' / 'rxnorm' / 'RxNorm_full_current.zip')  # noqa: E501
-                environ['RXNORM_PATH'] = RXNORM_PATH
-                zip_path = RXNORM_PATH
+            rxnorm_path = str(Path(therapy.__file__).resolve().parents[0] / 'data' / 'rxnorm' / 'RxNorm_full_current.zip')  # noqa: E501
+            environ['RXNORM_PATH'] = rxnorm_path
 
             # Source:
             # https://documentation.uts.nlm.nih.gov/automating-downloads.html
             subprocess.call(['bash', f'{PROJECT_ROOT}/etl/'
                                      f'rxnorm_download.sh', uri])
 
-            if 'DEV' in environ:
-                zip_path = rxn_dir / 'RxNorm_full_current.zip'
-                shutil.move(PROJECT_ROOT / 'RxNorm_full_current.zip', zip_path)
-
-            with zipfile.ZipFile(zip_path, 'r') as zf:
+            with zipfile.ZipFile(rxnorm_path, 'r') as zf:
                 zf.extractall(rxn_dir)
 
-            remove(zip_path)
+            remove(rxnorm_path)
             shutil.rmtree(rxn_dir / 'prescribe')
             shutil.rmtree(rxn_dir / 'scripts')
 
