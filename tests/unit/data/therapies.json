@@ -552,6 +552,11 @@
     "src_name": "RxNorm"
   },
   {
+    "label_and_type": "drugbank:db14222##other_id",
+    "concept_id": "rxcui:100213",
+    "src_name": "RxNorm"
+  },
+  {
     "label_and_type": "bifidobacterium infantis##label",
     "concept_id": "rxcui:100213",
     "src_name": "RxNorm"
@@ -601,6 +606,11 @@
     ],
     "src_name": "RxNorm",
     "merge_ref": "rxcui:2555"
+  },
+  {
+    "label_and_type": "drugbank:db12117##other_id",
+    "concept_id": "rxcui:2555",
+    "src_name": "RxNorm"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -981,6 +991,11 @@
       "mmsl:d00278",
       "mthspl:Q51BO43MG4"
     ],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "drugbank:db00451##other_id",
+    "concept_id": "rxcui:10582",
     "src_name": "RxNorm"
   },
   {

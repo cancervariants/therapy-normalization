@@ -544,6 +544,12 @@ def test_bifidobacterium_infantis(bifidobacterium_infantis, rxnorm):
     assert len(response['records']) == 1
     compare_records(response['records'][0], bifidobacterium_infantis)
 
+    # Other_ID Match
+    response = rxnorm.search('drugbank:DB14222')
+    assert response['match_type'] == MatchType.OTHER_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], bifidobacterium_infantis)
+
 
 def test_cisplatin(cisplatin, rxnorm):
     """Test that cisplatin drug normalizes to correct drug concept."""
@@ -578,6 +584,12 @@ def test_cisplatin(cisplatin, rxnorm):
     # Trade Name Match
     response = rxnorm.search('platinol')
     assert response['match_type'] == MatchType.TRADE_NAME
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
+
+    # Other_ID Match
+    response = rxnorm.search('drugbank:DB12117')
+    assert response['match_type'] == MatchType.OTHER_ID
     assert len(response['records']) == 1
     compare_records(response['records'][0], cisplatin)
 
@@ -823,6 +835,12 @@ def test_levothyroxine(levothyroxine, rxnorm):
 
     response = rxnorm.search('Euthyrox')
     assert response['match_type'] == MatchType.TRADE_NAME
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], levothyroxine)
+
+    # Other_ID Match
+    response = rxnorm.search('DRUGBANK:DB00451')
+    assert response['match_type'] == MatchType.OTHER_ID
     assert len(response['records']) == 1
     compare_records(response['records'][0], levothyroxine)
 
