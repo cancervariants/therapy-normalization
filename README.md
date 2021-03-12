@@ -87,6 +87,15 @@ From the project root, run the following to update all sources:
 python3 -m therapy.cli --update_all
 ```
 
+### Create Merged Concept Groups
+The `normalize` endpoint relies on merged concept groups.
+
+To create merged concept groups, use the `--update_merged` flag with the `--update_all` flag.
+
+```commandline
+python3 -m therapy.cli --update_all --update_merged
+```
+
 #### Specifying the database URL endpoint
 The default URL endpoint is `http://localhost:8000`.
 There are two different ways to specify the database URL endpoint.
