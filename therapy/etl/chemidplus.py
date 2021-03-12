@@ -165,21 +165,38 @@ class ChemIDplus(Base):
             instance
         :param therapy.schemas.Drug record: complete drug record to upload
         """
-        concept_id_l = record['concept_id'].lower()
-        for alias in {a.lower() for a in record['aliases']}:
-            batch.put_item(Item={
-                'label_and_type': f'{alias}##alias',
-                'concept_id': concept_id_l,
-                'src_name': SourceName.CHEMIDPLUS.value
-            })
-        if 'label' in record:
+        concept_id_ref = record['concept_id'].lower()
+        aliases = record.get('aliases')
+        if aliases:
+            for alias in {a.casefold() for a in aliases}:
+                batch.put_item(Item={
+                    'label_and_type': f'{alias}##alias',
+                    'concept_id': concept_id_ref,
+                    'src_name': SourceName.CHEMIDPLUS.value,
+                })
+        elif 'aliases' in record:
+            del record['aliases']
+        if record.get('label'):
             batch.put_item(Item={
                 'label_and_type': f'{record["label"].lower()}##label',
-                'concept_id': concept_id_l,
-                'src_name': SourceName.CHEMIDPLUS.value
+                'concept_id': concept_id_ref,
+                'src_name': SourceName.CHEMIDPLUS.value,
             })
+        elif 'label' in record:
+            del record['label']
+        other_ids = record.get('other_identifiers')
+        if other_ids:
+            for other_id in {i.casefold() for i in other_ids}:
+                batch.put_item(Item={
+                    'label_and_type': f'{other_id}##other_id',
+                    'concept_id': concept_id_ref,
+                    'src_name': SourceName.CHEMIDPLUS,
+                })
+        elif 'other_identifiers' in record:
+            del record['other_identifiers']
+
         record['src_name'] = SourceName.CHEMIDPLUS.value
-        record['label_and_type'] = f'{concept_id_l}##identity'
+        record['label_and_type'] = f'{concept_id_ref}##identity'
         batch.put_item(Item=record)
         self._added_ids.append(record['concept_id'])
 

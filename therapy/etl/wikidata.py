@@ -201,3 +201,14 @@ class Wikidata(Base):
                 'concept_id': concept_id_lower,
                 'src_name': SourceName.WIKIDATA.value
             })
+
+        if 'other_identifiers' in item.keys():
+            other_ids = {other_id.lower() for other_id
+                         in item['other_identifiers']}
+            for other_id in other_ids:
+                pk = f"{other_id}##other_id"
+                batch.put_item(Item={
+                    'label_and_type': pk,
+                    'concept_id': concept_id_lower,
+                    'src_name': SourceName.WIKIDATA.value
+                })
