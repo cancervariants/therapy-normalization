@@ -1,9 +1,8 @@
 """This module defines the Wikidata ETL methods."""
-from .base import Base, IDENTIFIER_PREFIXES
+from .base import Base
 from therapy import PROJECT_ROOT
 from therapy.schemas import SourceName, NamespacePrefix, \
     SourceIDAfterNamespace, Meta
-from therapy.database import Database
 import json
 import logging
 from typing import Dict, List
@@ -13,6 +12,19 @@ import datetime
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
+
+# Prefixes for translating ID namespaces
+IDENTIFIER_PREFIXES = {
+    'casRegistry': NamespacePrefix.CASREGISTRY.value,
+    'ChemIDplus': NamespacePrefix.CHEMIDPLUS.value,
+    'pubchemCompound': NamespacePrefix.PUBCHEMCOMPOUND.value,
+    'pubchemSubstance': NamespacePrefix.PUBCHEMSUBSTANCE.value,
+    'chembl': NamespacePrefix.CHEMBL.value,
+    'rxnorm': NamespacePrefix.RXNORM.value,
+    'drugbank': NamespacePrefix.DRUGBANK.value,
+    'wikidata': NamespacePrefix.WIKIDATA.value,
+}
+
 
 SPARQL_QUERY = """
     SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound
@@ -52,7 +64,7 @@ class Wikidata(Base):
     """Extract, transform, and load the Wikidata source into therapy.db."""
 
     def __init__(self,
-                 database: Database,
+                 database,
                  data_path: Path = PROJECT_ROOT / 'data' / 'wikidata'):
         """Initialize wikidata ETL class.
 
@@ -114,11 +126,11 @@ class Wikidata(Base):
 
     def _transform_data(self):
         """Transform the Wikidata source data."""
+        from therapy import OTHER_IDENTIFIERS
         with open(self._data_src, 'r') as f:
             records = json.load(f)
 
             items = dict()
-            normalizer_srcs = {src for src in SourceName.__members__}
 
             for record in records:
                 record_id = record['item'].split('/')[-1]
@@ -138,7 +150,7 @@ class Wikidata(Base):
                             if key.upper() == 'CASREGISTRY':
                                 key = SourceName.CHEMIDPLUS.value
 
-                            if key.upper() in normalizer_srcs:
+                            if key.upper() in OTHER_IDENTIFIERS:
                                 if key != 'chembl':
                                     fmted_other_id = \
                                         f"{IDENTIFIER_PREFIXES[key]}:" \

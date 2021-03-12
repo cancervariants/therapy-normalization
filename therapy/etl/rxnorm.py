@@ -6,8 +6,8 @@ Library of Medicine (NLM), National Institutes of Health, Department of Health
  endorse or recommend this or any other product."
 """
 from .base import Base
+from therapy import PROJECT_ROOT, DownloadException, OTHER_IDENTIFIERS, XREFS
 import therapy
-from therapy import PROJECT_ROOT, DownloadException
 from therapy.database import Database
 from therapy.schemas import SourceName, NamespacePrefix, Meta, Drug, \
     ApprovalStatus
@@ -38,9 +38,9 @@ ALIASES = ['SYN', 'SY', 'TMSY', 'PM',
 # Semantic branded drug
 TRADE_NAMES = ['BD', 'BN', 'SBD']
 
-# Allowed xrefs that have Source Level Restriction 0 or 1
-XREFS = ['ATC', 'CVX', 'DRUGBANK', 'MMSL', 'MSH', 'MTHCMSFRF', 'MTHSPL',
-         'RXNORM', 'USP', 'VANDF']
+# Allowed rxnorm xrefs that have Source Level Restriction 0 or 1
+RXNORM_XREFS = ['ATC', 'CVX', 'DRUGBANK', 'MMSL', 'MSH', 'MTHCMSFRF', 'MTHSPL',
+                'RXNORM', 'USP', 'VANDF']
 
 
 class RxNorm(Base):
@@ -55,8 +55,6 @@ class RxNorm(Base):
         :param Database database: Access to DynamoDB.
         :param str data_url: URL to RxNorm data files.
         """
-        self._other_id_srcs = {src for src in SourceName.__members__}
-        self._xref_srcs = {src for src in NamespacePrefix.__members__}
         self._data_url = data_url
         self.database = database
         self._added_ids = []
@@ -179,7 +177,7 @@ class RxNorm(Base):
             sbdfs = dict()  # Link ingredient to brand
             brands = dict()  # Get RXNORM|BN to concept_id
             for row in rff_data:
-                if row[11] in XREFS:
+                if row[11] in RXNORM_XREFS:
                     concept_id = f"{NamespacePrefix.RXNORM.value}:{row[0]}"
                     if row[12] == 'BN' and row[11] == 'RXNORM':
                         brands[row[14]] = concept_id
@@ -446,13 +444,13 @@ class RxNorm(Base):
         """
         if row[11]:
             other_id_xref = row[11].upper()
-            if other_id_xref in self._other_id_srcs:
+            if other_id_xref in OTHER_IDENTIFIERS:
                 source_id =\
                     f"{NamespacePrefix[other_id_xref].value}:{row[13]}"
                 if source_id != params['concept_id']:
                     # Sometimes concept_id is included in the source field
                     self._add_term(params, source_id, 'other_identifiers')
-            elif other_id_xref in self._xref_srcs:
+            elif other_id_xref in XREFS:
                 source_id = f"{NamespacePrefix[other_id_xref].value}:{row[13]}"
                 self._add_term(params, source_id, 'xrefs')
             else:

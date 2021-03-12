@@ -1,26 +1,12 @@
 """A base class for extraction, transformation, and loading of data."""
 from abc import ABC, abstractmethod
-from therapy.schemas import NamespacePrefix
-from therapy.database import Database
 from typing import List
-
-# prefixes for translating ID namespaces
-IDENTIFIER_PREFIXES = {
-    'casRegistry': NamespacePrefix.CASREGISTRY.value,
-    'ChemIDplus': NamespacePrefix.CHEMIDPLUS.value,  # needed for wikidata
-    'pubchemCompound': NamespacePrefix.PUBCHEMCOMPOUND.value,
-    'pubchemSubstance': NamespacePrefix.PUBCHEMSUBSTANCE.value,
-    'chembl': NamespacePrefix.CHEMBL.value,
-    'rxnorm': NamespacePrefix.RXNORM.value,
-    'drugbank': NamespacePrefix.DRUGBANK.value,
-    'wikidata': NamespacePrefix.WIKIDATA.value,
-}
 
 
 class Base(ABC):
     """The ETL base class."""
 
-    def __init__(self, database: Database):
+    def __init__(self, database):
         """Extract from sources."""
         self.database = database
         self._added_ids = []

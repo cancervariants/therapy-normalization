@@ -1,6 +1,6 @@
 """This module creates the database."""
 import boto3
-from therapy.schemas import NamespacePrefix, SourceName
+from therapy import PREFIX_LOOKUP
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
 from os import environ
@@ -11,12 +11,6 @@ import sys
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
-
-
-# should this be located in a shared module
-PREFIX_LOOKUP = {v.value: SourceName[k].value
-                 for k, v in NamespacePrefix.__members__.items()
-                 if k in SourceName.__members__.keys()}
 
 
 class Database:
@@ -49,6 +43,7 @@ class Database:
             else:
                 endpoint_url = 'http://localhost:8000'
             click.echo(f"***Using Database Endpoint: {endpoint_url}***")
+
             boto_params = {
                 'region_name': region_name,
                 'endpoint_url': endpoint_url
@@ -57,7 +52,7 @@ class Database:
         self.dynamodb = boto3.resource('dynamodb', **boto_params)
         self.dynamodb_client = boto3.client('dynamodb', **boto_params)
 
-        # create tables if nonexistent if not connecting to remote database
+        # Table creation for local database
         if 'THERAPY_NORM_PROD' not in environ.keys():
             existing_tables = self.dynamodb_client.list_tables()['TableNames']
             self.create_therapies_table(existing_tables)

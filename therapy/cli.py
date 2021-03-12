@@ -1,12 +1,13 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
 from botocore.exceptions import ClientError
-from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm
+from therapy import PROHIBITED_SOURCES
 from therapy.etl.merge import Merge
-from therapy.schemas import SourceName
 from timeit import default_timer as timer
-from therapy.database import Database
 from boto3.dynamodb.conditions import Key
+from therapy.schemas import SourceName
+from therapy import SOURCES_CLASS, SOURCES
+from therapy.database import Database
 from os import environ
 
 
@@ -41,15 +42,6 @@ class CLI:
     def update_normalizer_db(normalizer, prod, db_url, update_all,
                              update_merged):
         """Update select normalizer source(s) in the therapy database."""
-        sources = {
-            'chembl': ChEMBL,
-            'ncit': NCIt,
-            'wikidata': Wikidata,
-            'drugbank': DrugBank,
-            'chemidplus': ChemIDplus,
-            'rxnorm': RxNorm,
-        }
-
         if prod:
             environ['THERAPY_NORM_PROD'] = "TRUE"
             db: Database = Database()
@@ -63,22 +55,22 @@ class CLI:
             db: Database = Database(db_url=endpoint_url)
 
         if update_all:
-            normalizers = list(src for src in sources)
-            CLI()._update_normalizers(normalizers, sources, db, update_merged)
+            normalizers = list(src for src in SOURCES)
+            CLI()._update_normalizers(normalizers, SOURCES, db, update_merged)
         elif not normalizer:
             CLI()._help_msg()
         else:
-            normalizers = normalizer.lower().split()
+            normalizers = str(normalizer).lower().split()
 
             if len(normalizers) == 0:
                 CLI()._help_msg()
 
-            non_sources = CLI()._check_norm_srcs_match(sources, normalizers)
+            non_sources = set(normalizers) - {src for src in SOURCES}
 
             if len(non_sources) != 0:
                 raise Exception(f"Not valid source(s): {non_sources}")
 
-            CLI()._update_normalizers(normalizers, sources, db, update_merged)
+            CLI()._update_normalizers(normalizers, db, update_merged)
 
     def _help_msg(self):
         """Display help message."""
@@ -88,11 +80,7 @@ class CLI:
         click.echo(ctx.get_help())
         ctx.exit()
 
-    def _check_norm_srcs_match(self, sources, normalizers):
-        """Check that entered normalizers are actual sources."""
-        return set(normalizers) - {src for src in sources}
-
-    def _update_normalizers(self, normalizers, sources, db, update_merged):
+    def _update_normalizers(self, normalizers, db, update_merged):
         """Update selected normalizer sources."""
         processed_ids = list()
         for n in normalizers:
@@ -105,9 +93,8 @@ class CLI:
                        f"{delete_time:.5f} seconds.\n")
             click.echo(f"Loading {n}...")
             start_load = timer()
-            source = sources[n](database=db)
-            # TODO: Replace with constant once issue-90 merged
-            if n not in ['chembl', 'drugbank']:
+            source = SOURCES_CLASS[n](database=db)
+            if n not in PROHIBITED_SOURCES:
                 processed_ids += source.perform_etl()
             else:
                 source.perform_etl()
