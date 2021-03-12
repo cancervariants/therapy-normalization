@@ -359,7 +359,7 @@ class QueryHandler:
         :return: completed response object ready to return to user
         """
         vod = {
-            'id': f'normalize:{quote(query)}',
+            'id': f'normalize.disease:{quote(query)}',
             'type': 'TherapyDescriptor',
             'value': {
                 'type': 'Therapy',
