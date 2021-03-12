@@ -532,8 +532,28 @@
     "src_name": "ChemIDplus"
   },
   {
+    "label_and_type": "drugbank:db00619##other_id",
+    "concept_id": "chemidplus:152459-95-5",
+    "src_name": "ChemIDplus"
+  },
+  {
     "label_and_type": "imatinib##label",
     "concept_id": "chemidplus:152459-95-5",
+    "src_name": "ChemIDplus"
+  },
+  {
+    "label_and_type": "chemidplus:220127-57-1##identity",
+    "concept_id": "chemidplus:220127-57-1",
+    "src_name": "ChemIDplus",
+    "label": "Imatinib mesylate",
+    "aliases": [],
+    "other_identifiers": ["drugbank:DB00619"],
+    "xrefs": ["fda:8A1O1M485B"],
+    "trade_names": []
+  },
+  {
+    "label_and_type": "drugbank:db00619##other_id",
+    "concept_id": "chemidplus:220127-57-1",
     "src_name": "ChemIDplus"
   },
   {
