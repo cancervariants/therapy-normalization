@@ -274,6 +274,26 @@
     "merge_ref": "rxcui:2555"
   },
   {
+    "label_and_type": "chembl:chembl11359##other_id",
+    "concept_id": "wikidata:q412415",
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "drugbank:db00515##other_id",
+    "concept_id": "wikidata:q412415",
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "rxcui:2555##other_id",
+    "concept_id": "wikidata:q412415",
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "chemidplus:15663-27-1##other_id",
+    "concept_id": "wikidata:q412415",
+    "src_name": "Wikidata"
+  },
+  {
     "label_and_type": "cisplatin##label",
     "concept_id": "wikidata:q412415",
     "src_name": "Wikidata"
@@ -326,6 +346,11 @@
     "src_name": "Wikidata"
   },
   {
+    "label_and_type": "rxcui:6816##other_id",
+    "concept_id": "wikidata:q191924",
+    "src_name": "Wikidata"
+  },
+  {
     "label_and_type": "d-methamphetamine##label",
     "concept_id": "wikidata:q191924",
     "src_name": "Wikidata"
@@ -355,6 +380,11 @@
       "rxcui:1223",
       "chemidplus:51-55-8"
     ],
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "chemidplus:51-55-8##other_id",
+    "concept_id": "wikidata:q26272",
     "src_name": "Wikidata"
   },
   {
