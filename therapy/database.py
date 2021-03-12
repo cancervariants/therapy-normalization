@@ -265,9 +265,9 @@ class Database:
         update_expression = f"set {field}=:r"
         update_values = {':r': new_value}
         try:
-            self.diseases.update_item(Key=key,
-                                      UpdateExpression=update_expression,
-                                      ExpressionAttributeValues=update_values)
+            self.therapies.update_item(Key=key,
+                                       UpdateExpression=update_expression,
+                                       ExpressionAttributeValues=update_values)
         except ClientError as e:
             logger.error(f"boto3 client error in `database.update_record()`: "
                          f"{e.response['Error']['Message']}")
@@ -275,4 +275,4 @@ class Database:
     def flush_batch(self):
         """Flush internal batch_writer."""
         self.batch.__exit__(*sys.exc_info())
-        self.batch = self.diseases.batch_writer()
+        self.batch = self.therapies.batch_writer()
