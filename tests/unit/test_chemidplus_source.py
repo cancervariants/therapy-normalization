@@ -57,6 +57,19 @@ def imatinib():
 
 
 @pytest.fixture(scope='module')
+def other_imatinib():
+    """Build test fixture for imatinib mesylate."""
+    return Drug(**{
+        "concept_id": "chemidplus:220127-57-1",
+        "label": "Imatinib mesylate",
+        "aliases": [],
+        "other_identifiers": ["drugbank:DB00619"],
+        "xrefs": ["fda:8A1O1M485B"],
+        "trade_names": [],
+    })
+
+
+@pytest.fixture(scope='module')
 def cisplatin():
     """Build test fixture for cisplatin."""
     return Drug(**{
@@ -76,8 +89,8 @@ def cisplatin():
     })
 
 
-def test_concept_id_match(chemidplus, penicillin_v):
-    """Test that records are retrieved by concept ID correctly."""
+def test_penicillin(chemidplus, penicillin_v):
+    """Test record retrieval for Penicillin V."""
     response = chemidplus.search('chemidplus:87-08-1')
     assert response['match_type'] == MatchType.CONCEPT_ID
     assert len(response['records']) == 1
@@ -88,20 +101,33 @@ def test_concept_id_match(chemidplus, penicillin_v):
     assert len(response['records']) == 1
     compare_records(response['records'][0], penicillin_v)
 
+    response = chemidplus.search('Penicillin V')
+    assert response['match_type'] == MatchType.LABEL
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], penicillin_v)
+
+    response = chemidplus.search('Phenoxymethylpenicillin')
+    assert response['match_type'] == MatchType.ALIAS
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], penicillin_v)
+
+    response = chemidplus.search('drugbank:DB00417')
+    assert response['match_type'] == MatchType.OTHER_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], penicillin_v)
+
     response = chemidplus.search('87-08-1')
     assert response['match_type'] == MatchType.NO_MATCH
 
     response = chemidplus.search('87081')
     assert response['match_type'] == MatchType.NO_MATCH
 
+    response = chemidplus.search('PenicillinV')
+    assert response['match_type'] == MatchType.NO_MATCH
 
-def test_label_match(chemidplus, imatinib, penicillin_v):
-    """Test that records are retrieved by label correctly."""
-    response = chemidplus.search('Penicillin V')
-    assert response['match_type'] == MatchType.LABEL
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], penicillin_v)
 
+def test_imatinib(chemidplus, imatinib, other_imatinib):
+    """Test record retrieval for imatinib."""
     response = chemidplus.search('Imatinib')
     assert response['match_type'] == MatchType.LABEL
     assert len(response['records']) == 1
@@ -112,21 +138,39 @@ def test_label_match(chemidplus, imatinib, penicillin_v):
     assert len(response['records']) == 1
     compare_records(response['records'][0], imatinib)
 
-    response = chemidplus.search('PenicillinV')
-    assert response['match_type'] == MatchType.NO_MATCH
+    response = chemidplus.search('drugbank:DB00619')
+    assert response['match_type'] == MatchType.OTHER_ID
+    assert len(response['records']) == 2
+    for record in response['records']:
+        if record.concept_id == 'chemidplus:152459-95-5':
+            compare_records(record, imatinib)
+        elif record.concept_id == 'chemidplus:220127-57-1':
+            compare_records(record, other_imatinib)
+        else:
+            assert False  # retrieved incorrect record
 
 
-def test_alias_match(chemidplus, penicillin_v, cisplatin):
-    """Test that records are retrieved by alias correctly."""
+def test_cisplatin(chemidplus, cisplatin):
+    """Test record retrieval for cisplatin."""
+    response = chemidplus.search('chemidplus:15663-27-1')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
+
+    response = chemidplus.search('Cisplatin')
+    assert response['match_type'] == MatchType.LABEL
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
+
     response = chemidplus.search('cis-Diaminedichloroplatinum')
     assert response['match_type'] == MatchType.ALIAS
     assert len(response['records']) == 1
     compare_records(response['records'][0], cisplatin)
 
-    response = chemidplus.search('Phenoxymethylpenicillin')
-    assert response['match_type'] == MatchType.ALIAS
+    response = chemidplus.search('drugbank:DB00515')
+    assert response['match_type'] == MatchType.OTHER_ID
     assert len(response['records']) == 1
-    compare_records(response['records'][0], penicillin_v)
+    compare_records(response['records'][0], cisplatin)
 
     response = chemidplus.search('Cisplatine')
     assert response['match_type'] == MatchType.NO_MATCH

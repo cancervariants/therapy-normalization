@@ -1139,11 +1139,7 @@
   {
     "label_and_type": "rxcui:8134##merger",
     "concept_id": "rxcui:8134",
-    "other_ids": [
-      "ncit:C739",
-      "chemidplus:50-06-6",
-      "wikidata:Q407241"
-    ],
+    "other_ids": ["ncit:C739", "chemidplus:50-06-6", "wikidata:Q407241"],
     "aliases": [
       "5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
       "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
@@ -1487,5 +1483,21 @@
     "concept_id": "wikidata:q47522001",
     "label_and_type": "platinol##label",
     "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "chemidplus:220127-57-1##identity",
+    "src_name": "ChemIDplus",
+    "concept_id": "chemidplus:220127-57-1",
+    "label": "Imatinib mesylate",
+    "aliases": [],
+    "other_identifiers": ["drugbank:DB00619"],
+    "xrefs": ["fda:8A1O1M485B"],
+    "approval_status": null,
+    "trade_names": []
+  },
+  {
+    "label_and_type": "drugbank:db00619##other_id",
+    "src_name": "ChemIDplus",
+    "concept_id": "chemidplus:220127-57-1"
   }
 ]
