@@ -2,13 +2,13 @@
 Services and guidelines for normalizing drug (and non-drug therapy) terms
 
 ## Developer instructions
-Following are sections include instructions specifically for developers.
+The following sections include instructions specifically for developers.
 
 ### Installation
-For a development install, we recommend using Pipenv. See the 
-[pipenv docs](https://pipenv-fork.readthedocs.io/en/latest/#install-pipenv-today) 
+For a development install, we recommend using Pipenv. See the
+[pipenv docs](https://pipenv-fork.readthedocs.io/en/latest/#install-pipenv-today)
 for direction on installing pipenv in your compute environment.
- 
+
 Once installed, from the project root dir, just run:
 
 ```commandline
@@ -62,12 +62,12 @@ RxNorm requires a UMLS license, which you can register for one [here](https://ww
 You must set the `RxNORM_API_KEY` environment variable to your API key. This can be found in the [UTS 'My Profile' area](https://uts.nlm.nih.gov/uts/profile) after singing in.
 ```shell script
 export RXNORM_API_KEY={rxnorm_api_key}
-``` 
+```
 
 #### Update source(s)
 The sources we currently use are: ChEMBL, NCIt, DrugBank, RxNorm, ChemIDplus, and Wikidata.
 
-To update one source, simply set `--normalizer` to the source you wish to update. 
+To update one source, simply set `--normalizer` to the source you wish to update.
 
 From the project root, run the following to update the ChEMBL source:
 
@@ -79,7 +79,7 @@ To update multiple sources, you can use the `normalizer` flag with the source na
 
 #### Update all sources
 
-To update all sources, use the `--update_all` flag. 
+To update all sources, use the `--update_all` flag.
 
 From the project root, run the following to update all sources:
 
@@ -110,6 +110,6 @@ From the project root, run the following:
  uvicorn therapy.main:app --reload
 ```
 
-Next, view the OpenAPI docs on your local machine: 
+Next, view the OpenAPI docs on your local machine:
 
 http://127.0.0.1:8000/therapy
