@@ -453,7 +453,7 @@ class QueryHandler:
             if merge is None:
                 return self._handle_failed_merge_ref(record, response, query)
             else:
-                return self._add_vod(response, record, query,
+                return self._add_vod(response, merge, query,
                                      MatchType.CONCEPT_ID)
 
         # check other match types
@@ -478,7 +478,7 @@ class QueryHandler:
                     if merge is None:
                         self._handle_failed_merge_ref(record, response, query)
                     else:
-                        return self._add_vod(response, record, query,
+                        return self._add_vod(response, merge, query,
                                              MatchType[match_type.upper()])
 
         if not matching_records:  # TODO if check not needed?
