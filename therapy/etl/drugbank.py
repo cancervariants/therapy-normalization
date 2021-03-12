@@ -1,8 +1,7 @@
 """This module defines the DrugBank ETL methods."""
 from therapy import PROJECT_ROOT
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, Meta
-from therapy.etl.base import IDENTIFIER_PREFIXES, Base
-from therapy.database import Database
+from therapy.etl.base import Base
 import logging
 from lxml import etree
 from typing import List
@@ -40,7 +39,7 @@ class DrugBank(Base):
     """ETL the DrugBank source into therapy.db."""
 
     def __init__(self,
-                 database: Database,
+                 database,
                  data_path: Path = PROJECT_ROOT / 'data' / 'drugbank',
                  data_url: str = 'https://go.drugbank.com/releases/5-1-7/'
                                  'downloads/all-full-database',
@@ -80,10 +79,10 @@ class DrugBank(Base):
                              )
             if r.status_code == 200:
                 zip_file = zipfile.ZipFile(BytesIO(r.content))
-                temp_dir = self._data_dir / 'temp_drugbank'
+                temp_dir = self._data_path / 'temp_drugbank'
                 zip_file.extractall(temp_dir)
                 temp_file = temp_dir / 'full database.xml'
-                db_xml_file = self._data_dir / f"drugbank_{self._version}.xml"
+                db_xml_file = self._data_path / f"drugbank_{self._version}.xml"
                 shutil.move(temp_file, db_xml_file)
                 shutil.rmtree(temp_dir)
             else:
@@ -246,7 +245,7 @@ class DrugBank(Base):
         """Load cas number as other identifiers."""
         if element.text:
             params['other_identifiers'].append(
-                f"{IDENTIFIER_PREFIXES['ChemIDplus']}:"
+                f"{NamespacePrefix.CHEMIDPLUS.value}:"
                 f"{element.text}")
 
     def _load_external_identifiers(self, element, params, xmlns,

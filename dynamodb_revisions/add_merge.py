@@ -1,8 +1,6 @@
 """Add merged records and references to database."""
 from timeit import default_timer as timer
 from pathlib import Path
-from os import environ
-import click
 import sys
 import logging
 
@@ -10,8 +8,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(f"{PROJECT_ROOT}")
 
 from therapy.database import Database  # noqa: E402
-from therapy.schemas import SourceName  # noqa: E402
 from therapy.etl.merge import Merge  # noqa: E402
+from therapy import ACCEPTED_SOURCES  # noqa: #402
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -34,8 +32,7 @@ def main():
         items = response['Items']
         for item in items:
             if item['label_and_type'].endswith('##identity'):
-                if item['src_name'] != SourceName.CHEMBL.value and \
-                        item['src_name'] != SourceName.DRUGBANK.value:
+                if item['src_name'].lower() in ACCEPTED_SOURCES:
                     concept_ids.append(item['concept_id'])
 
         start_key = response.get('LastEvaluatedKey', None)
@@ -52,11 +49,4 @@ def main():
 
 
 if __name__ == '__main__':
-    if 'THERAPY_NORM_DB_URL' not in environ.keys():
-        if click.confirm("Are you sure you want to update"
-                         " the production database?", default=False):
-            click.echo("Updating production db...")
-        else:
-            click.echo("Exiting.")
-            sys.exit()
     main()

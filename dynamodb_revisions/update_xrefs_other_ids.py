@@ -2,19 +2,13 @@
 import sys
 from pathlib import Path
 import click
-from os import environ
 from timeit import default_timer as timer
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(f"{PROJECT_ROOT}")
 
 from therapy.database import Database  # noqa: E402
-from therapy.schemas import NamespacePrefix, SourceName  # noqa: E402
-
-# TODO: Replace once issue-90 is merged
-PREFIX_LOOKUP = {v.value: SourceName[k].value
-                 for k, v in NamespacePrefix.__members__.items()
-                 if k in SourceName.__members__.keys()}
+from therapy import PREFIX_LOOKUP  # noqa: E402
 
 
 def update_xrefs_other_ids(db):
@@ -127,13 +121,6 @@ def update_item(db, record_identity, record_concept_id, other_ids, xrefs):
 
 
 if __name__ == '__main__':
-    if 'THERAPY_NORM_DB_URL' not in environ.keys():
-        if click.confirm("Are you sure you want to update"
-                         " the production database?", default=False):
-            click.echo("Updating production db...")
-        else:
-            click.echo("Exiting.")
-            sys.exit()
     click.echo("Updating xrefs and other_identifiers...")
     start = timer()
     update_xrefs_other_ids(Database())
