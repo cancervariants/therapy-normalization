@@ -21,8 +21,6 @@ class DownloadException(Exception):
         super().__init__(*args, **kwargs)
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-
 from therapy.schemas import SourceName, NamespacePrefix, SourceIDAfterNamespace, ProhibitedSources  # noqa: E402, E501
 # Sources we import directly
 SOURCES = {source.value.lower(): source.value
