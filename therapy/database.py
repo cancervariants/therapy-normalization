@@ -176,7 +176,9 @@ class Database:
                 response = self.therapies.query(KeyConditionExpression=exp)
                 return response['Items'][0]
         except ClientError as e:
-            logger.error(e.response['Error']['Message'])
+            logger.error(f"boto3 client error on get_records_by_id for "
+                         f"search term {concept_id}: "
+                         f"{e.response['Error']['Message']}")
             return None
         except KeyError:  # record doesn't exist
             return None
@@ -199,43 +201,50 @@ class Database:
             matches = self.therapies.query(KeyConditionExpression=filter_exp)
             return matches.get('Items', None)
         except ClientError as e:
-            logger.error(e.response['Error']['Message'])
+            logger.error(f"boto3 client error on get_records_by_type for "
+                         f"search term {query}: "
+                         f"{e.response['Error']['Message']}")
             return []
 
-    def get_merged_record(self, merge_ref) -> Optional[Dict]:
-        """Fetch merged record from given reference.
-
-        :param str merge_ref: key for merged record, formated as a string
-            of grouped concept IDs separated by vertical bars, ending with
-            `##merger`. Must be correctly-cased.
-        :return: complete merged record if lookup successful, None otherwise
-        """
-        try:
-            match = self.therapies.get_item(Key={
-                'label_and_type': merge_ref.lower(),
-                'concept_id': merge_ref
-            })
-            return match['Item']
-        except ClientError as e:
-            logger.error(e.response['Error']['Message'])
-            return None
-        except KeyError:
-            return None
-
-    def add_record(self, record: Dict, record_type: str):
+    def add_record(self, record: Dict, record_type="identity"):
         """Add new record to database.
 
-        :param Dict record: record (of any type) to upload. Must include
-            `concept_id` key. If record is of the `identity` type, the
-            concept_id must be correctly-cased.
-        :param str record_type: one of 'identity', 'label', 'alias',
-            'trade_name', or 'merger'.
+        :param Dict record: record to upload
+        :param str record_type: type of record (either 'identity' or 'merger')
         """
-        if record_type in ('label', 'trade_name', 'alias', 'identity'):
-            prefix = record['concept_id'].split(':')[0]
-            record['src_name'] = PREFIX_LOOKUP[prefix]
-        record['label_and_type'] = f'{record["concept_id"].lower()}##{record_type}'  # noqa: E501
-        self.batch.put_item(Item=record)
+        id_prefix = record['concept_id'].split(':')[0].lower()
+        record['src_name'] = PREFIX_LOOKUP[id_prefix]
+        label_and_type = f'{record["concept_id"].lower()}##{record_type}'
+        record['label_and_type'] = label_and_type
+        record['item_type'] = record_type
+        try:
+            self.batch.put_item(Item=record)
+        except ClientError as e:
+            logger.error("boto3 client error on add_record for "
+                         f"{record['concept_id']}: "
+                         f"{e.response['Error']['Message']}")
+
+    def add_ref_record(self, term: str, concept_id: str, ref_type: str):
+        """Add auxilliary/reference record to database.
+
+        :param str term: referent term
+        :param str concept_id: concept ID to refer to
+        :param str ref_type: one of ('alias', 'label', 'other_id')
+        """
+        label_and_type = f'{term.lower()}##{ref_type}'
+        src_name = PREFIX_LOOKUP[concept_id.split(':')[0].lower()]
+        record = {
+            'label_and_type': label_and_type,
+            'concept_id': concept_id.lower(),
+            'src_name': src_name,
+            'item_type': ref_type,
+        }
+        try:
+            self.batch.put_item(Item=record)
+        except ClientError as e:
+            logger.error(f"boto3 client error adding reference {term} for "
+                         f"{concept_id} with match type {ref_type}: "
+                         f"{e.response['Error']['Message']}")
 
     def update_record(self, concept_id: str, field: str, new_value: Any):
         """Update the field of an individual record to a new value.
@@ -255,4 +264,10 @@ class Database:
                                        UpdateExpression=update_expression,
                                        ExpressionAttributeValues=update_values)
         except ClientError as e:
-            logger.error(e.response['Error']['Message'])
+            logger.error(f"boto3 client error in `database.update_record()`: "
+                         f"{e.response['Error']['Message']}")
+
+    def flush_batch(self):
+        """Flush internal batch_writer."""
+        self.batch.__exit__(*sys.exc_info())
+        self.batch = self.therapies.batch_writer()

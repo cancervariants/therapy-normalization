@@ -281,6 +281,9 @@ class RxNorm(Base):
             self._load_label_type(params, batch, 'trade_name', 'trade_names')
         if 'aliases' in params:
             self._load_label_type(params, batch, 'alias', 'aliases')
+        if 'other_identifiers' in params:
+            self._load_label_type(params, batch, 'other_id',
+                                  'other_identifiers')
 
     def _load_label_type(self, params, batch, label_type_sing, label_type_pl):
         """Insert alias, trade_name, or label data into the database.

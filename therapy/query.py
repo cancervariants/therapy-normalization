@@ -7,7 +7,7 @@ from uvicorn.config import logger
 from therapy.database import Database
 from therapy.schemas import Drug, Meta, MatchType, SourceName
 from botocore.exceptions import ClientError
-from boto3.dynamodb.conditions import Key
+from urllib.parse import quote
 
 
 class InvalidParameterException(Exception):
@@ -95,7 +95,7 @@ class QueryHandler:
         matches = response['source_matches']
         if src_name not in matches.keys():
             pass
-        elif matches[src_name] is None:
+        elif matches[src_name] is None:  # TODO what is going on here
             matches[src_name] = {
                 'match_type': MatchType[match_type.upper()],
                 'records': [drug],
@@ -154,9 +154,7 @@ class QueryHandler:
                           query: str,
                           resp: Dict,
                           sources: Set[str]) -> (Dict, Set):
-        """Check query for concept ID match. Should only find 0 or 1 matches,
-        but stores them as a collection to be safe.
-        # TODO is that ^ safe?
+        """Check query for concept ID match. Should only find 0 or 1 matches.
 
         :param str query: search string
         :param Dict resp: in-progress response object to return to client
@@ -166,29 +164,15 @@ class QueryHandler:
         """
         concept_id_items = []
         if [p for p in PREFIX_LOOKUP.keys() if query.startswith(p)]:
-            pk = f'{query}##identity'
-            filter_exp = Key('label_and_type').eq(pk)
-            try:
-                result = self.db.therapies.query(
-                    KeyConditionExpression=filter_exp
-                )
-                if len(result['Items']) > 0:
-                    concept_id_items += result['Items']
-            except ClientError as e:
-                logger.error(e.response['Error']['Message'])
+            record = self.db.get_record_by_id(query, False)
+            if record:
+                concept_id_items.append(record)
         for prefix in [p for p in NAMESPACE_LOOKUP.keys()
                        if query.startswith(p)]:
-            pk = f'{NAMESPACE_LOOKUP[prefix].lower()}:{query}##identity'
-            filter_exp = Key('label_and_type').eq(pk)
-            try:
-                result = self.db.therapies.query(
-                    KeyConditionExpression=filter_exp
-                )
-                if len(result['Items']) > 0:  # TODO remove check?
-                    concept_id_items += result['Items']
-            except ClientError as e:
-                logger(e.response['Error']['Message'])
-
+            concept_id = f'{NAMESPACE_LOOKUP[prefix]}:{query}'
+            id_lookup = self.db.get_record_by_id(concept_id, False)
+            if id_lookup:
+                concept_id_items.append(id_lookup)
         for item in concept_id_items:
             (resp, src_name) = self._add_record(resp, item,
                                                 MatchType.CONCEPT_ID.name)
@@ -205,7 +189,7 @@ class QueryHandler:
         :param Dict resp: in-progress response object to return to client
         :param Set[str] sources: remaining unmatched sources
         :param str match_type: Match type to check for. Should be one of
-            ['trade_name', 'label', 'alias']
+            {'trade_name', 'label', 'alias', 'other_id'}
         :return: Tuple with updated resp object and updated set of unmatched
                  sources
         """
@@ -242,7 +226,7 @@ class QueryHandler:
         if len(sources) == 0:
             return response
 
-        match_types = ['label', 'trade_name', 'alias']
+        match_types = ['label', 'trade_name', 'alias', 'other_id']
         for match_type in match_types:
             (response, sources) = self._check_match_type(query, response,
                                                          sources, match_type)
@@ -334,49 +318,20 @@ class QueryHandler:
         """Add source metadata to response object.
 
         :param Dict response: in-progress response object
-        :return: completed resopnse object.
+        :return: completed response object.
         """
         sources_meta = {}
-        for concept_id in response['record']['concept_ids']:
+        vod = response['value_object_descriptor']
+        ids = [vod['value']['therapy_id']] + vod.get('xrefs', [])
+        for concept_id in ids:
             prefix = concept_id.split(':')[0]
-            src_name = PREFIX_LOOKUP[prefix]
+            src_name = PREFIX_LOOKUP[prefix.lower()]
             if src_name not in sources_meta:
                 sources_meta[src_name] = self._fetch_meta(src_name)
         response['meta_'] = sources_meta
         return response
 
-    def _format_merged_record(self, merged_record: Dict) -> Dict:
-        """Transform merged record (as served by DB) into response object
-        format.
-
-        :param Dict merged_record: merged record as returned by DB call
-        :return: formatted record
-        """
-        del merged_record['label_and_type']
-        merged_record['concept_ids'] = merged_record['concept_id'].split('|')
-        del merged_record['concept_id']
-        return merged_record
-
-    def _add_merged_record(self, response: Dict, merge_ref: str) -> Dict:
-        """Add referenced concept ID group to response object.
-
-        :param Dict response: in-progress response object. Should have
-            match_type attribute filled in already.
-        :param str merge_ref: primary key for concept ID group lookup.
-        :return: completed response object.
-        """
-        merged_record = self.db.get_record_by_id(merge_ref, False, True)
-        if not merged_record:
-            logger.warning(f"Could not retrieve merged record for concept "
-                           f"ID group {merge_ref} "
-                           f"by way of query {response['query']}")
-            response['match_type'] = MatchType.NO_MATCH
-            return response
-        response['record'] = self._format_merged_record(merged_record)
-        response = self._add_merged_meta(response)
-        return response
-
-    def _record_order(self, record: Dict) -> (int, str):
+    def _record_order(self, record: Dict) -> (int, str):  # TODO refactor?
         """Construct priority order for matching. Only called by sort().
 
         :param Dict record: individual record item in iterable to sort
@@ -391,57 +346,124 @@ class QueryHandler:
             source_rank = 3
         else:
             source_rank = 4
-        return (source_rank, record['concept_id'])
+        return source_rank, record['concept_id']
 
-    def search_groups(self, query_str: str) -> Dict:
+    def _add_vod(self, response: Dict, record: Dict, query: str,
+                 match_type: MatchType) -> Dict:
+        """Format received DB record as VOD and update response object.
+
+        :param Dict response: in-progress response object
+        :param Dict record: record as stored in DB
+        :param str query: query string from user request
+        :param MatchType match_type: type of match achieved
+        :return: completed response object ready to return to user
+        """
+        vod = {
+            'id': f'normalize.therapy:{quote(query)}',
+            'type': 'TherapyDescriptor',
+            'value': {
+                'type': 'Therapy',
+                'therapy_id': record['concept_id']
+            },
+            'label': record['label'],
+            'extensions': [],
+        }
+        if 'other_ids' in record:
+            vod['xrefs'] = record['other_ids']
+        if 'aliases' in record:
+            vod['alternate_labels'] = record['aliases']
+        trade_names = record.get('trade_names')
+        if trade_names:
+            vod['extensions'].append({
+                'type': 'Extension',
+                'name': 'trade_names',
+                'value': trade_names
+            })
+        if 'xrefs' in record and record['xrefs']:
+            vod['extensions'].append(
+                {
+                    'type': 'Extension',
+                    'name': 'associated_with',
+                    'value': record['xrefs']
+                }
+            )
+        if not vod['extensions']:
+            del vod['extensions']
+        response['match_type'] = match_type
+        response['value_object_descriptor'] = vod
+        response = self._add_merged_meta(response)
+        return response
+
+    def _handle_failed_merge_ref(self, record, response, query) -> Dict:
+        """Log + fill out response for a failed merge reference lookup.
+
+        :param Dict record: record containing failed merge_ref
+        :param Dict response: in-progress response object
+        :param str query: original query value
+        :return: response with no match
+        """
+        logger.error(f"Merge ref lookup failed for ref {record['merge_ref']} "
+                     f"in record {record['concept_id']} from query {query}")
+        response['match_type'] = MatchType.NO_MATCH
+        return response
+
+    def search_groups(self, query: str) -> Dict:
         """Return merged, normalized concept for given search term.
 
-        :param str query_str: string to search against
+        :param str query: string to search against
         """
         # prepare basic response
         response = {
-            'query': query_str,
-            'warnings': self._emit_warnings(query_str),
+            'query': query,
+            'warnings': self._emit_warnings(query),
         }
-        if query_str == '':
+        if query == '':
             response['match_type'] = MatchType.NO_MATCH
             return response
-        query_str = query_str.lower()
+        query_str = query.lower()
 
         # check merged concept ID match
         record = self.db.get_record_by_id(query_str, case_sensitive=False,
                                           merge=True)
         if record:
-            response['match_type'] = MatchType.CONCEPT_ID
-            response['record'] = self._format_merged_record(record)
-            response = self._add_merged_meta(response)
-            return response
+            return self._add_vod(response, record, query,
+                                 MatchType.CONCEPT_ID)
 
         # check concept ID match
         record = self.db.get_record_by_id(query_str, case_sensitive=False)
         if record:
-            response['match_type'] = MatchType.CONCEPT_ID
-            response = self._add_merged_record(response, record['merge_ref'])
-            return response
+            merge = self.db.get_record_by_id(record['merge_ref'],
+                                             case_sensitive=False,
+                                             merge=True)
+            if merge is None:
+                return self._handle_failed_merge_ref(record, response, query)
+            else:
+                return self._add_vod(response, merge, query,
+                                     MatchType.CONCEPT_ID)
 
         # check other match types
-        for match_type in ['label', 'trade_name', 'alias']:
+        for match_type in ['label', 'trade_name', 'alias', 'other_id']:
             # get matches list for match tier
-            query_matches = self.db.get_records_by_type(query_str, match_type)
-            query_matches = [self.db.get_record_by_id(m['concept_id'], False)
-                             for m in query_matches
-                             if m['src_name'] not in PROHIBITED_SOURCES]
-            query_matches.sort(key=self._record_order)
+            matching_refs = self.db.get_records_by_type(query_str, match_type)
+            matching_records = [self.db.get_record_by_id(m['concept_id'],
+                                                         False)
+                                for m in matching_refs
+                                if m['src_name'] not in PROHIBITED_SOURCES]
+            matching_records.sort(key=self._record_order)
 
             # attempt merge ref resolution until successful
-            for match in query_matches:
+            for match in matching_records:
                 record = self.db.get_record_by_id(match['concept_id'], False)
                 if record:
-                    merge_ref = record['merge_ref']
-                    if merge_ref:
-                        response['match_type'] = MatchType[match_type.upper()]
-                        return self._add_merged_record(response, merge_ref)
+                    merge = self.db.get_record_by_id(record['merge_ref'],
+                                                     case_sensitive=False,
+                                                     merge=True)
+                    if merge is None:
+                        self._handle_failed_merge_ref(record, response, query)
+                    else:
+                        return self._add_vod(response, merge, query,
+                                             MatchType[match_type.upper()])
 
-        if not query_matches:
+        if not matching_records:  # TODO if check not needed?
             response['match_type'] = MatchType.NO_MATCH
         return response

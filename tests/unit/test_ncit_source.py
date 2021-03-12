@@ -2,6 +2,7 @@
 import pytest
 from therapy.schemas import Drug, MatchType
 from therapy.query import QueryHandler
+from tests.conftest import compare_records
 
 
 @pytest.fixture(scope='module')
@@ -12,7 +13,7 @@ def ncit():
         def __init__(self):
             self.query_handler = QueryHandler()
 
-        def normalize(self, query_str):
+        def search(self, query_str):
             resp = self.query_handler.search_sources(query_str, keyed=True,
                                                      incl='ncit')
             return resp['source_matches']['NCIt']
@@ -69,332 +70,161 @@ def trastuzumab():
 
 
 def test_concept_id_voglibose(voglibose, ncit):
-    """Test that Voglibose successfully matches to concept ID queries"""
-    response = ncit.normalize('ncit:C95221')
+    """Test that Voglibose successfully matches."""
+    response = ncit.search('ncit:C95221')
     assert response['match_type'] == MatchType.CONCEPT_ID
     assert len(response['records']) == 1
-    drug = response['records'][0]
-    assert drug.label == voglibose.label
-    assert drug.concept_id == voglibose.concept_id
-    assert set(drug.aliases) == set(voglibose.aliases)
-    assert set(drug.other_identifiers) == set(voglibose.other_identifiers)
-    assert set(drug.trade_names) == set(voglibose.trade_names)
-    assert set(drug.xrefs) == set(voglibose.xrefs)
-    assert drug.approval_status == voglibose.approval_status
+    compare_records(response['records'][0], voglibose)
 
-    normalizer_response = ncit.normalize('NCIT:C95221')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == voglibose.label
-    assert drug.concept_id == voglibose.concept_id
-    assert set(drug.aliases) == set(voglibose.aliases)
-    assert set(drug.other_identifiers) == set(voglibose.other_identifiers)
-    assert set(drug.trade_names) == set(voglibose.trade_names)
-    assert set(drug.xrefs) == set(voglibose.xrefs)
-    assert drug.approval_status == voglibose.approval_status
+    response = ncit.search('NCIT:C95221')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], voglibose)
 
-    normalizer_response = ncit.normalize('NCIt:c95221')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == voglibose.label
-    assert drug.concept_id == voglibose.concept_id
-    assert set(drug.aliases) == set(voglibose.aliases)
-    assert set(drug.other_identifiers) == set(voglibose.other_identifiers)
-    assert set(drug.trade_names) == set(voglibose.trade_names)
-    assert set(drug.xrefs) == set(voglibose.xrefs)
-    assert drug.approval_status == voglibose.approval_status
+    response = ncit.search('NCIt:c95221')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], voglibose)
 
-    normalizer_response = ncit.normalize('C95221')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == voglibose.label
-    assert drug.concept_id == voglibose.concept_id
-    assert set(drug.aliases) == set(voglibose.aliases)
-    assert set(drug.other_identifiers) == set(voglibose.other_identifiers)
-    assert set(drug.trade_names) == set(voglibose.trade_names)
-    assert set(drug.xrefs) == set(voglibose.xrefs)
-    assert drug.approval_status == voglibose.approval_status
+    response = ncit.search('C95221')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], voglibose)
 
+    response = ncit.search('voglibose')
+    assert response['match_type'] == MatchType.LABEL
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], voglibose)
 
-def test_primary_label_voglibose(voglibose, ncit):
-    """Test that voglibose drug normalizes to correct drug concept
-    as a LABEL match.
-    """
-    normalizer_response = ncit.normalize('voglibose')
-    assert normalizer_response['match_type'] == MatchType.LABEL
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == voglibose.label
-    assert drug.concept_id == voglibose.concept_id
-    assert set(drug.aliases) == set(voglibose.aliases)
-    assert set(drug.other_identifiers) == \
-           set(voglibose.other_identifiers)
-    assert set(drug.trade_names) == set(voglibose.trade_names)
-    assert set(drug.xrefs) == set(voglibose.xrefs)
-    assert drug.approval_status == voglibose.approval_status
+    response = ncit.search('voglibose')
+    assert response['match_type'] == MatchType.LABEL
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], voglibose)
 
-    normalizer_response = ncit.normalize('voglibose')
-    assert normalizer_response['match_type'] == \
-           MatchType.LABEL
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == voglibose.label
-    assert drug.concept_id == voglibose.concept_id
-    assert set(drug.aliases) == set(voglibose.aliases)
-    assert set(drug.other_identifiers) == \
-           set(voglibose.other_identifiers)
-    assert set(drug.trade_names) == set(voglibose.trade_names)
-    assert set(drug.xrefs) == set(voglibose.xrefs)
-    assert drug.approval_status == voglibose.approval_status
+    response = ncit.search('BASEN')
+    assert response['match_type'] == MatchType.ALIAS
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], voglibose)
 
+    response = ncit.search('AO-128')
+    assert response['match_type'] == MatchType.ALIAS
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], voglibose)
 
-def test_alias_voglibose(voglibose, ncit):
-    """Test that alias term normalizes to correct drug concept as an
-    ALIAS match.
-    """
-    normalizer_response = ncit.normalize('BASEN')
-    assert normalizer_response['match_type'] == MatchType.ALIAS
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == voglibose.label
-    assert drug.concept_id == voglibose.concept_id
-    assert set(drug.aliases) == set(voglibose.aliases)
-    assert set(drug.other_identifiers) == \
-           set(voglibose.other_identifiers)
-    assert set(drug.trade_names) == set(voglibose.trade_names)
-    assert set(drug.xrefs) == set(voglibose.xrefs)
-    assert drug.approval_status == voglibose.approval_status
-
-    normalizer_response = ncit.normalize('AO-128')
-    assert normalizer_response['match_type'] ==\
-           MatchType.ALIAS
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == voglibose.label
-    assert drug.concept_id == voglibose.concept_id
-    assert set(drug.aliases) == set(voglibose.aliases)
-    assert set(drug.other_identifiers) == \
-           set(voglibose.other_identifiers)
-    assert set(drug.trade_names) == set(voglibose.trade_names)
-    assert set(drug.xrefs) == set(voglibose.xrefs)
-    assert drug.approval_status == voglibose.approval_status
+    response = ncit.search('chemidplus:83480-29-9')
+    assert response['match_type'] == MatchType.OTHER_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], voglibose)
 
 
 def test_case_no_match(ncit):
     """Test that a term normalizes to NO match."""
-    normalizer_response = ncit.normalize('voglibo')
-    assert normalizer_response['match_type'] == MatchType.NO_MATCH
-    assert len(normalizer_response['records']) == 0
+    response = ncit.search('voglibo')
+    assert response['match_type'] == MatchType.NO_MATCH
+    assert len(response['records']) == 0
 
     # Test white space in between label
-    normalizer_response = ncit.normalize('Volgibo')
-    assert normalizer_response['match_type'] == MatchType.NO_MATCH
+    response = ncit.search('Volgibo')
+    assert response['match_type'] == MatchType.NO_MATCH
 
     # Test empty query
-    normalizer_response = ncit.normalize('')
-    assert normalizer_response['match_type'] == MatchType.NO_MATCH
-    assert len(normalizer_response['records']) == 0
+    response = ncit.search('')
+    assert response['match_type'] == MatchType.NO_MATCH
+    assert len(response['records']) == 0
 
 
-def test_concept_id_apricoxib(apricoxib, ncit):
-    """Test that apricoxib drug normalizes to correct drug concept
-    as a CONCEPT_ID match.
-    """
-    normalizer_response = ncit.normalize('ncit:C74021')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == apricoxib.label
-    assert drug.concept_id == apricoxib.concept_id
-    assert set(drug.aliases) == set(apricoxib.aliases)
-    assert set(drug.other_identifiers) == \
-           set(apricoxib.other_identifiers)
-    assert set(drug.trade_names) == set(apricoxib.trade_names)
-    assert set(drug.xrefs) == set(apricoxib.xrefs)
-    assert drug.approval_status == apricoxib.approval_status
-
-    normalizer_response = ncit.normalize('NCIt:C74021')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == apricoxib.label
-    assert drug.concept_id == apricoxib.concept_id
-    assert set(drug.aliases) == set(apricoxib.aliases)
-    assert set(drug.other_identifiers) == \
-           set(apricoxib.other_identifiers)
-    assert set(drug.trade_names) == set(apricoxib.trade_names)
-    assert set(drug.xrefs) == set(apricoxib.xrefs)
-    assert drug.approval_status == apricoxib.approval_status
-
-    normalizer_response = ncit.normalize('ncit:c74021')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == apricoxib.label
-    assert drug.concept_id == apricoxib.concept_id
-    assert set(drug.aliases) == set(apricoxib.aliases)
-    assert set(drug.other_identifiers) == \
-           set(apricoxib.other_identifiers)
-    assert set(drug.trade_names) == set(apricoxib.trade_names)
-    assert set(drug.xrefs) == set(apricoxib.xrefs)
-    assert drug.approval_status == apricoxib.approval_status
-
-    normalizer_response = ncit.normalize('C74021')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == apricoxib.label
-    assert drug.concept_id == apricoxib.concept_id
-    assert set(drug.aliases) == set(apricoxib.aliases)
-    assert set(drug.other_identifiers) == \
-           set(apricoxib.other_identifiers)
-    assert set(drug.trade_names) == set(apricoxib.trade_names)
-    assert set(drug.xrefs) == set(apricoxib.xrefs)
-    assert drug.approval_status == apricoxib.approval_status
-
-    normalizer_response = ncit.normalize('C74021')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == apricoxib.label
-    assert drug.concept_id == apricoxib.concept_id
-    assert set(drug.aliases) == set(apricoxib.aliases)
-    assert set(drug.other_identifiers) == \
-           set(apricoxib.other_identifiers)
-    assert set(drug.trade_names) == set(apricoxib.trade_names)
-    assert set(drug.xrefs) == set(apricoxib.xrefs)
-    assert drug.approval_status == apricoxib.approval_status
-
-
-def test_primary_label_apricoxib(apricoxib, ncit):
-    """Test that apricoxib drug normalizes to correct drug
-    concept as a LABEL match.
-    """
-    normalizer_response = ncit.normalize('Apricoxib')
-    assert normalizer_response['match_type'] == MatchType.LABEL
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == apricoxib.label
-    assert drug.concept_id == apricoxib.concept_id
-    assert set(drug.aliases) == set(apricoxib.aliases)
-    assert set(drug.other_identifiers) == \
-           set(apricoxib.other_identifiers)
-    assert set(drug.trade_names) == set(apricoxib.trade_names)
-    assert set(drug.xrefs) == set(apricoxib.xrefs)
-    assert drug.approval_status == apricoxib.approval_status
-
-    normalizer_response = ncit.normalize('APRICOXIB')
-    assert normalizer_response['match_type'] ==\
-           MatchType.LABEL
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == apricoxib.label
-    assert drug.concept_id == apricoxib.concept_id
-    assert set(drug.aliases) == set(apricoxib.aliases)
-    assert set(drug.other_identifiers) == \
-           set(apricoxib.other_identifiers)
-    assert set(drug.trade_names) == set(apricoxib.trade_names)
-    assert set(drug.xrefs) == set(apricoxib.xrefs)
-    assert drug.approval_status == apricoxib.approval_status
-
-
-def test_concept_id_trastuzumab(trastuzumab, ncit):
-    """Test that trastuzumab successfully matches to concept ID queries"""
-    response = ncit.normalize('ncit:C1647')
+def test_apricoxib(apricoxib, ncit):
+    """Test that apricoxib drug normalizes to correct drug concept."""
+    response = ncit.search('ncit:C74021')
     assert response['match_type'] == MatchType.CONCEPT_ID
     assert len(response['records']) == 1
-    drug = response['records'][0]
-    assert drug.label == trastuzumab.label
-    assert drug.concept_id == trastuzumab.concept_id
-    assert set(drug.aliases) == set(trastuzumab.aliases)
-    assert set(drug.other_identifiers) == set(trastuzumab.other_identifiers)
-    assert set(drug.trade_names) == set(trastuzumab.trade_names)
-    assert set(drug.xrefs) == set(trastuzumab.xrefs)
-    assert drug.approval_status == trastuzumab.approval_status
+    compare_records(response['records'][0], apricoxib)
 
-    normalizer_response = ncit.normalize('NCIT:C1647')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == trastuzumab.label
-    assert drug.concept_id == trastuzumab.concept_id
-    assert set(drug.aliases) == set(trastuzumab.aliases)
-    assert set(drug.other_identifiers) == set(trastuzumab.other_identifiers)
-    assert set(drug.trade_names) == set(trastuzumab.trade_names)
-    assert set(drug.xrefs) == set(trastuzumab.xrefs)
-    assert drug.approval_status == trastuzumab.approval_status
+    response = ncit.search('NCIt:C74021')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], apricoxib)
 
-    normalizer_response = ncit.normalize('NCIt:c1647')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == trastuzumab.label
-    assert drug.concept_id == trastuzumab.concept_id
-    assert set(drug.aliases) == set(trastuzumab.aliases)
-    assert set(drug.other_identifiers) == set(trastuzumab.other_identifiers)
-    assert set(drug.trade_names) == set(trastuzumab.trade_names)
-    assert set(drug.xrefs) == set(trastuzumab.xrefs)
-    assert drug.approval_status == trastuzumab.approval_status
+    response = ncit.search('ncit:c74021')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], apricoxib)
 
-    normalizer_response = ncit.normalize('C1647')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == trastuzumab.label
-    assert drug.concept_id == trastuzumab.concept_id
-    assert set(drug.aliases) == set(trastuzumab.aliases)
-    assert set(drug.other_identifiers) == set(trastuzumab.other_identifiers)
-    assert set(drug.trade_names) == set(trastuzumab.trade_names)
-    assert set(drug.xrefs) == set(trastuzumab.xrefs)
-    assert drug.approval_status == trastuzumab.approval_status
+    response = ncit.search('C74021')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], apricoxib)
+
+    response = ncit.search('C74021')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], apricoxib)
+
+    response = ncit.search('Apricoxib')
+    assert response['match_type'] == MatchType.LABEL
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], apricoxib)
+
+    response = ncit.search('APRICOXIB')
+    assert response['match_type'] == MatchType.LABEL
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], apricoxib)
+
+    response = ncit.search('CHEMIDPLUS:197904-84-0')
+    assert response['match_type'] == MatchType.OTHER_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], apricoxib)
 
 
-def test_primary_label_trastuzumab(trastuzumab, ncit):
-    """Test that trastuzumab drug normalizes to correct drug concept
-    as a LABEL match.
-    """
-    normalizer_response = ncit.normalize('trastuzumab')
-    assert normalizer_response['match_type'] == MatchType.LABEL
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == trastuzumab.label
-    assert drug.concept_id == trastuzumab.concept_id
-    assert set(drug.aliases) == set(trastuzumab.aliases)
-    assert set(drug.other_identifiers) == \
-           set(trastuzumab.other_identifiers)
-    assert set(drug.trade_names) == set(trastuzumab.trade_names)
-    assert set(drug.xrefs) == set(trastuzumab.xrefs)
-    assert drug.approval_status == trastuzumab.approval_status
+def test_trastuzumab(trastuzumab, ncit):
+    """Test that trastuzumab successfully matches."""
+    response = ncit.search('ncit:C1647')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], trastuzumab)
 
-    normalizer_response = ncit.normalize('Trastuzumab')
-    assert normalizer_response['match_type'] == \
-           MatchType.LABEL
-    assert len(normalizer_response['records']) == 1
-    drug = normalizer_response['records'][0]
-    assert drug.label == trastuzumab.label
-    assert drug.concept_id == trastuzumab.concept_id
-    assert set(drug.aliases) == set(trastuzumab.aliases)
-    assert set(drug.other_identifiers) == \
-           set(trastuzumab.other_identifiers)
-    assert set(drug.trade_names) == set(trastuzumab.trade_names)
-    assert set(drug.xrefs) == set(trastuzumab.xrefs)
-    assert drug.approval_status == trastuzumab.approval_status
+    response = ncit.search('NCIT:C1647')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], trastuzumab)
+
+    response = ncit.search('NCIt:c1647')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], trastuzumab)
+
+    response = ncit.search('C1647')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], trastuzumab)
+
+    response = ncit.search('trastuzumab')
+    assert response['match_type'] == MatchType.LABEL
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], trastuzumab)
+
+    response = ncit.search('Trastuzumab')
+    assert response['match_type'] == MatchType.LABEL
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], trastuzumab)
+
+    response = ncit.search('chemidplus:180288-69-1')
+    assert response['match_type'] == MatchType.OTHER_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], trastuzumab)
 
 
 def test_meta_info(voglibose, ncit):
     """Test that the meta field is correct."""
-    normalizer_response = ncit.normalize('voglibose')
-    assert normalizer_response['meta_'].data_license == 'CC BY 4.0'
-    assert normalizer_response['meta_'].data_license_url == \
+    response = ncit.search('voglibose')
+    assert response['meta_'].data_license == 'CC BY 4.0'
+    assert response['meta_'].data_license_url == \
         'https://creativecommons.org/licenses/by/4.0/legalcode'
-    assert normalizer_response['meta_'].version == '20.09d'
-    assert normalizer_response['meta_'].data_url == \
+    assert response['meta_'].version == '20.09d'
+    assert response['meta_'].data_url == \
         "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2020/20.09d_Release/"  # noqa: E501
-    assert normalizer_response['meta_'].rdp_url == 'http://reusabledata.org/ncit.html'  # noqa: E501
-    assert normalizer_response['meta_'].data_license_attributes == {
+    assert response['meta_'].rdp_url == 'http://reusabledata.org/ncit.html'  # noqa: E501
+    assert response['meta_'].data_license_attributes == {
         "non_commercial": False,
         "share_alike": False,
         "attribution": True

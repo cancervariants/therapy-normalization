@@ -177,6 +177,12 @@ class DrugBank(Base):
                     self._load_trade_names(params['trade_names'],
                                            params['concept_id'], batch)
 
+            if 'other_identifiers' in params:
+                if params['other_identifiers']:
+                    self._load_other_ids(params['other_identifiers'],
+                                         params['concept_id'].casefold(),
+                                         batch)
+
     def _load_therapy(self, batch, params):
         """Filter out trade names and aliases that exceed 20 and add item to
         therapies table.
@@ -305,6 +311,17 @@ class DrugBank(Base):
                 'src_name': SourceName.DRUGBANK.value
             }
             batch.put_item(Item=trade_name)
+
+    def _load_other_ids(self, other_ids, concept_id, batch):
+        """Insert other_id references into the database."""
+        other_ids_l = {i.casefold() for i in other_ids}
+        for other_id in other_ids_l:
+            item = {
+                'label_and_type': f'{other_id}##other_id',
+                'concept_id': concept_id,
+                'src_name': SourceName.DRUGBANK.value,
+            }
+            batch.put_item(Item=item)
 
     def _load_meta(self):
         """Add DrugBank metadata."""
