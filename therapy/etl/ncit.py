@@ -234,8 +234,19 @@ class NCIt(Base):
             del therapy.label
         item['label_and_type'] = f"{concept_id_lower}##identity"
         item['src_name'] = SourceName.NCIT.value
-        for element in ['other_identifiers', 'xrefs']:
-            if not item[element]:
-                del item[element]
+
+        other_ids = item.get('other_identifiers')
+        if other_ids:
+            for other_id in other_ids:
+                pk = f"{other_id.lower()}##other_id"
+                batch.put_item(Item={
+                    'label_and_type': pk,
+                    'concept_id': concept_id_lower,
+                    'src_name': SourceName.NCIT.value
+                })
+        else:
+            del item['other_identifiers']
+        if not item['xrefs']:
+            del item['xrefs']
         batch.put_item(Item=item)
         self._added_ids.append(item['concept_id'])
