@@ -1,4 +1,5 @@
 """Pytest test config tools."""
+from therapy.schemas import Drug
 from therapy.database import Database
 from typing import Dict, Any, Optional, List
 import json
@@ -121,3 +122,14 @@ def mock_database():
             self.updates[concept_id] = {attribute: new_value}
 
     return MockDatabase
+
+
+def compare_records(actual: Drug, fixture: Drug):
+    """Check that identity records are identical."""
+    assert actual.concept_id == fixture.concept_id
+    assert actual.label == fixture.label
+    assert set(actual.aliases) == set(fixture.aliases)
+    assert set(actual.trade_names) == set(fixture.trade_names)
+    assert actual.approval_status == fixture.approval_status
+    assert set(actual.other_identifiers) == set(fixture.other_identifiers)
+    assert set(actual.xrefs) == set(fixture.xrefs)

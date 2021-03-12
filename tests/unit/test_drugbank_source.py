@@ -4,6 +4,7 @@ source.
 import pytest
 from therapy.schemas import Drug, MatchType
 from therapy.query import QueryHandler
+from tests.conftest import compare_records
 
 
 @pytest.fixture(scope='module')
@@ -14,7 +15,7 @@ def drugbank():
         def __init__(self):
             self.query_handler = QueryHandler()
 
-        def normalize(self, query_str):
+        def search(self, query_str):
             resp = self.query_handler.search_sources(query_str, keyed=True,
                                                      incl='drugbank')
             return resp['source_matches']['DrugBank']
@@ -144,490 +145,238 @@ def test_cisplatin_concept_id(cisplatin, drugbank):
     """Test that cisplatin drug normalizes to correct drug concept
     as a CONCEPT_ID match.
     """
-    normalizer_response = drugbank.normalize('drugbank:DB00515')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_id == cisplatin.concept_id
-    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(cisplatin.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
-    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
-    assert normalized_drug.approval_status == cisplatin.approval_status
+    response = drugbank.search('drugbank:DB00515')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
 
-    normalizer_response = drugbank.normalize('DB00515')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_id == cisplatin.concept_id
-    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(cisplatin.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
-    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
-    assert normalized_drug.approval_status == cisplatin.approval_status
+    response = drugbank.search('DB00515')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
 
-    normalizer_response = drugbank.normalize('drugbank:db00515')
-    assert normalizer_response['match_type'] == \
-           MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_id == cisplatin.concept_id
-    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(cisplatin.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
-    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
-    assert normalized_drug.approval_status == cisplatin.approval_status
+    response = drugbank.search('drugbank:db00515')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
 
-    normalizer_response = drugbank.normalize('Drugbank:db00515')
-    assert normalizer_response['match_type'] == \
-           MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_id == cisplatin.concept_id
-    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(cisplatin.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
-    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
-    assert normalized_drug.approval_status == cisplatin.approval_status
+    response = drugbank.search('Drugbank:db00515')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
 
-    normalizer_response = drugbank.normalize('druGBank:DB00515')
-    assert normalizer_response['match_type'] == \
-           MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_id == cisplatin.concept_id
-    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(cisplatin.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
-    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
-    assert normalized_drug.approval_status == cisplatin.approval_status
+    response = drugbank.search('druGBank:DB00515')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
 
 
 def test_cisplatin_label(cisplatin, drugbank):
     """Test that cisplatin drug normalizes to correct drug concept
     as a LABEL match.
     """
-    normalizer_response = drugbank.normalize('cisplatin')
-    assert normalizer_response['match_type'] == MatchType.LABEL
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_id == cisplatin.concept_id
-    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(cisplatin.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
-    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
-    assert normalized_drug.approval_status == cisplatin.approval_status
+    response = drugbank.search('cisplatin')
+    assert response['match_type'] == MatchType.LABEL
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
 
-    normalizer_response = drugbank.normalize('cisplatin')
-    assert normalizer_response['match_type'] ==\
-           MatchType.LABEL
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_id == cisplatin.concept_id
-    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(cisplatin.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
-    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
-    assert normalized_drug.approval_status == cisplatin.approval_status
+    response = drugbank.search('cisplatin')
+    assert response['match_type'] == MatchType.LABEL
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
 
 
 def test_cisplatin_alias(cisplatin, drugbank):
     """Test that alias term normalizes to correct drug concept as an
     ALIAS match.
     """
-    normalizer_response = drugbank.normalize('Abiplatin')
-    assert normalizer_response['match_type'] == MatchType.ALIAS
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_id == cisplatin.concept_id
-    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(cisplatin.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
-    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
-    assert normalized_drug.approval_status == cisplatin.approval_status
+    response = drugbank.search('Abiplatin')
+    assert response['match_type'] == MatchType.ALIAS
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
 
-    normalizer_response = drugbank.normalize('Cis-ddp')
-    assert normalizer_response['match_type'] == MatchType.ALIAS
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_id == cisplatin.concept_id
-    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(cisplatin.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
-    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
-    assert normalized_drug.approval_status == cisplatin.approval_status
+    response = drugbank.search('Cis-ddp')
+    assert response['match_type'] == MatchType.ALIAS
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
 
-    normalizer_response = drugbank.normalize('Platidiam')
-    assert normalizer_response['match_type'] == \
-           MatchType.ALIAS
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_id == cisplatin.concept_id
-    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(cisplatin.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
-    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
-    assert normalized_drug.approval_status == cisplatin.approval_status
+    response = drugbank.search('Platidiam')
+    assert response['match_type'] == MatchType.ALIAS
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
 
 
 def test_cisplatin_trade_name(cisplatin, drugbank):
     """Test that alias term normalizes to correct drug concept as an
     TRADE_NAME match.
     """
-    normalizer_response = drugbank.normalize('Platinol')
-    assert normalizer_response['match_type'] == MatchType.TRADE_NAME
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_id == cisplatin.concept_id
-    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(cisplatin.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
-    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
-    assert normalized_drug.approval_status == cisplatin.approval_status
+    response = drugbank.search('Platinol')
+    assert response['match_type'] == MatchType.TRADE_NAME
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
 
-    normalizer_response = drugbank.normalize('platinol-aq')
-    assert normalizer_response['match_type'] == MatchType.TRADE_NAME
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_id == cisplatin.concept_id
-    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(cisplatin.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
-    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
-    assert normalized_drug.approval_status == cisplatin.approval_status
+    response = drugbank.search('platinol-aq')
+    assert response['match_type'] == MatchType.TRADE_NAME
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
 
-    normalizer_response = drugbank.normalize('pms-cisplatin')
-    assert normalizer_response['match_type'] == \
-           MatchType.TRADE_NAME
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == cisplatin.label
-    assert normalized_drug.concept_id == cisplatin.concept_id
-    assert set(normalized_drug.aliases) == set(cisplatin.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(cisplatin.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(cisplatin.trade_names)
-    assert set(normalized_drug.xrefs) == set(cisplatin.xrefs)
-    assert normalized_drug.approval_status == cisplatin.approval_status
+    response = drugbank.search('pms-cisplatin')
+    assert response['match_type'] == MatchType.TRADE_NAME
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
 
 
 def test_bentiromide_concept_id(bentiromide, drugbank):
     """Test that bentiromide drug normalizes to correct drug concept
     as a CONCEPT_ID match.
     """
-    normalizer_response = drugbank.normalize('drugbank:DB00522')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == bentiromide.label
-    assert normalized_drug.concept_id == bentiromide.concept_id
-    assert set(normalized_drug.aliases) == set(bentiromide.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(bentiromide.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
-    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
-    assert normalized_drug.approval_status == bentiromide.approval_status
+    response = drugbank.search('drugbank:DB00522')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], bentiromide)
 
-    normalizer_response = drugbank.normalize('DB00522')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == bentiromide.label
-    assert normalized_drug.concept_id == bentiromide.concept_id
-    assert set(normalized_drug.aliases) == set(bentiromide.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(bentiromide.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
-    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
-    assert normalized_drug.approval_status == bentiromide.approval_status
+    response = drugbank.search('DB00522')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], bentiromide)
 
-    normalizer_response = drugbank.normalize('drugbank:db00522')
-    assert normalizer_response['match_type'] == \
-           MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == bentiromide.label
-    assert normalized_drug.concept_id == bentiromide.concept_id
-    assert set(normalized_drug.aliases) == set(bentiromide.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(bentiromide.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
-    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
-    assert normalized_drug.approval_status == bentiromide.approval_status
+    response = drugbank.search('drugbank:db00522')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], bentiromide)
 
-    normalizer_response = drugbank.normalize('Drugbank:db00522')
-    assert normalizer_response['match_type'] == \
-           MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == bentiromide.label
-    assert normalized_drug.concept_id == bentiromide.concept_id
-    assert set(normalized_drug.aliases) == set(bentiromide.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(bentiromide.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
-    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
-    assert normalized_drug.approval_status == bentiromide.approval_status
+    response = drugbank.search('Drugbank:db00522')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], bentiromide)
 
-    normalizer_response = drugbank.normalize('druGBank:DB00522')
-    assert normalizer_response['match_type'] == \
-           MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == bentiromide.label
-    assert normalized_drug.concept_id == bentiromide.concept_id
-    assert set(normalized_drug.aliases) == set(bentiromide.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(bentiromide.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
-    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
-    assert normalized_drug.approval_status == bentiromide.approval_status
+    response = drugbank.search('druGBank:DB00522')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], bentiromide)
 
 
 def test_bentiromide_label(bentiromide, drugbank):
     """Test that bentiromide drug normalizes to correct drug concept
     as a LABEL match.
     """
-    normalizer_response = drugbank.normalize('Bentiromide')
-    assert normalizer_response['match_type'] == MatchType.LABEL
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == bentiromide.label
-    assert normalized_drug.concept_id == bentiromide.concept_id
-    assert set(normalized_drug.aliases) == set(bentiromide.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(bentiromide.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
-    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
-    assert normalized_drug.approval_status == bentiromide.approval_status
+    response = drugbank.search('Bentiromide')
+    assert response['match_type'] == MatchType.LABEL
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], bentiromide)
 
-    normalizer_response = drugbank.normalize('bentiromide')
-    assert normalizer_response['match_type'] ==\
-           MatchType.LABEL
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == bentiromide.label
-    assert normalized_drug.concept_id == bentiromide.concept_id
-    assert set(normalized_drug.aliases) == set(bentiromide.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(bentiromide.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
-    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
-    assert normalized_drug.approval_status == bentiromide.approval_status
+    response = drugbank.search('bentiromide')
+    assert response['match_type'] == MatchType.LABEL
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], bentiromide)
 
 
 def test_bentiromide_alias(bentiromide, drugbank):
     """Test that alias term normalizes to correct drug concept as an
     ALIAS match.
     """
-    normalizer_response = drugbank.normalize('APRD00818')
-    assert normalizer_response['match_type'] == MatchType.ALIAS
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == bentiromide.label
-    assert normalized_drug.concept_id == bentiromide.concept_id
-    assert set(normalized_drug.aliases) == set(bentiromide.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(bentiromide.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
-    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
-    assert normalized_drug.approval_status == bentiromide.approval_status
+    response = drugbank.search('APRD00818')
+    assert response['match_type'] == MatchType.ALIAS
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], bentiromide)
 
-    normalizer_response = drugbank.normalize('pfd')
-    assert normalizer_response['match_type'] == MatchType.ALIAS
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == bentiromide.label
-    assert normalized_drug.concept_id == bentiromide.concept_id
-    assert set(normalized_drug.aliases) == set(bentiromide.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(bentiromide.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
-    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
-    assert normalized_drug.approval_status == bentiromide.approval_status
+    response = drugbank.search('pfd')
+    assert response['match_type'] == MatchType.ALIAS
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], bentiromide)
 
-    normalizer_response = drugbank.normalize('PFT')
-    assert normalizer_response['match_type'] == \
-           MatchType.ALIAS
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == bentiromide.label
-    assert normalized_drug.concept_id == bentiromide.concept_id
-    assert set(normalized_drug.aliases) == set(bentiromide.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(bentiromide.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(bentiromide.trade_names)
-    assert set(normalized_drug.xrefs) == set(bentiromide.xrefs)
-    assert normalized_drug.approval_status == bentiromide.approval_status
+    response = drugbank.search('PFT')
+    assert response['match_type'] == MatchType.ALIAS
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], bentiromide)
 
 
 def test_db14201_concept_id(db14201, drugbank):
     """Test that db14201 drug normalizes to correct drug concept
     as a CONCEPT_ID match.
     """
-    normalizer_response = drugbank.normalize('drugbank:DB14201')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == db14201.label
-    assert normalized_drug.concept_id == db14201.concept_id
-    assert set(normalized_drug.aliases) == set(db14201.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(db14201.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(db14201.trade_names)
-    assert set(normalized_drug.xrefs) == set(db14201.xrefs)
-    assert normalized_drug.approval_status == db14201.approval_status
+    response = drugbank.search('drugbank:DB14201')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], db14201)
 
-    normalizer_response = drugbank.normalize('DB14201')
-    assert normalizer_response['match_type'] == MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == db14201.label
-    assert normalized_drug.concept_id == db14201.concept_id
-    assert set(normalized_drug.aliases) == set(db14201.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(db14201.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(db14201.trade_names)
-    assert set(normalized_drug.xrefs) == set(db14201.xrefs)
-    assert normalized_drug.approval_status == db14201.approval_status
+    response = drugbank.search('DB14201')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], db14201)
 
-    normalizer_response = drugbank.normalize('drugbank:db14201')
-    assert normalizer_response['match_type'] == \
-           MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == db14201.label
-    assert normalized_drug.concept_id == db14201.concept_id
-    assert set(normalized_drug.aliases) == set(db14201.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(db14201.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(db14201.trade_names)
-    assert set(normalized_drug.xrefs) == set(db14201.xrefs)
-    assert normalized_drug.approval_status == db14201.approval_status
+    response = drugbank.search('drugbank:db14201')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], db14201)
 
-    normalizer_response = drugbank.normalize('Drugbank:db14201')
-    assert normalizer_response['match_type'] == \
-           MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == db14201.label
-    assert normalized_drug.concept_id == db14201.concept_id
-    assert set(normalized_drug.aliases) == set(db14201.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(db14201.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(db14201.trade_names)
-    assert set(normalized_drug.xrefs) == set(db14201.xrefs)
-    assert normalized_drug.approval_status == db14201.approval_status
+    response = drugbank.search('Drugbank:db14201')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], db14201)
 
-    normalizer_response = drugbank.normalize('druGBank:DB14201')
-    assert normalizer_response['match_type'] == \
-           MatchType.CONCEPT_ID
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == db14201.label
-    assert normalized_drug.concept_id == db14201.concept_id
-    assert set(normalized_drug.aliases) == set(db14201.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(db14201.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(db14201.trade_names)
-    assert set(normalized_drug.xrefs) == set(db14201.xrefs)
-    assert normalized_drug.approval_status == db14201.approval_status
+    response = drugbank.search('druGBank:DB14201')
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], db14201)
 
 
 def test_db14201_label(db14201, drugbank):
     """Test that db14201 drug normalizes to correct drug concept
     as a LABEL match.
     """
-    normalizer_response = drugbank.normalize("2,2'-Dibenzothiazyl disulfide")
-    assert normalizer_response['match_type'] == MatchType.LABEL
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == db14201.label
-    assert normalized_drug.concept_id == db14201.concept_id
-    assert set(normalized_drug.aliases) == set(db14201.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(db14201.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(db14201.trade_names)
-    assert set(normalized_drug.xrefs) == set(db14201.xrefs)
-    assert normalized_drug.approval_status == db14201.approval_status
+    response = drugbank.search("2,2'-Dibenzothiazyl disulfide")
+    assert response['match_type'] == MatchType.LABEL
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], db14201)
 
-    normalizer_response = drugbank.normalize('2,2\'-dibenzothiazyl disulfide')
-    assert normalizer_response['match_type'] ==\
-           MatchType.LABEL
-    assert len(normalizer_response['records']) == 1
-    normalized_drug = normalizer_response['records'][0]
-    assert normalized_drug.label == db14201.label
-    assert normalized_drug.concept_id == db14201.concept_id
-    assert set(normalized_drug.aliases) == set(db14201.aliases)
-    assert set(normalized_drug.other_identifiers) == \
-           set(db14201.other_identifiers)
-    assert set(normalized_drug.trade_names) == set(db14201.trade_names)
-    assert set(normalized_drug.xrefs) == set(db14201.xrefs)
-    assert normalized_drug.approval_status == db14201.approval_status
+    response = drugbank.search('2,2\'-dibenzothiazyl disulfide')
+    assert response['match_type'] == MatchType.LABEL
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], db14201)
 
 
 def test_db14201_trade_name(db14201, drugbank):
     """Test that alias term normalizes to correct drug concept as an
     TRADE_NAME match.
     """
-    normalizer_response = \
-        drugbank.normalize('T.R.U.E. Test Thin-Layer Rapid Use Patch Test')
-    assert normalizer_response['match_type'] == MatchType.TRADE_NAME
+    response = \
+        drugbank.search('T.R.U.E. Test Thin-Layer Rapid Use Patch Test')
+    assert response['match_type'] == MatchType.TRADE_NAME
 
 
 def test_no_match(drugbank):
     """Test that a term normalizes to correct drug concept as a NO match."""
-    normalizer_response = drugbank.normalize('lepirudi')
-    assert normalizer_response['match_type'] == MatchType.NO_MATCH
-    assert len(normalizer_response['records']) == 0
+    response = drugbank.search('lepirudi')
+    assert response['match_type'] == MatchType.NO_MATCH
+    assert len(response['records']) == 0
 
     # Polish alias for DB14201
-    normalizer_response = drugbank.normalize('Dwusiarczek dwubenzotiazylu')
-    assert normalizer_response['match_type'] == \
+    response = drugbank.search('Dwusiarczek dwubenzotiazylu')
+    assert response['match_type'] == \
            MatchType.NO_MATCH
 
     # Test white space in between id
-    normalizer_response = drugbank.normalize('DB 00001')
-    assert normalizer_response['match_type'] == MatchType.NO_MATCH
+    response = drugbank.search('DB 00001')
+    assert response['match_type'] == MatchType.NO_MATCH
 
     # Test empty query
-    normalizer_response = drugbank.normalize('')
-    assert normalizer_response['match_type'] == MatchType.NO_MATCH
-    assert len(normalizer_response['records']) == 0
+    response = drugbank.search('')
+    assert response['match_type'] == MatchType.NO_MATCH
+    assert len(response['records']) == 0
 
 
 def test_meta_info(drugbank):
     """Test that the meta field is correct."""
-    normalizer_response = drugbank.fetch_meta()
-    assert normalizer_response.data_license == 'CC BY-NC 4.0'
-    assert normalizer_response.data_license_url == \
+    response = drugbank.fetch_meta()
+    assert response.data_license == 'CC BY-NC 4.0'
+    assert response.data_license_url == \
            'https://creativecommons.org/licenses/by-nc/4.0/legalcode'
-    assert normalizer_response.version == '5.1.7'
-    assert normalizer_response.data_url == \
+    assert response.version == '5.1.7'
+    assert response.data_url == \
            'https://go.drugbank.com/releases/5-1-7/downloads/all-full-database'  # noqa: E501
-    assert normalizer_response.rdp_url == 'http://reusabledata.org/drugbank.html'  # noqa: E501
-    assert normalizer_response.data_license_attributes == {
+    assert response.rdp_url == 'http://reusabledata.org/drugbank.html'  # noqa: E501
+    assert response.data_license_attributes == {
         "non_commercial": True,
         "share_alike": False,
         "attribution": True
