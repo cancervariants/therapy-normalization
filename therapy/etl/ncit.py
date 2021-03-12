@@ -2,7 +2,6 @@
 from .base import Base
 from therapy import PROJECT_ROOT
 from therapy.schemas import SourceName, NamespacePrefix, Therapy, Meta
-from therapy.database import Database
 import logging
 import owlready2 as owl
 from owlready2.entity import ThingClass
@@ -26,7 +25,7 @@ class NCIt(Base):
     """
 
     def __init__(self,
-                 database: Database,
+                 database,
                  src_dir: str = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2020/20.09d_Release/",  # noqa F401
                  src_fname: str = "Thesaurus_20.09d.OWL.zip",
                  data_path: Path = PROJECT_ROOT / 'data' / 'ncit',
