@@ -26,7 +26,7 @@ class NCIt(Base):
 
     def __init__(self,
                  database,
-                 src_dir: str = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/",  # noqa F401
+                 src_dir: str = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2020/20.09d_Release/",  # noqa F401
                  src_fname: str = "Thesaurus_20.09d.OWL.zip",
                  data_path: Path = PROJECT_ROOT / 'data' / 'ncit',
                  chemidplus_path: Path = PROJECT_ROOT / 'data' / 'chemidplus'):
@@ -65,6 +65,7 @@ class NCIt(Base):
         for chunk in response.iter_content(chunk_size=512):
             if chunk:
                 handle.write(chunk)
+        handle.close()
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
             zip_ref.extractall(self._data_path)
         remove(zip_path)
