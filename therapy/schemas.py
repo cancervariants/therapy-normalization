@@ -361,7 +361,7 @@ class NormalizationService(BaseModel):
             schema['example'] = {}  # TODO
 
 
-class Service(BaseModel):
+class SearchService(BaseModel):
     """Core response schema containing matches for each source"""
 
     query: str
@@ -373,7 +373,7 @@ class Service(BaseModel):
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
-                         model: Type['Service']) -> None:
+                         model: Type['SearchService']) -> None:
             """Configure OpenAPI schema"""
             if 'title' in schema.keys():
                 schema.pop('title', None)
