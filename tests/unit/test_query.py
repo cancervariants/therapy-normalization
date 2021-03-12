@@ -83,7 +83,7 @@ def phenobarbital():
             'phenobarbital sodium',
             'phenylethylbarbiturate'
         ],
-        "extension": [
+        "extensions": [
             {
                 "type": "Extension",
                 "name": "associated_with",
@@ -421,7 +421,6 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['match_type'] == MatchType.CONCEPT_ID
     cisplatin_copy = cisplatin.copy()
     cisplatin_copy['id'] = 'normalize:rxcui%3A2555'
-    print(response)
     compare_vod(response['value_object_descriptor'], cisplatin_copy)
 
     # test concept id match
@@ -459,7 +458,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.ALIAS
     cisplatin_copy = cisplatin.copy()
-    cisplatin_copy['id'] = 'normalize:cis Diamminedichloroplatinum'
+    cisplatin_copy['id'] = 'normalize:cis%20Diamminedichloroplatinum'
     compare_vod(response['value_object_descriptor'], cisplatin_copy)
 
     test_query = "Rovamycine"

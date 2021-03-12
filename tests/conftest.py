@@ -64,7 +64,7 @@ def mock_database():
                 label_and_type = f'{record_id.lower()}##merger'
                 record_lookup = self.records.get(label_and_type)
                 if record_lookup:
-                    return list(record_lookup.values())[0]
+                    return list(record_lookup.values())[0].copy()
                 else:
                     return None
             else:
