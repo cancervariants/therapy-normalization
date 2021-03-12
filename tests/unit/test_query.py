@@ -39,7 +39,7 @@ def merge_query_handler(mock_database):
 def phenobarbital():
     """Create phenobarbital fixture."""
     return {
-        "id": "normalize.disease:Phenobarbital",
+        "id": "normalize.therapy:Phenobarbital",
         "type": "TherapyDescriptor",
         "value": {
             "type": "Therapy",
@@ -122,7 +122,7 @@ def phenobarbital():
 def cisplatin():
     """Create cisplatin fixture."""
     return {
-        "id": "normalize.disease:Cisplatin",
+        "id": "normalize.therapy:Cisplatin",
         "type": "TherapyDescriptor",
         "value": {
             "type": "Therapy",
@@ -190,7 +190,7 @@ def cisplatin():
 def spiramycin():
     """Create fixture for spiramycin."""
     return {
-        "id": "normalize.disease:Spiramycin",
+        "id": "normalize.therapy:Spiramycin",
         "type": "TherapyDescriptor",
         "value": {
             "type": "Therapy",
@@ -226,7 +226,7 @@ def spiramycin():
 def timolol():
     """Create fixture for timolol."""
     return {
-        "id": "normalize.disease:timolol",
+        "id": "normalize.therapy:timolol",
         "type": "TherapyDescriptor",
         "value": {
             "type": "Therapy",
@@ -420,7 +420,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.CONCEPT_ID
     cisplatin_copy = cisplatin.copy()
-    cisplatin_copy['id'] = 'normalize.disease:rxcui%3A2555'
+    cisplatin_copy['id'] = 'normalize.therapy:rxcui%3A2555'
     compare_vod(response['value_object_descriptor'], cisplatin_copy)
 
     # test concept id match
@@ -430,7 +430,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.CONCEPT_ID
     pheno_copy = phenobarbital.copy()
-    pheno_copy['id'] = 'normalize.disease:chemidplus%3A50-06-6'
+    pheno_copy['id'] = 'normalize.therapy:chemidplus%3A50-06-6'
     compare_vod(response['value_object_descriptor'], pheno_copy)
 
     # test label match
@@ -448,7 +448,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.TRADE_NAME
     cisplatin_copy = cisplatin.copy()
-    cisplatin_copy['id'] = 'normalize.disease:Platinol'
+    cisplatin_copy['id'] = 'normalize.therapy:Platinol'
     compare_vod(response['value_object_descriptor'], cisplatin_copy)
 
     # test alias match
@@ -458,7 +458,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.ALIAS
     cisplatin_copy = cisplatin.copy()
-    cisplatin_copy['id'] = 'normalize.disease:cis%20Diamminedichloroplatinum'
+    cisplatin_copy['id'] = 'normalize.therapy:cis%20Diamminedichloroplatinum'
     compare_vod(response['value_object_descriptor'], cisplatin_copy)
 
     test_query = "Rovamycine"
@@ -467,7 +467,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.ALIAS
     spiramycin_copy = spiramycin.copy()
-    spiramycin_copy['id'] = 'normalize.disease:Rovamycine'
+    spiramycin_copy['id'] = 'normalize.therapy:Rovamycine'
     compare_vod(response['value_object_descriptor'], spiramycin_copy)
 
     # test merge group with single member
@@ -477,7 +477,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.TRADE_NAME
     timolol_copy = timolol.copy()
-    timolol_copy['id'] = 'normalize.disease:Betimol'
+    timolol_copy['id'] = 'normalize.therapy:Betimol'
     compare_vod(response['value_object_descriptor'], timolol_copy)
 
     # test that term with multiple possible resolutions resolves at highest
