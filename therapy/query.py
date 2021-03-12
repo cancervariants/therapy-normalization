@@ -107,7 +107,7 @@ class QueryHandler:
         matches = response['source_matches']
         if src_name not in matches.keys():
             pass
-        elif matches[src_name] is None:
+        elif matches[src_name] is None:  # TODO what is going on here
             matches[src_name] = {
                 'match_type': MatchType[match_type.upper()],
                 'records': [drug],
@@ -201,7 +201,7 @@ class QueryHandler:
         :param Dict resp: in-progress response object to return to client
         :param Set[str] sources: remaining unmatched sources
         :param str match_type: Match type to check for. Should be one of
-            ['trade_name', 'label', 'alias']
+            {'trade_name', 'label', 'alias', 'other_id'}
         :return: Tuple with updated resp object and updated set of unmatched
                  sources
         """
@@ -238,7 +238,7 @@ class QueryHandler:
         if len(sources) == 0:
             return response
 
-        match_types = ['label', 'trade_name', 'alias']
+        match_types = ['label', 'trade_name', 'alias', 'other_id']
         for match_type in match_types:
             (response, sources) = self._check_match_type(query, response,
                                                          sources, match_type)
@@ -346,7 +346,7 @@ class QueryHandler:
         response['meta_'] = sources_meta
         return response
 
-    def _record_order(self, record: Dict) -> (int, str):
+    def _record_order(self, record: Dict) -> (int, str):  # TODO refactor?
         """Construct priority order for matching. Only called by sort().
 
         :param Dict record: individual record item in iterable to sort
@@ -361,7 +361,7 @@ class QueryHandler:
             source_rank = 3
         else:
             source_rank = 4
-        return (source_rank, record['concept_id'])
+        return source_rank, record['concept_id']
 
     def _add_vod(self, response: Dict, record: Dict, query: str,
                  match_type: MatchType) -> Dict:
@@ -457,7 +457,7 @@ class QueryHandler:
                                      MatchType.CONCEPT_ID)
 
         # check other match types
-        for match_type in ['label', 'trade_name', 'alias']:
+        for match_type in ['label', 'trade_name', 'alias', 'other_id']:
             # get matches list for match tier
             prohibited_sources = (SourceName.CHEMBL.value,
                                   SourceName.DRUGBANK.value)
