@@ -1,5 +1,6 @@
 """Create concept groups and merged records."""
-from therapy.schemas import SourceName, NamespacePrefix
+from therapy import PROHIBITED_SOURCES
+from therapy.schemas import SourcePriority
 from therapy.database import Database
 from typing import Set, Dict
 import logging
@@ -7,9 +8,6 @@ from timeit import default_timer as timer
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
-
-DISALLOWED_SOURCES = {NamespacePrefix.DRUGBANK.value,
-                      NamespacePrefix.CHEMBL.value}
 
 
 class Merge:
@@ -77,7 +75,7 @@ class Merge:
         """
         other_ids = set()
         for other_id in record.get('other_identifiers', []):
-            if other_id.split(':')[0] not in DISALLOWED_SOURCES:
+            if other_id.split(':')[0] not in PROHIBITED_SOURCES:
                 other_ids.add(other_id)
         return other_ids
 
@@ -146,15 +144,9 @@ class Merge:
 
         def record_order(record):
             """Provide priority values of concepts for sort function."""
-            src = record['src_name']
-            if src == SourceName.RXNORM.value:
-                source_rank = 1
-            elif src == SourceName.NCIT.value:
-                source_rank = 2
-            elif src == SourceName.CHEMIDPLUS.value:
-                source_rank = 5
-            elif src == SourceName.WIKIDATA.value:
-                source_rank = 6
+            src = record['src_name'].upper()
+            if src in SourcePriority.__members__:
+                source_rank = SourcePriority[src].value
             else:
                 raise Exception(f"Prohibited source: {src} in concept_id "
                                 f"{record['concept_id']}")

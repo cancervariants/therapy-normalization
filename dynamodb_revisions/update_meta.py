@@ -1,8 +1,6 @@
 """Update source metadata in prod"""
 import sys
 from pathlib import Path
-import click
-from os import environ
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(f"{PROJECT_ROOT}")
@@ -58,11 +56,4 @@ def main():
 
 
 if __name__ == '__main__':
-    if 'THERAPY_NORM_DB_URL' not in environ.keys():
-        if click.confirm("Are you sure you want to update"
-                         " the production database?", default=False):
-            click.echo("Updating production db...")
-        else:
-            click.echo("Exiting.")
-            sys.exit()
     main()
