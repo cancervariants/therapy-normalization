@@ -389,6 +389,11 @@
     "src_name": "NCIt"
   },
   {
+    "label_and_type": "chemidplus:83480-29-9##other_id",
+    "concept_id": "ncit:c95221",
+    "src_name": "NCIt"
+  },
+  {
     "label_and_type": "voglibose##label",
     "concept_id": "ncit:c95221",
     "src_name": "NCIt"
@@ -420,6 +425,11 @@
     "src_name": "NCIt"
   },
   {
+    "label_and_type": "chemidplus:197904-84-0##other_id",
+    "concept_id": "ncit:c74021",
+    "src_name": "NCIt"
+  },
+  {
     "label_and_type": "apricoxib##label",
     "concept_id": "ncit:c74021",
     "src_name": "NCIt"
@@ -430,6 +440,11 @@
     "concept_id": "ncit:C1647",
     "other_identifiers": ["chemidplus:180288-69-1"],
     "xrefs": ["umls:C0728747", "fda:P188ANX8CK"],
+    "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "chemidplus:180288-69-1##other_id",
+    "concept_id": "ncit:c1647",
     "src_name": "NCIt"
   },
   {
