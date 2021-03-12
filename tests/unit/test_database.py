@@ -12,7 +12,7 @@ def db():
 
     class DB:
         def __init__(self):
-            self.db = Database()
+            self.db = Database(db_url=os.environ['THERAPY_NORM_DB_URL'])
             if os.environ.get('TEST') is not None:
                 self.load_test_data()
 
@@ -33,11 +33,11 @@ def db():
                         batch.put_item(Item=m)
                 f.close()
 
-    return DB()
+    return DB().db
 
 
 def test_tables_created(db):
     """Check that therapy_concepts and therapy_metadata are created."""
-    existing_tables = db.db.dynamodb_client.list_tables()['TableNames']
+    existing_tables = db.dynamodb_client.list_tables()['TableNames']
     assert 'therapy_concepts' in existing_tables
     assert 'therapy_metadata' in existing_tables

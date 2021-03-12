@@ -392,7 +392,7 @@ def test_meta_info(voglibose, ncit):
         'https://creativecommons.org/licenses/by/4.0/legalcode'
     assert normalizer_response['meta_'].version == '20.09d'
     assert normalizer_response['meta_'].data_url == \
-        "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/"  # noqa: E501
+        "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2020/20.09d_Release/"  # noqa: E501
     assert normalizer_response['meta_'].rdp_url == 'http://reusabledata.org/ncit.html'  # noqa: E501
     assert normalizer_response['meta_'].data_license_attributes == {
         "non_commercial": False,

@@ -101,10 +101,10 @@ class ChemIDplus(Base):
         self._version = self._data_src.stem.split('_')[1]
 
     def _get_file(self, data_dir):
-        self._download_data()
+        self._download_data(self._data_path)
         dir_files = list(data_dir.iterdir())
         return sorted([f for f in dir_files
-                       if f.names.startswith('chemidplus')])
+                       if f.name.startswith('chemidplus')])
 
     def _transform_data(self):
         """Open dataset and prepare for loading into database."""
