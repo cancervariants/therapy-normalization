@@ -173,7 +173,7 @@ class ChemIDplus(Base):
                     'concept_id': concept_id_ref,
                     'src_name': SourceName.CHEMIDPLUS.value,
                 })
-        elif 'aliases' in record:
+        else:
             del record['aliases']
         if record.get('label'):
             batch.put_item(Item={
