@@ -70,7 +70,7 @@ def trastuzumab():
 
 
 def test_concept_id_voglibose(voglibose, ncit):
-    """Test that Voglibose successfully matches to concept ID queries"""
+    """Test that Voglibose successfully matches."""
     response = ncit.search('ncit:C95221')
     assert response['match_type'] == MatchType.CONCEPT_ID
     assert len(response['records']) == 1
@@ -91,11 +91,6 @@ def test_concept_id_voglibose(voglibose, ncit):
     assert len(response['records']) == 1
     compare_records(response['records'][0], voglibose)
 
-
-def test_primary_label_voglibose(voglibose, ncit):
-    """Test that voglibose drug normalizes to correct drug concept
-    as a LABEL match.
-    """
     response = ncit.search('voglibose')
     assert response['match_type'] == MatchType.LABEL
     assert len(response['records']) == 1
@@ -106,19 +101,18 @@ def test_primary_label_voglibose(voglibose, ncit):
     assert len(response['records']) == 1
     compare_records(response['records'][0], voglibose)
 
-
-def test_alias_voglibose(voglibose, ncit):
-    """Test that alias term normalizes to correct drug concept as an
-    ALIAS match.
-    """
     response = ncit.search('BASEN')
     assert response['match_type'] == MatchType.ALIAS
     assert len(response['records']) == 1
     compare_records(response['records'][0], voglibose)
 
     response = ncit.search('AO-128')
-    assert response['match_type'] ==\
-           MatchType.ALIAS
+    assert response['match_type'] == MatchType.ALIAS
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], voglibose)
+
+    response = ncit.search('chemidplus:83480-29-9')
+    assert response['match_type'] == MatchType.OTHER_ID
     assert len(response['records']) == 1
     compare_records(response['records'][0], voglibose)
 
@@ -139,10 +133,8 @@ def test_case_no_match(ncit):
     assert len(response['records']) == 0
 
 
-def test_concept_id_apricoxib(apricoxib, ncit):
-    """Test that apricoxib drug normalizes to correct drug concept
-    as a CONCEPT_ID match.
-    """
+def test_apricoxib(apricoxib, ncit):
+    """Test that apricoxib drug normalizes to correct drug concept."""
     response = ncit.search('ncit:C74021')
     assert response['match_type'] == MatchType.CONCEPT_ID
     assert len(response['records']) == 1
@@ -168,11 +160,6 @@ def test_concept_id_apricoxib(apricoxib, ncit):
     assert len(response['records']) == 1
     compare_records(response['records'][0], apricoxib)
 
-
-def test_primary_label_apricoxib(apricoxib, ncit):
-    """Test that apricoxib drug normalizes to correct drug
-    concept as a LABEL match.
-    """
     response = ncit.search('Apricoxib')
     assert response['match_type'] == MatchType.LABEL
     assert len(response['records']) == 1
@@ -183,9 +170,14 @@ def test_primary_label_apricoxib(apricoxib, ncit):
     assert len(response['records']) == 1
     compare_records(response['records'][0], apricoxib)
 
+    response = ncit.search('CHEMIDPLUS:197904-84-0')
+    assert response['match_type'] == MatchType.OTHER_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], apricoxib)
 
-def test_concept_id_trastuzumab(trastuzumab, ncit):
-    """Test that trastuzumab successfully matches to concept ID queries"""
+
+def test_trastuzumab(trastuzumab, ncit):
+    """Test that trastuzumab successfully matches."""
     response = ncit.search('ncit:C1647')
     assert response['match_type'] == MatchType.CONCEPT_ID
     assert len(response['records']) == 1
@@ -206,11 +198,6 @@ def test_concept_id_trastuzumab(trastuzumab, ncit):
     assert len(response['records']) == 1
     compare_records(response['records'][0], trastuzumab)
 
-
-def test_primary_label_trastuzumab(trastuzumab, ncit):
-    """Test that trastuzumab drug normalizes to correct drug concept
-    as a LABEL match.
-    """
     response = ncit.search('trastuzumab')
     assert response['match_type'] == MatchType.LABEL
     assert len(response['records']) == 1
@@ -218,6 +205,11 @@ def test_primary_label_trastuzumab(trastuzumab, ncit):
 
     response = ncit.search('Trastuzumab')
     assert response['match_type'] == MatchType.LABEL
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], trastuzumab)
+
+    response = ncit.search('chemidplus:180288-69-1')
+    assert response['match_type'] == MatchType.OTHER_ID
     assert len(response['records']) == 1
     compare_records(response['records'][0], trastuzumab)
 
