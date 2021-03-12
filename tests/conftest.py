@@ -88,11 +88,12 @@ def mock_database():
 
             :param query: string to match against
             :param str match_type: type of match to look for. Should be one
-                of "alias", "trade_name", or "label" (use get_record_by_id for
-                concept ID lookup)
+                of {"alias", "trade_name", "label", "rx_brand", "other_id"}
+                (use get_record_by_id for concept ID lookup)
             :return: list of matching records. Empty if lookup fails.
             """
-            assert match_type in ('alias', 'trade_name', 'label', 'rx_brand')
+            assert match_type in ('alias', 'trade_name', 'label', 'rx_brand',
+                                  'other_id')
             label_and_type = f'{query}##{match_type.lower()}'
             records_lookup = self.records.get(label_and_type, None)
             if records_lookup:
