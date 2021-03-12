@@ -125,6 +125,16 @@
     "src_name": "DrugBank"
   },
   {
+    "label_and_type": "chembl:chembl2068237##other_id",
+    "concept_id": "drugbank:db00515",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "rxcui:2555##other_id",
+    "concept_id": "drugbank:db00515",
+    "src_name": "DrugBank"
+  },
+  {
     "label_and_type": "cisplatin##label",
     "concept_id": "drugbank:db00515",
     "src_name": "DrugBank"
@@ -183,6 +193,11 @@
     "src_name": "DrugBank"
   },
   {
+    "label_and_type": "chemidplus:37106-97-1##other_id",
+    "concept_id": "drugbank:db00522",
+    "src_name": "DrugBank"
+  },
+  {
     "label_and_type": "bentiromide##label",
     "concept_id": "drugbank:db00522",
     "src_name": "DrugBank"
@@ -222,6 +237,11 @@
     "src_name": "DrugBank"
   },
   {
+    "label_and_type": "rxcui:1306112##other_id",
+    "concept_id": "drugbank:db14201",
+    "src_name": "DrugBank"
+  },
+  {
     "label_and_type": "2,2'-dibenzothiazyl disulfide##label",
     "concept_id": "drugbank:db14201",
     "src_name": "DrugBank"
@@ -251,7 +271,27 @@
     ],
     "xrefs": ["pubchem.compound:5702198"],
     "src_name": "Wikidata",
-    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415|wikidata:q47522001"
+    "merge_ref": "rxcui:2555"
+  },
+  {
+    "label_and_type": "chembl:chembl11359##other_id",
+    "concept_id": "wikidata:q412415",
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "drugbank:db00515##other_id",
+    "concept_id": "wikidata:q412415",
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "rxcui:2555##other_id",
+    "concept_id": "wikidata:q412415",
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "chemidplus:15663-27-1##other_id",
+    "concept_id": "wikidata:q412415",
+    "src_name": "Wikidata"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -306,6 +346,11 @@
     "src_name": "Wikidata"
   },
   {
+    "label_and_type": "rxcui:6816##other_id",
+    "concept_id": "wikidata:q191924",
+    "src_name": "Wikidata"
+  },
+  {
     "label_and_type": "d-methamphetamine##label",
     "concept_id": "wikidata:q191924",
     "src_name": "Wikidata"
@@ -335,6 +380,11 @@
       "rxcui:1223",
       "chemidplus:51-55-8"
     ],
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "chemidplus:51-55-8##other_id",
+    "concept_id": "wikidata:q26272",
     "src_name": "Wikidata"
   },
   {
@@ -369,6 +419,11 @@
     "src_name": "NCIt"
   },
   {
+    "label_and_type": "chemidplus:83480-29-9##other_id",
+    "concept_id": "ncit:c95221",
+    "src_name": "NCIt"
+  },
+  {
     "label_and_type": "voglibose##label",
     "concept_id": "ncit:c95221",
     "src_name": "NCIt"
@@ -400,6 +455,11 @@
     "src_name": "NCIt"
   },
   {
+    "label_and_type": "chemidplus:197904-84-0##other_id",
+    "concept_id": "ncit:c74021",
+    "src_name": "NCIt"
+  },
+  {
     "label_and_type": "apricoxib##label",
     "concept_id": "ncit:c74021",
     "src_name": "NCIt"
@@ -410,6 +470,11 @@
     "concept_id": "ncit:C1647",
     "other_identifiers": ["chemidplus:180288-69-1"],
     "xrefs": ["umls:C0728747", "fda:P188ANX8CK"],
+    "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "chemidplus:180288-69-1##other_id",
+    "concept_id": "ncit:c1647",
     "src_name": "NCIt"
   },
   {
@@ -424,7 +489,7 @@
     "other_identifiers": ["chemidplus:15663-27-1"],
     "xrefs": ["umls:C0008838", "fda:Q20Q21Q62J"],
     "src_name": "NCIt",
-    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415|wikidata:q47522001"
+    "merge_ref": "rxcui:2555"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -439,6 +504,11 @@
     "trade_names": [],
     "other_identifiers": ["drugbank:DB00417"],
     "xrefs": ["fda:Z61I075U2W"],
+    "src_name": "ChemIDplus"
+  },
+  {
+    "label_and_type": "drugbank:db00417##other_id",
+    "concept_id": "chemidplus:87-08-1",
     "src_name": "ChemIDplus"
   },
   {
@@ -462,8 +532,28 @@
     "src_name": "ChemIDplus"
   },
   {
+    "label_and_type": "drugbank:db00619##other_id",
+    "concept_id": "chemidplus:152459-95-5",
+    "src_name": "ChemIDplus"
+  },
+  {
     "label_and_type": "imatinib##label",
     "concept_id": "chemidplus:152459-95-5",
+    "src_name": "ChemIDplus"
+  },
+  {
+    "label_and_type": "chemidplus:220127-57-1##identity",
+    "concept_id": "chemidplus:220127-57-1",
+    "src_name": "ChemIDplus",
+    "label": "Imatinib mesylate",
+    "aliases": [],
+    "other_identifiers": ["drugbank:DB00619"],
+    "xrefs": ["fda:8A1O1M485B"],
+    "trade_names": []
+  },
+  {
+    "label_and_type": "drugbank:db00619##other_id",
+    "concept_id": "chemidplus:220127-57-1",
     "src_name": "ChemIDplus"
   },
   {
@@ -478,7 +568,12 @@
     "other_identifiers": ["drugbank:DB00515"],
     "xrefs": ["fda:Q20Q21Q62J"],
     "src_name": "ChemIDplus",
-    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415|wikidata:q47522001"
+    "merge_ref": "rxcui:2555"
+  },
+  {
+    "label_and_type": "drugbank:db00515##other_id",
+    "concept_id": "chemidplus:15663-27-1",
+    "src_name": "ChemIDplus"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -504,6 +599,11 @@
     "trade_names": ["Align", "Evivo"],
     "other_identifiers": ["drugbank:DB14222"],
     "xrefs": ["mmsl:d07347"],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "drugbank:db14222##other_id",
+    "concept_id": "rxcui:100213",
     "src_name": "RxNorm"
   },
   {
@@ -555,7 +655,12 @@
       "mmsl:4456"
     ],
     "src_name": "RxNorm",
-    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415|wikidata:q47522001"
+    "merge_ref": "rxcui:2555"
+  },
+  {
+    "label_and_type": "drugbank:db12117##other_id",
+    "concept_id": "rxcui:2555",
+    "src_name": "RxNorm"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -939,6 +1044,11 @@
     "src_name": "RxNorm"
   },
   {
+    "label_and_type": "drugbank:db00451##other_id",
+    "concept_id": "rxcui:10582",
+    "src_name": "RxNorm"
+  },
+  {
     "label_and_type": "levothyroxine##label",
     "concept_id": "rxcui:10582",
     "src_name": "RxNorm"
@@ -996,7 +1106,7 @@
     "approval_status": null,
     "trade_names": ["Phenobarbital"],
     "src_name": "RxNorm",
-    "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241"
+    "merge_ref": "rxcui:8134"
   },
   {
     "label_and_type": "phenobarbital##label",
@@ -1033,7 +1143,7 @@
     "approval_status": null,
     "trade_names": [],
     "src_name": "ChemIDplus",
-    "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241"
+    "merge_ref": "rxcui:8134"
   },
   {
     "label": "Spiramycin",
@@ -1045,7 +1155,7 @@
     "approval_status": null,
     "trade_names": [],
     "src_name": "ChemIDplus",
-    "merge_ref": "ncit:c839|chemidplus:8025-81-8"
+    "merge_ref": "ncit:c839"
   },
   {
     "label": "phenobarbital",
@@ -1082,7 +1192,7 @@
     "approval_status": null,
     "trade_names": [],
     "src_name": "Wikidata",
-    "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241"
+    "merge_ref": "rxcui:8134"
   },
   {
     "label": "Phenobarbital",
@@ -1099,7 +1209,7 @@
     "approval_status": null,
     "trade_names": [],
     "src_name": "NCIt",
-    "merge_ref": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241"
+    "merge_ref": "rxcui:8134"
   },
   {
     "label_and_type": "pheno##alias",
@@ -1124,7 +1234,7 @@
     "approval_status": null,
     "trade_names": [],
     "src_name": "NCIt",
-    "merge_ref": "ncit:c839|chemidplus:8025-81-8"
+    "merge_ref": "ncit:c839"
   },
   {
     "label_and_type": "rp 5337##alias",
@@ -1137,8 +1247,9 @@
     "src_name": "NCIt"
   },
   {
-    "label_and_type": "rxcui:8134|ncit:c739|chemidplus:50-06-6|wikidata:q407241##merger",
-    "concept_id": "rxcui:8134|ncit:C739|chemidplus:50-06-6|wikidata:Q407241",
+    "label_and_type": "rxcui:8134##merger",
+    "concept_id": "rxcui:8134",
+    "other_ids": ["ncit:C739", "chemidplus:50-06-6", "wikidata:Q407241"],
     "aliases": [
       "5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
       "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
@@ -1193,8 +1304,14 @@
     "label": "Phenobarbital"
   },
   {
-    "label_and_type": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415|wikidata:q47522001##merger",
-    "concept_id": "rxcui:2555|ncit:C376|chemidplus:15663-27-1|wikidata:Q412415|wikidata:Q47522001",
+    "label_and_type": "rxcui:2555##merger",
+    "concept_id": "rxcui:2555",
+    "other_ids": [
+      "ncit:C376",
+      "chemidplus:15663-27-1",
+      "wikidata:Q412415",
+      "wikidata:Q47522001"
+    ],
     "trade_names": ["Cisplatin", "Platinol"],
     "aliases": [
       "1,2-Diaminocyclohexaneplatinum II citrate",
@@ -1233,8 +1350,9 @@
     ]
   },
   {
-    "label_and_type": "ncit:c839|chemidplus:8025-81-8##merger",
-    "concept_id": "ncit:C839|chemidplus:8025-81-8",
+    "label_and_type": "ncit:c839##merger",
+    "concept_id": "ncit:C839",
+    "other_ids": ["chemidplus:8025-81-8"],
     "label": "Spiramycin",
     "aliases": [
       "SPIRAMYCIN",
@@ -1463,7 +1581,7 @@
     "src_name": "RxNorm"
   },
   {
-    "merge_ref": "rxcui:2555|ncit:c376|chemidplus:15663-27-1|wikidata:q412415|wikidata:q47522001",
+    "merge_ref": "rxcui:2555",
     "concept_id": "wikidata:Q47522001",
     "label_and_type": "wikidata:q47522001##identity",
     "xrefs": [],
@@ -1475,5 +1593,21 @@
     "concept_id": "wikidata:q47522001",
     "label_and_type": "platinol##label",
     "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "chemidplus:220127-57-1##identity",
+    "src_name": "ChemIDplus",
+    "concept_id": "chemidplus:220127-57-1",
+    "label": "Imatinib mesylate",
+    "aliases": [],
+    "other_identifiers": ["drugbank:DB00619"],
+    "xrefs": ["fda:8A1O1M485B"],
+    "approval_status": null,
+    "trade_names": []
+  },
+  {
+    "label_and_type": "drugbank:db00619##other_id",
+    "src_name": "ChemIDplus",
+    "concept_id": "chemidplus:220127-57-1"
   }
 ]

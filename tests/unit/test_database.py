@@ -9,6 +9,7 @@ import os
 @pytest.fixture(scope='module')
 def db():
     """Create a DynamoDB test fixture."""
+
     class DB:
         def __init__(self):
             self.db = Database(db_url=os.environ['THERAPY_NORM_DB_URL'])

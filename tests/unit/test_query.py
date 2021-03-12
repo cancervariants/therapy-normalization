@@ -39,13 +39,19 @@ def merge_query_handler(mock_database):
 def phenobarbital():
     """Create phenobarbital fixture."""
     return {
-        "concept_ids": [
-            "rxcui:8134",
+        "id": "normalize.therapy:Phenobarbital",
+        "type": "TherapyDescriptor",
+        "value": {
+            "type": "Therapy",
+            "therapy_id": "rxcui:8134"
+        },
+        "label": "Phenobarbital",
+        "xrefs": [
             "ncit:C739",
             "chemidplus:50-06-6",
             "wikidata:Q407241"
         ],
-        "aliases": [
+        "alternate_labels": [
             '5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione',
             '5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione',
             '5-Ethyl-5-phenylbarbituric acid',
@@ -77,29 +83,38 @@ def phenobarbital():
             'phenobarbital sodium',
             'phenylethylbarbiturate'
         ],
-        "trade_names": [
-            "Phenobarbital",
-        ],
-        "xrefs": [
-            "pubchem.compound:4763",
-            "usp:m63400",
-            "gsddb:2179",
-            "snomedct:51073002",
-            "vandf:4017422",
-            "mmsl:2390",
-            "msh:D010634",
-            "snomedct:373505007",
-            "mmsl:5272",
-            "mthspl:YQE403BP4D",
-            "fdbmk:001406",
-            "mmsl:d00340",
-            "atc:N03AA02",
-            "fda:YQE403BP4D",
-            "umls:C0031412",
-            "chebi:CHEBI:8069"
+        "extensions": [
+            {
+                "type": "Extension",
+                "name": "associated_with",
+                "value": [
+                    "pubchem.compound:4763",
+                    "usp:m63400",
+                    "gsddb:2179",
+                    "snomedct:51073002",
+                    "vandf:4017422",
+                    "mmsl:2390",
+                    "msh:D010634",
+                    "snomedct:373505007",
+                    "mmsl:5272",
+                    "mthspl:YQE403BP4D",
+                    "fdbmk:001406",
+                    "mmsl:d00340",
+                    "atc:N03AA02",
+                    "fda:YQE403BP4D",
+                    "umls:C0031412",
+                    "chebi:CHEBI:8069"
+                ]
+            },
+            {
+                "type": "Extension",
+                "name": "trade_names",
+                "value": [
+                    "Phenobarbital",
+                ],
 
-        ],
-        "label": "Phenobarbital"
+            }
+        ]
     }
 
 
@@ -107,18 +122,20 @@ def phenobarbital():
 def cisplatin():
     """Create cisplatin fixture."""
     return {
-        "concept_ids": [
-            "rxcui:2555",
+        "id": "normalize.therapy:Cisplatin",
+        "type": "TherapyDescriptor",
+        "value": {
+            "type": "Therapy",
+            "therapy_id": "rxcui:2555",
+        },
+        "label": "cisplatin",
+        "xrefs": [
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001"
         ],
-        "trade_names": [
-            "Cisplatin",
-            "Platinol"
-        ],
-        "aliases": [
+        "alternate_labels": [
             '1,2-Diaminocyclohexaneplatinum II citrate',
             'CDDP',
             'CISplatin',
@@ -139,19 +156,32 @@ def cisplatin():
             'Platinol-AQ',
             'Platinol'
         ],
-        "label": "cisplatin",
-        "xrefs": [
-            "umls:C0008838",
-            "fda:Q20Q21Q62J",
-            "usp:m17910",
-            "vandf:4018139",
-            "mesh:D002945",
-            "mthspl:Q20Q21Q62J",
-            "mmsl:d00195",
-            "atc:L01XA01",
-            "mmsl:31747",
-            "mmsl:4456",
-            "pubchem.compound:5702198"
+        "extensions": [
+            {
+                "type": "Extension",
+                "name": "trade_names",
+                "value": [
+                    "Cisplatin",
+                    "Platinol"
+                ],
+            },
+            {
+                "type": "Extension",
+                "name": "associated_with",
+                "value": [
+                    "umls:C0008838",
+                    "fda:Q20Q21Q62J",
+                    "usp:m17910",
+                    "vandf:4018139",
+                    "mesh:D002945",
+                    "mthspl:Q20Q21Q62J",
+                    "mmsl:d00195",
+                    "atc:L01XA01",
+                    "mmsl:31747",
+                    "mmsl:4456",
+                    "pubchem.compound:5702198"
+                ]
+            }
         ]
     }
 
@@ -160,23 +190,35 @@ def cisplatin():
 def spiramycin():
     """Create fixture for spiramycin."""
     return {
-        "concept_ids": [
-            "ncit:C839",
+        "id": "normalize.therapy:Spiramycin",
+        "type": "TherapyDescriptor",
+        "value": {
+            "type": "Therapy",
+            "therapy_id": "ncit:C839"
+        },
+        "label": "Spiramycin",
+        "xrefs": [
             "chemidplus:8025-81-8"
         ],
-        "label": "Spiramycin",
-        "aliases": [
+        "alternate_labels": [
             "SPIRAMYCIN",
             "Antibiotic 799",
             "Rovamycin",
             "Provamycin",
             "Rovamycine",
             "RP 5337",
-            "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"],  # noqa: E501
-        "xrefs": [
-            "umls:C0037962",
-            "fda:71ODY0V87H",
+            "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"  # noqa: E501
         ],
+        "extensions": [
+            {
+                "type": "Extension",
+                "name": "associated_with",
+                "value": [
+                    "umls:C0037962",
+                    "fda:71ODY0V87H",
+                ],
+            }
+        ]
     }
 
 
@@ -184,36 +226,96 @@ def spiramycin():
 def timolol():
     """Create fixture for timolol."""
     return {
-        "concept_ids": ["rxcui:10600"],
-        "aliases": [
+        "id": "normalize.therapy:timolol",
+        "type": "TherapyDescriptor",
+        "value": {
+            "type": "Therapy",
+            "therapy_id": "rxcui:10600"
+        },
+        "label": "timolol",
+        "alternate_labels": [
             "(S)-1-((1,1-Dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadazol-3-yl)oxy)-2-propanol",  # noqa: E501
             "2-Propanol, 1-((1,1-dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadiazol-3-yl)oxy)-, (S)-",  # noqa: E501
             "(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol-3-yl)oxy]propan-2-ol"  # noqa: E501
         ],
-        "trade_names": [
-            "Timoptol",
-            "Timolide",
-            "Betimol",
-            "Betim",
-            "Timoptic",
-            "Combigan",
-            "Istalol",
-            "Glaucol",
-            "Cosopt",
-            "Blocadren",
-            "Timoptol LA",
-            "Glau-Opt"
-        ],
-        "xrefs": [
-            "atc:C07AA06",
-            "mthspl:817W3C6175",
-            "vandf:4019949",
-            "atc:S01ED01",
-            "mesh:D013999",
-            "mmsl:d00139"
-        ],
-        "label": "timolol"
+        "extensions": [
+            {
+                "type": "Extension",
+                "name": "trade_names",
+                "value": [
+                    "Timoptol",
+                    "Timolide",
+                    "Betimol",
+                    "Betim",
+                    "Timoptic",
+                    "Combigan",
+                    "Istalol",
+                    "Glaucol",
+                    "Cosopt",
+                    "Blocadren",
+                    "Timoptol LA",
+                    "Glau-Opt"
+                ]
+            },
+            {
+                "type": "Extension",
+                "name": "associated_with",
+                "value": [
+                    "atc:C07AA06",
+                    "mthspl:817W3C6175",
+                    "vandf:4019949",
+                    "atc:S01ED01",
+                    "mesh:D013999",
+                    "mmsl:d00139"
+                ]
+            }
+        ]
     }
+
+
+def compare_vod(actual, fixture):
+    """Verify correctness of returned VOD object against test fixture."""
+    assert actual['id'] == fixture['id']
+    assert actual['type'] == fixture['type']
+    assert actual['value'] == fixture['value']
+    assert actual['label'] == fixture['label']
+
+    assert ('xrefs' in actual.keys()) == ('xrefs' in fixture.keys())
+    if 'xrefs' in actual:
+        assert set(actual['xrefs']) == set(fixture['xrefs'])
+
+    assert ('alternate_labels' in actual.keys()) == ('alternate_labels' in fixture.keys())  # noqa: E501
+    if 'alternate_labels' in actual:
+        assert set(actual['alternate_labels']) == \
+            set(fixture['alternate_labels'])
+
+    def get_extension(extensions, name):
+        matches = [e for e in extensions if e['name'] == name]
+        if len(matches) > 1:
+            assert False
+        elif len(matches) == 1:
+            return matches[0]
+        else:
+            return None
+
+    assert ('extensions' in actual.keys()) == ('extensions' in fixture.keys())  # noqa: E501
+    if 'extensions' in actual:
+        ext_actual = actual['extensions']
+        ext_fixture = fixture['extensions']
+
+        assoc_actual = get_extension(ext_actual, 'associated_with')
+        assoc_fixture = get_extension(ext_fixture, 'associated_with')
+        assert (assoc_actual is None) == (assoc_fixture is None)
+        if assoc_actual:
+            assert set(assoc_actual['value']) == set(assoc_fixture['value'])
+            assert assoc_actual['value']
+
+        tn_actual = get_extension(ext_actual, 'trade_names')
+        tn_fixture = get_extension(ext_fixture, 'trade_names')
+        assert (tn_actual is None) == (tn_fixture is None)
+        if tn_actual:
+            assert set(tn_actual['value']) == set(tn_fixture['value'])
+            assert tn_actual['value']
 
 
 def test_query(query_handler):
@@ -308,32 +410,18 @@ def test_query_specify_query_handlers(query_handler):
                                        excl='wikidata')
 
 
-def compare_records(test_record, record_fixture):
-    """Assert equality of test record against correct record.
-
-    :param Dict test_record: record produced in test case
-    :param Dict record_fixture: expected record output
-    """
-    assert test_record['concept_ids'] == record_fixture['concept_ids']
-    if 'aliases' in test_record or 'aliases' in record_fixture:
-        assert set(test_record['aliases']) == set(record_fixture['aliases'])
-    if 'trade_names' in test_record or 'trade_names' in record_fixture:
-        assert set(test_record['trade_names']) == set(record_fixture['trade_names'])  # noqa: E501
-    if 'xrefs' in test_record or 'xrefs' in record_fixture:
-        assert set(test_record['xrefs']) == set(record_fixture['xrefs'])
-    assert test_record['label'] == record_fixture['label']
-
-
 def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
                       spiramycin, timolol):
     """Test that the merged concept endpoint handles queries correctly."""
     # test merged id match
-    test_query = "rxcui:2555|ncit:C376|chemidplus:15663-27-1|wikidata:Q412415|wikidata:Q47522001"  # noqa: E501
+    test_query = "rxcui:2555"
     response = merge_query_handler.search_groups(test_query)
     assert response['query'] == test_query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.CONCEPT_ID
-    compare_records(response['record'], cisplatin)
+    cisplatin_copy = cisplatin.copy()
+    cisplatin_copy['id'] = 'normalize.therapy:rxcui%3A2555'
+    compare_vod(response['value_object_descriptor'], cisplatin_copy)
 
     # test concept id match
     test_query = "chemidplus:50-06-6"
@@ -341,15 +429,17 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['query'] == test_query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.CONCEPT_ID
-    compare_records(response['record'], phenobarbital)
+    pheno_copy = phenobarbital.copy()
+    pheno_copy['id'] = 'normalize.therapy:chemidplus%3A50-06-6'
+    compare_vod(response['value_object_descriptor'], pheno_copy)
 
-    # # test label match
-    test_query = "phenobarbital"
+    # test label match
+    test_query = "Phenobarbital"
     response = merge_query_handler.search_groups(test_query)
     assert response['query'] == test_query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.LABEL
-    compare_records(response['record'], phenobarbital)
+    compare_vod(response['value_object_descriptor'], phenobarbital)
 
     # test trade name match
     test_query = "Platinol"
@@ -357,7 +447,9 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['query'] == test_query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.TRADE_NAME
-    compare_records(response['record'], cisplatin)
+    cisplatin_copy = cisplatin.copy()
+    cisplatin_copy['id'] = 'normalize.therapy:Platinol'
+    compare_vod(response['value_object_descriptor'], cisplatin_copy)
 
     # test alias match
     test_query = "cis Diamminedichloroplatinum"
@@ -365,22 +457,18 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['query'] == test_query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.ALIAS
-    compare_records(response['record'], cisplatin)
+    cisplatin_copy = cisplatin.copy()
+    cisplatin_copy['id'] = 'normalize.therapy:cis%20Diamminedichloroplatinum'
+    compare_vod(response['value_object_descriptor'], cisplatin_copy)
 
     test_query = "Rovamycine"
     response = merge_query_handler.search_groups(test_query)
     assert response['query'] == test_query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.ALIAS
-    compare_records(response['record'], spiramycin)
-
-    # test no match
-    test_query = "zzzz fake therapy zzzz"
-    response = merge_query_handler.search_groups(test_query)
-    assert response['query'] == test_query
-    assert response['warnings'] is None
-    assert 'record' not in response
-    assert response['match_type'] == MatchType.NO_MATCH
+    spiramycin_copy = spiramycin.copy()
+    spiramycin_copy['id'] = 'normalize.therapy:Rovamycine'
+    compare_vod(response['value_object_descriptor'], spiramycin_copy)
 
     # test merge group with single member
     test_query = "Betimol"
@@ -388,7 +476,9 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['query'] == test_query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.TRADE_NAME
-    compare_records(response['record'], timolol)
+    timolol_copy = timolol.copy()
+    timolol_copy['id'] = 'normalize.therapy:Betimol'
+    compare_vod(response['value_object_descriptor'], timolol_copy)
 
     # test that term with multiple possible resolutions resolves at highest
     # match
@@ -397,7 +487,15 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['query'] == test_query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.LABEL
-    compare_records(response['record'], cisplatin)
+    compare_vod(response['value_object_descriptor'], cisplatin)
+
+    # test no match
+    test_query = "zzzz fake therapy zzzz"
+    response = merge_query_handler.search_groups(test_query)
+    assert response['query'] == test_query
+    assert response['warnings'] is None
+    assert 'record' not in response
+    assert response['match_type'] == MatchType.NO_MATCH
 
 
 def test_merged_meta(merge_query_handler):
