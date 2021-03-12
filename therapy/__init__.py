@@ -9,6 +9,7 @@ logging.basicConfig(
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
 
+# TODO: Fix so that we don't have to change in setup.cfg
 __version__ = "0.2.5"
 
 
