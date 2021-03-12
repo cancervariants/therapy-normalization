@@ -159,10 +159,8 @@ def atropine():
     return Drug(**params)
 
 
-def test_concept_id_cisplatin(cisplatin, wikidata):
-    """Test that cisplatin drug normalizes to correct drug concept
-    as a CONCEPT_ID match.
-    """
+def test_cisplatin(cisplatin, wikidata):
+    """Test that cisplatin drug normalizes to correct drug concept."""
     response = wikidata.search('wikidata:Q412415')
     assert response['match_type'] == MatchType.CONCEPT_ID
     assert len(response['records']) == 1
@@ -183,11 +181,6 @@ def test_concept_id_cisplatin(cisplatin, wikidata):
     assert len(response['records']) == 1
     compare_records(response['records'][0], cisplatin)
 
-
-def test_primary_label_cisplatin(cisplatin, wikidata):
-    """Test that cisplatin drug normalizes to correct drug concept
-    as a LABEL match.
-    """
     response = wikidata.search('cisplatin')
     assert response['match_type'] == MatchType.LABEL
     assert len(response['records']) == 1
@@ -198,11 +191,6 @@ def test_primary_label_cisplatin(cisplatin, wikidata):
     assert len(response['records']) == 1
     compare_records(response['records'][0], cisplatin)
 
-
-def test_alias_cisplatin(cisplatin, wikidata):
-    """Test that alias term normalizes to correct drug concept as an
-    ALIAS match.
-    """
     response = wikidata.search('CDDP')
     assert response['match_type'] == MatchType.ALIAS
     assert len(response['records']) == 1
@@ -213,11 +201,29 @@ def test_alias_cisplatin(cisplatin, wikidata):
     assert len(response['records']) == 1
     compare_records(response['records'][0], cisplatin)
 
+    response = wikidata.search('chembl:CHEMBL11359')
+    assert response['match_type'] == MatchType.OTHER_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
 
-def test_concept_id_atropine(atropine, wikidata):
-    """Test that atropine drug normalizes to correct drug concept
-    as a CONCEPT_ID match.
-    """
+    response = wikidata.search('drugbank:DB00515')
+    assert response['match_type'] == MatchType.OTHER_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
+
+    response = wikidata.search('rxcui:2555')
+    assert response['match_type'] == MatchType.OTHER_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
+
+    response = wikidata.search('chemidplus:15663-27-1')
+    assert response['match_type'] == MatchType.OTHER_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
+
+
+def test_atropine(atropine, wikidata):
+    """Test that atropine drug normalizes to correct drug concept."""
     response = wikidata.search('wikidata:Q26272')
     assert response['match_type'] == MatchType.CONCEPT_ID
     assert len(response['records']) == 1
@@ -238,11 +244,6 @@ def test_concept_id_atropine(atropine, wikidata):
     assert len(response['records']) == 1
     compare_records(response['records'][0], atropine)
 
-
-def test_primary_label_atropine(atropine, wikidata):
-    """Test that atropine drug normalizes to correct drug concept
-    as a LABEL match.
-    """
     response = wikidata.search('atropine')
     assert response['match_type'] == MatchType.LABEL
     assert len(response['records']) == 1
@@ -253,11 +254,6 @@ def test_primary_label_atropine(atropine, wikidata):
     assert len(response['records']) == 1
     compare_records(response['records'][0], atropine)
 
-
-def test_alias_atropine(atropine, wikidata):
-    """Test that alias term normalizes to correct drug concept as an
-    ALIAS match.
-    """
     response = wikidata.search('Mydriasine')
     assert response['match_type'] == MatchType.ALIAS
     assert len(response['records']) == 1
@@ -268,27 +264,14 @@ def test_alias_atropine(atropine, wikidata):
     assert len(response['records']) == 1
     compare_records(response['records'][0], atropine)
 
-
-def test_case_no_match(wikidata):
-    """Test that a term normalizes to NO match."""
-    response = wikidata.search('cisplati')
-    assert response['match_type'] == MatchType.NO_MATCH
-    assert len(response['records']) == 0
-
-    # Test white space in between label
-    response = wikidata.search('Interferon alfacon - 1')
-    assert response['match_type'] == MatchType.NO_MATCH
-
-    # Test empty query
-    response = wikidata.search('')
-    assert response['match_type'] == MatchType.NO_MATCH
-    assert len(response['records']) == 0
+    response = wikidata.search('chemidplus:51-55-8')
+    assert response['match_type'] == MatchType.OTHER_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], atropine)
 
 
-def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
-    """Test that interferon alfacon-1 drug normalizes to correct drug concept
-    as a CONCEPT_ID match.
-    """
+def test_interferon_alfacon_1(interferon_alfacon_1, wikidata):
+    """Test that interferon alfacon-1 drug normalizes to correct concept"""
     response = wikidata.search('wikidata:Q15353101')
     assert response['match_type'] == MatchType.CONCEPT_ID
     assert len(response['records']) == 1
@@ -314,11 +297,6 @@ def test_concept_id_interferon_alfacon_1(interferon_alfacon_1, wikidata):
     assert len(response['records']) == 1
     compare_records(response['records'][0], interferon_alfacon_1)
 
-
-def test_primary_label_interferon_alfacon_1(interferon_alfacon_1, wikidata):
-    """Test that Interferon alfacon-1 drug normalizes to correct drug
-    concept as a LABEL match.
-    """
     response = wikidata.search('Interferon alfacon-1')
     assert response['match_type'] == MatchType.LABEL
     assert len(response['records']) == 1
@@ -330,10 +308,8 @@ def test_primary_label_interferon_alfacon_1(interferon_alfacon_1, wikidata):
     compare_records(response['records'][0], interferon_alfacon_1)
 
 
-def test_concept_id_d_methamphetamine(d_methamphetamine, wikidata):
-    """Test that d_methamphetamine drug normalizes to correct drug concept
-    as a CONCEPT_ID match.
-    """
+def test_d_methamphetamine(d_methamphetamine, wikidata):
+    """Test that d_methamphetamine drug normalizes to correct concept."""
     response = wikidata.search('wikidata:Q191924')
     assert response['match_type'] == MatchType.CONCEPT_ID
     assert len(response['records']) == 1
@@ -354,11 +330,6 @@ def test_concept_id_d_methamphetamine(d_methamphetamine, wikidata):
     assert len(response['records']) == 1
     compare_records(response['records'][0], d_methamphetamine)
 
-
-def test_primary_label_d_methamphetamine(d_methamphetamine, wikidata):
-    """Test that d_methamphetamine drug normalizes to correct drug concept
-    as a LABEL match.
-    """
     response = wikidata.search('D-methamphetamine')
     assert response['match_type'] == MatchType.LABEL
     assert len(response['records']) == 1
@@ -368,6 +339,27 @@ def test_primary_label_d_methamphetamine(d_methamphetamine, wikidata):
     assert response['match_type'] == MatchType.LABEL
     assert len(response['records']) == 1
     compare_records(response['records'][0], d_methamphetamine)
+
+    response = wikidata.search('rxcui:6816')
+    assert response['match_type'] == MatchType.OTHER_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], d_methamphetamine)
+
+
+def test_case_no_match(wikidata):
+    """Test that a term normalizes to NO match."""
+    response = wikidata.search('cisplati')
+    assert response['match_type'] == MatchType.NO_MATCH
+    assert len(response['records']) == 0
+
+    # Test white space in between label
+    response = wikidata.search('Interferon alfacon - 1')
+    assert response['match_type'] == MatchType.NO_MATCH
+
+    # Test empty query
+    response = wikidata.search('')
+    assert response['match_type'] == MatchType.NO_MATCH
+    assert len(response['records']) == 0
 
 
 def test_meta_info(wikidata):
