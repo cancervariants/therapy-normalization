@@ -181,7 +181,7 @@ class ChemIDplus(Base):
                 'concept_id': concept_id_ref,
                 'src_name': SourceName.CHEMIDPLUS.value,
             })
-        elif 'label' in record:
+        else:
             del record['label']
         other_ids = record.get('other_identifiers')
         if other_ids:
@@ -191,8 +191,10 @@ class ChemIDplus(Base):
                     'concept_id': concept_id_ref,
                     'src_name': SourceName.CHEMIDPLUS,
                 })
-        elif 'other_identifiers' in record:
+        else:
             del record['other_identifiers']
+        if not record['xrefs']:
+            del record['xrefs']
 
         record['src_name'] = SourceName.CHEMIDPLUS.value
         record['label_and_type'] = f'{concept_id_ref}##identity'
