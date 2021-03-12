@@ -125,6 +125,16 @@
     "src_name": "DrugBank"
   },
   {
+    "label_and_type": "chembl:chembl2068237##other_id",
+    "concept_id": "drugbank:db00515",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "rxcui:2555##other_id",
+    "concept_id": "drugbank:db00515",
+    "src_name": "DrugBank"
+  },
+  {
     "label_and_type": "cisplatin##label",
     "concept_id": "drugbank:db00515",
     "src_name": "DrugBank"
@@ -183,6 +193,11 @@
     "src_name": "DrugBank"
   },
   {
+    "label_and_type": "chemidplus:37106-97-1##other_id",
+    "concept_id": "drugbank:db00522",
+    "src_name": "DrugBank"
+  },
+  {
     "label_and_type": "bentiromide##label",
     "concept_id": "drugbank:db00522",
     "src_name": "DrugBank"
@@ -219,6 +234,11 @@
       "zinc:ZINC000001555224"
     ],
     "trade_names": ["T.R.U.E. Test Thin-Layer Rapid Use Patch Test"],
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "rxcui:1306112##other_id",
+    "concept_id": "drugbank:db14201",
     "src_name": "DrugBank"
   },
   {
@@ -442,6 +462,11 @@
     "src_name": "ChemIDplus"
   },
   {
+    "label_and_type": "drugbank:db00417##other_id",
+    "concept_id": "chemidplus:87-08-1",
+    "src_name": "ChemIDplus"
+  },
+  {
     "label_and_type": "penicillin v##label",
     "concept_id": "chemidplus:87-08-1",
     "src_name": "ChemIDplus"
@@ -479,6 +504,11 @@
     "xrefs": ["fda:Q20Q21Q62J"],
     "src_name": "ChemIDplus",
     "merge_ref": "rxcui:2555"
+  },
+  {
+    "label_and_type": "drugbank:db00515##other_id",
+    "concept_id": "chemidplus:15663-27-1",
+    "src_name": "ChemIDplus"
   },
   {
     "label_and_type": "cisplatin##label",
