@@ -56,7 +56,7 @@ class CLI:
 
         if update_all:
             normalizers = list(src for src in SOURCES)
-            CLI()._update_normalizers(normalizers, SOURCES, db, update_merged)
+            CLI()._update_normalizers(normalizers, db, update_merged)
         elif not normalizer:
             CLI()._help_msg()
         else:
