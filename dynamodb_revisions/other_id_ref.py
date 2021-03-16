@@ -2,8 +2,14 @@
 from therapy.database import Database
 from timeit import default_timer as timer
 from boto3.dynamodb.conditions import Attr
+from therapy.schemas import SourceName
 
 db = Database()
+
+normalized_srcs = {SourceName.WIKIDATA.value,
+                   SourceName.RXNORM.value,
+                   SourceName.NCIT.value,
+                   SourceName.CHEMIDPLUS.value}
 
 
 def perform_updates():
@@ -17,32 +23,30 @@ def perform_updates():
     last_evaluated_key = None
     while True:
         if last_evaluated_key:
-            response = db.therapies.scan(
-                ExclusiveStartKey=last_evaluated_key,
-            )
+            response = db.therapies.scan(ExclusiveStartKey=last_evaluated_key)
         else:
             response = db.therapies.scan()
-        records = response['Items']
+        records = response.get('Items', [])
 
         for record in records:
             if record['label_and_type'].endswith('identity'):
-                if record['src_name'] in ('Wikidata', 'RxNorm', 'NCIt',
-                                          'ChemIDplus'):
+                concept_id = record['concept_id']
+                if record['src_name'] in normalized_srcs:
                     old_ref = record['merge_ref']
                     if '|' in old_ref:
                         new_ref = old_ref.split('|', 1)[0]
-                        db.update_record(record['concept_id'], 'merge_ref',
-                                         new_ref)
+                        db.update_record(concept_id, 'merge_ref', new_ref)
 
-                concept_id = record['concept_id']
                 for other_id in record.get('other_identifiers', []):
                     db.add_ref_record(other_id, concept_id, 'other_id')
+
         last_evaluated_key = response.get('LastEvaluatedKey')
         if not last_evaluated_key:
             break
 
     # update concept IDs for merged records
     last_evaluated_key = None
+    # TODO double check that this filter will work correctly
     merge_filter = Attr('src_name').not_exists()
     while True:
         if last_evaluated_key:
@@ -65,7 +69,7 @@ def perform_updates():
                 new_concept_id = old_concept_id.split('|', 1)[0]
                 record['concept_id'] = new_concept_id
                 record['label_and_type'] = f"{new_concept_id.lower()}##merger"
-                db.batch.put_item(Item=record)
+                db.add_record(record, 'merger')
 
         last_evaluated_key = response.get('LastEvaluatedKey')
         if not last_evaluated_key:
