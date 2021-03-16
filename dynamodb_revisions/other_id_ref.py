@@ -46,7 +46,6 @@ def perform_updates():
 
     # update concept IDs for merged records
     last_evaluated_key = None
-    # TODO double check that this filter will work correctly
     merge_filter = Attr('src_name').not_exists()
     while True:
         if last_evaluated_key:
@@ -61,15 +60,17 @@ def perform_updates():
             old_label_and_type = record['label_and_type']
             if old_label_and_type.endswith('merger'):
                 old_concept_id = record['old_concept_id']
-                db.batch.delete_item(Key={
-                    'label_and_type': old_label_and_type,
-                    'concept_id': old_concept_id,
-                })
 
                 new_concept_id = old_concept_id.split('|', 1)[0]
-                record['concept_id'] = new_concept_id
-                record['label_and_type'] = f"{new_concept_id.lower()}##merger"
-                db.add_record(record, 'merger')
+                if new_concept_id != old_concept_id:
+                    db.batch.delete_item(Key={
+                        'label_and_type': old_label_and_type,
+                        'concept_id': old_concept_id,
+                    })
+                    record['concept_id'] = new_concept_id
+                    record['label_and_type'] = \
+                        f"{new_concept_id.lower()}##merger"
+                    db.add_record(record, 'merger')
 
         last_evaluated_key = response.get('LastEvaluatedKey')
         if not last_evaluated_key:
