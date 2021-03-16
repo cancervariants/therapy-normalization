@@ -5,6 +5,8 @@ from boto3.dynamodb.conditions import Attr
 from therapy.schemas import SourceName
 
 db = Database()
+db.batch = db.therapies.batch_writer(overwrite_by_pkeys=['label_and_type',
+                                                         'concept_id'])
 
 normalized_srcs = {SourceName.WIKIDATA.value,
                    SourceName.RXNORM.value,
@@ -75,10 +77,11 @@ def perform_updates():
         last_evaluated_key = response.get('LastEvaluatedKey')
         if not last_evaluated_key:
             break
+    db.flush_batch()
 
 
 if __name__ == '__main__':
-    print("Perfoming updates...")
+    print("Performing updates...")
     start = timer()
     perform_updates()
     end = timer()
