@@ -22,7 +22,6 @@ def perform_updates():
             )
         else:
             response = db.therapies.scan()
-        last_evaluated_key = response.get('LastEvaluatedKey')
         records = response['Items']
 
         for record in records:
@@ -52,7 +51,6 @@ def perform_updates():
         else:
             response = db.therapies.scan(FilterExpression=merge_filter)
 
-        last_evaluated_key = response.get('LastEvaluatedKey')
         records = response.get('Items', [])
 
         for record in records:
