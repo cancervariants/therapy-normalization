@@ -61,7 +61,7 @@ def perform_updates():
         for record in records:
             old_label_and_type = record['label_and_type']
             if old_label_and_type.endswith('merger'):
-                old_concept_id = record['old_concept_id']
+                old_concept_id = record['concept_id']
 
                 new_concept_id = old_concept_id.split('|', 1)[0]
                 if new_concept_id != old_concept_id:
