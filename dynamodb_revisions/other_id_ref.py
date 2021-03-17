@@ -2,16 +2,11 @@
 from therapy.database import Database
 from timeit import default_timer as timer
 from boto3.dynamodb.conditions import Attr
-from therapy.schemas import SourceName
+from therapy.schemas import ACCEPTED_SOURCES
 
 db = Database()
 db.batch = db.therapies.batch_writer(overwrite_by_pkeys=['label_and_type',
                                                          'concept_id'])
-
-normalized_srcs = {SourceName.WIKIDATA.value,
-                   SourceName.RXNORM.value,
-                   SourceName.NCIT.value,
-                   SourceName.CHEMIDPLUS.value}
 
 
 def perform_updates():
@@ -33,7 +28,7 @@ def perform_updates():
         for record in records:
             if record['label_and_type'].endswith('identity'):
                 concept_id = record['concept_id']
-                if record['src_name'] in normalized_srcs:
+                if record['src_name'].lower() in ACCEPTED_SOURCES:
                     old_ref = record['merge_ref']
                     if '|' in old_ref:
                         new_ref = old_ref.split('|', 1)[0]
