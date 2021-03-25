@@ -53,7 +53,7 @@ class ChEMBL(Base):
             chembl_dir = PROJECT_ROOT / 'data' / 'chembl'
             chembl_archive = PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27_' \
                                                                 'sqlite.tar.gz'
-            chembl_archive.parent.mkdir(exist_ok=True)
+            chembl_archive.parent.mkdir(exist_ok=True, parents=True)
             self._download_chembl_27(chembl_archive)
             tar = tarfile.open(chembl_archive)
             tar.extractall(path=PROJECT_ROOT / 'data' / 'chembl')
