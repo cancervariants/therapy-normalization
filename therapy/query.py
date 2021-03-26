@@ -420,7 +420,7 @@ class QueryHandler:
         if query == '':
             response['match_type'] = MatchType.NO_MATCH
             return response
-        query_str = query.lower()
+        query_str = query.lower().strip()
 
         # check merged concept ID match
         record = self.db.get_record_by_id(query_str, case_sensitive=False,
