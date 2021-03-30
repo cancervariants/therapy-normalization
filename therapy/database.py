@@ -54,7 +54,7 @@ class Database:
         self.dynamodb_client = boto3.client('dynamodb', **boto_params)
 
         # Table creation for local database
-        if 'THERAPY_NORM_PROD' not in environ or \
+        if 'THERAPY_NORM_PROD' not in environ and \
                 'THERAPY_NORM_EB_PROD' not in environ:
             existing_tables = self.dynamodb_client.list_tables()['TableNames']
             self.create_therapies_table(existing_tables)
