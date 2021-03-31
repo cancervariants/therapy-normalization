@@ -273,8 +273,12 @@ class QueryHandler:
         :raises InvalidParameterException: if both incl and excl args are
             provided, or if invalid source names are given.
         """
+        sources = dict()
+        for k, v in SOURCES.items():
+            if self.db.metadata.get_item(Key={'src_name': v}).get('Item'):
+                sources[k] = v
         if not incl and not excl:
-            query_sources = set(SOURCES.values())
+            query_sources = set(sources.values())
         elif incl and excl:
             detail = "Cannot request both source inclusions and exclusions."
             raise InvalidParameterException(detail)
@@ -283,8 +287,8 @@ class QueryHandler:
             invalid_sources = []
             query_sources = set()
             for source in req_sources:
-                if source.lower() in SOURCES.keys():
-                    query_sources.add(SOURCES[source.lower()])
+                if source.lower() in sources.keys():
+                    query_sources.add(sources[source.lower()])
                 else:
                     invalid_sources.append(source)
             if invalid_sources:
@@ -296,9 +300,9 @@ class QueryHandler:
             invalid_sources = []
             query_sources = set()
             for req_l, req in req_excl_dict.items():
-                if req_l not in SOURCES.keys():
+                if req_l not in sources.keys():
                     invalid_sources.append(req)
-            for src_l, src in SOURCES.items():
+            for src_l, src in sources.items():
                 if src_l not in req_excl_dict.keys():
                     query_sources.add(src)
             if invalid_sources:
