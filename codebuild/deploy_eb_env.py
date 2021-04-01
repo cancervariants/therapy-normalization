@@ -1,5 +1,6 @@
 """Module for deploying Therapy EB environment."""
-import boto3, time
+import boto3
+import time
 elasticbeanstalk = boto3.client('elasticbeanstalk')
 servicecatalog = boto3.client('servicecatalog')
 terminate_time = 12
