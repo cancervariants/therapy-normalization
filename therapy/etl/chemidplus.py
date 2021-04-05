@@ -75,7 +75,9 @@ class ChemIDplus(Base):
             logger.info('Downloaded ChemIDplus source file.')
         except TimeoutError:
             logger.error('Connection to EBI FTP server timed out.')
-        date = ET.parse(outfile_path).getroot().attrib['date']
+
+        parser = ET.iterparse(outfile_path, ('start', 'end'))
+        date = next(parser)[1].attrib['date']
         version = date.replace('-', '')
         outfile_path.rename(data_path / f'chemidplus_{version}.xml')
         logger.info('Finished downloading ChemIDplus data')
@@ -105,12 +107,25 @@ class ChemIDplus(Base):
         return sorted([f for f in dir_files
                        if f.name.startswith('chemidplus')])
 
+    @staticmethod
+    def parse_xml(path: Path, tag: str):
+        """Parse XML file and retrieve elements with matching tag value.
+        :param Path path: path to XML file
+        :param str tag: XML tag
+        :return: generator yielding elements of corresponding tag
+        """
+        context = iter(ET.iterparse(path, events=('start', 'end')))
+        _, root = next(context)
+        for event, elem in context:
+            if event == 'end' and elem.tag == tag:
+                yield elem
+                root.clear()
+
     def _transform_data(self):
         """Open dataset and prepare for loading into database."""
-        tree = ET.parse(self._data_src)
-        root = tree.getroot()
+        parser = self.parse_xml(self._data_src, 'Chemical')
         with self.database.therapies.batch_writer() as batch:
-            for chemical in root:
+            for chemical in parser:
                 if 'displayName' not in chemical.attrib:
                     continue
 
