@@ -320,8 +320,10 @@ class QueryHandler:
             response = self._response_list(query_str, query_sources)
 
         response['service_meta_'] = ServiceMeta(
+            name="thera-py",
             version=__version__,
-            response_datetime=datetime.now()
+            response_datetime=datetime.now(),
+            homepage="https://github.com/cancervariants/therapy-normalization"
         )
         return response
 
@@ -428,8 +430,10 @@ class QueryHandler:
             'query': query,
             'warnings': self._emit_warnings(query),
             'service_meta_': ServiceMeta(
+                name="thera-py",
                 version=__version__,
-                response_datetime=datetime.now()
+                response_datetime=datetime.now(),
+                homepage="https://github.com/cancervariants/therapy-normalization"  # noqa: E501
             )
         }
         if query == '':

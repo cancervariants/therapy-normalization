@@ -342,8 +342,10 @@ class ValueObjectDescriptor(BaseModel):
 class ServiceMeta(BaseModel):
     """Metadata regarding the therapy-normalization service."""
 
+    name: str
     version: str
     response_datetime: datetime
+    homepage: str
 
     class Config:
         """Enables orm_mode"""
@@ -357,8 +359,10 @@ class ServiceMeta(BaseModel):
             for prop in schema.get('properties', {}).values():
                 prop.pop('title', None)
             schema['example'] = {
+                'name': 'thera-py',
                 'version': '0.1.0',
-                'date': '2021-04-05T16:44:15.367831'
+                'date': '2021-04-05T16:44:15.367831',
+                'homepage': 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
             }
 
 
