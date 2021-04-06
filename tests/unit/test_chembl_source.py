@@ -263,14 +263,14 @@ def test_aspirin_label(aspirin, chembl):
 def test_meta_info(cisplatin, chembl):
     """Test that the meta field is correct."""
     response = chembl.search('cisplatin')
-    assert response['meta_'].data_license == 'CC BY-SA 3.0'
-    assert response['meta_'].data_license_url == \
+    assert response['source_meta_'].data_license == 'CC BY-SA 3.0'
+    assert response['source_meta_'].data_license_url == \
            'https://creativecommons.org/licenses/by-sa/3.0/'
-    assert response['meta_'].version == '27'
-    assert response['meta_'].data_url == \
+    assert response['source_meta_'].version == '27'
+    assert response['source_meta_'].data_url == \
            'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501
-    assert response['meta_'].rdp_url == 'http://reusabledata.org/chembl.html'  # noqa: E501
-    assert response['meta_'].data_license_attributes == {
+    assert response['source_meta_'].rdp_url == 'http://reusabledata.org/chembl.html'  # noqa: E501
+    assert response['source_meta_'].data_license_attributes == {
         "non_commercial": False,
         "share_alike": True,
         "attribution": True

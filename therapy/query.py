@@ -102,7 +102,7 @@ class QueryHandler:
             matches[src_name] = {
                 'match_type': MatchType[match_type.upper()],
                 'records': [drug],
-                'meta_': self._fetch_meta(src_name)
+                'source_meta_': self._fetch_meta(src_name)
             }
         elif matches[src_name]['match_type'] == MatchType[match_type.upper()]:
             matches[src_name]['records'].append(drug)
@@ -149,7 +149,7 @@ class QueryHandler:
                 resp['source_matches'][src_name] = {
                     'match_type': MatchType.NO_MATCH,
                     'records': [],
-                    'meta_': self._fetch_meta(src_name)
+                    'source_meta_': self._fetch_meta(src_name)
                 }
         return resp
 

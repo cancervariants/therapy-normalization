@@ -365,13 +365,13 @@ def test_case_no_match(wikidata):
 def test_meta_info(wikidata):
     """Test that the meta field is correct."""
     response = wikidata.search('cisplatin')
-    assert response['meta_'].data_license == 'CC0 1.0'
-    assert response['meta_'].data_license_url == \
+    assert response['source_meta_'].data_license == 'CC0 1.0'
+    assert response['source_meta_'].data_license_url == \
            'https://creativecommons.org/publicdomain/zero/1.0/'
-    assert datetime.strptime(response['meta_'].version, "%Y%m%d")
-    assert response['meta_'].data_url is None
-    assert not response['meta_'].rdp_url
-    assert response['meta_'].data_license_attributes == {
+    assert datetime.strptime(response['source_meta_'].version, "%Y%m%d")
+    assert response['source_meta_'].data_url is None
+    assert not response['source_meta_'].rdp_url
+    assert response['source_meta_'].data_license_attributes == {
         "non_commercial": False,
         "share_alike": False,
         "attribution": False

@@ -242,7 +242,7 @@ class MatchesKeyed(BaseModel):
 
     match_type: MatchType
     records: List[Drug]
-    meta_: SourceMeta
+    source_meta_: SourceMeta
 
     class Config:
         """Enables orm_mode"""
@@ -258,7 +258,7 @@ class MatchesKeyed(BaseModel):
             schema['example'] = {
                 'match_type': 0,
                 'records': [],
-                'meta_': {
+                'source_meta_': {
                     'data_license': 'CC BY-SA 3.0',
                     'data_license_url':
                         'https://creativecommons.org/licenses/by-sa/3.0/',
@@ -283,7 +283,7 @@ class MatchesListed(BaseModel):
     source: SourceName
     match_type: MatchType
     records: List[Drug]
-    meta_: SourceMeta
+    source_meta_: SourceMeta
 
     class Config:
         """Enables orm_mode"""
@@ -300,7 +300,7 @@ class MatchesListed(BaseModel):
                 'normalizer': 'ChEMBL',
                 'match_type': 0,
                 'records': [],
-                'meta_': {
+                'source_meta_': {
                     'data_license': 'CC BY-SA 3.0',
                     'data_license_url':
                         'https://creativecommons.org/licenses/by-sa/3.0/',
@@ -501,7 +501,7 @@ class NormalizationService(BaseModel):
                 "service_meta_": {
                     'name': 'thera-py',
                     'version': '0.1.0',
-                    'date': '2021-04-05T16:44:15.367831',
+                    'response_datetime': '2021-04-05T16:44:15.367831',
                     'homepage': 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
                 }
             }
@@ -547,7 +547,7 @@ class SearchService(BaseModel):
                                 "trade_names": []
                             }
                         ],
-                        "meta_": {
+                        "source_meta_": {
                             "data_license": "custom",
                             "data_license_url": "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501
                             "version": "20210204",
@@ -604,7 +604,7 @@ class SearchService(BaseModel):
                                 ]
                             }
                         ],
-                        "meta_": {
+                        "source_meta_": {
                             "data_license": "UMLS Metathesaurus",
                             "data_license_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",  # noqa: E501
                             "version": "20210104",
@@ -635,7 +635,7 @@ class SearchService(BaseModel):
                                 "trade_names": []
                             }
                         ],
-                        "meta_": {
+                        "source_meta_": {
                             "data_license": "CC BY 4.0",
                             "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa: E501
                             "version": "20.09d",
@@ -674,7 +674,7 @@ class SearchService(BaseModel):
                                 "trade_names": []
                             }
                         ],
-                        "meta_": {
+                        "source_meta_": {
                             "data_license": "CC0 1.0",
                             "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",  # noqa: E501
                             "version": "20210331",

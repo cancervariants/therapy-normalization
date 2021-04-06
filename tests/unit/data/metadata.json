@@ -53,7 +53,7 @@
     "src_name": "ChemIDplus",
     "data_license": "custom",
     "data_license_url": "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",
-    "version": "20200327",
+    "version": "20210204",
     "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
     "rdp_url": null,
     "data_license_attributes": {
