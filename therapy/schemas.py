@@ -361,7 +361,7 @@ class ServiceMeta(BaseModel):
             schema['example'] = {
                 'name': 'thera-py',
                 'version': '0.1.0',
-                'date': '2021-04-05T16:44:15.367831',
+                'response_datetime': '2021-04-05T16:44:15.367831',
                 'homepage': 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
             }
 
@@ -691,7 +691,7 @@ class SearchService(BaseModel):
                 "service_meta_": {
                     'name': 'thera-py',
                     'version': '0.1.0',
-                    'date': '2021-04-05T16:44:15.367831',
+                    'response_datetime': '2021-04-05T16:44:15.367831',
                     'homepage': 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
                 }
             }
