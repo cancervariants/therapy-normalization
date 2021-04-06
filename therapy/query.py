@@ -340,10 +340,6 @@ class QueryHandler:
             if src_name not in sources_meta:
                 sources_meta[src_name] = self._fetch_meta(src_name)
         response['source_meta_'] = sources_meta
-        response['service_meta_'] = ServiceMeta(
-            version=__version__,
-            response_datetime=datetime.now()
-        )
         return response
 
     def _record_order(self, record: Dict) -> (int, str):  # TODO refactor?
@@ -431,6 +427,10 @@ class QueryHandler:
         response = {
             'query': query,
             'warnings': self._emit_warnings(query),
+            'service_meta_': ServiceMeta(
+                version=__version__,
+                response_datetime=datetime.now()
+            )
         }
         if query == '':
             response['match_type'] = MatchType.NO_MATCH
@@ -481,8 +481,4 @@ class QueryHandler:
 
         if not matching_records:
             response['match_type'] = MatchType.NO_MATCH
-            response['service_meta_'] = ServiceMeta(
-                version=__version__,
-                response_datetime=datetime.now()
-            )
         return response
