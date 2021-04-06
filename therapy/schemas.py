@@ -449,7 +449,7 @@ class NormalizationService(BaseModel):
                         }
                     ]
                 },
-                "meta_": {
+                "source_meta_": {
                     "RxNorm": {
                         "data_license": "UMLS Metathesaurus",
                         "data_license_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",  # noqa: E501
@@ -497,6 +497,12 @@ class NormalizationService(BaseModel):
                             "share_alike": False
                         }
                     }
+                },
+                "service_meta_": {
+                    'name': 'thera-py',
+                    'version': '0.1.0',
+                    'date': '2021-04-05T16:44:15.367831',
+                    'homepage': 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
                 }
             }
 
@@ -683,7 +689,9 @@ class SearchService(BaseModel):
                     }
                 ],
                 "service_meta_": {
-                    "version": "0.2.13",
-                    "response_datetime": "2021-04-05T17:03:17.285695"
+                    'name': 'thera-py',
+                    'version': '0.1.0',
+                    'date': '2021-04-05T16:44:15.367831',
+                    'homepage': 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
                 }
             }
