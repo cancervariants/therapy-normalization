@@ -342,7 +342,7 @@ class ValueObjectDescriptor(BaseModel):
 class ServiceMeta(BaseModel):
     """Metadata regarding the therapy-normalization service."""
 
-    name: str
+    name = "thera-py"
     version: str
     response_datetime: datetime
     url: str
