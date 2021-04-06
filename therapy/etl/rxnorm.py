@@ -9,7 +9,7 @@ from .base import Base
 from therapy import PROJECT_ROOT, DownloadException, OTHER_IDENTIFIERS, XREFS
 import therapy
 from therapy.database import Database
-from therapy.schemas import SourceName, NamespacePrefix, Meta, Drug, \
+from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
     ApprovalStatus
 import csv
 import datetime
@@ -461,17 +461,18 @@ class RxNorm(Base):
 
     def _load_meta(self):
         """Add RxNorm metadata."""
-        meta = Meta(data_license='UMLS Metathesaurus',
-                    data_license_url='https://www.nlm.nih.gov/research/umls/'
-                                     'rxnorm/docs/termsofservice.html',
-                    version=self._version,
-                    data_url=self._data_url,
-                    rdp_url=None,
-                    data_license_attributes={
-                        'non_commercial': False,
-                        'share_alike': False,
-                        'attribution': True
-                    })
+        meta = SourceMeta(
+            data_license='UMLS Metathesaurus',
+            data_license_url='https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html',  # noqa: E501
+            version=self._version,
+            data_url=self._data_url,
+            rdp_url=None,
+            data_license_attributes={
+                'non_commercial': False,
+                'share_alike': False,
+                'attribution': True
+            }
+        )
         params = dict(meta)
         params['src_name'] = SourceName.RXNORM.value
         self.database.metadata.put_item(Item=params)

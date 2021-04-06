@@ -1,6 +1,7 @@
 """This module defines the DrugBank ETL methods."""
 from therapy import PROJECT_ROOT
-from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, Meta
+from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, \
+    SourceMeta
 from therapy.etl.base import Base
 import logging
 from lxml import etree
@@ -325,16 +326,16 @@ class DrugBank(Base):
 
     def _load_meta(self):
         """Add DrugBank metadata."""
-        meta = Meta(data_license='CC BY-NC 4.0',
-                    data_license_url='https://creativecommons.org/licenses/by-nc/4.0/legalcode',  # noqa: E501
-                    version=self._version,
-                    data_url=self._data_url,
-                    rdp_url='http://reusabledata.org/drugbank.html',
-                    data_license_attributes={
-                        'non_commercial': True,
-                        'share_alike': False,
-                        'attribution': True
-                    })
+        meta = SourceMeta(data_license='CC BY-NC 4.0',
+                          data_license_url='https://creativecommons.org/licenses/by-nc/4.0/legalcode',  # noqa: E501
+                          version=self._version,
+                          data_url=self._data_url,
+                          rdp_url='http://reusabledata.org/drugbank.html',
+                          data_license_attributes={
+                              'non_commercial': True,
+                              'share_alike': False,
+                              'attribution': True
+                          })
         params = dict(meta)
         params['src_name'] = SourceName.DRUGBANK.value
         self._database.metadata.put_item(Item=params)

@@ -5,7 +5,7 @@ Courtesy of the U.S. National Library of Medicine.
 from .base import Base
 from typing import List, Dict
 from therapy import PROJECT_ROOT
-from therapy.schemas import Drug, NamespacePrefix, Meta, SourceName, \
+from therapy.schemas import Drug, NamespacePrefix, SourceMeta, SourceName, \
     DataLicenseAttributes
 from pathlib import Path
 from ftplib import FTP
@@ -218,16 +218,16 @@ class ChemIDplus(Base):
 
     def _load_meta(self):
         """Add source metadata."""
-        meta = Meta(data_license="custom",
-                    data_license_url="https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501
-                    version=self._version,
-                    data_url="ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
-                    rdp_url=None,
-                    data_license_attributes=DataLicenseAttributes(
-                        non_commercial=False,
-                        share_alike=False,
-                        attribution=True
-                    ))
+        meta = SourceMeta(data_license="custom",
+                          data_license_url="https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501
+                          version=self._version,
+                          data_url="ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",  # noqa: E501
+                          rdp_url=None,
+                          data_license_attributes=DataLicenseAttributes(
+                              non_commercial=False,
+                              share_alike=False,
+                              attribution=True
+                          ))
         item = dict(meta)
         item['src_name'] = SourceName.CHEMIDPLUS.value
         self.database.metadata.put_item(Item=item)

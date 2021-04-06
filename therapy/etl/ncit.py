@@ -1,7 +1,7 @@
 """ETL methods for NCIt source"""
 from .base import Base
 from therapy import PROJECT_ROOT
-from therapy.schemas import SourceName, NamespacePrefix, Therapy, Meta
+from therapy.schemas import SourceName, NamespacePrefix, Therapy, SourceMeta
 import logging
 import owlready2 as owl
 from owlready2.entity import ThingClass
@@ -186,16 +186,16 @@ class NCIt(Base):
 
     def _load_meta(self):
         """Load metadata"""
-        metadata = Meta(data_license="CC BY 4.0",
-                        data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
-                        version=self._version,
-                        data_url=self._SRC_DIR,
-                        rdp_url='http://reusabledata.org/ncit.html',
-                        data_license_attributes={
-                            'non_commercial': False,
-                            'share_alike': False,
-                            'attribution': True
-                        })
+        metadata = SourceMeta(data_license="CC BY 4.0",
+                              data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
+                              version=self._version,
+                              data_url=self._SRC_DIR,
+                              rdp_url='http://reusabledata.org/ncit.html',
+                              data_license_attributes={
+                                  'non_commercial': False,
+                                  'share_alike': False,
+                                  'attribution': True
+                              })
         params = dict(metadata)
         params['src_name'] = SourceName.NCIT.value
         self.database.metadata.put_item(Item=params)

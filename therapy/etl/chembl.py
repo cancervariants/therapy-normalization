@@ -1,7 +1,8 @@
 """This module defines the ChEMBL ETL methods."""
 from .base import Base
 from therapy import PROJECT_ROOT
-from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, Meta
+from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, \
+    SourceMeta
 from typing import List
 from ftplib import FTP
 import logging
@@ -294,16 +295,16 @@ class ChEMBL(Base):
 
     def _load_meta(self, *args, **kwargs):
         """Add ChEMBL metadata."""
-        metadata = Meta(data_license='CC BY-SA 3.0',
-                        data_license_url='https://creativecommons.org/licenses/by-sa/3.0/',  # noqa: E501
-                        version='27',
-                        data_url='http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
-                        rdp_url='http://reusabledata.org/chembl.html',
-                        data_license_attributes={
-                            'non_commercial': False,
-                            'share_alike': True,
-                            'attribution': True
-                        })
+        metadata = SourceMeta(data_license='CC BY-SA 3.0',
+                              data_license_url='https://creativecommons.org/licenses/by-sa/3.0/',  # noqa: E501
+                              version='27',
+                              data_url='http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
+                              rdp_url='http://reusabledata.org/chembl.html',
+                              data_license_attributes={
+                                  'non_commercial': False,
+                                  'share_alike': True,
+                                  'attribution': True
+                              })
         params = dict(metadata)
         params['src_name'] = SourceName.CHEMBL.value
         self.database.metadata.put_item(Item=params)
