@@ -490,6 +490,14 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert response['match_type'] == MatchType.LABEL
     compare_vod(response['value_object_descriptor'], cisplatin)
 
+    # test whitespace stripping
+    test_query = "   Cisplatin "
+    response = merge_query_handler.search_groups(test_query)
+    assert response['query'] == test_query
+    assert response['warnings'] is None
+    assert response['match_type'] == MatchType.LABEL
+    compare_vod(response['value_object_descriptor'], cisplatin)
+
     # test no match
     test_query = "zzzz fake therapy zzzz"
     response = merge_query_handler.search_groups(test_query)
