@@ -323,7 +323,7 @@ class QueryHandler:
             name="thera-py",
             version=__version__,
             response_datetime=datetime.now(),
-            homepage="https://github.com/cancervariants/therapy-normalization"
+            url="https://github.com/cancervariants/therapy-normalization"
         )
         return response
 
@@ -433,7 +433,7 @@ class QueryHandler:
                 name="thera-py",
                 version=__version__,
                 response_datetime=datetime.now(),
-                homepage="https://github.com/cancervariants/therapy-normalization"  # noqa: E501
+                url="https://github.com/cancervariants/therapy-normalization"  # noqa: E501
             )
         }
         if query == '':

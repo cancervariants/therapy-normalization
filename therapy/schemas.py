@@ -345,7 +345,7 @@ class ServiceMeta(BaseModel):
     name: str
     version: str
     response_datetime: datetime
-    homepage: str
+    url: str
 
     class Config:
         """Enables orm_mode"""
@@ -362,7 +362,7 @@ class ServiceMeta(BaseModel):
                 'name': 'thera-py',
                 'version': '0.1.0',
                 'response_datetime': '2021-04-05T16:44:15.367831',
-                'homepage': 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
+                'url': 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
             }
 
 
@@ -502,7 +502,7 @@ class NormalizationService(BaseModel):
                     'name': 'thera-py',
                     'version': '0.1.0',
                     'response_datetime': '2021-04-05T16:44:15.367831',
-                    'homepage': 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
+                    'url': 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
                 }
             }
 
@@ -692,6 +692,6 @@ class SearchService(BaseModel):
                     'name': 'thera-py',
                     'version': '0.1.0',
                     'response_datetime': '2021-04-05T16:44:15.367831',
-                    'homepage': 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
+                    'url': 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
                 }
             }
