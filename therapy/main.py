@@ -7,7 +7,6 @@ from fastapi.openapi.utils import get_openapi
 import html
 from typing import Optional
 
-
 query_handler = QueryHandler()
 app = FastAPI(docs_url='/therapy', openapi_url='/therapy/openapi.json')
 

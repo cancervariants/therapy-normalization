@@ -2,6 +2,7 @@
 from therapy.query import QueryHandler, InvalidParameterException
 from therapy.schemas import MatchType
 import pytest
+from datetime import datetime
 
 
 @pytest.fixture(scope='module')
@@ -499,17 +500,23 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
 
 
 def test_merged_meta(merge_query_handler):
-    """Test population of source metadata in merged querying."""
+    """Test population of source and resource metadata in merged querying."""
     test_query = "pheno"
     response = merge_query_handler.search_groups(test_query)
-    meta_items = response['meta_']
+    meta_items = response['source_meta_']
     assert 'RxNorm' in meta_items.keys()
     assert 'Wikidata' in meta_items.keys()
     assert 'NCIt' in meta_items.keys()
     assert 'ChemIDplus' in meta_items.keys()
+    print(response.keys())
+    service_meta = response['service_meta_']
+    assert service_meta.version >= "0.2.13"
+    assert isinstance(service_meta.response_datetime, datetime)
 
     test_query = "RP 5337"
     response = merge_query_handler.search_groups(test_query)
-    meta_items = response['meta_']
+    meta_items = response['source_meta_']
     assert 'NCIt' in meta_items.keys()
     assert 'ChemIDplus' in meta_items.keys()
+    assert service_meta.version >= "0.2.13"
+    assert isinstance(service_meta.response_datetime, datetime)

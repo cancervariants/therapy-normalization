@@ -4,10 +4,13 @@ from typing import List, Dict, Set, Optional
 from therapy import SOURCES, NAMESPACE_LOOKUP, PROHIBITED_SOURCES, \
     PREFIX_LOOKUP
 from uvicorn.config import logger
+from therapy import __version__
 from therapy.database import Database
-from therapy.schemas import Drug, Meta, MatchType, SourceName
+from therapy.schemas import Drug, SourceMeta, MatchType, SourceName, \
+    ServiceMeta
 from botocore.exceptions import ClientError
 from urllib.parse import quote
+from datetime import datetime
 
 
 class InvalidParameterException(Exception):
@@ -51,11 +54,11 @@ class QueryHandler:
             )
         return warnings
 
-    def _fetch_meta(self, src_name: str) -> Meta:
+    def _fetch_meta(self, src_name: str) -> SourceMeta:
         """Fetch metadata for src_name.
 
         :param str src_name: name of source to get metadata for
-        :return: Meta object containing source metadata
+        :return: SourceMeta object containing source metadata
         """
         if src_name in self.db.cached_sources.keys():
             return self.db.cached_sources[src_name]
@@ -64,7 +67,7 @@ class QueryHandler:
                 db_response = self.db.metadata.get_item(
                     Key={'src_name': src_name}
                 )
-                response = Meta(**db_response['Item'])
+                response = SourceMeta(**db_response['Item'])
                 self.db.cached_sources[src_name] = response
                 return response
             except ClientError as e:
@@ -316,6 +319,10 @@ class QueryHandler:
         else:
             response = self._response_list(query_str, query_sources)
 
+        response['service_meta_'] = ServiceMeta(
+            version=__version__,
+            response_datetime=datetime.now()
+        )
         return response
 
     def _add_merged_meta(self, response: Dict) -> Dict:
@@ -332,7 +339,11 @@ class QueryHandler:
             src_name = PREFIX_LOOKUP[prefix.lower()]
             if src_name not in sources_meta:
                 sources_meta[src_name] = self._fetch_meta(src_name)
-        response['meta_'] = sources_meta
+        response['source_meta_'] = sources_meta
+        response['service_meta_'] = ServiceMeta(
+            version=__version__,
+            response_datetime=datetime.now()
+        )
         return response
 
     def _record_order(self, record: Dict) -> (int, str):  # TODO refactor?
@@ -470,4 +481,8 @@ class QueryHandler:
 
         if not matching_records:  # TODO if check not needed?
             response['match_type'] = MatchType.NO_MATCH
+            response['service_meta_'] = ServiceMeta(
+                version=__version__,
+                response_datetime=datetime.now()
+            )
         return response
