@@ -508,15 +508,24 @@ def test_merged_meta(merge_query_handler):
     assert 'Wikidata' in meta_items.keys()
     assert 'NCIt' in meta_items.keys()
     assert 'ChemIDplus' in meta_items.keys()
-    print(response.keys())
-    service_meta = response['service_meta_']
-    assert service_meta.version >= "0.2.13"
-    assert isinstance(service_meta.response_datetime, datetime)
 
     test_query = "RP 5337"
     response = merge_query_handler.search_groups(test_query)
     meta_items = response['source_meta_']
     assert 'NCIt' in meta_items.keys()
     assert 'ChemIDplus' in meta_items.keys()
+
+
+def test_service_meta(query_handler, merge_query_handler):
+    """Test service meta info in response."""
+    test_query = "pheno"
+
+    response = query_handler.normalize(test_query)
+    service_meta = response['service_meta_']
+    assert service_meta.version >= "0.2.13"
+    assert isinstance(service_meta.response_datetime, datetime)
+
+    response = merge_query_handler.search_groups(test_query)
+    service_meta = response['service_meta_']
     assert service_meta.version >= "0.2.13"
     assert isinstance(service_meta.response_datetime, datetime)

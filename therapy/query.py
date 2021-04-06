@@ -479,7 +479,7 @@ class QueryHandler:
                         return self._add_vod(response, merge, query,
                                              MatchType[match_type.upper()])
 
-        if not matching_records:  # TODO if check not needed?
+        if not matching_records:
             response['match_type'] = MatchType.NO_MATCH
             response['service_meta_'] = ServiceMeta(
                 version=__version__,
