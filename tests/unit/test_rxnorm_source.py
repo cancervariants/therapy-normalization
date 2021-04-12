@@ -939,7 +939,7 @@ def test_xref_lookup(rxnorm, bifidobacterium_infantis, cisplatin, amiloride):
     response = rxnorm.search('atc:C03DB01')
     assert response['match_type'] == MatchType.XREF
     assert len(response['records']) == 1
-    compare_records(response['records'][0], cisplatin)
+    compare_records(response['records'][0], amiloride)
 
 
 def test_meta_info(rxnorm):
