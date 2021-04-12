@@ -221,6 +221,11 @@ def test_cisplatin(cisplatin, wikidata):
     assert len(response['records']) == 1
     compare_records(response['records'][0], cisplatin)
 
+    response = wikidata.search('pubchem.compound:5702198')
+    assert response['match_type'] == MatchType.XREF
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
+
 
 def test_atropine(atropine, wikidata):
     """Test that atropine drug normalizes to correct drug concept."""
@@ -266,6 +271,11 @@ def test_atropine(atropine, wikidata):
 
     response = wikidata.search('chemidplus:51-55-8')
     assert response['match_type'] == MatchType.OTHER_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], atropine)
+
+    response = wikidata.search('pubchem.compound:174174')
+    assert response['match_type'] == MatchType.XREF
     assert len(response['records']) == 1
     compare_records(response['records'][0], atropine)
 

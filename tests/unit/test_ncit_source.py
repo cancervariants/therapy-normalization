@@ -69,7 +69,7 @@ def trastuzumab():
     return Drug(**params)
 
 
-def test_concept_id_voglibose(voglibose, ncit):
+def test_voglibose(voglibose, ncit):
     """Test that Voglibose successfully matches."""
     response = ncit.search('ncit:C95221')
     assert response['match_type'] == MatchType.CONCEPT_ID
@@ -116,21 +116,10 @@ def test_concept_id_voglibose(voglibose, ncit):
     assert len(response['records']) == 1
     compare_records(response['records'][0], voglibose)
 
-
-def test_case_no_match(ncit):
-    """Test that a term normalizes to NO match."""
-    response = ncit.search('voglibo')
-    assert response['match_type'] == MatchType.NO_MATCH
-    assert len(response['records']) == 0
-
-    # Test white space in between label
-    response = ncit.search('Volgibo')
-    assert response['match_type'] == MatchType.NO_MATCH
-
-    # Test empty query
-    response = ncit.search('')
-    assert response['match_type'] == MatchType.NO_MATCH
-    assert len(response['records']) == 0
+    response = ncit.search('fda:S77P977AG8')
+    assert response['match_type'] == MatchType.XREF
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], voglibose)
 
 
 def test_apricoxib(apricoxib, ncit):
@@ -175,6 +164,11 @@ def test_apricoxib(apricoxib, ncit):
     assert len(response['records']) == 1
     compare_records(response['records'][0], apricoxib)
 
+    response = ncit.search('fda:5X5HB3VZ3Z')
+    assert response['match_type'] == MatchType.XREF
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], apricoxib)
+
 
 def test_trastuzumab(trastuzumab, ncit):
     """Test that trastuzumab successfully matches."""
@@ -212,6 +206,27 @@ def test_trastuzumab(trastuzumab, ncit):
     assert response['match_type'] == MatchType.OTHER_ID
     assert len(response['records']) == 1
     compare_records(response['records'][0], trastuzumab)
+
+    response = ncit.search('fda:P188ANX8CK')
+    assert response['match_type'] == MatchType.XREF
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], trastuzumab)
+
+
+def test_case_no_match(ncit):
+    """Test that a term normalizes to NO match."""
+    response = ncit.search('voglibo')
+    assert response['match_type'] == MatchType.NO_MATCH
+    assert len(response['records']) == 0
+
+    # Test white space in between label
+    response = ncit.search('Volgibo')
+    assert response['match_type'] == MatchType.NO_MATCH
+
+    # Test empty query
+    response = ncit.search('')
+    assert response['match_type'] == MatchType.NO_MATCH
+    assert len(response['records']) == 0
 
 
 def test_meta_info(voglibose, ncit):

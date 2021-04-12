@@ -116,6 +116,11 @@ def test_penicillin(chemidplus, penicillin_v):
     assert len(response['records']) == 1
     compare_records(response['records'][0], penicillin_v)
 
+    response = chemidplus.search('fda:Z61I075U2W')
+    assert response['match_type'] == MatchType.XREF
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], penicillin_v)
+
     response = chemidplus.search('87-08-1')
     assert response['match_type'] == MatchType.NO_MATCH
 
@@ -148,6 +153,11 @@ def test_imatinib(chemidplus, imatinib, other_imatinib):
             compare_records(record, other_imatinib)
         else:
             assert False  # retrieved incorrect record
+
+    response = chemidplus.search('fda:BKJ8M8G5HI')
+    assert response['match_type'] == MatchType.XREF
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], imatinib)
 
 
 def test_cisplatin(chemidplus, cisplatin):

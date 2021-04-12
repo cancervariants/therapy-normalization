@@ -125,6 +125,11 @@
     "src_name": "DrugBank"
   },
   {
+    "label_and_type": "pubchem.substance:46504561##xref",
+    "concept_id": "drugbank:db00515",
+    "src_name": "DrugBank"
+  },
+  {
     "label_and_type": "chembl:chembl2068237##other_id",
     "concept_id": "drugbank:db00515",
     "src_name": "DrugBank"
@@ -190,6 +195,11 @@
       "pharmgkb.drug:PA164750572",
       "zinc:ZINC000000608204"
     ],
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "pharmgkb.drug:pa164750572##xref",
+    "concept_id": "drugbank:db00522",
     "src_name": "DrugBank"
   },
   {
@@ -272,6 +282,11 @@
     "xrefs": ["pubchem.compound:5702198"],
     "src_name": "Wikidata",
     "merge_ref": "rxcui:2555"
+  },
+  {
+    "label_and_type": "pubchem.compound:5702198##xref",
+    "concept_id": "wikidata:q412415",
+    "src_name": "Wikidata"
   },
   {
     "label_and_type": "chembl:chembl11359##other_id",
@@ -383,6 +398,11 @@
     "src_name": "Wikidata"
   },
   {
+    "label_and_type": "pubchem.compound:174174##xref",
+    "concept_id": "wikidata:q26272",
+    "src_name": "Wikidata"
+  },
+  {
     "label_and_type": "chemidplus:51-55-8##other_id",
     "concept_id": "wikidata:q26272",
     "src_name": "Wikidata"
@@ -416,6 +436,11 @@
     ],
     "other_identifiers": ["chemidplus:83480-29-9"],
     "xrefs": ["fda:S77P977AG8", "umls:C0532578"],
+    "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "fda:s77p977ag8##xref",
+    "concept_id": "ncit:c95221",
     "src_name": "NCIt"
   },
   {
@@ -455,6 +480,11 @@
     "src_name": "NCIt"
   },
   {
+    "label_and_type": "fda:5x5hb3vz3z##xref",
+    "concept_id": "ncit:c74021",
+    "src_name": "NCIt"
+  },
+  {
     "label_and_type": "chemidplus:197904-84-0##other_id",
     "concept_id": "ncit:c74021",
     "src_name": "NCIt"
@@ -470,6 +500,11 @@
     "concept_id": "ncit:C1647",
     "other_identifiers": ["chemidplus:180288-69-1"],
     "xrefs": ["umls:C0728747", "fda:P188ANX8CK"],
+    "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "fda:p188anx8ck##xref",
+    "concept_id": "ncit:c1647",
     "src_name": "NCIt"
   },
   {
@@ -507,6 +542,11 @@
     "src_name": "ChemIDplus"
   },
   {
+    "label_and_type": "fda:z61i075u2w##xref",
+    "concept_id": "chemidplus:87-08-1",
+    "src_name": "ChemIDplus"
+  },
+  {
     "label_and_type": "drugbank:db00417##other_id",
     "concept_id": "chemidplus:87-08-1",
     "src_name": "ChemIDplus"
@@ -529,6 +569,11 @@
     "trade_names": [],
     "other_identifiers": ["drugbank:DB00619"],
     "xrefs": ["fda:BKJ8M8G5HI"],
+    "src_name": "ChemIDplus"
+  },
+  {
+    "label_and_type": "fda:bkj8m8g5hi##xref",
+    "concept_id": "chemidplus:152459-95-5",
     "src_name": "ChemIDplus"
   },
   {
@@ -602,6 +647,11 @@
     "src_name": "RxNorm"
   },
   {
+    "label_and_type": "mmsl:d07347##xref",
+    "concept_id": "rxcui:100213",
+    "src_name": "RxNorm"
+  },
+  {
     "label_and_type": "drugbank:db14222##other_id",
     "concept_id": "rxcui:100213",
     "src_name": "RxNorm"
@@ -656,6 +706,11 @@
     ],
     "src_name": "RxNorm",
     "merge_ref": "rxcui:2555"
+  },
+  {
+    "label_and_type": "mesh:d002945##xref",
+    "concept_id": "rxcui:2555",
+    "src_name": "RxNorm"
   },
   {
     "label_and_type": "drugbank:db12117##other_id",
@@ -717,6 +772,11 @@
       "mmsl:d00169",
       "atc:C03DB01"
     ],
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "atc:c03db01##xref",
+    "concept_id": "rxcui:644",
     "src_name": "RxNorm"
   },
   {
