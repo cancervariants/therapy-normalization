@@ -227,7 +227,7 @@ class Database:
                          f"{e.response['Error']['Message']}")
 
     def add_ref_record(self, term: str, concept_id: str, ref_type: str):
-        """Add auxilliary/reference record to database.
+        """Add auxiliary/reference record to database.
 
         :param str term: referent term
         :param str concept_id: concept ID to refer to
@@ -253,7 +253,7 @@ class Database:
 
         :param str concept_id: record to update
         :param str field: name of field to update
-        :parm str new_value: new value
+        :param Any new_value: new value
         """
         key = {
             'label_and_type': f'{concept_id.lower()}##identity',
