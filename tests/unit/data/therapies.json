@@ -247,6 +247,11 @@
     "src_name": "DrugBank"
   },
   {
+    "label_and_type": "chebi:53239##xref",
+    "concept_id": "drugbank:db14201",
+    "src_name": "DrugBank"
+  },
+  {
     "label_and_type": "rxcui:1306112##other_id",
     "concept_id": "drugbank:db14201",
     "src_name": "DrugBank"

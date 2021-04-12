@@ -330,7 +330,7 @@ def test_db14201(db14201, drugbank):
     compare_records(response['records'][0], db14201)
 
     response = drugbank.search('chebi:53239')
-    assert response['match_type'] == MatchType.OTHER_ID
+    assert response['match_type'] == MatchType.XREF
     assert len(response['records']) == 1
     compare_records(response['records'][0], db14201)
 
