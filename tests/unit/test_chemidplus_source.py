@@ -3,6 +3,7 @@ from therapy.query import QueryHandler
 from therapy.schemas import Drug, MatchType
 import pytest
 from tests.conftest import compare_records
+import datetime
 
 
 @pytest.fixture(scope='module')
@@ -191,7 +192,9 @@ def test_meta(chemidplus):
     response = chemidplus.search('incoherent-string-of-text')
     assert response['source_meta_'].data_license == 'custom'
     assert response['source_meta_'].data_license_url == 'https://www.nlm.nih.gov/databases/download/terms_and_conditions.html'  # noqa: E501
-    assert response['source_meta_'].version == '20210204'
+    version = response['source_meta_'].version
+    assert len(version) == 8
+    assert datetime.datetime.strptime(version, '%Y%m%d')
     assert response['source_meta_'].data_url == 'ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/'  # noqa: E501
     assert response['source_meta_'].rdp_url is None
     assert response['source_meta_'].data_license_attributes == {
