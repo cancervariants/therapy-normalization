@@ -44,7 +44,7 @@ def phenobarbital():
         "type": "TherapyDescriptor",
         "value": {
             "type": "Therapy",
-            "therapy_id": "rxcui:8134"
+            "id": "rxcui:8134"
         },
         "label": "Phenobarbital",
         "xrefs": [
@@ -127,7 +127,7 @@ def cisplatin():
         "type": "TherapyDescriptor",
         "value": {
             "type": "Therapy",
-            "therapy_id": "rxcui:2555",
+            "id": "rxcui:2555",
         },
         "label": "cisplatin",
         "xrefs": [
@@ -195,7 +195,7 @@ def spiramycin():
         "type": "TherapyDescriptor",
         "value": {
             "type": "Therapy",
-            "therapy_id": "ncit:C839"
+            "id": "ncit:C839"
         },
         "label": "Spiramycin",
         "xrefs": [
@@ -231,7 +231,7 @@ def timolol():
         "type": "TherapyDescriptor",
         "value": {
             "type": "Therapy",
-            "therapy_id": "rxcui:10600"
+            "id": "rxcui:10600"
         },
         "label": "timolol",
         "alternate_labels": [

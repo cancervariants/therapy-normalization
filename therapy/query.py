@@ -334,7 +334,7 @@ class QueryHandler:
         """
         sources_meta = {}
         vod = response['value_object_descriptor']
-        ids = [vod['value']['therapy_id']] + vod.get('xrefs', [])
+        ids = [vod['value']['id']] + vod.get('xrefs', [])
         for concept_id in ids:
             prefix = concept_id.split(':')[0]
             src_name = PREFIX_LOOKUP[prefix.lower()]
@@ -375,7 +375,7 @@ class QueryHandler:
             'type': 'TherapyDescriptor',
             'value': {
                 'type': 'Therapy',
-                'therapy_id': record['concept_id']
+                'id': record['concept_id']
             },
             'label': record['label'],
             'extensions': [],
