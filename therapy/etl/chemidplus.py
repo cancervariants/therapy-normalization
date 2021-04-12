@@ -180,16 +180,7 @@ class ChemIDplus(Base):
         :param therapy.schemas.Drug record: complete drug record to upload
         """
         concept_id_ref = record['concept_id'].lower()
-        aliases = record.get('aliases')
-        if aliases:
-            for alias in {a.casefold() for a in aliases}:
-                batch.put_item(Item={
-                    'label_and_type': f'{alias}##alias',
-                    'concept_id': concept_id_ref,
-                    'src_name': SourceName.CHEMIDPLUS.value,
-                })
-        else:
-            del record['aliases']
+
         if record.get('label'):
             batch.put_item(Item={
                 'label_and_type': f'{record["label"].lower()}##label',
@@ -198,18 +189,25 @@ class ChemIDplus(Base):
             })
         else:
             del record['label']
-        other_ids = record.get('other_identifiers')
-        if other_ids:
-            for other_id in {i.casefold() for i in other_ids}:
-                batch.put_item(Item={
-                    'label_and_type': f'{other_id}##other_id',
-                    'concept_id': concept_id_ref,
-                    'src_name': SourceName.CHEMIDPLUS,
-                })
-        else:
-            del record['other_identifiers']
-        if not record['xrefs']:
-            del record['xrefs']
+
+        for field_type, field in (('alias', 'aliases'),
+                                  ('other_id', 'other_identifiers'),
+                                  ('xref', 'xrefs')):
+            values = record.get(field)
+            if values:
+                keys = {value.casefold() for value in values}
+                if field == 'aliases' and len(keys) > 20:
+                    del record['aliases']
+                    continue
+                for key in keys:
+                    pk = f"{key}##{field_type}"
+                    batch.put_item(Item={
+                        'label_and_type': pk,
+                        'concept_id': concept_id_ref,
+                        'src_name': SourceName.CHEMIDPLUS.value
+                    })
+            else:
+                del record[field]
 
         record['src_name'] = SourceName.CHEMIDPLUS.value
         record['label_and_type'] = f'{concept_id_ref}##identity'
