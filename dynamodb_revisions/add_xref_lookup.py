@@ -18,9 +18,9 @@ def add_xref_refs():
     last_evaluated_key = None
     while True:
         if last_evaluated_key:
-            response = db.genes.scan(ExclusiveStartKey=last_evaluated_key)
+            response = db.therapies.scan(ExclusiveStartKey=last_evaluated_key)
         else:
-            response = db.genes.scan()
+            response = db.therapies.scan()
         last_evaluated_key = response.get('LastEvaluatedKey')
 
         records = response['Items']
