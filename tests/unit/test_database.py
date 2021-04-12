@@ -70,3 +70,18 @@ def test_item_type(db):
     item = db.therapies.query(KeyConditionExpression=filter_exp)['Items'][0]
     assert 'item_type' in item
     assert item['item_type'] == 'alias'
+
+    filter_exp = Key('label_and_type').eq('rxcui:1041527##rx_brand')
+    item = db.therapies.query(KeyConditionExpression=filter_exp)['Items'][0]
+    assert 'item_type' in item
+    assert item['item_type'] == 'rx_brand'
+
+    filter_exp = Key('label_and_type').eq('pms-cisplatin##trade_name')
+    item = db.therapies.query(KeyConditionExpression=filter_exp)['Items'][0]
+    assert 'item_type' in item
+    assert item['item_type'] == 'trade_name'
+
+    filter_exp = Key('label_and_type').eq('ncit:c839##merger')
+    item = db.therapies.query(KeyConditionExpression=filter_exp)['Items'][0]
+    assert 'item_type' in item
+    assert item['item_type'] == 'merger'
