@@ -184,6 +184,12 @@ class DrugBank(Base):
                                          params['concept_id'].casefold(),
                                          batch)
 
+            if 'xrefs' in params:
+                if params['xrefs']:
+                    self._load_xrefs(params['xrefs'],
+                                     params['concept_id'].casefold(),
+                                     batch)
+
     def _load_therapy(self, batch, params):
         """Filter out trade names and aliases that exceed 20 and add item to
         therapies table.
@@ -319,6 +325,17 @@ class DrugBank(Base):
         for other_id in other_ids_l:
             item = {
                 'label_and_type': f'{other_id}##other_id',
+                'concept_id': concept_id,
+                'src_name': SourceName.DRUGBANK.value,
+            }
+            batch.put_item(Item=item)
+
+    def _load_xrefs(self, xrefs, concept_id, batch):
+        """Insert xref references into the database."""
+        xrefs_l = {i.casefold() for i in xrefs}
+        for xref in xrefs_l:
+            item = {
+                'label_and_type': f'{xref}##xref',
                 'concept_id': concept_id,
                 'src_name': SourceName.DRUGBANK.value,
             }

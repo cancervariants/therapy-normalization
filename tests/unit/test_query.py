@@ -343,7 +343,7 @@ def test_query_keyed(query_handler):
     assert chemidplus_record.label == 'Penicillin V'
 
 
-def test_query_specify_query_handlers(query_handler):
+def test_query_specify_sources(query_handler):
     """Test inclusion and exclusion of sources in query."""
     # test blank params
     resp = query_handler.normalize('cisplatin', keyed=True)

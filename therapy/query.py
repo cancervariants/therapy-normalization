@@ -192,7 +192,7 @@ class QueryHandler:
         :param Dict resp: in-progress response object to return to client
         :param Set[str] sources: remaining unmatched sources
         :param str match_type: Match type to check for. Should be one of
-            {'trade_name', 'label', 'alias', 'other_id'}
+            {'trade_name', 'label', 'alias', 'other_id', 'xref'}
         :return: Tuple with updated resp object and updated set of unmatched
                  sources
         """
@@ -229,7 +229,7 @@ class QueryHandler:
         if len(sources) == 0:
             return response
 
-        match_types = ['label', 'trade_name', 'alias', 'other_id']
+        match_types = ['label', 'trade_name', 'alias', 'other_id', 'xref']
         for match_type in match_types:
             (response, sources) = self._check_match_type(query, response,
                                                          sources, match_type)

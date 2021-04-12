@@ -221,7 +221,8 @@ class RxNorm(Base):
                                                         in value else [],
                             xrefs=value['xrefs'] if 'xrefs' in value else [],
                             trade_names=value['trade_names'] if 'trade_names'
-                                                                in value else []  # noqa: E501
+                                                                in value
+                                                                else []
                         )
                         self._load_therapy(params, batch)
 
@@ -284,6 +285,8 @@ class RxNorm(Base):
         if 'other_identifiers' in params:
             self._load_label_type(params, batch, 'other_id',
                                   'other_identifiers')
+        if 'xrefs' in params:
+            self._load_label_type(params, batch, 'xref', 'xrefs')
 
     def _load_label_type(self, params, batch, label_type_sing, label_type_pl):
         """Insert alias, trade_name, or label data into the database.

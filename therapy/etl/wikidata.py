@@ -189,22 +189,10 @@ class Wikidata(Base):
         if 'aliases' in item:
             item['aliases'] = list(set(item['aliases']))
 
-            if len({a.casefold() for a in item['aliases']}) > 20:  # noqa: E501
+            if len({a.casefold() for a in item['aliases']}) > 20:
                 del item['aliases']
 
-        batch.put_item(Item=item)
-        self._added_ids.append(item['concept_id'])
         concept_id_lower = item['concept_id'].lower()
-
-        if 'aliases' in item.keys():
-            aliases = {alias.lower() for alias in item['aliases']}
-            for alias in aliases:
-                pk = f"{alias}##alias"
-                batch.put_item(Item={
-                    'label_and_type': pk,
-                    'concept_id': concept_id_lower,
-                    'src_name': SourceName.WIKIDATA.value
-                })
 
         if 'label' in item.keys():
             pk = f"{item['label'].lower()}##label"
@@ -214,13 +202,24 @@ class Wikidata(Base):
                 'src_name': SourceName.WIKIDATA.value
             })
 
-        if 'other_identifiers' in item.keys():
-            other_ids = {other_id.lower() for other_id
-                         in item['other_identifiers']}
-            for other_id in other_ids:
-                pk = f"{other_id}##other_id"
-                batch.put_item(Item={
-                    'label_and_type': pk,
-                    'concept_id': concept_id_lower,
-                    'src_name': SourceName.WIKIDATA.value
-                })
+        for field_type, field in (('alias', 'aliases'),
+                                  ('other_id', 'other_identifiers'),
+                                  ('xref', 'xrefs')):
+            values = item.get(field)
+            if values:
+                keys = {value.casefold() for value in values}
+                if field == 'aliases' and len(keys) > 20:
+                    del item['aliases']
+                    continue
+                for key in keys:
+                    pk = f"{key}##{field_type}"
+                    batch.put_item(Item={
+                        'label_and_type': pk,
+                        'concept_id': concept_id_lower,
+                        'src_name': SourceName.NCIT.value
+                    })
+            else:
+                del item[field]
+
+        batch.put_item(Item=item)
+        self._added_ids.append(item['concept_id'])

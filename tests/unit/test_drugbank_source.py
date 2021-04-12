@@ -218,6 +218,11 @@ def test_cisplatin(cisplatin, drugbank):
     assert len(response['records']) == 1
     compare_records(response['records'][0], cisplatin)
 
+    response = drugbank.search('pubchem.substance:46504561')
+    assert response['match_type'] == MatchType.XREF
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
+
 
 def test_bentiromide(bentiromide, drugbank):
     """Test that bentiromide drug normalizes to correct drug concept."""
@@ -276,6 +281,11 @@ def test_bentiromide(bentiromide, drugbank):
     assert len(response['records']) == 1
     compare_records(response['records'][0], bentiromide)
 
+    response = drugbank.search('pharmgkb.drug:PA164750572')
+    assert response['match_type'] == MatchType.XREF
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], bentiromide)
+
 
 def test_db14201(db14201, drugbank):
     """Test that db14201 drug normalizes to correct drug concept."""
@@ -316,6 +326,11 @@ def test_db14201(db14201, drugbank):
 
     response = drugbank.search('rxcui:1306112')
     assert response['match_type'] == MatchType.OTHER_ID
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], db14201)
+
+    response = drugbank.search('chebi:53239')
+    assert response['match_type'] == MatchType.XREF
     assert len(response['records']) == 1
     compare_records(response['records'][0], db14201)
 

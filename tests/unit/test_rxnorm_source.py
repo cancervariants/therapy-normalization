@@ -924,6 +924,24 @@ def test_brand_name_to_concept(rxnorm):
     assert r['Items'][0]['concept_id'] != 'rxcui:218330'
 
 
+def test_xref_lookup(rxnorm, bifidobacterium_infantis, cisplatin, amiloride):
+    """Test that xref lookup resolves to correct concept."""
+    response = rxnorm.search('mmsl:d07347')
+    assert response['match_type'] == MatchType.XREF
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], bifidobacterium_infantis)
+
+    response = rxnorm.search('mesh:D002945')
+    assert response['match_type'] == MatchType.XREF
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], cisplatin)
+
+    response = rxnorm.search('atc:C03DB01')
+    assert response['match_type'] == MatchType.XREF
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], amiloride)
+
+
 def test_meta_info(rxnorm):
     """Test that the meta field is correct."""
     response = rxnorm.fetch_meta()
