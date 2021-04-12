@@ -4,6 +4,7 @@ from therapy.database import Database
 from tests.conftest import TEST_ROOT
 import json
 import os
+from boto3.dynamodb.conditions import Key
 
 
 @pytest.fixture(scope='module')
@@ -41,3 +42,31 @@ def test_tables_created(db):
     existing_tables = db.dynamodb_client.list_tables()['TableNames']
     assert 'therapy_concepts' in existing_tables
     assert 'therapy_metadata' in existing_tables
+
+
+def test_item_type(db):
+    """Check that objects are tagged with item_type attribute."""
+    filter_exp = Key('label_and_type').eq('chembl:chembl11359##identity')
+    item = db.therapies.query(KeyConditionExpression=filter_exp)['Items'][0]
+    assert 'item_type' in item
+    assert item['item_type'] == 'identity'
+
+    filter_exp = Key('label_and_type').eq('interferon alfacon-1##label')
+    item = db.therapies.query(KeyConditionExpression=filter_exp)['Items'][0]
+    assert 'item_type' in item
+    assert item['item_type'] == 'label'
+
+    filter_exp = Key('label_and_type').eq('fda:5x5hb3vz3z##xref')
+    item = db.therapies.query(KeyConditionExpression=filter_exp)['Items'][0]
+    assert 'item_type' in item
+    assert item['item_type'] == 'xref'
+
+    filter_exp = Key('label_and_type').eq('drugbank:db00515##other_id')
+    item = db.therapies.query(KeyConditionExpression=filter_exp)['Items'][0]
+    assert 'item_type' in item
+    assert item['item_type'] == 'other_id'
+
+    filter_exp = Key('label_and_type').eq('dichlorodiammineplatinum##alias')
+    item = db.therapies.query(KeyConditionExpression=filter_exp)['Items'][0]
+    assert 'item_type' in item
+    assert item['item_type'] == 'alias'

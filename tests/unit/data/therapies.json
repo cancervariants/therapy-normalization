@@ -1,6 +1,8 @@
 [
   {
     "label_and_type": "chembl:chembl11359##identity",
+    "src_name": "ChEMBL",
+    "item_type": "identity",
     "concept_id": "chembl:CHEMBL11359",
     "label": "CISPLATIN",
     "aliases": [
@@ -16,8 +18,7 @@
       "Platinol-Aq"
     ],
     "approval_status": "approved",
-    "trade_names": ["PLATINOL", "PLATINOL-AQ", "CISPLATIN"],
-    "src_name": "ChEMBL"
+    "trade_names": ["PLATINOL", "PLATINOL-AQ", "CISPLATIN"]
   },
   {
     "label_and_type": "cisplatin##label",
@@ -350,7 +351,8 @@
   {
     "label_and_type": "interferon alfacon-1##label",
     "concept_id": "wikidata:q15353101",
-    "src_name": "Wikidata"
+    "src_name": "Wikidata",
+    "item_type": "label"
   },
   {
     "label_and_type": "wikidata:q191924##identity",
@@ -487,7 +489,8 @@
   {
     "label_and_type": "fda:5x5hb3vz3z##xref",
     "concept_id": "ncit:c74021",
-    "src_name": "NCIt"
+    "src_name": "NCIt",
+    "item_type": "xref"
   },
   {
     "label_and_type": "chemidplus:197904-84-0##other_id",
@@ -735,7 +738,8 @@
   {
     "label_and_type": "dichlorodiammineplatinum##alias",
     "concept_id": "rxcui:2555",
-    "src_name": "RxNorm"
+    "src_name": "RxNorm",
+    "item_type": "alias"
   },
   {
     "label_and_type": "cis platinum##alias",
