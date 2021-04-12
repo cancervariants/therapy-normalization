@@ -173,7 +173,8 @@
   {
     "label_and_type": "pms-cisplatin##trade_name",
     "concept_id": "drugbank:db00515",
-    "src_name": "DrugBank"
+    "src_name": "DrugBank",
+    "item_type": "trade_name"
   },
   {
     "label_and_type": "drugbank:db00522##identity",
@@ -1420,6 +1421,7 @@
   },
   {
     "label_and_type": "ncit:c839##merger",
+    "item_type": "merger",
     "concept_id": "ncit:C839",
     "other_ids": ["chemidplus:8025-81-8"],
     "label": "Spiramycin",
@@ -1471,7 +1473,8 @@
   {
     "label_and_type": "rxcui:1041527##rx_brand",
     "concept_id": "rxcui:161",
-    "src_name": "RxNorm"
+    "src_name": "RxNorm",
+    "item_type": "rx_brand"
   },
   {
     "label_and_type": "rxcui:218330##rx_brand",
