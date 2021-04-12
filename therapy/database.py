@@ -115,6 +115,22 @@ class Database:
                             'ReadCapacityUnits': 10,
                             'WriteCapacityUnits': 10
                         }
+                    },
+                    {
+                        'IndexName': 'item_type_index',
+                        'KeySchema': [
+                            {
+                                'AttributeName': 'item_type',
+                                'KeyType': 'HASH'
+                            }
+                        ],
+                        'Projection': {
+                            'ProjectionType': 'KEYS_ONLY'
+                        },
+                        'ProvisionedThroughput': {
+                            'ReadCapacityUnits': 10,
+                            'WriteCapacityUnits': 10
+                        }
                     }
                 ],
                 ProvisionedThroughput={
