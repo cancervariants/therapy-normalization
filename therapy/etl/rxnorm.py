@@ -257,6 +257,7 @@ class RxNorm(Base):
         self._load_label_types(params, batch)
         params['src_name'] = SourceName.RXNORM.value
         params['label_and_type'] = f"{params['concept_id'].lower()}##identity"
+        params['item_type'] = 'identity'
         try:
             batch.put_item(Item=params)
             self._added_ids.append(params['concept_id'])
@@ -304,7 +305,8 @@ class RxNorm(Base):
             t = {
                 'label_and_type': f"{t.lower()}##{label_type_sing}",
                 'concept_id': f"{params['concept_id'].lower()}",
-                'src_name': SourceName.RXNORM.value
+                'src_name': SourceName.RXNORM.value,
+                'item_type': label_type_sing
             }
             try:
                 batch.put_item(Item=t)
@@ -385,7 +387,8 @@ class RxNorm(Base):
                         'label_and_type':
                             f"{brands.get(tn)}##rx_brand",
                         'concept_id': value['concept_id'],
-                        'src_name': SourceName.RXNORM.value
+                        'src_name': SourceName.RXNORM.value,
+                        'item_type': 'rx_brand'
                     })
 
     def _add_str_field(self, params, row, precise_ingredient, drug_forms,

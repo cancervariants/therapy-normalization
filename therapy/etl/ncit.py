@@ -210,6 +210,7 @@ class NCIt(Base):
         concept_id_lower = item['concept_id'].lower()
         item['label_and_type'] = f"{concept_id_lower}##identity"
         item['src_name'] = SourceName.NCIT.value
+        item['item_type'] = 'identity'
 
         for field_type, field in (('alias', 'aliases'),
                                   ('other_id', 'other_identifiers'),
@@ -225,7 +226,8 @@ class NCIt(Base):
                     batch.put_item(Item={
                         'label_and_type': pk,
                         'concept_id': concept_id_lower,
-                        'src_name': SourceName.NCIT.value
+                        'src_name': SourceName.NCIT.value,
+                        'item_type': field_type
                     })
             else:
                 del item[field]
@@ -235,7 +237,8 @@ class NCIt(Base):
             batch.put_item(Item={
                 'label_and_type': pk,
                 'concept_id': concept_id_lower,
-                'src_name': SourceName.NCIT.value
+                'src_name': SourceName.NCIT.value,
+                'item_type': 'label'
             })
         else:
             del therapy.label

@@ -186,6 +186,7 @@ class ChemIDplus(Base):
                 'label_and_type': f'{record["label"].lower()}##label',
                 'concept_id': concept_id_ref,
                 'src_name': SourceName.CHEMIDPLUS.value,
+                'item_type': 'label',
             })
         else:
             del record['label']
@@ -204,13 +205,15 @@ class ChemIDplus(Base):
                     batch.put_item(Item={
                         'label_and_type': pk,
                         'concept_id': concept_id_ref,
-                        'src_name': SourceName.CHEMIDPLUS.value
+                        'src_name': SourceName.CHEMIDPLUS.value,
+                        'item_type': field_type,
                     })
             else:
                 del record[field]
 
         record['src_name'] = SourceName.CHEMIDPLUS.value
         record['label_and_type'] = f'{concept_id_ref}##identity'
+        record['item_type'] = 'identity'
         batch.put_item(Item=record)
         self._added_ids.append(record['concept_id'])
 

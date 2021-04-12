@@ -67,10 +67,7 @@ class DrugBank(Base):
         return self._added_ids
 
     def _download_data(self):
-        """Download DrugBank database XML file.
-
-        :param PosixPath db_dir: The path to the DrugBank data directory
-        """
+        """Download DrugBank database XML file."""
         logger.info("Downloading DrugBank file...")
         if 'DRUGBANK_USER' in environ.keys() and \
                 'DRUGBANK_PWD' in environ.keys():
@@ -204,6 +201,7 @@ class DrugBank(Base):
                 if not params[label_type] or len(
                         {a.casefold() for a in params[label_type]}) > 20:
                     del params[label_type]
+        params['item_type'] = 'identity'
         batch.put_item(Item=params)
         self._added_ids.append(params['concept_id'])
 
@@ -292,7 +290,8 @@ class DrugBank(Base):
             'label_and_type':
                 f"{label.lower()}##label",
             'concept_id': f"{concept_id.lower()}",
-            'src_name': SourceName.DRUGBANK.value
+            'src_name': SourceName.DRUGBANK.value,
+            'item_type': 'label'
         }
         batch.put_item(Item=label)
 
@@ -303,7 +302,8 @@ class DrugBank(Base):
             alias = {
                 'label_and_type': f"{alias.lower()}##alias",
                 'concept_id': f"{concept_id.lower()}",
-                'src_name': SourceName.DRUGBANK.value
+                'src_name': SourceName.DRUGBANK.value,
+                'item_type': 'alias'
             }
             batch.put_item(Item=alias)
 
@@ -315,7 +315,8 @@ class DrugBank(Base):
             trade_name = {
                 'label_and_type': f"{trade_name.lower()}##trade_name",
                 'concept_id': f"{concept_id.lower()}",
-                'src_name': SourceName.DRUGBANK.value
+                'src_name': SourceName.DRUGBANK.value,
+                'item_type': 'trade_name',
             }
             batch.put_item(Item=trade_name)
 
@@ -327,6 +328,7 @@ class DrugBank(Base):
                 'label_and_type': f'{other_id}##other_id',
                 'concept_id': concept_id,
                 'src_name': SourceName.DRUGBANK.value,
+                'item_type': 'other_id',
             }
             batch.put_item(Item=item)
 
@@ -338,6 +340,7 @@ class DrugBank(Base):
                 'label_and_type': f'{xref}##xref',
                 'concept_id': concept_id,
                 'src_name': SourceName.DRUGBANK.value,
+                'item_type': 'xref',
             }
             batch.put_item(Item=item)
 

@@ -237,6 +237,7 @@ class ChEMBL(Base):
         """Load therapy record into DynamoDB."""
         record['label_and_type'] = \
             f"{record['concept_id'].lower()}##identity"
+        record['item_type'] = 'identity'
         batch.put_item(Item=record)
         self._added_ids.append(record['concept_id'])
 
@@ -246,7 +247,8 @@ class ChEMBL(Base):
             'label_and_type':
                 f"{record['label'].lower()}##label",
             'concept_id': f"{record['concept_id'].lower()}",
-            'src_name': SourceName.CHEMBL.value
+            'src_name': SourceName.CHEMBL.value,
+            'item_type': 'label',
         }
         batch.put_item(Item=label)
 
@@ -264,7 +266,8 @@ class ChEMBL(Base):
                 alias = {
                     'label_and_type': f"{alias}##alias",
                     'concept_id': f"{record['concept_id'].lower()}",
-                    'src_name': SourceName.CHEMBL.value
+                    'src_name': SourceName.CHEMBL.value,
+                    'item_type': 'alias',
                 }
                 batch.put_item(Item=alias)
 
@@ -287,7 +290,8 @@ class ChEMBL(Base):
                     'label_and_type':
                         f"{trade_name}##trade_name",
                     'concept_id': f"{record['concept_id'].lower()}",
-                    'src_name': SourceName.CHEMBL.value
+                    'src_name': SourceName.CHEMBL.value,
+                    'item_type': 'trade_name'
                 }
                 batch.put_item(Item=trade_name)
 
