@@ -612,6 +612,7 @@
   },
   {
     "label_and_type": "chemidplus:15663-27-1##identity",
+    "item_type": "identity",
     "concept_id": "chemidplus:15663-27-1",
     "label": "Cisplatin",
     "aliases": [
@@ -627,7 +628,8 @@
   {
     "label_and_type": "drugbank:db00515##other_id",
     "concept_id": "chemidplus:15663-27-1",
-    "src_name": "ChemIDplus"
+    "src_name": "ChemIDplus",
+    "item_type": "other_id"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -636,6 +638,7 @@
   },
   {
     "label_and_type": "cis-diaminedichloroplatinum##alias",
+    "item_type": "alias",
     "concept_id": "chemidplus:15663-27-1",
     "src_name": "ChemIDplus"
   },
