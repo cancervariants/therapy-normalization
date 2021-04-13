@@ -138,6 +138,7 @@ class Wikidata(Base):
                 if concept_id not in items.keys():
                     item = dict()
                     item['label_and_type'] = f"{concept_id.lower()}##identity"
+                    item['item_type'] = 'identity'
                     item['concept_id'] = concept_id
                     item['src_name'] = SourceName.WIKIDATA.value
 
@@ -199,7 +200,8 @@ class Wikidata(Base):
             batch.put_item(Item={
                 'label_and_type': pk,
                 'concept_id': concept_id_lower,
-                'src_name': SourceName.WIKIDATA.value
+                'src_name': SourceName.WIKIDATA.value,
+                'item_type': 'label'
             })
 
         for field_type, field in (('alias', 'aliases'),
@@ -216,7 +218,8 @@ class Wikidata(Base):
                     batch.put_item(Item={
                         'label_and_type': pk,
                         'concept_id': concept_id_lower,
-                        'src_name': SourceName.NCIT.value
+                        'src_name': SourceName.NCIT.value,
+                        'item_type': field_type
                     })
             else:
                 del item[field]

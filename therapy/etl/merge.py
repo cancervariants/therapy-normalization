@@ -184,4 +184,5 @@ class Merge:
 
         merged_attrs['label_and_type'] = \
             f'{merged_attrs["concept_id"].lower()}##merger'
+        merged_attrs['item_type'] = 'merger'
         return merged_attrs
