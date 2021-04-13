@@ -462,11 +462,10 @@ class QueryHandler:
         for match_type in ['label', 'trade_name', 'alias', 'other_id']:
             # get matches list for match tier
             matching_refs = self.db.get_records_by_type(query_str, match_type)
-            matching_records = [self.db.get_record_by_id(m['concept_id'],
-                                                         False)
-                                for m in matching_refs
-                                if m['src_name'].lower()
-                                not in PROHIBITED_SOURCES]
+            matching_records = \
+                [self.db.get_record_by_id(m['concept_id'], False)
+                 for m in matching_refs
+                 if m['src_name'].lower() not in PROHIBITED_SOURCES]
             matching_records.sort(key=self._record_order)
 
             # attempt merge ref resolution until successful
