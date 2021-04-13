@@ -96,8 +96,11 @@ class Database:
                     {
                         'AttributeName': 'src_name',
                         'AttributeType': 'S'
+                    },
+                    {
+                        'AttributeName': 'item_type',
+                        'AttributeType': 'S'
                     }
-
                 ],
                 GlobalSecondaryIndexes=[
                     {
