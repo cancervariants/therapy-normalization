@@ -35,6 +35,10 @@ def add_item_type(label_and_type: str, concept_id: str, item_type: str):
                      f"{e.response['Error']['Message']}")
 
 
+VALID_TYPES = {'identity', 'label', 'trade_name', 'rx_brand', 'alias',
+               'other_id', 'xref', 'merger'}
+
+
 def add_item_types():
     """Add item_type attribute to all items."""
     last_evaluated_key = None
@@ -47,24 +51,9 @@ def add_item_types():
         records = response['Items']
         for record in records:
             label_and_type = record['label_and_type']
-            if label_and_type.endswith('##identity'):
-                add_item_type(label_and_type, record['concept_id'],
-                              'identity')
-            elif label_and_type.endswith('##label'):
-                add_item_type(label_and_type, record['concept_id'], 'label')
-            elif label_and_type.endswith('##trade_name'):
-                add_item_type(label_and_type, record['concept_id'],
-                              'trade_name')
-            elif label_and_type.endswith('##rx_brand'):
-                add_item_type(label_and_type, record['concept_id'], 'rx_brand')
-            elif label_and_type.endswith('##alias'):
-                add_item_type(label_and_type, record['concept_id'], 'alias')
-            elif label_and_type.endswith('##other_id'):
-                add_item_type(label_and_type, record['concept_id'], 'other_id')
-            elif label_and_type.endswith('##xref'):
-                add_item_type(label_and_type, record['concept_id'], 'xref')
-            elif label_and_type.endswith('##merger'):
-                add_item_type(label_and_type, record['concept_id'], 'merger')
+            item_type = label_and_type.split('##')[-1]
+            if item_type in VALID_TYPES:
+                add_item_type(label_and_type, record['concept_id'], item_type)
             else:
                 logger.error(f"Couldn't parse item type for record: {record}")
 
