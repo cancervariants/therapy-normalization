@@ -506,6 +506,20 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     assert 'record' not in response
     assert response['match_type'] == MatchType.NO_MATCH
 
+    test_query = "APRD00818"
+    response = merge_query_handler.search_groups(test_query)
+    assert response['query'] == test_query
+    assert response['warnings'] is None
+    assert 'record' not in response
+    assert response['match_type'] == MatchType.NO_MATCH
+
+    test_query = "chembl:CHEMBL1200368"
+    response = merge_query_handler.search_groups(test_query)
+    assert response['query'] == test_query
+    assert response['warnings'] is None
+    assert 'record' not in response
+    assert response['match_type'] == MatchType.NO_MATCH
+
 
 def test_merged_meta(merge_query_handler):
     """Test population of source and resource metadata in merged querying."""

@@ -447,7 +447,7 @@ class QueryHandler:
 
         # check concept ID match
         record = self.db.get_record_by_id(query_str, case_sensitive=False)
-        if record:
+        if record and record['src_name'].lower() not in PROHIBITED_SOURCES:
             merge = self.db.get_record_by_id(record['merge_ref'],
                                              case_sensitive=False,
                                              merge=True)
@@ -465,7 +465,8 @@ class QueryHandler:
             matching_records = [self.db.get_record_by_id(m['concept_id'],
                                                          False)
                                 for m in matching_refs
-                                if m['src_name'] not in PROHIBITED_SOURCES]
+                                if m['src_name'].lower()
+                                not in PROHIBITED_SOURCES]
             matching_records.sort(key=self._record_order)
 
             # attempt merge ref resolution until successful
