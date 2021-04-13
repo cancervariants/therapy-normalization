@@ -397,7 +397,7 @@ class NormalizationService(BaseModel):
                     "type": "TherapyDescriptor",
                     "value": {
                         "type": "Therapy",
-                        "therapy_id": "rxcui:2555"
+                        "id": "rxcui:2555"
                     },
                     "label": "cisplatin",
                     "xrefs": [

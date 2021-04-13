@@ -334,7 +334,7 @@ class QueryHandler:
         """
         sources_meta = {}
         vod = response['value_object_descriptor']
-        ids = [vod['value']['therapy_id']] + vod.get('xrefs', [])
+        ids = [vod['value']['id']] + vod.get('xrefs', [])
         for concept_id in ids:
             prefix = concept_id.split(':')[0]
             src_name = PREFIX_LOOKUP[prefix.lower()]
@@ -375,7 +375,7 @@ class QueryHandler:
             'type': 'TherapyDescriptor',
             'value': {
                 'type': 'Therapy',
-                'therapy_id': record['concept_id']
+                'id': record['concept_id']
             },
             'label': record['label'],
             'extensions': [],
@@ -447,7 +447,7 @@ class QueryHandler:
 
         # check concept ID match
         record = self.db.get_record_by_id(query_str, case_sensitive=False)
-        if record:
+        if record and record['src_name'].lower() not in PROHIBITED_SOURCES:
             merge = self.db.get_record_by_id(record['merge_ref'],
                                              case_sensitive=False,
                                              merge=True)
@@ -462,10 +462,10 @@ class QueryHandler:
         for match_type in ['label', 'trade_name', 'alias', 'other_id']:
             # get matches list for match tier
             matching_refs = self.db.get_records_by_type(query_str, match_type)
-            matching_records = [self.db.get_record_by_id(m['concept_id'],
-                                                         False)
-                                for m in matching_refs
-                                if m['src_name'] not in PROHIBITED_SOURCES]
+            matching_records = \
+                [self.db.get_record_by_id(m['concept_id'], False)
+                 for m in matching_refs
+                 if m['src_name'].lower() not in PROHIBITED_SOURCES]
             matching_records.sort(key=self._record_order)
 
             # attempt merge ref resolution until successful
