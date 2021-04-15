@@ -19,7 +19,7 @@ class Base(ABC):
         self._in_normalize = self.__class__.__name__.lower() \
             in ACCEPTED_SOURCES
         if self._in_normalize:
-            self._processed_ids = []
+            self._added_ids = []
 
     @abstractmethod
     def perform_etl(self) -> List[str]:
@@ -55,7 +55,10 @@ class Base(ABC):
         raise NotImplementedError
 
     def _load_therapy(self, therapy: Dict):
-        """Load individual therapy record."""
+        """Load individual therapy record.
+
+        :param Dict therapy: valid therapy object.
+        """
         assert Therapy(**therapy)
         concept_id = therapy['concept_id']
 
@@ -89,7 +92,7 @@ class Base(ABC):
 
         self.database.add_record(therapy)
         if self._in_normalize:
-            self._processed_ids.append(concept_id)
+            self._added_ids.append(concept_id)
 
     @abstractmethod
     def _load_meta(self, *args, **kwargs):
