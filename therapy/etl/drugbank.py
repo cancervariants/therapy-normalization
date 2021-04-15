@@ -80,12 +80,17 @@ class DrugBank(Base):
             reader = csv.reader(file)
             next(reader)  # skip header
             for row in reader:
-                params = {}
-                params['concept_id'] = f'{NamespacePrefix.DRUGBANK.value}:{row[0]}'  # noqa: E501
-                params['label'] = row[2]
-                params['aliases'] = [
+                params = {
+                    'concept_id': f'{NamespacePrefix.DRUGBANK.value}:{row[0]}',
+                }
+                label = row[2]
+                if label:
+                    params['label'] = label
+                aliases = [
                     a for a in row[1].split(' | ') + row[5].split(' | ') if a
                 ]
+                if aliases:
+                    params['aliases'] = aliases
                 cas_ref = row[3]
                 if cas_ref:
                     params['other_ids'] = [

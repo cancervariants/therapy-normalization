@@ -5,6 +5,7 @@ import pytest
 from therapy.schemas import Drug, MatchType
 from therapy.query import QueryHandler
 from tests.conftest import compare_records
+import re
 
 
 @pytest.fixture(scope='module')
@@ -309,15 +310,13 @@ def test_no_match(drugbank):
 def test_meta_info(drugbank):
     """Test that the meta field is correct."""
     response = drugbank.fetch_meta()
-    assert response.data_license == 'CC BY-NC 4.0'
-    assert response.data_license_url == \
-           'https://creativecommons.org/publicdomain/zero/1.0/'
-    assert response.version == '5.1.7'
-    assert response.data_url == \
-           'https://go.drugbank.com/releases/5-1-7/downloads/all-full-database'  # noqa: E501
+    assert response.data_license == 'CC0 1.0'
+    assert response.data_license_url == 'https://creativecommons.org/publicdomain/zero/1.0/'  # noqa: E501
+    assert re.match(r'[0-9]+\.[0-9]+\.[0-9]', response.version)
+    assert response.data_url == 'https://go.drugbank.com/releases/latest#open-data'  # noqa: E501
     assert response.rdp_url == 'http://reusabledata.org/drugbank.html'  # noqa: E501
     assert response.data_license_attributes == {
-        "non_commercial": True,
+        "non_commercial": False,
         "share_alike": False,
-        "attribution": True
+        "attribution": False
     }
