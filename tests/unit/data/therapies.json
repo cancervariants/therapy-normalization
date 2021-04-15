@@ -91,37 +91,8 @@
       "Platidiam",
       "Platin"
     ],
-    "approval_status": "approved",
     "other_identifiers": [
-      "chemidplus:15663-27-1",
-      "chembl:CHEMBL2068237",
-      "rxcui:2555"
-    ],
-    "xrefs": [
-      "chebi:27899",
-      "pubchem.compound:2767",
-      "pubchem.substance:46504561",
-      "kegg.compound:C06911",
-      "kegg.drug:D00275",
-      "chemspider:76401",
-      "bindingdb:50028111",
-      "pharmgkb.drug:PA449014",
-      "pdb:CPT",
-      "ttd:DAP000215"
-    ],
-    "trade_names": [
-      "CISplatin",
-      "Cisplatin",
-      "Cisplatin Inj 0.5mg/ml",
-      "Cisplatin Inj 1mg/ml",
-      "Cisplatin Injection",
-      "Cisplatin Injection BP",
-      "Cisplatin Injection, BP",
-      "Cisplatin Injection, Mylan Std.",
-      "Platinol",
-      "Platinol AQ Inj 1mg/ml",
-      "Platinol-AQ",
-      "PMS-cisplatin"
+      "chemidplus:15663-27-1"
     ],
     "src_name": "DrugBank"
   },
@@ -181,21 +152,8 @@
     "label": "Bentiromide",
     "concept_id": "drugbank:DB00522",
     "aliases": ["APRD00818", "Bentiromide", "BTPABA", "PFT", "PFD"],
-    "approval_status": "withdrawn",
     "other_identifiers": [
-      "chemidplus:37106-97-1",
-      "rxcui:18896",
-      "chembl:CHEMBL1200368"
-    ],
-    "xrefs": [
-      "chebi:31263",
-      "pubchem.compound:6957673",
-      "pubchem.substance:46508175",
-      "kegg.drug:D01346",
-      "chemspider:5329364",
-      "bindingdb:50240073",
-      "pharmgkb.drug:PA164750572",
-      "zinc:ZINC000000608204"
+      "chemidplus:37106-97-1"
     ],
     "src_name": "DrugBank"
   },
@@ -233,19 +191,9 @@
     "label_and_type": "drugbank:db14201##identity",
     "label": "2,2'-Dibenzothiazyl disulfide",
     "concept_id": "drugbank:DB14201",
-    "approval_status": "approved",
     "other_identifiers": [
-      "chemidplus:120-78-5",
-      "chembl:CHEMBL508112",
-      "rxcui:1306112"
+      "chemidplus:120-78-5"
     ],
-    "xrefs": [
-      "chemspider:8139",
-      "bindingdb:50444458",
-      "chebi:53239",
-      "zinc:ZINC000001555224"
-    ],
-    "trade_names": ["T.R.U.E. Test Thin-Layer Rapid Use Patch Test"],
     "src_name": "DrugBank"
   },
   {

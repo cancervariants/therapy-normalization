@@ -44,38 +44,9 @@ def cisplatin():
             'Platidiam',
             'Platin'
         ],
-        'approval_status': 'approved',
         'other_identifiers': [
-            'rxcui:2555',
-            'chembl:CHEMBL2068237',
             'chemidplus:15663-27-1',
         ],
-        'xrefs': [
-            'chebi:27899',
-            'pubchem.compound:2767',
-            'pubchem.substance:46504561',
-            'kegg.compound:C06911',
-            'kegg.drug:D00275',
-            'chemspider:76401',
-            'bindingdb:50028111',
-            'pharmgkb.drug:PA449014',
-            'pdb:CPT',
-            'ttd:DAP000215',
-        ],
-        'trade_names': [
-            'CISplatin',
-            'Cisplatin',
-            'Cisplatin Inj 0.5mg/ml',
-            'Cisplatin Inj 1mg/ml',
-            'Cisplatin Injection',
-            'Cisplatin Injection BP',
-            'Cisplatin Injection, BP',
-            'Cisplatin Injection, Mylan Std.',
-            'Platinol',
-            'Platinol AQ Inj 1mg/ml',
-            'Platinol-AQ',
-            'PMS-cisplatin'
-        ]
     }
     return Drug(**params)
 
@@ -93,23 +64,9 @@ def bentiromide():
             'PFT',
             'PFD'
         ],
-        'approval_status': 'withdrawn',
         'other_identifiers': [
-            'rxcui:18896',
             'chemidplus:37106-97-1',
-            'chembl:CHEMBL1200368'
         ],
-        'xrefs': [
-            'chebi:31263',
-            'pubchem.compound:6957673',
-            'pubchem.substance:46508175',
-            'kegg.drug:D01346',
-            'chemspider:5329364',
-            'bindingdb:50240073',
-            'pharmgkb.drug:PA164750572',
-            'zinc:ZINC000000608204',
-        ],
-        'trade_names': []
     }
     return Drug(**params)
 
@@ -124,19 +81,8 @@ def db14201():
         'aliases': [],
         'approval_status': 'approved',
         'other_identifiers': [
-            'rxcui:1306112',
             'chemidplus:120-78-5',
-            'chembl:CHEMBL508112'
         ],
-        'xrefs': [
-            'chemspider:8139',
-            'bindingdb:50444458',
-            'chebi:53239',
-            'zinc:ZINC000001555224',
-        ],
-        'trade_names': [
-            'T.R.U.E. Test Thin-Layer Rapid Use Patch Test'
-        ]
     }
     return Drug(**params)
 
@@ -365,7 +311,7 @@ def test_meta_info(drugbank):
     response = drugbank.fetch_meta()
     assert response.data_license == 'CC BY-NC 4.0'
     assert response.data_license_url == \
-           'https://creativecommons.org/licenses/by-nc/4.0/legalcode'
+           'https://creativecommons.org/publicdomain/zero/1.0/'
     assert response.version == '5.1.7'
     assert response.data_url == \
            'https://go.drugbank.com/releases/5-1-7/downloads/all-full-database'  # noqa: E501
