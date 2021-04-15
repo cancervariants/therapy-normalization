@@ -2,9 +2,10 @@
 source.
 """
 import pytest
-from therapy.schemas import Drug, MatchType
+
+from tests.conftest import compare_response
 from therapy.query import QueryHandler
-from tests.conftest import compare_records
+from therapy.schemas import Drug, MatchType
 import re
 
 
@@ -39,15 +40,12 @@ def cisplatin():
             'cis-diamminedichloroplatinum(II)',
             'Cisplatin',
             'APRD00359',
-            # International / Other brands
-            'Abiplatin',
-            'Cisplatyl',
-            'Platidiam',
-            'Platin'
+            'cisplatino'
         ],
         'other_identifiers': [
             'chemidplus:15663-27-1',
         ],
+        'trade_names': [],
     }
     return Drug(**params)
 
@@ -68,6 +66,7 @@ def bentiromide():
         'other_identifiers': [
             'chemidplus:37106-97-1',
         ],
+        'trade_names': [],
     }
     return Drug(**params)
 
@@ -84,206 +83,107 @@ def db14201():
         'other_identifiers': [
             'chemidplus:120-78-5',
         ],
+        'trade_names': [],
     }
     return Drug(**params)
 
 
-def test_cisplatin(cisplatin, drugbank):
-    """Test that cisplatin drug normalizes to correct drug concept."""
+def test_concept_id_match(drugbank, cisplatin, bentiromide, db14201):
+    """Test that concept ID query resolves to correct record."""
     response = drugbank.search('drugbank:DB00515')
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], cisplatin)
+    compare_response(response, cisplatin, MatchType.CONCEPT_ID)
 
     response = drugbank.search('DB00515')
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], cisplatin)
+    compare_response(response, cisplatin, MatchType.CONCEPT_ID)
 
     response = drugbank.search('drugbank:db00515')
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], cisplatin)
+    compare_response(response, cisplatin, MatchType.CONCEPT_ID)
 
     response = drugbank.search('Drugbank:db00515')
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], cisplatin)
+    compare_response(response, cisplatin, MatchType.CONCEPT_ID)
 
     response = drugbank.search('druGBank:DB00515')
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], cisplatin)
+    compare_response(response, cisplatin, MatchType.CONCEPT_ID)
 
-    response = drugbank.search('cisplatin')
-    assert response['match_type'] == MatchType.LABEL
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], cisplatin)
-
-    response = drugbank.search('cisplatin')
-    assert response['match_type'] == MatchType.LABEL
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], cisplatin)
-
-    response = drugbank.search('Abiplatin')
-    assert response['match_type'] == MatchType.ALIAS
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], cisplatin)
-
-    response = drugbank.search('Cis-ddp')
-    assert response['match_type'] == MatchType.ALIAS
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], cisplatin)
-
-    response = drugbank.search('Platidiam')
-    assert response['match_type'] == MatchType.ALIAS
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], cisplatin)
-
-    response = drugbank.search('Platinol')
-    assert response['match_type'] == MatchType.TRADE_NAME
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], cisplatin)
-
-    response = drugbank.search('platinol-aq')
-    assert response['match_type'] == MatchType.TRADE_NAME
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], cisplatin)
-
-    response = drugbank.search('pms-cisplatin')
-    assert response['match_type'] == MatchType.TRADE_NAME
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], cisplatin)
-
-    response = drugbank.search('chembl:chembl2068237')
-    assert response['match_type'] == MatchType.OTHER_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], cisplatin)
-
-    response = drugbank.search('rxcui:2555')
-    assert response['match_type'] == MatchType.OTHER_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], cisplatin)
-
-    response = drugbank.search('pubchem.substance:46504561')
-    assert response['match_type'] == MatchType.XREF
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], cisplatin)
-
-
-def test_bentiromide(bentiromide, drugbank):
-    """Test that bentiromide drug normalizes to correct drug concept."""
     response = drugbank.search('drugbank:DB00522')
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], bentiromide)
+    compare_response(response, bentiromide, MatchType.CONCEPT_ID)
 
     response = drugbank.search('DB00522')
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], bentiromide)
+    compare_response(response, bentiromide, MatchType.CONCEPT_ID)
 
     response = drugbank.search('drugbank:db00522')
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], bentiromide)
+    compare_response(response, bentiromide, MatchType.CONCEPT_ID)
 
     response = drugbank.search('Drugbank:db00522')
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], bentiromide)
+    compare_response(response, bentiromide, MatchType.CONCEPT_ID)
 
     response = drugbank.search('druGBank:DB00522')
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], bentiromide)
+    compare_response(response, bentiromide, MatchType.CONCEPT_ID)
 
-    response = drugbank.search('Bentiromide')
-    assert response['match_type'] == MatchType.LABEL
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], bentiromide)
-
-    response = drugbank.search('bentiromide')
-    assert response['match_type'] == MatchType.LABEL
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], bentiromide)
-
-    response = drugbank.search('APRD00818')
-    assert response['match_type'] == MatchType.ALIAS
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], bentiromide)
-
-    response = drugbank.search('pfd')
-    assert response['match_type'] == MatchType.ALIAS
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], bentiromide)
-
-    response = drugbank.search('PFT')
-    assert response['match_type'] == MatchType.ALIAS
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], bentiromide)
-
-    response = drugbank.search('chemidplus:37106-97-1')
-    assert response['match_type'] == MatchType.OTHER_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], bentiromide)
-
-    response = drugbank.search('pharmgkb.drug:PA164750572')
-    assert response['match_type'] == MatchType.XREF
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], bentiromide)
-
-
-def test_db14201(db14201, drugbank):
-    """Test that db14201 drug normalizes to correct drug concept."""
     response = drugbank.search('drugbank:DB14201')
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], db14201)
+    compare_response(response, db14201, MatchType.CONCEPT_ID)
 
     response = drugbank.search('DB14201')
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], db14201)
+    compare_response(response, db14201, MatchType.CONCEPT_ID)
 
     response = drugbank.search('drugbank:db14201')
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], db14201)
+    compare_response(response, db14201, MatchType.CONCEPT_ID)
 
     response = drugbank.search('Drugbank:db14201')
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], db14201)
+    compare_response(response, db14201, MatchType.CONCEPT_ID)
 
     response = drugbank.search('druGBank:DB14201')
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], db14201)
+    compare_response(response, db14201, MatchType.CONCEPT_ID)
+
+
+def test_label_match(drugbank, cisplatin, bentiromide, db14201):
+    """Test that label query resolves to correct record."""
+    response = drugbank.search('cisplatin')
+    compare_response(response, cisplatin, MatchType.LABEL)
+
+    response = drugbank.search('cisplatin')
+    compare_response(response, cisplatin, MatchType.LABEL)
+
+    response = drugbank.search('Bentiromide')
+    compare_response(response, bentiromide, MatchType.LABEL)
+
+    response = drugbank.search('bentiromide')
+    compare_response(response, bentiromide, MatchType.LABEL)
 
     response = drugbank.search("2,2'-Dibenzothiazyl disulfide")
-    assert response['match_type'] == MatchType.LABEL
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], db14201)
+    compare_response(response, db14201, MatchType.LABEL)
 
     response = drugbank.search('2,2\'-dibenzothiazyl disulfide')
-    assert response['match_type'] == MatchType.LABEL
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], db14201)
+    compare_response(response, db14201, MatchType.LABEL)
 
-    response = drugbank.search('rxcui:1306112')
-    assert response['match_type'] == MatchType.OTHER_ID
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], db14201)
 
-    response = drugbank.search('chebi:53239')
-    assert response['match_type'] == MatchType.XREF
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], db14201)
+def test_alias_match(drugbank, cisplatin, bentiromide):
+    """Test that alias query resolves to correct record."""
+    response = drugbank.search('Abiplatin')
+    compare_response(response, cisplatin, MatchType.ALIAS)
 
-    response = \
-        drugbank.search('T.R.U.E. Test Thin-Layer Rapid Use Patch Test')
-    assert response['match_type'] == MatchType.TRADE_NAME
+    response = drugbank.search('Cis-ddp')
+    compare_response(response, cisplatin, MatchType.ALIAS)
+
+    response = drugbank.search('Platidiam')
+    compare_response(response, cisplatin, MatchType.ALIAS)
+
+    response = drugbank.search('APRD00818')
+    compare_response(response, bentiromide, MatchType.ALIAS)
+
+    response = drugbank.search('pfd')
+    compare_response(response, bentiromide, MatchType.ALIAS)
+
+    response = drugbank.search('PFT')
+    compare_response(response, bentiromide, MatchType.ALIAS)
+
+
+def test_other_id_match(drugbank, cisplatin, bentiromide, db14201):
+    """Test that other_id query resolves to correct record."""
+    response = drugbank.search('chemidplus:37106-97-1')
+    compare_response(response, bentiromide, MatchType.OTHER_ID)
+
+    # TODO more
 
 
 def test_no_match(drugbank):
