@@ -1,6 +1,6 @@
 """This module defines the DrugBank ETL methods."""
 from therapy import PROJECT_ROOT, DownloadException
-from therapy.schemas import SourceName, SourceMeta
+from therapy.schemas import SourceName, SourceMeta, NamespacePrefix, Therapy
 from therapy.etl.base import Base
 import logging
 import csv
@@ -25,9 +25,8 @@ class DrugBank(Base):
 
         :param Path data_path: normalizer data directory
         """
-        self._database = database
+        super().__init__(database)
         self._src_data_dir = data_path / 'drugbank'
-        self._added_ids = []
 
     def perform_etl(self) -> List[str]:
         """Public-facing method to initiate ETL procedures on given data.
@@ -80,19 +79,35 @@ class DrugBank(Base):
         with open(self._src_file, 'r') as file:
             reader = csv.reader(file)
             next(reader)  # skip header
+            for row in reader:
+                params = {}
+                params['concept_id'] = f'{NamespacePrefix.DRUGBANK.value}:{row[0]}'  # noqa: E501
+                params['label'] = row[2]
+                params['aliases'] = [
+                    a for a in row[1].split(' | ') + row[5].split(' | ') if a
+                ]
+                cas_ref = row[3]
+                if cas_ref:
+                    params['other_ids'] = [
+                        f'{NamespacePrefix.CHEMIDPLUS.value}:{row[3]}'
+                    ]
+                assert Therapy(**params)
+                self._load_therapy(params)
 
     def _load_meta(self):
         """Add DrugBank metadata."""
-        meta = SourceMeta(data_license='CC BY-NC 4.0',
-                          data_license_url='https://creativecommons.org/licenses/by-nc/4.0/legalcode',  # noqa: E501
-                          version=self._version,
-                          data_url=self._data_url,
-                          rdp_url='http://reusabledata.org/drugbank.html',
-                          data_license_attributes={
-                              'non_commercial': True,
-                              'share_alike': False,
-                              'attribution': True
-                          })
-        params = dict(meta)
-        params['src_name'] = SourceName.DRUGBANK.value
-        self._database.metadata.put_item(Item=params)
+        meta = {
+            'data_license': 'CC0 1.0',
+            'data_license_url': 'https://creativecommons.org/publicdomain/zero/1.0/',  # noqa: E501
+            'version': self._version,
+            'data_url': 'https://go.drugbank.com/releases/latest#open-data',
+            'rdp_url': 'http://reusabledata.org/drugbank.html',
+            'data_license_attributes': {
+                'non_commercial': False,
+                'share_alike': False,
+                'attribution': False,
+            },
+        }
+        assert SourceMeta(**meta)
+        meta['src_name'] = SourceName.DRUGBANK.value
+        self.database.metadata.put_item(Item=meta)
