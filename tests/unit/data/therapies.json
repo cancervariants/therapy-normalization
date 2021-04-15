@@ -92,27 +92,17 @@
     "src_name": "DrugBank"
   },
   {
-    "label_and_type": "pubchem.substance:46504561##xref",
+    "label_and_type": "chemidplus:15663-27-1##other_id",
     "concept_id": "drugbank:db00515",
     "src_name": "DrugBank"
   },
   {
-    "label_and_type": "chembl:chembl2068237##other_id",
+    "label_and_type": "cisplatino##alias",
     "concept_id": "drugbank:db00515",
     "src_name": "DrugBank"
   },
   {
-    "label_and_type": "rxcui:2555##other_id",
-    "concept_id": "drugbank:db00515",
-    "src_name": "DrugBank"
-  },
-  {
-    "label_and_type": "cisplatin##label",
-    "concept_id": "drugbank:db00515",
-    "src_name": "DrugBank"
-  },
-  {
-    "label_and_type": "abiplatin##alias",
+    "label_and_type": "cddp##alias",
     "concept_id": "drugbank:db00515",
     "src_name": "DrugBank"
   },
@@ -122,25 +112,9 @@
     "src_name": "DrugBank"
   },
   {
-    "label_and_type": "platidiam##alias",
+    "label_and_type": "cisplatin##label",
     "concept_id": "drugbank:db00515",
     "src_name": "DrugBank"
-  },
-  {
-    "label_and_type": "platinol##trade_name",
-    "concept_id": "drugbank:db00515",
-    "src_name": "DrugBank"
-  },
-  {
-    "label_and_type": "platinol-aq##trade_name",
-    "concept_id": "drugbank:db00515",
-    "src_name": "DrugBank"
-  },
-  {
-    "label_and_type": "pms-cisplatin##trade_name",
-    "concept_id": "drugbank:db00515",
-    "src_name": "DrugBank",
-    "item_type": "trade_name"
   },
   {
     "label_and_type": "drugbank:db00522##identity",
@@ -149,8 +123,8 @@
     "aliases": [
       "APRD00818",
       "Bentiromide",
-      "Bentiromodo",
-      "Bentiromodum",
+      "Bentiromido",
+      "Bentiromidum",
       "BTPABA",
       "PFT"
     ],

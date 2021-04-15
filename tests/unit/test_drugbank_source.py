@@ -147,13 +147,10 @@ def test_label_match(drugbank, cisplatin, bentiromide):
 
 def test_alias_match(drugbank, cisplatin, bentiromide):
     """Test that alias query resolves to correct record."""
-    response = drugbank.search('Abiplatin')
+    response = drugbank.search('CISPLATINO')
     compare_response(response, cisplatin, MatchType.ALIAS)
 
     response = drugbank.search('Cis-ddp')
-    compare_response(response, cisplatin, MatchType.ALIAS)
-
-    response = drugbank.search('Platidiam')
     compare_response(response, cisplatin, MatchType.ALIAS)
 
     response = drugbank.search('APRD00818')
