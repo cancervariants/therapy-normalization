@@ -93,7 +93,7 @@ class DrugBank(Base):
                     params['aliases'] = aliases
                 cas_ref = row[3]
                 if cas_ref:
-                    params['other_ids'] = [
+                    params['other_identifiers'] = [
                         f'{NamespacePrefix.CHEMIDPLUS.value}:{row[3]}'
                     ]
                 assert Therapy(**params)
