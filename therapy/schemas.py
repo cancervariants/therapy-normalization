@@ -152,7 +152,6 @@ class ProhibitedSources(Enum):
     """
 
     CHEMBL = SourceName.CHEMBL.value
-    DRUGBANK = SourceName.DRUGBANK.value
 
 
 class NamespacePrefix(Enum):
