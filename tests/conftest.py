@@ -1,5 +1,5 @@
 """Pytest test config tools."""
-from therapy.schemas import Drug
+from therapy.schemas import Drug, MatchType
 from therapy.database import Database
 from typing import Dict, Any, Optional, List
 import json
@@ -54,7 +54,7 @@ def mock_database():
                              merge: bool = False) -> Optional[Dict]:
             """Fetch record corresponding to provided concept ID.
 
-            :param str concept_id: concept ID for therapy record
+            :param str record_id: concept ID for therapy record
             :param bool case_sensitive: if true, performs exact lookup, which
                 is more efficient. Otherwise, performs filter operation, which
                 doesn't require correct casing.
@@ -116,8 +116,8 @@ def mock_database():
             """Store update request sent to database.
 
             :param str concept_id: record to update
-            :param str field: name of field to update
-            :parm str new_value: new value
+            :param str attribute: name of field to update
+            :param str new_value: new value
             """
             assert f'{concept_id.lower()}##identity' in self.records
             self.updates[concept_id] = {attribute: new_value}
@@ -134,3 +134,10 @@ def compare_records(actual: Drug, fixture: Drug):
     assert actual.approval_status == fixture.approval_status
     assert set(actual.other_identifiers) == set(fixture.other_identifiers)
     assert set(actual.xrefs) == set(fixture.xrefs)
+
+
+def compare_response(response: Dict, fixture: Drug, match_type: MatchType):
+    """Check that test response is correct."""
+    assert response['match_type'] == match_type
+    assert len(response['records']) == 1
+    compare_records(response['records'][0], fixture)
