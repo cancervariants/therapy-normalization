@@ -86,14 +86,9 @@
       "cis-diamminedichloroplatinum(II)",
       "Cisplatin",
       "APRD00359",
-      "Abiplatin",
-      "Cisplatyl",
-      "Platidiam",
-      "Platin"
+      "cisplatino"
     ],
-    "other_identifiers": [
-      "chemidplus:15663-27-1"
-    ],
+    "other_identifiers": ["chemidplus:15663-27-1"],
     "src_name": "DrugBank"
   },
   {
@@ -151,10 +146,15 @@
     "label_and_type": "drugbank:db00522##identity",
     "label": "Bentiromide",
     "concept_id": "drugbank:DB00522",
-    "aliases": ["APRD00818", "Bentiromide", "BTPABA", "PFT", "PFD"],
-    "other_identifiers": [
-      "chemidplus:37106-97-1"
+    "aliases": [
+      "APRD00818",
+      "Bentiromide",
+      "Bentiromodo",
+      "Bentiromodum",
+      "BTPABA",
+      "PFT"
     ],
+    "other_identifiers": ["chemidplus:37106-97-1"],
     "src_name": "DrugBank"
   },
   {
@@ -188,33 +188,17 @@
     "src_name": "DrugBank"
   },
   {
-    "label_and_type": "drugbank:db14201##identity",
-    "label": "2,2'-Dibenzothiazyl disulfide",
-    "concept_id": "drugbank:DB14201",
-    "other_identifiers": [
-      "chemidplus:120-78-5"
-    ],
-    "src_name": "DrugBank"
+    "label_and_type": "drugbank:db14257##identity",
+    "concept_id": "drugbank:DB14257",
+    "item_type": "identity",
+    "src_name": "DrugBank",
+    "label": "Aloe ferox leaf"
   },
   {
-    "label_and_type": "chebi:53239##xref",
-    "concept_id": "drugbank:db14201",
-    "src_name": "DrugBank"
-  },
-  {
-    "label_and_type": "rxcui:1306112##other_id",
-    "concept_id": "drugbank:db14201",
-    "src_name": "DrugBank"
-  },
-  {
-    "label_and_type": "2,2'-dibenzothiazyl disulfide##label",
-    "concept_id": "drugbank:db14201",
-    "src_name": "DrugBank"
-  },
-  {
-    "label_and_type": "t.r.u.e. test thin-layer rapid use patch test##trade_name",
-    "concept_id": "drugbank:db14201",
-    "src_name": "DrugBank"
+    "label_and_type": "aloe ferox leaf##label",
+    "item_type": "label",
+    "src_name": "DrugBank",
+    "concept_id": "drugbank:db14257"
   },
   {
     "label_and_type": "wikidata:q412415##identity",

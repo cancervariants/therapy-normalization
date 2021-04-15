@@ -40,12 +40,13 @@ def cisplatin():
             'cis-diamminedichloroplatinum(II)',
             'Cisplatin',
             'APRD00359',
-            'cisplatino'
+            'cisplatino',
         ],
         'other_identifiers': [
             'chemidplus:15663-27-1',
         ],
         'trade_names': [],
+        'xrefs': [],
     }
     return Drug(**params)
 
@@ -59,36 +60,38 @@ def bentiromide():
         'aliases': [
             'APRD00818',
             'Bentiromide',
+            'Bentiromido',
+            'Bentiromidum',
             'BTPABA',
             'PFT',
-            'PFD'
         ],
         'other_identifiers': [
             'chemidplus:37106-97-1',
         ],
         'trade_names': [],
+        'xrefs': [],
+    }
+    return Drug(**params)
+
+
+@pytest.fixture(scope='module')
+def aloe_ferox_leaf():
+    """Create aloe ferox leaf fixture."""
+    params = {
+        'concept_id': 'drugbank:DB14257',
+        'label': 'Aloe ferox leaf',
+        'aliases': [],
+        'other_identifiers': [],
+        'trade_names': [],
+        'xrefs': [],
     }
     return Drug(**params)
 
 
 # Tests filtering on aliases and trade_names length
-@pytest.fixture(scope='module')
-def db14201():
-    """Create a db14201 drug fixture."""
-    params = {
-        'label': '2,2\'-Dibenzothiazyl disulfide',
-        'concept_id': 'drugbank:DB14201',
-        'aliases': [],
-        'approval_status': 'approved',
-        'other_identifiers': [
-            'chemidplus:120-78-5',
-        ],
-        'trade_names': [],
-    }
-    return Drug(**params)
+# TODO find another example
 
-
-def test_concept_id_match(drugbank, cisplatin, bentiromide, db14201):
+def test_concept_id_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
     """Test that concept ID query resolves to correct record."""
     response = drugbank.search('drugbank:DB00515')
     compare_response(response, cisplatin, MatchType.CONCEPT_ID)
@@ -120,23 +123,11 @@ def test_concept_id_match(drugbank, cisplatin, bentiromide, db14201):
     response = drugbank.search('druGBank:DB00522')
     compare_response(response, bentiromide, MatchType.CONCEPT_ID)
 
-    response = drugbank.search('drugbank:DB14201')
-    compare_response(response, db14201, MatchType.CONCEPT_ID)
-
-    response = drugbank.search('DB14201')
-    compare_response(response, db14201, MatchType.CONCEPT_ID)
-
-    response = drugbank.search('drugbank:db14201')
-    compare_response(response, db14201, MatchType.CONCEPT_ID)
-
-    response = drugbank.search('Drugbank:db14201')
-    compare_response(response, db14201, MatchType.CONCEPT_ID)
-
-    response = drugbank.search('druGBank:DB14201')
-    compare_response(response, db14201, MatchType.CONCEPT_ID)
+    response = drugbank.search('drugbank:DB14257')
+    compare_response(response, aloe_ferox_leaf, MatchType.CONCEPT_ID)
 
 
-def test_label_match(drugbank, cisplatin, bentiromide, db14201):
+def test_label_match(drugbank, cisplatin, bentiromide):
     """Test that label query resolves to correct record."""
     response = drugbank.search('cisplatin')
     compare_response(response, cisplatin, MatchType.LABEL)
@@ -150,11 +141,8 @@ def test_label_match(drugbank, cisplatin, bentiromide, db14201):
     response = drugbank.search('bentiromide')
     compare_response(response, bentiromide, MatchType.LABEL)
 
-    response = drugbank.search("2,2'-Dibenzothiazyl disulfide")
-    compare_response(response, db14201, MatchType.LABEL)
-
-    response = drugbank.search('2,2\'-dibenzothiazyl disulfide')
-    compare_response(response, db14201, MatchType.LABEL)
+    response = drugbank.search('aloe ferox leaf')
+    compare_response(response, aloe_ferox_leaf, MatchType.LABEL)
 
 
 def test_alias_match(drugbank, cisplatin, bentiromide):
@@ -177,13 +165,24 @@ def test_alias_match(drugbank, cisplatin, bentiromide):
     response = drugbank.search('PFT')
     compare_response(response, bentiromide, MatchType.ALIAS)
 
+    # verify aliases > 20 not stored
+    response = drugbank.search('aloe ferox leaf')
+    compare_response(response, aloe_ferox_leaf, MatchType.LABEL)
 
-def test_other_id_match(drugbank, cisplatin, bentiromide, db14201):
+    response = drugbank.search('Aloe Capensis')
+    compare_response(response, aloe_ferox_leaf, MatchType.LABEL)
+
+    response = drugbank.search('Aloe Ferox Juice')
+    compare_response(response, aloe_ferox_leaf, MatchType.LABEL)
+
+
+def test_other_id_match(drugbank, cisplatin, bentiromide):
     """Test that other_id query resolves to correct record."""
+    response = drugbank.search('chemidplus:15663-27-1')
+    compare_response(response, cisplatin, MatchType.OTHER_ID)
+
     response = drugbank.search('chemidplus:37106-97-1')
     compare_response(response, bentiromide, MatchType.OTHER_ID)
-
-    # TODO more
 
 
 def test_no_match(drugbank):
@@ -191,11 +190,6 @@ def test_no_match(drugbank):
     response = drugbank.search('lepirudi')
     assert response['match_type'] == MatchType.NO_MATCH
     assert len(response['records']) == 0
-
-    # Polish alias for DB14201
-    response = drugbank.search('Dwusiarczek dwubenzotiazylu')
-    assert response['match_type'] == \
-           MatchType.NO_MATCH
 
     # Test white space in between id
     response = drugbank.search('DB 00001')
