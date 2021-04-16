@@ -1,7 +1,8 @@
 """Provide ETL methods for HemOnc.org data."""
 from therapy import DownloadException
 from therapy.etl.base import Base
-from therapy.schemas import NamespacePrefix, SourceMeta, SourceName
+from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, Therapy,\
+    ApprovalStatus
 from pathlib import Path
 from typing import List
 import csv
@@ -82,12 +83,13 @@ class HemOnc(Base):
 
     def _transform_data(self):
         """Prepare dataset for loading into normalizer database."""
-        concepts = {}  # concept id -> record
+        concepts = {}  # hemonc id -> record
         brand_names = {}  # hemonc id -> brand name
 
         concepts_file = open(self._src_files[0], 'r')
         concepts_reader = csv.reader(concepts_file)
         next(concepts_reader)  # skip header
+        unknown_types = set()  # TODO remove
         for row in concepts_reader:
             if row[6]:
                 logger.warning(f"Invalid row: {row}]")
@@ -96,31 +98,59 @@ class HemOnc(Base):
             row_type = row[2]
             if row_type == 'Component':
                 concept_id = f'{NamespacePrefix.HEMONC.value}:{row[3]}'
-                concepts[concept_id] = {'label': row[0]}
+                concepts[row[3]] = {
+                    'concept_id': concept_id,
+                    'label': row[0],
+                    'trade_names': [],
+                    'aliases': [],
+                    'other_identifiers': [],
+                    'xrefs': [],
+                }
             elif row_type == 'Brand Name':
                 brand_names[row[3]] = row[0]
+            else:
+                unknown_types.add(row_type)  # TODO remove
         concepts_file.close()
 
         rels_file = open(self._src_files[1], 'r')
         rels_reader = csv.reader(rels_file)
         next(rels_reader)
+        unknown_relations = set()  # TODO remove
         for row in rels_reader:
             rel_type = row[4]
+            hemonc_id = row[0]
+            if hemonc_id not in concepts:
+                continue  # skip non-drug items
             if rel_type == "Maps to":
-                # other id/xref
-                pass
+                src_raw = row[3]
+                if src_raw == "RxNorm":
+                    other_id = f'{SourceName.RXNORM.value}:{row[1]}'
+                    concepts[hemonc_id]['other_identifiers'].append(other_id)
+                else:
+                    logger.debug(f"Invalid source: {src_raw}")
             elif rel_type == "Was FDA approved yr":
-                # approval status
-                pass
+                status = ApprovalStatus.APPROVED
+                concepts[hemonc_id]['approval_status'] = status
             elif rel_type == "Has brand name":
-                # trade name
-                pass
-
+                concepts[hemonc_id]['trade_names'].append(brand_names[row[1]])
+            else:
+                unknown_relations.add(rel_type)  # TESTING TODO
         rels_file.close()
+
         synonyms_file = open(self._src_files[2], 'r')
         synonyms_reader = csv.reader(synonyms_file)
         next(synonyms_reader)
         for row in synonyms_reader:
-            pass
+            concept_code = row[1]
+            if concept_code in concepts:
+                concepts[concept_code]['aliases'].append(row[0])
+        synonyms_file.close()
 
         # load therapy for each in concepts
+        for therapy in concepts.values():
+            assert Therapy(**therapy)
+            self._load_therapy(therapy)
+
+        # TODO debugging remove
+        logger.debug(f"Unknown concept types: {unknown_types}")
+        logger.debug(f"Unknown concept relations: {unknown_relations}")
