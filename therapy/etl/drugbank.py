@@ -74,6 +74,24 @@ class DrugBank(Base):
         shutil.rmtree(temp_dir)
         logger.info("DrugBank source data download complete.")
 
+    def _load_meta(self):
+        """Add DrugBank metadata."""
+        meta = {
+            'data_license': 'CC0 1.0',
+            'data_license_url': 'https://creativecommons.org/publicdomain/zero/1.0/',  # noqa: E501
+            'version': self._version,
+            'data_url': 'https://go.drugbank.com/releases/latest#open-data',
+            'rdp_url': 'http://reusabledata.org/drugbank.html',
+            'data_license_attributes': {
+                'non_commercial': False,
+                'share_alike': False,
+                'attribution': False,
+            },
+        }
+        assert SourceMeta(**meta)
+        meta['src_name'] = SourceName.DRUGBANK.value
+        self.database.metadata.put_item(Item=meta)
+
     def _transform_data(self):
         """Transform the DrugBank source."""
         with open(self._src_file, 'r') as file:
@@ -98,21 +116,3 @@ class DrugBank(Base):
                     ]
                 assert Therapy(**params)
                 self._load_therapy(params)
-
-    def _load_meta(self):
-        """Add DrugBank metadata."""
-        meta = {
-            'data_license': 'CC0 1.0',
-            'data_license_url': 'https://creativecommons.org/publicdomain/zero/1.0/',  # noqa: E501
-            'version': self._version,
-            'data_url': 'https://go.drugbank.com/releases/latest#open-data',
-            'rdp_url': 'http://reusabledata.org/drugbank.html',
-            'data_license_attributes': {
-                'non_commercial': False,
-                'share_alike': False,
-                'attribution': False,
-            },
-        }
-        assert SourceMeta(**meta)
-        meta['src_name'] = SourceName.DRUGBANK.value
-        self.database.metadata.put_item(Item=meta)
