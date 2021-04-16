@@ -33,7 +33,6 @@ class Base(ABC):
         """
         raise NotImplementedError
 
-    @abstractmethod
     def _download_data(self, *args, **kwargs):
         raise NotImplementedError
 
