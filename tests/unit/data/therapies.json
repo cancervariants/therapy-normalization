@@ -1631,5 +1631,30 @@
     "concept_id": "drugbank:DB01174",
     "item_type": "other_id",
     "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "drugbank:db01143##identity",
+    "src_name": "DrugBank",
+    "item_type": "identity",
+    "concept_id": "drugbank:DB01143",
+    "label": "Amifostine",
+    "aliases": [
+      "APRD00021",
+      "Amifostina",
+      "Amifostine",
+      "Amifostine anhydrous",
+      "Amifostinum",
+      "Aminopropylaminoethyl thiophosphate"
+    ],
+    "other_identifiers": ["chemidplus:20537-88-6"],
+    "xrefs": [],
+    "approval_status": null,
+    "trade_names": []
+  },
+  {
+    "label_and_type": "chemidplus:20537-88-6##other_id",
+    "src_name": "DrugBank",
+    "item_type": "other_id",
+    "concept_id": "drugbank:DB01143"
   }
 ]

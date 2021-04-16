@@ -323,7 +323,9 @@ def record_id_groups():
 
 
 def test_create_record_id_set(merge_handler, record_id_groups):
-    """Test creation of record ID sets."""
+    """Test creation of record ID sets. Queries DB and matches against
+    record_id_groups fixture.
+    """
     for record_id in record_id_groups.keys():
         new_group = merge_handler.create_record_id_set(record_id)
         for concept_id in new_group:
