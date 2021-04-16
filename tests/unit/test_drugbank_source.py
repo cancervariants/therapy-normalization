@@ -156,9 +156,6 @@ def test_alias_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
     response = drugbank.search('APRD00818')
     compare_response(response, bentiromide, MatchType.ALIAS)
 
-    response = drugbank.search('pfd')
-    compare_response(response, bentiromide, MatchType.ALIAS)
-
     response = drugbank.search('PFT')
     compare_response(response, bentiromide, MatchType.ALIAS)
 
