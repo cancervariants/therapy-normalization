@@ -221,7 +221,7 @@ class Wikidata(Base):
                         'src_name': SourceName.NCIT.value,
                         'item_type': field_type
                     })
-            else:
+            elif field in item:
                 del item[field]
 
         batch.put_item(Item=item)
