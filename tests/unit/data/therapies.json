@@ -129,7 +129,8 @@
       "PFT"
     ],
     "other_identifiers": ["chemidplus:37106-97-1"],
-    "src_name": "DrugBank"
+    "src_name": "DrugBank",
+    "merge_ref": "rxcui:18896"
   },
   {
     "label_and_type": "pharmgkb.drug:pa164750572##xref",

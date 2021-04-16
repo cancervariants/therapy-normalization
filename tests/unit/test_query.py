@@ -46,11 +46,12 @@ def phenobarbital():
             "type": "Therapy",
             "id": "rxcui:8134"
         },
-        "label": "Phenobarbital",
+        "label": "phenobarbital",
         "xrefs": [
             "ncit:C739",
+            "drugbank:DB01174",
             "chemidplus:50-06-6",
-            "wikidata:Q407241"
+            "wikidata:Q407241",
         ],
         "alternate_labels": [
             '5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione',
@@ -59,7 +60,9 @@ def phenobarbital():
             '5-Phenyl-5-ethylbarbituric acid',
             '5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione',
             '5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione',
+            'APRD00184',
             'Acid, Phenylethylbarbituric',
+            'Fenobarbital',
             'Luminal®',
             'PHENO',
             'PHENOBARBITAL',
@@ -67,8 +70,6 @@ def phenobarbital():
             'PHENobarbital',
             'Phenemal',
             'Phenobarbital',
-            'Phenobarbital (substance)',
-            'Phenobarbital-containing product',
             'Phenobarbitol',
             'Phenobarbitone',
             'Phenobarbituric Acid',
@@ -77,8 +78,9 @@ def phenobarbital():
             'Phenylethylbarbiturate',
             'Phenylethylbarbituric Acid',
             'Phenylethylbarbitursaeure',
+            'Phenylethylbarbitursäure',
             'Phenylethylmalonylurea',
-            'Product containing phenobarbital (medicinal product)',
+            'Phenyläthylbarbitursäure',
             'fenobarbital',
             'phenobarbital',
             'phenobarbital sodium',
@@ -91,15 +93,11 @@ def phenobarbital():
                 "value": [
                     "pubchem.compound:4763",
                     "usp:m63400",
-                    "gsddb:2179",
-                    "snomedct:51073002",
                     "vandf:4017422",
                     "mmsl:2390",
-                    "msh:D010634",
-                    "snomedct:373505007",
+                    "mesh:D010634",
                     "mmsl:5272",
                     "mthspl:YQE403BP4D",
-                    "fdbmk:001406",
                     "mmsl:d00340",
                     "atc:N03AA02",
                     "fda:YQE403BP4D",
@@ -107,14 +105,6 @@ def phenobarbital():
                     "chebi:CHEBI:8069"
                 ]
             },
-            {
-                "type": "Extension",
-                "name": "trade_names",
-                "value": [
-                    "Phenobarbital",
-                ],
-
-            }
         ]
     }
 
@@ -132,12 +122,14 @@ def cisplatin():
         "label": "cisplatin",
         "xrefs": [
             "ncit:C376",
+            "drugbank:DB00515",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001"
         ],
         "alternate_labels": [
             '1,2-Diaminocyclohexaneplatinum II citrate',
+            'APRD00359',
             'CDDP',
             'CISplatin',
             'Cis-DDP',
@@ -155,7 +147,8 @@ def cisplatin():
             'cis-Platinum',
             'cis-diamminedichloroplatinum(II)',
             'Platinol-AQ',
-            'Platinol'
+            'Platinol',
+            'cisplatino',
         ],
         "extensions": [
             {

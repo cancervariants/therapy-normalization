@@ -78,7 +78,7 @@ def phenobarbital_merged():
             'PHENOBARBITAL',
             'PHENobarbital',
             'Phenobarbital',
-            'henobarbital (substance)',
+            'Phenobarbital (substance)',
             'Phenobarbital-containing product',
             'Phenobarbitol',
             'Phenobarbitone',
@@ -88,6 +88,7 @@ def phenobarbital_merged():
             'Phenylethylbarbiturate',
             'Phenylethylbarbituric Acid',
             'Phenylethylbarbitursaeure',
+            'Phenyläthylbarbitursäure',
             'Phenylethylbarbitursäure',
             'PHENYLETHYLMALONYLUREA',
             'Phenylethylmalonylurea',
@@ -117,7 +118,6 @@ def phenobarbital_merged():
 
         ],
         "label": "Phenobarbital",
-        "trade_names": [],
     }
 
 
@@ -143,6 +143,7 @@ def cisplatin_merged():
             'APRD00359',
             'CDDP',
             'CISplatin',
+            'Cisplatin',
             'Cis-DDP',
             'CIS-DDP',
             'DDP',
@@ -204,7 +205,6 @@ def spiramycin_merged():
             "umls:C0037962",
             "fda:71ODY0V87H",
         ],
-        "trade_names": [],
     }
 
 
