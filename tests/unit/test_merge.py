@@ -78,7 +78,7 @@ def phenobarbital_merged():
             'PHENOBARBITAL',
             'PHENobarbital',
             'Phenobarbital',
-            'Phenobarbital (substance)',
+            'henobarbital (substance)',
             'Phenobarbital-containing product',
             'Phenobarbitol',
             'Phenobarbitone',

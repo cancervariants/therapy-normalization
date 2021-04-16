@@ -1084,7 +1084,6 @@
       "atc:N03AA02"
     ],
     "approval_status": null,
-    "trade_names": ["Phenobarbital"],
     "src_name": "RxNorm",
     "merge_ref": "rxcui:8134"
   },
