@@ -1596,5 +1596,40 @@
     "label_and_type": "drugbank:db00619##other_id",
     "src_name": "ChemIDplus",
     "concept_id": "chemidplus:220127-57-1"
+  },
+  {
+    "label_and_type": "drugbank:db01174##identity",
+    "src_name": "DrugBank",
+    "item_type": "identity",
+    "concept_id": "drugbank:DB01174",
+    "label": "Phenobarbital",
+    "aliases": [
+      "APRD00184",
+      "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+      "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
+      "5-Ethyl-5-phenylbarbituric acid",
+      "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
+      "5-Phenyl-5-ethylbarbituric acid",
+      "Fenobarbital",
+      "Phenobarbital",
+      "Phenobarbitol",
+      "Phenobarbitone",
+      "Phenobarbituric Acid",
+      "Phenyläthylbarbitursäure",
+      "Phenylethylbarbiturate",
+      "Phenylethylbarbituric Acid",
+      "Phenylethylbarbitursäure",
+      "Phenylethylmalonylurea"
+    ],
+    "other_identifiers": ["chemidplus:50-06-6"],
+    "xrefs": [],
+    "approval_status": null,
+    "trade_names": []
+  },
+  {
+    "label_and_type": "chemidplus:50-06-6##other_id",
+    "concept_id": "drugbank:DB01174",
+    "item_type": "other_id",
+    "src_name": "DrugBank"
   }
 ]

@@ -127,7 +127,7 @@ def test_concept_id_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
     compare_response(response, aloe_ferox_leaf, MatchType.CONCEPT_ID)
 
 
-def test_label_match(drugbank, cisplatin, bentiromide):
+def test_label_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
     """Test that label query resolves to correct record."""
     response = drugbank.search('cisplatin')
     compare_response(response, cisplatin, MatchType.LABEL)
@@ -145,7 +145,7 @@ def test_label_match(drugbank, cisplatin, bentiromide):
     compare_response(response, aloe_ferox_leaf, MatchType.LABEL)
 
 
-def test_alias_match(drugbank, cisplatin, bentiromide):
+def test_alias_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
     """Test that alias query resolves to correct record."""
     response = drugbank.search('CISPLATINO')
     compare_response(response, cisplatin, MatchType.ALIAS)
