@@ -582,7 +582,8 @@
   {
     "label_and_type": "align##trade_name",
     "concept_id": "rxcui:100213",
-    "src_name": "RxNorm"
+    "src_name": "RxNorm",
+    "item_type": "trade_name"
   },
   {
     "label_and_type": "evivo##trade_name",

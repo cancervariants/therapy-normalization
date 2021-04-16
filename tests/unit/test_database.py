@@ -76,7 +76,7 @@ def test_item_type(db):
     assert 'item_type' in item
     assert item['item_type'] == 'rx_brand'
 
-    filter_exp = Key('label_and_type').eq('pms-cisplatin##trade_name')
+    filter_exp = Key('label_and_type').eq('align##trade_name')
     item = db.therapies.query(KeyConditionExpression=filter_exp)['Items'][0]
     assert 'item_type' in item
     assert item['item_type'] == 'trade_name'
