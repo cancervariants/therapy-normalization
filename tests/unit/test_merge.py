@@ -269,7 +269,7 @@ def record_id_groups():
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
-            "wikidata:Q47522001"
+            "wikidata:Q47522001",
             "drugbank:DB00515"
         },
         "ncit:C376": {
@@ -277,7 +277,7 @@ def record_id_groups():
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
-            "wikidata:Q47522001"
+            "wikidata:Q47522001",
             "drugbank:DB00515"
         },
         "wikidata:Q412415": {
@@ -285,7 +285,7 @@ def record_id_groups():
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
-            "wikidata:Q47522001"
+            "wikidata:Q47522001",
             "drugbank:DB00515"
         },
         "wikidata:Q47522001": {
@@ -293,7 +293,7 @@ def record_id_groups():
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
-            "wikidata:Q47522001"
+            "wikidata:Q47522001",
             "drugbank:DB00515"
         },
         "drugbank:DB00515": {
@@ -301,7 +301,7 @@ def record_id_groups():
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
-            "wikidata:Q47522001"
+            "wikidata:Q47522001",
             "drugbank:DB00515"
         },
         "rxcui:4126": {
