@@ -120,6 +120,7 @@ class SourcePriority(IntEnum):
 
     RXNORM = 1
     NCIT = 2
+    DRUGBANK = 3
     CHEMIDPLUS = 5
     WIKIDATA = 6
 

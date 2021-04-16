@@ -58,6 +58,7 @@ def phenobarbital_merged():
         "concept_id": "rxcui:8134",
         "other_ids": [
             "ncit:C739",
+            "drugbank:DB01174",
             "chemidplus:50-06-6",
             "wikidata:Q407241"
         ],
@@ -69,12 +70,13 @@ def phenobarbital_merged():
             '5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione',
             '5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione',
             'Acid, Phenylethylbarbituric',
+            'APRD00184',
+            'Fenobarbital',
             'Luminal®',
             'PHENO',
-            'PHENOBARBITAL',
-            'PHENYLETHYLMALONYLUREA',
-            'PHENobarbital',
             'Phenemal',
+            'PHENOBARBITAL',
+            'PHENobarbital',
             'Phenobarbital',
             'Phenobarbital (substance)',
             'Phenobarbital-containing product',
@@ -86,6 +88,8 @@ def phenobarbital_merged():
             'Phenylethylbarbiturate',
             'Phenylethylbarbituric Acid',
             'Phenylethylbarbitursaeure',
+            'Phenylethylbarbitursäure',
+            'PHENYLETHYLMALONYLUREA',
             'Phenylethylmalonylurea',
             'Product containing phenobarbital (medicinal product)',
             'fenobarbital',
@@ -127,6 +131,7 @@ def cisplatin_merged():
         "concept_id": "rxcui:2555",
         "other_ids": [
             "ncit:C376",
+            "drugbank:DB00515",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001"
@@ -137,6 +142,7 @@ def cisplatin_merged():
         ],
         "aliases": [
             '1,2-Diaminocyclohexaneplatinum II citrate',
+            'APRD00359',
             'CDDP',
             'CISplatin',
             'Cis-DDP',
@@ -149,9 +155,11 @@ def cisplatin_merged():
             'cis Platinum',
             'cis-Diaminedichloroplatinum',
             'cis-Diamminedichloroplatinum',
+            'cis-diamminedichloroplatinum(II)',
             'cis-Diamminedichloroplatinum(II)',
             'cis-Dichlorodiammineplatinum(II)',
             'cis-Platinum',
+            'cisplatino',
             'cis-diamminedichloroplatinum(II)',
             'Platinol-AQ',
             'Platinol'
@@ -181,7 +189,10 @@ def spiramycin_merged():
     return {
         "label_and_type": "ncit:c839##merger",
         "concept_id": "ncit:C839",
-        "other_ids": ["chemidplus:8025-81-8"],
+        "other_ids": [
+            'chemidplus:8025-81-8',
+            'wikidata:Q422265'
+        ],
         "label": "Spiramycin",
         "aliases": [
             "SPIRAMYCIN",
@@ -190,10 +201,13 @@ def spiramycin_merged():
             "Provamycin",
             "Rovamycine",
             "RP 5337",
-            "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"],  # noqa: E501
+            "spiramycin I",
+            "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"  # noqa: E501
+        ],
         "xrefs": [
             "umls:C0037962",
             "fda:71ODY0V87H",
+            "pubchem.compound:5356392",
         ],
     }
 
@@ -202,44 +216,63 @@ def spiramycin_merged():
 def record_id_groups():
     """Create fixture for concept group sets."""
     return {
-        "chemidplus:50-06-6": {
+        "drugbank:DB01174": {
             "rxcui:8134",
             "ncit:C739",
             "chemidplus:50-06-6",
             "wikidata:Q407241",
-        },
-        "ncit:C739": {
-            "rxcui:8134",
-            "ncit:C739",
-            "chemidplus:50-06-6",
-            "wikidata:Q407241",
-        },
-        "ncit:C839": {
-            "ncit:C839",
-            "chemidplus:8025-81-8",
+            "drugbank:DB01174"
         },
         "rxcui:8134": {
             "rxcui:8134",
             "ncit:C739",
             "chemidplus:50-06-6",
             "wikidata:Q407241",
+            "drugbank:DB01174"
+        },
+        "chemidplus:50-06-6": {
+            "rxcui:8134",
+            "ncit:C739",
+            "chemidplus:50-06-6",
+            "wikidata:Q407241",
+            "drugbank:DB01174"
+        },
+        "ncit:C739": {
+            "rxcui:8134",
+            "ncit:C739",
+            "chemidplus:50-06-6",
+            "wikidata:Q407241",
+            "drugbank:DB01174"
         },
         "wikidata:Q407241": {
             "rxcui:8134",
             "ncit:C739",
             "chemidplus:50-06-6",
             "wikidata:Q407241",
+            "drugbank:DB01174"
+        },
+        "chemidplus:8025-81-8": {
+            "ncit:C839",
+            "chemidplus:8025-81-8",
+            "wikidata:Q422265"
+        },
+        "ncit:C839": {
+            "ncit:C839",
+            "chemidplus:8025-81-8",
+            "wikidata:Q422265"
+        },
+        "wikidata:Q422265": {
+            "ncit:C839",
+            "chemidplus:8025-81-8",
+            "wikidata:Q422265"
         },
         "chemidplus:15663-27-1": {
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
-            "wikidata:Q47522001"
-        },
-        "chemidplus:8025-81-8": {
-            "ncit:C839",
-            "chemidplus:8025-81-8",
+            "wikidata:Q47522001",
+            "drugbank:DB00515"
         },
         "rxcui:2555": {
             "rxcui:2555",
@@ -247,6 +280,7 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001"
+            "drugbank:DB00515"
         },
         "ncit:C376": {
             "rxcui:2555",
@@ -254,6 +288,7 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001"
+            "drugbank:DB00515"
         },
         "wikidata:Q412415": {
             "rxcui:2555",
@@ -261,6 +296,7 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001"
+            "drugbank:DB00515"
         },
         "wikidata:Q47522001": {
             "rxcui:2555",
@@ -268,14 +304,30 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001"
+            "drugbank:DB00515"
+        },
+        "drugbank:DB00515": {
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415",
+            "wikidata:Q47522001"
+            "drugbank:DB00515"
         },
         "rxcui:4126": {
             "rxcui:4126",
-            "wikidata:Q47521576"
+            "wikidata:Q47521576",
+            "drugbank:DB01143"
         },
         "wikidata:Q47521576": {
             "rxcui:4126",
-            "wikidata:Q47521576"
+            "wikidata:Q47521576",
+            "drugbank:DB01143"
+        },
+        "drugbank:DB01143": {
+            "rxcui:4126",
+            "wikidata:Q47521576",
+            "drugbank:DB01143"
         },
     }
 

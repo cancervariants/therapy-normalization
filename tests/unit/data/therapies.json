@@ -1287,6 +1287,7 @@
     "concept_id": "rxcui:2555",
     "other_ids": [
       "ncit:C376",
+      "drugbank:DB00515",
       "chemidplus:15663-27-1",
       "wikidata:Q412415",
       "wikidata:Q47522001"
@@ -1294,6 +1295,7 @@
     "trade_names": ["Cisplatin", "Platinol"],
     "aliases": [
       "1,2-Diaminocyclohexaneplatinum II citrate",
+      "APRD00359",
       "CDDP",
       "CISplatin",
       "Cis-DDP",
@@ -1306,9 +1308,11 @@
       "cis Platinum",
       "cis-Diaminedichloroplatinum",
       "cis-Diamminedichloroplatinum",
+      "cis-diamminedichloroplatinum(II)",
       "cis-Diamminedichloroplatinum(II)",
       "cis-Dichlorodiammineplatinum(II)",
       "cis-Platinum",
+      "cisplatino",
       "cis-diamminedichloroplatinum(II)",
       "Platinol-AQ",
       "Platinol"
@@ -1332,7 +1336,7 @@
     "label_and_type": "ncit:c839##merger",
     "item_type": "merger",
     "concept_id": "ncit:C839",
-    "other_ids": ["chemidplus:8025-81-8"],
+    "other_ids": ["chemidplus:8025-81-8", "wikidata:Q422265"],
     "label": "Spiramycin",
     "aliases": [
       "SPIRAMYCIN",
@@ -1341,9 +1345,10 @@
       "Provamycin",
       "Rovamycine",
       "RP 5337",
+      "spiramycin I",
       "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"
     ],
-    "xrefs": ["umls:C0037962", "fda:71ODY0V87H"]
+    "xrefs": ["umls:C0037962", "fda:71ODY0V87H", "pubchem.compound:5356392"]
   },
   {
     "label_and_type": "ncit:c107245##identity",
