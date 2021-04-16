@@ -163,14 +163,11 @@ def test_alias_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
     compare_response(response, bentiromide, MatchType.ALIAS)
 
     # verify aliases > 20 not stored
-    response = drugbank.search('aloe ferox leaf')
-    compare_response(response, aloe_ferox_leaf, MatchType.LABEL)
-
     response = drugbank.search('Aloe Capensis')
-    compare_response(response, aloe_ferox_leaf, MatchType.LABEL)
+    assert response['match_type'] == MatchType.NO_MATCH
 
     response = drugbank.search('Aloe Ferox Juice')
-    compare_response(response, aloe_ferox_leaf, MatchType.LABEL)
+    assert response['match_type'] == MatchType.NO_MATCH
 
 
 def test_other_id_match(drugbank, cisplatin, bentiromide):

@@ -191,7 +191,6 @@ def spiramycin_merged():
         "concept_id": "ncit:C839",
         "other_ids": [
             'chemidplus:8025-81-8',
-            'wikidata:Q422265'
         ],
         "label": "Spiramycin",
         "aliases": [
@@ -201,13 +200,11 @@ def spiramycin_merged():
             "Provamycin",
             "Rovamycine",
             "RP 5337",
-            "spiramycin I",
             "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"  # noqa: E501
         ],
         "xrefs": [
             "umls:C0037962",
             "fda:71ODY0V87H",
-            "pubchem.compound:5356392",
         ],
     }
 
@@ -254,17 +251,10 @@ def record_id_groups():
         "chemidplus:8025-81-8": {
             "ncit:C839",
             "chemidplus:8025-81-8",
-            "wikidata:Q422265"
         },
         "ncit:C839": {
             "ncit:C839",
             "chemidplus:8025-81-8",
-            "wikidata:Q422265"
-        },
-        "wikidata:Q422265": {
-            "ncit:C839",
-            "chemidplus:8025-81-8",
-            "wikidata:Q422265"
         },
         "chemidplus:15663-27-1": {
             "rxcui:2555",

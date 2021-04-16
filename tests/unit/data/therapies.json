@@ -1126,16 +1126,17 @@
     "merge_ref": "rxcui:8134"
   },
   {
-    "label": "Spiramycin",
     "label_and_type": "chemidplus:8025-81-8##identity",
+    "src_name": "ChemIDplus",
+    "merge_ref": "ncit:c839",
+    "item_type": "identity",
+    "label": "Spiramycin",
     "concept_id": "chemidplus:8025-81-8",
     "aliases": [],
     "other_identifiers": [],
     "xrefs": ["fda:71ODY0V87H"],
     "approval_status": null,
-    "trade_names": [],
-    "src_name": "ChemIDplus",
-    "merge_ref": "ncit:c839"
+    "trade_names": []
   },
   {
     "label": "phenobarbital",
@@ -1337,7 +1338,7 @@
     "label_and_type": "ncit:c839##merger",
     "item_type": "merger",
     "concept_id": "ncit:C839",
-    "other_ids": ["chemidplus:8025-81-8", "wikidata:Q422265"],
+    "other_ids": ["chemidplus:8025-81-8"],
     "label": "Spiramycin",
     "aliases": [
       "SPIRAMYCIN",
@@ -1346,7 +1347,6 @@
       "Provamycin",
       "Rovamycine",
       "RP 5337",
-      "spiramycin I",
       "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"
     ],
     "xrefs": ["umls:C0037962", "fda:71ODY0V87H", "pubchem.compound:5356392"]
