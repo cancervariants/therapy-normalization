@@ -116,7 +116,8 @@ def phenobarbital_merged():
             "chebi:CHEBI:8069"
 
         ],
-        "label": "Phenobarbital"
+        "label": "Phenobarbital",
+        "trade_names": [],
     }
 
 
@@ -203,6 +204,7 @@ def spiramycin_merged():
             "umls:C0037962",
             "fda:71ODY0V87H",
         ],
+        "trade_names": [],
     }
 
 
