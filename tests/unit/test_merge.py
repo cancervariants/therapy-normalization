@@ -97,9 +97,6 @@ def phenobarbital_merged():
             'phenobarbital sodium',
             'phenylethylbarbiturate'
         ],
-        "trade_names": [
-            "Phenobarbital",
-        ],
         "xrefs": [
             "pubchem.compound:4763",
             "usp:m63400",
