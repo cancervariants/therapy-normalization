@@ -1653,5 +1653,153 @@
     "src_name": "DrugBank",
     "item_type": "other_id",
     "concept_id": "drugbank:DB01143"
+  },
+  {
+    "label_and_type": "hemonc:105##identity",
+    "item_type": "identity",
+    "src_name": "HemOnc",
+    "concept_id": "hemonc:105",
+    "label": "Cisplatin",
+    "aliases": [
+      "cis-diamminedichloroplatinum III",
+      "DDP",
+      "cisplatinum",
+      "cis-platinum",
+      "DACP",
+      "NSC 119875",
+      "CDDP"
+    ],
+    "other_identifiers": ["RxNorm:2555"],
+    "xrefs": [],
+    "approval_status": "approved",
+    "trade_names": []
+  },
+  {
+    "label_and_type": "nsc 119875##alias",
+    "concept_id": "hemonc:65",
+    "item_type": "alias",
+    "src_name": "HemOnc"
+  },
+  {
+    "label_and_type": "dacp##alias",
+    "concept_id": "hemonc:65",
+    "item_type": "alias",
+    "src_name": "HemOnc"
+  },
+  {
+    "label_and_type": "ddp##alias",
+    "concept_id": "hemonc:65",
+    "item_type": "alias",
+    "src_name": "HemOnc"
+  },
+  {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "hemonc:65",
+    "item_type": "label",
+    "src_name": "HemOnc"
+  },
+  {
+    "label_and_type": "hemonc:65##identity",
+    "item_type": "identity",
+    "src_name": "HemOnc",
+    "merge_ref": "hemonc:65",
+    "concept_id": "hemonc:65",
+    "label": "Bendamustine",
+    "aliases": [
+      "CEP-18083",
+      "cytostasan hydrochloride",
+      "SyB L-0501",
+      "SDX-105",
+      "bendamustine hydrochloride",
+      "bendamustin hydrochloride"
+    ],
+    "other_identifiers": ["RxNorm:134547"],
+    "xrefs": [],
+    "approval_status": "approved",
+    "trade_names": [
+      "Bendamax",
+      "Bendawel",
+      "Bendeka",
+      "Bendit",
+      "Innomustine",
+      "Leuben",
+      "Levact",
+      "Maxtorin",
+      "MyMust",
+      "Purplz",
+      "Ribomustin",
+      "Treakisym",
+      "Treanda",
+      "Xyotin"
+    ]
+  },
+  {
+    "label_and_type": "rxnorm:134547##other_id",
+    "concept_id": "hemonc:65",
+    "item_type": "other_id",
+    "src_name": "HemOnc"
+  },
+  {
+    "label_and_type": "purplz##trade_name",
+    "concept_id": "hemonc:65",
+    "item_type": "trade_name",
+    "src_name": "HemOnc"
+  },
+  {
+    "label_and_type": "bendamax##trade_name",
+    "concept_id": "hemonc:65",
+    "item_type": "trade_name",
+    "src_name": "HemOnc"
+  },
+  {
+    "label_and_type": "bendamustine hydrochloride##alias",
+    "concept_id": "hemonc:65",
+    "item_type": "alias",
+    "src_name": "HemOnc"
+  },
+  {
+    "label_and_type": "cep-18083##alias",
+    "concept_id": "hemonc:65",
+    "item_type": "alias",
+    "src_name": "HemOnc"
+  },
+  {
+    "label_and_type": "bendamustine##label",
+    "concept_id": "hemonc:65",
+    "item_type": "label",
+    "src_name": "HemOnc"
+  },
+  {
+    "label_and_type": "hemonc:65##merger",
+    "item_type": "merger",
+    "concept_id": "hemonc:65",
+    "label": "Bendamustine",
+    "aliases": [
+      "CEP-18083",
+      "cytostasan hydrochloride",
+      "SyB L-0501",
+      "SDX-105",
+      "bendamustine hydrochloride",
+      "bendamustin hydrochloride"
+    ],
+    "other_identifiers": ["RxNorm:134547"],
+    "xrefs": [],
+    "approval_status": "approved",
+    "trade_names": [
+      "Bendamax",
+      "Bendawel",
+      "Bendeka",
+      "Bendit",
+      "Innomustine",
+      "Leuben",
+      "Levact",
+      "Maxtorin",
+      "MyMust",
+      "Purplz",
+      "Ribomustin",
+      "Treakisym",
+      "Treanda",
+      "Xyotin"
+    ]
   }
 ]

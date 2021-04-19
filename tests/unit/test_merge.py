@@ -209,6 +209,45 @@ def spiramycin_merged():
 
 
 @pytest.fixture(scope='module')
+def bendamustine_merged():
+    """Create fixture for bendamustine. Should only contain a single HemOnc
+    record.
+    """
+    return {
+        "label_and_type": "hemonc:65##merger",
+        "concept_id": "hemonc:65",
+        "label": "Bendamustine",
+        "aliases": [
+            "CEP-18083",
+            "cytostasan hydrochloride",
+            "SyB L-0501",
+            "SDX-105",
+            "bendamustine hydrochloride",
+            "bendamustin hydrochloride"
+        ],
+        "other_identifiers": ["RxNorm:134547"],
+        "xrefs": [],
+        "approval_status": "approved",
+        "trade_names": [
+            "Bendamax",
+            "Bendawel",
+            "Bendeka",
+            "Bendit",
+            "Innomustine",
+            "Leuben",
+            "Levact",
+            "Maxtorin",
+            "MyMust",
+            "Purplz",
+            "Ribomustin",
+            "Treakisym",
+            "Treanda",
+            "Xyotin"
+        ]
+    }
+
+
+@pytest.fixture(scope='module')
 def record_id_groups():
     """Create fixture for concept group sets."""
     return {
@@ -318,6 +357,9 @@ def record_id_groups():
             "wikidata:Q47521576",
             "drugbank:DB01143"
         },
+        "hemonc:65": {
+            "hemonc:65"
+        }
     }
 
 

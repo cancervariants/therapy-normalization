@@ -73,5 +73,17 @@
       "share_alike": false,
       "attribution": true
     }
+  },
+  {
+    "src_name": "HemOnc",
+    "data_license": "CC BY 4.0",
+    "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
+    "version": "20210225",
+    "data_url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6",
+    "data_license_attributes": {
+      "non_commercial": false,
+      "share_alike": false,
+      "attribution": true
+    }
   }
 ]
