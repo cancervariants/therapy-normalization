@@ -76,7 +76,9 @@ def bentiromide():
 
 @pytest.fixture(scope='module')
 def aloe_ferox_leaf():
-    """Create aloe ferox leaf fixture."""
+    """Create aloe ferox leaf fixture. Record has >20 aliases, so ETL deletes
+    all of them.
+    """
     params = {
         'concept_id': 'drugbank:DB14257',
         'label': 'Aloe ferox leaf',
@@ -87,9 +89,6 @@ def aloe_ferox_leaf():
     }
     return Drug(**params)
 
-
-# Tests filtering on aliases and trade_names length
-# TODO find another example
 
 def test_concept_id_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
     """Test that concept ID query resolves to correct record."""
