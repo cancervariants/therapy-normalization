@@ -1,7 +1,7 @@
 """Provide ETL methods for HemOnc.org data."""
-from therapy import DownloadException
+from therapy import DownloadException, PROJECT_ROOT
 from therapy.etl.base import Base
-from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, Therapy,\
+from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, \
     ApprovalStatus
 from pathlib import Path
 from typing import List
@@ -16,14 +16,13 @@ logger.setLevel(logging.DEBUG)
 class HemOnc(Base):
     """Docstring"""
 
-    def __init__(self, database, data_path: Path):
+    def __init__(self, database, data_path: Path = PROJECT_ROOT / 'data'):
         """Initialize HemOnc instance.
 
         :param therapy.database.Database database: application database
         :param Path data_path: path to normalizer data directory
         """
-        super().__init__(database)
-        self._src_data_dir = data_path / 'hemonc'
+        super().__init__(database, data_path)
 
     def perform_etl(self) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
@@ -43,7 +42,7 @@ class HemOnc(Base):
         """Download HemOnc.org source data.
 
         Raises download exception for now -- HTTP authorization may be
-        possible.
+        possible?
         """
         raise DownloadException("No download for HemOnc data available.")
 
@@ -61,7 +60,7 @@ class HemOnc(Base):
                 dir_files = [f for f in self._src_data_dir.iterdir()
                              if f.name.startswith(src_file_prefix)]
             self._src_files.append(sorted(dir_files, reverse=True)[0])
-        self._version = self._src_file.stem.split('_', 1)[1]
+        self._version = self._src_files[0].stem.split('_', 1)[1]
 
     def _load_meta(self):
         """Add DrugBank metadata."""
@@ -78,7 +77,7 @@ class HemOnc(Base):
             },
         }
         assert SourceMeta(**meta)
-        meta['src_name'] = SourceName.DRUGBANK.value
+        meta['src_name'] = SourceName.HEMONC.value
         self.database.metadata.put_item(Item=meta)
 
     def _transform_data(self):
@@ -89,10 +88,8 @@ class HemOnc(Base):
         concepts_file = open(self._src_files[0], 'r')
         concepts_reader = csv.reader(concepts_file)
         next(concepts_reader)  # skip header
-        unknown_types = set()  # TODO remove
         for row in concepts_reader:
             if row[6]:
-                logger.warning(f"Invalid row: {row}]")
                 continue
 
             row_type = row[2]
@@ -104,18 +101,14 @@ class HemOnc(Base):
                     'trade_names': [],
                     'aliases': [],
                     'other_identifiers': [],
-                    'xrefs': [],
                 }
             elif row_type == 'Brand Name':
                 brand_names[row[3]] = row[0]
-            else:
-                unknown_types.add(row_type)  # TODO remove
         concepts_file.close()
 
         rels_file = open(self._src_files[1], 'r')
         rels_reader = csv.reader(rels_file)
         next(rels_reader)
-        unknown_relations = set()  # TODO remove
         for row in rels_reader:
             rel_type = row[4]
             hemonc_id = row[0]
@@ -126,15 +119,11 @@ class HemOnc(Base):
                 if src_raw == "RxNorm":
                     other_id = f'{SourceName.RXNORM.value}:{row[1]}'
                     concepts[hemonc_id]['other_identifiers'].append(other_id)
-                else:
-                    logger.debug(f"Invalid source: {src_raw}")
             elif rel_type == "Was FDA approved yr":
                 status = ApprovalStatus.APPROVED
                 concepts[hemonc_id]['approval_status'] = status
             elif rel_type == "Has brand name":
                 concepts[hemonc_id]['trade_names'].append(brand_names[row[1]])
-            else:
-                unknown_relations.add(rel_type)  # TESTING TODO
         rels_file.close()
 
         synonyms_file = open(self._src_files[2], 'r')
@@ -148,9 +137,4 @@ class HemOnc(Base):
 
         # load therapy for each in concepts
         for therapy in concepts.values():
-            assert Therapy(**therapy)
             self._load_therapy(therapy)
-
-        # TODO debugging remove
-        logger.debug(f"Unknown concept types: {unknown_types}")
-        logger.debug(f"Unknown concept relations: {unknown_relations}")
