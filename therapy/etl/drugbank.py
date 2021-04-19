@@ -1,6 +1,6 @@
 """This module defines the DrugBank ETL methods."""
 from therapy import DownloadException
-from therapy.schemas import SourceName, SourceMeta, NamespacePrefix, Therapy
+from therapy.schemas import SourceName, SourceMeta, NamespacePrefix
 from therapy.etl.base import Base
 import logging
 import csv
@@ -105,5 +105,4 @@ class DrugBank(Base):
                     params['other_identifiers'] = [
                         f'{NamespacePrefix.CHEMIDPLUS.value}:{row[3]}'
                     ]
-                assert Therapy(**params)
                 self._load_therapy(params)
