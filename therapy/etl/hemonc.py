@@ -132,7 +132,10 @@ class HemOnc(Base):
         for row in synonyms_reader:
             concept_code = row[1]
             if concept_code in concepts:
-                concepts[concept_code]['aliases'].append(row[0])
+                concept = concepts[concept_code]
+                alias = row[0]
+                if alias != concept.get('label'):
+                    concepts[concept_code]['aliases'].append(row[0])
         synonyms_file.close()
 
         # load therapy for each in concepts
