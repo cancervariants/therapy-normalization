@@ -75,7 +75,7 @@ class Base(ABC):
                     del therapy[field]
                 else:
                     items = {i.casefold() for i in items}
-                    if field == 'aliases':
+                    if field in ('aliases', 'trade_names'):
                         if len(items) > 20:
                             logger.debug(f"{concept_id} has > 20 {field}.")
                             del therapy[field]
