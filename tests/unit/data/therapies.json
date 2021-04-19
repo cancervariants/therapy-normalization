@@ -153,11 +153,6 @@
     "src_name": "DrugBank"
   },
   {
-    "label_and_type": "pfd##alias",
-    "concept_id": "drugbank:db00522",
-    "src_name": "DrugBank"
-  },
-  {
     "label_and_type": "pft##alias",
     "concept_id": "drugbank:db00522",
     "src_name": "DrugBank"

@@ -210,15 +210,12 @@ class Wikidata(Base):
             values = item.get(field)
             if values:
                 keys = {value.casefold() for value in values}
-                if field == 'aliases' and len(keys) > 20:
-                    del item['aliases']
-                    continue
                 for key in keys:
                     pk = f"{key}##{field_type}"
                     batch.put_item(Item={
                         'label_and_type': pk,
                         'concept_id': concept_id_lower,
-                        'src_name': SourceName.NCIT.value,
+                        'src_name': SourceName.WIKIDATA.value,
                         'item_type': field_type
                     })
             elif field in item:

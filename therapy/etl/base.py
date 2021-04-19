@@ -1,7 +1,7 @@
 """A base class for extraction, transformation, and loading of data."""
 from abc import ABC, abstractmethod
 from typing import List, Dict
-from therapy import ACCEPTED_SOURCES
+from therapy import ACCEPTED_SOURCES, PROJECT_ROOT
 from therapy.schemas import Therapy
 import logging
 
@@ -13,11 +13,16 @@ logger.setLevel(logging.DEBUG)
 class Base(ABC):
     """The ETL base class."""
 
-    def __init__(self, database):
-        """Extract from sources."""
+    def __init__(self, database, data_path=PROJECT_ROOT / 'data'):
+        """Extract from sources.
+
+        :param Database database: application database object
+        :param Path data_path: path to normalizer data directory
+        """
+        name = self.__class__.__name__.lower()
         self.database = database
-        self._in_normalize = self.__class__.__name__.lower() \
-            in ACCEPTED_SOURCES
+        self._src_data_dir = data_path / name
+        self._in_normalize = name in ACCEPTED_SOURCES
         if self._in_normalize:
             self._added_ids = []
 
