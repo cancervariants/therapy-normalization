@@ -1,11 +1,10 @@
 """This module defines the DrugBank ETL methods."""
-from therapy import PROJECT_ROOT, DownloadException
+from therapy import DownloadException
 from therapy.schemas import SourceName, SourceMeta, NamespacePrefix, Therapy
 from therapy.etl.base import Base
 import logging
 import csv
 from typing import List
-from pathlib import Path
 import bs4
 import requests
 import re
@@ -19,14 +18,6 @@ logger.setLevel(logging.DEBUG)
 
 class DrugBank(Base):
     """ETL the DrugBank source into therapy.db."""
-
-    def __init__(self, database, data_path: Path = PROJECT_ROOT / 'data'):
-        """Initialize ETL class instance.
-
-        :param Path data_path: normalizer data directory
-        """
-        super().__init__(database)
-        self._src_data_dir = data_path / 'drugbank'
 
     def perform_etl(self) -> List[str]:
         """Public-facing method to initiate ETL procedures on given data.
