@@ -37,17 +37,17 @@ class Database:
                     sys.exit()
         else:
             if db_url:
-                endpoint_url = db_url
+                self.endpoint_url = db_url
             elif 'THERAPY_NORM_DB_URL' in environ:
-                endpoint_url = environ['THERAPY_NORM_DB_URL']
+                self.endpoint_url = environ['THERAPY_NORM_DB_URL']
             else:
-                endpoint_url = 'http://localhost:8000'
+                self.endpoint_url = 'http://localhost:8000'
             click.echo(f"***Using Therapy Database Endpoint: "
-                       f"{endpoint_url}***")
+                       f"{self.endpoint_url}***")
 
             boto_params = {
                 'region_name': region_name,
-                'endpoint_url': endpoint_url
+                'endpoint_url': self.endpoint_url
             }
 
         self.dynamodb = boto3.resource('dynamodb', **boto_params)
