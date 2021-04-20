@@ -136,8 +136,39 @@ def compare_records(actual: Drug, fixture: Drug):
     assert set(actual.xrefs) == set(fixture.xrefs)
 
 
-def compare_response(response: Dict, fixture: Drug, match_type: MatchType):
-    """Check that test response is correct."""
+def compare_response(response: Dict, match_type: MatchType,
+                     fixture: Drug = None, fixture_list: List[Drug] = None,
+                     num_records: int = 0):
+    """Check that test response is correct. Only 1 of {fixture, fixture_list}
+    should be passed as arguments.
+
+    :param Dict response: response object returned by QueryHandler
+    :param MatchType match_type: expected match type
+    :param Drug fixture: single Drug object to match response against
+    :param List[Drug] fixture_list: multiple Drug objects to match response
+        against
+    :param int num_records: expected number of records in response. If not
+        given, tests for number of fixture Drugs given (ie, 1 for single
+        fixture and length of fixture_list otherwise)
+    """
+    if fixture and fixture_list:
+        raise Exception("Args provided for both `fixture` and `fixture_list`")
+    elif not fixture and not fixture_list:
+        raise Exception("Must pass 1 of {fixture, fixture_list}")
+
     assert response['match_type'] == match_type
-    assert len(response['records']) == 1
-    compare_records(response['records'][0], fixture)
+    if fixture:
+        assert len(response['records']) == 1
+        compare_records(response['records'][0], fixture)
+    elif fixture_list:
+        if not num_records:
+            assert len(response['records']) == len(fixture_list)
+        else:
+            assert len(response['records']) == num_records
+        for fixt in fixture_list:
+            for record in response['records']:
+                if fixt.concept_id == record.concept_id:
+                    compare_records(record, fixt)
+                    break
+            else:
+                assert False  # test fixture not found in response
