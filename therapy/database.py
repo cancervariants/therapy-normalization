@@ -227,11 +227,11 @@ class Database:
                          f"{e.response['Error']['Message']}")
             return []
 
-    def add_record(self, record: Dict, record_type="identity"):
+    def add_record(self, record: Dict, record_type: str = "identity"):
         """Add new record to database.
 
         :param Dict record: record to upload
-        :param str record_type: type of record (either 'identity' or 'merger')
+        :param str record_type: type of record, one of {'identity', 'merger'}
         """
         id_prefix = record['concept_id'].split(':')[0].lower()
         record['src_name'] = PREFIX_LOOKUP[id_prefix]
@@ -241,16 +241,26 @@ class Database:
         try:
             self.batch.put_item(Item=record)
         except ClientError as e:
-            logger.error("boto3 client error on add_record for "
-                         f"{record['concept_id']}: "
-                         f"{e.response['Error']['Message']}")
+            if (len((record['label_and_type']).encode('utf-8')) >= 2048) or \
+                    (len((record['concept_id']).encode('utf-8')) >= 1024):
+                logger.info(f"{record['concept_id']}: An error occurred "
+                            "(ValidationException) when calling the "
+                            "BatchWriteItem operation: Hash primary key "
+                            "values must be under 2048 bytes, and range "
+                            "primary key values must be under 1024 "
+                            "bytes.")
+            else:
+                logger.error("boto3 client error on add_record for "
+                             f"{record['concept_id']}: "
+                             f"{e.response['Error']['Message']}")
 
     def add_ref_record(self, term: str, concept_id: str, ref_type: str):
         """Add auxiliary/reference record to database.
 
         :param str term: referent term
         :param str concept_id: concept ID to refer to
-        :param str ref_type: one of ('alias', 'label', 'other_id', 'xref')
+        :param str ref_type: one of {'alias', 'label', 'trade_name',
+            'other_id', 'xref', 'rx_brand'}
         """
         label_and_type = f'{term.lower()}##{ref_type}'
         src_name = PREFIX_LOOKUP[concept_id.split(':')[0].lower()]
@@ -263,16 +273,27 @@ class Database:
         try:
             self.batch.put_item(Item=record)
         except ClientError as e:
-            logger.error(f"boto3 client error adding reference {term} for "
-                         f"{concept_id} with match type {ref_type}: "
-                         f"{e.response['Error']['Message']}")
+            if (len((record['label_and_type']).encode('utf-8')) >= 2048) or \
+                    (len((record['concept_id']).encode('utf-8')) >= 1024):
+                logger.info(f"{record['concept_id']}: An error occurred "
+                            "(ValidationException) when calling the "
+                            "BatchWriteItem operation: Hash primary key "
+                            "values must be under 2048 bytes, and range "
+                            "primary key values must be under 1024 "
+                            "bytes.")
+            else:
+                logger.error(f"boto3 client error adding reference {term} for "
+                             f"{concept_id} with match type {ref_type}: "
+                             f"{e.response['Error']['Message']}")
 
-    def update_record(self, concept_id: str, field: str, new_value: Any):
+    def update_record(self, concept_id: str, field: str, new_value: Any,
+                      item_type: str = 'identity'):
         """Update the field of an individual record to a new value.
 
         :param str concept_id: record to update
         :param str field: name of field to update
         :param Any new_value: new value
+        :param str item_type: record type, one of {'identity', 'merger'}
         """
         key = {
             'label_and_type': f'{concept_id.lower()}##identity',

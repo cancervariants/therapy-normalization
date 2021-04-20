@@ -120,6 +120,7 @@ class SourcePriority(IntEnum):
 
     RXNORM = 1
     NCIT = 2
+    DRUGBANK = 3
     CHEMIDPLUS = 5
     WIKIDATA = 6
 
@@ -152,7 +153,6 @@ class ProhibitedSources(Enum):
     """
 
     CHEMBL = SourceName.CHEMBL.value
-    DRUGBANK = SourceName.DRUGBANK.value
 
 
 class NamespacePrefix(Enum):
@@ -181,6 +181,8 @@ class NamespacePrefix(Enum):
     THERAPEUTICTARGETSDB = "ttd"
     IUPHAR = "iuphar"
     GUIDETOPHARMACOLOGY = "gtopdb"
+    INCHIKEY = "inchikey"
+    UNII = "unii"
     ATC = "atc"  # Anatomical Therapeutic Chemical Classification System
     CVX = "cvx"  # Vaccines Administered
     MMSL = "mmsl"  # Multum MediSource Lexicon

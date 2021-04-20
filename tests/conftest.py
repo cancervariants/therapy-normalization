@@ -1,5 +1,5 @@
 """Pytest test config tools."""
-from therapy.schemas import Drug
+from therapy.schemas import Drug, MatchType
 from therapy.database import Database
 from typing import Dict, Any, Optional, List
 import json
@@ -54,7 +54,7 @@ def mock_database():
                              merge: bool = False) -> Optional[Dict]:
             """Fetch record corresponding to provided concept ID.
 
-            :param str concept_id: concept ID for therapy record
+            :param str record_id: concept ID for therapy record
             :param bool case_sensitive: if true, performs exact lookup, which
                 is more efficient. Otherwise, performs filter operation, which
                 doesn't require correct casing.
@@ -116,8 +116,8 @@ def mock_database():
             """Store update request sent to database.
 
             :param str concept_id: record to update
-            :param str field: name of field to update
-            :parm str new_value: new value
+            :param str attribute: name of field to update
+            :param str new_value: new value
             """
             assert f'{concept_id.lower()}##identity' in self.records
             self.updates[concept_id] = {attribute: new_value}
@@ -134,3 +134,45 @@ def compare_records(actual: Drug, fixture: Drug):
     assert actual.approval_status == fixture.approval_status
     assert set(actual.other_identifiers) == set(fixture.other_identifiers)
     assert set(actual.xrefs) == set(fixture.xrefs)
+
+
+def compare_response(response: Dict, match_type: MatchType,
+                     fixture: Drug = None, fixture_list: List[Drug] = None,
+                     num_records: int = 0):
+    """Check that test response is correct. Only 1 of {fixture, fixture_list}
+    should be passed as arguments. num_records should only be passed with
+    fixture_list.
+
+    :param Dict response: response object returned by QueryHandler
+    :param MatchType match_type: expected match type
+    :param Drug fixture: single Drug object to match response against
+    :param List[Drug] fixture_list: multiple Drug objects to match response
+        against
+    :param int num_records: expected number of records in response. If not
+        given, tests for number of fixture Drugs given (ie, 1 for single
+        fixture and length of fixture_list otherwise)
+    """
+    if fixture and fixture_list:
+        raise Exception("Args provided for both `fixture` and `fixture_list`")
+    elif not fixture and not fixture_list:
+        raise Exception("Must pass 1 of {fixture, fixture_list}")
+    if fixture and num_records:
+        raise Exception("`num_records` should only be given with "
+                        "`fixture_list`.")
+
+    assert response['match_type'] == match_type
+    if fixture:
+        assert len(response['records']) == 1
+        compare_records(response['records'][0], fixture)
+    elif fixture_list:
+        if not num_records:
+            assert len(response['records']) == len(fixture_list)
+        else:
+            assert len(response['records']) == num_records
+        for fixt in fixture_list:
+            for record in response['records']:
+                if fixt.concept_id == record.concept_id:
+                    compare_records(record, fixt)
+                    break
+            else:
+                assert False  # test fixture not found in response

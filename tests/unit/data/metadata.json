@@ -38,15 +38,15 @@
   },
   {
     "src_name": "DrugBank",
-    "data_license": "CC BY-NC 4.0",
-    "data_license_url": "https://creativecommons.org/licenses/by-nc/4.0/legalcode",
-    "version": "5.1.7",
-    "data_url": "https://go.drugbank.com/releases/5-1-7/downloads/all-full-database",
+    "data_license": "CC0 1.0",
+    "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "version": "5.1.8",
+    "data_url": "https://go.drugbank.com/releases/latest#open-data",
     "rdp_url": "http://reusabledata.org/drugbank.html",
     "data_license_attributes": {
-      "non_commercial": true,
+      "non_commercial": false,
       "share_alike": false,
-      "attribution": true
+      "attribution": false
     }
   },
   {

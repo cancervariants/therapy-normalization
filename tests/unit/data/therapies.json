@@ -86,67 +86,31 @@
       "cis-diamminedichloroplatinum(II)",
       "Cisplatin",
       "APRD00359",
-      "Abiplatin",
-      "Cisplatyl",
-      "Platidiam",
-      "Platin"
+      "cisplatino"
     ],
-    "approval_status": "approved",
-    "other_identifiers": [
-      "chemidplus:15663-27-1",
-      "chembl:CHEMBL2068237",
-      "rxcui:2555"
-    ],
-    "xrefs": [
-      "chebi:27899",
-      "pubchem.compound:2767",
-      "pubchem.substance:46504561",
-      "kegg.compound:C06911",
-      "kegg.drug:D00275",
-      "chemspider:76401",
-      "bindingdb:50028111",
-      "pharmgkb.drug:PA449014",
-      "pdb:CPT",
-      "ttd:DAP000215"
-    ],
-    "trade_names": [
-      "CISplatin",
-      "Cisplatin",
-      "Cisplatin Inj 0.5mg/ml",
-      "Cisplatin Inj 1mg/ml",
-      "Cisplatin Injection",
-      "Cisplatin Injection BP",
-      "Cisplatin Injection, BP",
-      "Cisplatin Injection, Mylan Std.",
-      "Platinol",
-      "Platinol AQ Inj 1mg/ml",
-      "Platinol-AQ",
-      "PMS-cisplatin"
-    ],
-    "src_name": "DrugBank"
+    "other_identifiers": ["chemidplus:15663-27-1"],
+    "xrefs": ["unii:Q20Q21Q62J", "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"],
+    "src_name": "DrugBank",
+    "merge_ref": "rxcui:2555"
   },
   {
-    "label_and_type": "pubchem.substance:46504561##xref",
+    "label_and_type": "inchikey:lxzzyrpgzafole-uhfffaoysa-l##xref",
+    "concept_id": "drugbank:db00515",
+    "src_name": "DrugBank",
+    "item_type": "xref"
+  },
+  {
+    "label_and_type": "chemidplus:15663-27-1##other_id",
     "concept_id": "drugbank:db00515",
     "src_name": "DrugBank"
   },
   {
-    "label_and_type": "chembl:chembl2068237##other_id",
+    "label_and_type": "cisplatino##alias",
     "concept_id": "drugbank:db00515",
     "src_name": "DrugBank"
   },
   {
-    "label_and_type": "rxcui:2555##other_id",
-    "concept_id": "drugbank:db00515",
-    "src_name": "DrugBank"
-  },
-  {
-    "label_and_type": "cisplatin##label",
-    "concept_id": "drugbank:db00515",
-    "src_name": "DrugBank"
-  },
-  {
-    "label_and_type": "abiplatin##alias",
+    "label_and_type": "cddp##alias",
     "concept_id": "drugbank:db00515",
     "src_name": "DrugBank"
   },
@@ -156,48 +120,32 @@
     "src_name": "DrugBank"
   },
   {
-    "label_and_type": "platidiam##alias",
+    "label_and_type": "cisplatin##label",
     "concept_id": "drugbank:db00515",
     "src_name": "DrugBank"
-  },
-  {
-    "label_and_type": "platinol##trade_name",
-    "concept_id": "drugbank:db00515",
-    "src_name": "DrugBank"
-  },
-  {
-    "label_and_type": "platinol-aq##trade_name",
-    "concept_id": "drugbank:db00515",
-    "src_name": "DrugBank"
-  },
-  {
-    "label_and_type": "pms-cisplatin##trade_name",
-    "concept_id": "drugbank:db00515",
-    "src_name": "DrugBank",
-    "item_type": "trade_name"
   },
   {
     "label_and_type": "drugbank:db00522##identity",
     "label": "Bentiromide",
     "concept_id": "drugbank:DB00522",
-    "aliases": ["APRD00818", "Bentiromide", "BTPABA", "PFT", "PFD"],
-    "approval_status": "withdrawn",
-    "other_identifiers": [
-      "chemidplus:37106-97-1",
-      "rxcui:18896",
-      "chembl:CHEMBL1200368"
+    "aliases": [
+      "APRD00818",
+      "Bentiromide",
+      "Bentiromido",
+      "Bentiromidum",
+      "BTPABA",
+      "PFT"
     ],
-    "xrefs": [
-      "chebi:31263",
-      "pubchem.compound:6957673",
-      "pubchem.substance:46508175",
-      "kegg.drug:D01346",
-      "chemspider:5329364",
-      "bindingdb:50240073",
-      "pharmgkb.drug:PA164750572",
-      "zinc:ZINC000000608204"
-    ],
-    "src_name": "DrugBank"
+    "other_identifiers": ["chemidplus:37106-97-1"],
+    "src_name": "DrugBank",
+    "xrefs": ["unii:239IF5W61J", "inchikey:SPPTWHFVYKCNNK-FQEVSTJZSA-N"],
+    "merge_ref": "rxcui:18896"
+  },
+  {
+    "label_and_type": "unii:239if5w61j##xref",
+    "concept_id": "drugbank:db00522",
+    "src_name": "DrugBank",
+    "item_type": "xref"
   },
   {
     "label_and_type": "pharmgkb.drug:pa164750572##xref",
@@ -220,53 +168,29 @@
     "src_name": "DrugBank"
   },
   {
-    "label_and_type": "pfd##alias",
-    "concept_id": "drugbank:db00522",
-    "src_name": "DrugBank"
-  },
-  {
     "label_and_type": "pft##alias",
     "concept_id": "drugbank:db00522",
     "src_name": "DrugBank"
   },
   {
-    "label_and_type": "drugbank:db14201##identity",
-    "label": "2,2'-Dibenzothiazyl disulfide",
-    "concept_id": "drugbank:DB14201",
-    "approval_status": "approved",
-    "other_identifiers": [
-      "chemidplus:120-78-5",
-      "chembl:CHEMBL508112",
-      "rxcui:1306112"
-    ],
-    "xrefs": [
-      "chemspider:8139",
-      "bindingdb:50444458",
-      "chebi:53239",
-      "zinc:ZINC000001555224"
-    ],
-    "trade_names": ["T.R.U.E. Test Thin-Layer Rapid Use Patch Test"],
-    "src_name": "DrugBank"
+    "label_and_type": "drugbank:db14257##identity",
+    "concept_id": "drugbank:DB14257",
+    "item_type": "identity",
+    "src_name": "DrugBank",
+    "label": "Aloe ferox leaf",
+    "xrefs": ["unii:0D145J8EME"]
   },
   {
-    "label_and_type": "chebi:53239##xref",
-    "concept_id": "drugbank:db14201",
-    "src_name": "DrugBank"
+    "label_and_type": "unii:0d145j8eme##xref",
+    "item_type": "xref",
+    "src_name": "DrugBank",
+    "concept_id": "drugbank:db14257"
   },
   {
-    "label_and_type": "rxcui:1306112##other_id",
-    "concept_id": "drugbank:db14201",
-    "src_name": "DrugBank"
-  },
-  {
-    "label_and_type": "2,2'-dibenzothiazyl disulfide##label",
-    "concept_id": "drugbank:db14201",
-    "src_name": "DrugBank"
-  },
-  {
-    "label_and_type": "t.r.u.e. test thin-layer rapid use patch test##trade_name",
-    "concept_id": "drugbank:db14201",
-    "src_name": "DrugBank"
+    "label_and_type": "aloe ferox leaf##label",
+    "item_type": "label",
+    "src_name": "DrugBank",
+    "concept_id": "drugbank:db14257"
   },
   {
     "label_and_type": "wikidata:q412415##identity",
@@ -676,7 +600,8 @@
   {
     "label_and_type": "align##trade_name",
     "concept_id": "rxcui:100213",
-    "src_name": "RxNorm"
+    "src_name": "RxNorm",
+    "item_type": "trade_name"
   },
   {
     "label_and_type": "evivo##trade_name",
@@ -1177,7 +1102,6 @@
       "atc:N03AA02"
     ],
     "approval_status": null,
-    "trade_names": ["Phenobarbital"],
     "src_name": "RxNorm",
     "merge_ref": "rxcui:8134"
   },
@@ -1219,16 +1143,17 @@
     "merge_ref": "rxcui:8134"
   },
   {
-    "label": "Spiramycin",
     "label_and_type": "chemidplus:8025-81-8##identity",
+    "src_name": "ChemIDplus",
+    "merge_ref": "ncit:c839",
+    "item_type": "identity",
+    "label": "Spiramycin",
     "concept_id": "chemidplus:8025-81-8",
     "aliases": [],
     "other_identifiers": [],
     "xrefs": ["fda:71ODY0V87H"],
     "approval_status": null,
-    "trade_names": [],
-    "src_name": "ChemIDplus",
-    "merge_ref": "ncit:c839"
+    "trade_names": []
   },
   {
     "label": "phenobarbital",
@@ -1321,66 +1246,69 @@
   },
   {
     "label_and_type": "rxcui:8134##merger",
+    "item_type": "merger",
     "concept_id": "rxcui:8134",
-    "other_ids": ["ncit:C739", "chemidplus:50-06-6", "wikidata:Q407241"],
+    "label": "phenobarbital",
+    "other_ids": [
+      "ncit:C739",
+      "drugbank:DB01174",
+      "chemidplus:50-06-6",
+      "wikidata:Q407241"
+    ],
     "aliases": [
-      "5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
-      "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
-      "5-Ethyl-5-phenylbarbituric acid",
-      "5-Phenyl-5-ethylbarbituric acid",
-      "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
-      "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
-      "Acid, Phenylethylbarbituric",
-      "Luminal®",
       "PHENO",
-      "PHENOBARBITAL",
-      "PHENYLETHYLMALONYLUREA",
-      "PHENobarbital",
-      "Phenemal",
-      "Phenobarbital",
-      "Phenobarbital (substance)",
-      "Phenobarbital-containing product",
-      "Phenobarbitol",
-      "Phenobarbitone",
-      "Phenobarbituric Acid",
-      "Phenylaethylbarbitursaeure",
-      "Phenylbarbital",
-      "Phenylethylbarbiturate",
-      "Phenylethylbarbituric Acid",
-      "Phenylethylbarbitursaeure",
       "Phenylethylmalonylurea",
-      "Product containing phenobarbital (medicinal product)",
+      "PHENYLETHYLMALONYLUREA",
+      "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
+      "Phenylethylbarbitursaeure",
+      "5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+      "5-Phenyl-5-ethylbarbituric acid",
+      "PHENobarbital",
+      "Phenyläthylbarbitursäure",
       "fenobarbital",
+      "Phenylethylbarbiturate",
+      "5-Ethyl-5-phenylbarbituric acid",
+      "Phenobarbitol",
+      "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+      "Fenobarbital",
       "phenobarbital",
+      "Phenobarbituric Acid",
+      "Luminal®",
+      "Acid, Phenylethylbarbituric",
+      "Phenobarbital",
+      "Phenylbarbital",
       "phenobarbital sodium",
-      "phenylethylbarbiturate"
+      "Phenemal",
+      "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
+      "APRD00184",
+      "PHENOBARBITAL",
+      "Phenylethylbarbitursäure",
+      "phenylethylbarbiturate",
+      "Phenylethylbarbituric Acid",
+      "Phenylaethylbarbitursaeure",
+      "Phenobarbitone"
     ],
-    "trade_names": ["Phenobarbital"],
     "xrefs": [
-      "pubchem.compound:4763",
-      "usp:m63400",
-      "gsddb:2179",
-      "snomedct:51073002",
       "vandf:4017422",
-      "mmsl:2390",
-      "msh:D010634",
-      "snomedct:373505007",
-      "mmsl:5272",
       "mthspl:YQE403BP4D",
-      "fdbmk:001406",
-      "mmsl:d00340",
       "atc:N03AA02",
-      "fda:YQE403BP4D",
+      "chebi:CHEBI:8069",
+      "mmsl:2390",
+      "mmsl:d00340",
+      "pubchem.compound:4763",
+      "mesh:D010634",
+      "mmsl:5272",
       "umls:C0031412",
-      "chebi:CHEBI:8069"
-    ],
-    "label": "Phenobarbital"
+      "fda:YQE403BP4D",
+      "usp:m63400"
+    ]
   },
   {
     "label_and_type": "rxcui:2555##merger",
     "concept_id": "rxcui:2555",
     "other_ids": [
       "ncit:C376",
+      "drugbank:DB00515",
       "chemidplus:15663-27-1",
       "wikidata:Q412415",
       "wikidata:Q47522001"
@@ -1388,6 +1316,7 @@
     "trade_names": ["Cisplatin", "Platinol"],
     "aliases": [
       "1,2-Diaminocyclohexaneplatinum II citrate",
+      "APRD00359",
       "CDDP",
       "CISplatin",
       "Cis-DDP",
@@ -1400,9 +1329,11 @@
       "cis Platinum",
       "cis-Diaminedichloroplatinum",
       "cis-Diamminedichloroplatinum",
+      "cis-diamminedichloroplatinum(II)",
       "cis-Diamminedichloroplatinum(II)",
       "cis-Dichlorodiammineplatinum(II)",
       "cis-Platinum",
+      "cisplatino",
       "cis-diamminedichloroplatinum(II)",
       "Platinol-AQ",
       "Platinol"
@@ -1419,7 +1350,9 @@
       "atc:L01XA01",
       "mmsl:31747",
       "mmsl:4456",
-      "pubchem.compound:5702198"
+      "pubchem.compound:5702198",
+      "unii:Q20Q21Q62J",
+      "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"
     ]
   },
   {
@@ -1684,5 +1617,65 @@
     "label_and_type": "drugbank:db00619##other_id",
     "src_name": "ChemIDplus",
     "concept_id": "chemidplus:220127-57-1"
+  },
+  {
+    "label_and_type": "drugbank:db01174##identity",
+    "src_name": "DrugBank",
+    "item_type": "identity",
+    "concept_id": "drugbank:DB01174",
+    "label": "Phenobarbital",
+    "aliases": [
+      "APRD00184",
+      "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+      "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
+      "5-Ethyl-5-phenylbarbituric acid",
+      "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
+      "5-Phenyl-5-ethylbarbituric acid",
+      "Fenobarbital",
+      "Phenobarbital",
+      "Phenobarbitol",
+      "Phenobarbitone",
+      "Phenobarbituric Acid",
+      "Phenyläthylbarbitursäure",
+      "Phenylethylbarbiturate",
+      "Phenylethylbarbituric Acid",
+      "Phenylethylbarbitursäure",
+      "Phenylethylmalonylurea"
+    ],
+    "other_identifiers": ["chemidplus:50-06-6"],
+    "xrefs": [],
+    "approval_status": null,
+    "trade_names": []
+  },
+  {
+    "label_and_type": "chemidplus:50-06-6##other_id",
+    "concept_id": "drugbank:DB01174",
+    "item_type": "other_id",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "drugbank:db01143##identity",
+    "src_name": "DrugBank",
+    "item_type": "identity",
+    "concept_id": "drugbank:DB01143",
+    "label": "Amifostine",
+    "aliases": [
+      "APRD00021",
+      "Amifostina",
+      "Amifostine",
+      "Amifostine anhydrous",
+      "Amifostinum",
+      "Aminopropylaminoethyl thiophosphate"
+    ],
+    "other_identifiers": ["chemidplus:20537-88-6"],
+    "xrefs": [],
+    "approval_status": null,
+    "trade_names": []
+  },
+  {
+    "label_and_type": "chemidplus:20537-88-6##other_id",
+    "src_name": "DrugBank",
+    "item_type": "other_id",
+    "concept_id": "drugbank:DB01143"
   }
 ]
