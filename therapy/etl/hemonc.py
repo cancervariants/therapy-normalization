@@ -60,7 +60,7 @@ class HemOnc(Base):
                 dir_files = [f for f in self._src_data_dir.iterdir()
                              if f.name.startswith(src_file_prefix)]
             self._src_files.append(sorted(dir_files, reverse=True)[0])
-        self._version = self._src_files[0].stem.split('_', 1)[1]
+        self._version = self._src_files[0].stem.split('_', 2)[-1]
 
     def _load_meta(self):
         """Add DrugBank metadata."""
