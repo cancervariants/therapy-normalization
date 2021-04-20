@@ -186,6 +186,8 @@ class NamespacePrefix(Enum):
     THERAPEUTICTARGETSDB = "ttd"
     IUPHAR = "iuphar"
     GUIDETOPHARMACOLOGY = "gtopdb"
+    INCHIKEY = "inchikey"
+    UNII = "unii"
     ATC = "atc"  # Anatomical Therapeutic Chemical Classification System
     CVX = "cvx"  # Vaccines Administered
     MMSL = "mmsl"  # Multum MediSource Lexicon

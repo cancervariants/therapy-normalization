@@ -89,20 +89,41 @@ class DrugBank(Base):
             reader = csv.reader(file)
             next(reader)  # skip header
             for row in reader:
+                # get concept ID
                 params = {
                     'concept_id': f'{NamespacePrefix.DRUGBANK.value}:{row[0]}',
                 }
+
+                # get label
                 label = row[2]
                 if label:
                     params['label'] = label
+
+                # get aliases
                 aliases = [
                     a for a in row[1].split(' | ') + row[5].split(' | ') if a
                 ]
                 if aliases:
                     params['aliases'] = aliases
+
+                # get CAS reference
                 cas_ref = row[3]
                 if cas_ref:
                     params['other_identifiers'] = [
                         f'{NamespacePrefix.CHEMIDPLUS.value}:{row[3]}'
                     ]
+
+                params['xrefs'] = []
+                # get inchi key
+                if len(row) >= 7:
+                    inchi_key = row[6]
+                    if inchi_key:
+                        inchi_id = f'{NamespacePrefix.INCHIKEY.value}:{inchi_key}'  # noqa: E501
+                        params['xrefs'].append(inchi_id)
+                # get UNII id
+                unii = row[4]
+                if unii:
+                    unii_id = f'{NamespacePrefix.UNII.value}:{unii}'
+                    params['xrefs'].append(unii_id)
+
                 self._load_therapy(params)

@@ -175,7 +175,9 @@ def cisplatin_merged():
             "atc:L01XA01",
             "mmsl:31747",
             "mmsl:4456",
-            "pubchem.compound:5702198"
+            "pubchem.compound:5702198",
+            "unii:Q20Q21Q62J",
+            "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"
         ]
     }
 
