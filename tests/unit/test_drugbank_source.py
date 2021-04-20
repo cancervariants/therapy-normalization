@@ -93,70 +93,70 @@ def aloe_ferox_leaf():
 def test_concept_id_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
     """Test that concept ID query resolves to correct record."""
     response = drugbank.search('drugbank:DB00515')
-    compare_response(response, cisplatin, MatchType.CONCEPT_ID)
+    compare_response(response, MatchType.CONCEPT_ID, cisplatin)
 
     response = drugbank.search('DB00515')
-    compare_response(response, cisplatin, MatchType.CONCEPT_ID)
+    compare_response(response, MatchType.CONCEPT_ID, cisplatin)
 
     response = drugbank.search('drugbank:db00515')
-    compare_response(response, cisplatin, MatchType.CONCEPT_ID)
+    compare_response(response, MatchType.CONCEPT_ID, cisplatin)
 
     response = drugbank.search('Drugbank:db00515')
-    compare_response(response, cisplatin, MatchType.CONCEPT_ID)
+    compare_response(response, MatchType.CONCEPT_ID, cisplatin)
 
     response = drugbank.search('druGBank:DB00515')
-    compare_response(response, cisplatin, MatchType.CONCEPT_ID)
+    compare_response(response, MatchType.CONCEPT_ID, cisplatin)
 
     response = drugbank.search('drugbank:DB00522')
-    compare_response(response, bentiromide, MatchType.CONCEPT_ID)
+    compare_response(response, MatchType.CONCEPT_ID, bentiromide)
 
     response = drugbank.search('DB00522')
-    compare_response(response, bentiromide, MatchType.CONCEPT_ID)
+    compare_response(response, MatchType.CONCEPT_ID, bentiromide)
 
     response = drugbank.search('drugbank:db00522')
-    compare_response(response, bentiromide, MatchType.CONCEPT_ID)
+    compare_response(response, MatchType.CONCEPT_ID, bentiromide)
 
     response = drugbank.search('Drugbank:db00522')
-    compare_response(response, bentiromide, MatchType.CONCEPT_ID)
+    compare_response(response, MatchType.CONCEPT_ID, bentiromide)
 
     response = drugbank.search('druGBank:DB00522')
-    compare_response(response, bentiromide, MatchType.CONCEPT_ID)
+    compare_response(response, MatchType.CONCEPT_ID, bentiromide)
 
     response = drugbank.search('drugbank:DB14257')
-    compare_response(response, aloe_ferox_leaf, MatchType.CONCEPT_ID)
+    compare_response(response, MatchType.CONCEPT_ID, aloe_ferox_leaf)
 
 
 def test_label_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
     """Test that label query resolves to correct record."""
     response = drugbank.search('cisplatin')
-    compare_response(response, cisplatin, MatchType.LABEL)
+    compare_response(response, MatchType.LABEL, cisplatin)
 
     response = drugbank.search('cisplatin')
-    compare_response(response, cisplatin, MatchType.LABEL)
+    compare_response(response, MatchType.LABEL, cisplatin)
 
     response = drugbank.search('Bentiromide')
-    compare_response(response, bentiromide, MatchType.LABEL)
+    compare_response(response, MatchType.LABEL, bentiromide)
 
     response = drugbank.search('bentiromide')
-    compare_response(response, bentiromide, MatchType.LABEL)
+    compare_response(response, MatchType.LABEL, bentiromide)
 
     response = drugbank.search('aloe ferox leaf')
-    compare_response(response, aloe_ferox_leaf, MatchType.LABEL)
+    compare_response(response, MatchType.LABEL, aloe_ferox_leaf)
 
 
 def test_alias_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
     """Test that alias query resolves to correct record."""
     response = drugbank.search('CISPLATINO')
-    compare_response(response, cisplatin, MatchType.ALIAS)
+    compare_response(response, MatchType.ALIAS, cisplatin)
 
     response = drugbank.search('Cis-ddp')
-    compare_response(response, cisplatin, MatchType.ALIAS)
+    compare_response(response, MatchType.ALIAS, cisplatin)
 
     response = drugbank.search('APRD00818')
-    compare_response(response, bentiromide, MatchType.ALIAS)
+    compare_response(response, MatchType.ALIAS, bentiromide)
 
     response = drugbank.search('PFT')
-    compare_response(response, bentiromide, MatchType.ALIAS)
+    compare_response(response, MatchType.ALIAS, bentiromide)
 
     # verify aliases > 20 not stored
     response = drugbank.search('Aloe Capensis')
@@ -169,10 +169,10 @@ def test_alias_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
 def test_other_id_match(drugbank, cisplatin, bentiromide):
     """Test that other_id query resolves to correct record."""
     response = drugbank.search('chemidplus:15663-27-1')
-    compare_response(response, cisplatin, MatchType.OTHER_ID)
+    compare_response(response, MatchType.OTHER_ID, cisplatin)
 
     response = drugbank.search('chemidplus:37106-97-1')
-    compare_response(response, bentiromide, MatchType.OTHER_ID)
+    compare_response(response, MatchType.OTHER_ID, bentiromide)
 
 
 def test_no_match(drugbank):
