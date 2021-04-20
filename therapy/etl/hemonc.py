@@ -63,7 +63,7 @@ class HemOnc(Base):
         self._version = self._src_files[0].stem.split('_', 2)[-1]
 
     def _load_meta(self):
-        """Add DrugBank metadata."""
+        """Add HemOnc metadata."""
         meta = {
             'data_license': 'CC BY 4.0',
             'data_license_url': 'https://creativecommons.org/licenses/by/4.0/legalcode',  # noqa: E501
