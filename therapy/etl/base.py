@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict
 from therapy import ACCEPTED_SOURCES, PROJECT_ROOT
-from therapy.schemas import Therapy
+from therapy.schemas import Drug
 import logging
 
 
@@ -63,7 +63,7 @@ class Base(ABC):
 
         :param Dict therapy: valid therapy object.
         """
-        assert Therapy(**therapy)
+        assert Drug(**therapy)
         concept_id = therapy['concept_id']
 
         field_pairs = (('aliases', 'alias'), ('other_identifiers', 'other_id'),
