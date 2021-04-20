@@ -15,6 +15,7 @@ class Therapy(BaseModel):
     aliases: Optional[List[str]]
     other_identifiers: Optional[List[str]]
     xrefs: Optional[List[str]]
+    fda_indication: Optional[List[str]]
 
     class Config:
         """Configure model"""
