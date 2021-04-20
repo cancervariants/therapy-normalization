@@ -140,7 +140,8 @@ def compare_response(response: Dict, match_type: MatchType,
                      fixture: Drug = None, fixture_list: List[Drug] = None,
                      num_records: int = 0):
     """Check that test response is correct. Only 1 of {fixture, fixture_list}
-    should be passed as arguments.
+    should be passed as arguments. num_records should only be passed with
+    fixture_list.
 
     :param Dict response: response object returned by QueryHandler
     :param MatchType match_type: expected match type
@@ -155,6 +156,9 @@ def compare_response(response: Dict, match_type: MatchType,
         raise Exception("Args provided for both `fixture` and `fixture_list`")
     elif not fixture and not fixture_list:
         raise Exception("Must pass 1 of {fixture, fixture_list}")
+    if fixture and num_records:
+        raise Exception("`num_records` should only be given with "
+                        "`fixture_list`.")
 
     assert response['match_type'] == match_type
     if fixture:
