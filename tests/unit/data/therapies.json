@@ -89,7 +89,14 @@
       "cisplatino"
     ],
     "other_identifiers": ["chemidplus:15663-27-1"],
+    "xrefs": ["unii:Q20Q21Q62J", "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"],
     "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "inchikey:lxzzyrpgzafole-uhfffaoysa-l##xref",
+    "concept_id": "drugbank:db00515",
+    "src_name": "DrugBank",
+    "item_type": "xref"
   },
   {
     "label_and_type": "chemidplus:15663-27-1##other_id",
@@ -130,7 +137,14 @@
     ],
     "other_identifiers": ["chemidplus:37106-97-1"],
     "src_name": "DrugBank",
+    "xrefs": ["unii:239IF5W61J", "inchikey:SPPTWHFVYKCNNK-FQEVSTJZSA-N"],
     "merge_ref": "rxcui:18896"
+  },
+  {
+    "label_and_type": "unii:239if5w61j##xref",
+    "concept_id": "drugbank:db00522",
+    "src_name": "DrugBank",
+    "item_type": "xref"
   },
   {
     "label_and_type": "pharmgkb.drug:pa164750572##xref",
@@ -162,7 +176,14 @@
     "concept_id": "drugbank:DB14257",
     "item_type": "identity",
     "src_name": "DrugBank",
-    "label": "Aloe ferox leaf"
+    "label": "Aloe ferox leaf",
+    "xrefs": ["unii:0D145J8EME"]
+  },
+  {
+    "label_and_type": "unii:0d145j8eme##xref",
+    "item_type": "xref",
+    "src_name": "DrugBank",
+    "concept_id": "drugbank:db14257"
   },
   {
     "label_and_type": "aloe ferox leaf##label",
