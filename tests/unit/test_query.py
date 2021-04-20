@@ -102,7 +102,7 @@ def phenobarbital():
                     "atc:N03AA02",
                     "fda:YQE403BP4D",
                     "umls:C0031412",
-                    "chebi:CHEBI:8069"
+                    "chebi:CHEBI:8069",
                 ]
             },
         ]
@@ -173,7 +173,9 @@ def cisplatin():
                     "atc:L01XA01",
                     "mmsl:31747",
                     "mmsl:4456",
-                    "pubchem.compound:5702198"
+                    "pubchem.compound:5702198",
+                    "unii:Q20Q21Q62J",
+                    "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"
                 ]
             }
         ]
