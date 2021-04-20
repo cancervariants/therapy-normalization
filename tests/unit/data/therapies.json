@@ -1801,5 +1801,41 @@
       "Treanda",
       "Xyotin"
     ]
+  },
+  {
+    "label_and_type": "hemonc:151##identity",
+    "item_type": "identity",
+    "src_name": "HemOnc",
+    "label": "Degarelix",
+    "concept_id": "hemonc:151",
+    "aliases": ["degarelix acetate", "FE200486", "ASP3550"],
+    "other_identifiers": ["RxNorm:475230"],
+    "xrefs": [],
+    "approval_status": "approved",
+    "trade_names": ["Firmagon"]
+  },
+  {
+    "label_and_type": "rxnorm:475230##other_id",
+    "concept_id": "hemonc:151",
+    "src_name": "HemOnc",
+    "item_type": "other_id"
+  },
+  {
+    "label_and_type": "firmagon##trade_name",
+    "concept_id": "hemonc:151",
+    "src_name": "HemOnc",
+    "item_type": "trade_name"
+  },
+  {
+    "label_and_type": "asp3550##alias",
+    "concept_id": "hemonc:151",
+    "src_name": "HemOnc",
+    "item_type": "alias"
+  },
+  {
+    "label_and_type": "degarelix##label",
+    "concept_id": "hemonc:151",
+    "src_name": "HemOnc",
+    "item_type": "label"
   }
 ]

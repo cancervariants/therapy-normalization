@@ -86,7 +86,25 @@ def bendamustine():
     })
 
 
-def test_concept_id_match(hemonc, cisplatin, bendamustine):
+@pytest.fixture(scope='module')
+def degarelix():
+    """Create fixture for degarelix drug."""
+    return Drug(**{
+        "label": "Degarelix",
+        "concept_id": "hemonc:151",
+        "aliases": [
+            "degarelix acetate",
+            "FE200486",
+            "ASP3550"
+        ],
+        "other_identifiers": ["RxNorm:475230"],
+        "xrefs": [],
+        "approval_status": ApprovalStatus.APPROVED,
+        "trade_names": ["Firmagon"]
+    })
+
+
+def test_concept_id_match(hemonc, cisplatin, bendamustine, degarelix):
     """Test that concept ID queries resolve to correct record."""
     response = hemonc.search('hemonc:105')
     compare_response(response, cisplatin, MatchType.CONCEPT_ID)
@@ -94,8 +112,11 @@ def test_concept_id_match(hemonc, cisplatin, bendamustine):
     response = hemonc.search('hemonc:65')
     compare_response(response, bendamustine, MatchType.CONCEPT_ID)
 
+    response = hemonc.search('hemonc:151')
+    compare_response(response, degarelix, MatchType.CONCEPT_ID)
 
-def test_label_match(hemonc, cisplatin, bendamustine):
+
+def test_label_match(hemonc, cisplatin, bendamustine, degarelix):
     """Test that label queries resolve to correct record."""
     response = hemonc.search('cisplatin')
     compare_response(response, cisplatin, MatchType.LABEL)
@@ -103,8 +124,11 @@ def test_label_match(hemonc, cisplatin, bendamustine):
     response = hemonc.search('Bendamustine')
     compare_response(response, bendamustine, MatchType.LABEL)
 
+    response = hemonc.search('DEGARELIX')
+    compare_response(response, degarelix, MatchType.LABEL)
 
-def test_alias_match(hemonc, cisplatin, bendamustine):
+
+def test_alias_match(hemonc, cisplatin, bendamustine, degarelix):
     """Test that alias queries resolve to correct record."""
     response = hemonc.search('ddp')
     compare_response(response, cisplatin, MatchType.ALIAS)
@@ -121,8 +145,11 @@ def test_alias_match(hemonc, cisplatin, bendamustine):
     response = hemonc.search('bendamustine hydrochloride')
     compare_response(response, bendamustine, MatchType.ALIAS)
 
+    response = hemonc.search('asp3550')
+    compare_response(response, degarelix, MatchType.ALIAS)
 
-def test_trade_name(hemonc, bendamustine):
+
+def test_trade_name(hemonc, bendamustine, degarelix):
     """Test that trade name queries resolve to correct record."""
     response = hemonc.search('bendamax')
     compare_response(response, bendamustine, MatchType.TRADE_NAME)
@@ -130,18 +157,24 @@ def test_trade_name(hemonc, bendamustine):
     response = hemonc.search('purplz')
     compare_response(response, bendamustine, MatchType.TRADE_NAME)
 
+    response = hemonc.search('firmagon')
+    compare_response(response, degarelix, MatchType.TRADE_NAME)
+
     # no trade names for records with > 20
     response = hemonc.search('platinol')
     assert response['match_type'] == MatchType.NO_MATCH
 
 
-def test_other_id_match(hemonc, cisplatin, bendamustine):
+def test_other_id_match(hemonc, cisplatin, bendamustine, degarelix):
     """Test that other_id query resolves to correct record."""
     response = hemonc.search('rxnorm:2555')
     compare_response(response, cisplatin, MatchType.OTHER_ID)
 
     response = hemonc.search('rxnorm:134547')
     compare_response(response, bendamustine, MatchType.OTHER_ID)
+
+    response = hemonc.search('RXNORM:475230')
+    compare_response(response, degarelix, MatchType.OTHER_ID)
 
 
 def test_metadata(hemonc):
