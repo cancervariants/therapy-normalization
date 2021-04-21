@@ -472,15 +472,20 @@ class QueryHandler:
             for match in matching_records:
                 record = self.db.get_record_by_id(match['concept_id'], False)
                 if record:
-                    merge = self.db.get_record_by_id(record['merge_ref'],
-                                                     case_sensitive=False,
-                                                     merge=True)
-                    if merge is None:
-                        self._handle_failed_merge_ref(record, response,
-                                                      query_str)
+                    merge_ref = record.get('merge_ref')
+                    if merge_ref:
+                        merge = self.db.get_record_by_id(record['merge_ref'],
+                                                         case_sensitive=False,
+                                                         merge=True)
+                        if merge is None:
+                            self._handle_failed_merge_ref(record, response,
+                                                          query_str)
+                        else:
+                            return self._add_vod(response, merge, query,
+                                                 MatchType[match_type.upper()])
                     else:
-                        return self._add_vod(response, merge, query,
-                                             MatchType[match_type.upper()])
+                        logger.error(f'Record {record["label_and_type"]} has'
+                                     f' no merge_ref attribute.')
 
         if not matching_records:
             response['match_type'] = MatchType.NO_MATCH
