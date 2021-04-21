@@ -1,13 +1,14 @@
 """Test merged record generation."""
 import pytest
 from therapy.etl.merge import Merge
+from therapy.schemas import ApprovalStatus
 from typing import Dict
 
 
 @pytest.fixture(scope='module')
 def merge_handler(mock_database):
     """Provide Merge instance to test cases."""
-    class MergeHandler():
+    class MergeHandler:
         def __init__(self):
             self.merge = Merge(mock_database())
 
@@ -48,6 +49,12 @@ def compare_merged_records(actual: Dict, fixture: Dict):
     assert ('xrefs' in actual) == ('xrefs' in fixture)
     if 'xrefs' in actual or 'xrefs' in fixture:
         assert set(actual['xrefs']) == set(fixture['xrefs'])
+    assert ('fda_indication' in actual) == ('fda_indication' in fixture)
+    if 'fda_indication' in actual or 'fda_indication' in fixture:
+        assert set(actual['fda_indication']) == set(fixture['fda_indication'])
+    assert ('approval_status' in actual) == ('approval_status' in fixture)
+    if 'approval_status' in actual or 'approval_status' in fixture:
+        assert set(actual['approval_status']) == set(fixture['approval_status'])  # noqa: E501
 
 
 @pytest.fixture(scope='module')
@@ -130,6 +137,7 @@ def cisplatin_merged():
         "other_ids": [
             "ncit:C376",
             "drugbank:DB00515",
+            "hemonc:105",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001"
@@ -146,6 +154,7 @@ def cisplatin_merged():
             'Cisplatin',
             'Cis-DDP',
             'CIS-DDP',
+            'DACP',
             'DDP',
             'Diamminodichloride, Platinum',
             'Dichlorodiammineplatinum',
@@ -157,9 +166,13 @@ def cisplatin_merged():
             'cis-diamminedichloroplatinum(II)',
             'cis-Diamminedichloroplatinum(II)',
             'cis-Dichlorodiammineplatinum(II)',
+            'cisplatinum',
             'cis-Platinum',
+            'cis-platinum',
             'cisplatino',
             'cis-diamminedichloroplatinum(II)',
+            'cis-diamminedichloroplatinum III',
+            'NSC 119875',
             'Platinol-AQ',
             'Platinol'
         ],
@@ -178,7 +191,9 @@ def cisplatin_merged():
             "pubchem.compound:5702198",
             "unii:Q20Q21Q62J",
             "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"
-        ]
+        ],
+        "approval_status": ApprovalStatus.APPROVED,
+        "fda_indication": ["ncit:C7251", "ncit:C7431", "ncit:C9334"],
     }
 
 
@@ -302,7 +317,8 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001",
-            "drugbank:DB00515"
+            "drugbank:DB00515",
+            "hemonc:105"
         },
         "rxcui:2555": {
             "rxcui:2555",
@@ -310,7 +326,8 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001",
-            "drugbank:DB00515"
+            "drugbank:DB00515",
+            "hemonc:105"
         },
         "ncit:C376": {
             "rxcui:2555",
@@ -318,7 +335,8 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001",
-            "drugbank:DB00515"
+            "drugbank:DB00515",
+            "hemonc:105"
         },
         "wikidata:Q412415": {
             "rxcui:2555",
@@ -326,7 +344,8 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001",
-            "drugbank:DB00515"
+            "drugbank:DB00515",
+            "hemonc:105"
         },
         "wikidata:Q47522001": {
             "rxcui:2555",
@@ -334,7 +353,8 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001",
-            "drugbank:DB00515"
+            "drugbank:DB00515",
+            "hemonc:105"
         },
         "drugbank:DB00515": {
             "rxcui:2555",
@@ -342,7 +362,17 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001",
-            "drugbank:DB00515"
+            "drugbank:DB00515",
+            "hemonc:105"
+        },
+        "hemonc:105": {
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415",
+            "wikidata:Q47522001",
+            "drugbank:DB00515",
+            "hemonc:105"
         },
         "rxcui:4126": {
             "rxcui:4126",

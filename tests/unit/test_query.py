@@ -25,7 +25,7 @@ def query_handler():
 @pytest.fixture(scope='module')
 def merge_query_handler(mock_database):
     """Provide Merge instance to test cases."""
-    class QueryGetter():
+    class QueryGetter:
         def __init__(self):
             self.query_handler = QueryHandler(db_url='http://localhost:8000')
             self.query_handler.db = mock_database()  # replace initial DB
@@ -439,9 +439,9 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
                       spiramycin, timolol):
     """Test that the merged concept endpoint handles queries correctly."""
     # test merged id match
-    test_query = "rxcui:2555"
-    response = merge_query_handler.search_groups(test_query)
-    assert response['query'] == test_query
+    query = "rxcui:2555"
+    response = merge_query_handler.search_groups(query)
+    assert response['query'] == query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.CONCEPT_ID
     cisplatin_copy = cisplatin.copy()
@@ -449,9 +449,9 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     compare_vod(response['value_object_descriptor'], cisplatin_copy)
 
     # test concept id match
-    test_query = "chemidplus:50-06-6"
-    response = merge_query_handler.search_groups(test_query)
-    assert response['query'] == test_query
+    query = "chemidplus:50-06-6"
+    response = merge_query_handler.search_groups(query)
+    assert response['query'] == query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.CONCEPT_ID
     pheno_copy = phenobarbital.copy()
@@ -459,17 +459,17 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     compare_vod(response['value_object_descriptor'], pheno_copy)
 
     # test label match
-    test_query = "Phenobarbital"
-    response = merge_query_handler.search_groups(test_query)
-    assert response['query'] == test_query
+    query = "Phenobarbital"
+    response = merge_query_handler.search_groups(query)
+    assert response['query'] == query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.LABEL
     compare_vod(response['value_object_descriptor'], phenobarbital)
 
     # test trade name match
-    test_query = "Platinol"
-    response = merge_query_handler.search_groups(test_query)
-    assert response['query'] == test_query
+    query = "Platinol"
+    response = merge_query_handler.search_groups(query)
+    assert response['query'] == query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.TRADE_NAME
     cisplatin_copy = cisplatin.copy()
@@ -477,18 +477,18 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     compare_vod(response['value_object_descriptor'], cisplatin_copy)
 
     # test alias match
-    test_query = "cis Diamminedichloroplatinum"
-    response = merge_query_handler.search_groups(test_query)
-    assert response['query'] == test_query
+    query = "cis Diamminedichloroplatinum"
+    response = merge_query_handler.search_groups(query)
+    assert response['query'] == query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.ALIAS
     cisplatin_copy = cisplatin.copy()
     cisplatin_copy['id'] = 'normalize.therapy:cis%20Diamminedichloroplatinum'
     compare_vod(response['value_object_descriptor'], cisplatin_copy)
 
-    test_query = "Rovamycine"
-    response = merge_query_handler.search_groups(test_query)
-    assert response['query'] == test_query
+    query = "Rovamycine"
+    response = merge_query_handler.search_groups(query)
+    assert response['query'] == query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.ALIAS
     spiramycin_copy = spiramycin.copy()
@@ -496,9 +496,9 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     compare_vod(response['value_object_descriptor'], spiramycin_copy)
 
     # test merge group with single member
-    test_query = "Betimol"
-    response = merge_query_handler.search_groups(test_query)
-    assert response['query'] == test_query
+    query = "Betimol"
+    response = merge_query_handler.search_groups(query)
+    assert response['query'] == query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.TRADE_NAME
     timolol_copy = timolol.copy()
@@ -507,39 +507,39 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
 
     # test that term with multiple possible resolutions resolves at highest
     # match
-    test_query = "Cisplatin"
-    response = merge_query_handler.search_groups(test_query)
-    assert response['query'] == test_query
+    query = "Cisplatin"
+    response = merge_query_handler.search_groups(query)
+    assert response['query'] == query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.LABEL
     compare_vod(response['value_object_descriptor'], cisplatin)
 
     # test whitespace stripping
-    test_query = "   Cisplatin "
-    response = merge_query_handler.search_groups(test_query)
-    assert response['query'] == test_query
+    query = "   Cisplatin "
+    response = merge_query_handler.search_groups(query)
+    assert response['query'] == query
     assert response['warnings'] is None
     assert response['match_type'] == MatchType.LABEL
     compare_vod(response['value_object_descriptor'], cisplatin)
 
     # test no match
-    test_query = "zzzz fake therapy zzzz"
-    response = merge_query_handler.search_groups(test_query)
-    assert response['query'] == test_query
+    query = "zzzz fake therapy zzzz"
+    response = merge_query_handler.search_groups(query)
+    assert response['query'] == query
     assert response['warnings'] is None
     assert 'record' not in response
     assert response['match_type'] == MatchType.NO_MATCH
 
-    test_query = "APRD00818"
-    response = merge_query_handler.search_groups(test_query)
-    assert response['query'] == test_query
+    query = "APRD00818"
+    response = merge_query_handler.search_groups(query)
+    assert response['query'] == query
     assert response['warnings'] is None
     assert 'record' not in response
     assert response['match_type'] == MatchType.NO_MATCH
 
-    test_query = "chembl:CHEMBL1200368"
-    response = merge_query_handler.search_groups(test_query)
-    assert response['query'] == test_query
+    query = "chembl:CHEMBL1200368"
+    response = merge_query_handler.search_groups(query)
+    assert response['query'] == query
     assert response['warnings'] is None
     assert 'record' not in response
     assert response['match_type'] == MatchType.NO_MATCH
@@ -547,16 +547,16 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
 
 def test_merged_meta(merge_query_handler):
     """Test population of source and resource metadata in merged querying."""
-    test_query = "pheno"
-    response = merge_query_handler.search_groups(test_query)
+    query = "pheno"
+    response = merge_query_handler.search_groups(query)
     meta_items = response['source_meta_']
     assert 'RxNorm' in meta_items.keys()
     assert 'Wikidata' in meta_items.keys()
     assert 'NCIt' in meta_items.keys()
     assert 'ChemIDplus' in meta_items.keys()
 
-    test_query = "RP 5337"
-    response = merge_query_handler.search_groups(test_query)
+    query = "RP 5337"
+    response = merge_query_handler.search_groups(query)
     meta_items = response['source_meta_']
     assert 'NCIt' in meta_items.keys()
     assert 'ChemIDplus' in meta_items.keys()
@@ -564,16 +564,16 @@ def test_merged_meta(merge_query_handler):
 
 def test_service_meta(query_handler, merge_query_handler):
     """Test service meta info in response."""
-    test_query = "pheno"
+    query = "pheno"
 
-    response = query_handler.normalize(test_query)
+    response = query_handler.normalize(query)
     service_meta = response['service_meta_']
     assert service_meta.name == "thera-py"
     assert service_meta.version >= "0.2.13"
     assert isinstance(service_meta.response_datetime, datetime)
     assert service_meta.url == 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
 
-    response = merge_query_handler.search_groups(test_query)
+    response = merge_query_handler.search_groups(query)
     service_meta = response['service_meta_']
     assert service_meta.name == "thera-py"
     assert service_meta.version >= "0.2.13"
