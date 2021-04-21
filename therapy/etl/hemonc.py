@@ -3,6 +3,7 @@ from therapy import DownloadException, PROJECT_ROOT
 from therapy.etl.base import Base
 from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, \
     ApprovalStatus
+from disease.query import QueryHandler as DiseaseNormalizer
 from pathlib import Path
 from typing import List
 import csv
@@ -23,6 +24,9 @@ class HemOnc(Base):
         :param Path data_path: path to normalizer data directory
         """
         super().__init__(database, data_path)
+        self.disease_normalizer = DiseaseNormalizer(
+            db_url=self.database.endpoint_url
+        )
 
     def perform_etl(self) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
@@ -84,6 +88,7 @@ class HemOnc(Base):
         """Prepare dataset for loading into normalizer database."""
         concepts = {}  # hemonc id -> record
         brand_names = {}  # hemonc id -> brand name
+        conditions = {}  # hemonc id -> condition name
 
         concepts_file = open(self._src_files[0], 'r')
         concepts_reader = csv.reader(concepts_file)
@@ -104,6 +109,8 @@ class HemOnc(Base):
                 }
             elif row_type == 'Brand Name':
                 brand_names[row[3]] = row[0]
+            elif row_type == 'Condition':
+                conditions[row[3]] = row[0]
         concepts_file.close()
 
         rels_file = open(self._src_files[1], 'r')
@@ -111,19 +118,31 @@ class HemOnc(Base):
         next(rels_reader)
         for row in rels_reader:
             rel_type = row[4]
-            hemonc_id = row[0]
-            if hemonc_id not in concepts:
+            record = concepts.get(row[0])
+            if record is None:
                 continue  # skip non-drug items
             if rel_type == "Maps to":
                 src_raw = row[3]
                 if src_raw == "RxNorm":
                     other_id = f'{SourceName.RXNORM.value}:{row[1]}'
-                    concepts[hemonc_id]['other_identifiers'].append(other_id)
+                    record['other_identifiers'].append(other_id)
             elif rel_type == "Was FDA approved yr":
                 status = ApprovalStatus.APPROVED
-                concepts[hemonc_id]['approval_status'] = status
+                record['approval_status'] = status
             elif rel_type == "Has brand name":
-                concepts[hemonc_id]['trade_names'].append(brand_names[row[1]])
+                record['trade_names'].append(brand_names[row[1]])
+            elif rel_type == "Has FDA indication":
+                disease_raw = conditions[row[1]]
+                response = self.disease_normalizer.search_groups(disease_raw)
+                if response['match_type'] > 0:
+                    disease = response['value_object_descriptor']['value']['id']  # noqa: E501
+                    if 'fda_indication' in record:
+                        record['fda_indication'].append(disease)
+                    else:
+                        record['fda_indication'] = [disease]
+                else:
+                    logger.warning(f'Normalization of condition id: {row[1]}'
+                                   f' , {disease_raw}, failed.')
         rels_file.close()
 
         synonyms_file = open(self._src_files[2], 'r')
