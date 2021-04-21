@@ -1,7 +1,7 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
 from botocore.exceptions import ClientError
-from therapy import PROHIBITED_SOURCES
+from therapy import PROHIBITED_SOURCES, ACCEPTED_SOURCES
 from therapy.etl.merge import Merge
 from timeit import default_timer as timer
 from boto3.dynamodb.conditions import Key
@@ -103,9 +103,11 @@ class CLI:
             click.echo(f"Total time for {n}: "
                        f"{(delete_time + load_time):.5f} seconds.")
 
-        if update_merged and processed_ids:
+        if update_merged:
             click.echo("Generating merged concepts...")
             start_merge = timer()
+            if not processed_ids or not ACCEPTED_SOURCES.issubset(normalizers):
+                processed_ids = db.get_ids_for_merge()
             merge = Merge(database=db)
             merge.create_merged_concepts(processed_ids)
             end_merge = timer()

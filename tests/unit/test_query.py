@@ -320,7 +320,7 @@ def test_query(query_handler):
     assert resp['query'] == 'cisplatin'
     matches = resp['source_matches']
     assert isinstance(matches, list)
-    assert len(matches) == 6
+    assert len(matches) == 7
     wikidata = list(filter(lambda m: m['source'] == 'Wikidata',
                            matches))[0]
     assert len(wikidata['records']) == 1
@@ -343,11 +343,14 @@ def test_query_specify_sources(query_handler):
     # test blank params
     resp = query_handler.normalize('cisplatin', keyed=True)
     matches = resp['source_matches']
-    assert len(matches) == 6
+    assert len(matches) == 7
     assert 'Wikidata' in matches
     assert 'ChEMBL' in matches
     assert 'NCIt' in matches
     assert 'DrugBank' in matches
+    assert 'ChemIDplus' in matches
+    assert 'RxNorm' in matches
+    assert 'HemOnc' in matches
 
     # test partial inclusion
     resp = query_handler.normalize('cisplatin', keyed=True, incl='chembl,ncit')
@@ -357,44 +360,70 @@ def test_query_specify_sources(query_handler):
     assert 'ChEMBL' in matches
     assert 'NCIt' in matches
     assert 'DrugBank' not in matches
+    assert 'RxNorm' not in matches
+    assert 'ChemIDplus' not in matches
+    assert 'HemOnc' not in matches
 
     # test full inclusion
-    sources = 'chembl,ncit,drugbank,wikidata,rxnorm,chemidplus'
+    sources = 'chembl,ncit,drugbank,wikidata,rxnorm,chemidplus,hemonc'
     resp = query_handler.normalize('cisplatin', keyed=True,
                                    incl=sources, excl='')
     matches = resp['source_matches']
-    assert len(matches) == 6
+    assert len(matches) == 7
     assert 'Wikidata' in matches
     assert 'ChEMBL' in matches
+    assert 'NCIt' in matches
+    assert 'DrugBank' in matches
+    assert 'ChemIDplus' in matches
+    assert 'RxNorm' in matches
+    assert 'HemOnc' in matches
 
     # test partial exclusion
     resp = query_handler.normalize('cisplatin', keyed=True, excl='chemidplus')
     matches = resp['source_matches']
-    assert len(matches) == 5
+    assert len(matches) == 6
     assert 'Wikidata' in matches
+    assert 'ChEMBL' in matches
+    assert 'NCIt' in matches
+    assert 'DrugBank' in matches
     assert 'ChemIDplus' not in matches
+    assert 'RxNorm' in matches
+    assert 'HemOnc' in matches
 
     # test full exclusion
     resp = query_handler.normalize('cisplatin', keyed=True,
                                    excl='chembl, wikidata, drugbank, ncit, '
-                                   'rxnorm, chemidplus')
+                                   'rxnorm, chemidplus, hemonc')
     matches = resp['source_matches']
     assert len(matches) == 0
     assert 'Wikidata' not in matches
     assert 'ChEMBL' not in matches
     assert 'NCIt' not in matches
     assert 'DrugBank' not in matches
+    assert 'ChemIDplus' not in matches
+    assert 'RxNorm' not in matches
+    assert 'HemOnc' not in matches
 
     # test case insensitive
     resp = query_handler.normalize('cisplatin', keyed=True, excl='ChEmBl')
     matches = resp['source_matches']
     assert 'Wikidata' in matches
     assert 'ChEMBL' not in matches
+    assert 'NCIt' in matches
+    assert 'DrugBank' in matches
+    assert 'ChemIDplus' in matches
+    assert 'RxNorm' in matches
+    assert 'HemOnc' in matches
     resp = query_handler.normalize('cisplatin', keyed=True,
                                    incl='wIkIdAtA,cHeMbL')
     matches = resp['source_matches']
     assert 'Wikidata' in matches
     assert 'ChEMBL' in matches
+    assert 'NCIt' not in matches
+    assert 'DrugBank' not in matches
+    assert 'ChemIDplus' not in matches
+    assert 'RxNorm' not in matches
+    assert 'HemOnc' not in matches
 
     # test error on invalid source names
     with pytest.raises(InvalidParameterException):
