@@ -159,18 +159,22 @@ class Merge:
             'label': None,
             'aliases': set(),
             'trade_names': set(),
-            'xrefs': set()
+            'xrefs': set(),
+            'approval_status': None,
+            'fda_indication': set(),
         }
         if len(records) > 1:
             merged_attrs['other_ids'] = [r['concept_id'] for r in records[1:]]
 
         # merge from constituent records
-        set_fields = ['aliases', 'trade_names', 'xrefs']
+        set_fields = ['aliases', 'trade_names', 'xrefs', 'fda_indication']
         for record in records:
             for field in set_fields:
                 merged_attrs[field] |= set(record.get(field, {}))
             if merged_attrs['label'] is None:
                 merged_attrs['label'] = record.get('label')
+            if merged_attrs['approval_status'] is None:
+                merged_attrs['approval_status'] = record.get('approval_status')
 
         # clear unused fields
         for field in set_fields:
@@ -179,8 +183,9 @@ class Merge:
                 merged_attrs[field] = list(field_value)
             else:
                 del merged_attrs[field]
-        if merged_attrs['label'] is None:
-            del merged_attrs['label']
+        for field in ['label', 'approval_status']:
+            if merged_attrs[field] is None:
+                del merged_attrs[field]
 
         merged_attrs['label_and_type'] = \
             f'{merged_attrs["concept_id"].lower()}##merger'

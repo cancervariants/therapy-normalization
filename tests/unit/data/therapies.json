@@ -1696,29 +1696,30 @@
     "other_identifiers": ["RxNorm:2555"],
     "xrefs": [],
     "approval_status": "approved",
+    "fda_indication": ["ncit:C7251", "ncit:C7431", "ncit:C9334"],
     "trade_names": []
   },
   {
     "label_and_type": "nsc 119875##alias",
-    "concept_id": "hemonc:65",
+    "concept_id": "hemonc:105",
     "item_type": "alias",
     "src_name": "HemOnc"
   },
   {
     "label_and_type": "dacp##alias",
-    "concept_id": "hemonc:65",
+    "concept_id": "hemonc:105",
     "item_type": "alias",
     "src_name": "HemOnc"
   },
   {
     "label_and_type": "ddp##alias",
-    "concept_id": "hemonc:65",
+    "concept_id": "hemonc:105",
     "item_type": "alias",
     "src_name": "HemOnc"
   },
   {
     "label_and_type": "cisplatin##label",
-    "concept_id": "hemonc:65",
+    "concept_id": "hemonc:105",
     "item_type": "label",
     "src_name": "HemOnc"
   },
@@ -1755,7 +1756,8 @@
       "Treakisym",
       "Treanda",
       "Xyotin"
-    ]
+    ],
+    "fda_indication": ["ncit:C3163", "ncit:C8504"]
   },
   {
     "label_and_type": "rxnorm:134547##other_id",
@@ -1824,7 +1826,8 @@
       "Treakisym",
       "Treanda",
       "Xyotin"
-    ]
+    ],
+    "fda_indication": ["ncit:C3163", "ncit:C8504"]
   },
   {
     "label_and_type": "hemonc:151##identity",

@@ -228,7 +228,6 @@ def bendamustine_merged():
             "bendamustin hydrochloride"
         ],
         "other_identifiers": ["RxNorm:134547"],
-        "xrefs": [],
         "approval_status": "approved",
         "trade_names": [
             "Bendamax",
@@ -245,7 +244,8 @@ def bendamustine_merged():
             "Treakisym",
             "Treanda",
             "Xyotin"
-        ]
+        ],
+        "fda_indication": ["ncit:C3163", "ncit:C8504"]
     }
 
 
@@ -387,7 +387,7 @@ def test_create_record_id_set(merge_handler, record_id_groups):
 
 def test_generate_merged_record(merge_handler, record_id_groups,
                                 phenobarbital_merged, cisplatin_merged,
-                                spiramycin_merged):
+                                spiramycin_merged, bendamustine_merged):
     """Test generation of merged record method."""
     phenobarbital_ids = record_id_groups['rxcui:8134']
     merge_response = merge_handler.generate_merged_record(phenobarbital_ids)
@@ -401,28 +401,40 @@ def test_generate_merged_record(merge_handler, record_id_groups,
     merge_response = merge_handler.generate_merged_record(spiramycin_ids)
     compare_merged_records(merge_response, spiramycin_merged)
 
+    bendamustin_ids = record_id_groups['hemonc:65']
+    merge_response = merge_handler.generate_merged_record(bendamustin_ids)
+    compare_merged_records(merge_response, bendamustine_merged)
+
 
 def test_create_merged_concepts(merge_handler, record_id_groups,
                                 phenobarbital_merged, cisplatin_merged,
-                                spiramycin_merged):
+                                spiramycin_merged, bendamustine_merged):
     """Test end-to-end creation and upload of merged concepts."""
     record_ids = record_id_groups.keys()
     merge_handler.create_merged_concepts(record_ids)
 
     # check merged record generation and storage
     added_records = merge_handler.get_added_records()
-    assert len(added_records) == 4
+    assert len(added_records) == 5
+
     phenobarb_merged_id = phenobarbital_merged['concept_id']
     assert phenobarb_merged_id in added_records.keys()
     compare_merged_records(added_records[phenobarb_merged_id],
                            phenobarbital_merged)
+
     cispl_merged_id = cisplatin_merged['concept_id']
     assert cispl_merged_id in added_records.keys()
     compare_merged_records(added_records[cispl_merged_id], cisplatin_merged)
+
     spira_merged_id = spiramycin_merged['concept_id']
     assert spira_merged_id in added_records.keys()
     compare_merged_records(added_records[spira_merged_id],
                            spiramycin_merged)
+
+    benda_merged_id = bendamustine_merged['concept_id']
+    assert benda_merged_id in added_records.keys()
+    compare_merged_records(added_records[benda_merged_id],
+                           bendamustine_merged)
 
     # check merged record reference updating
     updates = merge_handler.get_updates()
@@ -438,4 +450,8 @@ def test_create_merged_concepts(merge_handler, record_id_groups,
     for concept_id in record_id_groups['ncit:C839']:
         assert updates[concept_id] == {
             'merge_ref': spiramycin_merged['concept_id'].lower()
+        }
+    for concept_id in record_id_groups['hemonc:65']:
+        assert updates[concept_id] == {
+            'merge_ref': bendamustine_merged['concept_id'].lower()
         }
