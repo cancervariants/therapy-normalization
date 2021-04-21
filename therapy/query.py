@@ -384,21 +384,17 @@ class QueryHandler:
             vod['xrefs'] = record['other_ids']
         if 'aliases' in record:
             vod['alternate_labels'] = record['aliases']
-        trade_names = record.get('trade_names')
-        if trade_names:
-            vod['extensions'].append({
-                'type': 'Extension',
-                'name': 'trade_names',
-                'value': trade_names
-            })
-        if 'xrefs' in record and record['xrefs']:
-            vod['extensions'].append(
-                {
+        for field, name in (('trade_names', 'trade_names'),
+                            ('xrefs', 'associated_with'),
+                            ('approval_status', 'approval_status'),
+                            ('fda_indication', 'fda_indication')):
+            values = record.get(field)
+            if values:
+                vod['extensions'].append({
                     'type': 'Extension',
-                    'name': 'associated_with',
-                    'value': record['xrefs']
-                }
-            )
+                    'name': name,
+                    'value': values
+                })
         if not vod['extensions']:
             del vod['extensions']
         response['match_type'] = match_type
