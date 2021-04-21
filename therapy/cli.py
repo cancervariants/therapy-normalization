@@ -107,6 +107,7 @@ class CLI:
             click.echo("Generating merged concepts...")
             start_merge = timer()
             if not processed_ids or not ACCEPTED_SOURCES.issubset(normalizers):
+                CLI()._delete_normalized_data(db)
                 processed_ids = db.get_ids_for_merge()
             merge = Merge(database=db)
             merge.create_merged_concepts(processed_ids)
@@ -115,6 +116,8 @@ class CLI:
                        f" {(end_merge - start_merge):.5f} seconds.")
 
     def _delete_normalized_data(self, database):
+        click.echo("\nDeleting normalized records...")
+        start_delete = timer()
         try:
             while True:
                 with database.therapies.batch_writer(
@@ -134,6 +137,9 @@ class CLI:
                         })
         except ClientError as e:
             click.echo(e.response['Error']['Message'])
+        end_delete = timer()
+        delete_time = end_delete - start_delete
+        click.echo(f"Deleted normalized records in {delete_time:.5f} seconds.")
 
     def _delete_data(self, source, database):
         # Delete source's metadata
