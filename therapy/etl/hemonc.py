@@ -51,14 +51,13 @@ class HemOnc(Base):
     def _extract_data(self):
         """Get source files from data directory."""
         self._src_data_dir.mkdir(exist_ok=True, parents=True)
-        src_file_prefix = 'hemonc_'
         self._src_files = []
         for item_type in ('concepts', 'rels', 'synonyms'):
             src_file_prefix = f'hemonc_{item_type}_'
             dir_files = [f for f in self._src_data_dir.iterdir()
                          if f.name.startswith(src_file_prefix)]
             if len(dir_files) == 0:
-                self._download_data(item_type)
+                self._download_data()
                 dir_files = [f for f in self._src_data_dir.iterdir()
                              if f.name.startswith(src_file_prefix)]
             self._src_files.append(sorted(dir_files, reverse=True)[0])
