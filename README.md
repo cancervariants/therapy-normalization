@@ -90,7 +90,7 @@ python3 -m therapy.cli --update_all
 ### Create Merged Concept Groups
 The `normalize` endpoint relies on merged concept groups.
 
-To create merged concept groups, use the `--update_merged` flag with the `--update_all` flag.
+To create merged concept groups, use the `--update_merged` flag.
 
 ```commandline
 python3 -m therapy.cli --update_all --update_merged
