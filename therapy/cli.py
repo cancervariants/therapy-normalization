@@ -114,6 +114,27 @@ class CLI:
             click.echo(f"Merged concept generation completed in"
                        f" {(end_merge - start_merge):.5f} seconds.")
 
+    def _delete_normalized_data(self, database):
+        try:
+            while True:
+                with database.therapies.batch_writer(
+                        overwrite_by_pkeys=['label_and_type', 'concept_id']) \
+                        as batch:
+                    response = database.therapies.query(
+                        IndexName='item_type_index',
+                        KeyConditionExpression=Key('item_type').eq('merger'),
+                    )
+                    records = response['Items']
+                    if not records:
+                        break
+                    for record in records:
+                        batch.delete_item(Key={
+                            'label_and_type': record['label_and_type'],
+                            'concept_id': record['concept_id']
+                        })
+        except ClientError as e:
+            click.echo(e.response['Error']['Message'])
+
     def _delete_data(self, source, database):
         # Delete source's metadata
         try:
@@ -131,13 +152,12 @@ class CLI:
         except ClientError as e:
             click.echo(e.response['Error']['Message'])
 
-        # Delete source's data from therapies table
         try:
             while True:
                 response = database.therapies.query(
                     IndexName='src_index',
                     KeyConditionExpression=Key('src_name').eq(
-                        SourceName[f"{source.upper()}"].value)
+                        SourceName[f"{source.upper()}"].value),
                 )
 
                 records = response['Items']
