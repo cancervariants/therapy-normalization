@@ -227,7 +227,7 @@ def bendamustine_merged():
             "bendamustine hydrochloride",
             "bendamustin hydrochloride"
         ],
-        "other_identifiers": ["RxNorm:134547"],
+        "other_identifiers": ["rxcui:134547"],
         "approval_status": "approved",
         "trade_names": [
             "Bendamax",

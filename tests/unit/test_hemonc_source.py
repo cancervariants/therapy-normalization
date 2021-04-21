@@ -44,7 +44,7 @@ def cisplatin():
             "CDDP"
         ],
         "trade_names": [],
-        "other_identifiers": ["RxNorm:2555"],
+        "other_identifiers": ["rxcui:2555"],
         "xrefs": [],
         "approval_status": ApprovalStatus.APPROVED,
         "fda_indication": ["ncit:C7251", "ncit:C7431", "ncit:C9334"]
@@ -65,7 +65,7 @@ def bendamustine():
             "bendamustine hydrochloride",
             "bendamustin hydrochloride"
         ],
-        "other_identifiers": ["RxNorm:134547"],
+        "other_identifiers": ["rxcui:134547"],
         "xrefs": [],
         "approval_status": ApprovalStatus.APPROVED,
         "trade_names": [
@@ -99,7 +99,7 @@ def degarelix():
             "FE200486",
             "ASP3550"
         ],
-        "other_identifiers": ["RxNorm:475230"],
+        "other_identifiers": ["rxcui:475230"],
         "xrefs": [],
         "approval_status": ApprovalStatus.APPROVED,
         "trade_names": ["Firmagon"],
@@ -170,13 +170,13 @@ def test_trade_name(hemonc, bendamustine, degarelix):
 
 def test_other_id_match(hemonc, cisplatin, bendamustine, degarelix):
     """Test that other_id query resolves to correct record."""
-    response = hemonc.search('rxnorm:2555')
+    response = hemonc.search('rxcui:2555')
     compare_response(response, MatchType.OTHER_ID, cisplatin)
 
-    response = hemonc.search('rxnorm:134547')
+    response = hemonc.search('rxcui:134547')
     compare_response(response, MatchType.OTHER_ID, bendamustine)
 
-    response = hemonc.search('RXNORM:475230')
+    response = hemonc.search('rxcui:475230')
     compare_response(response, MatchType.OTHER_ID, degarelix)
 
 

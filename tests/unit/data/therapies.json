@@ -1693,7 +1693,7 @@
       "NSC 119875",
       "CDDP"
     ],
-    "other_identifiers": ["RxNorm:2555"],
+    "other_identifiers": ["rxcui:2555"],
     "xrefs": [],
     "approval_status": "approved",
     "fda_indication": ["ncit:C7251", "ncit:C7431", "ncit:C9334"],
@@ -1738,7 +1738,7 @@
       "bendamustine hydrochloride",
       "bendamustin hydrochloride"
     ],
-    "other_identifiers": ["RxNorm:134547"],
+    "other_identifiers": ["rxcui:134547"],
     "xrefs": [],
     "approval_status": "approved",
     "trade_names": [
@@ -1760,7 +1760,7 @@
     "fda_indication": ["ncit:C3163", "ncit:C8504"]
   },
   {
-    "label_and_type": "rxnorm:134547##other_id",
+    "label_and_type": "rxcui:134547##other_id",
     "concept_id": "hemonc:65",
     "item_type": "other_id",
     "src_name": "HemOnc"
@@ -1808,7 +1808,7 @@
       "bendamustine hydrochloride",
       "bendamustin hydrochloride"
     ],
-    "other_identifiers": ["RxNorm:134547"],
+    "other_identifiers": ["rxcui:134547"],
     "xrefs": [],
     "approval_status": "approved",
     "trade_names": [
@@ -1836,13 +1836,13 @@
     "label": "Degarelix",
     "concept_id": "hemonc:151",
     "aliases": ["degarelix acetate", "FE200486", "ASP3550"],
-    "other_identifiers": ["RxNorm:475230"],
+    "other_identifiers": ["rxcui:475230"],
     "xrefs": [],
     "approval_status": "approved",
     "trade_names": ["Firmagon"]
   },
   {
-    "label_and_type": "rxnorm:475230##other_id",
+    "label_and_type": "rxcui:475230##other_id",
     "concept_id": "hemonc:151",
     "src_name": "HemOnc",
     "item_type": "other_id"
