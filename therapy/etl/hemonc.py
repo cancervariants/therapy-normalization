@@ -74,8 +74,8 @@ class HemOnc(Base):
             'rdp_url': None,
             'data_license_attributes': {
                 'non_commercial': False,
-                'share_alike': True,
-                'attribution': False,
+                'share_alike': False,
+                'attribution': True,
             },
         }
         assert SourceMeta(**meta)

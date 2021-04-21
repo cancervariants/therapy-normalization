@@ -190,6 +190,6 @@ def test_metadata(hemonc):
     assert response.rdp_url is None
     assert response.data_license_attributes == {
         "non_commercial": False,
-        "attribution": False,
-        "share_alike": True,
+        "attribution": True,
+        "share_alike": False,
     }
