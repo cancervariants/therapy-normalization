@@ -104,7 +104,7 @@ class CLI:
                        f"{(delete_time + load_time):.5f} seconds.")
 
         if update_merged:
-            click.echo("Generating merged concepts...")
+            click.echo("Constructing normalized records...")
             start_merge = timer()
             if not processed_ids or not ACCEPTED_SOURCES.issubset(normalizers):
                 CLI()._delete_normalized_data(db)
