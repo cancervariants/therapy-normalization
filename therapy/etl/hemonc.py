@@ -24,9 +24,7 @@ class HemOnc(Base):
         :param Path data_path: path to normalizer data directory
         """
         super().__init__(database, data_path)
-        self.disease_normalizer = DiseaseNormalizer(
-            db_url=self.database.endpoint_url
-        )
+        self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
 
     def perform_etl(self) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
