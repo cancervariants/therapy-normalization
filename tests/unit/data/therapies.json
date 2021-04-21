@@ -1700,6 +1700,12 @@
     "trade_names": []
   },
   {
+    "label_and_type": "rxcui:2555##other_id",
+    "concept_id": "hemonc:105",
+    "src_name": "HemOnc",
+    "item_type": "other_id"
+  },
+  {
     "label_and_type": "nsc 119875##alias",
     "concept_id": "hemonc:105",
     "item_type": "alias",
