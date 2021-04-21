@@ -1693,7 +1693,7 @@
       "NSC 119875",
       "CDDP"
     ],
-    "other_identifiers": ["rxcui:2555"],
+    "other_identifiers": ["rxcui:2555##other_id"],
     "xrefs": [],
     "approval_status": "approved",
     "fda_indication": ["ncit:C7251", "ncit:C7431", "ncit:C9334"],
