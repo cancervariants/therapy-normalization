@@ -354,10 +354,14 @@ class QueryHandler:
             source_rank = 1
         elif src == SourceName.NCIT.value:
             source_rank = 2
-        elif src == SourceName.CHEMIDPLUS.value:
+        elif src == SourceName.HEMONC.value:
             source_rank = 3
-        else:
+        elif src == SourceName.DRUGBANK.value:
             source_rank = 4
+        elif src == SourceName.CHEMIDPLUS.value:
+            source_rank = 5
+        else:
+            source_rank = 6
         return source_rank, record['concept_id']
 
     def _add_vod(self, response: Dict, record: Dict, query: str,

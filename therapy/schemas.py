@@ -121,9 +121,9 @@ class SourcePriority(IntEnum):
 
     RXNORM = 1
     NCIT = 2
-    DRUGBANK = 3
+    HEMONC = 3
+    DRUGBANK = 4
     CHEMIDPLUS = 5
-    HEMONC = 6
     WIKIDATA = 10
 
 
@@ -330,7 +330,7 @@ class Extension(BaseModel):
 
     type: str
     name: str
-    value: Union[bool, List[str]]
+    value: Union[bool, List[str], ApprovalStatus]
 
 
 class ValueObjectDescriptor(BaseModel):

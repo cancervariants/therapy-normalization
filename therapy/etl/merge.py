@@ -126,9 +126,9 @@ class Merge:
         scalars, assign from the highest-priority source where that attribute
         is non-null.
 
-        Priority is RxNorm > NCIt > ChemIDplus > Wikidata. ChEMBL and DrugBank
-        identifiers should not be included in record_id_set; doing so will
-        cause problems.
+        Priority is:
+        RxNorm > NCIt > HemOnc.org > DrugBank > ChemIDplus > Wikidata
+        ChEMBL records shouldn't be included in `record_id_set`.
 
         :param Set record_id_set: group of concept IDs
         :return: completed merged drug object to be stored in DB
