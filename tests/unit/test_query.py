@@ -162,38 +162,61 @@ def cisplatin():
             },
             {
                 "type": "Extension",
-                "name": "fda_indication",
-                "value": [
-                    "ncit:C7251",
-                    "ncit:C7431",
-                    "ncit:C9334"
-                ],
-            },
-            {
-                "type": "Extension",
-                "name": "approval_status",
-                "value": "approved"
-
-            },
-            {
-                "type": "Extension",
                 "name": "associated_with",
                 "value": [
-                    "umls:C0008838",
-                    "fda:Q20Q21Q62J",
-                    "usp:m17910",
-                    "vandf:4018139",
-                    "mesh:D002945",
                     "mthspl:Q20Q21Q62J",
-                    "mmsl:d00195",
-                    "atc:L01XA01",
                     "mmsl:31747",
                     "mmsl:4456",
-                    "pubchem.compound:5702198",
+                    "usp:m17910",
+                    "chebi:CHEBI:27899",
+                    "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
+                    "mmsl:d00195",
                     "unii:Q20Q21Q62J",
-                    "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"
+                    "mesh:D002945",
+                    "atc:L01XA01",
+                    "vandf:4018139",
+                    "pubchem.compound:5702198",
+                    "umls:C0008838",
+                    "fda:Q20Q21Q62J",
                 ]
-            }
+            },
+            {
+                "type": "Extension",
+                "name": "fda_approval",
+                "value": {
+                    "approval_status": "approved",
+                    "approval_year": "1978",
+                    "has_indication": [
+                        {
+                            "id": "hemonc:671",
+                            "type": "DiseaseDescriptor",
+                            "value": {
+                                "type": "Disease",
+                                "id": "ncit:C7251"
+                            },
+                            "label": "Testicular cancer"
+                        },
+                        {
+                            "id": "hemonc:645",
+                            "type": "DiseaseDescriptor",
+                            "value": {
+                                "type": "Disease",
+                                "id": "ncit:C7431"
+                            },
+                            "label": "Ovarian cancer"
+                        },
+                        {
+                            "id": "hemonc:569",
+                            "type": "DiseaseDescriptor",
+                            "value": {
+                                "type": "Disease",
+                                "id": "ncit:C9334"
+                            },
+                            "label": "Bladder cancer"
+                        }
+                    ]
+                }
+            },
         ]
     }
 
@@ -329,19 +352,16 @@ def compare_vod(actual, fixture):
             assert set(tn_actual['value']) == set(tn_fixture['value'])
             assert tn_actual['value']
 
-        fda_actual = get_extension(ext_actual, 'fda_indication')
-        fda_fixture = get_extension(ext_fixture, 'fda_indication')
+        fda_actual = get_extension(ext_actual, 'fda_approval')
+        fda_fixture = get_extension(ext_fixture, 'fda_approval')
         assert (fda_actual is None) == (fda_fixture is None)
         if fda_actual:
-            assert set(fda_actual['value']) == set(fda_fixture['value'])
-            assert fda_actual['value']
-
-        approv_actual = get_extension(ext_actual, 'approval_status')
-        approv_fixture = get_extension(ext_fixture, 'approval_status')
-        assert (approv_actual is None) == (approv_fixture is None)
-        if approv_actual:
-            assert approv_actual['value'] == approv_fixture['value']
-            assert approv_actual['value']
+            assert fda_actual.get('approval_status') == \
+                fda_fixture.get('approval_status')
+            assert fda_actual.get('approval_year') == \
+                fda_fixture.get('approval_year')
+            assert set(fda_actual.get('approval_status')) == \
+                set(fda_fixture.get('approval_status'))
 
 
 def test_query(query_handler):
