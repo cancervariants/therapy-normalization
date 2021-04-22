@@ -122,6 +122,7 @@ def cisplatin():
         "label": "cisplatin",
         "xrefs": [
             "ncit:C376",
+            "hemonc:105",
             "drugbank:DB00515",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
@@ -158,6 +159,21 @@ def cisplatin():
                     "Cisplatin",
                     "Platinol"
                 ],
+            },
+            {
+                "type": "Extension",
+                "name": "fda_indication",
+                "value": [
+                    "ncit:C7251",
+                    "ncit:C7431",
+                    "ncit:C9334"
+                ],
+            },
+            {
+                "type": "Extension",
+                "name": "approval_status",
+                "value": "approved"
+
             },
             {
                 "type": "Extension",
@@ -313,6 +329,20 @@ def compare_vod(actual, fixture):
             assert set(tn_actual['value']) == set(tn_fixture['value'])
             assert tn_actual['value']
 
+        fda_actual = get_extension(ext_actual, 'fda_indication')
+        fda_fixture = get_extension(ext_fixture, 'fda_indication')
+        assert (fda_actual is None) == (fda_fixture is None)
+        if fda_actual:
+            assert set(fda_actual['value']) == set(fda_fixture['value'])
+            assert fda_actual['value']
+
+        approv_actual = get_extension(ext_actual, 'approval_status')
+        approv_fixture = get_extension(ext_fixture, 'approval_status')
+        assert (approv_actual is None) == (approv_fixture is None)
+        if approv_actual:
+            assert approv_actual['value'] == approv_fixture['value']
+            assert approv_actual['value']
+
 
 def test_query(query_handler):
     """Test that query returns properly-structured response."""
@@ -457,6 +487,15 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     pheno_copy = phenobarbital.copy()
     pheno_copy['id'] = 'normalize.therapy:chemidplus%3A50-06-6'
     compare_vod(response['value_object_descriptor'], pheno_copy)
+
+    query = "hemonc:105"
+    response = merge_query_handler.search_groups(query)
+    assert response['query'] == query
+    assert response['warnings'] is None
+    assert response['match_type'] == MatchType.CONCEPT_ID
+    cisplatin_copy = cisplatin.copy()
+    cisplatin_copy['id'] = 'normalize.therapy:hemonc%3A105'
+    compare_vod(response['value_object_descriptor'], cisplatin_copy)
 
     # test label match
     query = "Phenobarbital"

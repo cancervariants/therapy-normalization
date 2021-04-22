@@ -1308,6 +1308,7 @@
     "concept_id": "rxcui:2555",
     "other_ids": [
       "ncit:C376",
+      "hemonc:105",
       "drugbank:DB00515",
       "chemidplus:15663-27-1",
       "wikidata:Q412415",
@@ -1353,7 +1354,9 @@
       "pubchem.compound:5702198",
       "unii:Q20Q21Q62J",
       "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"
-    ]
+    ],
+    "approval_status": "approved",
+    "fda_indication": ["ncit:C7431", "ncit:C7251", "ncit:C9334"]
   },
   {
     "label_and_type": "ncit:c839##merger",
