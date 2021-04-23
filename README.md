@@ -65,38 +65,29 @@ export RXNORM_API_KEY={rxnorm_api_key}
 ```
 
 #### Update source(s)
-The sources we currently use are: ChEMBL, NCIt, DrugBank, RxNorm, ChemIDplus, and Wikidata.
+The sources we currently use are: ChEMBL, NCIt, DrugBank (CC0 data only), RxNorm, ChemIDplus, Wikidata, and HemOnc.org.
 
-To update one source, simply set `--normalizer` to the source you wish to update.
-
-From the project root, run the following to update the ChEMBL source:
+To update one source, simply set `--normalizer` to the source you wish to update. For example, the following command updates ChEMBL and Wikidata:
 
 ```commandline
-python3 -m therapy.cli --normalizer="chembl"
+python3 -m therapy.cli --normalizer="chembl wikidata"
 ```
 
-To update multiple sources, you can use the `normalizer` flag with the source names separated by spaces.
-
-#### Update all sources
-
-To update all sources, use the `--update_all` flag.
-
-From the project root, run the following to update all sources:
+You can update all sources at once with the `--update_all` flag:
 
 ```commandline
 python3 -m therapy.cli --update_all
 ```
 
 ### Create Merged Concept Groups
-The `normalize` endpoint relies on merged concept groups.
-
-To create merged concept groups, use the `--update_merged` flag.
+The `/normalize` endpoint relies on merged concept groups.  The `--update_merged` flag generates these groups:
 
 ```commandline
-python3 -m therapy.cli --update_all --update_merged
+python3 -m therapy.cli --update_merged
 ```
 
 #### Specifying the database URL endpoint
+
 The default URL endpoint is `http://localhost:8000`.
 There are two different ways to specify the database URL endpoint.
 
@@ -116,7 +107,7 @@ python3 -m therapy.cli --update_all
 From the project root, run the following:
 
 ```commandline
- uvicorn therapy.main:app --reload
+uvicorn therapy.main:app --reload
 ```
 
 Next, view the OpenAPI docs on your local machine:
