@@ -348,15 +348,15 @@ class DiseaseValueObjectDescriptor(BaseModel):
 class FDAStatus(BaseModel):
     """VOD Extension class for FDA status/indication attributes."""
 
-    approval_status: ApprovalStatus
-    approval_year: List[int]
+    approval_status: Optional[ApprovalStatus]
+    approval_year: Optional[List[int]]
     has_indication: List[Dict]
 
 
 class Extension(BaseModel):
     """Value Object Descriptor Extension class."""
 
-    type: str
+    type = "Extension"
     name: str
     value: Union[bool, List[str], FDAStatus]
 

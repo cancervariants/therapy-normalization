@@ -49,12 +49,23 @@ def compare_merged_records(actual: Dict, fixture: Dict):
     assert ('xrefs' in actual) == ('xrefs' in fixture)
     if 'xrefs' in actual or 'xrefs' in fixture:
         assert set(actual['xrefs']) == set(fixture['xrefs'])
-    assert ('fda_indication' in actual) == ('fda_indication' in fixture)
-    if 'fda_indication' in actual or 'fda_indication' in fixture:
-        assert set(actual['fda_indication']) == set(fixture['fda_indication'])
     assert ('approval_status' in actual) == ('approval_status' in fixture)
     if 'approval_status' in actual or 'approval_status' in fixture:
-        assert set(actual['approval_status']) == set(fixture['approval_status'])  # noqa: E501
+        assert set(actual['approval_status']) == \
+            set(fixture['approval_status'])
+    assert ('approval_year' in actual) == ('approval_year' in fixture)
+    if 'approval_year' in actual or 'approval_year' in fixture:
+        assert set(actual['approval_year']) == set(fixture['approval_year'])
+    assert ('fda_indication' in actual) == ('fda_indication' in fixture)
+    if 'fda_indication' in actual or 'fda_indication' in fixture:
+        actual_inds = actual['fda_indication'].copy()
+        fixture_inds = fixture['fda_indication'].copy()
+        assert len(actual_inds) == len(fixture_inds)
+        print(actual_inds)
+        actual_inds.sort(key=lambda x: x[0])
+        fixture_inds.sort(key=lambda x: x[0])
+        for i in range(len(actual_inds)):
+            assert actual_inds[i] == fixture_inds[i]
 
 
 @pytest.fixture(scope='module')
@@ -193,7 +204,12 @@ def cisplatin_merged():
             "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"
         ],
         "approval_status": ApprovalStatus.APPROVED,
-        "fda_indication": ["ncit:C7251", "ncit:C7431", "ncit:C9334"],
+        "approval_year": ["1978"],
+        "fda_indication": [
+            ["hemonc:671", "Testicular cancer", "ncit:C7251"],
+            ["hemonc:645", "Ovarian cancer", "ncit:C7431"],
+            ["hemonc:569", "Bladder cancer", "ncit:C9334"]
+        ],
     }
 
 
@@ -243,7 +259,6 @@ def bendamustine_merged():
             "bendamustin hydrochloride"
         ],
         "other_identifiers": ["rxcui:134547"],
-        "approval_status": "approved",
         "trade_names": [
             "Bendamax",
             "Bendawel",
@@ -260,7 +275,12 @@ def bendamustine_merged():
             "Treanda",
             "Xyotin"
         ],
-        "fda_indication": ["ncit:C3163", "ncit:C8504"]
+        "approval_status": ApprovalStatus.APPROVED,
+        "approval_year": ["2008", "2015"],
+        "fda_indication": [
+            ["hemonc:581", "Chronic lymphocytic leukemia", "ncit:C3163"],
+            ["hemonc:46094", "Indolent lymphoma", "ncit:C8504"]
+        ]
     }
 
 

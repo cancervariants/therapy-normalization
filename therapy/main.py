@@ -109,5 +109,4 @@ def normalize(q: str = Query(..., description=merged_q_descr)):
         response = query_handler.search_groups(html.unescape(q))
     except InvalidParameterException as e:
         raise HTTPException(status_code=422, detail=str(e))
-    print(response)
     return response

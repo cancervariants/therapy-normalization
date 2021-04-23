@@ -86,15 +86,12 @@ class QueryHandler:
         :return: Tuple containing updated response object, and string
             containing name of the source of the match
         """
-        # print(item)
-        # del item['label_and_type']
         inds = item.get('fda_indication')
         if inds:
             item['has_indication'] = [HasIndication(disease_id=i[0],
                                                     disease_label=i[1],
                                                     normalized_disease_id=i[2])
                                       for i in inds]
-            print(item)
         set_attrs = ['aliases', 'other_identifiers', 'trade_names', 'xrefs',
                      'approval_year', 'has_indication']
         for attr in set_attrs:
@@ -399,10 +396,40 @@ class QueryHandler:
             vod['xrefs'] = record['other_ids']
         if 'aliases' in record:
             vod['alternate_labels'] = record['aliases']
+
+        if any(filter(lambda f: f in record, ('approval_status',
+                                              'approval_year',
+                                              'fda_indication'))):
+            fda_approv = {
+                "name": "fda_approval",
+                "value": {}
+            }
+            for field in ('approval_status', 'approval_year'):
+                value = record.get(field)
+                if value:
+                    fda_approv['value'][field] = value
+            inds = record.get('fda_indication', [])
+            inds_list = []
+            for ind in inds:
+                ind_obj = {
+                    "id": ind[0],
+                    "type": "DiseaseDescriptor",
+                    "label": ind[1]
+                }
+                if ind[2]:
+                    ind_obj['value'] = {
+                        'type': 'Disease',
+                        'id': ind[2]
+                    }
+                else:
+                    ind_obj['value'] = None
+                inds_list.append(ind_obj)
+            if inds_list:
+                fda_approv['value']['has_indication'] = inds_list
+            vod['extensions'].append(fda_approv)
+
         for field, name in (('trade_names', 'trade_names'),
-                            ('xrefs', 'associated_with'),
-                            ('approval_status', 'approval_status'),
-                            ('fda_indication', 'fda_indication')):
+                            ('xrefs', 'associated_with')):
             values = record.get(field)
             if values:
                 vod['extensions'].append({
@@ -410,8 +437,10 @@ class QueryHandler:
                     'name': name,
                     'value': values
                 })
+
         if not vod['extensions']:
             del vod['extensions']
+
         response['match_type'] = match_type
         response['value_object_descriptor'] = vod
         response = self._add_merged_meta(response)

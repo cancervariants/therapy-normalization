@@ -185,7 +185,7 @@ def cisplatin():
                 "name": "fda_approval",
                 "value": {
                     "approval_status": "approved",
-                    "approval_year": "1978",
+                    "approval_year": ["1978"],
                     "has_indication": [
                         {
                             "id": "hemonc:671",
@@ -358,10 +358,10 @@ def compare_vod(actual, fixture):
         if fda_actual:
             assert fda_actual.get('approval_status') == \
                 fda_fixture.get('approval_status')
-            assert fda_actual.get('approval_year') == \
-                fda_fixture.get('approval_year')
-            assert set(fda_actual.get('approval_status')) == \
-                set(fda_fixture.get('approval_status'))
+            assert set(fda_actual.get('approval_year', [])) == \
+                set(fda_fixture.get('approval_year', []))
+            assert set(fda_actual.get('has_indication', [])) == \
+                set(fda_fixture.get('has_indication', []))
 
 
 def test_query(query_handler):
