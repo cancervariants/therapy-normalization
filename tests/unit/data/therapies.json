@@ -1691,6 +1691,7 @@
     "label_and_type": "hemonc:105##identity",
     "item_type": "identity",
     "src_name": "HemOnc",
+    "merge_ref": "rxcui:2555",
     "concept_id": "hemonc:105",
     "label": "Cisplatin",
     "aliases": [
@@ -1704,15 +1705,14 @@
     ],
     "other_identifiers": ["rxcui:2555"],
     "xrefs": [],
+    "trade_names": [],
     "approval_status": "approved",
     "approval_year": ["1978"],
     "fda_indication": [
       ["hemonc:671", "Testicular cancer", "ncit:C7251"],
       ["hemonc:645", "Ovarian cancer", "ncit:C7431"],
       ["hemonc:569", "Bladder cancer", "ncit:C9334"]
-    ],
-    "trade_names": [],
-    "merge_ref": "rxcui:2555"
+    ]
   },
   {
     "label_and_type": "rxcui:2555##other_id",
@@ -1867,8 +1867,10 @@
     "aliases": ["degarelix acetate", "FE200486", "ASP3550"],
     "other_identifiers": ["rxcui:475230"],
     "xrefs": [],
+    "trade_names": ["Firmagon"],
     "approval_status": "approved",
-    "trade_names": ["Firmagon"]
+    "approval_year": ["2008"],
+    "fda_indication": [["hemonc:658", "Prostate cancer", "ncit:C7378"]]
   },
   {
     "label_and_type": "rxcui:475230##other_id",
