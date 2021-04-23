@@ -7,7 +7,7 @@ from uvicorn.config import logger
 from therapy import __version__
 from therapy.database import Database
 from therapy.schemas import Drug, SourceMeta, MatchType, SourceName, \
-    ServiceMeta
+    ServiceMeta, HasIndication
 from botocore.exceptions import ClientError
 from urllib.parse import quote
 from datetime import datetime
@@ -86,11 +86,22 @@ class QueryHandler:
         :return: Tuple containing updated response object, and string
             containing name of the source of the match
         """
-        del item['label_and_type']
-        attr_types = ['aliases', 'other_identifiers', 'trade_names', 'xrefs']
-        for attr_type in attr_types:
-            if attr_type not in item.keys():
-                item[attr_type] = []
+        # print(item)
+        # del item['label_and_type']
+        inds = item.get('fda_indication')
+        if inds:
+            item['has_indication'] = [HasIndication(disease_id=i[0],
+                                                    disease_label=i[1],
+                                                    normalized_disease_id=i[2])
+                                      for i in inds]
+            print(item)
+        set_attrs = ['aliases', 'other_identifiers', 'trade_names', 'xrefs',
+                     'approval_year', 'has_indication']
+        for attr in set_attrs:
+            if attr not in item.keys():
+                item[attr] = []
+        if 'approval_status' not in item.keys():
+            item['approval_status'] = None
 
         drug = Drug(**item)
         src_name = item['src_name']
@@ -343,7 +354,7 @@ class QueryHandler:
         response['source_meta_'] = sources_meta
         return response
 
-    def _record_order(self, record: Dict) -> (int, str):  # TODO refactor?
+    def _record_order(self, record: Dict) -> (int, str):
         """Construct priority order for matching. Only called by sort().
 
         :param Dict record: individual record item in iterable to sort

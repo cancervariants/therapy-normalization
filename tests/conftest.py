@@ -131,9 +131,20 @@ def compare_records(actual: Drug, fixture: Drug):
     assert actual.label == fixture.label
     assert set(actual.aliases) == set(fixture.aliases)
     assert set(actual.trade_names) == set(fixture.trade_names)
-    assert actual.approval_status == fixture.approval_status
     assert set(actual.other_identifiers) == set(fixture.other_identifiers)
     assert set(actual.xrefs) == set(fixture.xrefs)
+    if actual.approval_status or fixture.approval_status:
+        assert actual.approval_status == fixture.approval_status
+    if actual.approval_year or fixture.approval_year:
+        assert set(actual.approval_year) == set(fixture.approval_year)
+    if actual.has_indication or fixture.has_indication:
+        actual_inds = actual.has_indication.copy()
+        fixture_inds = fixture.has_indication.copy()
+        assert len(actual_inds) == len(fixture_inds)
+        actual_inds.sort(key=lambda x: x.disease_id)
+        fixture_inds.sort(key=lambda x: x.disease_id)
+        for i in range(len(actual_inds)):
+            assert actual_inds[i] == fixture_inds[i]
 
 
 def compare_response(response: Dict, match_type: MatchType,

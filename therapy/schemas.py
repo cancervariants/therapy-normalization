@@ -15,7 +15,6 @@ class Therapy(BaseModel):
     aliases: Optional[List[str]]
     other_identifiers: Optional[List[str]]
     xrefs: Optional[List[str]]
-    fda_indication: Optional[List[str]]
 
     class Config:
         """Configure model"""
@@ -48,10 +47,20 @@ class PhaseEnum(IntEnum):
     approved = 4
 
 
+class HasIndication(BaseModel):
+    """Data regarding FDA indication. Currently specific to HemOnc.org data."""
+
+    disease_id: str
+    disease_label: str
+    normalized_disease_id: Optional[str]
+
+
 class Drug(Therapy):
     """A pharmacologic substance used to treat a medical condition."""
 
     approval_status: Optional[ApprovalStatus]
+    approval_year: Optional[List[int]]
+    has_indication: Optional[List[HasIndication]]
     trade_names: Optional[List[str]]
     label: Optional[str]
 
@@ -325,21 +334,40 @@ class MatchesListed(BaseModel):
             }
 
 
+class DiseaseValueObjectDescriptor(BaseModel):
+    """VOD class for diseases. Used within the FDAStatus extension in the
+    main therapy VOD.
+    """
+
+    id: str
+    type = "DiseaseDescriptor"
+    value: Optional[Dict]
+    label: str
+
+
+class FDAStatus(BaseModel):
+    """VOD Extension class for FDA status/indication attributes."""
+
+    approval_status: ApprovalStatus
+    approval_year: List[int]
+    has_indication: List[Dict]
+
+
 class Extension(BaseModel):
     """Value Object Descriptor Extension class."""
 
     type: str
     name: str
-    value: Union[bool, List[str], ApprovalStatus]
+    value: Union[bool, List[str], FDAStatus]
 
 
 class ValueObjectDescriptor(BaseModel):
-    """VOD class. Provide additional Extension classes for trade_names and
-    references to non-normalized sources.
+    """Therapy VOD class. Provide additional Extension classes for trade_names
+    and references to non-normalized sources as well as FDA approval data.
     """
 
     id: str
-    type: str
+    type = "TherapyDescriptor"
     value: Any
     label: str
     xrefs: Optional[List[str]]

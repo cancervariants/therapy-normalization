@@ -47,7 +47,24 @@ def cisplatin():
         "other_identifiers": ["rxcui:2555"],
         "xrefs": [],
         "approval_status": ApprovalStatus.APPROVED,
-        "fda_indication": ["ncit:C7251", "ncit:C7431", "ncit:C9334"]
+        "approval_year": [1978],
+        "has_indication": [
+            {
+                "disease_id": "hemonc:671",
+                "disease_label": "Testicular cancer",
+                "normalized_disease_id": "ncit:C7251"
+            },
+            {
+                "disease_id": "hemonc:645",
+                "disease_label": "Ovarian cancer",
+                "normalized_disease_id": "ncit:C7431"
+            },
+            {
+                "disease_id": "hemonc:569",
+                "disease_label": "Bladder cancer",
+                "normalized_disease_id": "ncit:C9334"
+            }
+        ]
     })
 
 
@@ -67,7 +84,6 @@ def bendamustine():
         ],
         "other_identifiers": ["rxcui:134547"],
         "xrefs": [],
-        "approval_status": ApprovalStatus.APPROVED,
         "trade_names": [
             "Bendamax",
             "Bendawel",
@@ -84,7 +100,20 @@ def bendamustine():
             "Treanda",
             "Xyotin"
         ],
-        "fda_indication": ["ncit:C3163", "ncit:C8504"]
+        "approval_status": ApprovalStatus.APPROVED,
+        "approval_year": ["2008", "2015"],
+        "has_indication": [
+            {
+                "disease_id": "hemonc:581",
+                "disease_label": "Chronic lymphocytic leukemia",
+                "normalized_disease_id": "ncit:C3163"
+            },
+            {
+                "disease_id": "hemonc:46094",
+                "disease_label": "Indolent lymphoma",
+                "normalized_disease_id": "ncit:C8504"
+            }
+        ]
     })
 
 
@@ -101,9 +130,16 @@ def degarelix():
         ],
         "other_identifiers": ["rxcui:475230"],
         "xrefs": [],
-        "approval_status": ApprovalStatus.APPROVED,
         "trade_names": ["Firmagon"],
-        "fda_indication": ["ncit:C7378"],
+        "approval_status": ApprovalStatus.APPROVED,
+        "approval_year": ["2008"],
+        "has_indication": [
+            {
+                "disease_id": "hemonc:658",
+                "disease_label": "Prostate cancer",
+                "normalized_disease_id": "ncit:C7378"
+            }
+        ],
     })
 
 

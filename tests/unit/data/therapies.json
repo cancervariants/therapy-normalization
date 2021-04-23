@@ -1357,7 +1357,12 @@
       "chebi:CHEBI:27899"
     ],
     "approval_status": "approved",
-    "fda_indication": ["ncit:C7431", "ncit:C7251", "ncit:C9334"]
+    "approval_year": ["1978"],
+    "fda_indication": [
+      ["hemonc:671", "Testicular cancer", "ncit:C7251"],
+      ["hemonc:645", "Ovarian cancer", "ncit:C7431"],
+      ["hemonc:569", "Bladder cancer", "ncit:C9334"]
+    ]
   },
   {
     "label_and_type": "ncit:c839##merger",
@@ -1700,7 +1705,12 @@
     "other_identifiers": ["rxcui:2555"],
     "xrefs": [],
     "approval_status": "approved",
-    "fda_indication": ["ncit:C7251", "ncit:C7431", "ncit:C9334"],
+    "approval_year": ["1978"],
+    "fda_indication": [
+      ["hemonc:671", "Testicular cancer", "ncit:C7251"],
+      ["hemonc:645", "Ovarian cancer", "ncit:C7431"],
+      ["hemonc:569", "Bladder cancer", "ncit:C9334"]
+    ],
     "trade_names": [],
     "merge_ref": "rxcui:2555"
   },
@@ -1751,7 +1761,6 @@
     ],
     "other_identifiers": ["rxcui:134547"],
     "xrefs": [],
-    "approval_status": "approved",
     "trade_names": [
       "Bendamax",
       "Bendawel",
@@ -1768,7 +1777,12 @@
       "Treanda",
       "Xyotin"
     ],
-    "fda_indication": ["ncit:C3163", "ncit:C8504"]
+    "approval_status": "approved",
+    "approval_year": ["2008", "2015"],
+    "fda_indication": [
+      ["hemonc:581", "Chronic lymphocytic leukemia", "ncit:C3163"],
+      ["hemonc:46094", "Indolent lymphoma", "ncit:C8504"]
+    ]
   },
   {
     "label_and_type": "rxcui:134547##other_id",
@@ -1821,7 +1835,6 @@
     ],
     "other_identifiers": ["rxcui:134547"],
     "xrefs": [],
-    "approval_status": "approved",
     "trade_names": [
       "Bendamax",
       "Bendawel",
@@ -1838,7 +1851,12 @@
       "Treanda",
       "Xyotin"
     ],
-    "fda_indication": ["ncit:C3163", "ncit:C8504"]
+    "approval_status": "approved",
+    "approval_year": ["2008", "2015"],
+    "fda_indication": [
+      ["hemonc:581", "Chronic lymphocytic leukemia", "ncit:C3163"],
+      ["hemonc:46094", "Indolent lymphoma", "ncit:C8504"]
+    ]
   },
   {
     "label_and_type": "hemonc:151##identity",
