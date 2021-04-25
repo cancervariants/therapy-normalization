@@ -132,8 +132,8 @@ def phenobarbital_merged():
             "atc:N03AA02",
             "fda:YQE403BP4D",
             "umls:C0031412",
-            "chebi:CHEBI:8069"
-
+            "chebi:CHEBI:8069",
+            "chembl:CHEMBL40"
         ],
         "label": "Phenobarbital",
     }
@@ -201,7 +201,8 @@ def cisplatin_merged():
             "mmsl:4456",
             "pubchem.compound:5702198",
             "unii:Q20Q21Q62J",
-            "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"
+            "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
+            "chembl:CHEMBL2068237"
         ],
         "approval_status": ApprovalStatus.APPROVED,
         "approval_year": ["1978"],
@@ -237,6 +238,7 @@ def spiramycin_merged():
         "xrefs": [
             "umls:C0037962",
             "fda:71ODY0V87H",
+            "chembl:CHEMBL1256397"
         ],
     }
 
