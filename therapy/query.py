@@ -92,13 +92,14 @@ class QueryHandler:
                                                     disease_label=i[1],
                                                     normalized_disease_id=i[2])
                                       for i in inds]
-        set_attrs = ['aliases', 'other_identifiers', 'trade_names', 'xrefs',
+        set_attrs = ['aliases', 'trade_names', 'xrefs', 'assoc_with',
                      'approval_year', 'has_indication']
         for attr in set_attrs:
             if attr not in item.keys():
                 item[attr] = []
         if 'approval_status' not in item.keys():
             item['approval_status'] = None
+        item['associated_with'] = item['assoc_with']
 
         drug = Drug(**item)
         src_name = item['src_name']
@@ -106,7 +107,7 @@ class QueryHandler:
         matches = response['source_matches']
         if src_name not in matches.keys():
             pass
-        elif matches[src_name] is None:  # TODO what is going on here
+        elif matches[src_name] is None:
             matches[src_name] = {
                 'match_type': MatchType[match_type.upper()],
                 'records': [drug],
@@ -200,7 +201,7 @@ class QueryHandler:
         :param Dict resp: in-progress response object to return to client
         :param Set[str] sources: remaining unmatched sources
         :param str match_type: Match type to check for. Should be one of
-            {'trade_name', 'label', 'alias', 'other_id', 'xref'}
+            {'trade_name', 'label', 'alias', 'xref', 'assoc_with'}
         :return: Tuple with updated resp object and updated set of unmatched
                  sources
         """
@@ -237,7 +238,7 @@ class QueryHandler:
         if len(sources) == 0:
             return response
 
-        match_types = ['label', 'trade_name', 'alias', 'other_id', 'xref']
+        match_types = ['label', 'trade_name', 'alias', 'xref', 'assoc_with']
         for match_type in match_types:
             (response, sources) = self._check_match_type(query, response,
                                                          sources, match_type)
