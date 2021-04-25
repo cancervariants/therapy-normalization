@@ -176,7 +176,9 @@ class Merge:
                 merged_attrs['label'] = record.get('label')
             if merged_attrs['approval_status'] is None:
                 merged_attrs['approval_status'] = record.get('approval_status')
-            merged_attrs['fda_indication'] += record.get('fda_indication', [])
+            for ind in record.get('fda_indication', []):
+                if ind not in merged_attrs['fda_indication']:
+                    merged_attrs['fda_indication'].append(ind)
 
         # clear unused fields
         for field in set_fields + ['fda_indication']:
