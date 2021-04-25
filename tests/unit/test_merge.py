@@ -202,7 +202,7 @@ def cisplatin_merged():
             "pubchem.compound:5702198",
             "unii:Q20Q21Q62J",
             "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
-            "chembl:CHEMBL2068237"
+            "chembl:CHEMBL11359",
         ],
         "approval_status": ApprovalStatus.APPROVED,
         "approval_year": ["1978"],
@@ -237,8 +237,7 @@ def spiramycin_merged():
         ],
         "xrefs": [
             "umls:C0037962",
-            "fda:71ODY0V87H",
-            "chembl:CHEMBL1256397"
+            "fda:71ODY0V87H"
         ],
     }
 

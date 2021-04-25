@@ -179,7 +179,7 @@ def cisplatin():
                     "pubchem.compound:5702198",
                     "umls:C0008838",
                     "fda:Q20Q21Q62J",
-                    "chembl:CHEMBL2068237"
+                    "chembl:CHEMBL11359",
                 ]
             },
             {
@@ -253,7 +253,6 @@ def spiramycin():
                 "value": [
                     "umls:C0037962",
                     "fda:71ODY0V87H",
-                    "chembl:CHEMBL1256397"
                 ],
             }
         ]
