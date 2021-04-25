@@ -172,6 +172,9 @@ class Merge:
         for record in records:
             for field in set_fields:
                 merged_attrs[field] |= set(record.get(field, {}))
+            chembl_ids = {i for i in record.get('other_identifiers', [])
+                          if i.startswith('chembl')}
+            merged_attrs['xrefs'] |= chembl_ids
             if merged_attrs['label'] is None:
                 merged_attrs['label'] = record.get('label')
             if merged_attrs['approval_status'] is None:
