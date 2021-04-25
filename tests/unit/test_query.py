@@ -253,6 +253,7 @@ def spiramycin():
                 "value": [
                     "umls:C0037962",
                     "fda:71ODY0V87H",
+                    "chembl:CHEMBL1256397"
                 ],
             }
         ]
