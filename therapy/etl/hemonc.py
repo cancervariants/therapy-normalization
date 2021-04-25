@@ -82,7 +82,7 @@ class HemOnc(Base):
         meta['src_name'] = SourceName.HEMONC.value
         self.database.metadata.put_item(Item=meta)
 
-    def _get_concepts(self) -> Tuple[Dict]:
+    def _get_concepts(self) -> Tuple[Dict, Dict, Dict]:
         """Get therapy, brand name, and disease concepts from concepts file.
         :return: Tuple of dicts mapping ID to object for each type of concept
         """
@@ -141,7 +141,7 @@ class HemOnc(Base):
 
         :param dict therapies: mapping from IDs to therapy concepts
         :param dict brand_names: mapping from IDs to therapy brand names
-        :param dict condition: mapping from IDs to disease conditions
+        :param dict conditions: mapping from IDs to disease conditions
         :return: therapies dict updated with brand names and conditions
         """
         rels_file = open(self._src_files[1], 'r')
@@ -184,7 +184,6 @@ class HemOnc(Base):
                     record['approval_year'].append(year)
                 else:
                     record['approval_year'] = [year]
-                record['approval_year']
 
             elif rel_type == "Has FDA indication":
                 label = conditions[row[1]]
