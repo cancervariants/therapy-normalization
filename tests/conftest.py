@@ -88,12 +88,12 @@ def mock_database():
 
             :param query: string to match against
             :param str match_type: type of match to look for. Should be one
-                of {"alias", "trade_name", "label", "rx_brand", "other_id"}
-                (use get_record_by_id for concept ID lookup)
+                of {"alias", "trade_name", "label", "rx_brand", "xref"
+                "associated_with"} (use get_record_by_id for concept ID lookup)
             :return: list of matching records. Empty if lookup fails.
             """
             assert match_type in ('alias', 'trade_name', 'label', 'rx_brand',
-                                  'other_id')
+                                  'xref', 'associated_with')
             label_and_type = f'{query}##{match_type.lower()}'
             records_lookup = self.records.get(label_and_type, None)
             if records_lookup:
@@ -131,8 +131,8 @@ def compare_records(actual: Drug, fixture: Drug):
     assert actual.label == fixture.label
     assert set(actual.aliases) == set(fixture.aliases)
     assert set(actual.trade_names) == set(fixture.trade_names)
-    assert set(actual.other_identifiers) == set(fixture.other_identifiers)
     assert set(actual.xrefs) == set(fixture.xrefs)
+    assert set(actual.associated_with) == set(fixture.associated_with)
     if actual.approval_status or fixture.approval_status:
         assert actual.approval_status == fixture.approval_status
     if actual.approval_year or fixture.approval_year:

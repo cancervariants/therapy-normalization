@@ -56,15 +56,15 @@ def test_item_type(db):
     assert 'item_type' in item
     assert item['item_type'] == 'label'
 
-    filter_exp = Key('label_and_type').eq('fda:5x5hb3vz3z##xref')
+    filter_exp = Key('label_and_type').eq('fda:5x5hb3vz3z##associated_with')
+    item = db.therapies.query(KeyConditionExpression=filter_exp)['Items'][0]
+    assert 'item_type' in item
+    assert item['item_type'] == 'associated_with'
+
+    filter_exp = Key('label_and_type').eq('drugbank:db00515##xref')
     item = db.therapies.query(KeyConditionExpression=filter_exp)['Items'][0]
     assert 'item_type' in item
     assert item['item_type'] == 'xref'
-
-    filter_exp = Key('label_and_type').eq('drugbank:db00515##other_id')
-    item = db.therapies.query(KeyConditionExpression=filter_exp)['Items'][0]
-    assert 'item_type' in item
-    assert item['item_type'] == 'other_id'
 
     filter_exp = Key('label_and_type').eq('dichlorodiammineplatinum##alias')
     item = db.therapies.query(KeyConditionExpression=filter_exp)['Items'][0]

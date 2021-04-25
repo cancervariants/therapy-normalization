@@ -39,8 +39,8 @@ def cisplatin():
             'Platinol-Aq'
         ],
         'approval_status': 'approved',
-        'other_identifiers': [],
         'xrefs': [],
+        'associated_with': [],
         'trade_names': [
             'PLATINOL',
             'PLATINOL-AQ',
@@ -58,8 +58,8 @@ def l745870():
         'concept_id': 'chembl:CHEMBL267014',
         'aliases': ['L-745870'],
         'approval_status': None,
-        'other_identifiers': [],
         'xrefs': [],
+        'associated_with': [],
         'trade_names': []
     }
     return Drug(**params)
@@ -74,8 +74,8 @@ def aspirin():
         'concept_id': 'chembl:CHEMBL25',
         'aliases': [],
         'approval_status': 'approved',
-        'other_identifiers': [],
         'xrefs': [],
+        'associated_with': [],
         'trade_names': []
     }
     return Drug(**params)

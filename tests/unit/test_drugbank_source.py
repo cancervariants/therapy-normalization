@@ -42,11 +42,14 @@ def cisplatin():
             'APRD00359',
             'cisplatino',
         ],
-        'other_identifiers': [
+        'xrefs': [
             'chemidplus:15663-27-1',
         ],
         'trade_names': [],
-        'xrefs': ["unii:Q20Q21Q62J", "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"],
+        'associated_with': [
+            "unii:Q20Q21Q62J",
+            "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"
+        ],
     }
     return Drug(**params)
 
@@ -65,11 +68,14 @@ def bentiromide():
             'BTPABA',
             'PFT',
         ],
-        'other_identifiers': [
+        'xrefs': [
             'chemidplus:37106-97-1',
         ],
         'trade_names': [],
-        'xrefs': ["unii:239IF5W61J", "inchikey:SPPTWHFVYKCNNK-FQEVSTJZSA-N"],
+        'associated_with': [
+            "unii:239IF5W61J",
+            "inchikey:SPPTWHFVYKCNNK-FQEVSTJZSA-N"
+        ],
     }
     return Drug(**params)
 
@@ -83,9 +89,9 @@ def aloe_ferox_leaf():
         'concept_id': 'drugbank:DB14257',
         'label': 'Aloe ferox leaf',
         'aliases': [],
-        'other_identifiers': [],
+        'xrefs': [],
         'trade_names': [],
-        "xrefs": ["unii:0D145J8EME"]
+        "associated_with": ["unii:0D145J8EME"]
     }
     return Drug(**params)
 
@@ -166,25 +172,25 @@ def test_alias_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
     assert response['match_type'] == MatchType.NO_MATCH
 
 
-def test_other_id_match(drugbank, cisplatin, bentiromide):
-    """Test that other_id query resolves to correct record."""
-    response = drugbank.search('chemidplus:15663-27-1')
-    compare_response(response, MatchType.OTHER_ID, cisplatin)
-
-    response = drugbank.search('chemidplus:37106-97-1')
-    compare_response(response, MatchType.OTHER_ID, bentiromide)
-
-
-def test_xref_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
+def test_xref_match(drugbank, cisplatin, bentiromide):
     """Test that xref query resolves to correct record."""
-    response = drugbank.search('inchikey:lxzzyrpgzafole-uhfffaoysa-l')
+    response = drugbank.search('chemidplus:15663-27-1')
     compare_response(response, MatchType.XREF, cisplatin)
 
-    response = drugbank.search('unii:239if5w61j')
+    response = drugbank.search('chemidplus:37106-97-1')
     compare_response(response, MatchType.XREF, bentiromide)
 
+
+def test_assoc_with_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
+    """Test that associated_with query resolves to correct record."""
+    response = drugbank.search('inchikey:lxzzyrpgzafole-uhfffaoysa-l')
+    compare_response(response, MatchType.ASSOCIATED_WITH, cisplatin)
+
+    response = drugbank.search('unii:239if5w61j')
+    compare_response(response, MatchType.ASSOCIATED_WITH, bentiromide)
+
     response = drugbank.search('UNII:0D145J8EME')
-    compare_response(response, MatchType.XREF, aloe_ferox_leaf)
+    compare_response(response, MatchType.ASSOCIATED_WITH, aloe_ferox_leaf)
 
 
 def test_no_match(drugbank):

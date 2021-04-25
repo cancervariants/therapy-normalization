@@ -29,8 +29,8 @@ def voglibose():
         'aliases': ['3,4-Dideoxy-4-((2-Hydroxy-1-(Hydroxymethyl)Ethyl)Amino)-2-C-(Hydroxymethyl)-D-Epi-Inositol',  # noqa F401
                     'A-71100', 'AO-128', 'Basen',
                     'N-(1,3-Dihydroxy-2-Propyl)Valiolamine', 'VOGLIBOSE'],
-        'other_identifiers': ['chemidplus:83480-29-9'],
-        'xrefs': ['fda:S77P977AG8', 'umls:C0532578'],
+        'xrefs': ['chemidplus:83480-29-9'],
+        'associated_with': ['fda:S77P977AG8', 'umls:C0532578'],
         'approval_status': None,
         'trade_names': []
     }
@@ -45,8 +45,8 @@ def apricoxib():
         'concept_id': 'ncit:C74021',
         'aliases': ['APRICOXIB', 'COX-2 Inhibitor TG01', 'CS-706', 'R-109339',
                     'TG01', 'TP2001'],
-        'other_identifiers': ['chemidplus:197904-84-0'],
-        'xrefs': ['fda:5X5HB3VZ3Z', 'umls:C1737955'],
+        'xrefs': ['chemidplus:197904-84-0'],
+        'associated_with': ['fda:5X5HB3VZ3Z', 'umls:C1737955'],
         'approval_status': None,
         'trade_names': []
     }
@@ -61,8 +61,8 @@ def trastuzumab():
         'label': 'Trastuzumab',
         'concept_id': 'ncit:C1647',
         'aliases': [],
-        'other_identifiers': ['chemidplus:180288-69-1'],
-        'xrefs': ['umls:C0728747', 'fda:P188ANX8CK'],
+        'xrefs': ['chemidplus:180288-69-1'],
+        'associated_with': ['umls:C0728747', 'fda:P188ANX8CK'],
         'approval_status': None,
         'trade_names': []
     }
@@ -112,12 +112,12 @@ def test_voglibose(voglibose, ncit):
     compare_records(response['records'][0], voglibose)
 
     response = ncit.search('chemidplus:83480-29-9')
-    assert response['match_type'] == MatchType.OTHER_ID
+    assert response['match_type'] == MatchType.XREF
     assert len(response['records']) == 1
     compare_records(response['records'][0], voglibose)
 
     response = ncit.search('fda:S77P977AG8')
-    assert response['match_type'] == MatchType.XREF
+    assert response['match_type'] == MatchType.ASSOCIATED_WITH
     assert len(response['records']) == 1
     compare_records(response['records'][0], voglibose)
 
@@ -160,12 +160,12 @@ def test_apricoxib(apricoxib, ncit):
     compare_records(response['records'][0], apricoxib)
 
     response = ncit.search('CHEMIDPLUS:197904-84-0')
-    assert response['match_type'] == MatchType.OTHER_ID
+    assert response['match_type'] == MatchType.XREF
     assert len(response['records']) == 1
     compare_records(response['records'][0], apricoxib)
 
     response = ncit.search('fda:5X5HB3VZ3Z')
-    assert response['match_type'] == MatchType.XREF
+    assert response['match_type'] == MatchType.ASSOCIATED_WITH
     assert len(response['records']) == 1
     compare_records(response['records'][0], apricoxib)
 
@@ -203,12 +203,12 @@ def test_trastuzumab(trastuzumab, ncit):
     compare_records(response['records'][0], trastuzumab)
 
     response = ncit.search('chemidplus:180288-69-1')
-    assert response['match_type'] == MatchType.OTHER_ID
+    assert response['match_type'] == MatchType.XREF
     assert len(response['records']) == 1
     compare_records(response['records'][0], trastuzumab)
 
     response = ncit.search('fda:P188ANX8CK')
-    assert response['match_type'] == MatchType.XREF
+    assert response['match_type'] == MatchType.ASSOCIATED_WITH
     assert len(response['records']) == 1
     compare_records(response['records'][0], trastuzumab)
 

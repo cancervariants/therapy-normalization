@@ -43,10 +43,10 @@ def bifidobacterium_infantis():
             'Bifidobacterium infantis'
         ],
         'approval_status': 'approved',
-        'other_identifiers': [
+        'xrefs': [
             'drugbank:DB14222'
         ],
-        'xrefs': [
+        'associated_with': [
             'mmsl:d07347'
         ],
         'trade_names': [
@@ -80,11 +80,11 @@ def cisplatin():
             'Cis-DDP',
         ],
         'approval_status': 'approved',
-        'other_identifiers': [
+        'xrefs': [
             'drugbank:DB00515',
             'drugbank:DB12117'
         ],
-        'xrefs': [
+        'associated_with': [
             'usp:m17910',
             'vandf:4018139',
             'mesh:D002945',
@@ -114,8 +114,8 @@ def amiloride_hydrochloride():
             'Hydrochloride, Amiloride'
         ],
         'approval_status': 'approved',
-        'other_identifiers': [],
-        'xrefs': [
+        'xrefs': [],
+        'associated_with': [
             'usp:m2650',
             'mthspl:FZJ37245UC',
             'mmsl:2658',
@@ -152,10 +152,10 @@ def amiloride():
             'Amyloride'
         ],
         'approval_status': 'approved',
-        'other_identifiers': [
+        'xrefs': [
             'drugbank:DB00594'
         ],
-        'xrefs': [
+        'associated_with': [
             'mesh:D000584',
             'vandf:4019603',
             'mthspl:7DZO8EB0Z3',
@@ -190,10 +190,10 @@ def timolol():
             '-3-yl)oxy]propan-2-ol'
         ],
         'approval_status': 'approved',
-        'other_identifiers': [
+        'xrefs': [
             'drugbank:DB00373'
         ],
-        'xrefs': [
+        'associated_with': [
             'vandf:4019949',
             'mthspl:817W3C6175',
             'mesh:D013999',
@@ -244,8 +244,8 @@ def lymphocyte():
             'lymphocyte immune globulin, anti-thy (obs)'
         ],
         'approval_status': 'approved',
-        'other_identifiers': [],
-        'xrefs': [
+        'xrefs': [],
+        'associated_with': [
             'mesh:D000961',
             'vandf:4022194',
             'vandf:4018097',
@@ -280,10 +280,10 @@ def aspirin():
             'Acetylsalicylic Acid'
         ],
         'approval_status': 'approved',
-        'other_identifiers': [
+        'xrefs': [
             'drugbank:DB00945'
         ],
-        'xrefs': [
+        'associated_with': [
             'usp:m6240',
             'vandf:4017536',
             'mmsl:34512',
@@ -315,8 +315,8 @@ def mesna():
             'Sodium 2-Mercaptoethanesulphonate'
         ],
         'approval_status': 'approved',
-        'other_identifiers': [],
-        'xrefs': [
+        'xrefs': [],
+        'associated_with': [
             'usp:m49500',
             'mesh:D015080',
             'vandf:4019477',
@@ -348,8 +348,8 @@ def beta_alanine():
             '3-Aminopropionic Acid'
         ],
         'approval_status': 'approved',
-        'other_identifiers': [],
-        'xrefs': [
+        'xrefs': [],
+        'associated_with': [
             'mesh:D015091',
             'vandf:4028377',
             'mthspl:11P2JDE17B'
@@ -372,8 +372,8 @@ def algestone():
             'Dihydroxyprogesterone'
         ],
         'approval_status': None,
-        'other_identifiers': [],
-        'xrefs': [
+        'xrefs': [],
+        'associated_with': [
             'mesh:D000523'
         ],
         'trade_names': []
@@ -407,10 +407,10 @@ def levothyroxine():
             'Levothyroxin'
         ],
         'approval_status': 'approved',
-        'other_identifiers': [
+        'xrefs': [
             'drugbank:DB00451'
         ],
-        'xrefs': [
+        'associated_with': [
             'vandf:4022126',
             'mesh:D013974',
             'mmsl:d00278',
@@ -459,10 +459,10 @@ def fluoxetine():
             'P-tolyl)oxy)propylamine'
         ],
         'approval_status': 'approved',
-        'other_identifiers': [
+        'xrefs': [
             'drugbank:DB00472'
         ],
-        'xrefs': [
+        'associated_with': [
             'mesh:D005473',
             'mmsl:17711',
             'vandf:4019761',
@@ -493,8 +493,8 @@ def fluoxetine_hydrochloride():
             'Fluoxetine Hydrochloride'
         ],
         'approval_status': 'approved',
-        'other_identifiers': [],
-        'xrefs': [
+        'xrefs': [],
+        'associated_with': [
             'usp:m33780',
             'mthspl:I9W7N6B1KJ',
             'mmsl:4746',
@@ -544,9 +544,9 @@ def test_bifidobacterium_infantis(bifidobacterium_infantis, rxnorm):
     assert len(response['records']) == 1
     compare_records(response['records'][0], bifidobacterium_infantis)
 
-    # Other_ID Match
+    # Xref Match
     response = rxnorm.search('drugbank:DB14222')
-    assert response['match_type'] == MatchType.OTHER_ID
+    assert response['match_type'] == MatchType.XREF
     assert len(response['records']) == 1
     compare_records(response['records'][0], bifidobacterium_infantis)
 
@@ -587,9 +587,9 @@ def test_cisplatin(cisplatin, rxnorm):
     assert len(response['records']) == 1
     compare_records(response['records'][0], cisplatin)
 
-    # Other_ID Match
+    # Xref Match
     response = rxnorm.search('drugbank:DB12117')
-    assert response['match_type'] == MatchType.OTHER_ID
+    assert response['match_type'] == MatchType.XREF
     assert len(response['records']) == 1
     compare_records(response['records'][0], cisplatin)
 
@@ -838,9 +838,9 @@ def test_levothyroxine(levothyroxine, rxnorm):
     assert len(response['records']) == 1
     compare_records(response['records'][0], levothyroxine)
 
-    # Other_ID Match
+    # Xref Match
     response = rxnorm.search('DRUGBANK:DB00451')
-    assert response['match_type'] == MatchType.OTHER_ID
+    assert response['match_type'] == MatchType.XREF
     assert len(response['records']) == 1
     compare_records(response['records'][0], levothyroxine)
 
@@ -927,17 +927,17 @@ def test_brand_name_to_concept(rxnorm):
 def test_xref_lookup(rxnorm, bifidobacterium_infantis, cisplatin, amiloride):
     """Test that xref lookup resolves to correct concept."""
     response = rxnorm.search('mmsl:d07347')
-    assert response['match_type'] == MatchType.XREF
+    assert response['match_type'] == MatchType.ASSOCIATED_WITH
     assert len(response['records']) == 1
     compare_records(response['records'][0], bifidobacterium_infantis)
 
     response = rxnorm.search('mesh:D002945')
-    assert response['match_type'] == MatchType.XREF
+    assert response['match_type'] == MatchType.ASSOCIATED_WITH
     assert len(response['records']) == 1
     compare_records(response['records'][0], cisplatin)
 
     response = rxnorm.search('atc:C03DB01')
-    assert response['match_type'] == MatchType.XREF
+    assert response['match_type'] == MatchType.ASSOCIATED_WITH
     assert len(response['records']) == 1
     compare_records(response['records'][0], amiloride)
 
