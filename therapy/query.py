@@ -393,8 +393,8 @@ class QueryHandler:
             'label': record['label'],
             'extensions': [],
         }
-        if 'other_ids' in record:
-            vod['xrefs'] = record['other_ids']
+        if 'xrefs' in record:
+            vod['xrefs'] = record['xrefs']
         if 'aliases' in record:
             vod['alternate_labels'] = record['aliases']
 
@@ -430,7 +430,7 @@ class QueryHandler:
             vod['extensions'].append(fda_approv)
 
         for field, name in (('trade_names', 'trade_names'),
-                            ('xrefs', 'associated_with')):
+                            ('assoc_with', 'associated_with')):
             values = record.get(field)
             if values:
                 vod['extensions'].append({
@@ -500,7 +500,8 @@ class QueryHandler:
                                      MatchType.CONCEPT_ID)
 
         # check other match types
-        for match_type in ['label', 'trade_name', 'alias', 'other_id']:
+        for match_type in ['label', 'trade_name', 'alias', 'xref',
+                           'assoc_with']:
             # get matches list for match tier
             matching_refs = self.db.get_records_by_type(query_str, match_type)
             matching_records = \
