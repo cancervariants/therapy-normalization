@@ -13,8 +13,8 @@ class Therapy(BaseModel):
     label: str
     concept_id: str
     aliases: Optional[List[str]]
-    other_identifiers: Optional[List[str]]
     xrefs: Optional[List[str]]
+    associated_with: Optional[List[str]]
 
     class Config:
         """Configure model"""
@@ -78,26 +78,26 @@ class Drug(Therapy):
             for prop in schema.get('properties', {}).values():
                 prop.pop('title', None)
             schema['example'] = {
-                'label': 'CISPLATIN',
-                'concept_identifier': 'chembl:CHEMBL11359',
-                'aliases': [
-                    'Cisplatin',
-                    'Cis-Platinum II',
-                    'Cisplatinum',
-                    'cis-diamminedichloroplatinum(II)',
-                    'CIS-DDP',
-                    'INT-230-6 COMPONENT CISPLATIN',
-                    'INT230-6 COMPONENT CISPLATIN',
-                    'NSC-119875',
-                    'Platinol',
-                    'Platinol-Aq'
+                "label": "CISPLATIN",
+                "concept_id": "chembl:CHEMBL11359",
+                "aliases": [
+                    "Cisplatin",
+                    "Cis-Platinum II",
+                    "Cisplatinum",
+                    "cis-diamminedichloroplatinum(II)",
+                    "CIS-DDP",
+                    "INT-230-6 COMPONENT CISPLATIN",
+                    "INT230-6 COMPONENT CISPLATIN",
+                    "NSC-119875",
+                    "Platinol",
+                    "Platinol-Aq"
                 ],
-                'other_identifiers': [],
-                'trade_name': [
-                    'PLATINOL',
-                    'PLATINOL-AQ',
-                    'CISPLATIN'
-                ]
+                "xrefs": [],
+                "associated_with": None,
+                "approval_status": "approved",
+                "approval_year": [],
+                "has_indication": [],
+                "trade_names": ["PLATINOL", "PLATINOL-AQ", "CISPLATIN"]
             }
 
 
@@ -119,8 +119,8 @@ class MatchType(IntEnum):
     LABEL = 80
     TRADE_NAME = 80
     ALIAS = 60
-    OTHER_ID = 60
     XREF = 60
+    ASSOC_WITH = 60
     FUZZY_MATCH = 20
     NO_MATCH = 0
 
@@ -577,8 +577,8 @@ class SearchService(BaseModel):
                                     "cis-Diaminedichloroplatinum",
                                     "1,2-Diaminocyclohexaneplatinum II citrate"
                                 ],
-                                "other_identifiers": ["drugbank:DB00515"],
-                                "xrefs": ["fda:Q20Q21Q62J"],
+                                "xrefs": ["drugbank:DB00515"],
+                                "associated_with": ["fda:Q20Q21Q62J"],
                                 "approval_status": None,
                                 "trade_names": []
                             }
@@ -619,11 +619,11 @@ class SearchService(BaseModel):
                                     "DDP",
                                     "Diamminodichloride, Platinum"
                                 ],
-                                "other_identifiers": [
+                                "xrefs": [
                                     "drugbank:DB00515",
                                     "drugbank:DB12117"
                                 ],
-                                "xrefs": [
+                                "associated_with": [
                                     "usp:m17910",
                                     "vandf:4018139",
                                     "mesh:D002945",
@@ -661,8 +661,8 @@ class SearchService(BaseModel):
                                 "label": "Cisplatin",
                                 "concept_id": "ncit:C376",
                                 "aliases": [],
-                                "other_identifiers": ["chemidplus:15663-27-1"],
-                                "xrefs": [
+                                "xrefs": ["chemidplus:15663-27-1"],
+                                "associated_with": [
                                     "umls:C0008838",
                                     "fda:Q20Q21Q62J",
                                     "chebi:CHEBI:27899"
@@ -699,13 +699,15 @@ class SearchService(BaseModel):
                                     "CIS-DDP",
                                     "Platinol-AQ"
                                 ],
-                                "other_identifiers": [
+                                "xrefs": [
                                     "chemidplus:15663-27-1",
                                     "chembl:CHEMBL11359",
                                     "rxcui:2555",
                                     "drugbank:DB00515"
                                 ],
-                                "xrefs": ["pubchem.compound:5702198"],
+                                "associated_with": [
+                                    "pubchem.compound:5702198"
+                                ],
                                 "approval_status": None,
                                 "trade_names": []
                             }
