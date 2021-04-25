@@ -126,7 +126,7 @@ class Wikidata(Base):
 
     def _transform_data(self):
         """Transform the Wikidata source data."""
-        from therapy import OTHER_IDENTIFIERS
+        from therapy import XREF_SOURCES
         with open(self._data_src, 'r') as f:
             records = json.load(f)
 
@@ -142,31 +142,29 @@ class Wikidata(Base):
                     item['concept_id'] = concept_id
                     item['src_name'] = SourceName.WIKIDATA.value
 
-                    other_ids = list()
                     xrefs = list()
+                    assoc_with = list()
                     for key in IDENTIFIER_PREFIXES.keys():
                         if key in record.keys():
-                            other_id = record[key]
+                            ref = record[key]
 
                             if key.upper() == 'CASREGISTRY':
                                 key = SourceName.CHEMIDPLUS.value
 
-                            if key.upper() in OTHER_IDENTIFIERS:
+                            if key.upper() in XREF_SOURCES:
                                 if key != 'chembl':
-                                    fmted_other_id = \
-                                        f"{IDENTIFIER_PREFIXES[key]}:" \
-                                        f"{SourceIDAfterNamespace[key.upper()].value}{other_id}"  # noqa: E501
+                                    fmted_xref = \
+                                        f"{IDENTIFIER_PREFIXES[key]}:{SourceIDAfterNamespace[key.upper()].value}{ref}"  # noqa: E501
                                 else:
-                                    fmted_other_id = \
-                                        f"{IDENTIFIER_PREFIXES[key]}:" \
-                                        f"{other_id}"
-                                other_ids.append(fmted_other_id)
-                            else:
-                                fmted_xref = f"{IDENTIFIER_PREFIXES[key]}:" \
-                                             f"{other_id}"
+                                    fmted_xref = \
+                                        f"{IDENTIFIER_PREFIXES[key]}:{ref}"
                                 xrefs.append(fmted_xref)
-                    item['other_identifiers'] = other_ids
+                            else:
+                                fmted_assoc = f"{IDENTIFIER_PREFIXES[key]}:" \
+                                              f"{ref}"
+                                assoc_with.append(fmted_assoc)
                     item['xrefs'] = xrefs
+                    item['assoc_with'] = assoc_with
                     if 'itemLabel' in record.keys():
                         item['label'] = record['itemLabel']
                     items[concept_id] = item
@@ -205,8 +203,8 @@ class Wikidata(Base):
             })
 
         for field_type, field in (('alias', 'aliases'),
-                                  ('other_id', 'other_identifiers'),
-                                  ('xref', 'xrefs')):
+                                  ('xref', 'xrefs'),
+                                  ('assoc_with', 'assoc_with')):
             values = item.get(field)
             if values:
                 keys = {value.casefold() for value in values}

@@ -66,8 +66,9 @@ class Base(ABC):
         assert Drug(**therapy)
         concept_id = therapy['concept_id']
 
-        field_pairs = (('aliases', 'alias'), ('other_identifiers', 'other_id'),
-                       ('xrefs', 'xref'), ('trade_names', 'trade_name'))
+        field_pairs = (('aliases', 'alias'), ('xrefs', 'xref'),
+                       ('assoc_with', 'assoc_with'),
+                       ('trade_names', 'trade_name'))
         for field, field_name in field_pairs:
             if field in therapy:
                 items = therapy[field]

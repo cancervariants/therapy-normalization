@@ -105,7 +105,7 @@ class HemOnc(Base):
                     'label': row[0],
                     'trade_names': [],
                     'aliases': [],
-                    'other_identifiers': [],
+                    'xrefs': [],
                 }
             elif row_type == 'Brand Name':
                 brand_names[row[3]] = row[0]
@@ -159,8 +159,8 @@ class HemOnc(Base):
             if rel_type == "Maps to":
                 src_raw = row[3]
                 if src_raw == "RxNorm":
-                    other_id = f'{NamespacePrefix.RXNORM.value}:{row[1]}'
-                    record['other_identifiers'].append(other_id)
+                    xref = f'{NamespacePrefix.RXNORM.value}:{row[1]}'
+                    record['xrefs'].append(xref)
                 elif src_raw == "RxNorm Extension":
                     continue  # skip
                 else:
