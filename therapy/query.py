@@ -92,14 +92,14 @@ class QueryHandler:
                                                     disease_label=i[1],
                                                     normalized_disease_id=i[2])
                                       for i in inds]
-        set_attrs = ['aliases', 'trade_names', 'xrefs', 'assoc_with',
+        set_attrs = ['aliases', 'trade_names', 'xrefs', 'associated_with',
                      'approval_year', 'has_indication']
         for attr in set_attrs:
             if attr not in item.keys():
                 item[attr] = []
         if 'approval_status' not in item.keys():
             item['approval_status'] = None
-        item['associated_with'] = item['assoc_with']
+        item['associated_with'] = item['associated_with']
 
         drug = Drug(**item)
         src_name = item['src_name']
@@ -201,7 +201,7 @@ class QueryHandler:
         :param Dict resp: in-progress response object to return to client
         :param Set[str] sources: remaining unmatched sources
         :param str match_type: Match type to check for. Should be one of
-            {'trade_name', 'label', 'alias', 'xref', 'assoc_with'}
+            {'trade_name', 'label', 'alias', 'xref', 'associated_with'}
         :return: Tuple with updated resp object and updated set of unmatched
                  sources
         """
@@ -238,7 +238,8 @@ class QueryHandler:
         if len(sources) == 0:
             return response
 
-        match_types = ['label', 'trade_name', 'alias', 'xref', 'assoc_with']
+        match_types = ['label', 'trade_name', 'alias', 'xref',
+                       'associated_with']
         for match_type in match_types:
             (response, sources) = self._check_match_type(query, response,
                                                          sources, match_type)
@@ -430,7 +431,7 @@ class QueryHandler:
             vod['extensions'].append(fda_approv)
 
         for field, name in (('trade_names', 'trade_names'),
-                            ('assoc_with', 'associated_with')):
+                            ('associated_with', 'associated_with')):
             values = record.get(field)
             if values:
                 vod['extensions'].append({
@@ -501,7 +502,7 @@ class QueryHandler:
 
         # check other match types
         for match_type in ['label', 'trade_name', 'alias', 'xref',
-                           'assoc_with']:
+                           'associated_with']:
             # get matches list for match tier
             matching_refs = self.db.get_records_by_type(query_str, match_type)
             matching_records = \

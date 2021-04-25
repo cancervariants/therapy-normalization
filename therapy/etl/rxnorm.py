@@ -218,8 +218,9 @@ class RxNorm(Base):
                             aliases=value['aliases'] if 'aliases' in
                                                         value else [],
                             xrefs=value['xrefs'] if 'xrefs' in value else [],
-                            assoc_with=value['assoc_with'] if 'assoc_with'
-                                                              in value else [],
+                            associated_with=value[
+                                'associated_with'] if 'associated_with' in
+                                                      value else [],
                             trade_names=value['trade_names'] if 'trade_names'
                                                                 in value
                                                                 else []
@@ -233,7 +234,7 @@ class RxNorm(Base):
         :param BatchWriter batch: Object to write data to DynamoDB.
         """
         params = dict(params)
-        for label_type in ['label', 'aliases', 'xrefs', 'assoc_with',
+        for label_type in ['label', 'aliases', 'xrefs', 'associated_with',
                            'trade_names']:
             if not params[label_type]:
                 del params[label_type]
@@ -285,8 +286,9 @@ class RxNorm(Base):
             self._load_label_type(params, batch, 'alias', 'aliases')
         if 'xrefs' in params:
             self._load_label_type(params, batch, 'xref', 'xrefs')
-        if 'assoc_with' in params:
-            self._load_label_type(params, batch, 'assoc_with', 'assoc_with')
+        if 'associated_with' in params:
+            self._load_label_type(params, batch, 'associated_with',
+                                  'associated_with')
 
     def _load_label_type(self, params, batch, label_type_sing, label_type_pl):
         """Insert alias, trade_name, or label data into the database.
@@ -445,7 +447,7 @@ class RxNorm(Base):
             params[label_type] = [term]
 
     def _add_xref_assoc(self, params, row):
-        """Add xref or assoc_with to therapy.
+        """Add xref or associated_with to therapy.
 
         :param dict params: A transformed therapy record.
         :param list row: A row in the RxNorm data file.
@@ -460,7 +462,7 @@ class RxNorm(Base):
                     self._add_term(params, source_id, 'xrefs')
             elif xref_assoc in ASSOC_WITH_SOURCES:
                 source_id = f"{NamespacePrefix[xref_assoc].value}:{row[13]}"
-                self._add_term(params, source_id, 'assoc_with')
+                self._add_term(params, source_id, 'associated_with')
             else:
                 logger.info(f"{xref_assoc} not in NameSpacePrefix.")
 

@@ -67,7 +67,7 @@ class Base(ABC):
         concept_id = therapy['concept_id']
 
         field_pairs = (('aliases', 'alias'), ('xrefs', 'xref'),
-                       ('assoc_with', 'assoc_with'),
+                       ('associated_with', 'associated_with'),
                        ('trade_names', 'trade_name'))
         for field, field_name in field_pairs:
             if field in therapy:

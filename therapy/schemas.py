@@ -120,7 +120,7 @@ class MatchType(IntEnum):
     TRADE_NAME = 80
     ALIAS = 60
     XREF = 60
-    ASSOC_WITH = 60
+    ASSOCIATED_WITH = 60
     FUZZY_MATCH = 20
     NO_MATCH = 0
 

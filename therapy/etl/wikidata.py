@@ -143,7 +143,7 @@ class Wikidata(Base):
                     item['src_name'] = SourceName.WIKIDATA.value
 
                     xrefs = list()
-                    assoc_with = list()
+                    associated_with = list()
                     for key in IDENTIFIER_PREFIXES.keys():
                         if key in record.keys():
                             ref = record[key]
@@ -162,9 +162,9 @@ class Wikidata(Base):
                             else:
                                 fmted_assoc = f"{IDENTIFIER_PREFIXES[key]}:" \
                                               f"{ref}"
-                                assoc_with.append(fmted_assoc)
+                                associated_with.append(fmted_assoc)
                     item['xrefs'] = xrefs
-                    item['assoc_with'] = assoc_with
+                    item['associated_with'] = associated_with
                     if 'itemLabel' in record.keys():
                         item['label'] = record['itemLabel']
                     items[concept_id] = item
@@ -204,7 +204,7 @@ class Wikidata(Base):
 
         for field_type, field in (('alias', 'aliases'),
                                   ('xref', 'xrefs'),
-                                  ('assoc_with', 'assoc_with')):
+                                  ('associated_with', 'associated_with')):
             values = item.get(field)
             if values:
                 keys = {value.casefold() for value in values}
