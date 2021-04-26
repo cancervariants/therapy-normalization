@@ -1300,7 +1300,8 @@
       "mmsl:5272",
       "umls:C0031412",
       "fda:YQE403BP4D",
-      "usp:m63400"
+      "usp:m63400",
+      "chembl:CHEMBL40"
     ]
   },
   {
@@ -1354,7 +1355,8 @@
       "pubchem.compound:5702198",
       "unii:Q20Q21Q62J",
       "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
-      "chebi:CHEBI:27899"
+      "chebi:CHEBI:27899",
+      "chembl:CHEMBL11359"
     ],
     "approval_status": "approved",
     "approval_year": ["1978"],
@@ -1379,7 +1381,7 @@
       "RP 5337",
       "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"
     ],
-    "xrefs": ["umls:C0037962", "fda:71ODY0V87H"]
+    "xrefs": ["umls:C0037962", "fda:71ODY0V87H", "chembl:CHEMBL1256397"]
   },
   {
     "label_and_type": "ncit:c107245##identity",
