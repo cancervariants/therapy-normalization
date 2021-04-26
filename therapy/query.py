@@ -6,8 +6,8 @@ from therapy import SOURCES, NAMESPACE_LOOKUP, PROHIBITED_SOURCES, \
 from uvicorn.config import logger
 from therapy import __version__
 from therapy.database import Database
-from therapy.schemas import Drug, SourceMeta, MatchType, SourceName, \
-    ServiceMeta, HasIndication
+from therapy.schemas import Drug, SourceMeta, MatchType, ServiceMeta, \
+    HasIndication, SourcePriority
 from botocore.exceptions import ClientError
 from urllib.parse import quote
 from datetime import datetime
@@ -357,19 +357,8 @@ class QueryHandler:
         :param Dict record: individual record item in iterable to sort
         :return: tuple with rank value and concept ID
         """
-        src = record['src_name']
-        if src == SourceName.RXNORM.value:
-            source_rank = 1
-        elif src == SourceName.NCIT.value:
-            source_rank = 2
-        elif src == SourceName.HEMONC.value:
-            source_rank = 3
-        elif src == SourceName.DRUGBANK.value:
-            source_rank = 4
-        elif src == SourceName.CHEMIDPLUS.value:
-            source_rank = 5
-        else:
-            source_rank = 6
+        src = record['src_name'].upper()
+        source_rank = SourcePriority[src]
         return source_rank, record['concept_id']
 
     def _add_vod(self, response: Dict, record: Dict, query: str,
