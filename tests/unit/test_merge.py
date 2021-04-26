@@ -47,8 +47,6 @@ def compare_merged_records(actual: Dict, fixture: Dict):
     if 'aliases' in actual or 'aliases' in fixture:
         assert set(actual['aliases']) == set(fixture['aliases'])
 
-    print(actual.keys())
-    print(fixture.keys())
     assert ('xrefs' in actual) == ('xrefs' in fixture)
     if 'xrefs' in actual or 'xrefs' in fixture:
         assert set(actual['xrefs']) == set(fixture['xrefs'])
