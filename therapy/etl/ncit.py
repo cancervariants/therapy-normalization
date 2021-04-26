@@ -161,8 +161,8 @@ class NCIt(Base):
                 xrefs = []
                 associated_with = []
                 if node.P207:
-                    xrefs.append(f"{NamespacePrefix.UMLS.value}:"
-                                 f"{node.P207.first()}")
+                    associated_with.append(f"{NamespacePrefix.UMLS.value}:"
+                                           f"{node.P207.first()}")
                 if node.P210:
                     xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:"
                                  f"{node.P210.first()}")
