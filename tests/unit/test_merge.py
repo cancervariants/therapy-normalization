@@ -69,7 +69,6 @@ def compare_merged_records(actual: Dict, fixture: Dict):
         actual_inds = actual['fda_indication'].copy()
         fixture_inds = fixture['fda_indication'].copy()
         assert len(actual_inds) == len(fixture_inds)
-        print(actual_inds)
         actual_inds.sort(key=lambda x: x[0])
         fixture_inds.sort(key=lambda x: x[0])
         for i in range(len(actual_inds)):

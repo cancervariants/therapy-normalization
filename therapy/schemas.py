@@ -19,8 +19,6 @@ class Therapy(BaseModel):
     class Config:
         """Configure model"""
 
-        orm_mode = True
-
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
                          model: Type['Therapy']) -> None:
@@ -54,6 +52,35 @@ class HasIndication(BaseModel):
     disease_label: str
     normalized_disease_id: Optional[str]
 
+    class Config:
+        """Configure Drug class"""
+
+        @staticmethod
+        def schema_extra(schema: Dict[str, Any],
+                         model: Type['Drug']) -> None:
+            """Configure OpenAPI schema"""
+            if 'title' in schema.keys():
+                schema.pop('title', None)
+            for prop in schema.get('properties', {}).values():
+                prop.pop('title', None)
+            schema['example'] = [
+                {
+                    "disease_id": "hemonc:671",
+                    "disease_label": "Testicular cancer",
+                    "normalized_disease_id": "ncit:C7251"
+                },
+                {
+                    "disease_id": "hemonc:645",
+                    "disease_label": "Ovarian cancer",
+                    "normalized_disease_id": "ncit:C7431"
+                },
+                {
+                    "disease_id": "hemonc:569",
+                    "disease_label": "Bladder cancer",
+                    "normalized_disease_id": "ncit:C9334"
+                }
+            ]
+
 
 class Drug(Therapy):
     """A pharmacologic substance used to treat a medical condition."""
@@ -65,9 +92,7 @@ class Drug(Therapy):
     label: Optional[str]
 
     class Config:
-        """Enables orm_mode"""
-
-        orm_mode = True
+        """Configure Drug class"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
@@ -226,7 +251,7 @@ class SourceMeta(BaseModel):
     data_license_attributes: Dict[str, StrictBool]
 
     class Config:
-        """Enables orm_mode"""
+        """Configure OpenAPI schema"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
@@ -262,7 +287,7 @@ class MatchesKeyed(BaseModel):
     source_meta_: SourceMeta
 
     class Config:
-        """Enables orm_mode"""
+        """Configure OpenAPI schema"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
@@ -303,7 +328,7 @@ class MatchesListed(BaseModel):
     source_meta_: SourceMeta
 
     class Config:
-        """Enables orm_mode"""
+        """Configure openAPI schema"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
@@ -334,7 +359,7 @@ class MatchesListed(BaseModel):
             }
 
 
-class DiseaseValueObjectDescriptor(BaseModel):
+class DiseaseDescriptor(BaseModel):
     """VOD class for diseases. Used within the FDAStatus extension in the
     main therapy VOD.
     """
@@ -350,7 +375,7 @@ class FDAStatus(BaseModel):
 
     approval_status: Optional[ApprovalStatus]
     approval_year: Optional[List[int]]
-    has_indication: List[Dict]
+    has_indication: List[Union[Dict, DiseaseDescriptor]]
 
 
 class Extension(BaseModel):
@@ -361,7 +386,7 @@ class Extension(BaseModel):
     value: Union[bool, List[str], FDAStatus]
 
 
-class ValueObjectDescriptor(BaseModel):
+class TherapyDescriptor(BaseModel):
     """Therapy VOD class. Provide additional Extension classes for trade_names
     and references to non-normalized sources as well as FDA approval data.
     """
@@ -384,7 +409,7 @@ class ServiceMeta(BaseModel):
     url: str
 
     class Config:
-        """Enables orm_mode"""
+        """Configure OpenAPI schema"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
@@ -408,12 +433,12 @@ class NormalizationService(BaseModel):
     query: str
     warnings: Optional[Dict]
     match_type: MatchType
-    value_object_descriptor: Optional[ValueObjectDescriptor]
+    value_object_descriptor: Optional[TherapyDescriptor]
     source_meta_: Optional[Dict[SourceName, SourceMeta]]
     service_meta_: ServiceMeta
 
     class Config:
-        """Enables orm_mode"""
+        """Configure OpenAPI schema"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],

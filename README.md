@@ -67,7 +67,7 @@ export RXNORM_API_KEY={rxnorm_api_key}
 #### Update source(s)
 The sources we currently use are: ChEMBL, NCIt, DrugBank (CC0 data only), RxNorm, ChemIDplus, Wikidata, and HemOnc.org.
 
-To update one source, simply set `--normalizer` to the source you wish to update. For example, the following command updates ChEMBL and Wikidata:
+To update source(s), simply set `--normalizer` to the source(s) you wish to update separated by spaces. For example, the following command updates ChEMBL and Wikidata:
 
 ```commandline
 python3 -m therapy.cli --normalizer="chembl wikidata"
@@ -77,6 +77,29 @@ You can update all sources at once with the `--update_all` flag:
 
 ```commandline
 python3 -m therapy.cli --update_all
+```
+
+The `data/` subdirectory within the application should include all source data. The normalizer is capable of acquiring most of these files automatically; the exception is the HemOnc.org data, which must be manually downloaded from the [Harvard Dataverse](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6) and placed within the `data/hemonc` subdirectory. Files for all sources should follow the naming convention demonstrated below (with version numbers/dates changed where applicable).
+
+```
+therapy/data
+├── chembl
+│   └── chembl_27.db
+├── chemidplus
+│   └── chemidplus_20200327.xml
+├── drugbank
+│   └── drugbank_5.1.8.csv
+├── hemonc
+│   ├── hemonc_concepts_20210225.csv
+│   ├── hemonc_rels_20210225.csv
+│   └── hemonc_synonyms_20210225.csv
+├── ncit
+│   └── ncit_20.09d.owl
+├── rxnorm
+│   ├── drug_forms.yaml
+│   └── rxnorm_20210104.RRF
+└── wikidata
+    └── wikidata_20210425.json
 ```
 
 ### Create Merged Concept Groups
