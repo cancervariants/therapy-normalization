@@ -46,6 +46,9 @@ def compare_merged_records(actual: Dict, fixture: Dict):
     assert ('aliases' in actual) == ('aliases' in fixture)
     if 'aliases' in actual or 'aliases' in fixture:
         assert set(actual['aliases']) == set(fixture['aliases'])
+
+    print(actual.keys())
+    print(fixture.keys())
     assert ('xrefs' in actual) == ('xrefs' in fixture)
     if 'xrefs' in actual or 'xrefs' in fixture:
         assert set(actual['xrefs']) == set(fixture['xrefs'])
@@ -53,6 +56,7 @@ def compare_merged_records(actual: Dict, fixture: Dict):
     if 'associated_with' in actual or 'associated_with' in fixture:
         assert set(actual['associated_with']) == \
             set(fixture['associated_with'])
+
     assert ('approval_status' in actual) == ('approval_status' in fixture)
     if 'approval_status' in actual or 'approval_status' in fixture:
         assert set(actual['approval_status']) == \
@@ -248,8 +252,9 @@ def spiramycin_merged():
 
 @pytest.fixture(scope='module')
 def bendamustine_merged():
-    """Create fixture for bendamustine. Should only contain a single HemOnc
-    record.
+    """Create fixture for bendamustine. Designed to simulate a case of a group
+    with only one element (IRL, this concept belongs to a group with an
+    RxNorm record as well).
     """
     return {
         "label_and_type": "hemonc:65##merger",
@@ -263,7 +268,6 @@ def bendamustine_merged():
             "bendamustine hydrochloride",
             "bendamustin hydrochloride"
         ],
-        "xrefs": ["rxcui:134547"],
         "trade_names": [
             "Bendamax",
             "Bendawel",
@@ -415,7 +419,7 @@ def record_id_groups():
             "drugbank:DB01143"
         },
         "hemonc:65": {
-            "hemonc:65"
+            "hemonc:65",
         }
     }
 
