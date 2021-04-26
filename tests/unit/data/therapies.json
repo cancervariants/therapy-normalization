@@ -414,6 +414,12 @@
     "src_name": "NCIt"
   },
   {
+    "label_and_type": "cox-2 inhibitor tg01##alias",
+    "concept_id": "ncit:c74021",
+    "src_name": "NCIt",
+    "item_type": "alias"
+  },
+  {
     "label_and_type": "fda:5x5hb3vz3z##associated_with",
     "concept_id": "ncit:c74021",
     "src_name": "NCIt",
