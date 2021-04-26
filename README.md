@@ -67,7 +67,7 @@ export RXNORM_API_KEY={rxnorm_api_key}
 #### Update source(s)
 The sources we currently use are: ChEMBL, NCIt, DrugBank (CC0 data only), RxNorm, ChemIDplus, Wikidata, and HemOnc.org.
 
-To update one source, simply set `--normalizer` to the source you wish to update. For example, the following command updates ChEMBL and Wikidata:
+To update source(s), simply set `--normalizer` to the source(s) you wish to update separated by spaces. For example, the following command updates ChEMBL and Wikidata:
 
 ```commandline
 python3 -m therapy.cli --normalizer="chembl wikidata"
