@@ -1,8 +1,8 @@
 """This module creates the database."""
 import boto3
-from therapy import PREFIX_LOOKUP
+from therapy import PREFIX_LOOKUP, SOURCES, ACCEPTED_SOURCES
 from botocore.exceptions import ClientError
-from boto3.dynamodb.conditions import Key
+from boto3.dynamodb.conditions import Key, Attr
 from os import environ
 from typing import Optional, Dict, List, Any
 import logging
@@ -37,17 +37,17 @@ class Database:
                     sys.exit()
         else:
             if db_url:
-                endpoint_url = db_url
+                self.endpoint_url = db_url
             elif 'THERAPY_NORM_DB_URL' in environ:
-                endpoint_url = environ['THERAPY_NORM_DB_URL']
+                self.endpoint_url = environ['THERAPY_NORM_DB_URL']
             else:
-                endpoint_url = 'http://localhost:8000'
+                self.endpoint_url = 'http://localhost:8000'
             click.echo(f"***Using Therapy Database Endpoint: "
-                       f"{endpoint_url}***")
+                       f"{self.endpoint_url}***")
 
             boto_params = {
                 'region_name': region_name,
-                'endpoint_url': endpoint_url
+                'endpoint_url': self.endpoint_url
             }
 
         self.dynamodb = boto3.resource('dynamodb', **boto_params)
@@ -226,6 +226,36 @@ class Database:
                          f"search term {query}: "
                          f"{e.response['Error']['Message']}")
             return []
+
+    def get_ids_for_merge(self) -> List[str]:
+        """Retrieve concept IDs for use in generating normalized records. Only
+        pulls concept IDs for sources in `therapy.ACCEPTED_SOURCES`.
+        :return: List of concept IDs as strings.
+        """
+        last_evaluated_key = None
+        concept_ids = []
+        srcs_proper = {SOURCES[s] for s in ACCEPTED_SOURCES}
+        filter_exp = Attr('item_type').eq('identity') & \
+            Attr('src_name').is_in(srcs_proper)
+        params = {
+            'ProjectionExpression': 'concept_id',
+            'FilterExpression': filter_exp
+        }
+        while True:
+            if last_evaluated_key:
+                response = self.therapies.scan(
+                    ExclusiveStartKey=last_evaluated_key, **params
+                )
+            else:
+                response = self.therapies.scan(**params)
+            records = response['Items']
+            for record in records:
+                concept_ids.append(record['concept_id'])
+
+            last_evaluated_key = response.get('LastEvaluatedKey')
+            if not last_evaluated_key:
+                break
+        return concept_ids
 
     def add_record(self, record: Dict, record_type: str = "identity"):
         """Add new record to database.

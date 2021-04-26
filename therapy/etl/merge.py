@@ -126,9 +126,9 @@ class Merge:
         scalars, assign from the highest-priority source where that attribute
         is non-null.
 
-        Priority is RxNorm > NCIt > ChemIDplus > Wikidata. ChEMBL and DrugBank
-        identifiers should not be included in record_id_set; doing so will
-        cause problems.
+        Priority is:
+        RxNorm > NCIt > HemOnc.org > DrugBank > ChemIDplus > Wikidata
+        ChEMBL records shouldn't be included in `record_id_set`.
 
         :param Set record_id_set: group of concept IDs
         :return: completed merged drug object to be stored in DB
@@ -159,28 +159,37 @@ class Merge:
             'label': None,
             'aliases': set(),
             'trade_names': set(),
-            'xrefs': set()
+            'xrefs': set(),
+            'approval_status': None,
+            'approval_year': set(),
+            'fda_indication': [],
         }
         if len(records) > 1:
             merged_attrs['other_ids'] = [r['concept_id'] for r in records[1:]]
 
         # merge from constituent records
-        set_fields = ['aliases', 'trade_names', 'xrefs']
+        set_fields = ['aliases', 'trade_names', 'xrefs', 'approval_year']
         for record in records:
             for field in set_fields:
                 merged_attrs[field] |= set(record.get(field, {}))
             if merged_attrs['label'] is None:
                 merged_attrs['label'] = record.get('label')
+            if merged_attrs['approval_status'] is None:
+                merged_attrs['approval_status'] = record.get('approval_status')
+            for ind in record.get('fda_indication', []):
+                if ind not in merged_attrs['fda_indication']:
+                    merged_attrs['fda_indication'].append(ind)
 
         # clear unused fields
-        for field in set_fields:
+        for field in set_fields + ['fda_indication']:
             field_value = merged_attrs[field]
             if field_value:
                 merged_attrs[field] = list(field_value)
             else:
                 del merged_attrs[field]
-        if merged_attrs['label'] is None:
-            del merged_attrs['label']
+        for field in ['label', 'approval_status']:
+            if merged_attrs[field] is None:
+                del merged_attrs[field]
 
         merged_attrs['label_and_type'] = \
             f'{merged_attrs["concept_id"].lower()}##merger'

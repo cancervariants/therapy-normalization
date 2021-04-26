@@ -1,7 +1,7 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
 from botocore.exceptions import ClientError
-from therapy import PROHIBITED_SOURCES
+from therapy import PROHIBITED_SOURCES, ACCEPTED_SOURCES
 from therapy.etl.merge import Merge
 from timeit import default_timer as timer
 from boto3.dynamodb.conditions import Key
@@ -103,14 +103,43 @@ class CLI:
             click.echo(f"Total time for {n}: "
                        f"{(delete_time + load_time):.5f} seconds.")
 
-        if update_merged and processed_ids:
-            click.echo("Generating merged concepts...")
+        if update_merged:
+            click.echo("Constructing normalized records...")
             start_merge = timer()
+            if not processed_ids or not ACCEPTED_SOURCES.issubset(normalizers):
+                CLI()._delete_normalized_data(db)
+                processed_ids = db.get_ids_for_merge()
             merge = Merge(database=db)
             merge.create_merged_concepts(processed_ids)
             end_merge = timer()
             click.echo(f"Merged concept generation completed in"
                        f" {(end_merge - start_merge):.5f} seconds.")
+
+    def _delete_normalized_data(self, database):
+        click.echo("\nDeleting normalized records...")
+        start_delete = timer()
+        try:
+            while True:
+                with database.therapies.batch_writer(
+                        overwrite_by_pkeys=['label_and_type', 'concept_id']) \
+                        as batch:
+                    response = database.therapies.query(
+                        IndexName='item_type_index',
+                        KeyConditionExpression=Key('item_type').eq('merger'),
+                    )
+                    records = response['Items']
+                    if not records:
+                        break
+                    for record in records:
+                        batch.delete_item(Key={
+                            'label_and_type': record['label_and_type'],
+                            'concept_id': record['concept_id']
+                        })
+        except ClientError as e:
+            click.echo(e.response['Error']['Message'])
+        end_delete = timer()
+        delete_time = end_delete - start_delete
+        click.echo(f"Deleted normalized records in {delete_time:.5f} seconds.")
 
     def _delete_data(self, source, database):
         # Delete source's metadata
@@ -129,13 +158,12 @@ class CLI:
         except ClientError as e:
             click.echo(e.response['Error']['Message'])
 
-        # Delete source's data from therapies table
         try:
             while True:
                 response = database.therapies.query(
                     IndexName='src_index',
                     KeyConditionExpression=Key('src_name').eq(
-                        SourceName[f"{source.upper()}"].value)
+                        SourceName[f"{source.upper()}"].value),
                 )
 
                 records = response['Items']

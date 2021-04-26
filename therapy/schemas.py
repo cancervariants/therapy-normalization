@@ -19,8 +19,6 @@ class Therapy(BaseModel):
     class Config:
         """Configure model"""
 
-        orm_mode = True
-
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
                          model: Type['Therapy']) -> None:
@@ -47,17 +45,54 @@ class PhaseEnum(IntEnum):
     approved = 4
 
 
+class HasIndication(BaseModel):
+    """Data regarding FDA indication. Currently specific to HemOnc.org data."""
+
+    disease_id: str
+    disease_label: str
+    normalized_disease_id: Optional[str]
+
+    class Config:
+        """Configure Drug class"""
+
+        @staticmethod
+        def schema_extra(schema: Dict[str, Any],
+                         model: Type['Drug']) -> None:
+            """Configure OpenAPI schema"""
+            if 'title' in schema.keys():
+                schema.pop('title', None)
+            for prop in schema.get('properties', {}).values():
+                prop.pop('title', None)
+            schema['example'] = [
+                {
+                    "disease_id": "hemonc:671",
+                    "disease_label": "Testicular cancer",
+                    "normalized_disease_id": "ncit:C7251"
+                },
+                {
+                    "disease_id": "hemonc:645",
+                    "disease_label": "Ovarian cancer",
+                    "normalized_disease_id": "ncit:C7431"
+                },
+                {
+                    "disease_id": "hemonc:569",
+                    "disease_label": "Bladder cancer",
+                    "normalized_disease_id": "ncit:C9334"
+                }
+            ]
+
+
 class Drug(Therapy):
     """A pharmacologic substance used to treat a medical condition."""
 
     approval_status: Optional[ApprovalStatus]
+    approval_year: Optional[List[int]]
+    has_indication: Optional[List[HasIndication]]
     trade_names: Optional[List[str]]
     label: Optional[str]
 
     class Config:
-        """Enables orm_mode"""
-
-        orm_mode = True
+        """Configure Drug class"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
@@ -120,9 +155,10 @@ class SourcePriority(IntEnum):
 
     RXNORM = 1
     NCIT = 2
-    DRUGBANK = 3
+    HEMONC = 3
+    DRUGBANK = 4
     CHEMIDPLUS = 5
-    WIKIDATA = 6
+    WIKIDATA = 10
 
 
 class SourceName(str, Enum):
@@ -134,6 +170,7 @@ class SourceName(str, Enum):
     DRUGBANK = "DrugBank"
     CHEMIDPLUS = "ChemIDplus"
     RXNORM = "RxNorm"
+    HEMONC = "HemOnc"
 
 
 class SourceIDAfterNamespace(Enum):
@@ -145,6 +182,7 @@ class SourceIDAfterNamespace(Enum):
     NCIT = "C"
     CHEMIDPLUS = ""
     RXNORM = ""
+    HEMONC = ""
 
 
 class ProhibitedSources(Enum):
@@ -166,6 +204,7 @@ class NamespacePrefix(Enum):
     RXNORM = "rxcui"
     DRUGBANK = "drugbank"
     WIKIDATA = "wikidata"
+    HEMONC = "hemonc"
     NCIT = "ncit"
     FDA = "fda"
     ISO = "iso"
@@ -212,7 +251,7 @@ class SourceMeta(BaseModel):
     data_license_attributes: Dict[str, StrictBool]
 
     class Config:
-        """Enables orm_mode"""
+        """Configure OpenAPI schema"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
@@ -248,7 +287,7 @@ class MatchesKeyed(BaseModel):
     source_meta_: SourceMeta
 
     class Config:
-        """Enables orm_mode"""
+        """Configure OpenAPI schema"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
@@ -289,7 +328,7 @@ class MatchesListed(BaseModel):
     source_meta_: SourceMeta
 
     class Config:
-        """Enables orm_mode"""
+        """Configure openAPI schema"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
@@ -320,21 +359,40 @@ class MatchesListed(BaseModel):
             }
 
 
-class Extension(BaseModel):
-    """Value Object Descriptor Extension class."""
-
-    type: str
-    name: str
-    value: Union[bool, List[str]]
-
-
-class ValueObjectDescriptor(BaseModel):
-    """VOD class. Provide additional Extension classes for trade_names and
-    references to non-normalized sources.
+class DiseaseDescriptor(BaseModel):
+    """VOD class for diseases. Used within the FDAStatus extension in the
+    main therapy VOD.
     """
 
     id: str
-    type: str
+    type = "DiseaseDescriptor"
+    value: Optional[Dict]
+    label: str
+
+
+class FDAStatus(BaseModel):
+    """VOD Extension class for FDA status/indication attributes."""
+
+    approval_status: Optional[ApprovalStatus]
+    approval_year: Optional[List[int]]
+    has_indication: List[Union[Dict, DiseaseDescriptor]]
+
+
+class Extension(BaseModel):
+    """Value Object Descriptor Extension class."""
+
+    type = "Extension"
+    name: str
+    value: Union[bool, List[str], FDAStatus]
+
+
+class TherapyDescriptor(BaseModel):
+    """Therapy VOD class. Provide additional Extension classes for trade_names
+    and references to non-normalized sources as well as FDA approval data.
+    """
+
+    id: str
+    type = "TherapyDescriptor"
     value: Any
     label: str
     xrefs: Optional[List[str]]
@@ -351,7 +409,7 @@ class ServiceMeta(BaseModel):
     url: str
 
     class Config:
-        """Enables orm_mode"""
+        """Configure OpenAPI schema"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
@@ -375,12 +433,12 @@ class NormalizationService(BaseModel):
     query: str
     warnings: Optional[Dict]
     match_type: MatchType
-    value_object_descriptor: Optional[ValueObjectDescriptor]
+    value_object_descriptor: Optional[TherapyDescriptor]
     source_meta_: Optional[Dict[SourceName, SourceMeta]]
     service_meta_: ServiceMeta
 
     class Config:
-        """Enables orm_mode"""
+        """Configure OpenAPI schema"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],

@@ -6,8 +6,8 @@ from therapy import SOURCES, NAMESPACE_LOOKUP, PROHIBITED_SOURCES, \
 from uvicorn.config import logger
 from therapy import __version__
 from therapy.database import Database
-from therapy.schemas import Drug, SourceMeta, MatchType, SourceName, \
-    ServiceMeta
+from therapy.schemas import Drug, SourceMeta, MatchType, ServiceMeta, \
+    HasIndication, SourcePriority
 from botocore.exceptions import ClientError
 from urllib.parse import quote
 from datetime import datetime
@@ -86,11 +86,19 @@ class QueryHandler:
         :return: Tuple containing updated response object, and string
             containing name of the source of the match
         """
-        del item['label_and_type']
-        attr_types = ['aliases', 'other_identifiers', 'trade_names', 'xrefs']
-        for attr_type in attr_types:
-            if attr_type not in item.keys():
-                item[attr_type] = []
+        inds = item.get('fda_indication')
+        if inds:
+            item['has_indication'] = [HasIndication(disease_id=i[0],
+                                                    disease_label=i[1],
+                                                    normalized_disease_id=i[2])
+                                      for i in inds]
+        set_attrs = ['aliases', 'other_identifiers', 'trade_names', 'xrefs',
+                     'approval_year', 'has_indication']
+        for attr in set_attrs:
+            if attr not in item.keys():
+                item[attr] = []
+        if 'approval_status' not in item.keys():
+            item['approval_status'] = None
 
         drug = Drug(**item)
         src_name = item['src_name']
@@ -343,21 +351,14 @@ class QueryHandler:
         response['source_meta_'] = sources_meta
         return response
 
-    def _record_order(self, record: Dict) -> (int, str):  # TODO refactor?
+    def _record_order(self, record: Dict) -> (int, str):
         """Construct priority order for matching. Only called by sort().
 
         :param Dict record: individual record item in iterable to sort
         :return: tuple with rank value and concept ID
         """
-        src = record['src_name']
-        if src == SourceName.RXNORM.value:
-            source_rank = 1
-        elif src == SourceName.NCIT.value:
-            source_rank = 2
-        elif src == SourceName.CHEMIDPLUS.value:
-            source_rank = 3
-        else:
-            source_rank = 4
+        src = record['src_name'].upper()
+        source_rank = SourcePriority[src]
         return source_rank, record['concept_id']
 
     def _add_vod(self, response: Dict, record: Dict, query: str,
@@ -384,23 +385,51 @@ class QueryHandler:
             vod['xrefs'] = record['other_ids']
         if 'aliases' in record:
             vod['alternate_labels'] = record['aliases']
-        trade_names = record.get('trade_names')
-        if trade_names:
-            vod['extensions'].append({
-                'type': 'Extension',
-                'name': 'trade_names',
-                'value': trade_names
-            })
-        if 'xrefs' in record and record['xrefs']:
-            vod['extensions'].append(
-                {
-                    'type': 'Extension',
-                    'name': 'associated_with',
-                    'value': record['xrefs']
+
+        if any(filter(lambda f: f in record, ('approval_status',
+                                              'approval_year',
+                                              'fda_indication'))):
+            fda_approv = {
+                "name": "fda_approval",
+                "value": {}
+            }
+            for field in ('approval_status', 'approval_year'):
+                value = record.get(field)
+                if value:
+                    fda_approv['value'][field] = value
+            inds = record.get('fda_indication', [])
+            inds_list = []
+            for ind in inds:
+                ind_obj = {
+                    "id": ind[0],
+                    "type": "DiseaseDescriptor",
+                    "label": ind[1]
                 }
-            )
+                if ind[2]:
+                    ind_obj['value'] = {
+                        'type': 'Disease',
+                        'id': ind[2]
+                    }
+                else:
+                    ind_obj['value'] = None
+                inds_list.append(ind_obj)
+            if inds_list:
+                fda_approv['value']['has_indication'] = inds_list
+            vod['extensions'].append(fda_approv)
+
+        for field, name in (('trade_names', 'trade_names'),
+                            ('xrefs', 'associated_with')):
+            values = record.get(field)
+            if values:
+                vod['extensions'].append({
+                    'type': 'Extension',
+                    'name': name,
+                    'value': values
+                })
+
         if not vod['extensions']:
             del vod['extensions']
+
         response['match_type'] = match_type
         response['value_object_descriptor'] = vod
         response = self._add_merged_meta(response)
@@ -472,15 +501,20 @@ class QueryHandler:
             for match in matching_records:
                 record = self.db.get_record_by_id(match['concept_id'], False)
                 if record:
-                    merge = self.db.get_record_by_id(record['merge_ref'],
-                                                     case_sensitive=False,
-                                                     merge=True)
-                    if merge is None:
-                        self._handle_failed_merge_ref(record, response,
-                                                      query_str)
+                    merge_ref = record.get('merge_ref')
+                    if merge_ref:
+                        merge = self.db.get_record_by_id(record['merge_ref'],
+                                                         case_sensitive=False,
+                                                         merge=True)
+                        if merge is None:
+                            self._handle_failed_merge_ref(record, response,
+                                                          query_str)
+                        else:
+                            return self._add_vod(response, merge, query,
+                                                 MatchType[match_type.upper()])
                     else:
-                        return self._add_vod(response, merge, query,
-                                             MatchType[match_type.upper()])
+                        logger.error(f'Record {record["label_and_type"]} has'
+                                     f' no merge_ref attribute.')
 
         if not matching_records:
             response['match_type'] = MatchType.NO_MATCH
