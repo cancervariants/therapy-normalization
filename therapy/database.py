@@ -1,8 +1,8 @@
 """This module creates the database."""
 import boto3
-from therapy import PREFIX_LOOKUP, SOURCES, ACCEPTED_SOURCES
+from therapy import PREFIX_LOOKUP, PROHIBITED_SOURCES
 from botocore.exceptions import ClientError
-from boto3.dynamodb.conditions import Key, Attr
+from boto3.dynamodb.conditions import Key
 from os import environ
 from typing import Optional, Dict, List, Any
 import logging
@@ -212,8 +212,9 @@ class Database:
 
         :param query: string to match against
         :param str match_type: type of match to look for. Should be one
-            of "alias", "trade_name", "label", or "rx_brand" (use
-            `get_record_by_id` for concept ID lookup)
+            of {"alias", "trade_name", "label", "xref", "associated_with",
+            "rx_brand"} -- use Database.get_record_by_id() for concept ID
+            lookup
         :return: list of matching records. Empty if lookup fails.
         """
         pk = f'{query}##{match_type.lower()}'
@@ -234,12 +235,9 @@ class Database:
         """
         last_evaluated_key = None
         concept_ids = []
-        srcs_proper = {SOURCES[s] for s in ACCEPTED_SOURCES}
-        filter_exp = Attr('item_type').eq('identity') & \
-            Attr('src_name').is_in(srcs_proper)
+        prohibited_lower = {s.lower() for s in PROHIBITED_SOURCES}
         params = {
             'ProjectionExpression': 'concept_id',
-            'FilterExpression': filter_exp
         }
         while True:
             if last_evaluated_key:
@@ -250,12 +248,14 @@ class Database:
                 response = self.therapies.scan(**params)
             records = response['Items']
             for record in records:
-                concept_ids.append(record['concept_id'])
-
+                concept_id = record['concept_id']
+                if not any({s for s in prohibited_lower
+                            if concept_id.startswith(s)}):
+                    concept_ids.append(concept_id)
             last_evaluated_key = response.get('LastEvaluatedKey')
             if not last_evaluated_key:
                 break
-        return concept_ids
+        return set(concept_ids)
 
     def add_record(self, record: Dict, record_type: str = "identity"):
         """Add new record to database.
@@ -290,7 +290,7 @@ class Database:
         :param str term: referent term
         :param str concept_id: concept ID to refer to
         :param str ref_type: one of {'alias', 'label', 'trade_name',
-            'other_id', 'xref', 'rx_brand'}
+            'xref', 'associated_with', 'rx_brand'}
         """
         label_and_type = f'{term.lower()}##{ref_type}'
         src_name = PREFIX_LOOKUP[concept_id.split(':')[0].lower()]

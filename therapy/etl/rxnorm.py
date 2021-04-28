@@ -6,7 +6,8 @@ Library of Medicine (NLM), National Institutes of Health, Department of Health
  endorse or recommend this or any other product."
 """
 from .base import Base
-from therapy import PROJECT_ROOT, DownloadException, OTHER_IDENTIFIERS, XREFS
+from therapy import PROJECT_ROOT, DownloadException, XREF_SOURCES, \
+    ASSOC_WITH_SOURCES
 import therapy
 from therapy.database import Database
 from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
@@ -191,7 +192,7 @@ class RxNorm(Base):
                             self._add_str_field(params, row,
                                                 precise_ingredient,
                                                 drug_forms, sbdfs)
-                            self._add_other_ids_xrefs(params, row)
+                            self._add_xref_assoc(params, row)
                             data[concept_id] = params
                         else:
                             # Concept already created
@@ -199,7 +200,7 @@ class RxNorm(Base):
                             self._add_str_field(params, row,
                                                 precise_ingredient,
                                                 drug_forms, sbdfs)
-                            self._add_other_ids_xrefs(params, row)
+                            self._add_xref_assoc(params, row)
 
             with self.database.therapies.batch_writer() as batch:
                 for key, value in data.items():
@@ -216,10 +217,10 @@ class RxNorm(Base):
                                                       in value else None,
                             aliases=value['aliases'] if 'aliases' in
                                                         value else [],
-                            other_identifiers=value[
-                                'other_identifiers'] if 'other_identifiers'
-                                                        in value else [],
                             xrefs=value['xrefs'] if 'xrefs' in value else [],
+                            associated_with=value[
+                                'associated_with'] if 'associated_with' in
+                                                      value else [],
                             trade_names=value['trade_names'] if 'trade_names'
                                                                 in value
                                                                 else []
@@ -233,7 +234,7 @@ class RxNorm(Base):
         :param BatchWriter batch: Object to write data to DynamoDB.
         """
         params = dict(params)
-        for label_type in ['label', 'aliases', 'other_identifiers', 'xrefs',
+        for label_type in ['label', 'aliases', 'xrefs', 'associated_with',
                            'trade_names']:
             if not params[label_type]:
                 del params[label_type]
@@ -283,11 +284,11 @@ class RxNorm(Base):
             self._load_label_type(params, batch, 'trade_name', 'trade_names')
         if 'aliases' in params:
             self._load_label_type(params, batch, 'alias', 'aliases')
-        if 'other_identifiers' in params:
-            self._load_label_type(params, batch, 'other_id',
-                                  'other_identifiers')
         if 'xrefs' in params:
             self._load_label_type(params, batch, 'xref', 'xrefs')
+        if 'associated_with' in params:
+            self._load_label_type(params, batch, 'associated_with',
+                                  'associated_with')
 
     def _load_label_type(self, params, batch, label_type_sing, label_type_pl):
         """Insert alias, trade_name, or label data into the database.
@@ -445,25 +446,25 @@ class RxNorm(Base):
         else:
             params[label_type] = [term]
 
-    def _add_other_ids_xrefs(self, params, row):
-        """Add other identifier or xref to therapy.
+    def _add_xref_assoc(self, params, row):
+        """Add xref or associated_with to therapy.
 
         :param dict params: A transformed therapy record.
         :param list row: A row in the RxNorm data file.
         """
         if row[11]:
-            other_id_xref = row[11].upper()
-            if other_id_xref in OTHER_IDENTIFIERS:
+            xref_assoc = row[11].upper()
+            if xref_assoc in XREF_SOURCES:
                 source_id =\
-                    f"{NamespacePrefix[other_id_xref].value}:{row[13]}"
+                    f"{NamespacePrefix[xref_assoc].value}:{row[13]}"
                 if source_id != params['concept_id']:
                     # Sometimes concept_id is included in the source field
-                    self._add_term(params, source_id, 'other_identifiers')
-            elif other_id_xref in XREFS:
-                source_id = f"{NamespacePrefix[other_id_xref].value}:{row[13]}"
-                self._add_term(params, source_id, 'xrefs')
+                    self._add_term(params, source_id, 'xrefs')
+            elif xref_assoc in ASSOC_WITH_SOURCES:
+                source_id = f"{NamespacePrefix[xref_assoc].value}:{row[13]}"
+                self._add_term(params, source_id, 'associated_with')
             else:
-                logger.info(f"{other_id_xref} not in NameSpacePrefix.")
+                logger.info(f"{xref_assoc} not in NameSpacePrefix.")
 
     def _load_meta(self):
         """Add RxNorm metadata."""

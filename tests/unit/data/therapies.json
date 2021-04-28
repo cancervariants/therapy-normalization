@@ -88,19 +88,22 @@
       "APRD00359",
       "cisplatino"
     ],
-    "other_identifiers": ["chemidplus:15663-27-1"],
-    "xrefs": ["unii:Q20Q21Q62J", "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"],
+    "xrefs": ["chemidplus:15663-27-1"],
+    "associated_with": [
+      "unii:Q20Q21Q62J",
+      "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"
+    ],
     "src_name": "DrugBank",
     "merge_ref": "rxcui:2555"
   },
   {
-    "label_and_type": "inchikey:lxzzyrpgzafole-uhfffaoysa-l##xref",
+    "label_and_type": "inchikey:lxzzyrpgzafole-uhfffaoysa-l##associated_with",
     "concept_id": "drugbank:db00515",
     "src_name": "DrugBank",
-    "item_type": "xref"
+    "item_type": "associated_with"
   },
   {
-    "label_and_type": "chemidplus:15663-27-1##other_id",
+    "label_and_type": "chemidplus:15663-27-1##xref",
     "concept_id": "drugbank:db00515",
     "src_name": "DrugBank"
   },
@@ -136,24 +139,27 @@
       "BTPABA",
       "PFT"
     ],
-    "other_identifiers": ["chemidplus:37106-97-1"],
+    "xrefs": ["chemidplus:37106-97-1"],
     "src_name": "DrugBank",
-    "xrefs": ["unii:239IF5W61J", "inchikey:SPPTWHFVYKCNNK-FQEVSTJZSA-N"],
+    "associated_with": [
+      "unii:239IF5W61J",
+      "inchikey:SPPTWHFVYKCNNK-FQEVSTJZSA-N"
+    ],
     "merge_ref": "rxcui:18896"
   },
   {
-    "label_and_type": "unii:239if5w61j##xref",
+    "label_and_type": "unii:239if5w61j##associated_with",
     "concept_id": "drugbank:db00522",
     "src_name": "DrugBank",
-    "item_type": "xref"
+    "item_type": "associated_with"
   },
   {
-    "label_and_type": "pharmgkb.drug:pa164750572##xref",
+    "label_and_type": "pharmgkb.drug:pa164750572##associated_with",
     "concept_id": "drugbank:db00522",
     "src_name": "DrugBank"
   },
   {
-    "label_and_type": "chemidplus:37106-97-1##other_id",
+    "label_and_type": "chemidplus:37106-97-1##xref",
     "concept_id": "drugbank:db00522",
     "src_name": "DrugBank"
   },
@@ -178,11 +184,11 @@
     "item_type": "identity",
     "src_name": "DrugBank",
     "label": "Aloe ferox leaf",
-    "xrefs": ["unii:0D145J8EME"]
+    "associated_with": ["unii:0D145J8EME"]
   },
   {
-    "label_and_type": "unii:0d145j8eme##xref",
-    "item_type": "xref",
+    "label_and_type": "unii:0d145j8eme##associated_with",
+    "item_type": "associated_with",
     "src_name": "DrugBank",
     "concept_id": "drugbank:db14257"
   },
@@ -204,38 +210,38 @@
       "Platinol",
       "Platinol-AQ"
     ],
-    "other_identifiers": [
+    "xrefs": [
       "chemidplus:15663-27-1",
       "chembl:CHEMBL11359",
       "drugbank:DB00515",
       "rxcui:2555"
     ],
-    "xrefs": ["pubchem.compound:5702198"],
+    "associated_with": ["pubchem.compound:5702198"],
     "src_name": "Wikidata",
     "merge_ref": "rxcui:2555"
   },
   {
-    "label_and_type": "pubchem.compound:5702198##xref",
+    "label_and_type": "pubchem.compound:5702198##associated_with",
     "concept_id": "wikidata:q412415",
     "src_name": "Wikidata"
   },
   {
-    "label_and_type": "chembl:chembl11359##other_id",
+    "label_and_type": "chembl:chembl11359##xref",
     "concept_id": "wikidata:q412415",
     "src_name": "Wikidata"
   },
   {
-    "label_and_type": "drugbank:db00515##other_id",
+    "label_and_type": "drugbank:db00515##xref",
     "concept_id": "wikidata:q412415",
     "src_name": "Wikidata"
   },
   {
-    "label_and_type": "rxcui:2555##other_id",
+    "label_and_type": "rxcui:2555##xref",
     "concept_id": "wikidata:q412415",
     "src_name": "Wikidata"
   },
   {
-    "label_and_type": "chemidplus:15663-27-1##other_id",
+    "label_and_type": "chemidplus:15663-27-1##xref",
     "concept_id": "wikidata:q412415",
     "src_name": "Wikidata"
   },
@@ -264,13 +270,13 @@
       "Recombinant Consensus Interferon",
       "Recombinant methionyl human consensus interferon"
     ],
-    "other_identifiers": [
+    "xrefs": [
       "chembl:CHEMBL1201557",
       "drugbank:DB00069",
       "rxcui:59744",
       "chemidplus:118390-30-0"
     ],
-    "xrefs": [],
+    "associated_with": [],
     "src_name": "Wikidata"
   },
   {
@@ -283,17 +289,17 @@
     "label_and_type": "wikidata:q191924##identity",
     "label": "D-methamphetamine",
     "concept_id": "wikidata:Q191924",
-    "other_identifiers": [
+    "xrefs": [
       "chemidplus:537-46-2",
       "chembl:CHEMBL1201201",
       "drugbank:DB01577",
       "rxcui:6816"
     ],
-    "xrefs": ["pubchem.compound:10836"],
+    "associated_with": ["pubchem.compound:10836"],
     "src_name": "Wikidata"
   },
   {
-    "label_and_type": "rxcui:6816##other_id",
+    "label_and_type": "rxcui:6816##xref",
     "concept_id": "wikidata:q191924",
     "src_name": "Wikidata"
   },
@@ -321,21 +327,17 @@
       "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl 3-hydroxy-2-phenylpropanoate",
       "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate"
     ],
-    "xrefs": ["pubchem.compound:174174"],
-    "other_identifiers": [
-      "drugbank:DB00572",
-      "rxcui:1223",
-      "chemidplus:51-55-8"
-    ],
+    "associated_with": ["pubchem.compound:174174"],
+    "xrefs": ["drugbank:DB00572", "rxcui:1223", "chemidplus:51-55-8"],
     "src_name": "Wikidata"
   },
   {
-    "label_and_type": "pubchem.compound:174174##xref",
+    "label_and_type": "pubchem.compound:174174##associated_with",
     "concept_id": "wikidata:q26272",
     "src_name": "Wikidata"
   },
   {
-    "label_and_type": "chemidplus:51-55-8##other_id",
+    "label_and_type": "chemidplus:51-55-8##xref",
     "concept_id": "wikidata:q26272",
     "src_name": "Wikidata"
   },
@@ -366,17 +368,17 @@
       "N-(1,3-Dihydroxy-2-Propyl)Valiolamine",
       "VOGLIBOSE"
     ],
-    "other_identifiers": ["chemidplus:83480-29-9"],
-    "xrefs": ["fda:S77P977AG8", "umls:C0532578"],
+    "xrefs": ["chemidplus:83480-29-9"],
+    "associated_with": ["fda:S77P977AG8", "umls:C0532578"],
     "src_name": "NCIt"
   },
   {
-    "label_and_type": "fda:s77p977ag8##xref",
+    "label_and_type": "fda:s77p977ag8##associated_with",
     "concept_id": "ncit:c95221",
     "src_name": "NCIt"
   },
   {
-    "label_and_type": "chemidplus:83480-29-9##other_id",
+    "label_and_type": "chemidplus:83480-29-9##xref",
     "concept_id": "ncit:c95221",
     "src_name": "NCIt"
   },
@@ -407,18 +409,24 @@
       "TG01",
       "TP2001"
     ],
-    "other_identifiers": ["chemidplus:197904-84-0"],
-    "xrefs": ["fda:5X5HB3VZ3Z", "umls:C1737955"],
+    "xrefs": ["chemidplus:197904-84-0"],
+    "associated_with": ["fda:5X5HB3VZ3Z", "umls:C1737955"],
     "src_name": "NCIt"
   },
   {
-    "label_and_type": "fda:5x5hb3vz3z##xref",
+    "label_and_type": "cox-2 inhibitor tg01##alias",
     "concept_id": "ncit:c74021",
     "src_name": "NCIt",
-    "item_type": "xref"
+    "item_type": "alias"
   },
   {
-    "label_and_type": "chemidplus:197904-84-0##other_id",
+    "label_and_type": "fda:5x5hb3vz3z##associated_with",
+    "concept_id": "ncit:c74021",
+    "src_name": "NCIt",
+    "item_type": "associated_with"
+  },
+  {
+    "label_and_type": "chemidplus:197904-84-0##xref",
     "concept_id": "ncit:c74021",
     "src_name": "NCIt"
   },
@@ -431,17 +439,17 @@
     "label_and_type": "ncit:c1647##identity",
     "label": "Trastuzumab",
     "concept_id": "ncit:C1647",
-    "other_identifiers": ["chemidplus:180288-69-1"],
-    "xrefs": ["umls:C0728747", "fda:P188ANX8CK"],
+    "xrefs": ["chemidplus:180288-69-1"],
+    "associated_with": ["umls:C0728747", "fda:P188ANX8CK"],
     "src_name": "NCIt"
   },
   {
-    "label_and_type": "fda:p188anx8ck##xref",
+    "label_and_type": "fda:p188anx8ck##associated_with",
     "concept_id": "ncit:c1647",
     "src_name": "NCIt"
   },
   {
-    "label_and_type": "chemidplus:180288-69-1##other_id",
+    "label_and_type": "chemidplus:180288-69-1##xref",
     "concept_id": "ncit:c1647",
     "src_name": "NCIt"
   },
@@ -454,8 +462,8 @@
     "label_and_type": "ncit:c376##identity",
     "label": "Cisplatin",
     "concept_id": "ncit:C376",
-    "other_identifiers": ["chemidplus:15663-27-1"],
-    "xrefs": ["umls:C0008838", "fda:Q20Q21Q62J"],
+    "xrefs": ["chemidplus:15663-27-1"],
+    "associated_with": ["umls:C0008838", "fda:Q20Q21Q62J"],
     "src_name": "NCIt",
     "merge_ref": "rxcui:2555"
   },
@@ -470,17 +478,17 @@
     "label": "Penicillin V",
     "aliases": ["Phenoxymethylpenicillin"],
     "trade_names": [],
-    "other_identifiers": ["drugbank:DB00417"],
-    "xrefs": ["fda:Z61I075U2W"],
+    "xrefs": ["drugbank:DB00417"],
+    "associated_with": ["fda:Z61I075U2W"],
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "fda:z61i075u2w##xref",
+    "label_and_type": "fda:z61i075u2w##associated_with",
     "concept_id": "chemidplus:87-08-1",
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "drugbank:db00417##other_id",
+    "label_and_type": "drugbank:db00417##xref",
     "concept_id": "chemidplus:87-08-1",
     "src_name": "ChemIDplus"
   },
@@ -500,17 +508,17 @@
     "label": "Imatinib",
     "aliases": [],
     "trade_names": [],
-    "other_identifiers": ["drugbank:DB00619"],
-    "xrefs": ["fda:BKJ8M8G5HI"],
+    "xrefs": ["drugbank:DB00619"],
+    "associated_with": ["fda:BKJ8M8G5HI"],
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "fda:bkj8m8g5hi##xref",
+    "label_and_type": "fda:bkj8m8g5hi##associated_with",
     "concept_id": "chemidplus:152459-95-5",
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "drugbank:db00619##other_id",
+    "label_and_type": "drugbank:db00619##xref",
     "concept_id": "chemidplus:152459-95-5",
     "src_name": "ChemIDplus"
   },
@@ -525,12 +533,12 @@
     "src_name": "ChemIDplus",
     "label": "Imatinib mesylate",
     "aliases": [],
-    "other_identifiers": ["drugbank:DB00619"],
-    "xrefs": ["fda:8A1O1M485B"],
+    "xrefs": ["drugbank:DB00619"],
+    "associated_with": ["fda:8A1O1M485B"],
     "trade_names": []
   },
   {
-    "label_and_type": "drugbank:db00619##other_id",
+    "label_and_type": "drugbank:db00619##xref",
     "concept_id": "chemidplus:220127-57-1",
     "src_name": "ChemIDplus"
   },
@@ -544,16 +552,16 @@
       "1,2-Diaminocyclohexaneplatinum II citrate"
     ],
     "trade_names": [],
-    "other_identifiers": ["drugbank:DB00515"],
-    "xrefs": ["fda:Q20Q21Q62J"],
+    "xrefs": ["drugbank:DB00515"],
+    "associated_with": ["fda:Q20Q21Q62J"],
     "src_name": "ChemIDplus",
     "merge_ref": "rxcui:2555"
   },
   {
-    "label_and_type": "drugbank:db00515##other_id",
+    "label_and_type": "drugbank:db00515##xref",
     "concept_id": "chemidplus:15663-27-1",
     "src_name": "ChemIDplus",
-    "item_type": "other_id"
+    "item_type": "xref"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -578,17 +586,17 @@
     "approval_status": "approved",
     "aliases": ["bifidobacterium infantis", "Bifidobacterium infantis"],
     "trade_names": ["Align", "Evivo"],
-    "other_identifiers": ["drugbank:DB14222"],
-    "xrefs": ["mmsl:d07347"],
+    "xrefs": ["drugbank:DB14222"],
+    "associated_with": ["mmsl:d07347"],
     "src_name": "RxNorm"
   },
   {
-    "label_and_type": "mmsl:d07347##xref",
+    "label_and_type": "mmsl:d07347##associated_with",
     "concept_id": "rxcui:100213",
     "src_name": "RxNorm"
   },
   {
-    "label_and_type": "drugbank:db14222##other_id",
+    "label_and_type": "drugbank:db14222##xref",
     "concept_id": "rxcui:100213",
     "src_name": "RxNorm"
   },
@@ -630,8 +638,8 @@
       "Cis-DDP"
     ],
     "trade_names": ["Cisplatin", "Platinol"],
-    "other_identifiers": ["drugbank:DB00515", "drugbank:DB12117"],
-    "xrefs": [
+    "xrefs": ["drugbank:DB00515", "drugbank:DB12117"],
+    "associated_with": [
       "usp:m17910",
       "vandf:4018139",
       "mesh:D002945",
@@ -645,12 +653,12 @@
     "merge_ref": "rxcui:2555"
   },
   {
-    "label_and_type": "mesh:d002945##xref",
+    "label_and_type": "mesh:d002945##associated_with",
     "concept_id": "rxcui:2555",
     "src_name": "RxNorm"
   },
   {
-    "label_and_type": "drugbank:db12117##other_id",
+    "label_and_type": "drugbank:db12117##xref",
     "concept_id": "rxcui:2555",
     "src_name": "RxNorm"
   },
@@ -702,8 +710,8 @@
       "Amilamont",
       "Moduretic"
     ],
-    "other_identifiers": ["drugbank:DB00594"],
-    "xrefs": [
+    "xrefs": ["drugbank:DB00594"],
+    "associated_with": [
       "mesh:D000584",
       "vandf:4019603",
       "mthspl:7DZO8EB0Z3",
@@ -713,7 +721,7 @@
     "src_name": "RxNorm"
   },
   {
-    "label_and_type": "atc:c03db01##xref",
+    "label_and_type": "atc:c03db01##associated_with",
     "concept_id": "rxcui:644",
     "src_name": "RxNorm"
   },
@@ -761,8 +769,8 @@
       "Glaucol",
       "Timoptol"
     ],
-    "other_identifiers": ["drugbank:DB00373"],
-    "xrefs": [
+    "xrefs": ["drugbank:DB00373"],
+    "associated_with": [
       "vandf:4019949",
       "mthspl:817W3C6175",
       "mesh:D013999",
@@ -810,7 +818,7 @@
       "lymphocyte immune globulin, anti-thy (obs)"
     ],
     "trade_names": ["ATGAM", "Thymoglobulin"],
-    "xrefs": [
+    "associated_with": [
       "mesh:D000961",
       "vandf:4022194",
       "vandf:4018097",
@@ -862,8 +870,8 @@
       "o-carboxyphenyl acetate",
       "Acetylsalicylic Acid"
     ],
-    "other_identifiers": ["drugbank:DB00945"],
-    "xrefs": [
+    "xrefs": ["drugbank:DB00945"],
+    "associated_with": [
       "usp:m6240",
       "vandf:4017536",
       "mmsl:34512",
@@ -906,7 +914,7 @@
       "Sodium 2-Mercaptoethanesulphonate"
     ],
     "trade_names": ["Mesna", "Mesnex", "Mesna Nova Plus"],
-    "xrefs": [
+    "associated_with": [
       "usp:m49500",
       "mesh:D015080",
       "vandf:4019477",
@@ -949,7 +957,7 @@
       "3 Aminopropionic Acid",
       "3-Aminopropionic Acid"
     ],
-    "xrefs": ["mesh:D015091", "vandf:4028377", "mthspl:11P2JDE17B"],
+    "associated_with": ["mesh:D015091", "vandf:4028377", "mthspl:11P2JDE17B"],
     "src_name": "RxNorm"
   },
   {
@@ -973,7 +981,7 @@
       "Alphasone",
       "Dihydroxyprogesterone"
     ],
-    "xrefs": ["mesh:D000523"],
+    "associated_with": ["mesh:D000523"],
     "src_name": "RxNorm"
   },
   {
@@ -1032,8 +1040,8 @@
       "Tirosint",
       "Unithroid"
     ],
-    "other_identifiers": ["drugbank:DB00451"],
-    "xrefs": [
+    "xrefs": ["drugbank:DB00451"],
+    "associated_with": [
       "vandf:4022126",
       "mesh:D013974",
       "mmsl:d00278",
@@ -1042,7 +1050,7 @@
     "src_name": "RxNorm"
   },
   {
-    "label_and_type": "drugbank:db00451##other_id",
+    "label_and_type": "drugbank:db00451##xref",
     "concept_id": "rxcui:10582",
     "src_name": "RxNorm"
   },
@@ -1086,8 +1094,8 @@
       "Phenobarbitol",
       "Product containing phenobarbital (medicinal product)"
     ],
-    "other_identifiers": ["drugbank:DB01174"],
-    "xrefs": [
+    "xrefs": ["drugbank:DB01174"],
+    "associated_with": [
       "usp:m63400",
       "gsddb:2179",
       "snomedct:51073002",
@@ -1135,8 +1143,8 @@
     "label": "Phenobarbital",
     "concept_id": "chemidplus:50-06-6",
     "aliases": [],
-    "other_identifiers": ["drugbank:DB01174"],
-    "xrefs": ["fda:YQE403BP4D"],
+    "xrefs": ["drugbank:DB01174"],
+    "associated_with": ["fda:YQE403BP4D"],
     "approval_status": null,
     "trade_names": [],
     "src_name": "ChemIDplus",
@@ -1150,8 +1158,8 @@
     "label": "Spiramycin",
     "concept_id": "chemidplus:8025-81-8",
     "aliases": [],
-    "other_identifiers": [],
-    "xrefs": ["fda:71ODY0V87H"],
+    "xrefs": [],
+    "associated_with": ["fda:71ODY0V87H"],
     "approval_status": null,
     "trade_names": []
   },
@@ -1180,13 +1188,13 @@
       "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
       "PHENYLETHYLMALONYLUREA"
     ],
-    "other_identifiers": [
+    "xrefs": [
       "chemidplus:50-06-6",
       "chembl:CHEMBL40",
       "rxcui:8134",
       "drugbank:DB01174"
     ],
-    "xrefs": ["pubchem.compound:4763"],
+    "associated_with": ["pubchem.compound:4763"],
     "approval_status": null,
     "trade_names": [],
     "src_name": "Wikidata",
@@ -1202,8 +1210,8 @@
       "PHENOBARBITAL",
       "PHENO"
     ],
-    "other_identifiers": ["chemidplus:50-06-6"],
-    "xrefs": ["umls:C0031412", "fda:YQE403BP4D", "chebi:CHEBI:8069"],
+    "xrefs": ["chemidplus:50-06-6"],
+    "associated_with": ["umls:C0031412", "fda:YQE403BP4D", "chebi:CHEBI:8069"],
     "approval_status": null,
     "trade_names": [],
     "src_name": "NCIt",
@@ -1227,8 +1235,8 @@
       "RP 5337",
       "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"
     ],
-    "other_identifiers": ["chemidplus:8025-81-8"],
-    "xrefs": ["umls:C0037962", "fda:71ODY0V87H"],
+    "xrefs": ["chemidplus:8025-81-8"],
+    "associated_with": ["umls:C0037962", "fda:71ODY0V87H"],
     "approval_status": null,
     "trade_names": [],
     "src_name": "NCIt",
@@ -1249,7 +1257,7 @@
     "item_type": "merger",
     "concept_id": "rxcui:8134",
     "label": "phenobarbital",
-    "other_ids": [
+    "xrefs": [
       "ncit:C739",
       "drugbank:DB01174",
       "chemidplus:50-06-6",
@@ -1288,7 +1296,7 @@
       "Phenylaethylbarbitursaeure",
       "Phenobarbitone"
     ],
-    "xrefs": [
+    "associated_with": [
       "vandf:4017422",
       "mthspl:YQE403BP4D",
       "atc:N03AA02",
@@ -1307,7 +1315,7 @@
   {
     "label_and_type": "rxcui:2555##merger",
     "concept_id": "rxcui:2555",
-    "other_ids": [
+    "xrefs": [
       "ncit:C376",
       "hemonc:105",
       "drugbank:DB00515",
@@ -1341,7 +1349,7 @@
       "Platinol"
     ],
     "label": "cisplatin",
-    "xrefs": [
+    "associated_with": [
       "umls:C0008838",
       "fda:Q20Q21Q62J",
       "usp:m17910",
@@ -1370,7 +1378,7 @@
     "label_and_type": "ncit:c839##merger",
     "item_type": "merger",
     "concept_id": "ncit:C839",
-    "other_ids": ["chemidplus:8025-81-8"],
+    "xrefs": ["chemidplus:8025-81-8"],
     "label": "Spiramycin",
     "aliases": [
       "SPIRAMYCIN",
@@ -1381,7 +1389,11 @@
       "RP 5337",
       "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"
     ],
-    "xrefs": ["umls:C0037962", "fda:71ODY0V87H", "chembl:CHEMBL1256397"]
+    "associated_with": [
+      "umls:C0037962",
+      "fda:71ODY0V87H",
+      "chembl:CHEMBL1256397"
+    ]
   },
   {
     "label_and_type": "ncit:c107245##identity",
@@ -1394,8 +1406,8 @@
       "RXDX-105",
       "1-(3-(6,7-Dimethoxyquinazolin-4-yloxy)phenyl)-3-(5-(1,1,1-trifluoro-2-methylpropan-2-yl)isoxazol-3-yl)urea Hydrochloride"
     ],
-    "other_identifiers": ["chemidplus:1188910-76-0"],
-    "xrefs": ["fda:78I4VEX88N"]
+    "xrefs": ["chemidplus:1188910-76-0"],
+    "associated_with": ["fda:78I4VEX88N"]
   },
   {
     "label_and_type": "agerafenib##label",
@@ -1438,7 +1450,7 @@
       "Amiloride Hydrochloride",
       "Hydrochloride, Amiloride"
     ],
-    "xrefs": [
+    "associated_with": [
       "usp:m2650",
       "mthspl:FZJ37245UC",
       "mmsl:2658",
@@ -1480,8 +1492,8 @@
       "(+-)-N-Methyl-gamma-(4-(trifluoromethyl)phenoxy)benzenepropanamine",
       "(+-)-N-Methyl-3-phenyl-3-((alpha,alpha,alpha-trifluoro-P-tolyl)oxy)propylamine"
     ],
-    "other_identifiers": ["drugbank:DB00472"],
-    "xrefs": [
+    "xrefs": ["drugbank:DB00472"],
+    "associated_with": [
       "mesh:D005473",
       "mmsl:17711",
       "vandf:4019761",
@@ -1510,7 +1522,7 @@
     "label": "fluoxetine hydrochloride",
     "approval_status": "approved",
     "aliases": ["FLUoxetine hydrochloride", "Fluoxetine Hydrochloride"],
-    "xrefs": [
+    "associated_with": [
       "usp:m33780",
       "mthspl:I9W7N6B1KJ",
       "mmsl:4746",
@@ -1531,10 +1543,10 @@
     "merge_ref": "wikidata:q47521576",
     "concept_id": "wikidata:Q47521576",
     "label_and_type": "wikidata:q47521576##identity",
-    "xrefs": [],
+    "associated_with": [],
     "label": "Ethyol",
     "src_name": "Wikidata",
-    "other_identifiers": ["rxcui:151722"]
+    "xrefs": ["rxcui:151722"]
   },
   {
     "concept_id": "rxcui:4126",
@@ -1547,7 +1559,7 @@
     "concept_id": "rxcui:4126",
     "label_and_type": "rxcui:4126##identity",
     "approval_status": "approved",
-    "xrefs": [
+    "associated_with": [
       "usp:m2600",
       "mesh:D004999",
       "mmsl:4164",
@@ -1560,7 +1572,7 @@
     "label": "amifostine",
     "trade_names": ["Amifostine", "Ethyol"],
     "src_name": "RxNorm",
-    "other_identifiers": ["drugbank:DB01143"]
+    "xrefs": ["drugbank:DB01143"]
   },
   {
     "label_and_type": "rxcui:10600##merger",
@@ -1584,7 +1596,7 @@
       "Timoptol LA",
       "Glau-Opt"
     ],
-    "xrefs": [
+    "associated_with": [
       "atc:C07AA06",
       "mthspl:817W3C6175",
       "vandf:4019949",
@@ -1603,10 +1615,10 @@
     "merge_ref": "rxcui:2555",
     "concept_id": "wikidata:Q47522001",
     "label_and_type": "wikidata:q47522001##identity",
-    "xrefs": [],
+    "associated_with": [],
     "label": "Platinol",
     "src_name": "Wikidata",
-    "other_identifiers": ["rxcui:202856"]
+    "xrefs": ["rxcui:202856"]
   },
   {
     "concept_id": "wikidata:q47522001",
@@ -1619,13 +1631,13 @@
     "concept_id": "chemidplus:220127-57-1",
     "label": "Imatinib mesylate",
     "aliases": [],
-    "other_identifiers": ["drugbank:DB00619"],
-    "xrefs": ["fda:8A1O1M485B"],
+    "xrefs": ["drugbank:DB00619"],
+    "associated_with": ["fda:8A1O1M485B"],
     "approval_status": null,
     "trade_names": []
   },
   {
-    "label_and_type": "drugbank:db00619##other_id",
+    "label_and_type": "drugbank:db00619##xref",
     "src_name": "ChemIDplus",
     "concept_id": "chemidplus:220127-57-1"
   },
@@ -1653,15 +1665,15 @@
       "Phenylethylbarbitursäure",
       "Phenylethylmalonylurea"
     ],
-    "other_identifiers": ["chemidplus:50-06-6"],
-    "xrefs": [],
+    "xrefs": ["chemidplus:50-06-6"],
+    "associated_with": [],
     "approval_status": null,
     "trade_names": []
   },
   {
-    "label_and_type": "chemidplus:50-06-6##other_id",
+    "label_and_type": "chemidplus:50-06-6##xref",
     "concept_id": "drugbank:DB01174",
-    "item_type": "other_id",
+    "item_type": "xref",
     "src_name": "DrugBank"
   },
   {
@@ -1678,15 +1690,15 @@
       "Amifostinum",
       "Aminopropylaminoethyl thiophosphate"
     ],
-    "other_identifiers": ["chemidplus:20537-88-6"],
-    "xrefs": [],
+    "xrefs": ["chemidplus:20537-88-6"],
+    "associated_with": [],
     "approval_status": null,
     "trade_names": []
   },
   {
-    "label_and_type": "chemidplus:20537-88-6##other_id",
+    "label_and_type": "chemidplus:20537-88-6##xref",
     "src_name": "DrugBank",
-    "item_type": "other_id",
+    "item_type": "xref",
     "concept_id": "drugbank:DB01143"
   },
   {
@@ -1705,8 +1717,8 @@
       "NSC 119875",
       "CDDP"
     ],
-    "other_identifiers": ["rxcui:2555"],
-    "xrefs": [],
+    "xrefs": ["rxcui:2555"],
+    "associated_with": [],
     "trade_names": [],
     "approval_status": "approved",
     "approval_year": ["1978"],
@@ -1717,10 +1729,10 @@
     ]
   },
   {
-    "label_and_type": "rxcui:2555##other_id",
+    "label_and_type": "rxcui:2555##xref",
     "concept_id": "hemonc:105",
     "src_name": "HemOnc",
-    "item_type": "other_id"
+    "item_type": "xref"
   },
   {
     "label_and_type": "nsc 119875##alias",
@@ -1761,8 +1773,8 @@
       "bendamustine hydrochloride",
       "bendamustin hydrochloride"
     ],
-    "other_identifiers": ["rxcui:134547"],
-    "xrefs": [],
+    "xrefs": ["rxcui:134547"],
+    "associated_with": [],
     "trade_names": [
       "Bendamax",
       "Bendawel",
@@ -1787,9 +1799,9 @@
     ]
   },
   {
-    "label_and_type": "rxcui:134547##other_id",
+    "label_and_type": "rxcui:134547##xref",
     "concept_id": "hemonc:65",
-    "item_type": "other_id",
+    "item_type": "xref",
     "src_name": "HemOnc"
   },
   {
@@ -1835,8 +1847,8 @@
       "bendamustine hydrochloride",
       "bendamustin hydrochloride"
     ],
-    "other_identifiers": ["rxcui:134547"],
-    "xrefs": [],
+    "xrefs": ["rxcui:134547"],
+    "associated_with": [],
     "trade_names": [
       "Bendamax",
       "Bendawel",
@@ -1867,18 +1879,18 @@
     "label": "Degarelix",
     "concept_id": "hemonc:151",
     "aliases": ["degarelix acetate", "FE200486", "ASP3550"],
-    "other_identifiers": ["rxcui:475230"],
-    "xrefs": [],
+    "xrefs": ["rxcui:475230"],
+    "associated_with": [],
     "trade_names": ["Firmagon"],
     "approval_status": "approved",
     "approval_year": ["2008"],
     "fda_indication": [["hemonc:658", "Prostate cancer", "ncit:C7378"]]
   },
   {
-    "label_and_type": "rxcui:475230##other_id",
+    "label_and_type": "rxcui:475230##xref",
     "concept_id": "hemonc:151",
     "src_name": "HemOnc",
-    "item_type": "other_id"
+    "item_type": "xref"
   },
   {
     "label_and_type": "firmagon##trade_name",

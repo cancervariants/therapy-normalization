@@ -39,13 +39,13 @@ def cisplatin():
             'Platinol-AQ'
         ],
         'approval_status': None,
-        'other_identifiers': [
+        'xrefs': [
             'chembl:CHEMBL11359',
             'drugbank:DB00515',
             'rxcui:2555',
             'chemidplus:15663-27-1',
         ],
-        'xrefs': [
+        'associated_with': [
             'pubchem.compound:5702198'
         ],
         'trade_names': []
@@ -62,8 +62,8 @@ def platinol():
         'aliases': [],
         'trade_names': [],
         'approval_status': None,
-        'other_identifiers': ['rxcui:202856'],
-        'xrefs': []
+        'xrefs': ['rxcui:202856'],
+        'associated_with': []
     }
     return Drug(**params)
 
@@ -86,13 +86,13 @@ def interferon_alfacon_1():
             'Recombinant methionyl human consensus interferon'
         ],
         'approval_status': None,
-        'other_identifiers': [
+        'xrefs': [
             'chembl:CHEMBL1201557',
             'drugbank:DB00069',
             'rxcui:59744',
             'chemidplus:118390-30-0'
         ],
-        'xrefs': [],
+        'associated_with': [],
         'trade_names': []
     }
     return Drug(**params)
@@ -107,13 +107,13 @@ def d_methamphetamine():
         'concept_id': 'wikidata:Q191924',
         'aliases': [],
         'approval_status': None,
-        'other_identifiers': [
+        'xrefs': [
             'chembl:CHEMBL1201201',
             'drugbank:DB01577',
             'rxcui:6816',
             'chemidplus:537-46-2',
         ],
-        'xrefs': [
+        'associated_with': [
             'pubchem.compound:10836',
         ],
         'trade_names': []
@@ -146,12 +146,12 @@ def atropine():
             '8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate'
         ],
         'approval_status': None,
-        'other_identifiers': [
+        'xrefs': [
             'drugbank:DB00572',
             'chemidplus:51-55-8',
             'rxcui:1223'
         ],
-        'xrefs': [
+        'associated_with': [
             'pubchem.compound:174174',
         ],
         'trade_names': []
@@ -202,22 +202,22 @@ def test_cisplatin(cisplatin, wikidata):
     compare_records(response['records'][0], cisplatin)
 
     response = wikidata.search('chembl:CHEMBL11359')
-    assert response['match_type'] == MatchType.OTHER_ID
+    assert response['match_type'] == MatchType.XREF
     assert len(response['records']) == 1
     compare_records(response['records'][0], cisplatin)
 
     response = wikidata.search('drugbank:DB00515')
-    assert response['match_type'] == MatchType.OTHER_ID
+    assert response['match_type'] == MatchType.XREF
     assert len(response['records']) == 1
     compare_records(response['records'][0], cisplatin)
 
     response = wikidata.search('rxcui:2555')
-    assert response['match_type'] == MatchType.OTHER_ID
+    assert response['match_type'] == MatchType.XREF
     assert len(response['records']) == 1
     compare_records(response['records'][0], cisplatin)
 
     response = wikidata.search('chemidplus:15663-27-1')
-    assert response['match_type'] == MatchType.OTHER_ID
+    assert response['match_type'] == MatchType.XREF
     assert len(response['records']) == 1
     compare_records(response['records'][0], cisplatin)
 
@@ -270,12 +270,12 @@ def test_atropine(atropine, wikidata):
     compare_records(response['records'][0], atropine)
 
     response = wikidata.search('chemidplus:51-55-8')
-    assert response['match_type'] == MatchType.OTHER_ID
+    assert response['match_type'] == MatchType.XREF
     assert len(response['records']) == 1
     compare_records(response['records'][0], atropine)
 
     response = wikidata.search('pubchem.compound:174174')
-    assert response['match_type'] == MatchType.XREF
+    assert response['match_type'] == MatchType.ASSOCIATED_WITH
     assert len(response['records']) == 1
     compare_records(response['records'][0], atropine)
 
@@ -351,7 +351,7 @@ def test_d_methamphetamine(d_methamphetamine, wikidata):
     compare_records(response['records'][0], d_methamphetamine)
 
     response = wikidata.search('rxcui:6816')
-    assert response['match_type'] == MatchType.OTHER_ID
+    assert response['match_type'] == MatchType.XREF
     assert len(response['records']) == 1
     compare_records(response['records'][0], d_methamphetamine)
 

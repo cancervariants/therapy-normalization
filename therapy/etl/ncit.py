@@ -159,29 +159,29 @@ class NCIt(Base):
                     aliases.remove(label)
 
                 xrefs = []
-                other_ids = []
+                associated_with = []
                 if node.P207:
-                    xrefs.append(f"{NamespacePrefix.UMLS.value}:"
-                                 f"{node.P207.first()}")
+                    associated_with.append(f"{NamespacePrefix.UMLS.value}:"
+                                           f"{node.P207.first()}")
                 if node.P210:
-                    other_ids.append(f"{NamespacePrefix.CASREGISTRY.value}:"
-                                     f"{node.P210.first()}")
+                    xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:"
+                                 f"{node.P210.first()}")
                 if node.P319:
-                    xrefs.append(f"{NamespacePrefix.FDA.value}:"
-                                 f"{node.P319.first()}")
+                    associated_with.append(f"{NamespacePrefix.FDA.value}:"
+                                           f"{node.P319.first()}")
                 if node.P320:
-                    xrefs.append(f"{NamespacePrefix.ISO.value}:"
-                                 f"{node.P320.first()}")
+                    associated_with.append(f"{NamespacePrefix.ISO.value}:"
+                                           f"{node.P320.first()}")
                 if node.P368:
-                    xrefs.append(f"{NamespacePrefix.CHEBI.value}:"
-                                 f"{node.P368.first()}")
+                    associated_with.append(f"{NamespacePrefix.CHEBI.value}:"
+                                           f"{node.P368.first()}")
 
                 therapy = Therapy(concept_id=concept_id,
                                   src_name=SourceName.NCIT.value,
                                   label=label,
                                   aliases=aliases,
-                                  other_identifiers=other_ids,
-                                  xrefs=xrefs)
+                                  xrefs=xrefs,
+                                  associated_with=associated_with)
                 self._load_therapy(therapy, batch)
 
     def _load_meta(self):
@@ -213,8 +213,8 @@ class NCIt(Base):
         item['item_type'] = 'identity'
 
         for field_type, field in (('alias', 'aliases'),
-                                  ('other_id', 'other_identifiers'),
-                                  ('xref', 'xrefs')):
+                                  ('xref', 'xrefs'),
+                                  ('associated_with', 'associated_with')):
             values = item.get(field)
             if values:
                 keys = {value.casefold() for value in values}

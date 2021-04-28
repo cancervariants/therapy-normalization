@@ -44,8 +44,8 @@ def cisplatin():
             "CDDP"
         ],
         "trade_names": [],
-        "other_identifiers": ["rxcui:2555"],
-        "xrefs": [],
+        "xrefs": ["rxcui:2555"],
+        "associated_with": [],
         "approval_status": ApprovalStatus.APPROVED,
         "approval_year": [1978],
         "has_indication": [
@@ -82,8 +82,8 @@ def bendamustine():
             "bendamustine hydrochloride",
             "bendamustin hydrochloride"
         ],
-        "other_identifiers": ["rxcui:134547"],
-        "xrefs": [],
+        "xrefs": ["rxcui:134547"],
+        "associated_with": [],
         "trade_names": [
             "Bendamax",
             "Bendawel",
@@ -128,8 +128,8 @@ def degarelix():
             "FE200486",
             "ASP3550"
         ],
-        "other_identifiers": ["rxcui:475230"],
-        "xrefs": [],
+        "xrefs": ["rxcui:475230"],
+        "associated_with": [],
         "trade_names": ["Firmagon"],
         "approval_status": ApprovalStatus.APPROVED,
         "approval_year": ["2008"],
@@ -204,16 +204,16 @@ def test_trade_name(hemonc, bendamustine, degarelix):
     assert response['match_type'] == MatchType.NO_MATCH
 
 
-def test_other_id_match(hemonc, cisplatin, bendamustine, degarelix):
-    """Test that other_id query resolves to correct record."""
+def test_xref_match(hemonc, cisplatin, bendamustine, degarelix):
+    """Test that xref query resolves to correct record."""
     response = hemonc.search('rxcui:2555')
-    compare_response(response, MatchType.OTHER_ID, cisplatin)
+    compare_response(response, MatchType.XREF, cisplatin)
 
     response = hemonc.search('rxcui:134547')
-    compare_response(response, MatchType.OTHER_ID, bendamustine)
+    compare_response(response, MatchType.XREF, bendamustine)
 
     response = hemonc.search('rxcui:475230')
-    compare_response(response, MatchType.OTHER_ID, degarelix)
+    compare_response(response, MatchType.XREF, degarelix)
 
 
 def test_metadata(hemonc):

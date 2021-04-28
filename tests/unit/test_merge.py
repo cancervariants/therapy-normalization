@@ -46,9 +46,15 @@ def compare_merged_records(actual: Dict, fixture: Dict):
     assert ('aliases' in actual) == ('aliases' in fixture)
     if 'aliases' in actual or 'aliases' in fixture:
         assert set(actual['aliases']) == set(fixture['aliases'])
+
     assert ('xrefs' in actual) == ('xrefs' in fixture)
     if 'xrefs' in actual or 'xrefs' in fixture:
         assert set(actual['xrefs']) == set(fixture['xrefs'])
+    assert ('associated_with' in actual) == ('associated_with' in fixture)
+    if 'associated_with' in actual or 'associated_with' in fixture:
+        assert set(actual['associated_with']) == \
+            set(fixture['associated_with'])
+
     assert ('approval_status' in actual) == ('approval_status' in fixture)
     if 'approval_status' in actual or 'approval_status' in fixture:
         assert set(actual['approval_status']) == \
@@ -73,7 +79,7 @@ def phenobarbital_merged():
     return {
         "label_and_type": "rxcui:8134##merger",
         "concept_id": "rxcui:8134",
-        "other_ids": [
+        "xrefs": [
             "ncit:C739",
             "drugbank:DB01174",
             "chemidplus:50-06-6",
@@ -115,7 +121,7 @@ def phenobarbital_merged():
             'phenobarbital sodium',
             'phenylethylbarbiturate'
         ],
-        "xrefs": [
+        "associated_with": [
             "pubchem.compound:4763",
             "usp:m63400",
             "gsddb:2179",
@@ -144,7 +150,7 @@ def cisplatin_merged():
     return {
         "label_and_type": "rxcui:2555##merger",
         "concept_id": "rxcui:2555",
-        "other_ids": [
+        "xrefs": [
             "ncit:C376",
             "drugbank:DB00515",
             "hemonc:105",
@@ -187,7 +193,7 @@ def cisplatin_merged():
             'Platinol'
         ],
         "label": "cisplatin",
-        "xrefs": [
+        "associated_with": [
             "umls:C0008838",
             "fda:Q20Q21Q62J",
             "usp:m17910",
@@ -221,7 +227,7 @@ def spiramycin_merged():
     return {
         "label_and_type": "ncit:c839##merger",
         "concept_id": "ncit:C839",
-        "other_ids": [
+        "xrefs": [
             'chemidplus:8025-81-8',
         ],
         "label": "Spiramycin",
@@ -234,7 +240,7 @@ def spiramycin_merged():
             "RP 5337",
             "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"  # noqa: E501
         ],
-        "xrefs": [
+        "associated_with": [
             "umls:C0037962",
             "fda:71ODY0V87H"
         ],
@@ -243,8 +249,9 @@ def spiramycin_merged():
 
 @pytest.fixture(scope='module')
 def bendamustine_merged():
-    """Create fixture for bendamustine. Should only contain a single HemOnc
-    record.
+    """Create fixture for bendamustine. Designed to simulate a case of a group
+    with only one element (IRL, this concept belongs to a group with an
+    RxNorm record as well).
     """
     return {
         "label_and_type": "hemonc:65##merger",
@@ -258,7 +265,6 @@ def bendamustine_merged():
             "bendamustine hydrochloride",
             "bendamustin hydrochloride"
         ],
-        "other_identifiers": ["rxcui:134547"],
         "trade_names": [
             "Bendamax",
             "Bendawel",
@@ -410,7 +416,7 @@ def record_id_groups():
             "drugbank:DB01143"
         },
         "hemonc:65": {
-            "hemonc:65"
+            "hemonc:65",
         }
     }
 

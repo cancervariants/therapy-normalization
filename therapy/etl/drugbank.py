@@ -109,21 +109,21 @@ class DrugBank(Base):
                 # get CAS reference
                 cas_ref = row[3]
                 if cas_ref:
-                    params['other_identifiers'] = [
+                    params['xrefs'] = [
                         f'{NamespacePrefix.CHEMIDPLUS.value}:{row[3]}'
                     ]
 
-                params['xrefs'] = []
+                params['associated_with'] = []
                 # get inchi key
                 if len(row) >= 7:
                     inchi_key = row[6]
                     if inchi_key:
                         inchi_id = f'{NamespacePrefix.INCHIKEY.value}:{inchi_key}'  # noqa: E501
-                        params['xrefs'].append(inchi_id)
+                        params['associated_with'].append(inchi_id)
                 # get UNII id
                 unii = row[4]
                 if unii:
                     unii_id = f'{NamespacePrefix.UNII.value}:{unii}'
-                    params['xrefs'].append(unii_id)
+                    params['associated_with'].append(unii_id)
 
                 self._load_therapy(params)

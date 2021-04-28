@@ -65,19 +65,19 @@ class Merge:
         end = timer()
         logger.debug(f'Generated and added concepts in {end - start} seconds')
 
-    def _get_other_ids(self, record: Dict) -> Set[str]:
+    def _get_xrefs(self, record: Dict) -> Set[str]:
         """Extract references to entries in other sources from a record.
         Crucially, filter to allowed sources only.
 
         :param Dict record: record to process
-        :return: Set of other_identifier values
+        :return: Set of xref values
         :rtype: Set
         """
-        other_ids = set()
-        for other_id in record.get('other_identifiers', []):
-            if other_id.split(':')[0] not in PROHIBITED_SOURCES:
-                other_ids.add(other_id)
-        return other_ids
+        xrefs = set()
+        for xref in record.get('xrefs', []):
+            if xref.split(':')[0] not in PROHIBITED_SOURCES:
+                xrefs.add(xref)
+        return xrefs
 
     def _create_record_id_set(self, record_id: str,
                               observed_id_set: Set = set()) -> Set[str]:
@@ -111,7 +111,7 @@ class Merge:
                                    f"{observed_id_set}")
                     return observed_id_set - {record_id}
 
-            local_id_set = self._get_other_ids(db_record)
+            local_id_set = self._get_xrefs(db_record)
             if not local_id_set:
                 return observed_id_set | {db_record['concept_id']}
             merged_id_set = {record_id} | observed_id_set
@@ -159,22 +159,23 @@ class Merge:
             'label': None,
             'aliases': set(),
             'trade_names': set(),
-            'xrefs': set(),
+            'associated_with': set(),
             'approval_status': None,
             'approval_year': set(),
             'fda_indication': [],
         }
         if len(records) > 1:
-            merged_attrs['other_ids'] = [r['concept_id'] for r in records[1:]]
+            merged_attrs['xrefs'] = [r['concept_id'] for r in records[1:]]
 
         # merge from constituent records
-        set_fields = ['aliases', 'trade_names', 'xrefs', 'approval_year']
+        set_fields = ['aliases', 'trade_names', 'associated_with',
+                      'approval_year']
         for record in records:
             for field in set_fields:
                 merged_attrs[field] |= set(record.get(field, {}))
-            chembl_ids = {i for i in record.get('other_identifiers', [])
+            chembl_ids = {i for i in record.get('xrefs', [])
                           if i.startswith('chembl')}
-            merged_attrs['xrefs'] |= chembl_ids
+            merged_attrs['associated_with'] |= chembl_ids
             if merged_attrs['label'] is None:
                 merged_attrs['label'] = record.get('label')
             if merged_attrs['approval_status'] is None:

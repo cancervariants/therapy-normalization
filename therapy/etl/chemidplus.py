@@ -155,18 +155,18 @@ class ChemIDplus(Base):
                             aliases.append(re.sub(TAGS_REGEX, '', text))
                 params['aliases'] = aliases
 
-                # get other_ids and xrefs
-                params['other_identifiers'] = list()
-                params['xrefs'] = list()
+                # get xrefs and associated_with
+                params['xrefs'] = []
+                params['associated_with'] = []
                 locator_list = chemical.find('LocatorList')
                 if locator_list:
                     for loc in locator_list.findall('InternetLocator'):
                         if loc.text == 'DrugBank':
                             db = f'{NamespacePrefix.DRUGBANK.value}:{loc.attrib["url"].split("/")[-1]}'  # noqa: E501
-                            params['other_identifiers'].append(db)
+                            params['xrefs'].append(db)
                         elif loc.text == 'FDA SRS':
                             fda = f'{NamespacePrefix.FDA.value}:{loc.attrib["url"].split("/")[-1]}'  # noqa: E501
-                            params['xrefs'].append(fda)
+                            params['associated_with'].append(fda)
 
                 # double-check and load full record
                 assert Drug(**params)
@@ -192,8 +192,8 @@ class ChemIDplus(Base):
             del record['label']
 
         for field_type, field in (('alias', 'aliases'),
-                                  ('other_id', 'other_identifiers'),
-                                  ('xref', 'xrefs')):
+                                  ('xref', 'xrefs'),
+                                  ('associated_with', 'associated_with')):
             values = record.get(field)
             if values:
                 keys = {value.casefold() for value in values}
