@@ -375,7 +375,7 @@ class FDAStatus(BaseModel):
 
     approval_status: Optional[ApprovalStatus]
     approval_year: Optional[List[int]]
-    has_indication: List[Union[Dict, DiseaseDescriptor]]
+    has_indication: Optional[List[Union[Dict, DiseaseDescriptor]]]
 
 
 class Extension(BaseModel):
