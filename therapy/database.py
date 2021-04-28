@@ -26,6 +26,7 @@ class Database:
             boto_params = {
                 'region_name': region_name
             }
+            self.endpoint_url = ''
             if 'THERAPY_NORM_EB_PROD' not in environ:
                 # EB Instance should not have to confirm.
                 # This is used only for using production via CLI

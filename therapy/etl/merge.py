@@ -172,7 +172,7 @@ class Merge:
                       'approval_year']
         for record in records:
             for field in set_fields:
-                merged_attrs[field] |= set(record.get(field, {}))
+                merged_attrs[field] |= set(record.get(field, set()))
             chembl_ids = {i for i in record.get('xrefs', [])
                           if i.startswith('chembl')}
             merged_attrs['associated_with'] |= chembl_ids
