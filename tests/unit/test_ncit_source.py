@@ -78,23 +78,22 @@ def therapeutic_procedure():
     params = {
         "concept_id": "ncit:C49236",
         "label": "Therapeutic Procedure",
-        "associated_with": ["umls:C0087111"],
         "aliases": [
             "any therapy",
             "any_therapy",
             "Therapeutic Interventions",
             "Therapeutic Method",
-            "Therapeutic Procedure",
             "Therapeutic Technique",
             "therapy",
             "Therapy",
             "TREAT",
             "Treatment",
-            "treatment",
-            "treatment or therapy",
-            "treatment_or_therapy",
-            "TX"
-        ]
+            "TX",
+            "therapeutic intervention"
+        ],
+        "trade_names": [],
+        "xrefs": [],
+        "associated_with": ["umls:C0087111"]
     }
     return Drug(**params)
 

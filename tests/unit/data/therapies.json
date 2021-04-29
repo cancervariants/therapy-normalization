@@ -1922,16 +1922,13 @@
       "any_therapy",
       "Therapeutic Interventions",
       "Therapeutic Method",
-      "Therapeutic Procedure",
       "Therapeutic Technique",
       "therapy",
       "Therapy",
       "TREAT",
       "Treatment",
-      "treatment",
-      "treatment or therapy",
-      "treatment_or_therapy",
-      "TX"
+      "TX",
+      "therapeutic intervention"
     ]
   }
 ]
