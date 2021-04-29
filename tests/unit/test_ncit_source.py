@@ -71,7 +71,36 @@ def trastuzumab():
     return Drug(**params)
 
 
-def test_concept_id_match(ncit, voglibose, apricoxib, trastuzumab):
+# Needed for MetaKB
+@pytest.fixture(scope='module')
+def therapeutic_procedure():
+    """Create a fixture for the Therapeutic Procedure class."""
+    params = {
+        "concept_id": "ncit:C49236",
+        "label": "Therapeutic Procedure",
+        "associated_with": ["umls:C0087111"],
+        "aliases": [
+            "any therapy",
+            "any_therapy",
+            "Therapeutic Interventions",
+            "Therapeutic Method",
+            "Therapeutic Procedure",
+            "Therapeutic Technique",
+            "therapy",
+            "Therapy",
+            "TREAT",
+            "Treatment",
+            "treatment",
+            "treatment or therapy",
+            "treatment_or_therapy",
+            "TX"
+        ]
+    }
+    return Drug(**params)
+
+
+def test_concept_id_match(ncit, voglibose, apricoxib, trastuzumab,
+                          therapeutic_procedure):
     """Test that concept ID query resolves to correct record."""
     response = ncit.search('ncit:C95221')
     compare_response(response, MatchType.CONCEPT_ID, voglibose)
@@ -111,6 +140,9 @@ def test_concept_id_match(ncit, voglibose, apricoxib, trastuzumab):
 
     response = ncit.search('C1647')
     compare_response(response, MatchType.CONCEPT_ID, trastuzumab)
+
+    response = ncit.search('ncit:C49236')
+    compare_response(response, MatchType.CONCEPT_ID, therapeutic_procedure)
 
 
 def test_label_match(ncit, voglibose, apricoxib, trastuzumab):

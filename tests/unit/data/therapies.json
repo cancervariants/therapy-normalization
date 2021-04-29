@@ -1909,5 +1909,29 @@
     "concept_id": "hemonc:151",
     "src_name": "HemOnc",
     "item_type": "label"
+  },
+  {
+    "label_and_type": "ncit:c49236##identity",
+    "concept_id": "ncit:C49236",
+    "src_name": "NCIt",
+    "item_type": "identity",
+    "label": "Therapeutic Procedure",
+    "associated_with": ["umls:C0087111"],
+    "aliases": [
+      "any therapy",
+      "any_therapy",
+      "Therapeutic Interventions",
+      "Therapeutic Method",
+      "Therapeutic Procedure",
+      "Therapeutic Technique",
+      "therapy",
+      "Therapy",
+      "TREAT",
+      "Treatment",
+      "treatment",
+      "treatment or therapy",
+      "treatment_or_therapy",
+      "TX"
+    ]
   }
 ]
