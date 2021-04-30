@@ -144,7 +144,7 @@ class NCIt(Base):
         """Get data from file and construct objects for loading"""
         ncit = owl.get_ontology(self._data_file.absolute().as_uri())
         ncit.load()
-        uq_nodes = set()
+        uq_nodes = {ncit.C49236}  # add Therapeutic Procedure
         uq_nodes = self._get_desc_nodes(ncit.C1909, uq_nodes)
         uq_nodes = self._get_typed_nodes(uq_nodes, ncit)
         with self.database.therapies.batch_writer() as batch:
