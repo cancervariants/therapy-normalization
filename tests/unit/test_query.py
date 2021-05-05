@@ -13,7 +13,7 @@ def query_handler():
         def __init__(self):
             self.query_handler = QueryHandler()
 
-        def normalize(self, query_str, keyed=False, incl='', excl=''):
+        def search_sources(self, query_str, keyed=False, incl='', excl=''):
             resp = self.query_handler.search_sources(query_str=query_str,
                                                      keyed=keyed,
                                                      incl=incl, excl=excl)
@@ -322,7 +322,8 @@ def compare_vod(actual, fixture):
     if 'xrefs' in actual:
         assert set(actual['xrefs']) == set(fixture['xrefs'])
 
-    assert ('alternate_labels' in actual.keys()) == ('alternate_labels' in fixture.keys())  # noqa: E501
+    assert ('alternate_labels' in actual.keys()) == ('alternate_labels' in
+                                                     fixture.keys())
     if 'alternate_labels' in actual:
         assert set(actual['alternate_labels']) == \
             set(fixture['alternate_labels'])
@@ -369,7 +370,7 @@ def compare_vod(actual, fixture):
 
 def test_query(query_handler):
     """Test that query returns properly-structured response."""
-    resp = query_handler.normalize('cisplatin', keyed=False)
+    resp = query_handler.search_sources('cisplatin', keyed=False)
     assert resp['query'] == 'cisplatin'
     matches = resp['source_matches']
     assert isinstance(matches, list)
@@ -383,7 +384,7 @@ def test_query(query_handler):
 
 def test_query_keyed(query_handler):
     """Test that query structures matches as dict when requested."""
-    resp = query_handler.normalize('penicillin v', keyed=True)
+    resp = query_handler.search_sources('penicillin v', keyed=True)
     matches = resp['source_matches']
     assert isinstance(matches, dict)
     chemidplus = matches['ChemIDplus']
@@ -394,7 +395,7 @@ def test_query_keyed(query_handler):
 def test_query_specify_sources(query_handler):
     """Test inclusion and exclusion of sources in query."""
     # test blank params
-    resp = query_handler.normalize('cisplatin', keyed=True)
+    resp = query_handler.search_sources('cisplatin', keyed=True)
     matches = resp['source_matches']
     assert len(matches) == 7
     assert 'Wikidata' in matches
@@ -406,7 +407,8 @@ def test_query_specify_sources(query_handler):
     assert 'HemOnc' in matches
 
     # test partial inclusion
-    resp = query_handler.normalize('cisplatin', keyed=True, incl='chembl,ncit')
+    resp = query_handler.search_sources('cisplatin', keyed=True,
+                                        incl='chembl,ncit')
     matches = resp['source_matches']
     assert len(matches) == 2
     assert 'Wikidata' not in matches
@@ -419,8 +421,8 @@ def test_query_specify_sources(query_handler):
 
     # test full inclusion
     sources = 'chembl,ncit,drugbank,wikidata,rxnorm,chemidplus,hemonc'
-    resp = query_handler.normalize('cisplatin', keyed=True,
-                                   incl=sources, excl='')
+    resp = query_handler.search_sources('cisplatin', keyed=True,
+                                        incl=sources, excl='')
     matches = resp['source_matches']
     assert len(matches) == 7
     assert 'Wikidata' in matches
@@ -432,7 +434,8 @@ def test_query_specify_sources(query_handler):
     assert 'HemOnc' in matches
 
     # test partial exclusion
-    resp = query_handler.normalize('cisplatin', keyed=True, excl='chemidplus')
+    resp = query_handler.search_sources('cisplatin', keyed=True,
+                                        excl='chemidplus')
     matches = resp['source_matches']
     assert len(matches) == 6
     assert 'Wikidata' in matches
@@ -444,9 +447,10 @@ def test_query_specify_sources(query_handler):
     assert 'HemOnc' in matches
 
     # test full exclusion
-    resp = query_handler.normalize('cisplatin', keyed=True,
-                                   excl='chembl, wikidata, drugbank, ncit, '
-                                   'rxnorm, chemidplus, hemonc')
+    resp = query_handler.search_sources(
+        'cisplatin', keyed=True,
+        excl='chembl, wikidata, drugbank, ncit, rxnorm, chemidplus, hemonc'
+    )
     matches = resp['source_matches']
     assert len(matches) == 0
     assert 'Wikidata' not in matches
@@ -458,7 +462,7 @@ def test_query_specify_sources(query_handler):
     assert 'HemOnc' not in matches
 
     # test case insensitive
-    resp = query_handler.normalize('cisplatin', keyed=True, excl='ChEmBl')
+    resp = query_handler.search_sources('cisplatin', keyed=True, excl='ChEmBl')
     matches = resp['source_matches']
     assert 'Wikidata' in matches
     assert 'ChEMBL' not in matches
@@ -467,8 +471,8 @@ def test_query_specify_sources(query_handler):
     assert 'ChemIDplus' in matches
     assert 'RxNorm' in matches
     assert 'HemOnc' in matches
-    resp = query_handler.normalize('cisplatin', keyed=True,
-                                   incl='wIkIdAtA,cHeMbL')
+    resp = query_handler.search_sources('cisplatin', keyed=True,
+                                        incl='wIkIdAtA,cHeMbL')
     matches = resp['source_matches']
     assert 'Wikidata' in matches
     assert 'ChEMBL' in matches
@@ -480,12 +484,13 @@ def test_query_specify_sources(query_handler):
 
     # test error on invalid source names
     with pytest.raises(InvalidParameterException):
-        resp = query_handler.normalize('cisplatin', keyed=True, incl='chambl')
+        resp = query_handler.search_sources('cisplatin', keyed=True,
+                                            incl='chambl')
 
     # test error for supplying both incl and excl args
     with pytest.raises(InvalidParameterException):
-        resp = query_handler.normalize('cisplatin', keyed=True, incl='chembl',
-                                       excl='wikidata')
+        resp = query_handler.search_sources('cisplatin', keyed=True,
+                                            incl='chembl', excl='wikidata')
 
 
 def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
@@ -628,7 +633,7 @@ def test_service_meta(query_handler, merge_query_handler):
     """Test service meta info in response."""
     query = "pheno"
 
-    response = query_handler.normalize(query)
+    response = query_handler.search_sources(query)
     service_meta = response['service_meta_']
     assert service_meta.name == "thera-py"
     assert service_meta.version >= "0.2.13"
@@ -641,3 +646,16 @@ def test_service_meta(query_handler, merge_query_handler):
     assert service_meta.version >= "0.2.13"
     assert isinstance(service_meta.response_datetime, datetime)
     assert service_meta.url == 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
+
+
+def test_broken_db_handling(merge_query_handler):
+    """Test that query fails gracefully if mission-critical DB references are
+    missing or broken.
+    """
+    # test missing merge ref
+    query = "fake:00000"
+    assert merge_query_handler.search_groups(query)
+
+    # test broken merge ref
+    query = "fake:00001"
+    assert merge_query_handler.search_groups(query)

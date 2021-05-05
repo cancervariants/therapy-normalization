@@ -437,6 +437,19 @@ class QueryHandler:
         response = self._add_merged_meta(response)
         return response
 
+    def _handle_missing_merge_ref(self, record, response, query) -> Dict:
+        """Log + fill out response for a missing merge ref lookup.
+        :param Dict record: record missing a merge_ref attribute
+        :param Dict response: in-progress response object
+        :param str query: original query value
+        :return: response with no match
+        """
+        logger.error(f"Normalization of query {query} failed "
+                     f"-- record {record['concept_id']} is missing "
+                     f"`merge_ref` field.")
+        response['match_type'] = MatchType.NO_MATCH
+        return response
+
     def _handle_failed_merge_ref(self, record, response, query) -> Dict:
         """Log + fill out response for a failed merge reference lookup.
 
@@ -479,7 +492,10 @@ class QueryHandler:
         # check concept ID match
         record = self.db.get_record_by_id(query_str, case_sensitive=False)
         if record and record['src_name'].lower() not in PROHIBITED_SOURCES:
-            merge = self.db.get_record_by_id(record['merge_ref'],
+            merge_ref = record.get('merge_ref')
+            if not merge_ref:
+                return self._handle_missing_merge_ref(record, response, query)
+            merge = self.db.get_record_by_id(merge_ref,
                                              case_sensitive=False,
                                              merge=True)
             if merge is None:
@@ -505,19 +521,17 @@ class QueryHandler:
                 record = self.db.get_record_by_id(match['concept_id'], False)
                 if record:
                     merge_ref = record.get('merge_ref')
-                    if merge_ref:
-                        merge = self.db.get_record_by_id(record['merge_ref'],
-                                                         case_sensitive=False,
-                                                         merge=True)
-                        if merge is None:
-                            self._handle_failed_merge_ref(record, response,
-                                                          query_str)
-                        else:
-                            return self._add_vod(response, merge, query,
-                                                 MatchType[match_type.upper()])
+                    if not merge_ref:
+                        self._handle_missing_merge_ref(record, response, query)
+                    merge = self.db.get_record_by_id(record['merge_ref'],
+                                                     case_sensitive=False,
+                                                     merge=True)
+                    if merge is None:
+                        return self._handle_failed_merge_ref(record, response,
+                                                             query_str)
                     else:
-                        logger.error(f'Record {record["label_and_type"]} has'
-                                     f' no merge_ref attribute.')
+                        return self._add_vod(response, merge, query,
+                                             MatchType[match_type.upper()])
 
         if not matching_records:
             response['match_type'] = MatchType.NO_MATCH
