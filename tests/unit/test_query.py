@@ -633,7 +633,7 @@ def test_service_meta(query_handler, merge_query_handler):
     """Test service meta info in response."""
     query = "pheno"
 
-    response = query_handler.normalize(query)
+    response = query_handler.search_sources(query)
     service_meta = response['service_meta_']
     assert service_meta.name == "thera-py"
     assert service_meta.version >= "0.2.13"
