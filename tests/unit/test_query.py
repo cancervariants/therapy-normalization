@@ -323,7 +323,7 @@ def compare_vod(actual, fixture):
         assert set(actual['xrefs']) == set(fixture['xrefs'])
 
     assert ('alternate_labels' in actual.keys()) == ('alternate_labels' in
-                                                     fixture.keys())  # noqa: E501
+                                                     fixture.keys())
     if 'alternate_labels' in actual:
         assert set(actual['alternate_labels']) == \
             set(fixture['alternate_labels'])
