@@ -370,7 +370,7 @@ def compare_vod(actual, fixture):
 
 def test_query(query_handler):
     """Test that query returns properly-structured response."""
-    resp = query_handler.search_groups('cisplatin', keyed=False)
+    resp = query_handler.search_sources('cisplatin', keyed=False)
     assert resp['query'] == 'cisplatin'
     matches = resp['source_matches']
     assert isinstance(matches, list)
@@ -384,7 +384,7 @@ def test_query(query_handler):
 
 def test_query_keyed(query_handler):
     """Test that query structures matches as dict when requested."""
-    resp = query_handler.search_groups('penicillin v', keyed=True)
+    resp = query_handler.search_sources('penicillin v', keyed=True)
     matches = resp['source_matches']
     assert isinstance(matches, dict)
     chemidplus = matches['ChemIDplus']
@@ -395,7 +395,7 @@ def test_query_keyed(query_handler):
 def test_query_specify_sources(query_handler):
     """Test inclusion and exclusion of sources in query."""
     # test blank params
-    resp = query_handler.search_groups('cisplatin', keyed=True)
+    resp = query_handler.search_sources('cisplatin', keyed=True)
     matches = resp['source_matches']
     assert len(matches) == 7
     assert 'Wikidata' in matches
@@ -407,8 +407,8 @@ def test_query_specify_sources(query_handler):
     assert 'HemOnc' in matches
 
     # test partial inclusion
-    resp = query_handler.search_groups('cisplatin', keyed=True,
-                                       incl='chembl,ncit')
+    resp = query_handler.search_sources('cisplatin', keyed=True,
+                                        incl='chembl,ncit')
     matches = resp['source_matches']
     assert len(matches) == 2
     assert 'Wikidata' not in matches
@@ -421,8 +421,8 @@ def test_query_specify_sources(query_handler):
 
     # test full inclusion
     sources = 'chembl,ncit,drugbank,wikidata,rxnorm,chemidplus,hemonc'
-    resp = query_handler.search_groups('cisplatin', keyed=True,
-                                       incl=sources, excl='')
+    resp = query_handler.search_sources('cisplatin', keyed=True,
+                                        incl=sources, excl='')
     matches = resp['source_matches']
     assert len(matches) == 7
     assert 'Wikidata' in matches
@@ -434,8 +434,8 @@ def test_query_specify_sources(query_handler):
     assert 'HemOnc' in matches
 
     # test partial exclusion
-    resp = query_handler.search_groups('cisplatin', keyed=True,
-                                       excl='chemidplus')
+    resp = query_handler.search_sources('cisplatin', keyed=True,
+                                        excl='chemidplus')
     matches = resp['source_matches']
     assert len(matches) == 6
     assert 'Wikidata' in matches
@@ -447,7 +447,7 @@ def test_query_specify_sources(query_handler):
     assert 'HemOnc' in matches
 
     # test full exclusion
-    resp = query_handler.search_groups(
+    resp = query_handler.search_sources(
         'cisplatin', keyed=True,
         excl='chembl, wikidata, drugbank, ncit, rxnorm, chemidplus, hemonc'
     )
@@ -462,7 +462,7 @@ def test_query_specify_sources(query_handler):
     assert 'HemOnc' not in matches
 
     # test case insensitive
-    resp = query_handler.search_groups('cisplatin', keyed=True, excl='ChEmBl')
+    resp = query_handler.search_sources('cisplatin', keyed=True, excl='ChEmBl')
     matches = resp['source_matches']
     assert 'Wikidata' in matches
     assert 'ChEMBL' not in matches
@@ -471,8 +471,8 @@ def test_query_specify_sources(query_handler):
     assert 'ChemIDplus' in matches
     assert 'RxNorm' in matches
     assert 'HemOnc' in matches
-    resp = query_handler.search_groups('cisplatin', keyed=True,
-                                       incl='wIkIdAtA,cHeMbL')
+    resp = query_handler.search_sources('cisplatin', keyed=True,
+                                        incl='wIkIdAtA,cHeMbL')
     matches = resp['source_matches']
     assert 'Wikidata' in matches
     assert 'ChEMBL' in matches
@@ -484,13 +484,13 @@ def test_query_specify_sources(query_handler):
 
     # test error on invalid source names
     with pytest.raises(InvalidParameterException):
-        resp = query_handler.search_groups('cisplatin', keyed=True,
-                                           incl='chambl')
+        resp = query_handler.search_sources('cisplatin', keyed=True,
+                                            incl='chambl')
 
     # test error for supplying both incl and excl args
     with pytest.raises(InvalidParameterException):
-        resp = query_handler.search_groups('cisplatin', keyed=True,
-                                           incl='chembl', excl='wikidata')
+        resp = query_handler.search_sources('cisplatin', keyed=True,
+                                            incl='chembl', excl='wikidata')
 
 
 def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
