@@ -438,6 +438,12 @@ class QueryHandler:
         return response
 
     def _handle_missing_merge_ref(self, record, response, query) -> Dict:
+        """Log + fill out response for a missing merge ref lookup.
+        :param Dict record: record missing a merge_ref attribute
+        :param Dict response: in-progress response object
+        :param str query: original query value
+        :return: response with no match
+        """
         logger.error(f"Normalization of query {query} failed "
                      f"-- record {record['concept_id']} is missing "
                      f"`merge_ref` field.")
