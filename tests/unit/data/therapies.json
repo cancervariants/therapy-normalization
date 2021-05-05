@@ -1930,5 +1930,20 @@
       "TX",
       "therapeutic intervention"
     ]
+  },
+  {
+    "label_and_type": "fake:00000##identity",
+    "concept_id": "fake:00000",
+    "item_type": "identity",
+    "src_name": "FakeSource",
+    "label": "Fake Item For Testing"
+  },
+  {
+    "label_and_type": "fake:00001##identity",
+    "concept_id": "fake:00001",
+    "item_type": "identity",
+    "src_name": "FakeSource",
+    "label": "Another Fake Item For Testing",
+    "merge_ref": "merge_ref_that_will_fail"
   }
 ]
