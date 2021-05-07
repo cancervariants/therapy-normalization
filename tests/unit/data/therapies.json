@@ -778,8 +778,7 @@
       "atc:C07AA06",
       "atc:S01ED01"
     ],
-    "src_name": "RxNorm",
-    "merge_ref": "rxcui:10600"
+    "src_name": "RxNorm"
   },
   {
     "label_and_type": "timolol##label",
@@ -1575,38 +1574,6 @@
     "xrefs": ["drugbank:DB01143"]
   },
   {
-    "label_and_type": "rxcui:10600##merger",
-    "concept_id": "rxcui:10600",
-    "aliases": [
-      "(S)-1-((1,1-Dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadazol-3-yl)oxy)-2-propanol",
-      "2-Propanol, 1-((1,1-dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadiazol-3-yl)oxy)-, (S)-",
-      "(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol-3-yl)oxy]propan-2-ol"
-    ],
-    "trade_names": [
-      "Timoptol",
-      "Timolide",
-      "Betimol",
-      "Betim",
-      "Timoptic",
-      "Combigan",
-      "Istalol",
-      "Glaucol",
-      "Cosopt",
-      "Blocadren",
-      "Timoptol LA",
-      "Glau-Opt"
-    ],
-    "associated_with": [
-      "atc:C07AA06",
-      "mthspl:817W3C6175",
-      "vandf:4019949",
-      "atc:S01ED01",
-      "mesh:D013999",
-      "mmsl:d00139"
-    ],
-    "label": "timolol"
-  },
-  {
     "concept_id": "rxcui:2555",
     "label_and_type": "rxcui:202856##rx_brand",
     "src_name": "RxNorm"
@@ -1932,11 +1899,10 @@
     ]
   },
   {
-    "label_and_type": "fake:00000##identity",
-    "concept_id": "fake:00000",
-    "item_type": "identity",
-    "src_name": "FakeSource",
-    "label": "Fake Item For Testing"
+    "label_and_type": "any therapy##alias",
+    "concept_id": "ncit:c49236",
+    "src_name": "NCIt",
+    "item_type": "alias"
   },
   {
     "label_and_type": "fake:00001##identity",
