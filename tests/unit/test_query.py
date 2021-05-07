@@ -311,8 +311,20 @@ def timolol():
     }
 
 
-def compare_vod(actual, fixture):
+def compare_vod(response, fixture, query, match_type, response_id,
+                warnings=None):
     """Verify correctness of returned VOD object against test fixture."""
+    assert response['query'] == query
+    if warnings is None:
+        assert response['warnings'] is None
+    else:
+        assert response['warnings'] == warnings
+    assert response['match_type'] == match_type
+
+    fixture = fixture.copy()
+    fixture['id'] = response_id
+    actual = response['value_object_descriptor']
+
     assert actual['id'] == fixture['id']
     assert actual['type'] == fixture['type']
     assert actual['value'] == fixture['value']
@@ -499,95 +511,61 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     # test merged id match
     query = "rxcui:2555"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    cisplatin_copy = cisplatin.copy()
-    cisplatin_copy['id'] = 'normalize.therapy:rxcui%3A2555'
-    compare_vod(response['value_object_descriptor'], cisplatin_copy)
+    compare_vod(response, cisplatin, query, MatchType.CONCEPT_ID,
+                'normalize.therapy:rxcui%3A2555')
 
     # test concept id match
     query = "chemidplus:50-06-6"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    pheno_copy = phenobarbital.copy()
-    pheno_copy['id'] = 'normalize.therapy:chemidplus%3A50-06-6'
-    compare_vod(response['value_object_descriptor'], pheno_copy)
+    compare_vod(response, phenobarbital, query, MatchType.CONCEPT_ID,
+                'normalize.therapy:chemidplus%3A50-06-6')
 
     query = "hemonc:105"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    cisplatin_copy = cisplatin.copy()
-    cisplatin_copy['id'] = 'normalize.therapy:hemonc%3A105'
-    compare_vod(response['value_object_descriptor'], cisplatin_copy)
+    compare_vod(response, cisplatin, query, MatchType.CONCEPT_ID,
+                'normalize.therapy:hemonc%3A105')
 
     # test label match
     query = "Phenobarbital"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.LABEL
-    compare_vod(response['value_object_descriptor'], phenobarbital)
+    compare_vod(response, phenobarbital, query, MatchType.LABEL,
+                'normalize.therapy:Phenobarbital')
 
     # test trade name match
     query = "Platinol"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.TRADE_NAME
-    cisplatin_copy = cisplatin.copy()
-    cisplatin_copy['id'] = 'normalize.therapy:Platinol'
-    compare_vod(response['value_object_descriptor'], cisplatin_copy)
+    compare_vod(response, cisplatin, query, MatchType.TRADE_NAME,
+                'normalize.therapy:Platinol')
 
     # test alias match
     query = "cis Diamminedichloroplatinum"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.ALIAS
-    cisplatin_copy = cisplatin.copy()
-    cisplatin_copy['id'] = 'normalize.therapy:cis%20Diamminedichloroplatinum'
-    compare_vod(response['value_object_descriptor'], cisplatin_copy)
+    compare_vod(response, cisplatin, query, MatchType.ALIAS,
+                'normalize.therapy:cis%20Diamminedichloroplatinum')
 
     query = "Rovamycine"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.ALIAS
-    spiramycin_copy = spiramycin.copy()
-    spiramycin_copy['id'] = 'normalize.therapy:Rovamycine'
-    compare_vod(response['value_object_descriptor'], spiramycin_copy)
+    compare_vod(response, spiramycin, query, MatchType.ALIAS,
+                'normalize.therapy:Rovamycine')
 
-    # test merge group with single member
+    # test normalized group with single member
     query = "Betimol"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.TRADE_NAME
-    timolol_copy = timolol.copy()
-    timolol_copy['id'] = 'normalize.therapy:Betimol'
-    compare_vod(response['value_object_descriptor'], timolol_copy)
+    compare_vod(response, timolol, 'Betimol', MatchType.TRADE_NAME,
+                'normalize.therapy:Betimol')
 
     # test that term with multiple possible resolutions resolves at highest
     # match
     query = "Cisplatin"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.LABEL
-    compare_vod(response['value_object_descriptor'], cisplatin)
+    compare_vod(response, timolol, 'Betimol', MatchType.TRADE_NAME,
+                'normalize.therapy:Cisplatin')
 
     # test whitespace stripping
     query = "   Cisplatin "
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.LABEL
-    compare_vod(response['value_object_descriptor'], cisplatin)
+    compare_vod(response, timolol, 'Betimol', MatchType.TRADE_NAME,
+                'normalize.therapy:Cisplatin')
 
     # test no match
     query = "zzzz fake therapy zzzz"
@@ -650,12 +628,8 @@ def test_service_meta(query_handler, merge_query_handler):
 
 def test_broken_db_handling(merge_query_handler):
     """Test that query fails gracefully if mission-critical DB references are
-    missing or broken.
+    broken.
     """
-    # test missing merge ref
-    query = "fake:00000"
-    assert merge_query_handler.search_groups(query)
-
     # test broken merge ref
     query = "fake:00001"
     assert merge_query_handler.search_groups(query)
