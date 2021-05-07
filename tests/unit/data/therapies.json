@@ -1899,11 +1899,10 @@
     ]
   },
   {
-    "label_and_type": "fake:00000##identity",
-    "concept_id": "fake:00000",
-    "item_type": "identity",
-    "src_name": "FakeSource",
-    "label": "Fake Item For Testing"
+    "label_and_type": "any therapy##alias",
+    "concept_id": "ncit:c49236",
+    "src_name": "NCIt",
+    "item_type": "alias"
   },
   {
     "label_and_type": "fake:00001##identity",

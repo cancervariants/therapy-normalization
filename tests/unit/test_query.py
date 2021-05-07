@@ -261,53 +261,38 @@ def spiramycin():
 
 
 @pytest.fixture(scope='module')
-def timolol():
-    """Create fixture for timolol."""
+def therapeutic_procedure():
+    """Create a fixture for the Therapeutic Procedure concept. Used to validate
+    single-member concept groups for the normalize endpoint.
+    """
     return {
-        "id": "normalize.therapy:timolol",
-        "type": "TherapyDescriptor",
+        "id": "normalize.therapy:ncit%3AC49236",
         "value": {
             "type": "Therapy",
-            "id": "rxcui:10600"
+            "id": "ncit:C49236"
         },
-        "label": "timolol",
+        "label": "Therapeutic Procedure",
         "alternate_labels": [
-            "(S)-1-((1,1-Dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadazol-3-yl)oxy)-2-propanol",  # noqa: E501
-            "2-Propanol, 1-((1,1-dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadiazol-3-yl)oxy)-, (S)-",  # noqa: E501
-            "(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol-3-yl)oxy]propan-2-ol"  # noqa: E501
+            "any therapy",
+            "any_therapy",
+            "Therapeutic Interventions",
+            "Therapeutic Method",
+            "Therapeutic Technique",
+            "therapy",
+            "Therapy",
+            "TREAT",
+            "Treatment",
+            "TX",
+            "therapeutic intervention"
         ],
         "extensions": [
             {
-                "type": "Extension",
-                "name": "trade_names",
-                "value": [
-                    "Timoptol",
-                    "Timolide",
-                    "Betimol",
-                    "Betim",
-                    "Timoptic",
-                    "Combigan",
-                    "Istalol",
-                    "Glaucol",
-                    "Cosopt",
-                    "Blocadren",
-                    "Timoptol LA",
-                    "Glau-Opt"
-                ]
-            },
-            {
-                "type": "Extension",
                 "name": "associated_with",
-                "value": [
-                    "atc:C07AA06",
-                    "mthspl:817W3C6175",
-                    "vandf:4019949",
-                    "atc:S01ED01",
-                    "mesh:D013999",
-                    "mmsl:d00139"
-                ]
+                "value": ["umls:C0087111"],
+                "type": "Extension"
             }
-        ]
+        ],
+        "type": "TherapyDescriptor"
     }
 
 
@@ -506,7 +491,7 @@ def test_query_specify_sources(query_handler):
 
 
 def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
-                      spiramycin, timolol):
+                      spiramycin, therapeutic_procedure):
     """Test that the merged concept endpoint handles queries correctly."""
     # test merged id match
     query = "rxcui:2555"
@@ -549,22 +534,22 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
                 'normalize.therapy:Rovamycine')
 
     # test normalized group with single member
-    query = "Betimol"
+    query = "any therapy"
     response = merge_query_handler.search_groups(query)
-    compare_vod(response, timolol, 'Betimol', MatchType.TRADE_NAME,
-                'normalize.therapy:Betimol')
+    compare_vod(response, therapeutic_procedure, query, MatchType.ALIAS,
+                'normalize.therapy:any%20therapy')
 
     # test that term with multiple possible resolutions resolves at highest
     # match
     query = "Cisplatin"
     response = merge_query_handler.search_groups(query)
-    compare_vod(response, timolol, 'Betimol', MatchType.TRADE_NAME,
+    compare_vod(response, cisplatin, query, MatchType.TRADE_NAME,
                 'normalize.therapy:Cisplatin')
 
     # test whitespace stripping
     query = "   Cisplatin "
     response = merge_query_handler.search_groups(query)
-    compare_vod(response, timolol, 'Betimol', MatchType.TRADE_NAME,
+    compare_vod(response, cisplatin, query, MatchType.TRADE_NAME,
                 'normalize.therapy:Cisplatin')
 
     # test no match
