@@ -30,6 +30,9 @@ def merge_handler(mock_database):
         def generate_merged_record(self, record_id_set):
             return self.merge._generate_merged_record(record_id_set)
 
+        def get_created_id_groups(self):
+            return self.merge._groups()
+
     return MergeHandler()
 
 
@@ -248,67 +251,10 @@ def spiramycin_merged():
 
 
 @pytest.fixture(scope='module')
-def bendamustine_merged():
-    """Create fixture for bendamustine. Designed to simulate a case of a group
-    with only one element (IRL, this concept belongs to a group with an
-    RxNorm record as well).
-    """
-    return {
-        "label_and_type": "hemonc:65##merger",
-        "concept_id": "hemonc:65",
-        "label": "Bendamustine",
-        "aliases": [
-            "CEP-18083",
-            "cytostasan hydrochloride",
-            "SyB L-0501",
-            "SDX-105",
-            "bendamustine hydrochloride",
-            "bendamustin hydrochloride"
-        ],
-        "trade_names": [
-            "Bendamax",
-            "Bendawel",
-            "Bendeka",
-            "Bendit",
-            "Innomustine",
-            "Leuben",
-            "Levact",
-            "Maxtorin",
-            "MyMust",
-            "Purplz",
-            "Ribomustin",
-            "Treakisym",
-            "Treanda",
-            "Xyotin"
-        ],
-        "approval_status": ApprovalStatus.APPROVED,
-        "approval_year": ["2008", "2015"],
-        "fda_indication": [
-            ["hemonc:581", "Chronic lymphocytic leukemia", "ncit:C3163"],
-            ["hemonc:46094", "Indolent lymphoma", "ncit:C8504"]
-        ]
-    }
-
-
-@pytest.fixture(scope='module')
 def record_id_groups():
     """Create fixture for concept group sets."""
     return {
-        "drugbank:DB01174": {
-            "rxcui:8134",
-            "ncit:C739",
-            "chemidplus:50-06-6",
-            "wikidata:Q407241",
-            "drugbank:DB01174"
-        },
         "rxcui:8134": {
-            "rxcui:8134",
-            "ncit:C739",
-            "chemidplus:50-06-6",
-            "wikidata:Q407241",
-            "drugbank:DB01174"
-        },
-        "chemidplus:50-06-6": {
             "rxcui:8134",
             "ncit:C739",
             "chemidplus:50-06-6",
@@ -322,6 +268,13 @@ def record_id_groups():
             "wikidata:Q407241",
             "drugbank:DB01174"
         },
+        "chemidplus:50-06-6": {
+            "rxcui:8134",
+            "ncit:C739",
+            "chemidplus:50-06-6",
+            "wikidata:Q407241",
+            "drugbank:DB01174"
+        },
         "wikidata:Q407241": {
             "rxcui:8134",
             "ncit:C739",
@@ -329,22 +282,20 @@ def record_id_groups():
             "wikidata:Q407241",
             "drugbank:DB01174"
         },
-        "chemidplus:8025-81-8": {
-            "ncit:C839",
-            "chemidplus:8025-81-8",
+        "drugbank:DB01174": {
+            "rxcui:8134",
+            "ncit:C739",
+            "chemidplus:50-06-6",
+            "wikidata:Q407241",
+            "drugbank:DB01174"
         },
         "ncit:C839": {
             "ncit:C839",
             "chemidplus:8025-81-8",
         },
-        "chemidplus:15663-27-1": {
-            "rxcui:2555",
-            "ncit:C376",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415",
-            "wikidata:Q47522001",
-            "drugbank:DB00515",
-            "hemonc:105"
+        "chemidplus:8025-81-8": {
+            "ncit:C839",
+            "chemidplus:8025-81-8",
         },
         "rxcui:2555": {
             "rxcui:2555",
@@ -356,6 +307,15 @@ def record_id_groups():
             "hemonc:105"
         },
         "ncit:C376": {
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415",
+            "wikidata:Q47522001",
+            "drugbank:DB00515",
+            "hemonc:105"
+        },
+        "chemidplus:15663-27-1": {
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
@@ -415,8 +375,8 @@ def record_id_groups():
             "wikidata:Q47521576",
             "drugbank:DB01143"
         },
-        "hemonc:65": {
-            "hemonc:65",
+        "ncit:C49236": {
+            "ncit:C49236"
         }
     }
 
@@ -425,12 +385,14 @@ def test_create_record_id_set(merge_handler, record_id_groups):
     """Test creation of record ID sets. Queries DB and matches against
     record_id_groups fixture.
     """
+    # build groups from keys
     for record_id in record_id_groups.keys():
         new_group = merge_handler.create_record_id_set(record_id)
         for concept_id in new_group:
             merge_handler.merge._groups[concept_id] = new_group
     groups = merge_handler.merge._groups
 
+    # perform checks
     for concept_id in groups.keys():
         assert groups[concept_id] == record_id_groups[concept_id]
     assert len(groups) == len(record_id_groups)  # check if any are missing
@@ -443,7 +405,7 @@ def test_create_record_id_set(merge_handler, record_id_groups):
 
 def test_generate_merged_record(merge_handler, record_id_groups,
                                 phenobarbital_merged, cisplatin_merged,
-                                spiramycin_merged, bendamustine_merged):
+                                spiramycin_merged):
     """Test generation of merged record method."""
     phenobarbital_ids = record_id_groups['rxcui:8134']
     merge_response = merge_handler.generate_merged_record(phenobarbital_ids)
@@ -457,21 +419,17 @@ def test_generate_merged_record(merge_handler, record_id_groups,
     merge_response = merge_handler.generate_merged_record(spiramycin_ids)
     compare_merged_records(merge_response, spiramycin_merged)
 
-    bendamustin_ids = record_id_groups['hemonc:65']
-    merge_response = merge_handler.generate_merged_record(bendamustin_ids)
-    compare_merged_records(merge_response, bendamustine_merged)
-
 
 def test_create_merged_concepts(merge_handler, record_id_groups,
                                 phenobarbital_merged, cisplatin_merged,
-                                spiramycin_merged, bendamustine_merged):
+                                spiramycin_merged):
     """Test end-to-end creation and upload of merged concepts."""
     record_ids = record_id_groups.keys()
     merge_handler.create_merged_concepts(record_ids)
 
     # check merged record generation and storage
     added_records = merge_handler.get_added_records()
-    assert len(added_records) == 5
+    assert len(added_records) == 4
 
     phenobarb_merged_id = phenobarbital_merged['concept_id']
     assert phenobarb_merged_id in added_records.keys()
@@ -487,14 +445,8 @@ def test_create_merged_concepts(merge_handler, record_id_groups,
     compare_merged_records(added_records[spira_merged_id],
                            spiramycin_merged)
 
-    benda_merged_id = bendamustine_merged['concept_id']
-    assert benda_merged_id in added_records.keys()
-    compare_merged_records(added_records[benda_merged_id],
-                           bendamustine_merged)
-
     # check merged record reference updating
     updates = merge_handler.get_updates()
-    assert len(updates) == len(record_id_groups)
     for concept_id in record_id_groups['rxcui:8134']:
         assert updates[concept_id] == {
             'merge_ref': phenobarbital_merged['concept_id'].lower()
@@ -507,7 +459,7 @@ def test_create_merged_concepts(merge_handler, record_id_groups,
         assert updates[concept_id] == {
             'merge_ref': spiramycin_merged['concept_id'].lower()
         }
-    for concept_id in record_id_groups['hemonc:65']:
-        assert updates[concept_id] == {
-            'merge_ref': bendamustine_merged['concept_id'].lower()
-        }
+
+    # no merged record for ncit:C49236 should be generated
+    assert len(updates) == len(record_id_groups) - 1
+    assert 'ncit:C49236' not in updates
