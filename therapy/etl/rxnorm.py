@@ -209,35 +209,25 @@ class RxNorm(Base):
                                               ingredient_brands, sbdfs)
                         self._load_brand_concepts(value, brands, batch)
 
-                        params = Drug(
-                            concept_id=value['concept_id'],
-                            label=value['label'] if 'label' in value else None,
-                            approval_status=value[
-                                'approval_status'] if 'approval_status'
-                                                      in value else None,
-                            aliases=value['aliases'] if 'aliases' in
-                                                        value else [],
-                            xrefs=value['xrefs'] if 'xrefs' in value else [],
-                            associated_with=value[
-                                'associated_with'] if 'associated_with' in
-                                                      value else [],
-                            trade_names=value['trade_names'] if 'trade_names'
-                                                                in value
-                                                                else []
-                        )
+                        params = {
+                            'concept_id': value['concept_id']
+                        }
+
+                        for field in ('label', 'approval_status', 'aliases',
+                                      'xrefs', 'associated_with',
+                                      'trade_names'):
+                            field_value = value.get(field)
+                            if field_value:
+                                params[field] = field_value
                         self._load_therapy(params, batch)
 
     def _load_therapy(self, params, batch):
         """Load therapy record into the database.
 
-        :param Drug params: A Therapy object.
+        :param dict params: params for a Drug object.
         :param BatchWriter batch: Object to write data to DynamoDB.
         """
-        params = dict(params)
-        for label_type in ['label', 'aliases', 'xrefs', 'associated_with',
-                           'trade_names']:
-            if not params[label_type]:
-                del params[label_type]
+        assert Drug(**params)
 
         for attr in ['trade_names', 'aliases']:
             # Remove duplicates
