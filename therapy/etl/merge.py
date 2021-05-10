@@ -40,7 +40,7 @@ class Merge:
         end = timer()
         logger.debug(f'Built record ID sets in {end - start} seconds')
 
-        self._groups = {g for g in self._groups if len(g) > 1}
+        self._groups = {k: v for k, v in self._groups.items() if len(v) > 1}
 
         logger.info('Creating merged records and updating database...')
         uploaded_ids = set()
