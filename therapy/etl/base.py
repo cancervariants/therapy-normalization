@@ -66,6 +66,7 @@ class Base(ABC):
         assert Drug(**therapy)
         concept_id = therapy['concept_id']
 
+        # handle lists of refs
         field_pairs = (('aliases', 'alias'), ('xrefs', 'xref'),
                        ('associated_with', 'associated_with'),
                        ('trade_names', 'trade_name'))
@@ -85,15 +86,19 @@ class Base(ABC):
                         self.database.add_ref_record(item, concept_id,
                                                      field_name)
 
-        if 'approval_status' in therapy \
-                and therapy['approval_status'] is None:
-            del therapy['approval_status']
+        # handle scalar refs
         if 'label' in therapy:
             label = therapy['label']
             if label:
                 self.database.add_ref_record(label, concept_id, 'label')
             else:
                 del therapy['label']
+
+        # handle detail fields
+        approval_attrs = ('approval_status', 'approval_year', 'fda_indication')
+        for field in approval_attrs:
+            if approval_attrs in therapy and therapy[approval_attrs] is None:
+                del therapy[approval_attrs]
 
         self.database.add_record(therapy)
         if self._in_normalize:
