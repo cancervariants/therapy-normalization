@@ -437,19 +437,6 @@ class QueryHandler:
         response = self._add_merged_meta(response)
         return response
 
-    def _handle_missing_merge_ref(self, record, response, query) -> Dict:
-        """Log + fill out response for a missing merge ref lookup.
-        :param Dict record: record missing a merge_ref attribute
-        :param Dict response: in-progress response object
-        :param str query: original query value
-        :return: response with no match
-        """
-        logger.error(f"Normalization of query {query} failed "
-                     f"-- record {record['concept_id']} is missing "
-                     f"`merge_ref` field.")
-        response['match_type'] = MatchType.NO_MATCH
-        return response
-
     def _handle_failed_merge_ref(self, record, response, query) -> Dict:
         """Log + fill out response for a failed merge reference lookup.
 
@@ -494,7 +481,8 @@ class QueryHandler:
         if record and record['src_name'].lower() not in PROHIBITED_SOURCES:
             merge_ref = record.get('merge_ref')
             if not merge_ref:
-                return self._handle_missing_merge_ref(record, response, query)
+                return self._add_vod(response, record, query,
+                                     MatchType.CONCEPT_ID)
             merge = self.db.get_record_by_id(merge_ref,
                                              case_sensitive=False,
                                              merge=True)
@@ -522,7 +510,8 @@ class QueryHandler:
                 if record:
                     merge_ref = record.get('merge_ref')
                     if not merge_ref:
-                        self._handle_missing_merge_ref(record, response, query)
+                        return self._add_vod(response, record, query,
+                                             MatchType[match_type.upper()])
                     merge = self.db.get_record_by_id(record['merge_ref'],
                                                      case_sensitive=False,
                                                      merge=True)

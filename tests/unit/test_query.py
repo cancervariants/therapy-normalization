@@ -261,58 +261,55 @@ def spiramycin():
 
 
 @pytest.fixture(scope='module')
-def timolol():
-    """Create fixture for timolol."""
+def therapeutic_procedure():
+    """Create a fixture for the Therapeutic Procedure concept. Used to validate
+    single-member concept groups for the normalize endpoint.
+    """
     return {
-        "id": "normalize.therapy:timolol",
-        "type": "TherapyDescriptor",
+        "id": "normalize.therapy:ncit%3AC49236",
         "value": {
             "type": "Therapy",
-            "id": "rxcui:10600"
+            "id": "ncit:C49236"
         },
-        "label": "timolol",
+        "label": "Therapeutic Procedure",
         "alternate_labels": [
-            "(S)-1-((1,1-Dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadazol-3-yl)oxy)-2-propanol",  # noqa: E501
-            "2-Propanol, 1-((1,1-dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadiazol-3-yl)oxy)-, (S)-",  # noqa: E501
-            "(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol-3-yl)oxy]propan-2-ol"  # noqa: E501
+            "any therapy",
+            "any_therapy",
+            "Therapeutic Interventions",
+            "Therapeutic Method",
+            "Therapeutic Technique",
+            "therapy",
+            "Therapy",
+            "TREAT",
+            "Treatment",
+            "TX",
+            "therapeutic intervention"
         ],
         "extensions": [
             {
-                "type": "Extension",
-                "name": "trade_names",
-                "value": [
-                    "Timoptol",
-                    "Timolide",
-                    "Betimol",
-                    "Betim",
-                    "Timoptic",
-                    "Combigan",
-                    "Istalol",
-                    "Glaucol",
-                    "Cosopt",
-                    "Blocadren",
-                    "Timoptol LA",
-                    "Glau-Opt"
-                ]
-            },
-            {
-                "type": "Extension",
                 "name": "associated_with",
-                "value": [
-                    "atc:C07AA06",
-                    "mthspl:817W3C6175",
-                    "vandf:4019949",
-                    "atc:S01ED01",
-                    "mesh:D013999",
-                    "mmsl:d00139"
-                ]
+                "value": ["umls:C0087111"],
+                "type": "Extension"
             }
-        ]
+        ],
+        "type": "TherapyDescriptor"
     }
 
 
-def compare_vod(actual, fixture):
+def compare_vod(response, fixture, query, match_type, response_id,
+                warnings=None):
     """Verify correctness of returned VOD object against test fixture."""
+    assert response['query'] == query
+    if warnings is None:
+        assert response['warnings'] is None
+    else:
+        assert response['warnings'] == warnings
+    assert response['match_type'] == match_type
+
+    fixture = fixture.copy()
+    fixture['id'] = response_id
+    actual = response['value_object_descriptor']
+
     assert actual['id'] == fixture['id']
     assert actual['type'] == fixture['type']
     assert actual['value'] == fixture['value']
@@ -494,100 +491,66 @@ def test_query_specify_sources(query_handler):
 
 
 def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
-                      spiramycin, timolol):
+                      spiramycin, therapeutic_procedure):
     """Test that the merged concept endpoint handles queries correctly."""
     # test merged id match
     query = "rxcui:2555"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    cisplatin_copy = cisplatin.copy()
-    cisplatin_copy['id'] = 'normalize.therapy:rxcui%3A2555'
-    compare_vod(response['value_object_descriptor'], cisplatin_copy)
+    compare_vod(response, cisplatin, query, MatchType.CONCEPT_ID,
+                'normalize.therapy:rxcui%3A2555')
 
     # test concept id match
     query = "chemidplus:50-06-6"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    pheno_copy = phenobarbital.copy()
-    pheno_copy['id'] = 'normalize.therapy:chemidplus%3A50-06-6'
-    compare_vod(response['value_object_descriptor'], pheno_copy)
+    compare_vod(response, phenobarbital, query, MatchType.CONCEPT_ID,
+                'normalize.therapy:chemidplus%3A50-06-6')
 
     query = "hemonc:105"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.CONCEPT_ID
-    cisplatin_copy = cisplatin.copy()
-    cisplatin_copy['id'] = 'normalize.therapy:hemonc%3A105'
-    compare_vod(response['value_object_descriptor'], cisplatin_copy)
+    compare_vod(response, cisplatin, query, MatchType.CONCEPT_ID,
+                'normalize.therapy:hemonc%3A105')
 
     # test label match
     query = "Phenobarbital"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.LABEL
-    compare_vod(response['value_object_descriptor'], phenobarbital)
+    compare_vod(response, phenobarbital, query, MatchType.LABEL,
+                'normalize.therapy:Phenobarbital')
 
     # test trade name match
     query = "Platinol"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.TRADE_NAME
-    cisplatin_copy = cisplatin.copy()
-    cisplatin_copy['id'] = 'normalize.therapy:Platinol'
-    compare_vod(response['value_object_descriptor'], cisplatin_copy)
+    compare_vod(response, cisplatin, query, MatchType.TRADE_NAME,
+                'normalize.therapy:Platinol')
 
     # test alias match
     query = "cis Diamminedichloroplatinum"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.ALIAS
-    cisplatin_copy = cisplatin.copy()
-    cisplatin_copy['id'] = 'normalize.therapy:cis%20Diamminedichloroplatinum'
-    compare_vod(response['value_object_descriptor'], cisplatin_copy)
+    compare_vod(response, cisplatin, query, MatchType.ALIAS,
+                'normalize.therapy:cis%20Diamminedichloroplatinum')
 
     query = "Rovamycine"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.ALIAS
-    spiramycin_copy = spiramycin.copy()
-    spiramycin_copy['id'] = 'normalize.therapy:Rovamycine'
-    compare_vod(response['value_object_descriptor'], spiramycin_copy)
+    compare_vod(response, spiramycin, query, MatchType.ALIAS,
+                'normalize.therapy:Rovamycine')
 
-    # test merge group with single member
-    query = "Betimol"
+    # test normalized group with single member
+    query = "any therapy"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.TRADE_NAME
-    timolol_copy = timolol.copy()
-    timolol_copy['id'] = 'normalize.therapy:Betimol'
-    compare_vod(response['value_object_descriptor'], timolol_copy)
+    compare_vod(response, therapeutic_procedure, query, MatchType.ALIAS,
+                'normalize.therapy:any%20therapy')
 
     # test that term with multiple possible resolutions resolves at highest
     # match
     query = "Cisplatin"
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.LABEL
-    compare_vod(response['value_object_descriptor'], cisplatin)
+    compare_vod(response, cisplatin, query, MatchType.TRADE_NAME,
+                'normalize.therapy:Cisplatin')
 
     # test whitespace stripping
     query = "   Cisplatin "
     response = merge_query_handler.search_groups(query)
-    assert response['query'] == query
-    assert response['warnings'] is None
-    assert response['match_type'] == MatchType.LABEL
-    compare_vod(response['value_object_descriptor'], cisplatin)
+    compare_vod(response, cisplatin, query, MatchType.TRADE_NAME,
+                'normalize.therapy:Cisplatin')
 
     # test no match
     query = "zzzz fake therapy zzzz"
@@ -650,12 +613,8 @@ def test_service_meta(query_handler, merge_query_handler):
 
 def test_broken_db_handling(merge_query_handler):
     """Test that query fails gracefully if mission-critical DB references are
-    missing or broken.
+    broken.
     """
-    # test missing merge ref
-    query = "fake:00000"
-    assert merge_query_handler.search_groups(query)
-
     # test broken merge ref
     query = "fake:00001"
     assert merge_query_handler.search_groups(query)
