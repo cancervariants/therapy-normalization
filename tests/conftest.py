@@ -24,7 +24,7 @@ def mock_database():
             `self.added_records` stores add record requests, with the
             concept_id as the key and the complete record as the value.
             `self.updates` stores update requests, with the concept_id as the
-            key and the updated attribute and new value as the value.
+            key, and a dict of {new_attribute: new_value} as the value.
             """
             infile = TEST_ROOT / 'tests' / 'unit' / 'data' / 'therapies.json'
             self.records = {}
