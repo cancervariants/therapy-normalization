@@ -1911,5 +1911,15 @@
     "src_name": "FakeSource",
     "label": "Another Fake Item For Testing",
     "merge_ref": "merge_ref_that_will_fail"
+  },
+  {
+    "label_and_type": "wikidata:q27287118##identity",
+    "src_name": "Wikidata",
+    "item_type": "identity",
+    "concept_id": "wikidata:Q27287118",
+    "aliases": ["RO 5045337", "RG7112"],
+    "associated_with": ["pubchem.compound:57406853"],
+    "xrefs": ["chemidplus:939981-39-2", "chembl:CHEMBL2386346"],
+    "label": "ro-5045337"
   }
 ]
