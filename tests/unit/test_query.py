@@ -296,6 +296,31 @@ def therapeutic_procedure():
     }
 
 
+@pytest.fixture(scope='module')
+def ro_5045337():
+    """Create fixture for ro-5045337. Tests whether query correctly
+    builds VOD on the fly from non-merged record with xref to ChEMBL.
+    """
+    return {
+        "id": "normalize.therapy:wikidata#3AQ27287118",
+        "value": {
+            "type": "Therapy",
+            "id": "wikidata:Q27287118"
+        },
+        "label": "ro-5045337",
+        "xrefs": ["chemidplus:939981-39-2"],
+        "alternate_labels": ["RO 5045337", "RG7112"],
+        "extensions": [
+            {
+                "name": "associated_with",
+                "value": ["chembl:CHEMBL2386346", "pubchem.compound:57406853"],
+                "type": "Extension"
+            }
+        ],
+        "type": "TherapyDescriptor"
+    }
+
+
 def compare_vod(response, fixture, query, match_type, response_id,
                 warnings=None):
     """Verify correctness of returned VOD object against test fixture."""
@@ -491,7 +516,7 @@ def test_query_specify_sources(query_handler):
 
 
 def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
-                      spiramycin, therapeutic_procedure):
+                      spiramycin, therapeutic_procedure, ro_5045337):
     """Test that the merged concept endpoint handles queries correctly."""
     # test merged id match
     query = "rxcui:2555"
@@ -551,6 +576,12 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     response = merge_query_handler.search_groups(query)
     compare_vod(response, cisplatin, query, MatchType.TRADE_NAME,
                 'normalize.therapy:Cisplatin')
+
+    # test normalizing single-member group with chembl reference
+    query = "wikidata:Q27287118"
+    response = merge_query_handler.search_groups(query)
+    compare_vod(response, ro_5045337, query, MatchType.CONCEPT_ID,
+                'normalize.therapy:wikidata%3AQ27287118')
 
     # test no match
     query = "zzzz fake therapy zzzz"
