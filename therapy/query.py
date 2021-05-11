@@ -384,7 +384,12 @@ class QueryHandler:
             'extensions': [],
         }
         if 'xrefs' in record:
-            vod['xrefs'] = record['xrefs']
+            xrefs = record['xrefs']
+            chembl_refs = [ref for ref in xrefs if ref.startswith('chembl')]
+            vod['xrefs'] = [ref for ref in xrefs
+                            if not ref.startswith('chembl')]
+        else:
+            chembl_refs = None
         if 'aliases' in record:
             vod['alternate_labels'] = record['aliases']
 
@@ -422,7 +427,10 @@ class QueryHandler:
         for field, name in (('trade_names', 'trade_names'),
                             ('associated_with', 'associated_with')):
             values = record.get(field)
+
             if values:
+                if (field == 'associated_with') and chembl_refs:
+                    values += chembl_refs
                 vod['extensions'].append({
                     'type': 'Extension',
                     'name': name,
