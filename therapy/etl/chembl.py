@@ -4,7 +4,6 @@ from therapy import PROJECT_ROOT
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, \
     SourceMeta
 from typing import List
-from ftplib import FTP
 import logging
 import tarfile
 import sqlite3
@@ -48,21 +47,24 @@ class ChEMBL(Base):
         if 'data_path' in kwargs:
             chembl_db = kwargs['data_path']
         else:
-            chembl_db = PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27.db'
+            chembl_db = self._src_data_dir / 'chembl_27.db'
         if not chembl_db.exists():
-            chembl_dir = PROJECT_ROOT / 'data' / 'chembl'
-            chembl_archive = PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27_' \
-                                                                'sqlite.tar.gz'
+            chembl_archive = self._src_data_dir / 'chembl_27_sqlite.tar.gz'
             chembl_archive.parent.mkdir(exist_ok=True, parents=True)
-            self._download_chembl_27(chembl_archive)
+            logger.info(
+                'Downloading ChEMBL v27, this will take a few minutes.')
+            self._ftp_download('ftp.ebi.ac.uk',
+                               'pub/databases/chembl/ChEMBLdb/releases/chembl_27',  # noqa: E501
+                               self._src_data_dir,
+                               'chembl_27_sqlite.tar.gz')
             tar = tarfile.open(chembl_archive)
             tar.extractall(path=PROJECT_ROOT / 'data' / 'chembl')
             tar.close()
 
             # Remove unused directories and files
-            chembl_27_dir = chembl_dir / 'chembl_27'
+            chembl_27_dir = self._src_data_dir / 'chembl_27'
             temp_chembl = chembl_27_dir / 'chembl_27_sqlite' / 'chembl_27.db'
-            chembl_db = chembl_dir / 'chembl_27.db'
+            chembl_db = self._src_data_dir / 'chembl_27.db'
             shutil.move(temp_chembl, chembl_db)
             os.remove(chembl_archive)
             shutil.rmtree(chembl_27_dir)
@@ -81,21 +83,6 @@ class ChEMBL(Base):
 
         self._cursor.execute("DROP TABLE DictionarySynonyms;")
         self._cursor.execute("DROP TABLE TradeNames;")
-
-    @staticmethod
-    def _download_chembl_27(filepath):
-        """Download the ChEMBL source."""
-        logger.info('Downloading ChEMBL v27, this will take a few minutes.')
-        try:
-            with FTP('ftp.ebi.ac.uk') as ftp:
-                ftp.login()
-                logger.debug('FTP login completed.')
-                ftp.cwd('pub/databases/chembl/ChEMBLdb/releases/chembl_27')
-                with open(filepath, 'wb') as fp:
-                    ftp.retrbinary('RETR chembl_27_sqlite.tar.gz', fp.write)
-            logger.info('Downloaded ChEMBL tar file.')
-        except TimeoutError:
-            logger.error('Connection to EBI FTP server timed out.')
 
     def _create_dictionary_synonyms_table(self):
         """Create temporary table to store drugs and their synonyms."""

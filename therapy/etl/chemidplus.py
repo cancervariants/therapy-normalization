@@ -8,7 +8,6 @@ from therapy import PROJECT_ROOT
 from therapy.schemas import Drug, NamespacePrefix, SourceMeta, SourceName, \
     DataLicenseAttributes
 from pathlib import Path
-from ftplib import FTP
 import xml.etree.ElementTree as ET
 import logging
 import re
@@ -57,25 +56,20 @@ class ChemIDplus(Base):
         self._transform_data()
         return self._added_ids
 
-    def _download_data(self, data_path: Path):
+    def _download_data(self):
         """Download source data from default location."""
         logger.info('Downloading ChemIDplus data...')
-        outfile_path = data_path / self._src_fname
-        try:
-            with FTP(self._src_server) as ftp:
-                ftp.login()
-                logger.debug('FTP login successful.')
-                ftp.cwd(self._src_dir_path)
-                with open(outfile_path, 'wb') as fp:
-                    ftp.retrbinary(f'RETR {self._src_fname}', fp.write)
-            logger.info('Downloaded ChemIDplus source file.')
-        except TimeoutError:
-            logger.error('Connection to EBI FTP server timed out.')
+        outfile_path = self._src_data_dir / self._src_fname
+
+        self._ftp_download(self._src_server,
+                           self._src_dir_path,
+                           self._src_data_dir,
+                           self._src_fname)
 
         parser = ET.iterparse(outfile_path, ('start', 'end'))
         date = next(parser)[1].attrib['date']
         version = date.replace('-', '')
-        outfile_path.rename(data_path / f'chemidplus_{version}.xml')
+        outfile_path.rename(self._src_data_dir / f'chemidplus_{version}.xml')
         logger.info('Finished downloading ChemIDplus data')
 
     def _extract_data(self):
@@ -87,19 +81,19 @@ class ChemIDplus(Base):
         dir_files = list(self._src_data_dir.iterdir())
 
         if len(dir_files) == 0:
-            file = self._get_file(self._src_data_dir)
+            file = self._get_file()
         else:
             file = sorted([f for f in dir_files
                            if f.name.startswith('chemidplus')])
             if not file:
-                file = self._get_file(self._src_data_dir)
+                file = self._get_file()
 
         self._data_src = file[-1]
         self._version = self._data_src.stem.split('_')[1]
 
-    def _get_file(self, data_dir):
-        self._download_data(self._src_data_dir)
-        dir_files = list(data_dir.iterdir())
+    def _get_file(self):
+        self._download_data()
+        dir_files = list(self._src_data_dir.iterdir())
         return sorted([f for f in dir_files
                        if f.name.startswith('chemidplus')])
 
