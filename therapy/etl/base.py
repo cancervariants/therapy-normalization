@@ -1,7 +1,7 @@
 """A base class for extraction, transformation, and loading of data."""
 from abc import ABC, abstractmethod
 from typing import List, Dict
-from therapy import ACCEPTED_SOURCES, PROJECT_ROOT
+from therapy import ACCEPTED_SOURCES, PROJECT_ROOT, ITEM_TYPES
 from therapy.schemas import Drug
 import logging
 
@@ -66,39 +66,33 @@ class Base(ABC):
         assert Drug(**therapy)
         concept_id = therapy['concept_id']
 
-        # handle lists of refs
-        field_pairs = (('aliases', 'alias'), ('xrefs', 'xref'),
-                       ('associated_with', 'associated_with'),
-                       ('trade_names', 'trade_name'))
-        for field, field_name in field_pairs:
-            if field in therapy:
-                items = therapy[field]
-                if items == [] or items is None:
-                    del therapy[field]
-                else:
-                    items = {i.casefold() for i in items}
-                    if field in ('aliases', 'trade_names'):
-                        if len(items) > 20:
-                            logger.debug(f"{concept_id} has > 20 {field}.")
-                            del therapy[field]
-                            continue
+        for attr_type, item_type in ITEM_TYPES.items():
+            if attr_type in therapy:
+                value = therapy[attr_type]
+                if value is not None and value != []:
+                    if isinstance(value, str):
+                        items = [value.lower()]
+                    else:
+                        therapy[attr_type] = list(set(value))
+                        items = {item.lower() for item in value}
+                        if attr_type in ['aliases', 'trade_names']:
+                            if len(items) > 20:
+                                logger.debug(f"{concept_id} has > 20"
+                                             f" {attr_type}.")
+                                del therapy[attr_type]
+                                continue
+
                     for item in items:
                         self.database.add_ref_record(item, concept_id,
-                                                     field_name)
-
-        # handle scalar refs
-        if 'label' in therapy:
-            label = therapy['label']
-            if label:
-                self.database.add_ref_record(label, concept_id, 'label')
-            else:
-                del therapy['label']
+                                                     item_type)
+                else:
+                    del therapy[attr_type]
 
         # handle detail fields
         approval_attrs = ('approval_status', 'approval_year', 'fda_indication')
         for field in approval_attrs:
-            if approval_attrs in therapy and therapy[approval_attrs] is None:
-                del therapy[approval_attrs]
+            if approval_attrs in therapy and therapy[field] is None:
+                del therapy[field]
 
         self.database.add_record(therapy)
         if self._in_normalize:

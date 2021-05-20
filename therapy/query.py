@@ -1,10 +1,10 @@
 """This module provides methods for handling queries."""
 import re
 from typing import List, Dict, Set, Optional
+from .version import __version__
 from therapy import SOURCES, NAMESPACE_LOOKUP, PROHIBITED_SOURCES, \
     PREFIX_LOOKUP, ITEM_TYPES
 from uvicorn.config import logger
-from therapy import __version__
 from therapy.database import Database
 from therapy.schemas import Drug, SourceMeta, MatchType, ServiceMeta, \
     HasIndication, SourcePriority
