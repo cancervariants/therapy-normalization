@@ -17,16 +17,6 @@ logger.setLevel(logging.DEBUG)
 class ChEMBL(Base):
     """ETL the ChEMBL source into therapy.db."""
 
-    def __init__(self,
-                 database,
-                 data_path=PROJECT_ROOT / 'data'):
-        """Initialize CHEMBl ETL instance.
-
-        :param Database database: application database object
-        :param Path data_path: path to app data directory
-        """
-        super().__init__(database, data_path)
-
     def perform_etl(self) -> List[str]:
         """Public-facing method to initiate ETL procedures on given data.
 
@@ -51,12 +41,7 @@ class ChEMBL(Base):
         if not chembl_db.exists():
             chembl_archive = self._src_data_dir / 'chembl_27_sqlite.tar.gz'
             chembl_archive.parent.mkdir(exist_ok=True, parents=True)
-            logger.info(
-                'Downloading ChEMBL v27, this will take a few minutes.')
-            self._ftp_download('ftp.ebi.ac.uk',
-                               'pub/databases/chembl/ChEMBLdb/releases/chembl_27',  # noqa: E501
-                               self._src_data_dir,
-                               'chembl_27_sqlite.tar.gz')
+            self._download_data()
             tar = tarfile.open(chembl_archive)
             tar.extractall(path=PROJECT_ROOT / 'data' / 'chembl')
             tar.close()
@@ -74,6 +59,15 @@ class ChEMBL(Base):
         self._cursor = conn.cursor()
         assert chembl_db.exists()
         logger.info('Finished extracting chembl_27.db.')
+
+    def _download_data(self, *args, **kwargs):
+        """Download ChEMBL data from FTP."""
+        logger.info(
+            'Downloading ChEMBL v27, this will take a few minutes.')
+        self._ftp_download('ftp.ebi.ac.uk',
+                           'pub/databases/chembl/ChEMBLdb/releases/chembl_27',
+                           self._src_data_dir,
+                           'chembl_27_sqlite.tar.gz')
 
     def _transform_data(self, *args, **kwargs):
         """Transform SQLite data to JSON."""
