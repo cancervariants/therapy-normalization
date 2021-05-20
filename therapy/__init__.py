@@ -1,4 +1,5 @@
 """The VICC library for normalizing therapies."""
+from .version import __version__  # noqa: F401
 from pathlib import Path
 import logging
 
@@ -8,9 +9,6 @@ logging.basicConfig(
     format='[%(asctime)s] - %(name)s - %(levelname)s : %(message)s')
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
-
-# TODO: Fix so that we don't have to change in setup.cfg
-__version__ = "0.2.20"
 
 
 class DownloadException(Exception):
