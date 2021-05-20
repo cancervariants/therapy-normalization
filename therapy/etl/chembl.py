@@ -23,7 +23,7 @@ class ChEMBL(Base):
         """Initialize CHEMBl ETL instance.
 
         :param Database database: application database object
-        :param Path data_path: path to CHEMBl source SQLite3 database file.
+        :param Path data_path: path to app data directory
         """
         super().__init__(database, data_path)
 
