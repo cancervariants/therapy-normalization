@@ -2,7 +2,7 @@
 import re
 from typing import List, Dict, Set, Optional
 from therapy import SOURCES, NAMESPACE_LOOKUP, PROHIBITED_SOURCES, \
-    PREFIX_LOOKUP
+    PREFIX_LOOKUP, ITEM_TYPES
 from uvicorn.config import logger
 from therapy import __version__
 from therapy.database import Database
@@ -92,14 +92,6 @@ class QueryHandler:
                                                     disease_label=i[1],
                                                     normalized_disease_id=i[2])
                                       for i in inds]
-        set_attrs = ['aliases', 'trade_names', 'xrefs', 'associated_with',
-                     'approval_year', 'has_indication']
-        for attr in set_attrs:
-            if attr not in item.keys():
-                item[attr] = []
-        if 'approval_status' not in item.keys():
-            item['approval_status'] = None
-        item['associated_with'] = item['associated_with']
 
         drug = Drug(**item)
         src_name = item['src_name']
@@ -238,9 +230,7 @@ class QueryHandler:
         if len(sources) == 0:
             return response
 
-        match_types = ['label', 'trade_name', 'alias', 'xref',
-                       'associated_with']
-        for match_type in match_types:
+        for match_type in ITEM_TYPES.values():
             (response, sources) = self._check_match_type(query, response,
                                                          sources, match_type)
             if len(sources) == 0:
@@ -502,8 +492,7 @@ class QueryHandler:
                                      MatchType.CONCEPT_ID)
 
         # check other match types
-        for match_type in ['label', 'trade_name', 'alias', 'xref',
-                           'associated_with']:
+        for match_type in ITEM_TYPES.values():
             # get matches list for match tier
             matching_refs = self.db.get_records_by_type(query_str, match_type)
             matching_records = \

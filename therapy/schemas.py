@@ -12,9 +12,9 @@ class Therapy(BaseModel):
 
     label: str
     concept_id: str
-    aliases: Optional[List[str]]
-    xrefs: Optional[List[str]]
-    associated_with: Optional[List[str]]
+    aliases: Optional[List[str]] = []
+    xrefs: Optional[List[str]] = []
+    associated_with: Optional[List[str]] = []
 
     class Config:
         """Configure model"""
@@ -85,11 +85,11 @@ class HasIndication(BaseModel):
 class Drug(Therapy):
     """A pharmacologic substance used to treat a medical condition."""
 
-    approval_status: Optional[ApprovalStatus]
-    approval_year: Optional[List[int]]
-    has_indication: Optional[List[HasIndication]]
-    trade_names: Optional[List[str]]
-    label: Optional[str]
+    approval_status: Optional[ApprovalStatus] = None
+    approval_year: Optional[List[int]] = []
+    has_indication: Optional[List[HasIndication]] = []
+    trade_names: Optional[List[str]] = []
+    label: Optional[str] = None
 
     class Config:
         """Configure Drug class"""
@@ -238,6 +238,17 @@ class DataLicenseAttributes(BaseModel):
     non_commercial: StrictBool
     share_alike: StrictBool
     attribution: StrictBool
+
+
+class ItemTypes(str, Enum):
+    """Item types used in DynamoDB."""
+
+    # Must be in descending MatchType order.
+    LABEL = 'label'
+    TRADE_NAMES = 'trade_name'
+    ALIASES = 'alias'
+    XREFS = 'xref'
+    ASSOCIATED_WITH = 'associated_with'
 
 
 class SourceMeta(BaseModel):

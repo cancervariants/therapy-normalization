@@ -5,7 +5,7 @@ import logging
 PROJECT_ROOT = Path(__file__).resolve().parents[0]
 logging.basicConfig(
     filename='therapy.log',
-    format='[%(asctime)s] %(levelname)s : %(message)s')
+    format='[%(asctime)s] - %(name)s - %(levelname)s : %(message)s')
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
 
@@ -21,7 +21,9 @@ class DownloadException(Exception):
         super().__init__(*args, **kwargs)
 
 
-from therapy.schemas import SourceName, NamespacePrefix, SourceIDAfterNamespace, ProhibitedSources  # noqa: E402, E501
+from therapy.schemas import SourceName, NamespacePrefix, SourceIDAfterNamespace, ProhibitedSources, ItemTypes  # noqa: E402, E501
+ITEM_TYPES = {k.lower(): v.value for k, v in ItemTypes.__members__.items()}
+
 # Sources we import directly
 SOURCES = {source.value.lower(): source.value
            for source in SourceName.__members__.values()}
