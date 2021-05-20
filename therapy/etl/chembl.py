@@ -20,14 +20,13 @@ class ChEMBL(Base):
 
     def __init__(self,
                  database,
-                 data_path=PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27.db'):
+                 data_path=PROJECT_ROOT / 'data'):
         """Initialize CHEMBl ETL instance.
 
+        :param Database database: application database object
         :param Path data_path: path to CHEMBl source SQLite3 database file.
         """
-        self.database = database
-        self._data_path = data_path
-        self._added_ids = []
+        super().__init__(database, data_path)
 
     def perform_etl(self) -> List[str]:
         """Public-facing method to initiate ETL procedures on given data.
@@ -215,87 +214,11 @@ class ChEMBL(Base):
                   self._cursor.execute(chembl_data).fetchall()]
         self._cursor.execute("DROP TABLE temp;")
 
-        with self.database.therapies.batch_writer() as batch:
-            for record in result:
-                if record['label']:
-                    self._load_label(record, batch)
-                else:
-                    del record['label']
-                if record['aliases']:
-                    self._load_alias(record, batch)
-                else:
-                    del record['aliases']
-                if record['trade_names']:
-                    self._load_trade_name(record, batch)
-                else:
-                    del record['trade_names']
-                if not record['approval_status']:
-                    del record['approval_status']
-                self._load_therapy(record, batch)
-
-    def _load_therapy(self, record, batch):
-        """Load therapy record into DynamoDB."""
-        record['label_and_type'] = \
-            f"{record['concept_id'].lower()}##identity"
-        record['item_type'] = 'identity'
-        batch.put_item(Item=record)
-        self._added_ids.append(record['concept_id'])
-
-    def _load_label(self, record, batch):
-        """Load label record into DynamoDB."""
-        label = {
-            'label_and_type':
-                f"{record['label'].lower()}##label",
-            'concept_id': f"{record['concept_id'].lower()}",
-            'src_name': SourceName.CHEMBL.value,
-            'item_type': 'label',
-        }
-        batch.put_item(Item=label)
-
-    def _load_alias(self, record, batch):
-        """Load alias records into DynamoDB."""
-        record['aliases'] = record['aliases'].split("||")
-
-        # Remove duplicates (case-insensitive)
-        aliases = set({t.casefold(): t for t in record['aliases']})
-
-        if len(aliases) > 20:
-            del record['aliases']
-        else:
-            for alias in aliases:
-                alias = {
-                    'label_and_type': f"{alias}##alias",
-                    'concept_id': f"{record['concept_id'].lower()}",
-                    'src_name': SourceName.CHEMBL.value,
-                    'item_type': 'alias',
-                }
-                batch.put_item(Item=alias)
-
-            record['aliases'] = list(set(record['aliases']))
-
-    def _load_trade_name(self, record, batch):
-        """Load trade name records into DynamoDB."""
-        record['trade_names'] = \
-            record['trade_names'].split("||")
-
-        # Remove duplicates (case-insensitive)
-        trade_names = \
-            set({t.casefold(): t for t in record['trade_names']})
-
-        if len(trade_names) > 20:
-            del record['trade_names']
-        else:
-            for trade_name in trade_names:
-                trade_name = {
-                    'label_and_type':
-                        f"{trade_name}##trade_name",
-                    'concept_id': f"{record['concept_id'].lower()}",
-                    'src_name': SourceName.CHEMBL.value,
-                    'item_type': 'trade_name'
-                }
-                batch.put_item(Item=trade_name)
-
-            record['trade_names'] = list(set(record['trade_names']))
+        for record in result:
+            for attr in ['aliases', 'trade_names']:
+                if attr in record and record[attr]:
+                    record[attr] = record[attr].split('||')
+            self._load_therapy(record)
 
     def _load_meta(self, *args, **kwargs):
         """Add ChEMBL metadata."""

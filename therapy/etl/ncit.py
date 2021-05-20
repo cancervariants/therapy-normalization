@@ -28,7 +28,7 @@ class NCIt(Base):
                  database,
                  src_dir: str = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2020/20.09d_Release/",  # noqa F401
                  src_fname: str = "Thesaurus_20.09d.OWL.zip",
-                 data_path: Path = PROJECT_ROOT / 'data' / 'ncit',
+                 data_path: Path = PROJECT_ROOT / 'data',
                  chemidplus_path: Path = PROJECT_ROOT / 'data' / 'chemidplus'):
         """Override base class init method. Call ETL methods.
 
@@ -37,12 +37,10 @@ class NCIt(Base):
         :param str src_fname: filename for source file within source directory
         :param pathlib.Path data_path: path to local NCIt data directory
         """
-        self.database = database
+        super().__init__(database, data_path)
         self._SRC_DIR = src_dir
         self._SRC_FNAME = src_fname
-        self._data_path = data_path
         self._chemidplus_path = chemidplus_path
-        self._added_ids = []
 
     def perform_etl(self) -> List[str]:
         """Public-facing method to initiate ETL procedures on given data.
@@ -59,7 +57,7 @@ class NCIt(Base):
         """Download NCI thesaurus source file for loading into normalizer."""
         logger.info('Downloading NCI Thesaurus...')
         url = self._SRC_DIR + self._SRC_FNAME
-        zip_path = self._data_path / 'ncit.zip'
+        zip_path = self._src_data_dir / 'ncit.zip'
         response = requests.get(url, stream=True)
         handle = open(zip_path, "wb")
         for chunk in response.iter_content(chunk_size=512):
@@ -67,21 +65,11 @@ class NCIt(Base):
                 handle.write(chunk)
         handle.close()
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-            zip_ref.extractall(self._data_path)
+            zip_ref.extractall(self._src_data_dir)
         remove(zip_path)
         version = self._SRC_DIR.split('/')[-2].split('_')[0]
-        rename(self._data_path / 'Thesaurus.owl', self._data_path / f'ncit_{version}.owl')  # noqa: E501
+        rename(self._src_data_dir / 'Thesaurus.owl', self._src_data_dir / f'ncit_{version}.owl')  # noqa: E501
         logger.info('Finished downloading NCI Thesaurus')
-
-    def _extract_data(self):
-        """Get NCIt source file."""
-        self._data_path.mkdir(exist_ok=True, parents=True)
-        dir_files = list(self._data_path.iterdir())
-        if len(dir_files) == 0:
-            self._download_data()
-            dir_files = list(self._data_path.iterdir())
-        self._data_file = sorted(dir_files)[-1]
-        self._version = self._data_file.stem.split('_')[1]
 
     def _get_desc_nodes(self, node: ThingClass,
                         uq_nodes: Set[ThingClass]) -> Set[ThingClass]:
@@ -142,47 +130,47 @@ class NCIt(Base):
 
     def _transform_data(self):
         """Get data from file and construct objects for loading"""
-        ncit = owl.get_ontology(self._data_file.absolute().as_uri())
+        ncit = owl.get_ontology(self._src_file.absolute().as_uri())
         ncit.load()
         uq_nodes = {ncit.C49236}  # add Therapeutic Procedure
         uq_nodes = self._get_desc_nodes(ncit.C1909, uq_nodes)
         uq_nodes = self._get_typed_nodes(uq_nodes, ncit)
-        with self.database.therapies.batch_writer() as batch:
-            for node in uq_nodes:
-                concept_id = f"{NamespacePrefix.NCIT.value}:{node.name}"
-                if node.P108:
-                    label = node.P108.first()
-                else:
-                    label = None
-                aliases = node.P90
-                if label and aliases and label in aliases:
-                    aliases.remove(label)
+        for node in uq_nodes:
+            concept_id = f"{NamespacePrefix.NCIT.value}:{node.name}"
+            if node.P108:
+                label = node.P108.first()
+            else:
+                label = None
+            aliases = node.P90
+            if label and aliases and label in aliases:
+                aliases.remove(label)
 
-                xrefs = []
-                associated_with = []
-                if node.P207:
-                    associated_with.append(f"{NamespacePrefix.UMLS.value}:"
-                                           f"{node.P207.first()}")
-                if node.P210:
-                    xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:"
-                                 f"{node.P210.first()}")
-                if node.P319:
-                    associated_with.append(f"{NamespacePrefix.FDA.value}:"
-                                           f"{node.P319.first()}")
-                if node.P320:
-                    associated_with.append(f"{NamespacePrefix.ISO.value}:"
-                                           f"{node.P320.first()}")
-                if node.P368:
-                    associated_with.append(f"{NamespacePrefix.CHEBI.value}:"
-                                           f"{node.P368.first()}")
-
-                therapy = Therapy(concept_id=concept_id,
-                                  src_name=SourceName.NCIT.value,
-                                  label=label,
-                                  aliases=aliases,
-                                  xrefs=xrefs,
-                                  associated_with=associated_with)
-                self._load_therapy(therapy, batch)
+            xrefs = []
+            associated_with = []
+            if node.P207:
+                associated_with.append(f"{NamespacePrefix.UMLS.value}:"
+                                       f"{node.P207.first()}")
+            if node.P210:
+                xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:"
+                             f"{node.P210.first()}")
+            if node.P319:
+                associated_with.append(f"{NamespacePrefix.FDA.value}:"
+                                       f"{node.P319.first()}")
+            if node.P320:
+                associated_with.append(f"{NamespacePrefix.ISO.value}:"
+                                       f"{node.P320.first()}")
+            if node.P368:
+                associated_with.append(f"{NamespacePrefix.CHEBI.value}:"
+                                       f"{node.P368.first()}")
+            params = {
+                'concept_id': concept_id,
+                'label': label,
+                'aliases': aliases,
+                'xrefs': xrefs,
+                'associated_with': associated_with
+            }
+            assert Therapy(**params)
+            self._load_therapy(params)
 
     def _load_meta(self):
         """Load metadata"""
@@ -199,49 +187,3 @@ class NCIt(Base):
         params = dict(metadata)
         params['src_name'] = SourceName.NCIT.value
         self.database.metadata.put_item(Item=params)
-
-    def _load_therapy(self, therapy: Therapy, batch):
-        """Load individual therapy into dynamodb table
-
-        :param therapy.schemas.Therapy therapy: complete Therapy instance
-        :param batch: dynamoDB batch_writer context manager object
-        """
-        item = therapy.dict()
-        concept_id_lower = item['concept_id'].lower()
-        item['label_and_type'] = f"{concept_id_lower}##identity"
-        item['src_name'] = SourceName.NCIT.value
-        item['item_type'] = 'identity'
-
-        for field_type, field in (('alias', 'aliases'),
-                                  ('xref', 'xrefs'),
-                                  ('associated_with', 'associated_with')):
-            values = item.get(field)
-            if values:
-                keys = {value.casefold() for value in values}
-                if field == 'aliases' and len(keys) > 20:
-                    del item['aliases']
-                    continue
-                for key in keys:
-                    pk = f"{key}##{field_type}"
-                    batch.put_item(Item={
-                        'label_and_type': pk,
-                        'concept_id': concept_id_lower,
-                        'src_name': SourceName.NCIT.value,
-                        'item_type': field_type
-                    })
-            else:
-                del item[field]
-
-        if item['label']:
-            pk = f"{item['label'].lower()}##label"
-            batch.put_item(Item={
-                'label_and_type': pk,
-                'concept_id': concept_id_lower,
-                'src_name': SourceName.NCIT.value,
-                'item_type': 'label'
-            })
-        else:
-            del therapy.label
-
-        batch.put_item(Item=item)
-        self._added_ids.append(item['concept_id'])

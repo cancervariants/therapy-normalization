@@ -7,7 +7,7 @@ Library of Medicine (NLM), National Institutes of Health, Department of Health
 """
 from .base import Base
 from therapy import PROJECT_ROOT, DownloadException, XREF_SOURCES, \
-    ASSOC_WITH_SOURCES
+    ASSOC_WITH_SOURCES, ITEM_TYPES
 import therapy
 from therapy.database import Database
 from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
@@ -15,7 +15,6 @@ from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
 import csv
 import datetime
 import logging
-import botocore
 from typing import List
 from os import environ, remove
 import subprocess
@@ -49,16 +48,17 @@ class RxNorm(Base):
 
     def __init__(self,
                  database: Database,
+                 data_path=PROJECT_ROOT / 'data',
                  data_url='https://www.nlm.nih.gov/research/umls/'
                           'rxnorm/docs/rxnormfiles.html'):
         """Initialize the RxNorm ETL class.
 
         :param Database database: Access to DynamoDB.
+        :param Path data_path: path to app data directory
         :param str data_url: URL to RxNorm data files.
         """
+        super().__init__(database, data_path)
         self._data_url = data_url
-        self.database = database
-        self._added_ids = []
 
     def perform_etl(self) -> List[str]:
         """Load the RxNorm source into database.
@@ -213,22 +213,20 @@ class RxNorm(Base):
                             'concept_id': value['concept_id']
                         }
 
-                        for field in ('label', 'approval_status', 'aliases',
-                                      'xrefs', 'associated_with',
-                                      'trade_names'):
+                        for field in list(ITEM_TYPES.keys()) + ['approval_status']:  # noqa: E501
                             field_value = value.get(field)
                             if field_value:
                                 params[field] = field_value
-                        self._load_therapy(params, batch)
+                        self._remove_duplicates(params)
+                        assert Drug(**params)
+                        self._load_therapy(params)
 
-    def _load_therapy(self, params, batch):
-        """Load therapy record into the database.
+    @staticmethod
+    def _remove_duplicates(params):
+        """Remove duplicates from therapy object.
 
-        :param dict params: params for a Drug object.
-        :param BatchWriter batch: Object to write data to DynamoDB.
+        :param dict params: params for a Drug object
         """
-        assert Drug(**params)
-
         for attr in ['trade_names', 'aliases']:
             # Remove duplicates
             if attr in params:
@@ -238,79 +236,6 @@ class RxNorm(Base):
                 if attr == 'aliases' and 'trade_names' in params:
                     params[attr] = \
                         list(set(params[attr]) - set(params['trade_names']))
-
-                # 20 cutoff for aliases / trade names
-                if len(params[attr]) > 20:
-                    logger.debug(f"{params['concept_id']} has more than 20"
-                                 f" {attr}.")
-                    del params[attr]
-
-        self._load_label_types(params, batch)
-        params['src_name'] = SourceName.RXNORM.value
-        params['label_and_type'] = f"{params['concept_id'].lower()}##identity"
-        params['item_type'] = 'identity'
-        try:
-            batch.put_item(Item=params)
-            self._added_ids.append(params['concept_id'])
-        except botocore.exceptions.ClientError:
-            if (len((params['label_and_type']).encode('utf-8')) >= 2048) or \
-                    (len((params['concept_id']).encode('utf-8')) >= 1024):
-                logger.info(f"{params['concept_id']}: An error occurred "
-                            "(ValidationException) when calling the "
-                            "BatchWriteItem operation: Hash primary key "
-                            "values must be under 2048 bytes, and range"
-                            " primary key values must be under 1024"
-                            " bytes.")
-
-    def _load_label_types(self, params, batch):
-        """Insert aliases, trade_names, and label data into the database.
-
-        :param dict params: A transformed therapy record.
-        :param BatchWriter batch: Object to write data to DynamoDB
-        """
-        if 'label' in params:
-            self._load_label_type(params, batch, 'label', 'label')
-        if 'trade_names' in params:
-            self._load_label_type(params, batch, 'trade_name', 'trade_names')
-        if 'aliases' in params:
-            self._load_label_type(params, batch, 'alias', 'aliases')
-        if 'xrefs' in params:
-            self._load_label_type(params, batch, 'xref', 'xrefs')
-        if 'associated_with' in params:
-            self._load_label_type(params, batch, 'associated_with',
-                                  'associated_with')
-
-    def _load_label_type(self, params, batch, label_type_sing, label_type_pl):
-        """Insert alias, trade_name, or label data into the database.
-
-        :param dict params: A transformed therapy record.
-        :param BatchWriter batch: Object to write data to DynamoDB
-        :param str label_type_sing: The singular label type
-        :param str label_type_pl: The plural label type
-        """
-        if isinstance(params[label_type_pl], list):
-            terms = {t.casefold(): t for t in params[label_type_pl]}.values()
-        else:
-            terms = [params[label_type_pl]]
-        for t in terms:
-            t = {
-                'label_and_type': f"{t.lower()}##{label_type_sing}",
-                'concept_id': f"{params['concept_id'].lower()}",
-                'src_name': SourceName.RXNORM.value,
-                'item_type': label_type_sing
-            }
-            try:
-                batch.put_item(Item=t)
-            except botocore.exceptions.ClientError:
-                if (len((t['label_and_type']).encode('utf-8')) >= 2048) or \
-                        (len((t['concept_id']).encode('utf-8')) >= 1024):
-                    logger.info(f"{params['concept_id']}: An error occurred "
-                                "(ValidationException) when calling the "
-                                "BatchWriteItem operation: Hash primary key "
-                                "values must be under 2048 bytes, and range"
-                                " primary key values must be under 1024"
-                                " bytes.")
-        return terms
 
     def _get_brands(self, row, ingredient_brands):
         """Add ingredient and brand to ingredient_brands.
@@ -364,7 +289,8 @@ class RxNorm(Base):
             for tn in sbdfs[record_label]:
                 self._add_term(value, tn, 'trade_names')
 
-    def _load_brand_concepts(self, value, brands, batch):
+    @staticmethod
+    def _load_brand_concepts(value, brands, batch):
         """Connect brand names to a concept and load into the database.
 
         :params dict value: A transformed therapy record
@@ -390,7 +316,7 @@ class RxNorm(Base):
         :param list row: A row in the RxNorm data file.
         :param dict precise_ingredient: Precise ingredient information
         :param list drug_forms: RxNorm Drug Form values
-        :param dict precise_ingredient: Brand names for precise ingredient
+        :param dict sbdfs: Brand names for precise ingredient
         """
         term = row[14]
         term_type = row[12]
@@ -423,7 +349,8 @@ class RxNorm(Base):
             elif term_type == 'PEP':
                 self._add_term(precise_ingredient, term, row[13])
 
-    def _add_term(self, params, term, label_type):
+    @staticmethod
+    def _add_term(params, term, label_type):
         """Add a single term to a therapy record in an associated field.
 
         :param dict params: A transformed therapy record.

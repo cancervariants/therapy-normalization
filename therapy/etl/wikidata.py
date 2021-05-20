@@ -5,7 +5,7 @@ from therapy.schemas import SourceName, NamespacePrefix, \
     SourceIDAfterNamespace, SourceMeta
 import json
 import logging
-from typing import Dict, List
+from typing import List
 from pathlib import Path
 from wikibaseintegrator import wbi_core
 import datetime
@@ -65,15 +65,13 @@ class Wikidata(Base):
 
     def __init__(self,
                  database,
-                 data_path: Path = PROJECT_ROOT / 'data' / 'wikidata'):
+                 data_path: Path = PROJECT_ROOT / 'data'):
         """Initialize wikidata ETL class.
 
         :param therapy.database.Database: DB instance to use
-        :param pathlib.Path data_path: path to wikidata data directory
+        :param Path data_path: path to app data directory
         """
-        self.database = database
-        self._data_path = data_path
-        self._added_ids = []
+        super().__init__(database, data_path)
 
     def perform_etl(self) -> List[str]:
         """Public-facing method to initiate ETL procedures on given data.
@@ -88,7 +86,7 @@ class Wikidata(Base):
 
     def _extract_data(self):
         """Extract data from the Wikidata source."""
-        self._data_path.mkdir(exist_ok=True, parents=True)
+        self._src_data_dir.mkdir(exist_ok=True, parents=True)
 
         data = (wbi_core.FunctionsEngine.execute_sparql_query(
             SPARQL_QUERY))['results']['bindings']
@@ -101,10 +99,10 @@ class Wikidata(Base):
             transformed_data.append(params)
 
         self._version = datetime.datetime.today().strftime('%Y%m%d')
-        with open(f"{self._data_path}/wikidata_{self._version}.json",
+        with open(f"{self._src_data_dir}/wikidata_{self._version}.json",
                   'w+') as f:
             json.dump(transformed_data, f)
-        self._data_src = sorted(list(self._data_path.iterdir()))[-1]
+        self._data_src = sorted(list(self._src_data_dir.iterdir()))[-1]
         logger.info('Successfully extracted Wikidata.')
 
     def _load_meta(self):
@@ -174,50 +172,5 @@ class Wikidata(Base):
                     else:
                         items[concept_id]['aliases'] = [record['alias']]
 
-        with self.database.therapies.batch_writer() as batch:
-            for item in items.values():
-                self._load_therapy(item, batch)
-
-    def _load_therapy(self, item: Dict, batch):
-        """Load individual therapy record into database.
-
-        :param Dict item: containing, at minimum, label_and_type and concept_id
-            keys.
-        :param batch: boto3 batch writer
-        """
-        if 'aliases' in item:
-            item['aliases'] = list(set(item['aliases']))
-
-            if len({a.casefold() for a in item['aliases']}) > 20:
-                del item['aliases']
-
-        concept_id_lower = item['concept_id'].lower()
-
-        if 'label' in item.keys():
-            pk = f"{item['label'].lower()}##label"
-            batch.put_item(Item={
-                'label_and_type': pk,
-                'concept_id': concept_id_lower,
-                'src_name': SourceName.WIKIDATA.value,
-                'item_type': 'label'
-            })
-
-        for field_type, field in (('alias', 'aliases'),
-                                  ('xref', 'xrefs'),
-                                  ('associated_with', 'associated_with')):
-            values = item.get(field)
-            if values:
-                keys = {value.casefold() for value in values}
-                for key in keys:
-                    pk = f"{key}##{field_type}"
-                    batch.put_item(Item={
-                        'label_and_type': pk,
-                        'concept_id': concept_id_lower,
-                        'src_name': SourceName.WIKIDATA.value,
-                        'item_type': field_type
-                    })
-            elif field in item:
-                del item[field]
-
-        batch.put_item(Item=item)
-        self._added_ids.append(item['concept_id'])
+        for item in items.values():
+            self._load_therapy(item)

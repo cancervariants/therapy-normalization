@@ -17,7 +17,7 @@ class Base(ABC):
         """Extract from sources.
 
         :param Database database: application database object
-        :param Path data_path: path to normalizer data directory
+        :param Path data_path: path to app data directory
         """
         name = self.__class__.__name__.lower()
         self.database = database
