@@ -5,7 +5,6 @@ from therapy.schemas import SourceName, NamespacePrefix, \
     SourceIDAfterNamespace, SourceMeta
 import json
 import logging
-from typing import List
 from pathlib import Path
 from wikibaseintegrator import wbi_core
 import datetime
@@ -72,17 +71,6 @@ class Wikidata(Base):
         :param Path data_path: path to app data directory
         """
         super().__init__(database, data_path)
-
-    def perform_etl(self) -> List[str]:
-        """Public-facing method to initiate ETL procedures on given data.
-
-        :return: List of concept IDs which were successfully processed and
-            uploaded.
-        """
-        self._extract_data()
-        self._load_meta()
-        self._transform_data()
-        return self._added_ids
 
     def _extract_data(self):
         """Extract data from the Wikidata source."""

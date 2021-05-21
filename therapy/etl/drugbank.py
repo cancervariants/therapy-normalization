@@ -4,7 +4,6 @@ from therapy.schemas import SourceName, SourceMeta, NamespacePrefix
 from therapy.etl.base import Base
 import logging
 import csv
-from typing import List
 import bs4
 import requests
 import re
@@ -18,17 +17,6 @@ logger.setLevel(logging.DEBUG)
 
 class DrugBank(Base):
     """ETL the DrugBank source into therapy.db."""
-
-    def perform_etl(self) -> List[str]:
-        """Public-facing method to initiate ETL procedures on given data.
-
-        :return: List of concept IDs which were successfully processed and
-            uploaded.
-        """
-        self._extract_data()
-        self._load_meta()
-        self._transform_data()
-        return self._added_ids
 
     def _download_data(self):
         """Download DrugBank source data."""

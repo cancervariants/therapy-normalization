@@ -27,7 +27,6 @@ class Base(ABC):
         self.in_normalize = name in ACCEPTED_SOURCES
         self._added_ids = []
 
-    @abstractmethod
     def perform_etl(self) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
 
@@ -37,7 +36,10 @@ class Base(ABC):
         :return: list of concept IDs which were successfully processed and
             uploaded.
         """
-        raise NotImplementedError
+        self._extract_data()
+        self._load_meta()
+        self._transform_data()
+        return self._added_ids
 
     def _download_data(self, *args, **kwargs):
         raise NotImplementedError

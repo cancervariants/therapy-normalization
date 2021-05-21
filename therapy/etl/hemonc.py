@@ -5,7 +5,7 @@ from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, \
     ApprovalStatus
 from disease.query import QueryHandler as DiseaseNormalizer
 from pathlib import Path
-from typing import List, Dict, Tuple
+from typing import Dict, Tuple
 import csv
 import logging
 
@@ -25,20 +25,6 @@ class HemOnc(Base):
         """
         super().__init__(database, data_path)
         self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
-
-    def perform_etl(self) -> List[str]:
-        """Public-facing method to begin ETL procedures on given data.
-
-        Returned concept IDs can be passed to Merge method for computing
-        merged concepts.
-
-        :return: list of concept IDs which were successfully processed and
-            uploaded.
-        """
-        self._extract_data()
-        self._load_meta()
-        self._transform_data()
-        return self._added_ids
 
     def _download_data(self):
         """Download HemOnc.org source data.

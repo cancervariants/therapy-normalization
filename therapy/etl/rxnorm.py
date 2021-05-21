@@ -15,7 +15,6 @@ from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
 import csv
 import datetime
 import logging
-from typing import List
 from os import environ, remove
 import subprocess
 import shutil
@@ -59,17 +58,6 @@ class RxNorm(Base):
         """
         super().__init__(database, data_path)
         self._data_url = data_url
-
-    def perform_etl(self) -> List[str]:
-        """Load the RxNorm source into database.
-
-        :return: List of concept IDs which were successfully processed and
-            uploaded.
-        """
-        self._extract_data()
-        self._load_meta()
-        self._transform_data()
-        return self._added_ids
 
     def _extract_data(self, *args, **kwargs):
         """Extract data from the RxNorm source."""

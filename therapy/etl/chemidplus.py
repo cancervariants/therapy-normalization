@@ -3,7 +3,6 @@
 Courtesy of the U.S. National Library of Medicine.
 """
 from .base import Base
-from typing import List
 from therapy import PROJECT_ROOT
 from therapy.schemas import Drug, NamespacePrefix, SourceMeta, SourceName, \
     DataLicenseAttributes
@@ -44,17 +43,6 @@ class ChemIDplus(Base):
         self._src_server = src_server
         self._src_dir_path = src_dir_path
         self._src_fname = src_fname
-
-    def perform_etl(self) -> List[str]:
-        """Public-facing method to initiate ETL procedures on given data.
-
-        :return: List of concept IDs which were successfully processed and
-            uploaded.
-        """
-        self._extract_data()
-        self._load_meta()
-        self._transform_data()
-        return self._added_ids
 
     def _download_data(self):
         """Download source data from default location."""

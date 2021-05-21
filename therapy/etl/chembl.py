@@ -3,7 +3,6 @@ from .base import Base
 from therapy import PROJECT_ROOT
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, \
     SourceMeta
-from typing import List
 import logging
 import tarfile
 import sqlite3
@@ -16,20 +15,6 @@ logger.setLevel(logging.DEBUG)
 
 class ChEMBL(Base):
     """ETL the ChEMBL source into therapy.db."""
-
-    def perform_etl(self) -> List[str]:
-        """Public-facing method to initiate ETL procedures on given data.
-
-        :return: List of concept IDs which were successfully processed and
-            uploaded.
-        """
-        self._load_meta()
-        self._extract_data()
-        self._transform_data()
-        self._load_json()
-        self._conn.commit()
-        self._conn.close()
-        return self._added_ids
 
     def _extract_data(self, *args, **kwargs):
         """Extract data from the ChEMBL source."""
@@ -77,6 +62,10 @@ class ChEMBL(Base):
 
         self._cursor.execute("DROP TABLE DictionarySynonyms;")
         self._cursor.execute("DROP TABLE TradeNames;")
+
+        self._load_json()
+        self._conn.commit()
+        self._conn.close()
 
     def _create_dictionary_synonyms_table(self):
         """Create temporary table to store drugs and their synonyms."""

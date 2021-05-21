@@ -5,7 +5,7 @@ from therapy.schemas import SourceName, NamespacePrefix, Therapy, SourceMeta
 import logging
 import owlready2 as owl
 from owlready2.entity import ThingClass
-from typing import List, Set
+from typing import Set
 from pathlib import Path
 import requests
 import zipfile
@@ -41,17 +41,6 @@ class NCIt(Base):
         self._SRC_DIR = src_dir
         self._SRC_FNAME = src_fname
         self._chemidplus_path = chemidplus_path
-
-    def perform_etl(self) -> List[str]:
-        """Public-facing method to initiate ETL procedures on given data.
-
-        :return: List of concept IDs which were successfully processed and
-            uploaded.
-        """
-        self._extract_data()
-        self._load_meta()
-        self._transform_data()
-        return self._added_ids
 
     def _download_data(self):
         """Download NCI thesaurus source file for loading into normalizer."""
