@@ -1,7 +1,7 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
 from botocore.exceptions import ClientError
-from therapy import PROHIBITED_SOURCES, ACCEPTED_SOURCES
+from therapy import ACCEPTED_SOURCES
 from therapy.etl.merge import Merge
 from timeit import default_timer as timer
 from boto3.dynamodb.conditions import Key
@@ -106,7 +106,7 @@ class CLI:
             logger.info(msg)
             start_load = timer()
             source = SOURCES_CLASS[n](database=db)
-            if n not in PROHIBITED_SOURCES:
+            if source.in_normalize:
                 processed_ids += source.perform_etl()
             else:
                 source.perform_etl()

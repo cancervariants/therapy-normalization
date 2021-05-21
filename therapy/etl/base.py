@@ -24,9 +24,8 @@ class Base(ABC):
         name = self.__class__.__name__.lower()
         self.database = database
         self._src_data_dir = data_path / name
-        self._in_normalize = name in ACCEPTED_SOURCES
-        if self._in_normalize:
-            self._added_ids = []
+        self.in_normalize = name in ACCEPTED_SOURCES
+        self._added_ids = []
 
     @abstractmethod
     def perform_etl(self) -> List[str]:
@@ -116,7 +115,7 @@ class Base(ABC):
                 del therapy[field]
 
         self.database.add_record(therapy)
-        if self._in_normalize:
+        if self.in_normalize:
             self._added_ids.append(concept_id)
 
     @abstractmethod
