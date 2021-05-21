@@ -8,6 +8,9 @@ from boto3.dynamodb.conditions import Key
 from therapy.schemas import SourceName
 from therapy import SOURCES_CLASS, SOURCES
 from therapy.database import Database
+from disease.database import Database as DiseaseDatabase
+from disease.cli import CLI as DiseaseCLI
+from disease.schemas import SourceName as DiseaseSources
 from os import environ
 import logging
 
@@ -46,8 +49,10 @@ class CLI:
     def update_normalizer_db(normalizer, prod, db_url, update_all,
                              update_merged):
         """Update select normalizer source(s) in the therapy database."""
+        endpoint_url = None
         if prod:
             environ['THERAPY_NORM_PROD'] = "TRUE"
+            environ['DISEASE_NORM_PROD'] = "TRUE"
             db: Database = Database()
         else:
             if db_url:
@@ -60,6 +65,7 @@ class CLI:
 
         if update_all:
             normalizers = list(src for src in SOURCES)
+            CLI()._check_disease_normalizer(normalizers, endpoint_url)
             CLI()._update_normalizers(normalizers, db, update_merged)
         elif not normalizer:
             CLI()._help_msg()
@@ -74,7 +80,27 @@ class CLI:
             if len(non_sources) != 0:
                 raise Exception(f"Not valid source(s): {non_sources}")
 
+            CLI()._check_disease_normalizer(normalizers, endpoint_url)
             CLI()._update_normalizers(normalizers, db, update_merged)
+
+    def _check_disease_normalizer(self, normalizers, endpoint_url):
+        """Load Disease Normalizer data if Hemonc source included.
+
+        :param list normalizers: List of sources to load
+        :param str endpoint_url: Therapy endpoint URL
+        """
+        if 'hemonc' in normalizers:
+            db = DiseaseDatabase(db_url=endpoint_url)
+            n_sources = len({v.value for v in DiseaseSources})
+            if db.diseases.item_count == 0 or \
+                    db.metadata.item_count != n_sources:
+                msg = "Disease Normalizer not loaded. " \
+                      "Loading Disease Normalizer..."
+                logger.debug(msg)
+                click.echo(msg)
+                DiseaseCLI().update_normalizer_db(['--update_all',
+                                                   '--update_merged',
+                                                   '--db_url', endpoint_url])
 
     @staticmethod
     def _help_msg():

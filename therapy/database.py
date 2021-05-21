@@ -27,7 +27,11 @@ class Database:
                 'region_name': region_name
             }
             self.endpoint_url = ''
-            if 'THERAPY_NORM_EB_PROD' not in environ:
+            if 'THERAPY_NORM_PROD' in environ:
+                environ['DISEASE_NORM_PROD'] = "true"
+            if 'THERAPY_NORM_EB_PROD' in environ:
+                environ['DISEASE_NORM_EB_PROD'] = "true"
+            else:
                 # EB Instance should not have to confirm.
                 # This is used only for using production via CLI
                 if click.confirm("Are you sure you want to use the "
@@ -45,6 +49,7 @@ class Database:
                 self.endpoint_url = 'http://localhost:8000'
             click.echo(f"***Using Therapy Database Endpoint: "
                        f"{self.endpoint_url}***")
+            environ['DISEASE_NORM_DB_URL'] = self.endpoint_url
 
             boto_params = {
                 'region_name': region_name,
