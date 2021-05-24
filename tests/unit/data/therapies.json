@@ -18,7 +18,7 @@
       "Platinol-Aq"
     ],
     "approval_status": "approved",
-    "trade_names": ["PLATINOL", "PLATINOL-AQ", "CISPLATIN"]
+    "trade_names": ["PLATINOL", "PLATINOL-AQ"]
   },
   {
     "label_and_type": "cisplatin##label",
@@ -51,16 +51,10 @@
     "label_and_type": "chembl:chembl267014##identity",
     "label": "L-745870",
     "concept_id": "chembl:CHEMBL267014",
-    "aliases": ["L-745870"],
     "src_name": "ChEMBL"
   },
   {
     "label_and_type": "l-745870##label",
-    "concept_id": "chembl:chembl267014",
-    "src_name": "ChEMBL"
-  },
-  {
-    "label_and_type": "l-745870##alias",
     "concept_id": "chembl:chembl267014",
     "src_name": "ChEMBL"
   },
@@ -84,7 +78,6 @@
       "CDDP",
       "Cis-DDP",
       "cis-diamminedichloroplatinum(II)",
-      "Cisplatin",
       "APRD00359",
       "cisplatino"
     ],
@@ -108,17 +101,17 @@
     "src_name": "DrugBank"
   },
   {
-    "label_and_type": "cisplatino##alias",
-    "concept_id": "drugbank:db00515",
-    "src_name": "DrugBank"
-  },
-  {
     "label_and_type": "cddp##alias",
     "concept_id": "drugbank:db00515",
     "src_name": "DrugBank"
   },
   {
     "label_and_type": "cis-ddp##alias",
+    "concept_id": "drugbank:db00515",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "cisplatino##alias",
     "concept_id": "drugbank:db00515",
     "src_name": "DrugBank"
   },
@@ -133,7 +126,6 @@
     "concept_id": "drugbank:DB00522",
     "aliases": [
       "APRD00818",
-      "Bentiromide",
       "Bentiromido",
       "Bentiromidum",
       "BTPABA",

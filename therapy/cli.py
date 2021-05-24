@@ -1,19 +1,27 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
 from botocore.exceptions import ClientError
-from therapy import PROHIBITED_SOURCES, ACCEPTED_SOURCES
+from therapy import ACCEPTED_SOURCES
 from therapy.etl.merge import Merge
 from timeit import default_timer as timer
 from boto3.dynamodb.conditions import Key
 from therapy.schemas import SourceName
 from therapy import SOURCES_CLASS, SOURCES
 from therapy.database import Database
+from disease.database import Database as DiseaseDatabase
+from disease.cli import CLI as DiseaseCLI
+from disease.schemas import SourceName as DiseaseSources
 from os import environ
+import logging
+
+logger = logging.getLogger('therapy')
+logger.setLevel(logging.DEBUG)
 
 
 class CLI:
     """Class for updating the normalizer database via Click"""
 
+    @staticmethod
     @click.command()
     @click.option(
         '--normalizer',
@@ -41,8 +49,10 @@ class CLI:
     def update_normalizer_db(normalizer, prod, db_url, update_all,
                              update_merged):
         """Update select normalizer source(s) in the therapy database."""
+        endpoint_url = None
         if prod:
             environ['THERAPY_NORM_PROD'] = "TRUE"
+            environ['DISEASE_NORM_PROD'] = "TRUE"
             db: Database = Database()
         else:
             if db_url:
@@ -55,6 +65,7 @@ class CLI:
 
         if update_all:
             normalizers = list(src for src in SOURCES)
+            CLI()._check_disease_normalizer(normalizers, endpoint_url)
             CLI()._update_normalizers(normalizers, db, update_merged)
         elif not normalizer:
             CLI()._help_msg()
@@ -69,9 +80,38 @@ class CLI:
             if len(non_sources) != 0:
                 raise Exception(f"Not valid source(s): {non_sources}")
 
+            CLI()._check_disease_normalizer(normalizers, endpoint_url)
             CLI()._update_normalizers(normalizers, db, update_merged)
 
-    def _help_msg(self):
+    def _check_disease_normalizer(self, normalizers, endpoint_url):
+        """Load Disease Normalizer data if Hemonc source included.
+
+        :param list normalizers: List of sources to load
+        :param str endpoint_url: Therapy endpoint URL
+        """
+        if 'hemonc' in normalizers:
+            db = DiseaseDatabase(db_url=endpoint_url)
+            n_sources = len({v.value for v in DiseaseSources})
+            if db.diseases.item_count == 0 or \
+                    db.metadata.item_count != n_sources:
+                msg = "Disease Normalizer not loaded. " \
+                      "Loading Disease Normalizer..."
+                logger.debug(msg)
+                click.echo(msg)
+                # Is there a better way to do this?
+                try:
+                    DiseaseCLI().update_normalizer_db(
+                        ['--update_all', '--update_merged',
+                         '--db_url', endpoint_url]
+                    )
+                except Exception as e:
+                    logger.error(e)
+                    raise Exception(e)
+                except:  # noqa: E722
+                    pass
+
+    @staticmethod
+    def _help_msg():
         """Display help message."""
         ctx = click.get_current_context()
         click.echo(
@@ -79,29 +119,40 @@ class CLI:
         click.echo(ctx.get_help())
         ctx.exit()
 
-    def _update_normalizers(self, normalizers, db, update_merged):
+    @staticmethod
+    def _update_normalizers(normalizers, db, update_merged):
         """Update selected normalizer sources."""
         processed_ids = list()
         for n in normalizers:
-            click.echo(f"\nDeleting {n}...")
+            msg = f"Deleting {n}..."
+            click.echo(f"\n{msg}")
+            logger.info(msg)
             start_delete = timer()
             CLI()._delete_data(n, db)
             end_delete = timer()
             delete_time = end_delete - start_delete
-            click.echo(f"Deleted {n} in "
-                       f"{delete_time:.5f} seconds.\n")
-            click.echo(f"Loading {n}...")
+            msg = f"Deleted {n} in {delete_time:.5f} seconds."
+            click.echo(f"{msg}\n")
+            logger.info(msg)
+
+            msg = f"Loading {n}..."
+            click.echo(msg)
+            logger.info(msg)
             start_load = timer()
             source = SOURCES_CLASS[n](database=db)
-            if n not in PROHIBITED_SOURCES:
+            if source.in_normalize:
                 processed_ids += source.perform_etl()
             else:
                 source.perform_etl()
             end_load = timer()
             load_time = end_load - start_load
-            click.echo(f"Loaded {n} in {load_time:.5f} seconds.")
-            click.echo(f"Total time for {n}: "
-                       f"{(delete_time + load_time):.5f} seconds.")
+            msg = f"Loaded {n} in {load_time:.5f} seconds."
+            click.echo(msg)
+            logger.info(msg)
+            msg = f"Total time for {n}: " \
+                  f"{(delete_time + load_time):.5f} seconds."
+            click.echo(msg)
+            logger.info(msg)
 
         if update_merged:
             start_merge = timer()
@@ -115,7 +166,8 @@ class CLI:
             click.echo(f"Merged concept generation completed in"
                        f" {(end_merge - start_merge):.5f} seconds.")
 
-    def _delete_normalized_data(self, database):
+    @staticmethod
+    def _delete_normalized_data(database):
         click.echo("\nDeleting normalized records...")
         start_delete = timer()
         try:
@@ -141,7 +193,8 @@ class CLI:
         delete_time = end_delete - start_delete
         click.echo(f"Deleted normalized records in {delete_time:.5f} seconds.")
 
-    def _delete_data(self, source, database):
+    @staticmethod
+    def _delete_data(source, database):
         # Delete source's metadata
         try:
             metadata = database.metadata.query(

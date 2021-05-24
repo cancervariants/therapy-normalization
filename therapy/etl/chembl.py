@@ -3,8 +3,6 @@ from .base import Base
 from therapy import PROJECT_ROOT
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, \
     SourceMeta
-from typing import List
-from ftplib import FTP
 import logging
 import tarfile
 import sqlite3
@@ -18,52 +16,25 @@ logger.setLevel(logging.DEBUG)
 class ChEMBL(Base):
     """ETL the ChEMBL source into therapy.db."""
 
-    def __init__(self,
-                 database,
-                 data_path=PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27.db'):
-        """Initialize CHEMBl ETL instance.
-
-        :param Path data_path: path to CHEMBl source SQLite3 database file.
-        """
-        self.database = database
-        self._data_path = data_path
-        self._added_ids = []
-
-    def perform_etl(self) -> List[str]:
-        """Public-facing method to initiate ETL procedures on given data.
-
-        :return: List of concept IDs which were successfully processed and
-            uploaded.
-        """
-        self._load_meta()
-        self._extract_data()
-        self._transform_data()
-        self._load_json()
-        self._conn.commit()
-        self._conn.close()
-        return self._added_ids
-
     def _extract_data(self, *args, **kwargs):
         """Extract data from the ChEMBL source."""
         logger.info('Extracting chembl_27.db...')
         if 'data_path' in kwargs:
             chembl_db = kwargs['data_path']
         else:
-            chembl_db = PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27.db'
+            chembl_db = self._src_data_dir / 'chembl_27.db'
         if not chembl_db.exists():
-            chembl_dir = PROJECT_ROOT / 'data' / 'chembl'
-            chembl_archive = PROJECT_ROOT / 'data' / 'chembl' / 'chembl_27_' \
-                                                                'sqlite.tar.gz'
+            chembl_archive = self._src_data_dir / 'chembl_27_sqlite.tar.gz'
             chembl_archive.parent.mkdir(exist_ok=True, parents=True)
-            self._download_chembl_27(chembl_archive)
+            self._download_data()
             tar = tarfile.open(chembl_archive)
             tar.extractall(path=PROJECT_ROOT / 'data' / 'chembl')
             tar.close()
 
             # Remove unused directories and files
-            chembl_27_dir = chembl_dir / 'chembl_27'
+            chembl_27_dir = self._src_data_dir / 'chembl_27'
             temp_chembl = chembl_27_dir / 'chembl_27_sqlite' / 'chembl_27.db'
-            chembl_db = chembl_dir / 'chembl_27.db'
+            chembl_db = self._src_data_dir / 'chembl_27.db'
             shutil.move(temp_chembl, chembl_db)
             os.remove(chembl_archive)
             shutil.rmtree(chembl_27_dir)
@@ -74,6 +45,15 @@ class ChEMBL(Base):
         assert chembl_db.exists()
         logger.info('Finished extracting chembl_27.db.')
 
+    def _download_data(self, *args, **kwargs):
+        """Download ChEMBL data from FTP."""
+        logger.info(
+            'Downloading ChEMBL v27, this will take a few minutes.')
+        self._ftp_download('ftp.ebi.ac.uk',
+                           'pub/databases/chembl/ChEMBLdb/releases/chembl_27',
+                           self._src_data_dir,
+                           'chembl_27_sqlite.tar.gz')
+
     def _transform_data(self, *args, **kwargs):
         """Transform SQLite data to JSON."""
         self._create_dictionary_synonyms_table()
@@ -83,20 +63,9 @@ class ChEMBL(Base):
         self._cursor.execute("DROP TABLE DictionarySynonyms;")
         self._cursor.execute("DROP TABLE TradeNames;")
 
-    @staticmethod
-    def _download_chembl_27(filepath):
-        """Download the ChEMBL source."""
-        logger.info('Downloading ChEMBL v27, this will take a few minutes.')
-        try:
-            with FTP('ftp.ebi.ac.uk') as ftp:
-                ftp.login()
-                logger.debug('FTP login completed.')
-                ftp.cwd('pub/databases/chembl/ChEMBLdb/releases/chembl_27')
-                with open(filepath, 'wb') as fp:
-                    ftp.retrbinary('RETR chembl_27_sqlite.tar.gz', fp.write)
-            logger.info('Downloaded ChEMBL tar file.')
-        except TimeoutError:
-            logger.error('Connection to EBI FTP server timed out.')
+        self._load_json()
+        self._conn.commit()
+        self._conn.close()
 
     def _create_dictionary_synonyms_table(self):
         """Create temporary table to store drugs and their synonyms."""
@@ -215,87 +184,11 @@ class ChEMBL(Base):
                   self._cursor.execute(chembl_data).fetchall()]
         self._cursor.execute("DROP TABLE temp;")
 
-        with self.database.therapies.batch_writer() as batch:
-            for record in result:
-                if record['label']:
-                    self._load_label(record, batch)
-                else:
-                    del record['label']
-                if record['aliases']:
-                    self._load_alias(record, batch)
-                else:
-                    del record['aliases']
-                if record['trade_names']:
-                    self._load_trade_name(record, batch)
-                else:
-                    del record['trade_names']
-                if not record['approval_status']:
-                    del record['approval_status']
-                self._load_therapy(record, batch)
-
-    def _load_therapy(self, record, batch):
-        """Load therapy record into DynamoDB."""
-        record['label_and_type'] = \
-            f"{record['concept_id'].lower()}##identity"
-        record['item_type'] = 'identity'
-        batch.put_item(Item=record)
-        self._added_ids.append(record['concept_id'])
-
-    def _load_label(self, record, batch):
-        """Load label record into DynamoDB."""
-        label = {
-            'label_and_type':
-                f"{record['label'].lower()}##label",
-            'concept_id': f"{record['concept_id'].lower()}",
-            'src_name': SourceName.CHEMBL.value,
-            'item_type': 'label',
-        }
-        batch.put_item(Item=label)
-
-    def _load_alias(self, record, batch):
-        """Load alias records into DynamoDB."""
-        record['aliases'] = record['aliases'].split("||")
-
-        # Remove duplicates (case-insensitive)
-        aliases = set({t.casefold(): t for t in record['aliases']})
-
-        if len(aliases) > 20:
-            del record['aliases']
-        else:
-            for alias in aliases:
-                alias = {
-                    'label_and_type': f"{alias}##alias",
-                    'concept_id': f"{record['concept_id'].lower()}",
-                    'src_name': SourceName.CHEMBL.value,
-                    'item_type': 'alias',
-                }
-                batch.put_item(Item=alias)
-
-            record['aliases'] = list(set(record['aliases']))
-
-    def _load_trade_name(self, record, batch):
-        """Load trade name records into DynamoDB."""
-        record['trade_names'] = \
-            record['trade_names'].split("||")
-
-        # Remove duplicates (case-insensitive)
-        trade_names = \
-            set({t.casefold(): t for t in record['trade_names']})
-
-        if len(trade_names) > 20:
-            del record['trade_names']
-        else:
-            for trade_name in trade_names:
-                trade_name = {
-                    'label_and_type':
-                        f"{trade_name}##trade_name",
-                    'concept_id': f"{record['concept_id'].lower()}",
-                    'src_name': SourceName.CHEMBL.value,
-                    'item_type': 'trade_name'
-                }
-                batch.put_item(Item=trade_name)
-
-            record['trade_names'] = list(set(record['trade_names']))
+        for record in result:
+            for attr in ['aliases', 'trade_names']:
+                if attr in record and record[attr]:
+                    record[attr] = record[attr].split('||')
+            self._load_therapy(record)
 
     def _load_meta(self, *args, **kwargs):
         """Add ChEMBL metadata."""

@@ -7,3 +7,4 @@ exclude =
   source
   outputs
   docs/*
+  therapy/version.py

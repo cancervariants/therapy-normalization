@@ -170,7 +170,6 @@ def cisplatin_merged():
             'APRD00359',
             'CDDP',
             'CISplatin',
-            'Cisplatin',
             'Cis-DDP',
             'CIS-DDP',
             'DACP',

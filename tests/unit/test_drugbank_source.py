@@ -38,7 +38,6 @@ def cisplatin():
             'CDDP',
             'Cis-DDP',
             'cis-diamminedichloroplatinum(II)',
-            'Cisplatin',
             'APRD00359',
             'cisplatino',
         ],
@@ -62,7 +61,6 @@ def bentiromide():
         'concept_id': 'drugbank:DB00522',
         'aliases': [
             'APRD00818',
-            'Bentiromide',
             'Bentiromido',
             'Bentiromidum',
             'BTPABA',
