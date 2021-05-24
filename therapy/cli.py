@@ -104,6 +104,9 @@ class CLI:
                         ['--update_all', '--update_merged',
                          '--db_url', endpoint_url]
                     )
+                except Exception as e:
+                    logger.error(e)
+                    raise Exception(e)
                 except:  # noqa: E722
                     pass
 
