@@ -182,7 +182,7 @@ def cisplatin_merged():
             'cis-Diaminedichloroplatinum',
             'cis-Diamminedichloroplatinum',
             'cis-diamminedichloroplatinum(II)',
-            'cis-Diamminedichloroqplatinum(II)',
+            'cis-Diamminedichloroplatinum(II)',
             'cis-Dichlorodiammineplatinum(II)',
             'cisplatinum',
             'cis-Platinum',
