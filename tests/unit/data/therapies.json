@@ -111,6 +111,11 @@
     "src_name": "DrugBank"
   },
   {
+    "label_and_type": "cisplatino##alias",
+    "concept_id": "drugbank:db00515",
+    "src_name": "DrugBank"
+  },
+  {
     "label_and_type": "cisplatin##label",
     "concept_id": "drugbank:db00515",
     "src_name": "DrugBank"
