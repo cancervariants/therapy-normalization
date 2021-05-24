@@ -98,9 +98,14 @@ class CLI:
                       "Loading Disease Normalizer..."
                 logger.debug(msg)
                 click.echo(msg)
-                DiseaseCLI().update_normalizer_db(['--update_all',
-                                                   '--update_merged',
-                                                   '--db_url', endpoint_url])
+                # Is there a better way to do this?
+                try:
+                    DiseaseCLI().update_normalizer_db(
+                        ['--update_all', '--update_merged',
+                         '--db_url', endpoint_url]
+                    )
+                except:  # noqa: E722
+                    pass
 
     @staticmethod
     def _help_msg():
