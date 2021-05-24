@@ -43,8 +43,7 @@ def cisplatin():
         'associated_with': [],
         'trade_names': [
             'PLATINOL',
-            'PLATINOL-AQ',
-            'CISPLATIN'
+            'PLATINOL-AQ'
         ]
     }
     return Drug(**params)
@@ -56,7 +55,7 @@ def l745870():
     params = {
         'label': 'L-745870',
         'concept_id': 'chembl:CHEMBL267014',
-        'aliases': ['L-745870'],
+        'aliases': [],
         'approval_status': None,
         'xrefs': [],
         'associated_with': [],

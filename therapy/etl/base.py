@@ -98,6 +98,14 @@ class Base(ABC):
                         therapy[attr_type] = list(set(value))
                         items = {item.lower() for item in value}
                         if attr_type in ['aliases', 'trade_names']:
+                            # remove duplicates
+                            if 'label' in therapy:
+                                therapy[attr_type] = list(set(therapy[attr_type]) - {therapy['label']})  # noqa: E501
+
+                            if attr_type == 'aliases' and \
+                                    'trade_names' in therapy:
+                                therapy[attr_type] = list(set(therapy[attr_type]) - set(therapy['trade_names']))  # noqa: E501
+
                             if len(items) > 20:
                                 logger.debug(f"{concept_id} has > 20"
                                              f" {attr_type}.")

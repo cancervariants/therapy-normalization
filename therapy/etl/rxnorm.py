@@ -205,25 +205,8 @@ class RxNorm(Base):
                             field_value = value.get(field)
                             if field_value:
                                 params[field] = field_value
-                        self._remove_duplicates(params)
                         assert Drug(**params)
                         self._load_therapy(params)
-
-    @staticmethod
-    def _remove_duplicates(params):
-        """Remove duplicates from therapy object.
-
-        :param dict params: params for a Drug object
-        """
-        for attr in ['trade_names', 'aliases']:
-            # Remove duplicates
-            if attr in params:
-                if 'label' in params:
-                    params[attr] = list(set(params[attr]) - {params['label']})
-
-                if attr == 'aliases' and 'trade_names' in params:
-                    params[attr] = \
-                        list(set(params[attr]) - set(params['trade_names']))
 
     def _get_brands(self, row, ingredient_brands):
         """Add ingredient and brand to ingredient_brands.
