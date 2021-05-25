@@ -16,7 +16,7 @@ coveralls = "*"
 civicpy = "*"
 
 [packages]
-pydantic = "*"
+pydantic = ">=1.8.2"
 twine = "*"
 fastapi = "*"
 uvicorn = "*"
