@@ -6,7 +6,7 @@ from therapy.schemas import SourceName, NamespacePrefix, \
 import json
 import logging
 from pathlib import Path
-from wikibaseintegrator import wbi_core
+from wikibaseintegrator.wbi_functions import execute_sparql_query
 import datetime
 
 logger = logging.getLogger('therapy')
@@ -76,8 +76,7 @@ class Wikidata(Base):
         """Extract data from the Wikidata source."""
         self._src_data_dir.mkdir(exist_ok=True, parents=True)
 
-        data = (wbi_core.FunctionsEngine.execute_sparql_query(
-            SPARQL_QUERY))['results']['bindings']
+        data = execute_sparql_query(SPARQL_QUERY)['results']['bindings']
 
         transformed_data = list()
         for item in data:
