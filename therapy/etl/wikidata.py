@@ -76,8 +76,7 @@ class Wikidata(Base):
         """Extract data from the Wikidata source."""
         self._src_data_dir.mkdir(exist_ok=True, parents=True)
 
-        data = (execute_sparql_query(
-            SPARQL_QUERY))['results']['bindings']
+        data = execute_sparql_query(SPARQL_QUERY)['results']['bindings']
 
         transformed_data = list()
         for item in data:
