@@ -84,16 +84,19 @@ class CLI:
             CLI()._update_normalizers(normalizers, db, update_merged)
 
     def _check_disease_normalizer(self, normalizers, endpoint_url):
-        """Load Disease Normalizer data if Hemonc source included.
+        """When loading HemOnc source, perform rudimentary check of Disease
+            Normalizer tables, and reload them if necessary.
 
         :param list normalizers: List of sources to load
         :param str endpoint_url: Therapy endpoint URL
         """
         if 'hemonc' in normalizers:
             db = DiseaseDatabase(db_url=endpoint_url)
-            n_sources = len({v.value for v in DiseaseSources})
-            if db.diseases.item_count == 0 or \
-                    db.metadata.item_count != n_sources:
+            n_sources = len(DiseaseSources)
+            metadata_len = db.metadata.scan()['Count']
+            diseases_len = db.diseases.scan()['Count']
+
+            if diseases_len == 0 or metadata_len < n_sources:
                 msg = "Disease Normalizer not loaded. " \
                       "Loading Disease Normalizer..."
                 logger.debug(msg)
