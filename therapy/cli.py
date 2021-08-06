@@ -95,7 +95,6 @@ class CLI:
                   "Loading Disease Normalizer..."
             logger.debug(msg)
             click.echo(msg)
-            # Is there a better way to do this?
             try:
                 DiseaseCLI().update_normalizer_db(
                     ['--update_all', '--update_merged',
