@@ -64,7 +64,7 @@ export RXNORM_API_KEY={rxnorm_api_key}
 ```
 
 #### Update source(s)
-The Therapy Normalizer currently aggregates therapy data from [ChEMBL](https://www.ebi.ac.uk/chembl/), [NCIt](https://ncithesaurus.nci.nih.gov/ncitbrowser/), [RxNorm](https://www.nlm.nih.gov/research/umls/rxnorm/index.html), [DrugBank](https://go.drugbank.com/), [ChemIDPlus](https://chem.nlm.nih.gov/chemidplus/), [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page), and [HemOnc.org](https://hemonc.org/wiki/Main_Page).
+The Therapy Normalizer currently aggregates therapy data from [ChEMBL](https://www.ebi.ac.uk/chembl/), [NCIt](https://ncithesaurus.nci.nih.gov/ncitbrowser/), [RxNorm](https://www.nlm.nih.gov/research/umls/rxnorm/index.html), [DrugBank](https://go.drugbank.com/) (currently using CC0 data only), [ChemIDPlus](https://chem.nlm.nih.gov/chemidplus/), [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page), and [HemOnc.org](https://hemonc.org/wiki/Main_Page).
 
 To update source(s), simply set `--normalizer` to the source(s) you wish to update separated by spaces. For example, the following command updates ChEMBL and Wikidata:
 
