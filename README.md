@@ -38,7 +38,6 @@ Before first commit run:
 pre-commit install
 ```
 
-
 ### Running unit tests
 
 Running unit tests is as easy as pytest.
@@ -65,7 +64,7 @@ export RXNORM_API_KEY={rxnorm_api_key}
 ```
 
 #### Update source(s)
-The sources we currently use are: ChEMBL, NCIt, DrugBank (CC0 data only), RxNorm, ChemIDplus, Wikidata, and HemOnc.org.
+The Therapy Normalizer currently aggregates therapy data from [ChEMBL](https://www.ebi.ac.uk/chembl/), [NCIt](https://ncithesaurus.nci.nih.gov/ncitbrowser/), [RxNorm](https://www.nlm.nih.gov/research/umls/rxnorm/index.html), [DrugBank](https://go.drugbank.com/) (currently using CC0 data only), [ChemIDPlus](https://chem.nlm.nih.gov/chemidplus/), [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page), and [HemOnc.org](https://hemonc.org/wiki/Main_Page).
 
 To update source(s), simply set `--normalizer` to the source(s) you wish to update separated by spaces. For example, the following command updates ChEMBL and Wikidata:
 
@@ -102,6 +101,9 @@ therapy/data
     └── wikidata_20210425.json
 ```
 
+Updates to the HemOnc source depend on the [Disease Normalizer](https://github.com/cancervariants/disease-normalization) service. If the Disease Normalizer database appears to be empty or incomplete, updates to HemOnc will also trigger a refresh of the Disease Normalizer database. See its README for additional data requirements.
+
+
 ### Create Merged Concept Groups
 The `/normalize` endpoint relies on merged concept groups.  The `--update_merged` flag generates these groups:
 
@@ -119,7 +121,7 @@ The first way is to set the `--db_url` flag to the URL endpoint.
 python3 -m therapy.cli --update_all --db_url="http://localhost:8001"
 ```
 
-The second way is to set the `THERAPY_NORM_DB_URL` to the URL endpoint.
+The second way is to set the environment variable `THERAPY_NORM_DB_URL` to the URL endpoint.
 ```commandline
 export THERAPY_NORM_DB_URL="http://localhost:8001"
 python3 -m therapy.cli --update_all

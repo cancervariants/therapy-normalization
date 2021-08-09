@@ -84,31 +84,37 @@ class CLI:
             CLI()._update_normalizers(normalizers, db, update_merged)
 
     def _check_disease_normalizer(self, normalizers, endpoint_url):
-        """Load Disease Normalizer data if Hemonc source included.
+        """When loading HemOnc source, perform rudimentary check of Disease
+            Normalizer tables, and reload them if necessary.
 
         :param list normalizers: List of sources to load
         :param str endpoint_url: Therapy endpoint URL
         """
+        def _load_diseases():
+            msg = "Disease Normalizer not loaded. " \
+                  "Loading Disease Normalizer..."
+            logger.debug(msg)
+            click.echo(msg)
+            try:
+                DiseaseCLI().update_normalizer_db(
+                    ['--update_all', '--update_merged',
+                     '--db_url', endpoint_url]
+                )
+            except Exception as e:
+                logger.error(e)
+                raise Exception(e)
+            except:  # noqa: E722
+                pass
+
         if 'hemonc' in normalizers:
             db = DiseaseDatabase(db_url=endpoint_url)
-            n_sources = len({v.value for v in DiseaseSources})
-            if db.diseases.item_count == 0 or \
-                    db.metadata.item_count != n_sources:
-                msg = "Disease Normalizer not loaded. " \
-                      "Loading Disease Normalizer..."
-                logger.debug(msg)
-                click.echo(msg)
-                # Is there a better way to do this?
-                try:
-                    DiseaseCLI().update_normalizer_db(
-                        ['--update_all', '--update_merged',
-                         '--db_url', endpoint_url]
-                    )
-                except Exception as e:
-                    logger.error(e)
-                    raise Exception(e)
-                except:  # noqa: E722
-                    pass
+            current_tables = {table.name for table in db.dynamodb.tables.all()}
+            if not all(name in current_tables
+                       for name in ('disease_concepts', 'disease_metadata')):
+                _load_diseases()
+            elif db.diseases.scan()['Count'] == 0 or \
+                    db.metadata.scan()['Count'] < len(DiseaseSources):
+                _load_diseases()
 
     @staticmethod
     def _help_msg():
