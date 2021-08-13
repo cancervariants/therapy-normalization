@@ -47,3 +47,17 @@ class DrugsAtFDA(Base):
         )
         for file in needed_files:
             zip_file.extract(member=file, path=self._src_data_dir)
+
+    def _extract_data(self):
+        """Extract Therapy records from source data."""
+        marketing_status_lookup = {
+            1: 'Prescription',
+            2: 'Over-the-counter',
+            3: 'Discontinued',
+            4: 'None (Tentative Approval)'
+        }
+        return marketing_status_lookup
+
+        # Products.txt == name
+        # Submissions.txt = submission
+        # MarketingStatus.txt == approval status
