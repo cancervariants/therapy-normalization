@@ -1,13 +1,13 @@
 """ETL methods for the Drugs@FDA source."""
 from .base import Base
 from therapy import PROJECT_ROOT
+from therapy.schemas import SourceMeta, SourceName
 import logging
 from pathlib import Path
 import requests
 import zipfile
 from io import BytesIO
-import re
-import shutil
+import json
 
 
 logger = logging.getLogger('therapy')
@@ -20,7 +20,7 @@ class DrugsAtFDA(Base):
     def __init__(self,
                  database,
                  data_path: Path = PROJECT_ROOT / 'data',
-                 src_url: str = 'https://www.fda.gov/media/89850/download'):
+                 src_url: str = 'https://download.open.fda.gov/drug/drugsfda/drug-drugsfda-0001-of-0001.json.zip'):  # noqa: E501
         """Initialize ETL class.
         :param Database database: DB instance to use
         :param Path data_path: path to Drugs@FDA source data folder
@@ -39,23 +39,29 @@ class DrugsAtFDA(Base):
             logger.error(msg)
             raise requests.HTTPError(r.status_code)
 
-        pattern = r'filename=drugsatfda(.+)\.zip'
-        self._version = re.findall(pattern,
-                                   r.headers['content-disposition'])[0]
-        needed_files = (
-            'Products.txt',
-            'MarketingStatus.txt',
-            'Submissions.txt',
-        )
-        for file in needed_files:
-            zip_file.extract(member=file, path=self._src_data_dir)
-            fname_prefix = file.split('.')[0].lower()
-            fname = f'drugsatfda_{fname_prefix}_{self._version}.tsv'
-            shutil.move(self._src_data_dir / file, self._src_data_dir / fname)
+        orig_fname = 'drug-drugsfda-0001-of-0001.json'
+        tmp_file = json.loads(zip_file.read(orig_fname))
+        self._version = tmp_file['meta']['last_updated'].replace('-', '')
+        outfile_path = self._src_data_dir / f'drugsatfda_{self._version}.json'
+        zip_file.extract(member=orig_fname, path=outfile_path)
 
     def _load_meta(self):
         """Add Drugs@FDA metadata."""
-        pass
+        meta = {
+            'data_license': 'CC0',
+            'data_license_url': 'https://creativecommons.org/publicdomain/zero/1.0/legalcode',  # noqa: E501
+            'version': self._version,
+            'data_url': self._src_url,
+            'rdp_url': None,
+            'data_license_attributes': {
+                'non_commercial': False,
+                'share_alike': False,
+                'attribution': False,
+            }
+        }
+        assert SourceMeta(**meta)
+        meta['src_name'] = SourceName.DRUGSATFDA
+        self.database.metadata.put_item(Item=meta)
 
     def _extract_data(self):
         """Extract Therapy records from source data."""
