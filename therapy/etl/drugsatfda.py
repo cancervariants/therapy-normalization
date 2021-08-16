@@ -54,6 +54,7 @@ class DrugsAtFDA(Base):
             shutil.move(self._src_data_dir / file, self._src_data_dir / fname)
 
     def _load_meta(self):
+        """Add Drugs@FDA metadata."""
         pass
 
     def _extract_data(self):
