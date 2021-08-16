@@ -7,6 +7,7 @@ import requests
 import zipfile
 from io import BytesIO
 import re
+import shutil
 
 
 logger = logging.getLogger('therapy')
@@ -44,20 +45,30 @@ class DrugsAtFDA(Base):
         needed_files = (
             'Products.txt',
             'MarketingStatus.txt',
+            'Submissions.txt',
         )
         for file in needed_files:
             zip_file.extract(member=file, path=self._src_data_dir)
+            fname_prefix = file.split('.')[0].lower()
+            fname = f'drugsatfda_{fname_prefix}_{self._version}.tsv'
+            shutil.move(self._src_data_dir / file, self._src_data_dir / fname)
+
+    def _load_meta(self):
+        pass
 
     def _extract_data(self):
         """Extract Therapy records from source data."""
-        marketing_status_lookup = {
-            1: 'Prescription',
-            2: 'Over-the-counter',
-            3: 'Discontinued',
-            4: 'None (Tentative Approval)'
-        }
-        return marketing_status_lookup
+        # marketing_status_lookup = {
+        #     1: 'Prescription',
+        #     2: 'Over-the-counter',
+        #     3: 'Discontinued',
+        #     4: 'None (Tentative Approval)'
+        # }
 
         # Products.txt == name
         # Submissions.txt = submission
         # MarketingStatus.txt == approval status
+        pass
+
+    def _transform_data(self):
+        pass
