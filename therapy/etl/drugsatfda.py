@@ -1,14 +1,14 @@
 """ETL methods for the Drugs@FDA source."""
 from .base import Base
 from therapy import PROJECT_ROOT
-from therapy.schemas import SourceMeta, SourceName
+from therapy.schemas import SourceMeta, SourceName  # , NamespacePrefix
 import logging
 from pathlib import Path
 import requests
 import zipfile
 from io import BytesIO
 import json
-
+import shutil
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -41,9 +41,10 @@ class DrugsAtFDA(Base):
 
         orig_fname = 'drug-drugsfda-0001-of-0001.json'
         tmp_file = json.loads(zip_file.read(orig_fname))
-        self._version = tmp_file['meta']['last_updated'].replace('-', '')
-        outfile_path = self._src_data_dir / f'drugsatfda_{self._version}.json'
-        zip_file.extract(member=orig_fname, path=outfile_path)
+        version = tmp_file['meta']['last_updated'].replace('-', '')
+        zip_file.extract(member=orig_fname, path=self._src_data_dir)
+        outfile_path = self._src_data_dir / f'drugsatfda_{version}.json'
+        shutil.move(self._src_data_dir / orig_fname, outfile_path)
 
     def _load_meta(self):
         """Add Drugs@FDA metadata."""
@@ -63,19 +64,28 @@ class DrugsAtFDA(Base):
         meta['src_name'] = SourceName.DRUGSATFDA
         self.database.metadata.put_item(Item=meta)
 
-    def _extract_data(self):
-        """Extract Therapy records from source data."""
-        # marketing_status_lookup = {
-        #     1: 'Prescription',
-        #     2: 'Over-the-counter',
-        #     3: 'Discontinued',
-        #     4: 'None (Tentative Approval)'
-        # }
-
-        # Products.txt == name
-        # Submissions.txt = submission
-        # MarketingStatus.txt == approval status
-        pass
-
-    def _transform_data(self):
-        pass
+    # def _transform_data(self):
+    #     with open(self._src_file, 'r') as f:
+    #         data = json.load(f)['results']
+    #     for result in data:
+    #         if 'marketing_status' not in result:
+    #             continue
+    #         products = result['products']
+    #         marketing_status = products[0]['marketing_status']
+    #         if not all([products[0]['marketing_status'] != marketing_status
+    #                     for p in products]):
+    #             continue
+    #         concept_id = result['application_number']  # TODO
+    #         openfda = result.get('openfda')
+    #         if openfda:
+    #             label = result['generic_name']
+    #             xrefs = []
+    #             rxcui = result.get('rxcui')
+    #             if rxcui:
+    #                 xrefs += [f'{NamespacePrefix.RXNORM}:{rxid}'
+    #                           for rxid in rxcui]
+    #             other_ids = []
+    #             uniis = result.get('unii')
+    #             if uniis:
+    #                 other_ids += [f'{NamespacePrefix.UNII}:{unii}'
+    #                               for unii in uniis]

@@ -158,6 +158,7 @@ class SourcePriority(IntEnum):
     HEMONC = 3
     DRUGBANK = 4
     CHEMIDPLUS = 5
+    DRUGSATFDA = 6
     WIKIDATA = 10
 
 
@@ -171,6 +172,7 @@ class SourceName(str, Enum):
     CHEMIDPLUS = "ChemIDplus"
     RXNORM = "RxNorm"
     HEMONC = "HemOnc"
+    DRUGSATFDA = "DrugsAtFDA"
 
 
 class SourceIDAfterNamespace(Enum):
@@ -183,6 +185,7 @@ class SourceIDAfterNamespace(Enum):
     CHEMIDPLUS = ""
     RXNORM = ""
     HEMONC = ""
+    DRUGSATFDA = "ANDA"
 
 
 class ProhibitedSources(Enum):
@@ -203,6 +206,7 @@ class NamespacePrefix(Enum):
     CHEMBL = "chembl"
     RXNORM = "rxcui"
     DRUGBANK = "drugbank"
+    DRUGSATFDA = "drugsatfda"  # TODO ????
     WIKIDATA = "wikidata"
     HEMONC = "hemonc"
     NCIT = "ncit"

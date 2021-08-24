@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import List, Dict
 from therapy import ACCEPTED_SOURCES, PROJECT_ROOT, ITEM_TYPES
 from therapy.schemas import Drug
+from therapy.database import Database
 import logging
 
 
@@ -22,10 +23,10 @@ class Base(ABC):
         :param Path data_path: path to app data directory
         """
         name = self.__class__.__name__.lower()
-        self.database = database
-        self._src_data_dir = data_path / name
-        self.in_normalize = name in ACCEPTED_SOURCES
-        self._added_ids = []
+        self.database: Database = database
+        self._src_data_dir: Path = Path(data_path / name)
+        self.in_normalize: bool = name in ACCEPTED_SOURCES
+        self._added_ids: List[str] = []
 
     def perform_etl(self) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
@@ -41,6 +42,7 @@ class Base(ABC):
         self._transform_data()
         return self._added_ids
 
+    @abstractmethod
     def _download_data(self, *args, **kwargs):
         raise NotImplementedError
 
