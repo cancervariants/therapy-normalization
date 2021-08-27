@@ -6,6 +6,7 @@ from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, \
 from disease.query import QueryHandler as DiseaseNormalizer
 from pathlib import Path
 from typing import Dict, Tuple
+import os
 import csv
 import logging
 
@@ -32,8 +33,9 @@ class HemOnc(Base):
         Raises download exception for now -- HTTP authorization may be
         possible?
         """
-        raise DownloadException("No download for HemOnc data available -- "
-                                "must place manually in data/ directory.")
+        if not os.listdir(self._src_data_dir):
+            raise DownloadException("No download for HemOnc data available -- "
+                                "must place manually in data/ directory, as described in README.")
 
     def _extract_data(self):
         """Get source files from data directory."""
