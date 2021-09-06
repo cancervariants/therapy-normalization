@@ -175,6 +175,8 @@ class HemOnc(Base):
                 label = conditions[row[1]]
                 norm_response = self.disease_normalizer.search_groups(label)
                 if norm_response['match_type'] > 0:
+                    # TODO: Change once disease normalizer updated
+                    # ncit_id = norm_response['disease_descriptor']['disease_id']  # noqa: E501
                     ncit_id = norm_response['value_object_descriptor']['value']['id']  # noqa: E501
                 else:
                     ncit_id = ""

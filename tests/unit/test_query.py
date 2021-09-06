@@ -42,10 +42,7 @@ def phenobarbital():
     return {
         "id": "normalize.therapy:Phenobarbital",
         "type": "TherapyDescriptor",
-        "value": {
-            "type": "Therapy",
-            "id": "rxcui:8134"
-        },
+        "therapy_id": "rxcui:8134",
         "label": "phenobarbital",
         "xrefs": [
             "ncit:C739",
@@ -116,10 +113,7 @@ def cisplatin():
     return {
         "id": "normalize.therapy:Cisplatin",
         "type": "TherapyDescriptor",
-        "value": {
-            "type": "Therapy",
-            "id": "rxcui:2555",
-        },
+        "therapy_id": "rxcui:2555",
         "label": "cisplatin",
         "xrefs": [
             "ncit:C376",
@@ -192,33 +186,24 @@ def cisplatin():
                         {
                             "id": "hemonc:671",
                             "type": "DiseaseDescriptor",
-                            "value": {
-                                "type": "Disease",
-                                "id": "ncit:C7251"
-                            },
+                            "disease_id": "ncit:C7251",
                             "label": "Testicular cancer"
                         },
                         {
                             "id": "hemonc:645",
                             "type": "DiseaseDescriptor",
-                            "value": {
-                                "type": "Disease",
-                                "id": "ncit:C7431"
-                            },
+                            "disease_id": "ncit:C7431",
                             "label": "Ovarian cancer"
                         },
                         {
                             "id": "hemonc:569",
                             "type": "DiseaseDescriptor",
-                            "value": {
-                                "type": "Disease",
-                                "id": "ncit:C9334"
-                            },
+                            "disease_id": "ncit:C9334",
                             "label": "Bladder cancer"
                         }
                     ]
                 }
-            },
+            }
         ]
     }
 
@@ -229,10 +214,7 @@ def spiramycin():
     return {
         "id": "normalize.therapy:Spiramycin",
         "type": "TherapyDescriptor",
-        "value": {
-            "type": "Therapy",
-            "id": "ncit:C839"
-        },
+        "therapy_id": "ncit:C839",
         "label": "Spiramycin",
         "xrefs": [
             "chemidplus:8025-81-8"
@@ -254,7 +236,7 @@ def spiramycin():
                     "umls:C0037962",
                     "fda:71ODY0V87H",
                     "chembl:CHEMBL1256397"
-                ],
+                ]
             }
         ]
     }
@@ -267,10 +249,7 @@ def therapeutic_procedure():
     """
     return {
         "id": "normalize.therapy:ncit%3AC49236",
-        "value": {
-            "type": "Therapy",
-            "id": "ncit:C49236"
-        },
+        "therapy_id": "ncit:C49236",
         "label": "Therapeutic Procedure",
         "alternate_labels": [
             "any therapy",
@@ -303,10 +282,7 @@ def ro_5045337():
     """
     return {
         "id": "normalize.therapy:wikidata#3AQ27287118",
-        "value": {
-            "type": "Therapy",
-            "id": "wikidata:Q27287118"
-        },
+        "therapy_id": "wikidata:Q27287118",
         "label": "ro-5045337",
         "xrefs": ["chemidplus:939981-39-2"],
         "alternate_labels": ["RO 5045337", "RG7112"],
@@ -333,11 +309,11 @@ def compare_vod(response, fixture, query, match_type, response_id,
 
     fixture = fixture.copy()
     fixture['id'] = response_id
-    actual = response['value_object_descriptor']
+    actual = response['therapy_descriptor']
 
     assert actual['id'] == fixture['id']
     assert actual['type'] == fixture['type']
-    assert actual['value'] == fixture['value']
+    assert actual['therapy_id'] == fixture['therapy_id']
     assert actual['label'] == fixture['label']
 
     assert ('xrefs' in actual.keys()) == ('xrefs' in fixture.keys())
