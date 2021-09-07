@@ -1,7 +1,8 @@
 """ETL methods for the Drugs@FDA source."""
 from .base import Base
 from therapy import PROJECT_ROOT
-from therapy.schemas import SourceMeta, SourceName  # , NamespacePrefix
+from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, \
+    ApprovalStatus
 import logging
 from pathlib import Path
 import requests
@@ -64,28 +65,26 @@ class DrugsAtFDA(Base):
         meta['src_name'] = SourceName.DRUGSATFDA
         self.database.metadata.put_item(Item=meta)
 
-    # def _transform_data(self):
-    #     with open(self._src_file, 'r') as f:
-    #         data = json.load(f)['results']
-    #     for result in data:
-    #         if 'marketing_status' not in result:
-    #             continue
-    #         products = result['products']
-    #         marketing_status = products[0]['marketing_status']
-    #         if not all([products[0]['marketing_status'] != marketing_status
-    #                     for p in products]):
-    #             continue
-    #         concept_id = result['application_number']  # TODO
-    #         openfda = result.get('openfda')
-    #         if openfda:
-    #             label = result['generic_name']
-    #             xrefs = []
-    #             rxcui = result.get('rxcui')
-    #             if rxcui:
-    #                 xrefs += [f'{NamespacePrefix.RXNORM}:{rxid}'
-    #                           for rxid in rxcui]
-    #             other_ids = []
-    #             uniis = result.get('unii')
-    #             if uniis:
-    #                 other_ids += [f'{NamespacePrefix.UNII}:{unii}'
-    #                               for unii in uniis]
+    def _transform_data(self):
+        """Prepare source data for loading into DB."""
+        with open(self._src_file, 'r') as f:
+            data = json.load(f)['results']
+        for result in data:
+            therapy = {}
+            if 'submissions' not in result:
+                if 'products' not in result:
+                    continue
+                therapy['concept_id'] = f'{NamespacePrefix.DRUGSATFDA.value}:{result["application_number"]}'  # noqa: E501
+                products = result['products']
+                if not all([p['marketing_status'] == products[0]['marketing_status'] for p in products]):  # noqa: E501
+                    continue
+                status = products[0]['marketing_status']
+                if status == 'Discontinued':
+                    therapy['approval_status'] = ApprovalStatus.WITHDRAWN.value
+                else:
+                    therapy['approval_status'] = ApprovalStatus.APPROVED.value
+
+                # print(result['application_number'])
+                # for p in result['products']:
+                #     print((p['brand_name'], p['marketing_status']))
+                #  print(result)

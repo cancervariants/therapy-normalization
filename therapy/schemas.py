@@ -206,7 +206,7 @@ class NamespacePrefix(Enum):
     CHEMBL = "chembl"
     RXNORM = "rxcui"
     DRUGBANK = "drugbank"
-    DRUGSATFDA = "drugsatfda"  # TODO ????
+    DRUGSATFDA = "drugsatfda"  # TODO finalize?
     WIKIDATA = "wikidata"
     HEMONC = "hemonc"
     NCIT = "ncit"
