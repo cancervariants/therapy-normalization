@@ -378,7 +378,7 @@ def test_query(query_handler):
                            matches))[0]
     assert len(wikidata['records']) == 1
     wikidata_record = wikidata['records'][0]
-    assert wikidata_record.label == 'cisplatin'
+    assert wikidata_record['label'] == 'cisplatin'
 
 
 def test_query_keyed(query_handler):
@@ -388,7 +388,7 @@ def test_query_keyed(query_handler):
     assert isinstance(matches, dict)
     chemidplus = matches['ChemIDplus']
     chemidplus_record = chemidplus['records'][0]
-    assert chemidplus_record.label == 'Penicillin V'
+    assert chemidplus_record['label'] == 'Penicillin V'
 
 
 def test_query_specify_sources(query_handler):
@@ -606,17 +606,17 @@ def test_service_meta(query_handler, merge_query_handler):
 
     response = query_handler.search_sources(query)
     service_meta = response['service_meta_']
-    assert service_meta.name == "thera-py"
-    assert service_meta.version >= "0.2.13"
-    assert isinstance(service_meta.response_datetime, datetime)
-    assert service_meta.url == 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
+    assert service_meta['name'] == "thera-py"
+    assert service_meta['version'] >= "0.2.13"
+    assert isinstance(service_meta['response_datetime'], datetime)
+    assert service_meta['url'] == 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
 
     response = merge_query_handler.search_groups(query)
     service_meta = response['service_meta_']
-    assert service_meta.name == "thera-py"
-    assert service_meta.version >= "0.2.13"
-    assert isinstance(service_meta.response_datetime, datetime)
-    assert service_meta.url == 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
+    assert service_meta['name'] == "thera-py"
+    assert service_meta['version'] >= "0.2.13"
+    assert isinstance(service_meta['response_datetime'], datetime)
+    assert service_meta['url'] == 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
 
 
 def test_broken_db_handling(merge_query_handler):

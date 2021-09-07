@@ -148,9 +148,9 @@ def test_imatinib(chemidplus, imatinib, other_imatinib):
     assert response['match_type'] == MatchType.XREF
     assert len(response['records']) == 2
     for record in response['records']:
-        if record.concept_id == 'chemidplus:152459-95-5':
+        if record['concept_id'] == 'chemidplus:152459-95-5':
             compare_records(record, imatinib)
-        elif record.concept_id == 'chemidplus:220127-57-1':
+        elif record['concept_id'] == 'chemidplus:220127-57-1':
             compare_records(record, other_imatinib)
         else:
             assert False  # retrieved incorrect record
@@ -190,14 +190,14 @@ def test_cisplatin(chemidplus, cisplatin):
 def test_meta(chemidplus):
     """Test correctness of source metadata."""
     response = chemidplus.search('incoherent-string-of-text')
-    assert response['source_meta_'].data_license == 'custom'
-    assert response['source_meta_'].data_license_url == 'https://www.nlm.nih.gov/databases/download/terms_and_conditions.html'  # noqa: E501
-    version = response['source_meta_'].version
+    assert response['source_meta_']['data_license'] == 'custom'
+    assert response['source_meta_']['data_license_url'] == 'https://www.nlm.nih.gov/databases/download/terms_and_conditions.html'  # noqa: E501
+    version = response['source_meta_']['version']
     assert len(version) == 8
     assert datetime.datetime.strptime(version, '%Y%m%d')
-    assert response['source_meta_'].data_url == 'ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/'  # noqa: E501
-    assert response['source_meta_'].rdp_url is None
-    assert response['source_meta_'].data_license_attributes == {
+    assert response['source_meta_']['data_url'] == 'ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/'  # noqa: E501
+    assert response['source_meta_']['rdp_url'] is None
+    assert response['source_meta_']['data_license_attributes'] == {
         "non_commercial": False,
         "share_alike": False,
         "attribution": True
