@@ -7,7 +7,7 @@ from therapy import SOURCES, NAMESPACE_LOOKUP, PROHIBITED_SOURCES, \
 from uvicorn.config import logger
 from therapy.database import Database
 from therapy.schemas import Drug, SourceMeta, MatchType, ServiceMeta, \
-    HasIndication, SourcePriority
+    HasIndication, SourcePriority, SearchService, NormalizationService
 from botocore.exceptions import ClientError
 from urllib.parse import quote
 from datetime import datetime
@@ -323,8 +323,8 @@ class QueryHandler:
             version=__version__,
             response_datetime=datetime.now(),
             url="https://github.com/cancervariants/therapy-normalization"
-        )
-        return response
+        ).dict()
+        return SearchService(**response).dict()
 
     def _add_merged_meta(self, response: Dict) -> Dict:
         """Add source metadata to response object.
@@ -455,7 +455,7 @@ class QueryHandler:
                 version=__version__,
                 response_datetime=datetime.now(),
                 url="https://github.com/cancervariants/therapy-normalization"  # noqa: E501
-            )
+            ).dict()
         }
         if query == '':
             response['match_type'] = MatchType.NO_MATCH
@@ -515,4 +515,4 @@ class QueryHandler:
 
         if not matching_records:
             response['match_type'] = MatchType.NO_MATCH
-        return response
+        return NormalizationService(**response).dict()
