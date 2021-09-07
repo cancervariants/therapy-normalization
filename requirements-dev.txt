@@ -39,7 +39,7 @@ debugpy==1.4.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2
 decorator==5.0.9; python_version >= '3.5'
 defusedxml==0.7.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
 deprecation==2.1.0
-disease-normalizer==0.2.7
+disease-normalizer==0.2.10
 distlib==0.3.2
 docopt==0.6.2
 docutils==0.17.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
@@ -48,7 +48,7 @@ fastapi==0.68.1
 filelock==3.0.12
 flake8-docstrings==1.6.0
 flake8==3.9.2
-ga4gh.vrsatile.pydantic==0.0.2
+ga4gh.vrsatile.pydantic==0.0.3
 h11==0.12.0; python_version >= '3.6'
 httptools==0.3.0
 identify==2.2.13; python_full_version >= '3.6.1'
@@ -68,12 +68,12 @@ jupyter-client==7.0.2; python_full_version >= '3.6.1'
 jupyter-core==4.7.1; python_version >= '3.6'
 jupyter-server==1.10.2; python_version >= '3.6'
 jupyterlab-pygments==0.1.2
-jupyterlab-server==2.7.2; python_version >= '3.6'
+jupyterlab-server==2.8.1; python_version >= '3.6'
 jupyterlab==3.1.10
 keyring==23.1.0; python_version >= '3.6'
 lxml==4.6.3
 markupsafe==2.0.1; python_version >= '3.6'
-matplotlib-inline==0.1.2; python_version >= '3.5'
+matplotlib-inline==0.1.3; python_version >= '3.5'
 mccabe==0.6.1
 mistune==0.8.4
 mwoauth==0.3.7
@@ -88,7 +88,7 @@ notebook==6.4.3; python_version >= '3.6'
 numpy==1.21.2; python_version < '3.11' and python_version >= '3.7'
 oauthlib==3.1.1; python_version >= '3.6'
 obonet==0.3.0; python_version >= '3.5'
-owlready2==0.33
+owlready2==0.34
 packaging==21.0; python_version >= '3.6'
 pandas==1.3.2; python_full_version >= '3.7.1'
 pandocfilters==1.4.3
@@ -134,7 +134,7 @@ sniffio==1.2.0; python_version >= '3.5'
 snowballstemmer==2.1.0
 soupsieve==2.2.1; python_version >= '3.0'
 starlette==0.14.2; python_version >= '3.6'
-terminado==0.11.1; python_version >= '3.6'
+terminado==0.12.1; python_version >= '3.6'
 testpath==0.5.0; python_version >= '3.5'
 toml==0.10.2; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'
 tornado==6.1; python_version >= '3.5'
