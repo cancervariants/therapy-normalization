@@ -3,6 +3,7 @@ from .base import Base
 from therapy import PROJECT_ROOT
 from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, \
     ApprovalStatus
+from typing import List, Union, Dict
 import logging
 from pathlib import Path
 import requests
@@ -71,20 +72,10 @@ class DrugsAtFDA(Base):
             data = json.load(f)['results']
         for result in data:
             concept_id = f'{NamespacePrefix.DRUGSATFDA.value}:{result["application_number"]}'  # noqa: E501
-            therapy = {'concept_id': concept_id}
+            therapy: Dict[str, Union[str, List]] = {'concept_id': concept_id}
             if 'products' not in result:
                 continue
             products = result['products']
-
-            # TODO ZONE
-            # product['reference_drug']
-            # product['brand_name']
-            # product['reference_standard']
-            print(concept_id)
-            for product in products:
-                # print(product.keys())
-                print((product['reference_drug'], product['brand_name']))
-            # END TODO ZONE
 
             statuses = [p['marketing_status'] for p in products]
             if not all([s == statuses[0] for s in statuses]):
@@ -95,6 +86,7 @@ class DrugsAtFDA(Base):
                 therapy['approval_status'] = ApprovalStatus.WITHDRAWN.value
             else:
                 therapy['approval_status'] = ApprovalStatus.APPROVED.value
+
             if 'openfda' in result:
                 openfda = result['openfda']
                 brand_names = openfda.get('brand_name')
