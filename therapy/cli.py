@@ -106,7 +106,7 @@ class CLI:
             except:  # noqa: E722
                 pass
 
-        if 'hemonc' in normalizers:
+        if 'THERAPY_NORM_PROD' not in environ and 'hemonc' in normalizers:
             db = DiseaseDatabase(db_url=endpoint_url)
             current_tables = {table.name for table in db.dynamodb.tables.all()}
             if not all(name in current_tables
