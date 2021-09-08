@@ -70,21 +70,60 @@ class DrugsAtFDA(Base):
         with open(self._src_file, 'r') as f:
             data = json.load(f)['results']
         for result in data:
-            therapy = {}
-            if 'submissions' not in result:
-                if 'products' not in result:
-                    continue
-                therapy['concept_id'] = f'{NamespacePrefix.DRUGSATFDA.value}:{result["application_number"]}'  # noqa: E501
-                products = result['products']
-                if not all([p['marketing_status'] == products[0]['marketing_status'] for p in products]):  # noqa: E501
-                    continue
-                status = products[0]['marketing_status']
-                if status == 'Discontinued':
-                    therapy['approval_status'] = ApprovalStatus.WITHDRAWN.value
-                else:
-                    therapy['approval_status'] = ApprovalStatus.APPROVED.value
+            concept_id = f'{NamespacePrefix.DRUGSATFDA.value}:{result["application_number"]}'  # noqa: E501
+            therapy = {'concept_id': concept_id}
+            if 'products' not in result:
+                continue
+            products = result['products']
 
-                # print(result['application_number'])
-                # for p in result['products']:
-                #     print((p['brand_name'], p['marketing_status']))
-                #  print(result)
+            # TODO ZONE
+            # product['reference_drug']
+            # product['brand_name']
+            # product['reference_standard']
+            print(concept_id)
+            for product in products:
+                # print(product.keys())
+                print((product['reference_drug'], product['brand_name']))
+            # END TODO ZONE
+
+            statuses = [p['marketing_status'] for p in products]
+            if not all([s == statuses[0] for s in statuses]):
+                msg = f'Application {concept_id} has inconsistent marketing statuses: {statuses}'  # noqa: E501
+                logger.info(msg)
+                continue
+            if statuses[0] == 'Discontinued':
+                therapy['approval_status'] = ApprovalStatus.WITHDRAWN.value
+            else:
+                therapy['approval_status'] = ApprovalStatus.APPROVED.value
+            if 'openfda' in result:
+                openfda = result['openfda']
+                brand_names = openfda.get('brand_name')
+                if brand_names:
+                    therapy['trade_names'] = brand_names
+
+                label_candidates = []
+
+                # also a List that appears to always be len <= 1
+                substance = openfda.get('substance_name', [])
+                if len(substance) > 1:
+                    msg = f'Application {concept_id} has >1 substance names'
+                    logger.info(msg)
+                elif len(substance) == 1:
+                    label_candidates += substance
+
+                # this value is a List but appears to always be len <= 1
+                generic = openfda.get('generic_name', [])
+                if len(generic) > 1:
+                    msg = f'Application {concept_id} has >1 generic names'
+                    logger.info(msg)
+                elif len(generic) == 1:
+                    label_candidates += generic
+
+                unii = openfda.get('unii')
+                if unii:
+                    therapy['associated_with'] = [f'{NamespacePrefix.UNII.value}:{u}' for u in unii]  # noqa: E501
+                rxcui = openfda.get('rxcui')
+                if rxcui:
+                    therapy['xrefs'] = [f'{NamespacePrefix.RXNORM.value}:{r}' for r in rxcui]  # noqa: E501
+
+                print(result['products'])
