@@ -5,6 +5,7 @@ from typing import List, Optional, Dict, Union, Any, Type
 from pydantic import BaseModel, StrictBool
 from enum import Enum, IntEnum
 from datetime import datetime
+from ga4gh.vrsatile.pydantic.vrsatile_model import ValueObjectDescriptor
 
 
 class Therapy(BaseModel):
@@ -370,45 +371,12 @@ class MatchesListed(BaseModel):
             }
 
 
-class DiseaseDescriptor(BaseModel):
-    """VOD class for diseases. Used within the FDAStatus extension in the
-    main therapy VOD.
-    """
-
-    id: str
-    type = "DiseaseDescriptor"
-    value: Optional[Dict]
-    label: str
-
-
 class FDAStatus(BaseModel):
     """VOD Extension class for FDA status/indication attributes."""
 
     approval_status: Optional[ApprovalStatus]
     approval_year: Optional[List[int]]
-    has_indication: Optional[List[Union[Dict, DiseaseDescriptor]]]
-
-
-class Extension(BaseModel):
-    """Value Object Descriptor Extension class."""
-
-    type = "Extension"
-    name: str
-    value: Union[bool, List[str], FDAStatus]
-
-
-class TherapyDescriptor(BaseModel):
-    """Therapy VOD class. Provide additional Extension classes for trade_names
-    and references to non-normalized sources as well as FDA approval data.
-    """
-
-    id: str
-    type = "TherapyDescriptor"
-    value: Any
-    label: str
-    xrefs: Optional[List[str]]
-    alternate_labels: Optional[List[str]]
-    extensions: Optional[List[Extension]]
+    has_indication: Optional[List[Union[Dict, ValueObjectDescriptor]]]
 
 
 class ServiceMeta(BaseModel):
@@ -444,7 +412,7 @@ class NormalizationService(BaseModel):
     query: str
     warnings: Optional[Dict]
     match_type: MatchType
-    value_object_descriptor: Optional[TherapyDescriptor]
+    therapy_descriptor: Optional[ValueObjectDescriptor]
     source_meta_: Optional[Dict[SourceName, SourceMeta]]
     service_meta_: ServiceMeta
 
@@ -463,13 +431,10 @@ class NormalizationService(BaseModel):
                 "query": "cisplatin",
                 "warnings": None,
                 "match_type": 80,
-                "value_object_descriptor": {
+                "therapy_descriptor": {
                     "id": "normalize.therapy:cisplatin",
                     "type": "TherapyDescriptor",
-                    "value": {
-                        "type": "Therapy",
-                        "id": "rxcui:2555"
-                    },
+                    "therapy_id": "rxcui:2555",
                     "label": "cisplatin",
                     "xrefs": [
                         "ncit:C376", "chemidplus:15663-27-1",

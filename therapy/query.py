@@ -7,7 +7,7 @@ from therapy import SOURCES, NAMESPACE_LOOKUP, PROHIBITED_SOURCES, \
 from uvicorn.config import logger
 from therapy.database import Database
 from therapy.schemas import Drug, SourceMeta, MatchType, ServiceMeta, \
-    HasIndication, SourcePriority
+    HasIndication, SourcePriority, SearchService, NormalizationService
 from botocore.exceptions import ClientError
 from urllib.parse import quote
 from datetime import datetime
@@ -323,8 +323,8 @@ class QueryHandler:
             version=__version__,
             response_datetime=datetime.now(),
             url="https://github.com/cancervariants/therapy-normalization"
-        )
-        return response
+        ).dict()
+        return SearchService(**response).dict()
 
     def _add_merged_meta(self, response: Dict) -> Dict:
         """Add source metadata to response object.
@@ -333,8 +333,8 @@ class QueryHandler:
         :return: completed response object.
         """
         sources_meta = {}
-        vod = response['value_object_descriptor']
-        ids = [vod['value']['id']] + vod.get('xrefs', [])
+        vod = response['therapy_descriptor']
+        ids = [vod['therapy_id']] + vod.get('xrefs', [])
         for concept_id in ids:
             prefix = concept_id.split(':')[0]
             src_name = PREFIX_LOOKUP[prefix.lower()]
@@ -366,10 +366,7 @@ class QueryHandler:
         vod = {
             'id': f'normalize.therapy:{quote(query.strip())}',
             'type': 'TherapyDescriptor',
-            'value': {
-                'type': 'Therapy',
-                'id': record['concept_id']
-            },
+            'therapy_id': record['concept_id'],
             'label': record['label'],
             'extensions': [],
         }
@@ -403,13 +400,10 @@ class QueryHandler:
                     "label": ind[1]
                 }
                 if ind[2]:
-                    ind_obj['value'] = {
-                        'type': 'Disease',
-                        'id': ind[2]
-                    }
+                    ind_obj['disease_id']: ind[2]
+                    inds_list.append(ind_obj)
                 else:
-                    ind_obj['value'] = None
-                inds_list.append(ind_obj)
+                    logger.warning(f"{ind[0]} has no disease ID")
             if inds_list:
                 fda_approv['value']['has_indication'] = inds_list
             vod['extensions'].append(fda_approv)
@@ -431,7 +425,7 @@ class QueryHandler:
             del vod['extensions']
 
         response['match_type'] = match_type
-        response['value_object_descriptor'] = vod
+        response['therapy_descriptor'] = vod
         response = self._add_merged_meta(response)
         return response
 
@@ -461,7 +455,7 @@ class QueryHandler:
                 version=__version__,
                 response_datetime=datetime.now(),
                 url="https://github.com/cancervariants/therapy-normalization"  # noqa: E501
-            )
+            ).dict()
         }
         if query == '':
             response['match_type'] = MatchType.NO_MATCH
@@ -521,4 +515,4 @@ class QueryHandler:
 
         if not matching_records:
             response['match_type'] = MatchType.NO_MATCH
-        return response
+        return NormalizationService(**response).dict()
