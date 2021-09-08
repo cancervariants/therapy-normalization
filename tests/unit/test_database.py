@@ -13,7 +13,7 @@ def db():
 
     class DB:
         def __init__(self):
-            self.db = Database(db_url=os.environ['THERAPY_NORM_DB_URL'])
+            self.db = Database()
             if os.environ.get('TEST') is not None:
                 self.load_test_data()
 

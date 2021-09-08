@@ -119,8 +119,8 @@ def test_cisplatin_label(cisplatin, chembl):
     response = chembl.search('CISPLATIN')
     assert response['match_type'] == MatchType.LABEL
     assert len(response['records']) == 2
-    if len(response['records'][0].aliases) >\
-            len(response['records'][1].aliases):
+    if len(response['records'][0]['aliases']) >\
+            len(response['records'][1]['aliases']):
         ind = 0
     else:
         ind = 1
@@ -129,8 +129,8 @@ def test_cisplatin_label(cisplatin, chembl):
     response = chembl.search('cisplatin')
     assert response['match_type'] == MatchType.LABEL
     assert len(response['records']) == 2
-    if len(response['records'][0].aliases) >\
-            len(response['records'][1].aliases):
+    if len(response['records'][0]['aliases']) >\
+            len(response['records'][1]['aliases']):
         ind = 0
     else:
         ind = 1
@@ -262,14 +262,14 @@ def test_aspirin_label(aspirin, chembl):
 def test_meta_info(cisplatin, chembl):
     """Test that the meta field is correct."""
     response = chembl.search('cisplatin')
-    assert response['source_meta_'].data_license == 'CC BY-SA 3.0'
-    assert response['source_meta_'].data_license_url == \
+    assert response['source_meta_']['data_license'] == 'CC BY-SA 3.0'
+    assert response['source_meta_']['data_license_url'] == \
            'https://creativecommons.org/licenses/by-sa/3.0/'
-    assert response['source_meta_'].version == '27'
-    assert response['source_meta_'].data_url == \
+    assert response['source_meta_']['version'] == '27'
+    assert response['source_meta_']['data_url'] == \
            'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/'  # noqa: E501
-    assert response['source_meta_'].rdp_url == 'http://reusabledata.org/chembl.html'  # noqa: E501
-    assert response['source_meta_'].data_license_attributes == {
+    assert response['source_meta_']['rdp_url'] == 'http://reusabledata.org/chembl.html'  # noqa: E501
+    assert response['source_meta_']['data_license_attributes'] == {
         "non_commercial": False,
         "share_alike": True,
         "attribution": True
