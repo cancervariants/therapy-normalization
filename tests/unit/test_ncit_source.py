@@ -99,8 +99,36 @@ def therapeutic_procedure():
     return Drug(**params)
 
 
+# test correct CHEBI naming
+@pytest.fixture(scope='module')
+def ivermectin():
+    """Create a fixture for Ivermectin."""
+    params = {
+        "label_and_type": "ncit:c61796",
+        "src_name": "NCIt",
+        "item_type": "identity",
+        "concept_id": "ncit:C61796",
+        "label": "Ivermectin",
+        "aliases": [
+            "Stromectol",
+            "IVERMECTIN",
+            "Avermectin A1a, 5-O-demethyl-25-de(1-methylpropyl)-22,23-dihydro-25-(1-methylethyl)-",  # noqa: E501
+            "Sklice"
+        ],
+        "xrefs": [
+            "chemidplus:70288-86-7"
+        ],
+        "associated_with": [
+            "umls:C0022322",
+            "unii:8883YP2R6D",
+            "CHEBI:6078"
+        ]
+    }
+    return Drug(**params)
+
+
 def test_concept_id_match(ncit, voglibose, apricoxib, trastuzumab,
-                          therapeutic_procedure):
+                          therapeutic_procedure, ivermectin):
     """Test that concept ID query resolves to correct record."""
     response = ncit.search('ncit:C95221')
     compare_response(response, MatchType.CONCEPT_ID, voglibose)
@@ -143,6 +171,9 @@ def test_concept_id_match(ncit, voglibose, apricoxib, trastuzumab,
 
     response = ncit.search('ncit:C49236')
     compare_response(response, MatchType.CONCEPT_ID, therapeutic_procedure)
+
+    response = ncit.search('NCIT:C61796')
+    compare_response(response, MatchType.CONCEPT_ID, ivermectin)
 
 
 def test_label_match(ncit, voglibose, apricoxib, trastuzumab):

@@ -1202,7 +1202,7 @@
       "PHENO"
     ],
     "xrefs": ["chemidplus:50-06-6"],
-    "associated_with": ["umls:C0031412", "fda:YQE403BP4D", "chebi:CHEBI:8069"],
+    "associated_with": ["umls:C0031412", "fda:YQE403BP4D", "CHEBI:8069"],
     "approval_status": null,
     "trade_names": [],
     "src_name": "NCIt",
@@ -1291,7 +1291,7 @@
       "vandf:4017422",
       "mthspl:YQE403BP4D",
       "atc:N03AA02",
-      "chebi:CHEBI:8069",
+      "CHEBI:8069",
       "mmsl:2390",
       "mmsl:d00340",
       "pubchem.compound:4763",
@@ -1354,7 +1354,7 @@
       "pubchem.compound:5702198",
       "unii:Q20Q21Q62J",
       "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
-      "chebi:CHEBI:27899",
+      "CHEBI:27899",
       "chembl:CHEMBL11359"
     ],
     "approval_status": "approved",
@@ -1914,5 +1914,26 @@
     "associated_with": ["pubchem.compound:57406853"],
     "xrefs": ["chemidplus:939981-39-2", "chembl:CHEMBL2386346"],
     "label": "ro-5045337"
+  },
+  {
+    "label_and_type": "ncit:c61796",
+    "src_name": "NCIt",
+    "item_type": "identity",
+    "concept_id": "ncit:C61796",
+    "label": "Ivermectin",
+    "aliases": [
+      "Stromectol",
+      "IVERMECTIN",
+      "Avermectin A1a, 5-O-demethyl-25-de(1-methylpropyl)-22,23-dihydro-25-(1-methylethyl)-",
+      "Sklice"
+    ],
+    "xrefs": [
+      "chemidplus:70288-86-7"
+    ],
+    "associated_with": [
+      "umls:C0022322",
+      "unii:8883YP2R6D",
+      "CHEBI:6078"
+    ]
   }
 ]

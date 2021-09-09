@@ -210,7 +210,7 @@ class NamespacePrefix(Enum):
     FDA = "fda"
     ISO = "iso"
     UMLS = "umls"
-    CHEBI = "chebi"
+    CHEBI = "CHEBI"
     KEGGCOMPOUND = "kegg.compound"
     KEGGDRUG = "kegg.drug"
     BINDINGDB = "bindingdb"
