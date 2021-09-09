@@ -143,7 +143,7 @@ class NCIt(Base):
                 xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:"
                              f"{node.P210.first()}")
             if node.P319:
-                associated_with.append(f"{NamespacePrefix.FDA.value}:"
+                associated_with.append(f"{NamespacePrefix.UNII.value}:"
                                        f"{node.P319.first()}")
             if node.P320:
                 associated_with.append(f"{NamespacePrefix.ISO.value}:"

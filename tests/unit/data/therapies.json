@@ -361,11 +361,11 @@
       "VOGLIBOSE"
     ],
     "xrefs": ["chemidplus:83480-29-9"],
-    "associated_with": ["fda:S77P977AG8", "umls:C0532578"],
+    "associated_with": ["unii:S77P977AG8", "umls:C0532578"],
     "src_name": "NCIt"
   },
   {
-    "label_and_type": "fda:s77p977ag8##associated_with",
+    "label_and_type": "unii:s77p977ag8##associated_with",
     "concept_id": "ncit:c95221",
     "src_name": "NCIt"
   },
@@ -402,7 +402,7 @@
       "TP2001"
     ],
     "xrefs": ["chemidplus:197904-84-0"],
-    "associated_with": ["fda:5X5HB3VZ3Z", "umls:C1737955"],
+    "associated_with": ["unii:5X5HB3VZ3Z", "umls:C1737955"],
     "src_name": "NCIt"
   },
   {
@@ -412,7 +412,7 @@
     "item_type": "alias"
   },
   {
-    "label_and_type": "fda:5x5hb3vz3z##associated_with",
+    "label_and_type": "unii:5x5hb3vz3z##associated_with",
     "concept_id": "ncit:c74021",
     "src_name": "NCIt",
     "item_type": "associated_with"
@@ -432,11 +432,11 @@
     "label": "Trastuzumab",
     "concept_id": "ncit:C1647",
     "xrefs": ["chemidplus:180288-69-1"],
-    "associated_with": ["umls:C0728747", "fda:P188ANX8CK"],
+    "associated_with": ["umls:C0728747", "unii:P188ANX8CK"],
     "src_name": "NCIt"
   },
   {
-    "label_and_type": "fda:p188anx8ck##associated_with",
+    "label_and_type": "unii:p188anx8ck##associated_with",
     "concept_id": "ncit:c1647",
     "src_name": "NCIt"
   },
@@ -455,7 +455,7 @@
     "label": "Cisplatin",
     "concept_id": "ncit:C376",
     "xrefs": ["chemidplus:15663-27-1"],
-    "associated_with": ["umls:C0008838", "fda:Q20Q21Q62J"],
+    "associated_with": ["umls:C0008838", "unii:Q20Q21Q62J"],
     "src_name": "NCIt",
     "merge_ref": "rxcui:2555"
   },
@@ -471,11 +471,11 @@
     "aliases": ["Phenoxymethylpenicillin"],
     "trade_names": [],
     "xrefs": ["drugbank:DB00417"],
-    "associated_with": ["fda:Z61I075U2W"],
+    "associated_with": ["unii:Z61I075U2W"],
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "fda:z61i075u2w##associated_with",
+    "label_and_type": "unii:z61i075u2w##associated_with",
     "concept_id": "chemidplus:87-08-1",
     "src_name": "ChemIDplus"
   },
@@ -501,11 +501,11 @@
     "aliases": [],
     "trade_names": [],
     "xrefs": ["drugbank:DB00619"],
-    "associated_with": ["fda:BKJ8M8G5HI"],
+    "associated_with": ["unii:BKJ8M8G5HI"],
     "src_name": "ChemIDplus"
   },
   {
-    "label_and_type": "fda:bkj8m8g5hi##associated_with",
+    "label_and_type": "unii:bkj8m8g5hi##associated_with",
     "concept_id": "chemidplus:152459-95-5",
     "src_name": "ChemIDplus"
   },
@@ -526,7 +526,7 @@
     "label": "Imatinib mesylate",
     "aliases": [],
     "xrefs": ["drugbank:DB00619"],
-    "associated_with": ["fda:8A1O1M485B"],
+    "associated_with": ["unii:8A1O1M485B"],
     "trade_names": []
   },
   {
@@ -545,7 +545,7 @@
     ],
     "trade_names": [],
     "xrefs": ["drugbank:DB00515"],
-    "associated_with": ["fda:Q20Q21Q62J"],
+    "associated_with": ["unii:Q20Q21Q62J"],
     "src_name": "ChemIDplus",
     "merge_ref": "rxcui:2555"
   },
@@ -635,7 +635,7 @@
       "usp:m17910",
       "vandf:4018139",
       "mesh:D002945",
-      "mthspl:Q20Q21Q62J",
+      "unii:Q20Q21Q62J",
       "mmsl:d00195",
       "atc:L01XA01",
       "mmsl:31747",
@@ -706,7 +706,7 @@
     "associated_with": [
       "mesh:D000584",
       "vandf:4019603",
-      "mthspl:7DZO8EB0Z3",
+      "unii:7DZO8EB0Z3",
       "mmsl:d00169",
       "atc:C03DB01"
     ],
@@ -764,7 +764,7 @@
     "xrefs": ["drugbank:DB00373"],
     "associated_with": [
       "vandf:4019949",
-      "mthspl:817W3C6175",
+      "unii:817W3C6175",
       "mesh:D013999",
       "mmsl:d00139",
       "atc:C07AA06",
@@ -866,7 +866,7 @@
       "usp:m6240",
       "vandf:4017536",
       "mmsl:34512",
-      "mthspl:R16CO5Y76E",
+      "unii:R16CO5Y76E",
       "mmsl:244",
       "mesh:D001241",
       "mmsl:4223",
@@ -909,7 +909,7 @@
       "usp:m49500",
       "mesh:D015080",
       "vandf:4019477",
-      "mthspl:NR7O1405Q9",
+      "unii:NR7O1405Q9",
       "atc:R05CB05",
       "atc:V03AF01",
       "mmsl:41498",
@@ -948,7 +948,7 @@
       "3 Aminopropionic Acid",
       "3-Aminopropionic Acid"
     ],
-    "associated_with": ["mesh:D015091", "vandf:4028377", "mthspl:11P2JDE17B"],
+    "associated_with": ["mesh:D015091", "vandf:4028377", "unii:11P2JDE17B"],
     "src_name": "RxNorm"
   },
   {
@@ -1036,7 +1036,7 @@
       "vandf:4022126",
       "mesh:D013974",
       "mmsl:d00278",
-      "mthspl:Q51BO43MG4"
+      "unii:Q51BO43MG4"
     ],
     "src_name": "RxNorm"
   },
@@ -1095,7 +1095,7 @@
       "msh:D010634",
       "snomedct:373505007",
       "mmsl:5272",
-      "mthspl:YQE403BP4D",
+      "unii:YQE403BP4D",
       "fdbmk:001406",
       "mmsl:d00340",
       "atc:N03AA02"
@@ -1135,7 +1135,7 @@
     "concept_id": "chemidplus:50-06-6",
     "aliases": [],
     "xrefs": ["drugbank:DB01174"],
-    "associated_with": ["fda:YQE403BP4D"],
+    "associated_with": ["unii:YQE403BP4D"],
     "approval_status": null,
     "trade_names": [],
     "src_name": "ChemIDplus",
@@ -1150,7 +1150,7 @@
     "concept_id": "chemidplus:8025-81-8",
     "aliases": [],
     "xrefs": [],
-    "associated_with": ["fda:71ODY0V87H"],
+    "associated_with": ["unii:71ODY0V87H"],
     "approval_status": null,
     "trade_names": []
   },
@@ -1202,7 +1202,7 @@
       "PHENO"
     ],
     "xrefs": ["chemidplus:50-06-6"],
-    "associated_with": ["umls:C0031412", "fda:YQE403BP4D", "chebi:CHEBI:8069"],
+    "associated_with": ["umls:C0031412", "unii:YQE403BP4D", "chebi:CHEBI:8069"],
     "approval_status": null,
     "trade_names": [],
     "src_name": "NCIt",
@@ -1227,7 +1227,7 @@
       "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"
     ],
     "xrefs": ["chemidplus:8025-81-8"],
-    "associated_with": ["umls:C0037962", "fda:71ODY0V87H"],
+    "associated_with": ["umls:C0037962", "unii:71ODY0V87H"],
     "approval_status": null,
     "trade_names": [],
     "src_name": "NCIt",
@@ -1289,7 +1289,6 @@
     ],
     "associated_with": [
       "vandf:4017422",
-      "mthspl:YQE403BP4D",
       "atc:N03AA02",
       "chebi:CHEBI:8069",
       "mmsl:2390",
@@ -1298,7 +1297,7 @@
       "mesh:D010634",
       "mmsl:5272",
       "umls:C0031412",
-      "fda:YQE403BP4D",
+      "unii:YQE403BP4D",
       "usp:m63400",
       "chembl:CHEMBL40"
     ]
@@ -1342,11 +1341,9 @@
     "label": "cisplatin",
     "associated_with": [
       "umls:C0008838",
-      "fda:Q20Q21Q62J",
       "usp:m17910",
       "vandf:4018139",
       "mesh:D002945",
-      "mthspl:Q20Q21Q62J",
       "mmsl:d00195",
       "atc:L01XA01",
       "mmsl:31747",
@@ -1382,7 +1379,7 @@
     ],
     "associated_with": [
       "umls:C0037962",
-      "fda:71ODY0V87H",
+      "unii:71ODY0V87H",
       "chembl:CHEMBL1256397"
     ]
   },
@@ -1398,7 +1395,7 @@
       "1-(3-(6,7-Dimethoxyquinazolin-4-yloxy)phenyl)-3-(5-(1,1,1-trifluoro-2-methylpropan-2-yl)isoxazol-3-yl)urea Hydrochloride"
     ],
     "xrefs": ["chemidplus:1188910-76-0"],
-    "associated_with": ["fda:78I4VEX88N"]
+    "associated_with": ["unii:78I4VEX88N"]
   },
   {
     "label_and_type": "agerafenib##label",
@@ -1443,7 +1440,7 @@
     ],
     "associated_with": [
       "usp:m2650",
-      "mthspl:FZJ37245UC",
+      "unii:FZJ37245UC",
       "mmsl:2658",
       "mesh:D000584",
       "mmsl:4166",
@@ -1490,7 +1487,7 @@
       "vandf:4019761",
       "mmsl:d00236",
       "atc:N06AB03",
-      "mthspl:01K63SUP8D"
+      "unii:01K63SUP8D"
     ],
     "trade_names": [
       "Prozac",
@@ -1515,7 +1512,7 @@
     "aliases": ["FLUoxetine hydrochloride", "Fluoxetine Hydrochloride"],
     "associated_with": [
       "usp:m33780",
-      "mthspl:I9W7N6B1KJ",
+      "unii:I9W7N6B1KJ",
       "mmsl:4746",
       "vandf:4019389",
       "mmsl:41730",
@@ -1557,7 +1554,7 @@
       "mmsl:d03868",
       "vandf:4020970",
       "mmsl:133029",
-      "mthspl:M487QF2F4V",
+      "unii:M487QF2F4V",
       "atc:V03AF05"
     ],
     "label": "amifostine",
@@ -1591,7 +1588,7 @@
     "label": "Imatinib mesylate",
     "aliases": [],
     "xrefs": ["drugbank:DB00619"],
-    "associated_with": ["fda:8A1O1M485B"],
+    "associated_with": ["unii:8A1O1M485B"],
     "approval_status": null,
     "trade_names": []
   },
@@ -1887,8 +1884,7 @@
       "TREAT",
       "Treatment",
       "TX",
-      "therapeutic intervention",
-      "treatment"
+      "therapeutic intervention"
     ]
   },
   {
