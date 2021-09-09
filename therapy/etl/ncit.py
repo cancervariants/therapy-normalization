@@ -151,7 +151,7 @@ class NCIt(Base):
             if node.P368:
                 iri = node.P368.first()
                 if ':' in iri:
-                    iri = iri.split(':')[0]
+                    iri = iri.split(':')[1]
                 associated_with.append(f"{NamespacePrefix.CHEBI.value}:{iri}")
             params = {
                 'concept_id': concept_id,
