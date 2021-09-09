@@ -139,7 +139,7 @@ def phenobarbital_merged():
             "mmsl:d00340",
             "atc:N03AA02",
             "umls:C0031412",
-            "chebi:CHEBI:8069",
+            "CHEBI:8069",
             "chembl:CHEMBL40"
         ],
         "label": "Phenobarbital",
