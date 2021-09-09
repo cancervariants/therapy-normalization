@@ -153,9 +153,6 @@ def test_concept_id_match(ncit, voglibose, apricoxib, trastuzumab,
     response = ncit.search('C74021')
     compare_response(response, MatchType.CONCEPT_ID, apricoxib)
 
-    response = ncit.search('C74021')
-    compare_response(response, MatchType.CONCEPT_ID, apricoxib)
-
     response = ncit.search('ncit:C1647')
     compare_response(response, MatchType.CONCEPT_ID, trastuzumab)
 
