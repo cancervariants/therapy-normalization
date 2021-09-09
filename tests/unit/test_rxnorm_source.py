@@ -88,7 +88,7 @@ def cisplatin():
             'usp:m17910',
             'vandf:4018139',
             'mesh:D002945',
-            'mthspl:Q20Q21Q62J',
+            'unii:Q20Q21Q62J',
             'mmsl:d00195',
             'atc:L01XA01',
             'mmsl:31747',
@@ -117,7 +117,7 @@ def amiloride_hydrochloride():
         'xrefs': [],
         'associated_with': [
             'usp:m2650',
-            'mthspl:FZJ37245UC',
+            'unii:FZJ37245UC',
             'mmsl:2658',
             'mesh:D000584',
             'mmsl:4166',
@@ -158,7 +158,7 @@ def amiloride():
         'associated_with': [
             'mesh:D000584',
             'vandf:4019603',
-            'mthspl:7DZO8EB0Z3',
+            'unii:7DZO8EB0Z3',
             'mmsl:d00169',
             'atc:C03DB01'
         ],
@@ -195,7 +195,7 @@ def timolol():
         ],
         'associated_with': [
             'vandf:4019949',
-            'mthspl:817W3C6175',
+            'unii:817W3C6175',
             'mesh:D013999',
             'mmsl:d00139',
             'atc:C07AA06',
@@ -287,7 +287,7 @@ def aspirin():
             'usp:m6240',
             'vandf:4017536',
             'mmsl:34512',
-            'mthspl:R16CO5Y76E',
+            'unii:R16CO5Y76E',
             'mmsl:244',
             'mesh:D001241',
             'mmsl:4223',
@@ -320,7 +320,7 @@ def mesna():
             'usp:m49500',
             'mesh:D015080',
             'vandf:4019477',
-            'mthspl:NR7O1405Q9',
+            'unii:NR7O1405Q9',
             'atc:R05CB05',
             'atc:V03AF01',
             'mmsl:41498',
@@ -352,7 +352,7 @@ def beta_alanine():
         'associated_with': [
             'mesh:D015091',
             'vandf:4028377',
-            'mthspl:11P2JDE17B'
+            'unii:11P2JDE17B'
         ],
         'trade_names': []
     }
@@ -414,7 +414,7 @@ def levothyroxine():
             'vandf:4022126',
             'mesh:D013974',
             'mmsl:d00278',
-            'mthspl:Q51BO43MG4'
+            'unii:Q51BO43MG4'
         ],
         'trade_names': [
             'Eltroxin',
@@ -468,7 +468,7 @@ def fluoxetine():
             'vandf:4019761',
             'mmsl:d00236',
             'atc:N06AB03',
-            'mthspl:01K63SUP8D'
+            'unii:01K63SUP8D'
         ],
         'trade_names': [
             'Prozac',
@@ -496,7 +496,7 @@ def fluoxetine_hydrochloride():
         'xrefs': [],
         'associated_with': [
             'usp:m33780',
-            'mthspl:I9W7N6B1KJ',
+            'unii:I9W7N6B1KJ',
             'mmsl:4746',
             'vandf:4019389',
             'mmsl:41730',

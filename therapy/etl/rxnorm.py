@@ -340,8 +340,13 @@ class RxNorm(Base):
         :param dict params: A transformed therapy record.
         :param list row: A row in the RxNorm data file.
         """
-        if row[11]:
-            xref_assoc = row[11].upper()
+        ref = row[11]
+        if ref:
+            if ref == 'MTHSPL':
+                xref_assoc = 'UNII'
+            else:
+                xref_assoc = row[11].upper()
+
             if xref_assoc in XREF_SOURCES:
                 source_id =\
                     f"{NamespacePrefix[xref_assoc].value}:{row[13]}"
