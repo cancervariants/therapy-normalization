@@ -1912,7 +1912,7 @@
     "label": "ro-5045337"
   },
   {
-    "label_and_type": "ncit:c61796",
+    "label_and_type": "ncit:c61796##identity",
     "src_name": "NCIt",
     "item_type": "identity",
     "concept_id": "ncit:C61796",
