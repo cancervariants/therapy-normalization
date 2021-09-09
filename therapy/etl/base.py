@@ -83,7 +83,11 @@ class Base(ABC):
         raise NotImplementedError
 
     def _load_therapy(self, therapy: Dict):
-        """Load individual therapy record.
+        """Load individual therapy record into database.
+        This method takes responsibility for:
+            * validating record structure correctness
+            * removing duplicates from list-like fields
+            * removing empty fields
 
         :param Dict therapy: valid therapy object.
         """

@@ -29,11 +29,18 @@ class Therapy(BaseModel):
 
 
 class ApprovalStatus(str, Enum):
-    """Define string constraints for approval status attribute."""
+    """Define string constraints for approval status attribute.
+
+    Tentative approval "is notification that an NDA or ANDA otherwise meets
+        ther requirements for approval under the Federal Food, Drug, and
+        Cosmetic Act", but cannot be approved because of existing patent
+        rights (see CFR Title 21, Chapter 1, Subchapter D, Part 314)
+    """
 
     WITHDRAWN = "withdrawn"
     APPROVED = "approved"
     INVESTIGATIONAL = "investigational"
+    TENTATIVE = "tentative"
 
 
 class PhaseEnum(IntEnum):

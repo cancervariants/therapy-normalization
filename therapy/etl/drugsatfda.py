@@ -70,6 +70,7 @@ class DrugsAtFDA(Base):
         """Prepare source data for loading into DB."""
         with open(self._src_file, 'r') as f:
             data = json.load(f)['results']
+
         for result in data:
             concept_id = f'{NamespacePrefix.DRUGSATFDA.value}:{result["application_number"]}'  # noqa: E501
             therapy: Dict[str, Union[str, List]] = {'concept_id': concept_id}
@@ -82,34 +83,43 @@ class DrugsAtFDA(Base):
                 msg = f'Application {concept_id} has inconsistent marketing statuses: {statuses}'  # noqa: E501
                 logger.info(msg)
                 continue
-            if statuses[0] == 'Discontinued':
+            status = statuses[0]
+            if status == 'Discontinued':
                 therapy['approval_status'] = ApprovalStatus.WITHDRAWN.value
-            else:
+            elif status in {'Prescription', 'Over-the-counter'}:
                 therapy['approval_status'] = ApprovalStatus.APPROVED.value
+            elif status == 'None (Tentative Approval)':
+                therapy['approval_status'] = ApprovalStatus.TENTATIVE.value
+
+            brand_names = [p['brand_name'] for p in products]
+
+            aliases = []
 
             if 'openfda' in result:
                 openfda = result['openfda']
-                brand_names = openfda.get('brand_name')
-                if brand_names:
-                    therapy['trade_names'] = brand_names
+                brand_name = openfda.get('brand_name')
+                if brand_name:
+                    brand_names += brand_name
 
-                label_candidates = []
-
-                # also a List that appears to always be len <= 1
+                # this value is a List that appears to always be len <= 1
                 substance = openfda.get('substance_name', [])
-                if len(substance) > 1:
+                num_substances = len(substance)
+                if num_substances > 1:
                     msg = f'Application {concept_id} has >1 substance names'
                     logger.info(msg)
-                elif len(substance) == 1:
-                    label_candidates += substance
+                elif num_substances == 1:
+                    therapy['label'] = substance[0]
 
-                # this value is a List but appears to always be len <= 1
+                # also a List but appears to always be len <= 1
                 generic = openfda.get('generic_name', [])
                 if len(generic) > 1:
                     msg = f'Application {concept_id} has >1 generic names'
                     logger.info(msg)
                 elif len(generic) == 1:
-                    label_candidates += generic
+                    if num_substances == 0:
+                        therapy['label'] = generic[0]
+                    else:
+                        aliases.append(generic[0])
 
                 unii = openfda.get('unii')
                 if unii:
@@ -118,4 +128,6 @@ class DrugsAtFDA(Base):
                 if rxcui:
                     therapy['xrefs'] = [f'{NamespacePrefix.RXNORM.value}:{r}' for r in rxcui]  # noqa: E501
 
-                print(result['products'])
+            therapy['trade_names'] = brand_names
+            therapy['aliases'] = aliases
+            self._load_therapy(therapy)
