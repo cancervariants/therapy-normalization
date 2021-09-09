@@ -207,7 +207,6 @@ class NamespacePrefix(Enum):
     WIKIDATA = "wikidata"
     HEMONC = "hemonc"
     NCIT = "ncit"
-    FDA = "fda"
     ISO = "iso"
     UMLS = "umls"
     CHEBI = "chebi"
@@ -228,7 +227,6 @@ class NamespacePrefix(Enum):
     MMSL = "mmsl"  # Multum MediSource Lexicon
     MSH = "mesh"  # Medical Subject Headings
     MTHCMSFRF = "mthcmsfrf"  # CMS Formulary Reference File
-    MTHSPL = "mthspl"  # FDA Structured Product Labels
     USP = "usp"  # USP Compendial Nomenclature
     VANDF = "vandf"  # Veterans Health Administration National Drug File
 
