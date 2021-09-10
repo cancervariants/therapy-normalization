@@ -209,7 +209,7 @@ class NamespacePrefix(Enum):
     NCIT = "ncit"
     ISO = "iso"
     UMLS = "umls"
-    CHEBI = "chebi"
+    CHEBI = "CHEBI"
     KEGGCOMPOUND = "kegg.compound"
     KEGGDRUG = "kegg.drug"
     BINDINGDB = "bindingdb"

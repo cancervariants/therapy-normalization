@@ -98,7 +98,7 @@ def phenobarbital():
                     "atc:N03AA02",
                     "unii:YQE403BP4D",
                     "umls:C0031412",
-                    "chebi:CHEBI:8069",
+                    "CHEBI:8069",
                     "chembl:CHEMBL40"
                 ]
             },
@@ -161,7 +161,7 @@ def cisplatin():
                     "mmsl:31747",
                     "mmsl:4456",
                     "usp:m17910",
-                    "chebi:CHEBI:27899",
+                    "CHEBI:27899",
                     "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
                     "mmsl:d00195",
                     "mesh:D002945",

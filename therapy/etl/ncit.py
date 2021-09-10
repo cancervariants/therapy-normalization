@@ -149,8 +149,10 @@ class NCIt(Base):
                 associated_with.append(f"{NamespacePrefix.ISO.value}:"
                                        f"{node.P320.first()}")
             if node.P368:
-                associated_with.append(f"{NamespacePrefix.CHEBI.value}:"
-                                       f"{node.P368.first()}")
+                iri = node.P368.first()
+                if ':' in iri:
+                    iri = iri.split(':')[1]
+                associated_with.append(f"{NamespacePrefix.CHEBI.value}:{iri}")
             params = {
                 'concept_id': concept_id,
                 'label': label,
