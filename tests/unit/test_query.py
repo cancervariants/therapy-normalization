@@ -13,10 +13,10 @@ def query_handler():
         def __init__(self):
             self.query_handler = QueryHandler()
 
-        def search_sources(self, query_str, keyed=False, incl='', excl=''):
-            resp = self.query_handler.search_sources(query_str=query_str,
-                                                     keyed=keyed,
-                                                     incl=incl, excl=excl)
+        def search_sources(self, query_str, keyed=False, incl='', excl='',
+                           infer=True):
+            resp = self.query_handler.search_sources(query_str, keyed, incl,
+                                                     excl, infer)
             return resp
 
     return QueryGetter()
@@ -30,8 +30,8 @@ def merge_query_handler(mock_database):
             self.query_handler = QueryHandler(db_url='http://localhost:8000')
             self.query_handler.db = mock_database()  # replace initial DB
 
-        def search_groups(self, query_str):
-            return self.query_handler.search_groups(query_str)
+        def search_groups(self, query_str, infer=True):
+            return self.query_handler.search_groups(query_str, infer)
 
     return QueryGetter()
 
@@ -508,6 +508,18 @@ def test_query_specify_sources(query_handler):
                                             incl='chembl', excl='wikidata')
 
 
+def test_query_infer_option(query_handler):
+    """Test search/ infer_namespace boolean option"""
+    query = "DB01174"
+    response = query_handler.search_sources(query, keyed=True)
+    assert response['source_matches']['DrugBank']['match_type'] == \
+        MatchType.CONCEPT_ID
+
+    response = query_handler.search_sources(query, keyed=True, infer=False)
+    assert response['source_matches']['DrugBank']['match_type'] == \
+        MatchType.NO_MATCH
+
+
 def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
                       spiramycin, therapeutic_procedure, ro_5045337):
     """Test that the merged concept endpoint handles queries correctly."""
@@ -582,6 +594,14 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     compare_vod(response, phenobarbital, query, MatchType.CONCEPT_ID,
                 'normalize.therapy:DB01174',
                 [{'inferred_namespace': 'drugbank'}])
+
+    # test disabling namespace inference
+    query = "DB01174"
+    response = merge_query_handler.search_groups(query, infer=False)
+    assert response['query'] == query
+    assert response['warnings'] == []
+    assert 'record' not in response
+    assert response['match_type'] == MatchType.NO_MATCH
 
     # test no match
     query = "zzzz fake therapy zzzz"
