@@ -419,7 +419,7 @@ class NormalizationService(BaseModel):
     """Response containing one or more merged records and source data."""
 
     query: str
-    warnings: Optional[Dict]
+    warnings: Optional[List[Dict]]
     match_type: MatchType
     therapy_descriptor: Optional[ValueObjectDescriptor]
     source_meta_: Optional[Dict[SourceName, SourceMeta]]
