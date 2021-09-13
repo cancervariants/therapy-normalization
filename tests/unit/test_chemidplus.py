@@ -35,7 +35,7 @@ def penicillin_v():
             "drugbank:DB00417",
         ],
         "associated_with": [
-            "fda:Z61I075U2W",
+            "unii:Z61I075U2W",
         ]
     })
 
@@ -52,7 +52,7 @@ def imatinib():
             "drugbank:DB00619",
         ],
         "associated_with": [
-            "fda:BKJ8M8G5HI",
+            "unii:BKJ8M8G5HI",
         ]
     })
 
@@ -65,7 +65,7 @@ def other_imatinib():
         "label": "Imatinib mesylate",
         "aliases": [],
         "xrefs": ["drugbank:DB00619"],
-        "associated_with": ["fda:8A1O1M485B"],
+        "associated_with": ["unii:8A1O1M485B"],
         "trade_names": [],
     })
 
@@ -85,7 +85,7 @@ def cisplatin():
             'drugbank:DB00515'
         ],
         "associated_with": [
-            'fda:Q20Q21Q62J'
+            'unii:Q20Q21Q62J'
         ]
     })
 
@@ -117,7 +117,7 @@ def test_penicillin(chemidplus, penicillin_v):
     assert len(response['records']) == 1
     compare_records(response['records'][0], penicillin_v)
 
-    response = chemidplus.search('fda:Z61I075U2W')
+    response = chemidplus.search('unii:Z61I075U2W')
     assert response['match_type'] == MatchType.ASSOCIATED_WITH
     assert len(response['records']) == 1
     compare_records(response['records'][0], penicillin_v)
@@ -155,7 +155,7 @@ def test_imatinib(chemidplus, imatinib, other_imatinib):
         else:
             assert False  # retrieved incorrect record
 
-    response = chemidplus.search('fda:BKJ8M8G5HI')
+    response = chemidplus.search('unii:BKJ8M8G5HI')
     assert response['match_type'] == MatchType.ASSOCIATED_WITH
     assert len(response['records']) == 1
     compare_records(response['records'][0], imatinib)
