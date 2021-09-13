@@ -556,11 +556,12 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     compare_vod(response, ro_5045337, query, MatchType.CONCEPT_ID,
                 'normalize.therapy:wikidata%3AQ27287118')
 
-    # test normalize matches term based on leading characters in source ID
+    # test normalize/ infers namespace correctly
     query = "DB01174"
     response = merge_query_handler.search_groups(query)
     compare_vod(response, phenobarbital, query, MatchType.CONCEPT_ID,
-                'normalize.therapy:DB01174')
+                'normalize.therapy:DB01174',
+                ['Using inferred namespace `drugbank`'])
 
     # test no match
     query = "zzzz fake therapy zzzz"
