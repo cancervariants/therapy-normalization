@@ -2,7 +2,7 @@
 import re
 from typing import List, Dict, Set, Optional
 from .version import __version__
-from therapy import SOURCES, NAMESPACE_LOOKUP, PROHIBITED_SOURCES, \
+from therapy import SOURCES, NAMESPACE_LOOKUP, \
     PREFIX_LOOKUP, ITEM_TYPES
 from uvicorn.config import logger
 from therapy.database import Database
@@ -356,7 +356,6 @@ class QueryHandler:
     def _add_vod(self, response: Dict, record: Dict, query: str,
                  match_type: MatchType) -> Dict:
         """Format received DB record as VOD and update response object.
-
         :param Dict response: in-progress response object
         :param Dict record: record as stored in DB
         :param str query: query string from user request
@@ -370,9 +369,10 @@ class QueryHandler:
                 'type': 'Therapy',
                 'id': record['concept_id']
             },
-            'label': record['label'],
+            'label': str(record.get('label')),
             'extensions': [],
         }
+
         if 'xrefs' in record:
             xrefs = record['xrefs']
             chembl_refs = [ref for ref in xrefs if ref.startswith('chembl')]
@@ -476,7 +476,7 @@ class QueryHandler:
 
         # check concept ID match
         record = self.db.get_record_by_id(query_str, case_sensitive=False)
-        if record and record['src_name'].lower() not in PROHIBITED_SOURCES:
+        if record and record['src_name'].lower():
             merge_ref = record.get('merge_ref')
             if not merge_ref:
                 return self._add_vod(response, record, query,
@@ -498,7 +498,7 @@ class QueryHandler:
             matching_records = \
                 [self.db.get_record_by_id(m['concept_id'], False)
                  for m in matching_refs
-                 if m['src_name'].lower() not in PROHIBITED_SOURCES]
+                 if m['src_name'].lower()]
             matching_records.sort(key=self._record_order)
 
             # attempt merge ref resolution until successful
