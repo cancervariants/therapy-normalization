@@ -183,19 +183,6 @@ class SourceName(str, Enum):
     DRUGSATFDA = "DrugsAtFDA"
 
 
-class SourceIDAfterNamespace(Enum):
-    """Define string constraints after namespace."""
-
-    WIKIDATA = "Q"
-    CHEMBL = "CHEMBL"
-    DRUGBANK = "DB"
-    NCIT = "C"
-    CHEMIDPLUS = ""
-    RXNORM = ""
-    HEMONC = ""
-    DRUGSATFDA = "ANDA"
-
-
 class ProhibitedSources(Enum):
     """Define constraints for sources that are prohibited in normalize
     endpoint.
@@ -557,7 +544,7 @@ class SearchService(BaseModel):
     """Core response schema containing matches for each source"""
 
     query: str
-    warnings: Optional[Dict]
+    warnings: Optional[List[Dict]]
     source_matches: Union[Dict[SourceName, MatchesKeyed], List[MatchesListed]]
     service_meta_: ServiceMeta
 

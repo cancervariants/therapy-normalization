@@ -1,13 +1,14 @@
 """This module provides methods for handling queries."""
 import re
-from typing import List, Dict, Set, Optional
+from typing import List, Dict, Set, Tuple
 from .version import __version__
-from therapy import SOURCES, NAMESPACE_LOOKUP, PROHIBITED_SOURCES, \
-    PREFIX_LOOKUP, ITEM_TYPES
+from therapy import SOURCES, PROHIBITED_SOURCES, PREFIX_LOOKUP, ITEM_TYPES, \
+    NAMESPACE_LUIS
 from uvicorn.config import logger
 from therapy.database import Database
 from therapy.schemas import Drug, SourceMeta, MatchType, ServiceMeta, \
-    HasIndication, SourcePriority, SearchService, NormalizationService
+    HasIndication, SourcePriority, SearchService, NormalizationService, \
+    NamespacePrefix
 from botocore.exceptions import ClientError
 from urllib.parse import quote
 from datetime import datetime
@@ -37,18 +38,19 @@ class QueryHandler:
         """
         self.db = Database(db_url=db_url, region_name=db_region)
 
-    def _emit_warnings(self, query_str) -> Optional[Dict]:
+    def _emit_char_warnings(self, query_str) -> List[Dict]:
         """Emit warnings if query contains non breaking space characters.
 
         :param str query_str: query string
-        :return: dict keying warning type to warning description
+        :return: List of warnings (dicts)
         """
-        warnings = None
+        warnings = []
         nbsp = re.search('\xa0|&nbsp;', query_str)
         if nbsp:
-            warnings = {
-                'nbsp': 'Query contains non breaking space characters.'
-            }
+            warnings.append({
+                'non_breaking_space_characters':
+                    'Query contains non-breaking space characters'
+            })
             logger.warning(
                 f'Query ({query_str}) contains non breaking space characters.'
             )
@@ -157,7 +159,7 @@ class QueryHandler:
     def _check_concept_id(self,
                           query: str,
                           resp: Dict,
-                          sources: Set[str]) -> (Dict, Set):
+                          sources: Set[str]) -> Tuple[Dict, Set]:
         """Check query for concept ID match. Should only find 0 or 1 matches.
 
         :param str query: search string
@@ -166,18 +168,22 @@ class QueryHandler:
         :return: Tuple with updated resp object and updated set of unmatched
             sources
         """
-        concept_id_items = []
+        records = []
         if [p for p in PREFIX_LOOKUP.keys() if query.startswith(p)]:
             record = self.db.get_record_by_id(query, False)
             if record:
-                concept_id_items.append(record)
-        for prefix in [p for p in NAMESPACE_LOOKUP.keys()
-                       if query.startswith(p)]:
-            concept_id = f'{NAMESPACE_LOOKUP[prefix]}:{query}'
-            id_lookup = self.db.get_record_by_id(concept_id, False)
-            if id_lookup:
-                concept_id_items.append(id_lookup)
-        for item in concept_id_items:
+                records.append(record)
+        for pattern, source in NAMESPACE_LUIS.items():
+            if re.match(pattern, query, re.IGNORECASE):
+                namespace = NamespacePrefix[source.upper()].value
+                concept_id = f'{namespace}:{query}'
+                id_lookup = self.db.get_record_by_id(concept_id, False)
+                if id_lookup:
+                    records.append(id_lookup)
+                    resp['warnings'].append({
+                        'inferred_namespace': namespace
+                    })
+        for item in records:
             (resp, src_name) = self._add_record(resp, item,
                                                 MatchType.CONCEPT_ID.name)
             sources = sources - {src_name}
@@ -215,7 +221,7 @@ class QueryHandler:
         """
         response = {
             'query': query,
-            'warnings': self._emit_warnings(query),
+            'warnings': self._emit_char_warnings(query),
             'source_matches': {
                 source: None for source in sources
             }
@@ -442,6 +448,28 @@ class QueryHandler:
         response['match_type'] = MatchType.NO_MATCH
         return response
 
+    def _resolve_merge(self, response: Dict, query: str,
+                       record: Dict, match_type: MatchType) -> Dict:
+        """Given a record, return the corresponding normalized record
+
+        :param Dict response: in-progress response object
+        :param str query: exact query as provided by user
+        :param Dict record: TODO
+        :param MatchType match_type: type of match that returned these records
+        :return: formed response, a Dict
+        """
+        merge_ref = record.get('merge_ref')
+        if merge_ref:
+            # follow merge_ref
+            merge = self.db.get_record_by_id(merge_ref, False, True)
+            if merge is None:
+                return self._handle_failed_merge_ref(record, response, query)
+            else:
+                return self._add_vod(response, merge, query, match_type)
+        else:
+            # record is sole member of concept group
+            return self._add_vod(response, record, query, match_type)
+
     def search_groups(self, query: str) -> Dict:
         """Return merged, normalized concept for given search term.
 
@@ -450,13 +478,14 @@ class QueryHandler:
         # prepare basic response
         response = {
             'query': query,
-            'warnings': self._emit_warnings(query),
+            'warnings': self._emit_char_warnings(query),
             'service_meta_': ServiceMeta(
                 version=__version__,
                 response_datetime=datetime.now(),
                 url="https://github.com/cancervariants/therapy-normalization"  # noqa: E501
             ).dict()
         }
+
         if query == '':
             response['match_type'] = MatchType.NO_MATCH
             return response
@@ -471,19 +500,28 @@ class QueryHandler:
         # check concept ID match
         record = self.db.get_record_by_id(query_str, case_sensitive=False)
         if record and record['src_name'].lower() not in PROHIBITED_SOURCES:
-            merge_ref = record.get('merge_ref')
-            if not merge_ref:
-                return self._add_vod(response, record, query,
-                                     MatchType.CONCEPT_ID)
-            merge = self.db.get_record_by_id(merge_ref,
-                                             case_sensitive=False,
-                                             merge=True)
-            if merge is None:
-                return self._handle_failed_merge_ref(record, response,
-                                                     query_str)
-            else:
-                return self._add_vod(response, merge, query,
-                                     MatchType.CONCEPT_ID)
+            return self._resolve_merge(response, query, record,
+                                       MatchType.CONCEPT_ID)
+
+        # check concept ID match with inferred namespace
+        inferred_records = []
+        for pattern, source in NAMESPACE_LUIS.items():
+            if re.match(pattern, query, re.IGNORECASE):
+                namespace = NamespacePrefix[source.upper()].value
+                inferred_concept = f'{namespace}:{query}'
+                record = self.db.get_record_by_id(inferred_concept,
+                                                  case_sensitive=False)
+                if record:
+                    inferred_records.append((record, namespace))
+        if inferred_records:
+            inferred_records.sort(key=lambda r: self._record_order(r[0]))
+            response = self._resolve_merge(response, query,
+                                           inferred_records[0][0],
+                                           MatchType.CONCEPT_ID)
+            response['warnings'].append({
+                'inferred_namespace': inferred_records[0][1]
+            })
+            return response
 
         # check other match types
         for match_type in ITEM_TYPES.values():
@@ -499,19 +537,8 @@ class QueryHandler:
             for match in matching_records:
                 record = self.db.get_record_by_id(match['concept_id'], False)
                 if record:
-                    merge_ref = record.get('merge_ref')
-                    if not merge_ref:
-                        return self._add_vod(response, record, query,
-                                             MatchType[match_type.upper()])
-                    merge = self.db.get_record_by_id(record['merge_ref'],
-                                                     case_sensitive=False,
-                                                     merge=True)
-                    if merge is None:
-                        return self._handle_failed_merge_ref(record, response,
-                                                             query_str)
-                    else:
-                        return self._add_vod(response, merge, query,
-                                             MatchType[match_type.upper()])
+                    return self._resolve_merge(response, query, record,
+                                               MatchType[match_type.upper()])
 
         if not matching_records:
             response['match_type'] = MatchType.NO_MATCH

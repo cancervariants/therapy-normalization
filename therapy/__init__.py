@@ -19,7 +19,7 @@ class DownloadException(Exception):
         super().__init__(*args, **kwargs)
 
 
-from therapy.schemas import SourceName, NamespacePrefix, SourceIDAfterNamespace, ProhibitedSources, ItemTypes  # noqa: E402, E501
+from therapy.schemas import SourceName, NamespacePrefix, ProhibitedSources, ItemTypes  # noqa: E402, E501
 ITEM_TYPES = {k.lower(): v.value for k, v in ItemTypes.__members__.items()}
 
 # Sources we import directly
@@ -32,11 +32,14 @@ PREFIX_LOOKUP = {v.value: SourceName[k].value
                  for k, v in NamespacePrefix.__members__.items()
                  if k in SourceName.__members__.keys()}
 
-# use to generate namespace prefix from source ID value
-# e.g. {'q': 'wikidata'}
-NAMESPACE_LOOKUP = {v.value.lower(): NamespacePrefix[k].value
-                    for k, v in SourceIDAfterNamespace.__members__.items()
-                    if v.value != ''}
+# Namespace LUI patterns. Use for namespace inference.
+NAMESPACE_LUIS = {
+    r'^CHEMBL\d+$': SourceName.CHEMBL.value,
+    r'^\d+\-\d+\-\d+$': SourceName.CHEMIDPLUS.value,
+    r'^(Q|P)\d+$': SourceName.WIKIDATA.value,
+    r'^C\d+$': SourceName.NCIT.value,
+    r'^DB\d{5}$': SourceName.DRUGBANK.value,
+}
 
 # Sources that are not allowed in normalize endpoint due to license
 PROHIBITED_SOURCES = {s.value.lower()
