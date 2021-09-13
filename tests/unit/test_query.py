@@ -295,13 +295,33 @@ def ro_5045337():
 
 
 def compare_vod(response, fixture, query, match_type, response_id,
-                warnings=None):
-    """Verify correctness of returned VOD object against test fixture."""
+                warnings=[]):
+    """Verify correctness of returned VOD object against test fixture.
+
+    :param Dict response: actual response
+    :param Dict fixture: expected Descriptor object
+    :param str query: query used in search
+    :param MatchType match_type: expected MatchType
+    :param str response_id: expected response_id value
+    :param List warnings: expected warnings
+    """
     assert response['query'] == query
-    if warnings is None:
-        assert response['warnings'] is None
+
+    # check warnings
+    if warnings:
+        assert len(response["warnings"]) == len(warnings), "warnings len"
+        for e_warnings in warnings:
+            for r_warnings in response["warnings"]:
+                for e_key, e_val in e_warnings.items():
+                    for _, r_val in r_warnings.items():
+                        if e_key == r_val:
+                            if isinstance(e_val, list):
+                                assert set(r_val) == set(e_val), "warnings val"
+                            else:
+                                assert r_val == e_val, "warnings val"
     else:
-        assert response['warnings'] == warnings
+        assert response["warnings"] == [], "warnings != []"
+
     assert response['match_type'] == match_type
 
     fixture = fixture.copy()
@@ -347,14 +367,14 @@ def compare_vod(response, fixture, query, match_type, response_id,
         tn_actual = get_extension(ext_actual, 'trade_names')
         tn_fixture = get_extension(ext_fixture, 'trade_names')
         assert (tn_actual is None) == (tn_fixture is None)
-        if tn_actual:
+        if tn_fixture:
             assert set(tn_actual['value']) == set(tn_fixture['value'])
             assert tn_actual['value']
 
         fda_actual = get_extension(ext_actual, 'fda_approval')
         fda_fixture = get_extension(ext_fixture, 'fda_approval')
         assert (fda_actual is None) == (fda_fixture is None)
-        if fda_actual:
+        if fda_fixture:
             assert fda_actual.get('approval_status') == \
                 fda_fixture.get('approval_status')
             assert set(fda_actual.get('approval_year', [])) == \
@@ -561,27 +581,27 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     response = merge_query_handler.search_groups(query)
     compare_vod(response, phenobarbital, query, MatchType.CONCEPT_ID,
                 'normalize.therapy:DB01174',
-                ['Using inferred namespace `drugbank`'])
+                [{'inferred_namespace': 'drugbank'}])
 
     # test no match
     query = "zzzz fake therapy zzzz"
     response = merge_query_handler.search_groups(query)
     assert response['query'] == query
-    assert response['warnings'] is None
+    assert response['warnings'] == []
     assert 'record' not in response
     assert response['match_type'] == MatchType.NO_MATCH
 
     query = "APRD00818"
     response = merge_query_handler.search_groups(query)
     assert response['query'] == query
-    assert response['warnings'] is None
+    assert response['warnings'] == []
     assert 'record' not in response
     assert response['match_type'] == MatchType.NO_MATCH
 
     query = "chembl:CHEMBL1200368"
     response = merge_query_handler.search_groups(query)
     assert response['query'] == query
-    assert response['warnings'] is None
+    assert response['warnings'] == []
     assert 'record' not in response
     assert response['match_type'] == MatchType.NO_MATCH
 
