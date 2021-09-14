@@ -366,7 +366,7 @@ class QueryHandler:
             'id': f'normalize.therapy:{quote(query.strip())}',
             'type': 'TherapyDescriptor',
             'therapy_id': record['concept_id'],
-            'label': record['label'],
+            'label': record.get('label'),
             'extensions': [],
         }
 
