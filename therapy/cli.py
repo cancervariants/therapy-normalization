@@ -145,10 +145,7 @@ class CLI:
             logger.info(msg)
             start_load = timer()
             source = SOURCES_CLASS[n](database=db)
-            if source.in_normalize:
-                processed_ids += source.perform_etl()
-            else:
-                source.perform_etl()
+            processed_ids += source.perform_etl()
             end_load = timer()
             load_time = end_load - start_load
             msg = f"Loaded {n} in {load_time:.5f} seconds."
