@@ -24,7 +24,6 @@ class Base(ABC):
         name = self.__class__.__name__.lower()
         self.database = database
         self._src_data_dir = data_path / name
-        self.in_normalize = name
         self._added_ids = []
 
     def perform_etl(self) -> List[str]:
