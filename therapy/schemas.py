@@ -156,9 +156,9 @@ class SourcePriority(IntEnum):
 
     RXNORM = 1
     NCIT = 2
-    CHEMBL = 3
-    HEMONC = 4
-    DRUGBANK = 5
+    HEMONC = 3
+    DRUGBANK = 4
+    CHEMBL = 5
     CHEMIDPLUS = 6
     WIKIDATA = 10
 

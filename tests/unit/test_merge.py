@@ -160,7 +160,8 @@ def cisplatin_merged():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001",
-            "chembl:CHEMBL11359"
+            "chembl:CHEMBL11359",
+            "chembl:CHEMBL2068237"
         ],
         "trade_names": [
             "Cisplatin",
@@ -220,6 +221,7 @@ def cisplatin_merged():
             "unii:Q20Q21Q62J",
             "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
             "chembl:CHEMBL11359",
+            "chembl:CHEMBL2068237"
         ],
         "approval_status": ApprovalStatus.APPROVED,
         "approval_year": ["1978"],
@@ -314,7 +316,8 @@ def record_id_groups():
             "wikidata:Q47522001",
             "drugbank:DB00515",
             "hemonc:105",
-            "chembl:CHEMBL11359"
+            "chembl:CHEMBL11359",
+            "chembl:CHEMBL2068237"
         },
         "ncit:C376": {  # Cisplatin
             "rxcui:2555",
@@ -324,7 +327,8 @@ def record_id_groups():
             "wikidata:Q47522001",
             "drugbank:DB00515",
             "hemonc:105",
-            "chembl:CHEMBL11359"
+            "chembl:CHEMBL11359",
+            "chembl:CHEMBL2068237"
         },
         "chemidplus:15663-27-1": {  # Cisplatin
             "rxcui:2555",
@@ -334,7 +338,8 @@ def record_id_groups():
             "wikidata:Q47522001",
             "drugbank:DB00515",
             "hemonc:105",
-            "chembl:CHEMBL11359"
+            "chembl:CHEMBL11359",
+            "chembl:CHEMBL2068237"
         },
         "wikidata:Q412415": {  # Cisplatin
             "rxcui:2555",
@@ -344,7 +349,8 @@ def record_id_groups():
             "wikidata:Q47522001",
             "drugbank:DB00515",
             "hemonc:105",
-            "chembl:CHEMBL11359"
+            "chembl:CHEMBL11359",
+            "chembl:CHEMBL2068237"
         },
         "wikidata:Q47522001": {  # Cisplatin
             "rxcui:2555",
@@ -354,7 +360,8 @@ def record_id_groups():
             "wikidata:Q47522001",
             "drugbank:DB00515",
             "hemonc:105",
-            "chembl:CHEMBL11359"
+            "chembl:CHEMBL11359",
+            "chembl:CHEMBL2068237"
         },
         "drugbank:DB00515": {  # Cisplatin
             "rxcui:2555",
@@ -364,7 +371,8 @@ def record_id_groups():
             "wikidata:Q47522001",
             "drugbank:DB00515",
             "hemonc:105",
-            "chembl:CHEMBL11359"
+            "chembl:CHEMBL11359",
+            "chembl:CHEMBL2068237"
         },
         "hemonc:105": {  # Cisplatin
             "rxcui:2555",
@@ -374,7 +382,8 @@ def record_id_groups():
             "wikidata:Q47522001",
             "drugbank:DB00515",
             "hemonc:105",
-            "chembl:CHEMBL11359"
+            "chembl:CHEMBL11359",
+            "chembl:CHEMBL2068237"
         },
         "chembl:CHEMBL11359": {  # Cisplatin
             "rxcui:2555",
@@ -384,7 +393,19 @@ def record_id_groups():
             "wikidata:Q47522001",
             "drugbank:DB00515",
             "hemonc:105",
-            "chembl:CHEMBL11359"
+            "chembl:CHEMBL11359",
+            "chembl:CHEMBL2068237"
+        },
+        "chembl:CHEMBL2068237": {  # Cisplatin
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415",
+            "wikidata:Q47522001",
+            "drugbank:DB00515",
+            "hemonc:105",
+            "chembl:CHEMBL11359",
+            "chembl:CHEMBL2068237"
         },
         "rxcui:4126": {  # Amifostine
             "rxcui:4126",

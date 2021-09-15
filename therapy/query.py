@@ -470,7 +470,7 @@ class QueryHandler:
 
         # check concept ID match
         record = self.db.get_record_by_id(query_str, case_sensitive=False)
-        if record and record['src_name'].lower():
+        if record:
             merge_ref = record.get('merge_ref')
             if not merge_ref:
                 return self._add_vod(response, record, query,
@@ -491,8 +491,7 @@ class QueryHandler:
             matching_refs = self.db.get_records_by_type(query_str, match_type)
             matching_records = \
                 [self.db.get_record_by_id(m['concept_id'], False)
-                 for m in matching_refs
-                 if m['src_name'].lower()]
+                 for m in matching_refs]
             matching_records.sort(key=self._record_order)
 
             # attempt merge ref resolution until successful

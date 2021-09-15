@@ -38,9 +38,6 @@ NAMESPACE_LOOKUP = {v.value.lower(): NamespacePrefix[k].value
                     for k, v in SourceIDAfterNamespace.__members__.items()
                     if v.value != ''}
 
-# Sources that are allowed in normalize endpoint
-ACCEPTED_SOURCES = SOURCES.keys()
-
 # Sources that we import directly
 XREF_SOURCES = {source for source in SourceName.__members__}
 

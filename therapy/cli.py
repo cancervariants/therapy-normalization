@@ -1,7 +1,6 @@
 """This module provides a CLI util to make updates to normalizer database."""
 import click
 from botocore.exceptions import ClientError
-from therapy import ACCEPTED_SOURCES
 from therapy.etl.merge import Merge
 from timeit import default_timer as timer
 from boto3.dynamodb.conditions import Key
@@ -162,7 +161,7 @@ class CLI:
 
         if update_merged:
             start_merge = timer()
-            if not processed_ids or not ACCEPTED_SOURCES.issubset(normalizers):
+            if not processed_ids:
                 CLI()._delete_normalized_data(db)
                 processed_ids = db.get_ids_for_merge()
             merge = Merge(database=db)
