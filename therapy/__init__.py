@@ -19,7 +19,7 @@ class DownloadException(Exception):
         super().__init__(*args, **kwargs)
 
 
-from therapy.schemas import SourceName, NamespacePrefix, SourceIDAfterNamespace, ProhibitedSources, ItemTypes  # noqa: E402, E501
+from therapy.schemas import SourceName, NamespacePrefix, SourceIDAfterNamespace, ItemTypes  # noqa: E402, E501
 ITEM_TYPES = {k.lower(): v.value for k, v in ItemTypes.__members__.items()}
 
 # Sources we import directly
@@ -37,13 +37,6 @@ PREFIX_LOOKUP = {v.value: SourceName[k].value
 NAMESPACE_LOOKUP = {v.value.lower(): NamespacePrefix[k].value
                     for k, v in SourceIDAfterNamespace.__members__.items()
                     if v.value != ''}
-
-# Sources that are not allowed in normalize endpoint due to license
-PROHIBITED_SOURCES = {s.value.lower()
-                      for s in ProhibitedSources.__members__.values()}
-
-# Sources that are allowed in normalize endpoint
-ACCEPTED_SOURCES = SOURCES.keys() - PROHIBITED_SOURCES
 
 # Sources that we import directly
 XREF_SOURCES = {source for source in SourceName.__members__}

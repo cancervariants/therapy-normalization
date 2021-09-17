@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from ftplib import FTP
 from pathlib import Path
 from typing import List, Dict
-from therapy import ACCEPTED_SOURCES, PROJECT_ROOT, ITEM_TYPES
+from therapy import PROJECT_ROOT, ITEM_TYPES
 from therapy.schemas import Drug
 from therapy.database import Database
 import logging
@@ -25,7 +25,6 @@ class Base(ABC):
         name = self.__class__.__name__.lower()
         self.database: Database = database
         self._src_data_dir: Path = Path(data_path / name)
-        self.in_normalize: bool = name in ACCEPTED_SOURCES
         self._added_ids: List[str] = []
 
     def perform_etl(self) -> List[str]:
@@ -131,8 +130,6 @@ class Base(ABC):
                 del therapy[field]
 
         self.database.add_record(therapy)
-        if self.in_normalize:
-            self._added_ids.append(concept_id)
 
     @abstractmethod
     def _load_meta(self, *args, **kwargs):
