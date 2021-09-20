@@ -134,13 +134,12 @@ def phenobarbital_merged():
             "msh:D010634",
             "snomedct:373505007",
             "mmsl:5272",
-            "mthspl:YQE403BP4D",
+            "unii:YQE403BP4D",
             "fdbmk:001406",
             "mmsl:d00340",
             "atc:N03AA02",
-            "fda:YQE403BP4D",
             "umls:C0031412",
-            "chebi:CHEBI:8069",
+            "CHEBI:8069",
             "chembl:CHEMBL40"
         ],
         "label": "Phenobarbital",
@@ -207,17 +206,15 @@ def cisplatin_merged():
         "label": "cisplatin",
         "associated_with": [
             "umls:C0008838",
-            "fda:Q20Q21Q62J",
             "usp:m17910",
             "vandf:4018139",
             "mesh:D002945",
-            "mthspl:Q20Q21Q62J",
+            "unii:Q20Q21Q62J",
             "mmsl:d00195",
             "atc:L01XA01",
             "mmsl:31747",
             "mmsl:4456",
             "pubchem.compound:5702198",
-            "unii:Q20Q21Q62J",
             "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
             "chembl:CHEMBL11359",
         ],
@@ -254,7 +251,7 @@ def spiramycin_merged():
         ],
         "associated_with": [
             "umls:C0037962",
-            "fda:71ODY0V87H"
+            "unii:71ODY0V87H"
         ],
     }
 
