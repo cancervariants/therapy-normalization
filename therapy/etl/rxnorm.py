@@ -6,7 +6,7 @@ Library of Medicine (NLM), National Institutes of Health, Department of Health
  endorse or recommend this or any other product."
 """
 from .base import Base
-from therapy import PROJECT_ROOT, DownloadException, XREF_SOURCES, \
+from therapy import APP_ROOT, DownloadException, XREF_SOURCES, \
     ASSOC_WITH_SOURCES, ITEM_TYPES
 import therapy
 from therapy.database import Database
@@ -47,7 +47,7 @@ class RxNorm(Base):
 
     def __init__(self,
                  database: Database,
-                 data_path=PROJECT_ROOT / 'data',
+                 data_path=APP_ROOT / 'data',
                  data_url='https://www.nlm.nih.gov/research/umls/'
                           'rxnorm/docs/rxnormfiles.html'):
         """Initialize the RxNorm ETL class.
@@ -65,7 +65,7 @@ class RxNorm(Base):
         if 'data_path' in kwargs:
             self._data_src = kwargs['data_path']
         else:
-            rxn_dir = PROJECT_ROOT / 'data' / 'rxnorm'
+            rxn_dir = APP_ROOT / 'rxnorm'
             rxn_dir.mkdir(exist_ok=True, parents=True)
             rxn_files = list(rxn_dir.iterdir())
             if len(rxn_files) == 0:
@@ -106,7 +106,7 @@ class RxNorm(Base):
 
             # Source:
             # https://documentation.uts.nlm.nih.gov/automating-downloads.html
-            subprocess.call(['bash', f'{PROJECT_ROOT}/etl/'
+            subprocess.call(['bash', f'{APP_ROOT}/etl/'
                                      f'rxnorm_download.sh', uri])
 
             with zipfile.ZipFile(rxnorm_path, 'r') as zf:

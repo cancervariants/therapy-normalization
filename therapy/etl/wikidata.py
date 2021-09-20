@@ -1,6 +1,6 @@
 """This module defines the Wikidata ETL methods."""
 from .base import Base
-from therapy import PROJECT_ROOT
+from therapy import APP_ROOT
 from therapy.schemas import SourceName, NamespacePrefix, \
     SourceIDAfterNamespace, SourceMeta
 import json
@@ -64,7 +64,7 @@ class Wikidata(Base):
 
     def __init__(self,
                  database,
-                 data_path: Path = PROJECT_ROOT / 'data'):
+                 data_path: Path = APP_ROOT / 'data'):
         """Initialize wikidata ETL class.
 
         :param therapy.database.Database: DB instance to use

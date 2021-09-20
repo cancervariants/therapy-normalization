@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from ftplib import FTP
 from pathlib import Path
 from typing import List, Dict
-from therapy import ACCEPTED_SOURCES, PROJECT_ROOT, ITEM_TYPES
+from therapy import ACCEPTED_SOURCES, APP_ROOT, ITEM_TYPES
 from therapy.schemas import Drug
 import logging
 
@@ -15,7 +15,7 @@ logger.setLevel(logging.DEBUG)
 class Base(ABC):
     """The ETL base class."""
 
-    def __init__(self, database, data_path=PROJECT_ROOT / 'data'):
+    def __init__(self, database, data_path=APP_ROOT / 'data'):
         """Extract from sources.
 
         :param Database database: application database object

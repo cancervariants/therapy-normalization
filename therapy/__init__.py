@@ -3,7 +3,7 @@ from .version import __version__  # noqa: F401
 from pathlib import Path
 import logging
 
-PROJECT_ROOT = Path(__file__).resolve().parents[0]
+APP_ROOT = Path(__file__).resolve().parents[0]
 logging.basicConfig(
     filename='therapy.log',
     format='[%(asctime)s] - %(name)s - %(levelname)s : %(message)s')

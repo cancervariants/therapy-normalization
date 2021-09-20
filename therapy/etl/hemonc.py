@@ -1,5 +1,5 @@
 """Provide ETL methods for HemOnc.org data."""
-from therapy import DownloadException, PROJECT_ROOT
+from therapy import DownloadException, APP_ROOT
 from therapy.etl.base import Base
 from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, \
     ApprovalStatus
@@ -17,7 +17,7 @@ logger.setLevel(logging.DEBUG)
 class HemOnc(Base):
     """Docstring"""
 
-    def __init__(self, database, data_path: Path = PROJECT_ROOT / 'data'):
+    def __init__(self, database, data_path: Path = APP_ROOT / 'data'):
         """Initialize HemOnc instance.
 
         :param therapy.database.Database database: application database
