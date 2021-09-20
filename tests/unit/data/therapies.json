@@ -36,6 +36,18 @@
     "src_name": "ChEMBL"
   },
   {
+    "label_and_type": "chembl:chembl2068237##identity",
+    "concept_id": "chembl:CHEMBL2068237",
+    "label": "CISPLATIN",
+    "approval_status": "approved",
+    "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "CISPLATIN##label",
+    "concept_id": "chembl:CHEMBL2068237",
+    "src_name": "ChEMBL"
+  },
+  {
     "label_and_type": "chembl:chembl1628046##identity",
     "concept_id": "chembl:CHEMBL1628046",
     "label": "CISPLATIN",

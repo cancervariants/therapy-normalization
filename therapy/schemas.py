@@ -158,7 +158,8 @@ class SourcePriority(IntEnum):
     NCIT = 2
     HEMONC = 3
     DRUGBANK = 4
-    CHEMIDPLUS = 5
+    CHEMBL = 5
+    CHEMIDPLUS = 6
     WIKIDATA = 10
 
 
@@ -184,14 +185,6 @@ class SourceIDAfterNamespace(Enum):
     CHEMIDPLUS = ""
     RXNORM = ""
     HEMONC = ""
-
-
-class ProhibitedSources(Enum):
-    """Define constraints for sources that are prohibited in normalize
-    endpoint.
-    """
-
-    CHEMBL = SourceName.CHEMBL.value
 
 
 class NamespacePrefix(Enum):
