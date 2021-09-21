@@ -1,6 +1,6 @@
 """This module defines the ChEMBL ETL methods."""
 from .base import Base
-from therapy import PROJECT_ROOT
+from therapy import APP_ROOT
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, \
     SourceMeta
 import logging
@@ -28,7 +28,7 @@ class ChEMBL(Base):
             chembl_archive.parent.mkdir(exist_ok=True, parents=True)
             self._download_data()
             tar = tarfile.open(chembl_archive)
-            tar.extractall(path=PROJECT_ROOT / 'data' / 'chembl')
+            tar.extractall(path=APP_ROOT / 'data' / 'chembl')
             tar.close()
 
             # Remove unused directories and files
@@ -45,7 +45,7 @@ class ChEMBL(Base):
         assert chembl_db.exists()
         logger.info('Finished extracting chembl_27.db.')
 
-    def _download_data(self, *args, **kwargs):
+    def _download_data(self):
         """Download ChEMBL data from FTP."""
         logger.info(
             'Downloading ChEMBL v27, this will take a few minutes.')
@@ -54,7 +54,7 @@ class ChEMBL(Base):
                            self._src_data_dir,
                            'chembl_27_sqlite.tar.gz')
 
-    def _transform_data(self, *args, **kwargs):
+    def _transform_data(self):
         """Transform SQLite data to JSON."""
         self._create_dictionary_synonyms_table()
         self._create_trade_names_table()
@@ -190,7 +190,7 @@ class ChEMBL(Base):
                     record[attr] = record[attr].split('||')
             self._load_therapy(record)
 
-    def _load_meta(self, *args, **kwargs):
+    def _load_meta(self):
         """Add ChEMBL metadata."""
         metadata = SourceMeta(data_license='CC BY-SA 3.0',
                               data_license_url='https://creativecommons.org/licenses/by-sa/3.0/',  # noqa: E501
