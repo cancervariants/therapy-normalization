@@ -3,9 +3,9 @@ from .base import Base
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, \
     SourceMeta
 import logging
-import re
 import sqlite3
 import os
+import bioversions
 import chembl_downloader
 import shutil
 
@@ -19,12 +19,10 @@ class ChEMBL(Base):
     def _extract_data(self):
         """Extract data from the ChEMBL source."""
         self._src_data_dir.mkdir(exist_ok=True, parents=True)
-        chembl_files = list(self._src_data_dir.glob('chembl_*.db'))
-        if chembl_files:
-            chembl_path = sorted(chembl_files, reverse=True)[0]
-            search_results = re.search(r'chembl_([0-9]*).db', chembl_path.name)
-            self._version = search_results.group(1)
-        else:
+        latest_chembl = bioversions.search('chembl')
+        latest_fname = f'chembl_{latest_chembl}.db'
+        chembl_path = self._src_data_dir / latest_fname
+        if not chembl_path.exists():
             self._download_data()
             chembl_path = list(self._src_data_dir.glob('chembl_*.db'))[0]
         conn = sqlite3.connect(chembl_path)
