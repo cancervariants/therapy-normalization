@@ -1,11 +1,9 @@
 """This module defines the Wikidata ETL methods."""
 from .base import Base
-from therapy import APP_ROOT
 from therapy.schemas import SourceName, NamespacePrefix, \
     SourceIDAfterNamespace, SourceMeta
 import json
 import logging
-from pathlib import Path
 from wikibaseintegrator.wbi_functions import execute_sparql_query
 import datetime
 
@@ -61,16 +59,6 @@ SPARQL_QUERY = """
 
 class Wikidata(Base):
     """Extract, transform, and load the Wikidata source into therapy.db."""
-
-    def __init__(self,
-                 database,
-                 data_path: Path = APP_ROOT / 'data'):
-        """Initialize wikidata ETL class.
-
-        :param therapy.database.Database: DB instance to use
-        :param Path data_path: path to app data directory
-        """
-        super().__init__(database, data_path)
 
     def _extract_data(self):
         """Extract data from the Wikidata source."""

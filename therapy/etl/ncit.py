@@ -1,5 +1,5 @@
 """ETL methods for NCIt source"""
-from .base import Base
+from .base import Base, DEFAULT_DATA_PATH
 from therapy import APP_ROOT
 from therapy.schemas import SourceName, NamespacePrefix, Therapy, SourceMeta
 import logging
@@ -28,7 +28,7 @@ class NCIt(Base):
                  database,
                  src_dir: str = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2020/20.09d_Release/",  # noqa F401
                  src_fname: str = "Thesaurus_20.09d.OWL.zip",
-                 data_path: Path = APP_ROOT / 'data',
+                 data_path: Path = DEFAULT_DATA_PATH,
                  chemidplus_path: Path = APP_ROOT / 'data' / 'chemidplus'):
         """Override base class init method. Call ETL methods.
 

@@ -2,8 +2,7 @@
 
 Courtesy of the U.S. National Library of Medicine.
 """
-from .base import Base
-from therapy import APP_ROOT
+from .base import Base, DEFAULT_DATA_PATH
 from therapy.schemas import Drug, NamespacePrefix, SourceMeta, SourceName, \
     DataLicenseAttributes
 from pathlib import Path
@@ -24,7 +23,7 @@ class ChemIDplus(Base):
 
     def __init__(self,
                  database,
-                 data_path: Path = APP_ROOT / 'data',
+                 data_path: Path = DEFAULT_DATA_PATH,
                  src_server: str = 'ftp.nlm.nih.gov',
                  src_dir_path: str = 'nlmdata/.chemidlease/',
                  src_fname: str = 'CurrentChemID.xml'):

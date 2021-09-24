@@ -11,11 +11,13 @@ import logging
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
 
+DEFAULT_DATA_PATH = APP_ROOT / 'data'
+
 
 class Base(ABC):
     """The ETL base class."""
 
-    def __init__(self, database, data_path=APP_ROOT / 'data'):
+    def __init__(self, database, data_path=DEFAULT_DATA_PATH):
         """Extract from sources.
 
         :param Database database: application database object
