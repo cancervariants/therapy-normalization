@@ -6,6 +6,7 @@ from typing import List, Dict
 from therapy import APP_ROOT, ITEM_TYPES
 from therapy.schemas import Drug
 import logging
+import bioversions
 
 
 logger = logging.getLogger('therapy')
@@ -30,7 +31,6 @@ class Base(ABC):
 
     def perform_etl(self) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
-
         Returned concept IDs can be passed to Merge method for computing
         merged concepts.
 
@@ -42,6 +42,14 @@ class Base(ABC):
         self._transform_data()
         return self._added_ids
 
+    def get_latest_version(self) -> str:
+        """Get most recent version of source data. Should be overriden by
+        sources not added to Bioversions yet, or other special-case sources.
+        :return: most recent version, as a str
+        """
+        return bioversions.get_version(__class__.__name__)
+
+    @abstractmethod
     def _download_data(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -67,15 +75,12 @@ class Base(ABC):
     def _extract_data(self):
         """Get source file from data directory."""
         self._src_data_dir.mkdir(exist_ok=True, parents=True)
-        src_file_prefix = f'{type(self).__name__.lower()}_'
-        dir_files = [f for f in self._src_data_dir.iterdir()
-                     if f.name.startswith(src_file_prefix)]
-        if len(dir_files) == 0:
+        self._version = self.get_latest_version()
+        latest = list(self._src_data_dir.glob(f'*{self._version}*'))
+        if not latest:
             self._download_data()
-            dir_files = [f for f in self._src_data_dir.iterdir()
-                         if f.name.startswith(src_file_prefix)]
-        self._src_file = sorted(dir_files, reverse=True)[0]
-        self._version = self._src_file.stem.split('_', 1)[1]
+            latest = list(self._src_data_dir.glob(f'*{self._version}*'))
+        self._src_file = latest[0]
 
     @abstractmethod
     def _transform_data(self, *args, **kwargs):
@@ -126,8 +131,7 @@ class Base(ABC):
                 del therapy[field]
 
         self.database.add_record(therapy)
-        if self.in_normalize:
-            self._added_ids.append(concept_id)
+        self._added_ids.append(concept_id)
 
     @abstractmethod
     def _load_meta(self, *args, **kwargs):
