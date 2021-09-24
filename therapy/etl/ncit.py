@@ -1,14 +1,14 @@
 """ETL methods for NCIt source"""
-from .base import Base, DEFAULT_DATA_PATH
-from therapy import APP_ROOT
+from .base import Base
+from therapy import DownloadException
 from therapy.schemas import SourceName, NamespacePrefix, Therapy, SourceMeta
 import logging
 import owlready2 as owl
 from owlready2.entity import ThingClass
 from typing import Set
-from pathlib import Path
 import requests
 import zipfile
+import bioversions
 from os import remove, rename
 
 logger = logging.getLogger('therapy')
@@ -24,41 +24,36 @@ class NCIt(Base):
      * NCIt classes that are subclasses of C1909 (Pharmacologic Substance)
     """
 
-    def __init__(self,
-                 database,
-                 src_dir: str = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2020/20.09d_Release/",  # noqa F401
-                 src_fname: str = "Thesaurus_20.09d.OWL.zip",
-                 data_path: Path = DEFAULT_DATA_PATH,
-                 chemidplus_path: Path = APP_ROOT / 'data' / 'chemidplus'):
-        """Override base class init method. Call ETL methods.
-
-        :param therapy.database.Database database: app database instance
-        :param str src_dir: URL of remote directory containing source input
-        :param str src_fname: filename for source file within source directory
-        :param pathlib.Path data_path: path to local NCIt data directory
-        """
-        super().__init__(database, data_path)
-        self._SRC_DIR = src_dir
-        self._SRC_FNAME = src_fname
-        self._chemidplus_path = chemidplus_path
-
     def _download_data(self):
         """Download NCI thesaurus source file for loading into normalizer."""
-        logger.info('Downloading NCI Thesaurus...')
-        url = self._SRC_DIR + self._SRC_FNAME
+        base_dir_url = 'https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/'
+        latest_ncit = bioversions.get_version('ncit')
+        # ping base NCIt directory
+        self._SRC_URL = f'{base_dir_url}{latest_ncit}_Release/Thesaurus_{latest_ncit}.OWL.zip'  # noqa: E501
+        r_try = requests.get(self._SRC_URL)
+        if r_try.status_code != 200:
+            # ping NCIt archive directory
+            archive_ncit_url = f'{base_dir_url}archive/20{latest_ncit[0:2]}/{latest_ncit}_Release/Thesaurus_{latest_ncit}.OWL.zip'  # noqa: E501
+            archive_try = requests.get(archive_ncit_url)
+            if archive_try.status_code != 200:
+                msg = f'NCIt download failed: tried {self._SRC_URL} and {archive_ncit_url}'  # noqa: E501
+                logger.error(msg)
+                raise DownloadException(msg)
+            self._SRC_URL = archive_ncit_url
+
         zip_path = self._src_data_dir / 'ncit.zip'
-        response = requests.get(url, stream=True)
+        logger.info('Downloading NCI Thesaurus...')
+        response = requests.get(self._SRC_URL, stream=True)
         handle = open(zip_path, "wb")
         for chunk in response.iter_content(chunk_size=512):
             if chunk:
                 handle.write(chunk)
         handle.close()
+        logger.info('Finished downloading NCI Thesaurus')
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
             zip_ref.extractall(self._src_data_dir)
         remove(zip_path)
-        version = self._SRC_DIR.split('/')[-2].split('_')[0]
-        rename(self._src_data_dir / 'Thesaurus.owl', self._src_data_dir / f'ncit_{version}.owl')  # noqa: E501
-        logger.info('Finished downloading NCI Thesaurus')
+        rename(self._src_data_dir / 'Thesaurus.owl', self._src_data_dir / f'ncit_{latest_ncit}.owl')  # noqa: E501
 
     def _get_desc_nodes(self, node: ThingClass,
                         uq_nodes: Set[ThingClass]) -> Set[ThingClass]:
@@ -168,7 +163,7 @@ class NCIt(Base):
         metadata = SourceMeta(data_license="CC BY 4.0",
                               data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
                               version=self._version,
-                              data_url=self._SRC_DIR,
+                              data_url=self._SRC_URL.split('Thesaurus_')[0],
                               rdp_url='http://reusabledata.org/ncit.html',
                               data_license_attributes={
                                   'non_commercial': False,
