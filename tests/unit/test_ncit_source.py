@@ -30,7 +30,7 @@ def voglibose():
                     'A-71100', 'AO-128', 'Basen',
                     'N-(1,3-Dihydroxy-2-Propyl)Valiolamine', 'VOGLIBOSE'],
         'xrefs': ['chemidplus:83480-29-9'],
-        'associated_with': ['fda:S77P977AG8', 'umls:C0532578'],
+        'associated_with': ['unii:S77P977AG8', 'umls:C0532578'],
         'approval_status': None,
         'trade_names': []
     }
@@ -48,7 +48,7 @@ def apricoxib():
             'TG01', 'TP2001'
         ],
         'xrefs': ['chemidplus:197904-84-0'],
-        'associated_with': ['fda:5X5HB3VZ3Z', 'umls:C1737955'],
+        'associated_with': ['unii:5X5HB3VZ3Z', 'umls:C1737955'],
         'approval_status': None,
         'trade_names': []
     }
@@ -64,7 +64,7 @@ def trastuzumab():
         'concept_id': 'ncit:C1647',
         'aliases': [],
         'xrefs': ['chemidplus:180288-69-1'],
-        'associated_with': ['umls:C0728747', 'fda:P188ANX8CK'],
+        'associated_with': ['umls:C0728747', 'unii:P188ANX8CK'],
         'approval_status': None,
         'trade_names': []
     }
@@ -90,7 +90,6 @@ def therapeutic_procedure():
             "Treatment",
             "TX",
             "therapeutic intervention",
-            "treatment"
         ],
         "trade_names": [],
         "xrefs": [],
@@ -99,8 +98,36 @@ def therapeutic_procedure():
     return Drug(**params)
 
 
+# test correct CHEBI naming
+@pytest.fixture(scope='module')
+def ivermectin():
+    """Create a fixture for Ivermectin."""
+    params = {
+        "label_and_type": "ncit:c61796",
+        "src_name": "NCIt",
+        "item_type": "identity",
+        "concept_id": "ncit:C61796",
+        "label": "Ivermectin",
+        "aliases": [
+            "Stromectol",
+            "IVERMECTIN",
+            "Avermectin A1a, 5-O-demethyl-25-de(1-methylpropyl)-22,23-dihydro-25-(1-methylethyl)-",  # noqa: E501
+            "Sklice"
+        ],
+        "xrefs": [
+            "chemidplus:70288-86-7"
+        ],
+        "associated_with": [
+            "umls:C0022322",
+            "unii:8883YP2R6D",
+            "CHEBI:6078"
+        ]
+    }
+    return Drug(**params)
+
+
 def test_concept_id_match(ncit, voglibose, apricoxib, trastuzumab,
-                          therapeutic_procedure):
+                          therapeutic_procedure, ivermectin):
     """Test that concept ID query resolves to correct record."""
     response = ncit.search('ncit:C95221')
     compare_response(response, MatchType.CONCEPT_ID, voglibose)
@@ -126,9 +153,6 @@ def test_concept_id_match(ncit, voglibose, apricoxib, trastuzumab,
     response = ncit.search('C74021')
     compare_response(response, MatchType.CONCEPT_ID, apricoxib)
 
-    response = ncit.search('C74021')
-    compare_response(response, MatchType.CONCEPT_ID, apricoxib)
-
     response = ncit.search('ncit:C1647')
     compare_response(response, MatchType.CONCEPT_ID, trastuzumab)
 
@@ -143,6 +167,9 @@ def test_concept_id_match(ncit, voglibose, apricoxib, trastuzumab,
 
     response = ncit.search('ncit:C49236')
     compare_response(response, MatchType.CONCEPT_ID, therapeutic_procedure)
+
+    response = ncit.search('NCIT:C61796')
+    compare_response(response, MatchType.CONCEPT_ID, ivermectin)
 
 
 def test_label_match(ncit, voglibose, apricoxib, trastuzumab):
@@ -192,13 +219,13 @@ def test_xref_match(ncit, voglibose, apricoxib, trastuzumab):
 
 def test_assoc_with_match(ncit, voglibose, apricoxib, trastuzumab):
     """Test that associated_with query resolves to correct record."""
-    response = ncit.search('fda:S77P977AG8')
+    response = ncit.search('unii:S77P977AG8')
     compare_response(response, MatchType.ASSOCIATED_WITH, voglibose)
 
-    response = ncit.search('fda:5X5HB3VZ3Z')
+    response = ncit.search('unii:5X5HB3VZ3Z')
     compare_response(response, MatchType.ASSOCIATED_WITH, apricoxib)
 
-    response = ncit.search('fda:P188ANX8CK')
+    response = ncit.search('unii:P188ANX8CK')
     compare_response(response, MatchType.ASSOCIATED_WITH, trastuzumab)
 
 

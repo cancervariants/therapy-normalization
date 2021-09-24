@@ -144,9 +144,9 @@ class ChemIDplus(Base):
                              f'{loc.attrib["url"].split("/")[-1]}'
                         params['xrefs'].append(db)
                     elif loc.text == 'FDA SRS':
-                        fda = f'{NamespacePrefix.FDA.value}:' \
-                              f'{loc.attrib["url"].split("/")[-1]}'
-                        params['associated_with'].append(fda)
+                        unii = f'{NamespacePrefix.UNII.value}:' \
+                               f'{loc.attrib["url"].split("/")[-1]}'
+                        params['associated_with'].append(unii)
 
             # double-check and load full record
             assert Drug(**params)

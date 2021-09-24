@@ -1,8 +1,8 @@
 """This module provides methods for handling queries."""
 import re
-from typing import List, Dict, Set, Optional
+from typing import List, Dict, Set, Optional, Tuple
 from .version import __version__
-from therapy import SOURCES, NAMESPACE_LOOKUP, PROHIBITED_SOURCES, \
+from therapy import SOURCES, NAMESPACE_LOOKUP, \
     PREFIX_LOOKUP, ITEM_TYPES
 from uvicorn.config import logger
 from therapy.database import Database
@@ -76,7 +76,7 @@ class QueryHandler:
     def _add_record(self,
                     response: Dict[str, Dict],
                     item: Dict,
-                    match_type: str) -> (Dict, str):
+                    match_type: str) -> Tuple[Dict, str]:
         """Add individual record (i.e. Item in DynamoDB) to response object
 
         :param Dict[str, Dict] response: in-progress response object to return
@@ -113,7 +113,7 @@ class QueryHandler:
     def _fetch_records(self,
                        response: Dict[str, Dict],
                        concept_ids: Set[str],
-                       match_type: str) -> (Dict, Set):
+                       match_type: str) -> Tuple[Dict, Set]:
         """Return matched Drug records as a structured response for a given
         collection of concept IDs.
 
@@ -157,7 +157,7 @@ class QueryHandler:
     def _check_concept_id(self,
                           query: str,
                           resp: Dict,
-                          sources: Set[str]) -> (Dict, Set):
+                          sources: Set[str]) -> Tuple[Dict, Set]:
         """Check query for concept ID match. Should only find 0 or 1 matches.
 
         :param str query: search string
@@ -187,7 +187,7 @@ class QueryHandler:
                           query: str,
                           resp: Dict,
                           sources: Set[str],
-                          match_type: str) -> (Dict, Set):
+                          match_type: str) -> Tuple[Dict, Set]:
         """Check query for selected match type.
         :param str query: search string
         :param Dict resp: in-progress response object to return to client
@@ -343,7 +343,7 @@ class QueryHandler:
         response['source_meta_'] = sources_meta
         return response
 
-    def _record_order(self, record: Dict) -> (int, str):
+    def _record_order(self, record: Dict) -> Tuple[int, str]:
         """Construct priority order for matching. Only called by sort().
 
         :param Dict record: individual record item in iterable to sort
@@ -356,7 +356,6 @@ class QueryHandler:
     def _add_vod(self, response: Dict, record: Dict, query: str,
                  match_type: MatchType) -> Dict:
         """Format received DB record as VOD and update response object.
-
         :param Dict response: in-progress response object
         :param Dict record: record as stored in DB
         :param str query: query string from user request
@@ -367,9 +366,10 @@ class QueryHandler:
             'id': f'normalize.therapy:{quote(query.strip())}',
             'type': 'TherapyDescriptor',
             'therapy_id': record['concept_id'],
-            'label': record['label'],
+            'label': record.get('label'),
             'extensions': [],
         }
+
         if 'xrefs' in record:
             xrefs = record['xrefs']
             chembl_refs = [ref for ref in xrefs if ref.startswith('chembl')]
@@ -400,7 +400,7 @@ class QueryHandler:
                     "label": ind[1]
                 }
                 if ind[2]:
-                    ind_obj['disease_id']: ind[2]
+                    ind_obj['disease_id'] = ind[2]
                     inds_list.append(ind_obj)
                 else:
                     logger.warning(f"{ind[0]} has no disease ID")
@@ -470,7 +470,7 @@ class QueryHandler:
 
         # check concept ID match
         record = self.db.get_record_by_id(query_str, case_sensitive=False)
-        if record and record['src_name'].lower() not in PROHIBITED_SOURCES:
+        if record:
             merge_ref = record.get('merge_ref')
             if not merge_ref:
                 return self._add_vod(response, record, query,
@@ -491,8 +491,7 @@ class QueryHandler:
             matching_refs = self.db.get_records_by_type(query_str, match_type)
             matching_records = \
                 [self.db.get_record_by_id(m['concept_id'], False)
-                 for m in matching_refs
-                 if m['src_name'].lower() not in PROHIBITED_SOURCES]
+                 for m in matching_refs]
             matching_records.sort(key=self._record_order)
 
             # attempt merge ref resolution until successful

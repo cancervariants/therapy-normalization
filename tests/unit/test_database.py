@@ -56,7 +56,7 @@ def test_item_type(db):
     assert 'item_type' in item
     assert item['item_type'] == 'label'
 
-    filter_exp = Key('label_and_type').eq('fda:5x5hb3vz3z##associated_with')
+    filter_exp = Key('label_and_type').eq('unii:5x5hb3vz3z##associated_with')
     item = db.therapies.query(KeyConditionExpression=filter_exp)['Items'][0]
     assert 'item_type' in item
     assert item['item_type'] == 'associated_with'

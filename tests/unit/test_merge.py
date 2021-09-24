@@ -134,13 +134,12 @@ def phenobarbital_merged():
             "msh:D010634",
             "snomedct:373505007",
             "mmsl:5272",
-            "mthspl:YQE403BP4D",
+            "unii:YQE403BP4D",
             "fdbmk:001406",
             "mmsl:d00340",
             "atc:N03AA02",
-            "fda:YQE403BP4D",
             "umls:C0031412",
-            "chebi:CHEBI:8069",
+            "CHEBI:8069",
             "chembl:CHEMBL40"
         ],
         "label": "Phenobarbital",
@@ -159,23 +158,31 @@ def cisplatin_merged():
             "hemonc:105",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
-            "wikidata:Q47522001"
+            "wikidata:Q47522001",
+            "chembl:CHEMBL11359",
         ],
         "trade_names": [
             "Cisplatin",
-            "Platinol"
+            "Platinol",
+            "PLATINOL",
+            "PLATINOL-AQ"
         ],
         "aliases": [
             '1,2-Diaminocyclohexaneplatinum II citrate',
             'APRD00359',
             'CDDP',
             'CISplatin',
+            'Cisplatin',
+            'Cisplatinum',
+            'Cis-Platinum II',
             'Cis-DDP',
             'CIS-DDP',
             'DACP',
             'DDP',
             'Diamminodichloride, Platinum',
             'Dichlorodiammineplatinum',
+            'INT-230-6 COMPONENT CISPLATIN',
+            'INT230-6 COMPONENT CISPLATIN',
             'Platinum Diamminodichloride',
             'cis Diamminedichloroplatinum',
             'cis Platinum',
@@ -191,23 +198,23 @@ def cisplatin_merged():
             'cis-diamminedichloroplatinum(II)',
             'cis-diamminedichloroplatinum III',
             'NSC 119875',
+            'NSC-119875',
             'Platinol-AQ',
+            'Platinol-Aq',
             'Platinol'
         ],
         "label": "cisplatin",
         "associated_with": [
             "umls:C0008838",
-            "fda:Q20Q21Q62J",
             "usp:m17910",
             "vandf:4018139",
             "mesh:D002945",
-            "mthspl:Q20Q21Q62J",
+            "unii:Q20Q21Q62J",
             "mmsl:d00195",
             "atc:L01XA01",
             "mmsl:31747",
             "mmsl:4456",
             "pubchem.compound:5702198",
-            "unii:Q20Q21Q62J",
             "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
             "chembl:CHEMBL11359",
         ],
@@ -244,7 +251,7 @@ def spiramycin_merged():
         ],
         "associated_with": [
             "umls:C0037962",
-            "fda:71ODY0V87H"
+            "unii:71ODY0V87H"
         ],
     }
 
@@ -253,128 +260,145 @@ def spiramycin_merged():
 def record_id_groups():
     """Create fixture for concept group sets."""
     return {
-        "rxcui:8134": {
+        "rxcui:8134": {  # Phenobarbital
             "rxcui:8134",
             "ncit:C739",
             "chemidplus:50-06-6",
             "wikidata:Q407241",
             "drugbank:DB01174"
         },
-        "ncit:C739": {
+        "ncit:C739": {  # Phenobarbital
             "rxcui:8134",
             "ncit:C739",
             "chemidplus:50-06-6",
             "wikidata:Q407241",
             "drugbank:DB01174"
         },
-        "chemidplus:50-06-6": {
+        "chemidplus:50-06-6": {  # Phenobarbital
             "rxcui:8134",
             "ncit:C739",
             "chemidplus:50-06-6",
             "wikidata:Q407241",
             "drugbank:DB01174"
         },
-        "wikidata:Q407241": {
+        "wikidata:Q407241": {  # Phenobarbital
             "rxcui:8134",
             "ncit:C739",
             "chemidplus:50-06-6",
             "wikidata:Q407241",
             "drugbank:DB01174"
         },
-        "drugbank:DB01174": {
+        "drugbank:DB01174": {  # Phenobarbital
             "rxcui:8134",
             "ncit:C739",
             "chemidplus:50-06-6",
             "wikidata:Q407241",
             "drugbank:DB01174"
         },
-        "ncit:C839": {
+        "ncit:C839": {  # Spiramycin
             "ncit:C839",
             "chemidplus:8025-81-8",
         },
-        "chemidplus:8025-81-8": {
+        "chemidplus:8025-81-8": {  # Spiramycin
             "ncit:C839",
             "chemidplus:8025-81-8",
         },
-        "rxcui:2555": {
+        "rxcui:2555": {  # Cisplatin
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001",
             "drugbank:DB00515",
-            "hemonc:105"
+            "hemonc:105",
+            "chembl:CHEMBL11359"
         },
-        "ncit:C376": {
+        "ncit:C376": {  # Cisplatin
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001",
             "drugbank:DB00515",
-            "hemonc:105"
+            "hemonc:105",
+            "chembl:CHEMBL11359"
         },
-        "chemidplus:15663-27-1": {
+        "chemidplus:15663-27-1": {  # Cisplatin
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001",
             "drugbank:DB00515",
-            "hemonc:105"
+            "hemonc:105",
+            "chembl:CHEMBL11359"
         },
-        "wikidata:Q412415": {
+        "wikidata:Q412415": {  # Cisplatin
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001",
             "drugbank:DB00515",
-            "hemonc:105"
+            "hemonc:105",
+            "chembl:CHEMBL11359"
         },
-        "wikidata:Q47522001": {
+        "wikidata:Q47522001": {  # Cisplatin
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001",
             "drugbank:DB00515",
-            "hemonc:105"
+            "hemonc:105",
+            "chembl:CHEMBL11359"
         },
-        "drugbank:DB00515": {
+        "drugbank:DB00515": {  # Cisplatin
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001",
             "drugbank:DB00515",
-            "hemonc:105"
+            "hemonc:105",
+            "chembl:CHEMBL11359"
         },
-        "hemonc:105": {
+        "hemonc:105": {  # Cisplatin
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "wikidata:Q47522001",
             "drugbank:DB00515",
-            "hemonc:105"
+            "hemonc:105",
+            "chembl:CHEMBL11359"
         },
-        "rxcui:4126": {
+        "chembl:CHEMBL11359": {  # Cisplatin
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415",
+            "wikidata:Q47522001",
+            "drugbank:DB00515",
+            "hemonc:105",
+            "chembl:CHEMBL11359"
+        },
+        "rxcui:4126": {  # Amifostine
             "rxcui:4126",
             "wikidata:Q47521576",
             "drugbank:DB01143"
         },
-        "wikidata:Q47521576": {
+        "wikidata:Q47521576": {  # Amifostine
             "rxcui:4126",
             "wikidata:Q47521576",
             "drugbank:DB01143"
         },
-        "drugbank:DB01143": {
+        "drugbank:DB01143": {  # Amifostine
             "rxcui:4126",
             "wikidata:Q47521576",
             "drugbank:DB01143"
         },
-        "ncit:C49236": {
+        "ncit:C49236": {  # Therapeutic Procedure
             "ncit:C49236"
         }
     }
