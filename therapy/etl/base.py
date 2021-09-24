@@ -4,6 +4,7 @@ from ftplib import FTP
 from pathlib import Path
 from typing import List, Dict
 from therapy import APP_ROOT, ITEM_TYPES
+from therapy.database import Database
 from therapy.schemas import Drug
 import logging
 import bioversions
@@ -18,7 +19,8 @@ DEFAULT_DATA_PATH = APP_ROOT / 'data'
 class Base(ABC):
     """The ETL base class."""
 
-    def __init__(self, database, data_path=DEFAULT_DATA_PATH):
+    def __init__(self, database: Database,
+                 data_path: Path = DEFAULT_DATA_PATH):
         """Extract from sources.
 
         :param Database database: application database object
@@ -76,10 +78,10 @@ class Base(ABC):
         """Get source file from data directory."""
         self._src_data_dir.mkdir(exist_ok=True, parents=True)
         self._version = self.get_latest_version()
-        latest = list(self._src_data_dir.glob(f'*{self._version}*'))
+        latest = list(self._src_data_dir.glob(f'*_{self._version}.*'))
         if not latest:
             self._download_data()
-            latest = list(self._src_data_dir.glob(f'*{self._version}*'))
+            latest = list(self._src_data_dir.glob(f'*_{self._version}.*'))
         self._src_file = latest[0]
 
     @abstractmethod
