@@ -8,7 +8,6 @@ from owlready2.entity import ThingClass
 from typing import Set
 import requests
 import zipfile
-import bioversions
 from os import remove, rename
 
 logger = logging.getLogger('therapy')
@@ -27,33 +26,33 @@ class NCIt(Base):
     def _download_data(self):
         """Download NCI thesaurus source file for loading into normalizer."""
         base_dir_url = 'https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/'
-        latest_ncit = bioversions.get_version('ncit')
         # ping base NCIt directory
-        self._SRC_URL = f'{base_dir_url}{latest_ncit}_Release/Thesaurus_{latest_ncit}.OWL.zip'  # noqa: E501
-        r_try = requests.get(self._SRC_URL)
+        self._src_url = f'{base_dir_url}{self._version}_Release/Thesaurus_{self._version}.OWL.zip'  # noqa: E501
+        r_try = requests.get(self._src_url)
         if r_try.status_code != 200:
             # ping NCIt archive directory
-            archive_ncit_url = f'{base_dir_url}archive/20{latest_ncit[0:2]}/{latest_ncit}_Release/Thesaurus_{latest_ncit}.OWL.zip'  # noqa: E501
+            archive_ncit_url = f'{base_dir_url}archive/20{self._version[0:2]}/{self._version}_Release/Thesaurus_{self._version}.OWL.zip'  # noqa: E501
             archive_try = requests.get(archive_ncit_url)
             if archive_try.status_code != 200:
-                msg = f'NCIt download failed: tried {self._SRC_URL} and {archive_ncit_url}'  # noqa: E501
+                msg = f'NCIt download failed: tried {self._src_url} and {archive_ncit_url}'  # noqa: E501
                 logger.error(msg)
                 raise DownloadException(msg)
-            self._SRC_URL = archive_ncit_url
+            self._src_url = archive_ncit_url
 
         zip_path = self._src_data_dir / 'ncit.zip'
         logger.info('Downloading NCI Thesaurus...')
-        response = requests.get(self._SRC_URL, stream=True)
+        response = requests.get(self._src_url, stream=True)
         handle = open(zip_path, "wb")
         for chunk in response.iter_content(chunk_size=512):
             if chunk:
                 handle.write(chunk)
         handle.close()
         logger.info('Finished downloading NCI Thesaurus')
+
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
             zip_ref.extractall(self._src_data_dir)
         remove(zip_path)
-        rename(self._src_data_dir / 'Thesaurus.owl', self._src_data_dir / f'ncit_{latest_ncit}.owl')  # noqa: E501
+        rename(self._src_data_dir / 'Thesaurus.owl', self._src_data_dir / f'ncit_{self._version}.owl')  # noqa: E501
 
     def _get_desc_nodes(self, node: ThingClass,
                         uq_nodes: Set[ThingClass]) -> Set[ThingClass]:
@@ -163,7 +162,7 @@ class NCIt(Base):
         metadata = SourceMeta(data_license="CC BY 4.0",
                               data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
                               version=self._version,
-                              data_url=self._SRC_URL.split('Thesaurus_')[0],
+                              data_url=self._src_url.split('Thesaurus_')[0],
                               rdp_url='http://reusabledata.org/ncit.html',
                               data_license_attributes={
                                   'non_commercial': False,
