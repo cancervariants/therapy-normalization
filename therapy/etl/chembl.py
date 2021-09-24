@@ -1,12 +1,12 @@
 """This module defines the ChEMBL ETL methods."""
 from .base import Base
-from therapy import APP_ROOT
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, \
     SourceMeta
 import logging
-import tarfile
+import re
 import sqlite3
 import os
+import chembl_downloader
 import shutil
 
 logger = logging.getLogger('therapy')
@@ -16,46 +16,34 @@ logger.setLevel(logging.DEBUG)
 class ChEMBL(Base):
     """ETL the ChEMBL source into therapy.db."""
 
-    def _extract_data(self, *args, **kwargs):
+    def _extract_data(self):
         """Extract data from the ChEMBL source."""
-        logger.info('Extracting chembl_27.db...')
-        if 'data_path' in kwargs:
-            chembl_db = kwargs['data_path']
+        self._src_data_dir.mkdir(exist_ok=True, parents=True)
+        chembl_files = list(self._src_data_dir.glob('chembl_*.db'))
+        if chembl_files:
+            chembl_path = sorted(chembl_files, reverse=True)[0]
+            search_results = re.search(r'chembl_([0-9]*).db', chembl_path.name)
+            self._version = search_results.group(1)
         else:
-            chembl_db = self._src_data_dir / 'chembl_27.db'
-        if not chembl_db.exists():
-            chembl_archive = self._src_data_dir / 'chembl_27_sqlite.tar.gz'
-            chembl_archive.parent.mkdir(exist_ok=True, parents=True)
             self._download_data()
-            tar = tarfile.open(chembl_archive)
-            tar.extractall(path=APP_ROOT / 'data' / 'chembl')
-            tar.close()
-
-            # Remove unused directories and files
-            chembl_27_dir = self._src_data_dir / 'chembl_27'
-            temp_chembl = chembl_27_dir / 'chembl_27_sqlite' / 'chembl_27.db'
-            chembl_db = self._src_data_dir / 'chembl_27.db'
-            shutil.move(temp_chembl, chembl_db)
-            os.remove(chembl_archive)
-            shutil.rmtree(chembl_27_dir)
-        conn = sqlite3.connect(chembl_db)
+            chembl_path = list(self._src_data_dir.glob('chembl_*.db'))[0]
+        conn = sqlite3.connect(chembl_path)
         conn.row_factory = sqlite3.Row
         self._conn = conn
         self._cursor = conn.cursor()
-        assert chembl_db.exists()
-        logger.info('Finished extracting chembl_27.db.')
 
     def _download_data(self):
-        """Download ChEMBL data from FTP."""
-        logger.info(
-            'Downloading ChEMBL v27, this will take a few minutes.')
-        self._ftp_download('ftp.ebi.ac.uk',
-                           'pub/databases/chembl/ChEMBLdb/releases/chembl_27',
-                           self._src_data_dir,
-                           'chembl_27_sqlite.tar.gz')
+        """Download latest ChEMBL database file from EBI."""
+        os.environ['PYSTOW_HOME'] = str(self._src_data_dir.parent.absolute())
+        logger.info('Downloading latest ChEMBL version...')
+        tmp_path = chembl_downloader.download_extract_sqlite()
+        logger.info('ChEMBL download complete.')
+        self._version = chembl_downloader.latest()
+        shutil.move(tmp_path, self._src_data_dir)
+        shutil.rmtree(tmp_path.parent.parent.parent)
 
     def _transform_data(self):
-        """Transform SQLite data to JSON."""
+        """Transform SQLite data to temporary JSON."""
         self._create_dictionary_synonyms_table()
         self._create_trade_names_table()
         self._create_temp_table()
@@ -194,7 +182,7 @@ class ChEMBL(Base):
         """Add ChEMBL metadata."""
         metadata = SourceMeta(data_license='CC BY-SA 3.0',
                               data_license_url='https://creativecommons.org/licenses/by-sa/3.0/',  # noqa: E501
-                              version='27',
+                              version=self._version,
                               data_url='http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
                               rdp_url='http://reusabledata.org/chembl.html',
                               data_license_attributes={
