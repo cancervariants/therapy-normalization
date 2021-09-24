@@ -1,12 +1,9 @@
 """This module defines the DrugBank ETL methods."""
-from therapy import DownloadException
 from therapy.schemas import SourceName, SourceMeta, NamespacePrefix
 from therapy.etl.base import Base
 import logging
 import csv
-import bs4
 import requests
-import re
 import zipfile
 import shutil
 from io import BytesIO
@@ -20,22 +17,9 @@ class DrugBank(Base):
 
     def _download_data(self):
         """Download DrugBank source data."""
-        logger.info("Downloading DrugBank source data...")
+        logger.info('Fetching DrugBank source data...')
+        url = f'https://go.drugbank.com/releases/{self._version.replace(".", "-")}/downloads/all-drugbank-vocabulary'  # noqa: E501
 
-        # get newest version number
-        r = requests.get('https://go.drugbank.com/release_notes')
-        if r.status_code == 200:
-            soup = bs4.BeautifulSoup(r.content, features='lxml')
-        else:
-            logger.error(f'DrugBank version fetch failed with status code: '
-                         f'{r.status_code}')
-            raise DownloadException
-        most_recent = soup.find('div', {'class': 'card-header'})
-        version = re.search(r'[0-9]+\.[0-9]+\.[0-9]+',
-                            most_recent.contents[0]).group()
-        url = f'https://go.drugbank.com/releases/{version.replace(".", "-")}/downloads/all-drugbank-vocabulary'  # noqa: E501
-
-        # download file
         r = requests.get(url)
         if r.status_code == 200:
             zip_file = zipfile.ZipFile(BytesIO(r.content))
@@ -48,10 +32,10 @@ class DrugBank(Base):
         temp_dir = self._src_data_dir / 'temp_drugbank'
         zip_file.extractall(temp_dir)
         temp_file = temp_dir / 'drugbank vocabulary.csv'
-        csv_file = self._src_data_dir / f'drugbank_{version}.csv'
+        csv_file = self._src_data_dir / f'drugbank_{self._version}.csv'
         shutil.move(temp_file, csv_file)
         shutil.rmtree(temp_dir)
-        logger.info("DrugBank source data download complete.")
+        logger.info('Finished fetching DrugBank.')
 
     def _load_meta(self):
         """Add DrugBank metadata."""
