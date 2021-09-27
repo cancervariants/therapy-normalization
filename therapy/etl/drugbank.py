@@ -7,6 +7,7 @@ import requests
 import zipfile
 import shutil
 from io import BytesIO
+from typing import Dict, Any
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -62,7 +63,7 @@ class DrugBank(Base):
             next(reader)  # skip header
             for row in reader:
                 # get concept ID
-                params = {
+                params: Dict[str, Any] = {
                     'concept_id': f'{NamespacePrefix.DRUGBANK.value}:{row[0]}',
                 }
 
