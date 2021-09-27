@@ -29,20 +29,20 @@ class NCIt(Base):
         base_dir_url = 'https://evs.nci.nih.gov/ftp1/NCI_Thesaurus'
         # ping base NCIt directory
         release_path = f'{self._version}_Release/Thesaurus_{self._version}.OWL.zip'  # noqa: E501
-        self._src_url = f'{base_dir_url}/{release_path}'
-        r_try = requests.get(self._src_url)
+        src_url = f'{base_dir_url}/{release_path}'
+        r_try = requests.get(src_url)
         if r_try.status_code != 200:
             # ping NCIt archive directory
             archive_ncit_url = f'{base_dir_url}/archive/20{self._version[0:2]}/release_path'  # noqa: E501
             archive_try = requests.get(archive_ncit_url)
             if archive_try.status_code != 200:
-                msg = f'NCIt download failed: tried {self._src_url} and {archive_ncit_url}'  # noqa: E501
+                msg = f'NCIt download failed: tried {src_url} and {archive_ncit_url}'  # noqa: E501
                 logger.error(msg)
                 raise DownloadException(msg)
-            self._src_url = archive_ncit_url
+            src_url = archive_ncit_url
 
         zip_path = self._src_data_dir / 'ncit.zip'
-        response = requests.get(self._src_url, stream=True)
+        response = requests.get(src_url, stream=True)
         handle = open(zip_path, "wb")
         for chunk in response.iter_content(chunk_size=512):
             if chunk:
@@ -163,7 +163,7 @@ class NCIt(Base):
         metadata = SourceMeta(data_license="CC BY 4.0",
                               data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
                               version=self._version,
-                              data_url=self._src_url.split('Thesaurus_')[0],
+                              data_url='https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/',  # noqa: E501
                               rdp_url='http://reusabledata.org/ncit.html',
                               data_license_attributes={
                                   'non_commercial': False,
