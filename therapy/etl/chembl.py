@@ -5,7 +5,6 @@ from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, \
 import logging
 import sqlite3
 import os
-import bioversions
 import chembl_downloader
 import shutil
 
@@ -16,29 +15,22 @@ logger.setLevel(logging.DEBUG)
 class ChEMBL(Base):
     """ETL the ChEMBL source into therapy.db."""
 
+    def _download_data(self):
+        """Download latest ChEMBL database file from EBI."""
+        logger.info('Fetching latest ChEMBL version...')
+        os.environ['PYSTOW_HOME'] = str(self._src_data_dir.parent.absolute())
+        tmp_path = chembl_downloader.download_extract_sqlite()
+        shutil.move(tmp_path, self._src_data_dir)
+        shutil.rmtree(tmp_path.parent.parent.parent)
+        logger.info('Finished fetching ChEMBL.')
+
     def _extract_data(self):
         """Extract data from the ChEMBL source."""
-        self._src_data_dir.mkdir(exist_ok=True, parents=True)
-        latest_chembl = bioversions.search('chembl')
-        latest_fname = f'chembl_{latest_chembl}.db'
-        chembl_path = self._src_data_dir / latest_fname
-        if not chembl_path.exists():
-            self._download_data()
-            chembl_path = list(self._src_data_dir.glob('chembl_*.db'))[0]
-        conn = sqlite3.connect(chembl_path)
+        super()._extract_data()
+        conn = sqlite3.connect(self._src_file)
         conn.row_factory = sqlite3.Row
         self._conn = conn
         self._cursor = conn.cursor()
-
-    def _download_data(self):
-        """Download latest ChEMBL database file from EBI."""
-        os.environ['PYSTOW_HOME'] = str(self._src_data_dir.parent.absolute())
-        logger.info('Downloading latest ChEMBL version...')
-        tmp_path = chembl_downloader.download_extract_sqlite()
-        logger.info('ChEMBL download complete.')
-        self._version = chembl_downloader.latest()
-        shutil.move(tmp_path, self._src_data_dir)
-        shutil.rmtree(tmp_path.parent.parent.parent)
 
     def _transform_data(self):
         """Transform SQLite data to temporary JSON."""
