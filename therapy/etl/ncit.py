@@ -25,13 +25,15 @@ class NCIt(Base):
 
     def _download_data(self):
         """Download NCI thesaurus source file for loading into normalizer."""
-        base_dir_url = 'https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/'
+        logger.info('Fetching NCI Thesaurus...')
+        base_dir_url = 'https://evs.nci.nih.gov/ftp1/NCI_Thesaurus'
         # ping base NCIt directory
-        self._src_url = f'{base_dir_url}{self._version}_Release/Thesaurus_{self._version}.OWL.zip'  # noqa: E501
+        release_path = f'{self._version}_Release/Thesaurus_{self._version}.OWL.zip'  # noqa: E501
+        self._src_url = f'{base_dir_url}/{release_path}'
         r_try = requests.get(self._src_url)
         if r_try.status_code != 200:
             # ping NCIt archive directory
-            archive_ncit_url = f'{base_dir_url}archive/20{self._version[0:2]}/{self._version}_Release/Thesaurus_{self._version}.OWL.zip'  # noqa: E501
+            archive_ncit_url = f'{base_dir_url}/archive/20{self._version[0:2]}/release_path'  # noqa: E501
             archive_try = requests.get(archive_ncit_url)
             if archive_try.status_code != 200:
                 msg = f'NCIt download failed: tried {self._src_url} and {archive_ncit_url}'  # noqa: E501
@@ -40,19 +42,18 @@ class NCIt(Base):
             self._src_url = archive_ncit_url
 
         zip_path = self._src_data_dir / 'ncit.zip'
-        logger.info('Downloading NCI Thesaurus...')
         response = requests.get(self._src_url, stream=True)
         handle = open(zip_path, "wb")
         for chunk in response.iter_content(chunk_size=512):
             if chunk:
                 handle.write(chunk)
         handle.close()
-        logger.info('Finished downloading NCI Thesaurus')
 
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
             zip_ref.extractall(self._src_data_dir)
         remove(zip_path)
         rename(self._src_data_dir / 'Thesaurus.owl', self._src_data_dir / f'ncit_{self._version}.owl')  # noqa: E501
+        logger.info('Finished fetching NCI Thesaurus')
 
     def _get_desc_nodes(self, node: ThingClass,
                         uq_nodes: Set[ThingClass]) -> Set[ThingClass]:
