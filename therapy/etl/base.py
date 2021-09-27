@@ -75,7 +75,13 @@ class Base(ABC):
             raise Exception(e)
 
     def _extract_data(self):
-        """Get source file from data directory."""
+        """Get source file from data directory.
+        This method should create the source data directory if needed,
+        set the data version number, check that local data is up-to-date and
+        acquire the latest data if needed, and set the `self._src_file`
+        attribute to the source file location. Child classes could
+        add additional functions, e.g. setting up DB cursors.
+        """
         self._src_data_dir.mkdir(exist_ok=True, parents=True)
         self._version = self.get_latest_version()
         latest = list(self._src_data_dir.glob(f'*_{self._version}.*'))
@@ -86,6 +92,9 @@ class Base(ABC):
 
     @abstractmethod
     def _transform_data(self, *args, **kwargs):
+        """Prepare source data for loading into DB. Individually extract each
+        record and call the Base class's `_load_therapy()` method.
+        """
         raise NotImplementedError
 
     def _load_therapy(self, therapy: Dict):
