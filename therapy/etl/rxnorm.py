@@ -5,15 +5,13 @@ Library of Medicine (NLM), National Institutes of Health, Department of Health
  and Human Services; NLM is not responsible for the product and does not
  endorse or recommend this or any other product."
 """
-from .base import Base, DEFAULT_DATA_PATH
+from .base import Base
 from therapy import APP_ROOT, DownloadException, XREF_SOURCES, \
     ASSOC_WITH_SOURCES, ITEM_TYPES
-import therapy
-from therapy.database import Database
 from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
     ApprovalStatus
+from boto3.dynamodb.table import BatchWriter
 import csv
-import datetime
 import logging
 from os import environ, remove
 import subprocess
@@ -21,7 +19,8 @@ import shutil
 import zipfile
 import re
 import yaml
-from pathlib import Path
+import bioversions
+from typing import Dict, List
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -45,117 +44,59 @@ RXNORM_XREFS = ['ATC', 'CVX', 'DRUGBANK', 'MMSL', 'MSH', 'MTHCMSFRF', 'MTHSPL',
 class RxNorm(Base):
     """Extract, transform, and load the RxNorm source."""
 
-    def __init__(self,
-                 database: Database,
-                 data_path=DEFAULT_DATA_PATH,
-                 data_url='https://www.nlm.nih.gov/research/umls/'
-                          'rxnorm/docs/rxnormfiles.html'):
-        """Initialize the RxNorm ETL class.
-
-        :param Database database: Access to DynamoDB.
-        :param Path data_path: path to app data directory
-        :param str data_url: URL to RxNorm data files.
-        """
-        super().__init__(database, data_path)
-        self._data_url = data_url
-
-    def _extract_data(self, *args, **kwargs):
-        """Extract data from the RxNorm source."""
-        logger.info('Extracting RxNorm...')
-        if 'data_path' in kwargs:
-            self._data_src = kwargs['data_path']
-        else:
-            rxn_dir = APP_ROOT / 'rxnorm'
-            rxn_dir.mkdir(exist_ok=True, parents=True)
-            rxn_files = list(rxn_dir.iterdir())
-            if len(rxn_files) == 0:
-                self._download_data(rxn_dir)
-
-            # file might already exist
-            files = sorted([fn for fn in rxn_dir.iterdir() if fn.name.
-                           startswith('rxnorm_') and fn.name.endswith('.RRF')],
-                           reverse=True)
-            file_found = False
-            for file in files:
-                version = str(file).split('_')[-1].split('.')[0]
-                try:
-                    datetime.datetime.strptime(version, '%Y%m%d')
-                    self._data_src = file
-                    self._version = version
-                    file_found = True
-                    break
-                except ValueError:
-                    pass
-            if not file_found:
-                self._download_data(rxn_dir)
-            self._create_drug_form_yaml(rxn_dir)
-        logger.info('Successfully extracted RxNorm.')
-
-    def _download_data(self, rxn_dir):
-        """Download RxNorm data file.
-
-        :param Path rxn_dir: Path to RxNorm data directory.
+    def _download_data(self):
+        """Download latest RxNorm data file.
+        :raises DownloadException: if API Key is not defined in the
+            environment.
         """
         logger.info('Downloading RxNorm...')
         if 'RXNORM_API_KEY' in environ.keys():
-            uri = 'https://download.nlm.nih.gov/umls/kss/' \
-                  'rxnorm/RxNorm_full_current.zip'
+            url = bioversions.resolve('rxnorm').homepage
+            if not url:
+                raise ValueError('Could not resolve RxNorm homepage')
 
-            rxnorm_path = str(Path(therapy.__file__).resolve().parents[0] / 'data' / 'rxnorm' / 'RxNorm_full_current.zip')  # noqa: E501
-            environ['RXNORM_PATH'] = rxnorm_path
+            zip_path = str(self._src_data_dir / 'rxnorm.zip')
+            environ['RXNORM_PATH'] = zip_path
 
             # Source:
             # https://documentation.uts.nlm.nih.gov/automating-downloads.html
-            subprocess.call(['bash', f'{APP_ROOT}/etl/'
-                                     f'rxnorm_download.sh', uri])
+            subprocess.call(['bash', f'{APP_ROOT}/etl/rxnorm_download.sh',
+                             url])
 
-            with zipfile.ZipFile(rxnorm_path, 'r') as zf:
-                zf.extractall(rxn_dir)
+            with zipfile.ZipFile(zip_path, 'r') as zf:
+                zf.extractall(self._src_data_dir)
 
-            remove(rxnorm_path)
-            shutil.rmtree(rxn_dir / 'prescribe')
-            shutil.rmtree(rxn_dir / 'scripts')
+            remove(zip_path)
+            shutil.rmtree(self._src_data_dir / 'prescribe')
+            shutil.rmtree(self._src_data_dir / 'scripts')
 
-            readme = sorted([fn for fn in rxn_dir.iterdir() if fn.name.
-                            startswith('Readme')])[0]
-
-            # get version
-            version = str(readme).split('/')[-1].split('.')[0].split('_')[-1]
-
-            self._version = datetime.datetime.strptime(
-                version, '%m%d%Y').strftime('%Y%m%d')
-            remove(readme)
-
-            temp_file = rxn_dir / 'rrf' / 'RXNCONSO.RRF'
-            self._data_src = rxn_dir / f"rxnorm_{self._version}.RRF"
+            temp_file = self._src_data_dir / 'rrf' / 'RXNCONSO.RRF'
+            self._data_src = self._src_data_dir / f"rxnorm_{self._version}.RRF"
             shutil.move(temp_file, self._data_src)
-            shutil.rmtree(rxn_dir / 'rrf')
+            shutil.rmtree(self._src_data_dir / 'rrf')
+            self._create_drug_form_yaml()
+            logger.info("Finished fetching RxNorm data.")
         else:
             logger.error('Could not find RXNORM_API_KEY in environment '
                          'variables.')
             raise DownloadException("RXNORM_API_KEY not found.")
 
-    def _create_drug_form_yaml(self, rxn_dir):
-        """Create a YAML file containing RxNorm drug form values.
-
-        :param Path rxn_dir: Path to RxNorm data directory.
-        """
-        self._drug_forms_file = rxn_dir / 'drug_forms.yaml'
-        if not self._drug_forms_file.exists():
-            dfs = list()
-            with open(self._data_src) as f:
-                data = csv.reader(f, delimiter='|')
-                for row in data:
-                    if row[12] == 'DF' and row[11] == 'RXNORM':
-                        if row[14] not in dfs:
-                            dfs.append(row[14])
-
-            with open(self._drug_forms_file, 'w') as file:
-                yaml.dump(dfs, file)
+    def _create_drug_form_yaml(self):
+        """Create a YAML file containing RxNorm drug form values."""
+        self._drug_forms = self._src_data_dir / f'rxnorm_drug_forms_{self._version}.yaml'  # noqa: E501
+        dfs = []
+        with open(self._data_src) as f:
+            data = csv.reader(f, delimiter='|')
+            for row in data:
+                if row[12] == 'DF' and row[11] == 'RXNORM':
+                    if row[14] not in dfs:
+                        dfs.append(row[14])
+        with open(self._drug_forms, 'w') as file:
+            yaml.dump(dfs, file)
 
     def _transform_data(self):
         """Transform the RxNorm source."""
-        with open(self._drug_forms_file, 'r') as file:
+        with open(self._drug_forms, 'r') as file:
             drug_forms = yaml.safe_load(file)
 
         with open(self._data_src) as f:
@@ -191,7 +132,7 @@ class RxNorm(Base):
                             self._add_xref_assoc(params, row)
 
             with self.database.therapies.batch_writer() as batch:
-                for key, value in data.items():
+                for value in data.values():
                     if 'label' in value:
                         self._get_trade_names(value, precise_ingredient,
                                               ingredient_brands, sbdfs)
@@ -208,7 +149,7 @@ class RxNorm(Base):
                         assert Drug(**params)
                         self._load_therapy(params)
 
-    def _get_brands(self, row, ingredient_brands):
+    def _get_brands(self, row: List, ingredient_brands: Dict):
         """Add ingredient and brand to ingredient_brands.
 
         :param list row: A row in the RxNorm data file.
@@ -230,8 +171,8 @@ class RxNorm(Base):
             self._add_term(ingredient_brands, brand,
                            ingredients.strip())
 
-    def _get_trade_names(self, value, precise_ingredient, ingredient_brands,
-                         sbdfs):
+    def _get_trade_names(self, value: Dict, precise_ingredient: Dict,
+                         ingredient_brands: Dict, sbdfs: Dict):
         """Get trade names for a given ingredient.
 
         :param dict value: Therapy attributes
@@ -261,7 +202,7 @@ class RxNorm(Base):
                 self._add_term(value, tn, 'trade_names')
 
     @staticmethod
-    def _load_brand_concepts(value, brands, batch):
+    def _load_brand_concepts(value: Dict, brands: Dict, batch: BatchWriter):
         """Connect brand names to a concept and load into the database.
 
         :params dict value: A transformed therapy record
@@ -279,8 +220,8 @@ class RxNorm(Base):
                         'item_type': 'rx_brand'
                     })
 
-    def _add_str_field(self, params, row, precise_ingredient, drug_forms,
-                       sbdfs):
+    def _add_str_field(self, params: Dict, row: List, precise_ingredient: Dict,
+                       drug_forms: List, sbdfs: Dict):
         """Differentiate STR field.
 
         :param dict params: A transformed therapy record.
@@ -321,7 +262,7 @@ class RxNorm(Base):
                 self._add_term(precise_ingredient, term, row[13])
 
     @staticmethod
-    def _add_term(params, term, label_type):
+    def _add_term(params, term: str, label_type: str):
         """Add a single term to a therapy record in an associated field.
 
         :param dict params: A transformed therapy record.
@@ -334,7 +275,7 @@ class RxNorm(Base):
         else:
             params[label_type] = [term]
 
-    def _add_xref_assoc(self, params, row):
+    def _add_xref_assoc(self, params: Dict, row: List):
         """Add xref or associated_with to therapy.
 
         :param dict params: A transformed therapy record.
@@ -365,7 +306,7 @@ class RxNorm(Base):
             data_license='UMLS Metathesaurus',
             data_license_url='https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html',  # noqa: E501
             version=self._version,
-            data_url=self._data_url,
+            data_url=bioversions.resolve('rxnorm').homepage,
             rdp_url=None,
             data_license_attributes={
                 'non_commercial': False,

@@ -17,7 +17,14 @@ DEFAULT_DATA_PATH = APP_ROOT / 'data'
 
 
 class Base(ABC):
-    """The ETL base class."""
+    """The ETL base class.
+
+    Default methods are declared to provide basic functions for core source
+    data-gathering phases (extraction, transformation, loading), as well
+    as some common subtasks (getting most recent version, downloading data
+    from an FTP server). Classes should expand or reimplement these methods as
+    needed.
+    """
 
     def __init__(self, database: Database,
                  data_path: Path = DEFAULT_DATA_PATH):
@@ -77,10 +84,10 @@ class Base(ABC):
     def _extract_data(self):
         """Get source file from data directory.
         This method should create the source data directory if needed,
-        set the data version number, check that local data is up-to-date and
-        acquire the latest data if needed, and set the `self._src_file`
-        attribute to the source file location. Child classes could
-        add additional functions, e.g. setting up DB cursors.
+        acquire the most recent version number, check that local data is
+        up-to-date and retrieve the latest data if needed, and set the
+        `self._src_file` attribute to the source file location. Child classes
+        could add additional functions, e.g. setting up DB cursors.
         """
         self._src_data_dir.mkdir(exist_ok=True, parents=True)
         self._version = self.get_latest_version()
