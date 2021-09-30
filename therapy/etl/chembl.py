@@ -6,6 +6,7 @@ import logging
 import sqlite3
 import os
 import chembl_downloader
+import bioversions
 import shutil
 
 logger = logging.getLogger('therapy')
@@ -173,7 +174,7 @@ class ChEMBL(Base):
         metadata = SourceMeta(data_license='CC BY-SA 3.0',
                               data_license_url='https://creativecommons.org/licenses/by-sa/3.0/',  # noqa: E501
                               version=self._version,
-                              data_url='http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
+                              data_url=bioversions.resolve('chembl').homepage,  # noqa: E501
                               rdp_url='http://reusabledata.org/chembl.html',
                               data_license_attributes={
                                   'non_commercial': False,
