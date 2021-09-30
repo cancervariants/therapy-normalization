@@ -94,12 +94,11 @@ def phenobarbital():
                     "mmsl:2390",
                     "mesh:D010634",
                     "mmsl:5272",
-                    "mthspl:YQE403BP4D",
                     "mmsl:d00340",
                     "atc:N03AA02",
-                    "fda:YQE403BP4D",
+                    "unii:YQE403BP4D",
                     "umls:C0031412",
-                    "chebi:CHEBI:8069",
+                    "CHEBI:8069",
                     "chembl:CHEMBL40"
                 ]
             },
@@ -159,20 +158,18 @@ def cisplatin():
                 "type": "Extension",
                 "name": "associated_with",
                 "value": [
-                    "mthspl:Q20Q21Q62J",
                     "mmsl:31747",
                     "mmsl:4456",
                     "usp:m17910",
-                    "chebi:CHEBI:27899",
+                    "CHEBI:27899",
                     "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
                     "mmsl:d00195",
-                    "unii:Q20Q21Q62J",
                     "mesh:D002945",
                     "atc:L01XA01",
                     "vandf:4018139",
                     "pubchem.compound:5702198",
                     "umls:C0008838",
-                    "fda:Q20Q21Q62J",
+                    "unii:Q20Q21Q62J",
                     "chembl:CHEMBL11359",
                 ]
             },
@@ -234,7 +231,7 @@ def spiramycin():
                 "name": "associated_with",
                 "value": [
                     "umls:C0037962",
-                    "fda:71ODY0V87H",
+                    "unii:71ODY0V87H",
                     "chembl:CHEMBL1256397"
                 ]
             }
@@ -263,7 +260,6 @@ def therapeutic_procedure():
             "Treatment",
             "TX",
             "therapeutic intervention",
-            "treatment"
         ],
         "extensions": [
             {

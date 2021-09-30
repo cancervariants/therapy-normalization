@@ -1,5 +1,4 @@
 """Create concept groups and merged records."""
-from therapy import PROHIBITED_SOURCES
 from therapy.schemas import SourcePriority
 from therapy.database import Database
 from typing import Set, Dict
@@ -77,8 +76,7 @@ class Merge:
         """
         xrefs = set()
         for xref in record.get('xrefs', []):
-            if xref.split(':')[0] not in PROHIBITED_SOURCES:
-                xrefs.add(xref)
+            xrefs.add(xref)
         return xrefs
 
     def _create_record_id_set(self, record_id: str,

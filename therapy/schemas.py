@@ -158,7 +158,8 @@ class SourcePriority(IntEnum):
     NCIT = 2
     HEMONC = 3
     DRUGBANK = 4
-    CHEMIDPLUS = 5
+    CHEMBL = 5
+    CHEMIDPLUS = 6
     WIKIDATA = 10
     GUIDETOPHARMACOLOGY = 6
 
@@ -189,14 +190,6 @@ class SourceIDAfterNamespace(Enum):
     GUIDETOPHARMACOLOGY = ""
 
 
-class ProhibitedSources(Enum):
-    """Define constraints for sources that are prohibited in normalize
-    endpoint.
-    """
-
-    CHEMBL = SourceName.CHEMBL.value
-
-
 class NamespacePrefix(Enum):
     """Define string constraints for namespace prefixes on concept IDs."""
 
@@ -210,10 +203,9 @@ class NamespacePrefix(Enum):
     WIKIDATA = "wikidata"
     HEMONC = "hemonc"
     NCIT = "ncit"
-    FDA = "fda"
     ISO = "iso"
     UMLS = "umls"
-    CHEBI = "chebi"
+    CHEBI = "CHEBI"
     KEGGCOMPOUND = "kegg.compound"
     KEGGDRUG = "kegg.drug"
     BINDINGDB = "bindingdb"
@@ -232,7 +224,6 @@ class NamespacePrefix(Enum):
     MMSL = "mmsl"  # Multum MediSource Lexicon
     MSH = "mesh"  # Medical Subject Headings
     MTHCMSFRF = "mthcmsfrf"  # CMS Formulary Reference File
-    MTHSPL = "mthspl"  # FDA Structured Product Labels
     USP = "usp"  # USP Compendial Nomenclature
     VANDF = "vandf"  # Veterans Health Administration National Drug File
 
