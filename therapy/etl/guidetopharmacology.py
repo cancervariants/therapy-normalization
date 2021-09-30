@@ -1,11 +1,15 @@
 """Module for Guide to PHARMACOLOGY ETL methods."""
+from typing import Optional
 from therapy import logger, PROJECT_ROOT, DownloadException
 from therapy.etl.base import Base
-from therapy.schemas import SourceMeta, SourceName
+from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, \
+    ApprovalStatus
 from pathlib import Path
 import requests
 import bs4
 import re
+import csv
+import html
 
 
 class GuideToPHARMACOLOGY(Base):
@@ -85,8 +89,121 @@ class GuideToPHARMACOLOGY(Base):
             with open(str(path), "wb") as f:
                 f.write(r.content)
 
-    def _transform_data(self):
-        pass
+    def _transform_data(self) -> None:
+        """Transform Guide To PHARMACOLOGY data."""
+        data = dict()
+        self._transform_ligands(data)
+        self._transform_ligand_id_mappings(data)
+        for param in data.values():
+            self._load_therapy(param)
+
+    def _transform_ligands(self, data) -> None:
+        """Transform ligands data file and add this data to `data`.
+
+        :param dict data: Transformed data
+        """
+        with open(self._ligands_file, "r") as f:
+            rows = csv.reader(f, delimiter="\t")
+            next(rows)
+
+            for row in rows:
+                params = {
+                    "concept_id":
+                        f"{NamespacePrefix.IUPHAR_LIGAND.value}:{row[0]}",
+                    "label": row[1],
+                    "src_name": SourceName.GUIDETOPHARMACOLOGY.value
+                }
+
+                approval_status = self._set_approval_status(row[4], row[5])
+                if approval_status:
+                    params["approval_status"] = approval_status
+
+                associated_with = list()
+                aliases = list()
+                if row[8]:
+                    associated_with.append(f"{NamespacePrefix.PUBCHEMSUBSTANCE.value}:{row[8]}")  # noqa: E501
+                if row[9]:
+                    associated_with.append(f"{NamespacePrefix.PUBCHEMCOMPOUND.value}:{row[9]}")  # noqa: E501
+                if row[10]:
+                    associated_with.append(f"{NamespacePrefix.UNIPROT.value}:{row[10]}")  # noqa: E501
+                if row[11]:
+                    # IUPAC
+                    aliases.append(row[11])
+                if row[12]:
+                    # International Non-proprietary Name assigned by the WHO
+                    aliases.append(row[12])
+                if row[13]:
+                    # synonyms
+                    synonyms = row[13].split("|")
+                    for s in synonyms:
+                        if "&" in s and ";" in s:
+                            name_code = s[s.index("&"):s.index(";") + 1]
+                            if name_code.lower() in ["&reg;", "&trade;"]:
+                                # Remove trademark symbols to allow for search
+                                s = s.replace(name_code, "")
+                            s = html.unescape(s)
+                        aliases.append(s)
+                if row[15]:
+                    associated_with.append(f"{NamespacePrefix.INCHIKEY.value}:{row[15]}")  # noqa: E501
+
+                if associated_with:
+                    params["associated_with"] = associated_with
+                if aliases:
+                    params["aliases"] = aliases
+
+                data[params["concept_id"]] = params
+
+    def _transform_ligand_id_mappings(self, data):
+        """Transform ligand_id_mappings and add this data to `data`
+        All ligands found in this file should already be in data
+
+        :param dict data: Transformed data
+        """
+        with open(self._ligand_id_mapping_file, "r") as f:
+            rows = csv.reader(f, delimiter="\t")
+            for row in rows:
+                concept_id = f"{NamespacePrefix.IUPHAR_LIGAND.value}:{row[0]}"
+
+                if concept_id not in data:
+                    logger.debug(f"{concept_id} not in ligands")
+                    continue
+                params = data[concept_id]
+                xrefs = list()
+                associated_with = params.get("associated_with", [])
+                if row[6]:
+                    xrefs.append(f"{NamespacePrefix.CHEMBL.value}:{row[6]}")
+                if row[7]:
+                    # CHEBI
+                    associated_with.append(row[7])
+                if row[11]:
+                    associated_with.append(f"{NamespacePrefix.CASREGISTRY.value}:{row[11]}")  # noqa: E501
+                if row[12]:
+                    xrefs.append(f"{NamespacePrefix.DRUGBANK.value}:{row[12]}")
+                if row[13]:
+                    associated_with.append(f"{NamespacePrefix.DRUGCENTRAL.value}:{row[13]}")  # noqa: E501
+
+                if xrefs:
+                    params["xrefs"] = xrefs
+                if associated_with:
+                    params["associated_with"] = associated_with
+
+    def _set_approval_status(self, approved: str,
+                             withdrawn: str) -> Optional[ApprovalStatus]:
+        """Set approval status.
+
+        :param str approved: The drug is or has in the past been approved for
+            human clinical use by a regulatory agency
+        :param str withdrawn: The drug is no longer approved for its original
+            clinical use in one or more countries
+        :return: Approval status
+        """
+        if approved and not withdrawn:
+            approval_status = ApprovalStatus.APPROVED.value
+        elif withdrawn:
+            approval_status = ApprovalStatus.WITHDRAWN.value
+        else:
+            approval_status = None
+        return approval_status
 
     def _load_meta(self) -> None:
         """Load Guide to PHARMACOLOGY metadata to database."""

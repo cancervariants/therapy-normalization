@@ -158,10 +158,10 @@ class SourcePriority(IntEnum):
     NCIT = 2
     HEMONC = 3
     DRUGBANK = 4
-    CHEMBL = 5
-    CHEMIDPLUS = 6
+    GUIDETOPHARMACOLOGY = 5
+    CHEMBL = 6
+    CHEMIDPLUS = 7
     WIKIDATA = 10
-    GUIDETOPHARMACOLOGY = 6
 
 
 class SourceName(str, Enum):
@@ -226,6 +226,8 @@ class NamespacePrefix(Enum):
     MTHCMSFRF = "mthcmsfrf"  # CMS Formulary Reference File
     USP = "usp"  # USP Compendial Nomenclature
     VANDF = "vandf"  # Veterans Health Administration National Drug File
+    UNIPROT = "uniprot"
+    DRUGCENTRAL = "drugcentral"
 
 
 class DataLicenseAttributes(BaseModel):
