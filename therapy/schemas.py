@@ -160,6 +160,7 @@ class SourcePriority(IntEnum):
     DRUGBANK = 4
     CHEMIDPLUS = 5
     WIKIDATA = 10
+    GUIDETOPHARMACOLOGY = 6
 
 
 class SourceName(str, Enum):
@@ -172,6 +173,7 @@ class SourceName(str, Enum):
     CHEMIDPLUS = "ChemIDplus"
     RXNORM = "RxNorm"
     HEMONC = "HemOnc"
+    GUIDETOPHARMACOLOGY = "GuideToPHARMACOLOGY"
 
 
 class SourceIDAfterNamespace(Enum):
@@ -184,6 +186,7 @@ class SourceIDAfterNamespace(Enum):
     CHEMIDPLUS = ""
     RXNORM = ""
     HEMONC = ""
+    GUIDETOPHARMACOLOGY = ""
 
 
 class ProhibitedSources(Enum):
@@ -220,6 +223,7 @@ class NamespacePrefix(Enum):
     PDB = "pdb"
     THERAPEUTICTARGETSDB = "ttd"
     IUPHAR = "iuphar"
+    IUPHAR_LIGAND = "iuphar.ligand"
     GUIDETOPHARMACOLOGY = "gtopdb"
     INCHIKEY = "inchikey"
     UNII = "unii"
