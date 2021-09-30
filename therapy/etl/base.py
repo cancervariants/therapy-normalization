@@ -62,12 +62,10 @@ class Base(ABC):
     def _download_data(self, *args, **kwargs):
         raise NotImplementedError
 
-    def _ftp_download(self, host: str, data_dir: str, source_dir: Path,
-                      data_fn: str) -> None:
+    def _ftp_download(self, host: str, data_dir: str, data_fn: str) -> None:
         """Download data file from FTP site.
         :param str host: Source's FTP host name
         :param str data_dir: Data directory located on FTP site
-        :param Path source_dir: Source's data directory
         :param str data_fn: Filename on FTP site to be downloaded
         """
         try:
@@ -75,7 +73,7 @@ class Base(ABC):
                 ftp.login()
                 logger.debug(f"FTP login to {host} was successful")
                 ftp.cwd(data_dir)
-                with open(source_dir / data_fn, 'wb') as fp:
+                with open(self._src_data_dir / data_fn, 'wb') as fp:
                     ftp.retrbinary(f'RETR {data_fn}', fp.write)
         except Exception as e:
             logger.error(f'FTP download failed: {e}')
