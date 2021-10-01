@@ -109,7 +109,7 @@ class GuideToPHARMACOLOGY(Base):
             for row in rows:
                 params = {
                     "concept_id":
-                        f"{NamespacePrefix.IUPHAR_LIGAND.value}:{row[0]}",
+                        f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}",  # noqa: E501
                     "label": row[1],
                     "src_name": SourceName.GUIDETOPHARMACOLOGY.value
                 }
@@ -162,7 +162,7 @@ class GuideToPHARMACOLOGY(Base):
         with open(self._ligand_id_mapping_file, "r") as f:
             rows = csv.reader(f, delimiter="\t")
             for row in rows:
-                concept_id = f"{NamespacePrefix.IUPHAR_LIGAND.value}:{row[0]}"
+                concept_id = f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}"  # noqa: E501
 
                 if concept_id not in data:
                     logger.debug(f"{concept_id} not in ligands")

@@ -31,7 +31,6 @@ SOURCES = {source.value.lower(): source.value
 PREFIX_LOOKUP = {v.value: SourceName[k].value
                  for k, v in NamespacePrefix.__members__.items()
                  if k in SourceName.__members__.keys()}
-PREFIX_LOOKUP[NamespacePrefix.IUPHAR_LIGAND.value] = SourceName.GUIDETOPHARMACOLOGY.value  # noqa: E501
 
 # use to generate namespace prefix from source ID value
 # e.g. {'q': 'wikidata'}

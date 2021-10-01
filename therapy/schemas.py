@@ -216,7 +216,7 @@ class NamespacePrefix(Enum):
     THERAPEUTICTARGETSDB = "ttd"
     IUPHAR = "iuphar"
     IUPHAR_LIGAND = "iuphar.ligand"
-    GUIDETOPHARMACOLOGY = "gtopdb"
+    GUIDETOPHARMACOLOGY = IUPHAR_LIGAND
     INCHIKEY = "inchikey"
     UNII = "unii"
     ATC = "atc"  # Anatomical Therapeutic Chemical Classification System
