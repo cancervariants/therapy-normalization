@@ -176,7 +176,7 @@ class GuideToPHARMACOLOGY(Base):
                     # CHEBI
                     associated_with.append(row[7])
                 if row[11]:
-                    associated_with.append(f"{NamespacePrefix.CASREGISTRY.value}:{row[11]}")  # noqa: E501
+                    xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:{row[11]}")  # noqa: E501
                 if row[12]:
                     xrefs.append(f"{NamespacePrefix.DRUGBANK.value}:{row[12]}")
                 if row[13]:
