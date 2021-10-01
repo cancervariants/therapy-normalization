@@ -85,5 +85,17 @@
       "share_alike": false,
       "attribution": true
     }
+  },
+  {
+    "src_name": "GuideToPHARMACOLOGY",
+    "data_license": "CC BY-SA 4.0",
+    "data_license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "version": "2021.3",
+    "data_url": "https://www.guidetopharmacology.org/download.jsp",
+    "data_license_attributes": {
+      "non_commercial": false,
+      "share_alike": true,
+      "attribution": true
+    }
   }
 ]

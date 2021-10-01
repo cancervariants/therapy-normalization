@@ -1943,5 +1943,233 @@
       "unii:8883YP2R6D",
       "CHEBI:6078"
     ]
+  },
+  {
+    "label_and_type": "iuphar.ligand:5343##identity",
+    "src_name": "GuideToPHARMACOLOGY",
+    "item_type": "identity",
+    "concept_id": "iuphar.ligand:5343",
+    "label": "cisplatin",
+    "approval_status": "approved",
+    "xrefs": [
+        "chembl:CHEMBL11359",
+        "chemidplus:15663-27-1",
+        "drugbank:DB00515"
+    ],
+    "associated_with": [
+        "pubchem.substance:178102005",
+        "pubchem.compound:441203",
+        "CHEBI:27899"
+    ],
+    "aliases": [
+        "Platinol"
+    ]
+  },
+  {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "iuphar.ligand:5343",
+    "item_type": "label",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "platinol##alias",
+    "concept_id": "iuphar.ligand:5343",
+    "item_type": "alias",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "chemidplus:15663-27-1##xref",
+    "concept_id": "iuphar.ligand:5343",
+    "item_type": "xref",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "pubchem.substance:178102005##associated_with",
+    "concept_id": "iuphar.ligand:5343",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "pubchem.compound:441203##associated_with",
+    "concept_id": "iuphar.ligand:5343",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "iuphar.ligand:2169##identity",
+    "src_name": "GuideToPHARMACOLOGY",
+    "item_type": "identity",
+    "concept_id": "iuphar.ligand:2169",
+    "label": "arginine vasotocin",
+    "xrefs": [
+        "chemidplus:113-80-4"
+    ],
+    "associated_with": [
+        "pubchem.substance:135652004",
+        "pubchem.compound:68649",
+        "inchikey:OXDZADMCOWPSOC-ICBIOJHSSA-N"
+    ],
+    "aliases": [
+        "L-cysteinyl-L-tyrosyl-(3S)-DL-isoleucyl-L-glutaminyl-L-asparagyl-L-cysteinyl-DL-prolyl-L-arginyl-glycinamide (1->6)-disulfide",
+        "argiprestocin",
+        "[Arg<sup>8</sup>]vasotocin",
+        "AVT"
+    ]
+  },
+  {
+    "label_and_type": "arginine vasotocin##label",
+    "concept_id": "iuphar.ligand:2169",
+    "item_type": "label",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "avt##alias",
+    "concept_id": "iuphar.ligand:2169",
+    "item_type": "alias",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "chemidplus:113-80-4##xref",
+    "concept_id": "iuphar.ligand:2169",
+    "item_type": "xref",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "pubchem.substance:135652004##associated_with",
+    "concept_id": "iuphar.ligand:2169",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "pubchem.compound:68649##associated_with",
+    "concept_id": "iuphar.ligand:2169",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "iuphar.ligand:2804##identity",
+    "src_name": "GuideToPHARMACOLOGY",
+    "item_type": "identity",
+    "concept_id": "iuphar.ligand:2804",
+    "label": "phenobarbital",
+    "approval_status": "approved",
+    "xrefs": [
+        "chembl:CHEMBL40",
+        "chemidplus:50-06-6",
+        "drugbank:DB01174"
+    ],
+    "associated_with": [
+        "pubchem.substance:135650817",
+        "pubchem.compound:4763",
+        "CHEBI:8069",
+        "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N",
+        "drugcentral:2134"
+    ],
+    "aliases": [
+        "5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione",
+        "fenobarbital",
+        "Luminal",
+        "phenobarb",
+        "phenobarbital sodium",
+        "phenobarbitone",
+        "phenylethylbarbiturate"
+    ]
+  },
+  {
+    "label_and_type": "phenobarbital##label",
+    "concept_id": "iuphar.ligand:2804",
+    "item_type": "label",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione##alias",
+    "concept_id": "iuphar.ligand:2804",
+    "item_type": "alias",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "chembl:chembl40##xref",
+    "concept_id": "iuphar.ligand:2804",
+    "item_type": "xref",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "pubchem.substance:135650817##associated_with",
+    "concept_id": "iuphar.ligand:2804",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "pubchem.compound:4763##associated_with",
+    "concept_id": "iuphar.ligand:2804",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "drugcentral:2134##associated_with",
+    "concept_id": "iuphar.ligand:2804",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "iuphar.ligand:240##identity",
+    "src_name": "GuideToPHARMACOLOGY",
+    "item_type": "identity",
+    "concept_id": "iuphar.ligand:240",
+    "label": "cisapride",
+    "approval_status": "withdrawn",
+    "xrefs": [
+        "chembl:CHEMBL1729",
+        "chemidplus:81098-60-4",
+        "drugbank:DB00604"
+    ],
+    "associated_with": [
+        "pubchem.substance:135650104",
+        "pubchem.compound:2769",
+        "CHEBI:151790",
+        "inchikey:DCSUBABJRXZOMT-UHFFFAOYSA-N",
+        "drugcentral:660"
+    ],
+    "aliases": [
+        "4-amino-5-chloro-N-[1-[3-(4-fluorophenoxy)propyl]-3-methoxypiperidin-4-yl]-2-methoxybenzamide",
+        "Prepulsid",
+        "Propulsid"
+    ]
+  },
+  {
+    "label_and_type": "cisapride##label",
+    "concept_id": "iuphar.ligand:240",
+    "item_type": "label",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "prepulsid##alias",
+    "concept_id": "iuphar.ligand:240",
+    "item_type": "alias",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "drugbank:db00604##xref",
+    "concept_id": "iuphar.ligand:240",
+    "item_type": "xref",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "pubchem.substance:135650104##associated_with",
+    "concept_id": "iuphar.ligand:240",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "pubchem.compound:2769##associated_with",
+    "concept_id": "iuphar.ligand:240",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "inchikey:dcsubabjrxzomt-uhfffaoysa-n##associated_with",
+    "concept_id": "iuphar.ligand:240",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
   }
 ]
