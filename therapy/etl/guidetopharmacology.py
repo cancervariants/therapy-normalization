@@ -38,7 +38,7 @@ class GuideToPHARMACOLOGY(Base):
         r = requests.get(self._data_url)
         status_code = r.status_code
         if status_code == 200:
-            soup = bs4.BeautifulSoup(r.content, features='lxml')
+            soup = bs4.BeautifulSoup(r.content, features="lxml")
         else:
             logger.error(f"GuideToPHARMACOLOGY version fetch failed with"
                          f" status code: {status_code}")
