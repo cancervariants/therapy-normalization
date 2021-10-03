@@ -97,7 +97,7 @@ class GuideToPHARMACOLOGY(Base):
         for param in data.values():
             self._load_therapy(param)
 
-    def _transform_ligands(self, data) -> None:
+    def _transform_ligands(self, data: dict) -> None:
         """Transform ligands data file and add this data to `data`.
 
         :param dict data: Transformed data
@@ -153,7 +153,7 @@ class GuideToPHARMACOLOGY(Base):
 
                 data[params["concept_id"]] = params
 
-    def _transform_ligand_id_mappings(self, data):
+    def _transform_ligand_id_mappings(self, data: dict):
         """Transform ligand_id_mappings and add this data to `data`
         All ligands found in this file should already be in data
 
