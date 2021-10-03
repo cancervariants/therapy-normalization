@@ -150,9 +150,13 @@ def phenobarbital_merged():
             "mmsl:d00340",
             "atc:N03AA02",
             "umls:C0031412",
-            "CHEBI:8069"
+            "CHEBI:8069",
+            "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N",
+            "drugcentral:2134",
+            "pubchem.substance:135650817"
         ],
         "label": "Phenobarbital",
+        "approval_status": "approved"
     }
 
 
@@ -274,7 +278,8 @@ def record_id_groups():
             "chemidplus:50-06-6",
             "wikidata:Q407241",
             "drugbank:DB01174",
-            "chembl:CHEMBL40"
+            "chembl:CHEMBL40",
+            "iuphar.ligand:2804"
         },
         "ncit:C739": {  # Phenobarbital
             "rxcui:8134",
@@ -282,7 +287,8 @@ def record_id_groups():
             "chemidplus:50-06-6",
             "wikidata:Q407241",
             "drugbank:DB01174",
-            "chembl:CHEMBL40"
+            "chembl:CHEMBL40",
+            "iuphar.ligand:2804"
         },
         "chemidplus:50-06-6": {  # Phenobarbital
             "rxcui:8134",
@@ -290,7 +296,8 @@ def record_id_groups():
             "chemidplus:50-06-6",
             "wikidata:Q407241",
             "drugbank:DB01174",
-            "chembl:CHEMBL40"
+            "chembl:CHEMBL40",
+            "iuphar.ligand:2804"
         },
         "wikidata:Q407241": {  # Phenobarbital
             "rxcui:8134",
@@ -298,7 +305,8 @@ def record_id_groups():
             "chemidplus:50-06-6",
             "wikidata:Q407241",
             "drugbank:DB01174",
-            "chembl:CHEMBL40"
+            "chembl:CHEMBL40",
+            "iuphar.ligand:2804"
         },
         "drugbank:DB01174": {  # Phenobarbital
             "rxcui:8134",
@@ -306,7 +314,8 @@ def record_id_groups():
             "chemidplus:50-06-6",
             "wikidata:Q407241",
             "drugbank:DB01174",
-            "chembl:CHEMBL40"
+            "chembl:CHEMBL40",
+            "iuphar.ligand:2804"
         },
         "chembl:CHEMBL40": {  # Phenobarbital
             "rxcui:8134",
@@ -314,7 +323,17 @@ def record_id_groups():
             "chemidplus:50-06-6",
             "wikidata:Q407241",
             "drugbank:DB01174",
-            "chembl:CHEMBL40"
+            "chembl:CHEMBL40",
+            "iuphar.ligand:2804"
+        },
+        "iuphar.ligand:2804": {  # Phenobarbital
+            "rxcui:8134",
+            "ncit:C739",
+            "chemidplus:50-06-6",
+            "wikidata:Q407241",
+            "drugbank:DB01174",
+            "chembl:CHEMBL40",
+            "iuphar.ligand:2804"
         },
         "ncit:C839": {  # Spiramycin
             "ncit:C839",

@@ -1980,7 +1980,36 @@
     "aliases": ["RO 5045337", "RG7112"],
     "associated_with": ["pubchem.compound:57406853"],
     "xrefs": ["chemidplus:939981-39-2", "chembl:CHEMBL2386346"],
-    "label": "ro-5045337"
+    "label": "ro-5045337",
+    "merge_ref": "drugbank:DB14793"
+  },
+  {
+    "label_and_type": "drugbank:db14793##merger",
+    "item_type": "merger",
+    "src_name": "DrugBank",
+    "concept_id": "drugbank:DB14793",
+    "xrefs": [
+      "iuphar.ligand:9599",
+      "chembl:CHEMBL2386346",
+      "wikidata:Q27287118"
+    ],
+    "label": "RO-5045337",
+    "aliases": [
+      "RG7112",
+      "[(4S,5R)-2-(4-tert-butyl-2-ethoxyphenyl)-4,5-bis(4-chlorophenyl)-4,5-dimethylimidazol-1-yl]-[4-(3-methylsulfonylpropyl)piperazin-1-yl]methanone",
+      "RO5045337",
+      "RG-7112",
+      "R 7112",
+      "Ro-5045337",
+      "RO 5045337"
+    ],
+    "associated_with": [
+      "pubchem.substance:340590229",
+      "pubchem.compound:57406853",
+      "unii:Q8MI0X869M",
+      "inchikey:QBGKPEROWUKSBK-QPPIDDCLSA-N"
+    ],
+    "approval_status": "investigational"
   },
   {
     "label_and_type": "ncit:c61796##identity",
