@@ -37,7 +37,7 @@ class Base(ABC):
         """
         name = self.__class__.__name__.lower()
         self.database = database
-        self._src_data_dir = data_path / name
+        self._src_data_dir: Path = data_path / name
         self._added_ids = []
 
     def perform_etl(self) -> List[str]:
@@ -58,7 +58,7 @@ class Base(ABC):
         sources not added to Bioversions yet, or other special-case sources.
         :return: most recent version, as a str
         """
-        return bioversions.get_version(__class__.__name__)
+        return bioversions.get_version(self.__class__.__name__)
 
     @abstractmethod
     def _download_data(self, *args, **kwargs):
