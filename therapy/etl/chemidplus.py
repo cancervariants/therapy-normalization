@@ -6,6 +6,7 @@ import logging
 from urllib.parse import urlparse
 import zipfile
 from os import remove
+from shutil import move
 from pathlib import Path
 import xml.etree.ElementTree as ET
 import re
@@ -14,7 +15,7 @@ from typing import Dict, Any
 import bioversions
 
 from .base import Base
-from therapy.schemas import Drug, NamespacePrefix, SourceMeta, SourceName, \
+from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, \
     DataLicenseAttributes
 
 
@@ -32,15 +33,20 @@ class ChemIDplus(Base):
         """Download source data from default location."""
         logger.info('Retrieving source data for ChemIDplus')
         url = urlparse(bioversions.resolve('chemidplus').homepage)
-        path, file = url.path.rsplit('/', 1)
-        self._ftp_download(url.netloc, path, file)
+        _, file = url.path.rsplit('/', 1)
+        self._ftp_download('ftp.nlm.nih.gov', 'nlmdata/.chemidlease',
+                           str(file))
         zip_path = (self._src_data_dir / file).absolute()
         zip_file = zipfile.ZipFile(zip_path, 'r')
         outfile = self._src_data_dir / f'chemidplus_{self._version}.xml'
         for info in zip_file.infolist():
-            if re.match(r'*.xml', info.filename):
-                zip_file.extract(info, path=outfile)
+            if re.match(r'.*\.xml', info.filename):
+                xml_filename = info.filename
+                zip_file.extract(info, path=self._src_data_dir)
+                move(self._src_data_dir / xml_filename, outfile)
+                break
         remove(zip_path)
+        assert outfile.exists()
         logger.info('Successfully retrieved source data for ChemIDplus')
 
     @staticmethod
@@ -106,8 +112,6 @@ class ChemIDplus(Base):
                                f'{loc.attrib["url"].split("/")[-1]}'
                         params['associated_with'].append(unii)
 
-            # double-check and load full record
-            assert Drug(**params)
             self._load_therapy(params)
 
     def _load_meta(self):
