@@ -1,13 +1,15 @@
 """This module creates the database."""
-import boto3
-from therapy import PREFIX_LOOKUP
-from botocore.exceptions import ClientError
-from boto3.dynamodb.conditions import Key
-from os import environ
-from typing import Optional, Dict, List, Any
 import logging
-import click
+from os import environ
 import sys
+from typing import Optional, Dict, List, Any
+
+import click
+import boto3
+from boto3.dynamodb.conditions import Key
+from botocore.exceptions import ClientError
+
+from therapy import PREFIX_LOOKUP
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)

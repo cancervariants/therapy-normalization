@@ -1,9 +1,11 @@
 """Test ChemIDplus ETL methods."""
+import datetime
+
+import pytest
+
 from therapy.query import QueryHandler
 from therapy.schemas import Drug, MatchType
-import pytest
 from tests.conftest import compare_records
-import datetime
 
 
 @pytest.fixture(scope='module')

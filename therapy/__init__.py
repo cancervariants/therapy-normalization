@@ -1,7 +1,9 @@
 """The VICC library for normalizing therapies."""
-from .version import __version__  # noqa: F401
 from pathlib import Path
 import logging
+
+from .version import __version__  # noqa: F401
+
 
 APP_ROOT = Path(__file__).resolve().parents[0]
 logging.basicConfig(

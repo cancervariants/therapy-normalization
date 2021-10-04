@@ -5,12 +5,6 @@ Library of Medicine (NLM), National Institutes of Health, Department of Health
  and Human Services; NLM is not responsible for the product and does not
  endorse or recommend this or any other product."
 """
-from .base import Base
-from therapy import APP_ROOT, DownloadException, XREF_SOURCES, \
-    ASSOC_WITH_SOURCES, ITEM_TYPES
-from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
-    ApprovalStatus
-from boto3.dynamodb.table import BatchWriter
 import csv
 import logging
 from os import environ, remove
@@ -19,8 +13,16 @@ import shutil
 import zipfile
 import re
 import yaml
-import bioversions
 from typing import Dict, List
+
+import bioversions
+from boto3.dynamodb.table import BatchWriter
+
+from .base import Base
+from therapy import APP_ROOT, DownloadException, XREF_SOURCES, \
+    ASSOC_WITH_SOURCES, ITEM_TYPES
+from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
+    ApprovalStatus
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)

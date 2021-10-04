@@ -1,6 +1,4 @@
 """This module defines the DrugBank ETL methods."""
-from therapy.schemas import SourceName, SourceMeta, NamespacePrefix
-from therapy.etl.base import Base
 import logging
 import csv
 import requests
@@ -8,6 +6,10 @@ import zipfile
 import shutil
 from io import BytesIO
 from typing import Dict, Any
+
+from therapy.schemas import SourceName, SourceMeta, NamespacePrefix
+from .base import Base
+
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)

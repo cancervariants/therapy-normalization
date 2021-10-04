@@ -1,10 +1,12 @@
 """Test DynamoDB"""
-import pytest
-from therapy.database import Database
-from tests.conftest import TEST_ROOT
 import json
 import os
+
+import pytest
 from boto3.dynamodb.conditions import Key
+
+from therapy.database import Database
+from tests.conftest import TEST_ROOT
 
 
 @pytest.fixture(scope='module')

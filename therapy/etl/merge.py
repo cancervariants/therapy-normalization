@@ -1,9 +1,11 @@
 """Create concept groups and merged records."""
+import logging
+from typing import Set, Dict
+from timeit import default_timer as timer
+
 from therapy.schemas import SourcePriority
 from therapy.database import Database
-from typing import Set, Dict
-import logging
-from timeit import default_timer as timer
+
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)

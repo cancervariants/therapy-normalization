@@ -1,10 +1,12 @@
 """Pytest test config tools."""
-from therapy.schemas import Drug, MatchType
-from therapy.database import Database
 from typing import Dict, Any, Optional, List
 import json
-import pytest
 from pathlib import Path
+
+import pytest
+
+from therapy.schemas import Drug, MatchType
+from therapy.database import Database
 
 TEST_ROOT = Path(__file__).resolve().parents[1]
 

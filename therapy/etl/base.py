@@ -3,11 +3,13 @@ from abc import ABC, abstractmethod
 from ftplib import FTP
 from pathlib import Path
 from typing import List, Dict
+import logging
+
+import bioversions
+
 from therapy import APP_ROOT, ITEM_TYPES
 from therapy.database import Database
 from therapy.schemas import Drug
-import logging
-import bioversions
 
 
 logger = logging.getLogger('therapy')

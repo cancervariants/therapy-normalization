@@ -2,18 +2,20 @@
 
 Courtesy of the U.S. National Library of Medicine.
 """
-from .base import Base
-from therapy.schemas import Drug, NamespacePrefix, SourceMeta, SourceName, \
-    DataLicenseAttributes
-from pathlib import Path
-import xml.etree.ElementTree as ET
 import logging
-import re
-import bioversions
-from typing import Dict, Any
 from urllib.parse import urlparse
 import zipfile
 from os import remove
+from pathlib import Path
+import xml.etree.ElementTree as ET
+import re
+from typing import Dict, Any
+
+import bioversions
+
+from .base import Base
+from therapy.schemas import Drug, NamespacePrefix, SourceMeta, SourceName, \
+    DataLicenseAttributes
 
 
 logger = logging.getLogger('therapy')

@@ -1,12 +1,13 @@
 """Test that the therapy normalizer works as intended for the HemOnc.org
 source.
 """
-import pytest
+import re
 
+import pytest
 from tests.conftest import compare_response
+
 from therapy.query import QueryHandler
 from therapy.schemas import Drug, MatchType, ApprovalStatus
-import re
 
 
 @pytest.fixture(scope='module')

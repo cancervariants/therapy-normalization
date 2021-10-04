@@ -1,8 +1,10 @@
 """Test merged record generation."""
+from typing import Dict
+
 import pytest
+
 from therapy.etl.merge import Merge
 from therapy.schemas import ApprovalStatus
-from typing import Dict
 
 
 @pytest.fixture(scope='module')

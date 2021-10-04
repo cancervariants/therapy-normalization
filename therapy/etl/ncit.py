@@ -1,14 +1,16 @@
 """ETL methods for NCIt source"""
-from .base import Base
-from therapy import DownloadException
-from therapy.schemas import SourceName, NamespacePrefix, Therapy, SourceMeta
 import logging
-import owlready2 as owl
-from owlready2.entity import ThingClass
-from typing import Set
 import requests
+from typing import Set
 import zipfile
 from os import remove, rename
+
+import owlready2 as owl
+from owlready2.entity import ThingClass
+
+from therapy import DownloadException
+from therapy.schemas import SourceName, NamespacePrefix, Therapy, SourceMeta
+from .base import Base
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)

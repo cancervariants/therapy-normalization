@@ -1,11 +1,13 @@
 """Test that the therapy normalizer works as intended for the RxNorm source."""
+import os
+
 import pytest
+from boto3.dynamodb.conditions import Key
+
 from tests.conftest import compare_records
 from therapy.schemas import Drug, MatchType
 from therapy.query import QueryHandler
 from therapy.database import Database
-import os
-from boto3.dynamodb.conditions import Key
 
 
 @pytest.fixture(scope='module')

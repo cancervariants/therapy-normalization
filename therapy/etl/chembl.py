@@ -1,13 +1,15 @@
 """This module defines the ChEMBL ETL methods."""
+import logging
+import os
+import shutil
+import sqlite3
+
+import chembl_downloader
+import bioversions
+
 from .base import Base
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, \
     SourceMeta
-import logging
-import sqlite3
-import os
-import chembl_downloader
-import bioversions
-import shutil
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)

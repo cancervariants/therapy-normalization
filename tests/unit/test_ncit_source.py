@@ -1,5 +1,6 @@
 """Test NCIT source"""
 import pytest
+
 from therapy.schemas import Drug, MatchType
 from therapy.query import QueryHandler
 from tests.conftest import compare_response
