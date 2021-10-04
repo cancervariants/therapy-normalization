@@ -30,7 +30,7 @@ class ChemIDplus(Base):
 
     def _download_data(self):
         """Download source data from default location."""
-        logger.info('Downloading ChemIDplus data...')
+        logger.info('Retrieving source data for ChemIDplus')
         url = urlparse(bioversions.resolve('chemidplus').homepage)
         path, file = url.path.rsplit('/', 1)
         self._ftp_download(url.netloc, path, file)
@@ -41,7 +41,7 @@ class ChemIDplus(Base):
             if re.match(r'*.xml', info.filename):
                 zip_file.extract(info, path=outfile)
         remove(zip_path)
-        logger.info('Finished downloading ChemIDplus data')
+        logger.info('Successfully retrieved source data for ChemIDplus')
 
     @staticmethod
     def parse_xml(path: Path, tag: str):

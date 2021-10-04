@@ -20,7 +20,7 @@ class DrugBank(Base):
 
     def _download_data(self):
         """Download DrugBank source data."""
-        logger.info('Fetching DrugBank source data...')
+        logger.info('Retrieving source data for DrugBank')
         url = f'https://go.drugbank.com/releases/{self._version.replace(".", "-")}/downloads/all-drugbank-vocabulary'  # noqa: E501
 
         r = requests.get(url)
@@ -38,7 +38,7 @@ class DrugBank(Base):
         csv_file = self._src_data_dir / f'drugbank_{self._version}.csv'
         shutil.move(temp_file, csv_file)
         shutil.rmtree(temp_dir)
-        logger.info('Finished fetching DrugBank.')
+        logger.info('Successfully retrieved source data for DrugBank')
 
     def _load_meta(self):
         """Add DrugBank metadata."""

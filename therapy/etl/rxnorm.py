@@ -51,7 +51,7 @@ class RxNorm(Base):
         :raises DownloadException: if API Key is not defined in the
             environment.
         """
-        logger.info('Downloading RxNorm...')
+        logger.info('Retrieving source data for RxNorm')
         if 'RXNORM_API_KEY' in environ.keys():
             url = bioversions.resolve('rxnorm').homepage
             if not url:
@@ -77,7 +77,7 @@ class RxNorm(Base):
             shutil.move(temp_file, self._data_src)
             shutil.rmtree(self._src_data_dir / 'rrf')
             self._create_drug_form_yaml()
-            logger.info("Finished fetching RxNorm data.")
+            logger.info('Successfully retrieved source data for RxNorm')
         else:
             logger.error('Could not find RXNORM_API_KEY in environment '
                          'variables.')

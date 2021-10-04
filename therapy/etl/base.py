@@ -86,13 +86,16 @@ class Base(ABC):
             logger.error(f'FTP download failed: {e}')
             raise Exception(e)
 
-    def _extract_data(self):
+    def _extract_data(self) -> None:
         """Get source file from data directory.
         This method should create the source data directory if needed,
         acquire the most recent version number, check that local data is
         up-to-date and retrieve the latest data if needed, and set the
         `self._src_file` attribute to the source file location. Child classes
         could add additional functions, e.g. setting up DB cursors.
+
+        Sources that use multiple data files (such as RxNorm and HemOnc) will
+        have to reimplement this method.
         """
         self._src_data_dir.mkdir(exist_ok=True, parents=True)
         self._version = self.get_latest_version()
@@ -103,13 +106,13 @@ class Base(ABC):
         self._src_file = latest[0]
 
     @abstractmethod
-    def _transform_data(self, *args, **kwargs):
+    def _transform_data(self, *args, **kwargs) -> None:
         """Prepare source data for loading into DB. Individually extract each
         record and call the Base class's `_load_therapy()` method.
         """
         raise NotImplementedError
 
-    def _load_therapy(self, therapy: Dict):
+    def _load_therapy(self, therapy: Dict) -> None:
         """Load individual therapy record. Subclasses should not be overriding
         this implementation.
 

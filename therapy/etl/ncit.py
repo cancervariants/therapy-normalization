@@ -27,7 +27,7 @@ class NCIt(Base):
 
     def _download_data(self):
         """Download NCI thesaurus source file for loading into normalizer."""
-        logger.info('Fetching NCI Thesaurus...')
+        logger.info('Retrieving source data for NCIt')
         base_dir_url = 'https://evs.nci.nih.gov/ftp1/NCI_Thesaurus'
         # ping base NCIt directory
         release_path = f'{self._version}_Release/Thesaurus_{self._version}.OWL.zip'  # noqa: E501
@@ -55,7 +55,7 @@ class NCIt(Base):
             zip_ref.extractall(self._src_data_dir)
         remove(zip_path)
         rename(self._src_data_dir / 'Thesaurus.owl', self._src_data_dir / f'ncit_{self._version}.owl')  # noqa: E501
-        logger.info('Finished fetching NCI Thesaurus')
+        logger.info('Successfully retrieved source data for NCIt')
 
     def _get_desc_nodes(self, node: ThingClass,
                         uq_nodes: Set[ThingClass]) -> Set[ThingClass]:
