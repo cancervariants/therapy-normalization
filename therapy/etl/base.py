@@ -1,6 +1,6 @@
 """A base class for extraction, transformation, and loading of data."""
 from abc import ABC, abstractmethod
-from ftplib import FTP
+import ftplib
 from pathlib import Path
 from typing import List, Dict
 import logging
@@ -76,13 +76,13 @@ class Base(ABC):
         :param str data_fn: Filename on FTP site to be downloaded
         """
         try:
-            with FTP(host) as ftp:
+            with ftplib.FTP(host) as ftp:
                 ftp.login()
                 logger.debug(f"FTP login to {host} was successful")
                 ftp.cwd(data_dir)
                 with open(self._src_dir / data_fn, 'wb') as fp:
                     ftp.retrbinary(f'RETR {data_fn}', fp.write)
-        except Exception as e:
+        except ftplib.all_errors as e:
             logger.error(f'FTP download failed: {e}')
             raise Exception(e)
 
