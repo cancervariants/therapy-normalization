@@ -159,8 +159,9 @@ class SourcePriority(IntEnum):
     NCIT = 2
     HEMONC = 3
     DRUGBANK = 4
-    CHEMBL = 5
-    CHEMIDPLUS = 6
+    GUIDETOPHARMACOLOGY = 5
+    CHEMBL = 6
+    CHEMIDPLUS = 7
     WIKIDATA = 10
 
 
@@ -174,6 +175,7 @@ class SourceName(str, Enum):
     CHEMIDPLUS = "ChemIDplus"
     RXNORM = "RxNorm"
     HEMONC = "HemOnc"
+    GUIDETOPHARMACOLOGY = "GuideToPHARMACOLOGY"
 
 
 class SourceIDAfterNamespace(Enum):
@@ -186,6 +188,7 @@ class SourceIDAfterNamespace(Enum):
     CHEMIDPLUS = ""
     RXNORM = ""
     HEMONC = ""
+    GUIDETOPHARMACOLOGY = ""
 
 
 class NamespacePrefix(Enum):
@@ -213,7 +216,8 @@ class NamespacePrefix(Enum):
     PDB = "pdb"
     THERAPEUTICTARGETSDB = "ttd"
     IUPHAR = "iuphar"
-    GUIDETOPHARMACOLOGY = "gtopdb"
+    IUPHAR_LIGAND = "iuphar.ligand"
+    GUIDETOPHARMACOLOGY = IUPHAR_LIGAND
     INCHIKEY = "inchikey"
     UNII = "unii"
     ATC = "atc"  # Anatomical Therapeutic Chemical Classification System
@@ -223,6 +227,8 @@ class NamespacePrefix(Enum):
     MTHCMSFRF = "mthcmsfrf"  # CMS Formulary Reference File
     USP = "usp"  # USP Compendial Nomenclature
     VANDF = "vandf"  # Veterans Health Administration National Drug File
+    UNIPROT = "uniprot"
+    DRUGCENTRAL = "drugcentral"
 
 
 class DataLicenseAttributes(BaseModel):

@@ -46,7 +46,7 @@ XREF_SOURCES = {source for source in SourceName.__members__}
 # Sources that are found in data from imported sources
 ASSOC_WITH_SOURCES = {source for source in NamespacePrefix.__members__} - XREF_SOURCES  # noqa: E501
 
-from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm, HemOnc  # noqa: F401, E402, E501
+from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm, HemOnc, GuideToPHARMACOLOGY  # noqa: F401, E402, E501
 # used to get source class name from string
 SOURCES_CLASS = \
     {s.value.lower(): eval(s.value) for s in SourceName.__members__.values()}
