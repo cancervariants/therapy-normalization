@@ -60,7 +60,8 @@ class NCIt(Base):
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
             zip_ref.extractall(self._src_dir)
         remove(zip_path)
-        rename(self._src_dir / 'Thesaurus.owl', self._src_data_dir / f'ncit_{self._version}.owl')  # noqa: E501
+        rename(self._src_dir / 'Thesaurus.owl',
+               self._src_dir / f'ncit_{self._version}.owl')
         logger.info('Successfully retrieved source data for NCIt')
 
     def _get_desc_nodes(self, node: ThingClass,
@@ -112,7 +113,8 @@ class NCIt(Base):
         '''
         retired_results = set(graph.query(retired_query_str))
 
-        typed_results = typed_results - retired_results
+        typed_results = {r for r in (typed_results - retired_results)
+                         if r is not None}
 
         for result in typed_results:
             # parse result as URI and get ThingClass object back from NCIt

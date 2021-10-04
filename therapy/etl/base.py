@@ -29,7 +29,7 @@ class Base(ABC):
     """
 
     def __init__(self, database: Database,
-                 data_path: Path = DEFAULT_DATA_PATH):
+                 data_path: Path = DEFAULT_DATA_PATH) -> None:
         """Extract from sources.
 
         :param Database database: application database object
@@ -138,7 +138,7 @@ class Base(ABC):
 
                             if attr_type == 'aliases' and \
                                     'trade_names' in therapy:
-                                therapy[attr_type] = list(set(therapy[attr_type]) - set(therapy['trade_names']))  # noqa: E501
+                                therapy['alias'] = list(set(therapy['alias']) - set(therapy['trade_names']))  # noqa: E501
 
                             if len(items) > 20:
                                 logger.debug(f"{concept_id} has > 20"
@@ -162,5 +162,5 @@ class Base(ABC):
         self._added_ids.append(concept_id)
 
     @abstractmethod
-    def _load_meta(self, *args, **kwargs):
+    def _load_meta(self, *args, **kwargs) -> None:
         raise NotImplementedError

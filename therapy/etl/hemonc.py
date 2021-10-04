@@ -19,7 +19,7 @@ logger.setLevel(logging.DEBUG)
 class HemOnc(Base):
     """Docstring"""
 
-    def __init__(self, database, data_path: Path = DEFAULT_DATA_PATH):
+    def __init__(self, database, data_path: Path = DEFAULT_DATA_PATH) -> None:
         """Initialize HemOnc instance.
 
         :param therapy.database.Database database: application database
@@ -28,7 +28,7 @@ class HemOnc(Base):
         super().__init__(database, data_path)
         self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
 
-    def _download_data(self):
+    def _download_data(self) -> None:
         """Download HemOnc.org source data. Harvard's DataVerse platform
         requires a login and acceptance of terms to download, so it's not
         easily automatable. End users should go directly to the HemOnc page
@@ -45,7 +45,7 @@ class HemOnc(Base):
                f"directory")
         raise DownloadException(msg)
 
-    def _extract_data(self):
+    def _extract_data(self) -> None:
         """Get source files from data directory."""
         self._src_dir.mkdir(exist_ok=True, parents=True)
         self._src_files = []
@@ -56,7 +56,7 @@ class HemOnc(Base):
             self._src_files.append(sorted(files, reverse=True)[0])
         self._version = self._src_files[0].stem.split('_', 2)[-1]
 
-    def _load_meta(self):
+    def _load_meta(self) -> None:
         """Add HemOnc metadata."""
         meta = {
             'data_license': 'CC BY 4.0',
@@ -215,7 +215,7 @@ class HemOnc(Base):
         synonyms_file.close()
         return therapies
 
-    def _transform_data(self):
+    def _transform_data(self) -> None:
         """Prepare dataset for loading into normalizer database."""
         therapies, brand_names, conditions = self._get_concepts()
         therapies = self._get_rels(therapies, brand_names, conditions)

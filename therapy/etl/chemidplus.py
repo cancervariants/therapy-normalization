@@ -29,7 +29,7 @@ TAGS_REGEX = r' \[.*\]'
 class ChemIDplus(Base):
     """Core ChemIDplus ETL class."""
 
-    def _download_data(self):
+    def _download_data(self) -> None:
         """Download source data from default location."""
         logger.info('Retrieving source data for ChemIDplus')
         url = urlparse(bioversions.resolve('chemidplus').homepage)
@@ -60,6 +60,7 @@ class ChemIDplus(Base):
         _, root = next(context)
         for event, elem in context:
             if event == 'end' and elem.tag == tag:
+                print(type(elem))
                 yield elem
                 root.clear()
 
