@@ -6,6 +6,7 @@ import datetime
 from wikibaseintegrator.wbi_functions import execute_sparql_query
 
 from .base import Base
+from therapy import DownloadException, XREF_SOURCES
 from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, \
     SourceIDAfterNamespace
 
@@ -63,11 +64,14 @@ SPARQL_QUERY = """
 class Wikidata(Base):
     """Extract, transform, and load the Wikidata source into therapy.db."""
 
-    def _extract_data(self):
-        """Extract data from the Wikidata source."""
-        self._src_data_dir.mkdir(exist_ok=True, parents=True)
-
-        data = execute_sparql_query(SPARQL_QUERY)['results']['bindings']
+    def _download_data(self):
+        """Download latest Wikidata source dump."""
+        logger.info('Retrieving source data for Wikidata')
+        query_results = execute_sparql_query(SPARQL_QUERY)
+        if query_results is None:
+            raise DownloadException("Wikidata SPARQL query returned no results")  # noqa: E501
+        else:
+            data = query_results['results']['bindings']
 
         transformed_data = list()
         for item in data:
@@ -75,13 +79,18 @@ class Wikidata(Base):
             for attr in item:
                 params[attr] = item[attr]['value']
             transformed_data.append(params)
-
         self._version = datetime.datetime.today().strftime('%Y%m%d')
         with open(f"{self._src_data_dir}/wikidata_{self._version}.json",
                   'w+') as f:
             json.dump(transformed_data, f)
-        self._data_src = sorted(list(self._src_data_dir.iterdir()))[-1]
-        logger.info('Successfully extracted Wikidata.')
+        logger.info('Successfully retrieved source data for Wikidata')
+
+    def get_latest_version(self):
+        """Wikidata is updated immediately, so source data has no strict
+        versioning. We use the current day's date as a pragmatic way to
+        indicate the version.
+        """
+        return datetime.datetime.today().strftime('%Y%m%d')
 
     def _load_meta(self):
         """Add Wikidata metadata."""
@@ -102,8 +111,7 @@ class Wikidata(Base):
 
     def _transform_data(self):
         """Transform the Wikidata source data."""
-        from therapy import XREF_SOURCES
-        with open(self._data_src, 'r') as f:
+        with open(self._src_file, 'r') as f:
             records = json.load(f)
 
             items = dict()
