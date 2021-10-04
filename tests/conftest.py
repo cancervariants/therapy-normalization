@@ -1,12 +1,43 @@
 """Pytest test config tools."""
 from therapy.schemas import Drug, MatchType
 from therapy.database import Database
+import os
 from typing import Dict, Any, Optional, List
 import json
 import pytest
 from pathlib import Path
 
 TEST_ROOT = Path(__file__).resolve().parents[1]
+
+
+@pytest.fixture(scope='module', autouse=True)
+def db():
+    """Create a DynamoDB test fixture."""
+
+    class DB:
+        def __init__(self):
+            self.db = Database()
+            if os.environ.get('TEST') is not None:
+                self.load_test_data()
+
+        def load_test_data(self):
+            with open(f'{TEST_ROOT}/tests/unit/'
+                      f'data/therapies.json', 'r') as f:
+                therapies = json.load(f)
+                with self.db.therapies.batch_writer() as batch:
+                    for therapy in therapies:
+                        batch.put_item(Item=therapy)
+                f.close()
+
+            with open(f'{TEST_ROOT}/tests/unit/'
+                      f'data/metadata.json', 'r') as f:
+                metadata = json.load(f)
+                with self.db.metadata.batch_writer() as batch:
+                    for m in metadata:
+                        batch.put_item(Item=m)
+                f.close()
+
+    return DB().db
 
 
 @pytest.fixture(scope='module')

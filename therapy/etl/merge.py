@@ -127,8 +127,8 @@ class Merge:
         is non-null.
 
         Priority is:
-        RxNorm > NCIt > HemOnc.org > DrugBank > ChemIDplus > Wikidata
-        ChEMBL records shouldn't be included in `record_id_set`.
+        RxNorm > NCIt > HemOnc.org > DrugBank > GuideToPHARMACOLOGY >
+            ChEMBL > ChemIDplus > Wikidata
 
         :param Set record_id_set: group of concept IDs
         :return: completed merged drug object to be stored in DB
@@ -173,9 +173,6 @@ class Merge:
         for record in records:
             for field in set_fields:
                 merged_attrs[field] |= set(record.get(field, set()))
-            chembl_ids = {i for i in record.get('xrefs', [])
-                          if i.startswith('chembl')}
-            merged_attrs['associated_with'] |= chembl_ids
             if merged_attrs['label'] is None:
                 merged_attrs['label'] = record.get('label')
             if merged_attrs['approval_status'] is None:

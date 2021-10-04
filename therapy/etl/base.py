@@ -124,8 +124,7 @@ class Base(ABC):
                 del therapy[field]
 
         self.database.add_record(therapy)
-        if self.in_normalize:
-            self._added_ids.append(concept_id)
+        self._added_ids.append(concept_id)
 
     @abstractmethod
     def _load_meta(self, *args, **kwargs):

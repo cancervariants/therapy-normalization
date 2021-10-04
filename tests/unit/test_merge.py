@@ -5,7 +5,7 @@ from therapy.schemas import ApprovalStatus
 from typing import Dict
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def merge_handler(mock_database):
     """Provide Merge instance to test cases."""
     class MergeHandler:
@@ -38,37 +38,37 @@ def merge_handler(mock_database):
 
 def compare_merged_records(actual: Dict, fixture: Dict):
     """Check that records are identical."""
-    assert actual['concept_id'] == fixture['concept_id']
-    assert actual['label_and_type'] == fixture['label_and_type']
-    assert ('label' in actual) == ('label' in fixture)
-    if 'label' in actual or 'label' in fixture:
-        assert actual['label'] == fixture['label']
-    assert ('trade_names' in actual) == ('trade_names' in fixture)
-    if 'trade_names' in actual or 'trade_names' in fixture:
-        assert set(actual['trade_names']) == set(fixture['trade_names'])
-    assert ('aliases' in actual) == ('aliases' in fixture)
-    if 'aliases' in actual or 'aliases' in fixture:
-        assert set(actual['aliases']) == set(fixture['aliases'])
+    assert actual["concept_id"] == fixture["concept_id"]
+    assert actual["label_and_type"] == fixture["label_and_type"]
+    assert ("label" in actual) == ("label" in fixture)
+    if "label" in actual or "label" in fixture:
+        assert actual["label"] == fixture["label"]
+    assert ("trade_names" in actual) == ("trade_names" in fixture)
+    if "trade_names" in actual or "trade_names" in fixture:
+        assert set(actual["trade_names"]) == set(fixture["trade_names"])
+    assert ("aliases" in actual) == ("aliases" in fixture)
+    if "aliases" in actual or "aliases" in fixture:
+        assert set(actual["aliases"]) == set(fixture["aliases"])
 
-    assert ('xrefs' in actual) == ('xrefs' in fixture)
-    if 'xrefs' in actual or 'xrefs' in fixture:
-        assert set(actual['xrefs']) == set(fixture['xrefs'])
-    assert ('associated_with' in actual) == ('associated_with' in fixture)
-    if 'associated_with' in actual or 'associated_with' in fixture:
-        assert set(actual['associated_with']) == \
-            set(fixture['associated_with'])
+    assert ("xrefs" in actual) == ("xrefs" in fixture)
+    if "xrefs" in actual or "xrefs" in fixture:
+        assert set(actual["xrefs"]) == set(fixture["xrefs"])
+    assert ("associated_with" in actual) == ("associated_with" in fixture)
+    if "associated_with" in actual or "associated_with" in fixture:
+        assert set(actual["associated_with"]) == \
+            set(fixture["associated_with"])
 
-    assert ('approval_status' in actual) == ('approval_status' in fixture)
-    if 'approval_status' in actual or 'approval_status' in fixture:
-        assert set(actual['approval_status']) == \
-            set(fixture['approval_status'])
-    assert ('approval_year' in actual) == ('approval_year' in fixture)
-    if 'approval_year' in actual or 'approval_year' in fixture:
-        assert set(actual['approval_year']) == set(fixture['approval_year'])
-    assert ('fda_indication' in actual) == ('fda_indication' in fixture)
-    if 'fda_indication' in actual or 'fda_indication' in fixture:
-        actual_inds = actual['fda_indication'].copy()
-        fixture_inds = fixture['fda_indication'].copy()
+    assert ("approval_status" in actual) == ("approval_status" in fixture)
+    if "approval_status" in actual or "approval_status" in fixture:
+        assert set(actual["approval_status"]) == \
+            set(fixture["approval_status"])
+    assert ("approval_year" in actual) == ("approval_year" in fixture)
+    if "approval_year" in actual or "approval_year" in fixture:
+        assert set(actual["approval_year"]) == set(fixture["approval_year"])
+    assert ("fda_indication" in actual) == ("fda_indication" in fixture)
+    if "fda_indication" in actual or "fda_indication" in fixture:
+        actual_inds = actual["fda_indication"].copy()
+        fixture_inds = fixture["fda_indication"].copy()
         assert len(actual_inds) == len(fixture_inds)
         actual_inds.sort(key=lambda x: x[0])
         fixture_inds.sort(key=lambda x: x[0])
@@ -76,7 +76,7 @@ def compare_merged_records(actual: Dict, fixture: Dict):
             assert actual_inds[i] == fixture_inds[i]
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def phenobarbital_merged():
     """Create phenobarbital fixture."""
     return {
@@ -86,26 +86,35 @@ def phenobarbital_merged():
             "ncit:C739",
             "drugbank:DB01174",
             "chemidplus:50-06-6",
-            "wikidata:Q407241"
+            "wikidata:Q407241",
+            "chembl:CHEMBL40",
+            "iuphar.ligand:2804"
         ],
         "aliases": [
             '5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione',
             '5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione',
             '5-Ethyl-5-phenylbarbituric acid',
             '5-Phenyl-5-ethylbarbituric acid',
+            '5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione',
             '5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione',
             '5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione',
-            'Acid, Phenylethylbarbituric',
             'APRD00184',
+            'Acid, Phenylethylbarbituric',
+            'Eskabarb',
             'Fenobarbital',
+            'Luminal',
             'Luminal®',
+            'NSC-128143',
+            'NSC-128143-',
+            'NSC-9848',
+            'Noptil',
             'PHENO',
-            'Phenemal',
             'PHENOBARBITAL',
+            'PHENYLETHYLMALONYLUREA',
             'PHENobarbital',
+            'Phenemal',
             'Phenobarbital',
-            'Phenobarbital (substance)',
-            'Phenobarbital-containing product',
+            'Phenobarbital civ',
             'Phenobarbitol',
             'Phenobarbitone',
             'Phenobarbituric Acid',
@@ -114,14 +123,16 @@ def phenobarbital_merged():
             'Phenylethylbarbiturate',
             'Phenylethylbarbituric Acid',
             'Phenylethylbarbitursaeure',
-            'Phenyläthylbarbitursäure',
             'Phenylethylbarbitursäure',
-            'PHENYLETHYLMALONYLUREA',
             'Phenylethylmalonylurea',
-            'Product containing phenobarbital (medicinal product)',
+            'Phenyläthylbarbitursäure',
+            'Solfoton',
+            'Talpheno',
             'fenobarbital',
+            'phenobarb',
             'phenobarbital',
             'phenobarbital sodium',
+            'phenobarbitone',
             'phenylethylbarbiturate'
         ],
         "associated_with": [
@@ -140,13 +151,16 @@ def phenobarbital_merged():
             "atc:N03AA02",
             "umls:C0031412",
             "CHEBI:8069",
-            "chembl:CHEMBL40"
+            "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N",
+            "drugcentral:2134",
+            "pubchem.substance:135650817"
         ],
         "label": "Phenobarbital",
+        "approval_status": "approved"
     }
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def cisplatin_merged():
     """Create cisplatin fixture."""
     return {
@@ -158,7 +172,6 @@ def cisplatin_merged():
             "hemonc:105",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
-            "wikidata:Q47522001",
             "chembl:CHEMBL11359",
         ],
         "trade_names": [
@@ -168,40 +181,40 @@ def cisplatin_merged():
             "PLATINOL-AQ"
         ],
         "aliases": [
-            '1,2-Diaminocyclohexaneplatinum II citrate',
-            'APRD00359',
-            'CDDP',
-            'CISplatin',
-            'Cisplatin',
-            'Cisplatinum',
-            'Cis-Platinum II',
-            'Cis-DDP',
-            'CIS-DDP',
-            'DACP',
-            'DDP',
-            'Diamminodichloride, Platinum',
-            'Dichlorodiammineplatinum',
-            'INT-230-6 COMPONENT CISPLATIN',
-            'INT230-6 COMPONENT CISPLATIN',
-            'Platinum Diamminodichloride',
-            'cis Diamminedichloroplatinum',
-            'cis Platinum',
-            'cis-Diaminedichloroplatinum',
-            'cis-Diamminedichloroplatinum',
-            'cis-diamminedichloroplatinum(II)',
-            'cis-Diamminedichloroplatinum(II)',
-            'cis-Dichlorodiammineplatinum(II)',
-            'cisplatinum',
-            'cis-Platinum',
-            'cis-platinum',
-            'cisplatino',
-            'cis-diamminedichloroplatinum(II)',
-            'cis-diamminedichloroplatinum III',
-            'NSC 119875',
-            'NSC-119875',
-            'Platinol-AQ',
-            'Platinol-Aq',
-            'Platinol'
+            "1,2-Diaminocyclohexaneplatinum II citrate",
+            "APRD00359",
+            "CDDP",
+            "CISplatin",
+            "Cisplatin",
+            "Cisplatinum",
+            "Cis-Platinum II",
+            "Cis-DDP",
+            "CIS-DDP",
+            "DACP",
+            "DDP",
+            "Diamminodichloride, Platinum",
+            "Dichlorodiammineplatinum",
+            "INT-230-6 COMPONENT CISPLATIN",
+            "INT230-6 COMPONENT CISPLATIN",
+            "Platinum Diamminodichloride",
+            "cis Diamminedichloroplatinum",
+            "cis Platinum",
+            "cis-Diaminedichloroplatinum",
+            "cis-Diamminedichloroplatinum",
+            "cis-diamminedichloroplatinum(II)",
+            "cis-Diamminedichloroplatinum(II)",
+            "cis-Dichlorodiammineplatinum(II)",
+            "cisplatinum",
+            "cis-Platinum",
+            "cis-platinum",
+            "cisplatino",
+            "cis-diamminedichloroplatinum(II)",
+            "cis-diamminedichloroplatinum III",
+            "NSC 119875",
+            "NSC-119875",
+            "Platinol-AQ",
+            "Platinol-Aq",
+            "Platinol"
         ],
         "label": "cisplatin",
         "associated_with": [
@@ -216,7 +229,6 @@ def cisplatin_merged():
             "mmsl:4456",
             "pubchem.compound:5702198",
             "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
-            "chembl:CHEMBL11359",
         ],
         "approval_status": ApprovalStatus.APPROVED,
         "approval_year": ["1978"],
@@ -228,7 +240,7 @@ def cisplatin_merged():
     }
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def spiramycin_merged():
     """Create fixture for spiramycin. The RxNorm entry should be inaccessible
     to this group.
@@ -237,7 +249,7 @@ def spiramycin_merged():
         "label_and_type": "ncit:c839##merger",
         "concept_id": "ncit:C839",
         "xrefs": [
-            'chemidplus:8025-81-8',
+            "chemidplus:8025-81-8",
         ],
         "label": "Spiramycin",
         "aliases": [
@@ -256,7 +268,7 @@ def spiramycin_merged():
     }
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def record_id_groups():
     """Create fixture for concept group sets."""
     return {
@@ -265,35 +277,63 @@ def record_id_groups():
             "ncit:C739",
             "chemidplus:50-06-6",
             "wikidata:Q407241",
-            "drugbank:DB01174"
+            "drugbank:DB01174",
+            "chembl:CHEMBL40",
+            "iuphar.ligand:2804"
         },
         "ncit:C739": {  # Phenobarbital
             "rxcui:8134",
             "ncit:C739",
             "chemidplus:50-06-6",
             "wikidata:Q407241",
-            "drugbank:DB01174"
+            "drugbank:DB01174",
+            "chembl:CHEMBL40",
+            "iuphar.ligand:2804"
         },
         "chemidplus:50-06-6": {  # Phenobarbital
             "rxcui:8134",
             "ncit:C739",
             "chemidplus:50-06-6",
             "wikidata:Q407241",
-            "drugbank:DB01174"
+            "drugbank:DB01174",
+            "chembl:CHEMBL40",
+            "iuphar.ligand:2804"
         },
         "wikidata:Q407241": {  # Phenobarbital
             "rxcui:8134",
             "ncit:C739",
             "chemidplus:50-06-6",
             "wikidata:Q407241",
-            "drugbank:DB01174"
+            "drugbank:DB01174",
+            "chembl:CHEMBL40",
+            "iuphar.ligand:2804"
         },
         "drugbank:DB01174": {  # Phenobarbital
             "rxcui:8134",
             "ncit:C739",
             "chemidplus:50-06-6",
             "wikidata:Q407241",
-            "drugbank:DB01174"
+            "drugbank:DB01174",
+            "chembl:CHEMBL40",
+            "iuphar.ligand:2804"
+        },
+        "chembl:CHEMBL40": {  # Phenobarbital
+            "rxcui:8134",
+            "ncit:C739",
+            "chemidplus:50-06-6",
+            "wikidata:Q407241",
+            "drugbank:DB01174",
+            "chembl:CHEMBL40",
+            "iuphar.ligand:2804"
+        },
+        "iuphar.ligand:2804": {  # Phenobarbital
+            "rxcui:8134",
+            "ncit:C739",
+            "chemidplus:50-06-6",
+            "wikidata:Q407241",
+            "drugbank:DB01174",
+            "chembl:CHEMBL40",
+            "iuphar.ligand:2804"
         },
         "ncit:C839": {  # Spiramycin
             "ncit:C839",
@@ -308,7 +348,6 @@ def record_id_groups():
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
-            "wikidata:Q47522001",
             "drugbank:DB00515",
             "hemonc:105",
             "chembl:CHEMBL11359"
@@ -318,7 +357,6 @@ def record_id_groups():
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
-            "wikidata:Q47522001",
             "drugbank:DB00515",
             "hemonc:105",
             "chembl:CHEMBL11359"
@@ -328,7 +366,6 @@ def record_id_groups():
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
-            "wikidata:Q47522001",
             "drugbank:DB00515",
             "hemonc:105",
             "chembl:CHEMBL11359"
@@ -338,17 +375,6 @@ def record_id_groups():
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
-            "wikidata:Q47522001",
-            "drugbank:DB00515",
-            "hemonc:105",
-            "chembl:CHEMBL11359"
-        },
-        "wikidata:Q47522001": {  # Cisplatin
-            "rxcui:2555",
-            "ncit:C376",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415",
-            "wikidata:Q47522001",
             "drugbank:DB00515",
             "hemonc:105",
             "chembl:CHEMBL11359"
@@ -358,7 +384,6 @@ def record_id_groups():
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
-            "wikidata:Q47522001",
             "drugbank:DB00515",
             "hemonc:105",
             "chembl:CHEMBL11359"
@@ -368,7 +393,6 @@ def record_id_groups():
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
-            "wikidata:Q47522001",
             "drugbank:DB00515",
             "hemonc:105",
             "chembl:CHEMBL11359"
@@ -378,7 +402,6 @@ def record_id_groups():
             "ncit:C376",
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
-            "wikidata:Q47522001",
             "drugbank:DB00515",
             "hemonc:105",
             "chembl:CHEMBL11359"
@@ -421,7 +444,7 @@ def test_create_record_id_set(merge_handler, record_id_groups):
     assert len(groups) == len(record_id_groups)  # check if any are missing
 
     # test dead reference
-    has_dead_ref = 'ncit:C107245'
+    has_dead_ref = "ncit:C107245"
     dead_group = merge_handler.create_record_id_set(has_dead_ref)
     assert dead_group == {has_dead_ref}
 
@@ -430,15 +453,15 @@ def test_generate_merged_record(merge_handler, record_id_groups,
                                 phenobarbital_merged, cisplatin_merged,
                                 spiramycin_merged):
     """Test generation of merged record method."""
-    phenobarbital_ids = record_id_groups['rxcui:8134']
+    phenobarbital_ids = record_id_groups["rxcui:8134"]
     merge_response = merge_handler.generate_merged_record(phenobarbital_ids)
     compare_merged_records(merge_response, phenobarbital_merged)
 
-    cisplatin_ids = record_id_groups['rxcui:2555']
+    cisplatin_ids = record_id_groups["rxcui:2555"]
     merge_response = merge_handler.generate_merged_record(cisplatin_ids)
     compare_merged_records(merge_response, cisplatin_merged)
 
-    spiramycin_ids = record_id_groups['ncit:C839']
+    spiramycin_ids = record_id_groups["ncit:C839"]
     merge_response = merge_handler.generate_merged_record(spiramycin_ids)
     compare_merged_records(merge_response, spiramycin_merged)
 
@@ -454,35 +477,35 @@ def test_create_merged_concepts(merge_handler, record_id_groups,
     added_records = merge_handler.get_added_records()
     assert len(added_records) == 4
 
-    phenobarb_merged_id = phenobarbital_merged['concept_id']
+    phenobarb_merged_id = phenobarbital_merged["concept_id"]
     assert phenobarb_merged_id in added_records.keys()
     compare_merged_records(added_records[phenobarb_merged_id],
                            phenobarbital_merged)
 
-    cispl_merged_id = cisplatin_merged['concept_id']
+    cispl_merged_id = cisplatin_merged["concept_id"]
     assert cispl_merged_id in added_records.keys()
     compare_merged_records(added_records[cispl_merged_id], cisplatin_merged)
 
-    spira_merged_id = spiramycin_merged['concept_id']
+    spira_merged_id = spiramycin_merged["concept_id"]
     assert spira_merged_id in added_records.keys()
     compare_merged_records(added_records[spira_merged_id],
                            spiramycin_merged)
 
     # check merged record reference updating
     updates = merge_handler.get_updates()
-    for concept_id in record_id_groups['rxcui:8134']:
+    for concept_id in record_id_groups["rxcui:8134"]:
         assert updates[concept_id] == {
-            'merge_ref': phenobarbital_merged['concept_id'].lower()
+            "merge_ref": phenobarbital_merged["concept_id"].lower()
         }
-    for concept_id in record_id_groups['rxcui:2555']:
+    for concept_id in record_id_groups["rxcui:2555"]:
         assert updates[concept_id] == {
-            'merge_ref': cisplatin_merged['concept_id'].lower()
+            "merge_ref": cisplatin_merged["concept_id"].lower()
         }
-    for concept_id in record_id_groups['ncit:C839']:
+    for concept_id in record_id_groups["ncit:C839"]:
         assert updates[concept_id] == {
-            'merge_ref': spiramycin_merged['concept_id'].lower()
+            "merge_ref": spiramycin_merged["concept_id"].lower()
         }
 
     # no merged record for ncit:C49236 should be generated
     assert len(updates) == len(record_id_groups) - 1
-    assert 'ncit:C49236' not in updates
+    assert "ncit:C49236" not in updates

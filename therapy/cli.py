@@ -67,7 +67,10 @@ class CLI:
             CLI()._check_disease_normalizer(normalizers, endpoint_url)
             CLI()._update_normalizers(normalizers, db, update_merged)
         elif not normalizer:
-            CLI()._help_msg()
+            if update_merged:
+                CLI()._update_merged(db, [])
+            else:
+                CLI()._help_msg()
         else:
             normalizers = str(normalizer).lower().split()
 
@@ -157,16 +160,20 @@ class CLI:
             logger.info(msg)
 
         if update_merged:
-            start_merge = timer()
-            if not processed_ids:
-                CLI()._delete_normalized_data(db)
-                processed_ids = db.get_ids_for_merge()
-            merge = Merge(database=db)
-            click.echo("Constructing normalized records...")
-            merge.create_merged_concepts(processed_ids)
-            end_merge = timer()
-            click.echo(f"Merged concept generation completed in"
-                       f" {(end_merge - start_merge):.5f} seconds.")
+            CLI()._update_merged(db, processed_ids)
+
+    def _update_merged(self, db, processed_ids):
+        """Update merged concepts"""
+        start_merge = timer()
+        if not processed_ids:
+            CLI()._delete_normalized_data(db)
+            processed_ids = db.get_ids_for_merge()
+        merge = Merge(database=db)
+        click.echo("Constructing normalized records...")
+        merge.create_merged_concepts(processed_ids)
+        end_merge = timer()
+        click.echo(f"Merged concept generation completed in"
+                   f" {(end_merge - start_merge):.5f} seconds.")
 
     @staticmethod
     def _delete_normalized_data(database):
