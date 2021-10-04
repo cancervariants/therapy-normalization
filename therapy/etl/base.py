@@ -60,6 +60,11 @@ class Base(ABC):
 
     @abstractmethod
     def _download_data(self, *args, **kwargs):
+        """Acquire source data and deposit in a usable form with correct file
+        naming conventions (generally, `<source>_<version>.<filetype>`, or
+        `<source>_<subset>_<version>.<filetype>` if sources require multiple
+        files). Shouldn't set any instance attributes.
+        """
         raise NotImplementedError
 
     def _ftp_download(self, host: str, data_dir: str, data_fn: str) -> None:
@@ -103,7 +108,8 @@ class Base(ABC):
         raise NotImplementedError
 
     def _load_therapy(self, therapy: Dict):
-        """Load individual therapy record.
+        """Load individual therapy record. Subclasses should not be overriding
+        this implementation.
 
         :param Dict therapy: valid therapy object.
         """
