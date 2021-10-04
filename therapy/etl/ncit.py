@@ -9,7 +9,7 @@ import owlready2 as owl
 from owlready2.entity import ThingClass
 
 from therapy import DownloadException
-from therapy.schemas import SourceName, NamespacePrefix, Therapy, SourceMeta
+from therapy.schemas import SourceName, NamespacePrefix, SourceMeta
 from .base import Base
 
 logger = logging.getLogger('therapy')
@@ -25,25 +25,31 @@ class NCIt(Base):
      * NCIt classes that are subclasses of C1909 (Pharmacologic Substance)
     """
 
-    def _download_data(self):
-        """Download NCI thesaurus source file for loading into normalizer."""
+    def _download_data(self) -> None:
+        """Download NCI thesaurus source file."""
         logger.info('Retrieving source data for NCIt')
-        base_dir_url = 'https://evs.nci.nih.gov/ftp1/NCI_Thesaurus'
+        base_url = 'https://evs.nci.nih.gov/ftp1/NCI_Thesaurus'
         # ping base NCIt directory
-        release_path = f'{self._version}_Release/Thesaurus_{self._version}.OWL.zip'  # noqa: E501
-        src_url = f'{base_dir_url}/{release_path}'
+        release_fname = f'Thesaurus_{self._version}.OWL.zip'  # noqa: E501
+        src_url = f'{base_url}/{release_fname}'
         r_try = requests.get(src_url)
         if r_try.status_code != 200:
-            # ping NCIt archive directory
-            archive_ncit_url = f'{base_dir_url}/archive/20{self._version[0:2]}/release_path'  # noqa: E501
-            archive_try = requests.get(archive_ncit_url)
+            # ping NCIt archive directories
+            archive_url = f'{base_url}/archive/{self._version}_Release/{release_fname}'  # noqa: E501
+            archive_try = requests.get(archive_url)
             if archive_try.status_code != 200:
-                msg = f'NCIt download failed: tried {src_url} and {archive_ncit_url}'  # noqa: E501
-                logger.error(msg)
-                raise DownloadException(msg)
-            src_url = archive_ncit_url
+                old_archive_url = f'{base_url}/archive/20{self._version[0:2]}/{self._version}_Release/{release_fname}'  # noqa: E501
+                old_archive_try = requests.get(old_archive_url)
+                if old_archive_try.status_code != 200:
+                    msg = f'NCIt download failed: tried {src_url}, {archive_url}, and {old_archive_url}'  # noqa: E501
+                    logger.error(msg)
+                    raise DownloadException(msg)
+                else:
+                    src_url = old_archive_url
+            else:
+                src_url = archive_url
 
-        zip_path = self._src_data_dir / 'ncit.zip'
+        zip_path = self._src_dir / 'ncit.zip'
         response = requests.get(src_url, stream=True)
         handle = open(zip_path, "wb")
         for chunk in response.iter_content(chunk_size=512):
@@ -52,9 +58,9 @@ class NCIt(Base):
         handle.close()
 
         with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-            zip_ref.extractall(self._src_data_dir)
+            zip_ref.extractall(self._src_dir)
         remove(zip_path)
-        rename(self._src_data_dir / 'Thesaurus.owl', self._src_data_dir / f'ncit_{self._version}.owl')  # noqa: E501
+        rename(self._src_dir / 'Thesaurus.owl', self._src_data_dir / f'ncit_{self._version}.owl')  # noqa: E501
         logger.info('Successfully retrieved source data for NCIt')
 
     def _get_desc_nodes(self, node: ThingClass,
@@ -157,7 +163,6 @@ class NCIt(Base):
                 'xrefs': xrefs,
                 'associated_with': associated_with
             }
-            assert Therapy(**params)
             self._load_therapy(params)
 
     def _load_meta(self):

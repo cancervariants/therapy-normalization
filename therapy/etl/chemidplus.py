@@ -36,14 +36,14 @@ class ChemIDplus(Base):
         _, file = url.path.rsplit('/', 1)
         self._ftp_download('ftp.nlm.nih.gov', 'nlmdata/.chemidlease',
                            str(file))
-        zip_path = (self._src_data_dir / file).absolute()
+        zip_path = (self._src_dir / file).absolute()
         zip_file = zipfile.ZipFile(zip_path, 'r')
-        outfile = self._src_data_dir / f'chemidplus_{self._version}.xml'
+        outfile = self._src_dir / f'chemidplus_{self._version}.xml'
         for info in zip_file.infolist():
             if re.match(r'.*\.xml', info.filename):
                 xml_filename = info.filename
-                zip_file.extract(info, path=self._src_data_dir)
-                move(self._src_data_dir / xml_filename, outfile)
+                zip_file.extract(info, path=self._src_dir)
+                move(self._src_dir / xml_filename, outfile)
                 break
         remove(zip_path)
         assert outfile.exists()

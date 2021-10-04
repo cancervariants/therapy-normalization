@@ -64,7 +64,7 @@ SPARQL_QUERY = """
 class Wikidata(Base):
     """Extract, transform, and load the Wikidata source into therapy.db."""
 
-    def _download_data(self):
+    def _download_data(self) -> None:
         """Download latest Wikidata source dump."""
         logger.info('Retrieving source data for Wikidata')
         query_results = execute_sparql_query(SPARQL_QUERY)
@@ -80,19 +80,19 @@ class Wikidata(Base):
                 params[attr] = item[attr]['value']
             transformed_data.append(params)
         self._version = datetime.datetime.today().strftime('%Y%m%d')
-        with open(f"{self._src_data_dir}/wikidata_{self._version}.json",
+        with open(f"{self._src_dir}/wikidata_{self._version}.json",
                   'w+') as f:
             json.dump(transformed_data, f)
         logger.info('Successfully retrieved source data for Wikidata')
 
-    def get_latest_version(self):
+    def get_latest_version(self) -> str:
         """Wikidata is updated immediately, so source data has no strict
         versioning. We use the current day's date as a pragmatic way to
         indicate the version.
         """
         return datetime.datetime.today().strftime('%Y%m%d')
 
-    def _load_meta(self):
+    def _load_meta(self) -> None:
         """Add Wikidata metadata."""
         metadata = SourceMeta(src_name=SourceName.WIKIDATA.value,
                               data_license='CC0 1.0',
@@ -109,7 +109,7 @@ class Wikidata(Base):
         params['src_name'] = SourceName.WIKIDATA.value
         self.database.metadata.put_item(Item=params)
 
-    def _transform_data(self):
+    def _transform_data(self) -> None:
         """Transform the Wikidata source data."""
         with open(self._src_file, 'r') as f:
             records = json.load(f)

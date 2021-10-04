@@ -21,9 +21,9 @@ class ChEMBL(Base):
     def _download_data(self):
         """Download latest ChEMBL database file from EBI."""
         logger.info('Retrieving source data for ChEMBL')
-        os.environ['PYSTOW_HOME'] = str(self._src_data_dir.parent.absolute())
+        os.environ['PYSTOW_HOME'] = str(self._src_dir.parent.absolute())
         tmp_path = chembl_downloader.download_extract_sqlite()
-        shutil.move(tmp_path, self._src_data_dir)
+        shutil.move(tmp_path, self._src_dir)
         shutil.rmtree(tmp_path.parent.parent.parent)
         logger.info('Successfully retrieved source data for ChEMBL')
 

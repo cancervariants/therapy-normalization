@@ -37,7 +37,7 @@ class Base(ABC):
         """
         name = self.__class__.__name__.lower()
         self.database = database
-        self._src_data_dir: Path = data_path / name
+        self._src_dir: Path = data_path / name
         self._added_ids = []
 
     def perform_etl(self) -> List[str]:
@@ -80,7 +80,7 @@ class Base(ABC):
                 ftp.login()
                 logger.debug(f"FTP login to {host} was successful")
                 ftp.cwd(data_dir)
-                with open(self._src_data_dir / data_fn, 'wb') as fp:
+                with open(self._src_dir / data_fn, 'wb') as fp:
                     ftp.retrbinary(f'RETR {data_fn}', fp.write)
         except Exception as e:
             logger.error(f'FTP download failed: {e}')
@@ -97,12 +97,13 @@ class Base(ABC):
         Sources that use multiple data files (such as RxNorm and HemOnc) will
         have to reimplement this method.
         """
-        self._src_data_dir.mkdir(exist_ok=True, parents=True)
+        self._src_dir.mkdir(exist_ok=True, parents=True)
         self._version = self.get_latest_version()
-        latest = list(self._src_data_dir.glob(f'*_{self._version}.*'))
+        fglob = f'{self.__class__.__name__.lower()}_{self._version}.*'
+        latest = list(self._src_dir.glob(fglob))
         if not latest:
             self._download_data()
-            latest = list(self._src_data_dir.glob(f'*_{self._version}.*'))
+            latest = list(self._src_dir.glob(fglob))
         self._src_file = latest[0]
 
     @abstractmethod

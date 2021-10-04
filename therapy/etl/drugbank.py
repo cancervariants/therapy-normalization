@@ -22,7 +22,6 @@ class DrugBank(Base):
         """Download DrugBank source data."""
         logger.info('Retrieving source data for DrugBank')
         url = f'https://go.drugbank.com/releases/{self._version.replace(".", "-")}/downloads/all-drugbank-vocabulary'  # noqa: E501
-
         r = requests.get(url)
         if r.status_code == 200:
             zip_file = zipfile.ZipFile(BytesIO(r.content))
@@ -32,10 +31,10 @@ class DrugBank(Base):
             raise requests.HTTPError(r.status_code)
 
         # unpack file
-        temp_dir = self._src_data_dir / 'temp_drugbank'
+        temp_dir = self._src_dir / 'temp_drugbank'
         zip_file.extractall(temp_dir)
         temp_file = temp_dir / 'drugbank vocabulary.csv'
-        csv_file = self._src_data_dir / f'drugbank_{self._version}.csv'
+        csv_file = self._src_dir / f'drugbank_{self._version}.csv'
         shutil.move(temp_file, csv_file)
         shutil.rmtree(temp_dir)
         logger.info('Successfully retrieved source data for DrugBank')

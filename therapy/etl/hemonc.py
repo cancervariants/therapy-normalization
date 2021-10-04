@@ -29,27 +29,31 @@ class HemOnc(Base):
         self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
 
     def _download_data(self):
-        """Download HemOnc.org source data.
+        """Download HemOnc.org source data. Harvard's DataVerse platform
+        requires a login and acceptance of terms to download, so it's not
+        easily automatable. End users should go directly to the HemOnc page
+        to retrieve the source data, and name them as follows:
+            hemonc_concepts_<version>.csv
+            hemonc_rels_<version>.csv
+            hemonc_synonyms_<version>.csv
+        where <version> is the date given in the original filename.
 
-        Raises download exception for now -- HTTP authorization may be
-        possible?
+        https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6  # noqa: E501
         """
-        raise DownloadException("No download for HemOnc data available -- "
-                                "must place manually in data/ directory.")
+        msg = (f"No download for HemOnc data available -- files must be "
+               f"placed manually in the {self._src_dir.absolute()} "
+               f"directory")
+        raise DownloadException(msg)
 
     def _extract_data(self):
         """Get source files from data directory."""
-        self._src_data_dir.mkdir(exist_ok=True, parents=True)
+        self._src_dir.mkdir(exist_ok=True, parents=True)
         self._src_files = []
         for item_type in ('concepts', 'rels', 'synonyms'):
-            src_file_prefix = f'hemonc_{item_type}_'
-            dir_files = [f for f in self._src_data_dir.iterdir()
-                         if f.name.startswith(src_file_prefix)]
-            if len(dir_files) == 0:
+            files = list(self._src_dir.glob(f'hemonc_{item_type}_*.csv'))
+            if len(files) == 0:
                 self._download_data()
-                dir_files = [f for f in self._src_data_dir.iterdir()
-                             if f.name.startswith(src_file_prefix)]
-            self._src_files.append(sorted(dir_files, reverse=True)[0])
+            self._src_files.append(sorted(files, reverse=True)[0])
         self._version = self._src_files[0].stem.split('_', 2)[-1]
 
     def _load_meta(self):
