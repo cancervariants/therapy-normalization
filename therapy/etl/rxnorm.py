@@ -57,7 +57,7 @@ class RxNorm(Base):
             if not url:
                 raise ValueError('Could not resolve RxNorm homepage')
 
-            zip_path = str(self._src_data_dir / 'rxnorm.zip')
+            zip_path = str(self._src_dir / 'rxnorm.zip')
             environ['RXNORM_PATH'] = zip_path
 
             # Source:
@@ -66,16 +66,16 @@ class RxNorm(Base):
                              url])
 
             with zipfile.ZipFile(zip_path, 'r') as zf:
-                zf.extractall(self._src_data_dir)
+                zf.extractall(self._src_dir)
 
             remove(zip_path)
-            shutil.rmtree(self._src_data_dir / 'prescribe')
-            shutil.rmtree(self._src_data_dir / 'scripts')
+            shutil.rmtree(self._src_dir / 'prescribe')
+            shutil.rmtree(self._src_dir / 'scripts')
 
-            temp_file = self._src_data_dir / 'rrf' / 'RXNCONSO.RRF'
-            self._data_src = self._src_data_dir / f"rxnorm_{self._version}.RRF"
-            shutil.move(temp_file, self._data_src)
-            shutil.rmtree(self._src_data_dir / 'rrf')
+            temp_file = self._src_dir / 'rrf' / 'RXNCONSO.RRF'
+            self._src_file = self._src_dir / f"rxnorm_{self._version}.RRF"
+            shutil.move(temp_file, self._src_file)
+            shutil.rmtree(self._src_dir / 'rrf')
             self._create_drug_form_yaml()
             logger.info('Successfully retrieved source data for RxNorm')
         else:
@@ -83,11 +83,23 @@ class RxNorm(Base):
                          'variables.')
             raise DownloadException("RXNORM_API_KEY not found.")
 
+    def _extract_data(self) -> None:
+        """Get source files from RxNorm data directory.
+        This class expects a file named `rxnorm_<version>.RRF` and a file named
+        `rxnorm_drug_forms_<version>.yaml`. This method will download and
+        generate them if they are unavailable.
+        """
+        super()._extract_data()
+        drug_forms_path = self._src_dir / f'rxnorm_drug_forms_{self._version}.yaml'  # noqa: E501
+        if not drug_forms_path.exists():
+            self._download_data()
+        self._drug_forms = drug_forms_path
+
     def _create_drug_form_yaml(self):
         """Create a YAML file containing RxNorm drug form values."""
-        self._drug_forms = self._src_data_dir / f'rxnorm_drug_forms_{self._version}.yaml'  # noqa: E501
+        self._drug_forms = self._src_dir / f'rxnorm_drug_forms_{self._version}.yaml'  # noqa: E501
         dfs = []
-        with open(self._data_src) as f:
+        with open(self._src_file) as f:
             data = csv.reader(f, delimiter='|')
             for row in data:
                 if row[12] == 'DF' and row[11] == 'RXNORM':
@@ -101,7 +113,7 @@ class RxNorm(Base):
         with open(self._drug_forms, 'r') as file:
             drug_forms = yaml.safe_load(file)
 
-        with open(self._data_src) as f:
+        with open(self._src_file) as f:
             rff_data = csv.reader(f, delimiter='|')
             ingredient_brands = dict()  # Link ingredient to brand
             precise_ingredient = dict()  # Link precise ingredient to get brand
