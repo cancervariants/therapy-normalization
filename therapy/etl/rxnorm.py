@@ -92,12 +92,13 @@ class RxNorm(Base):
         super()._extract_data()
         drug_forms_path = self._src_dir / f'rxnorm_drug_forms_{self._version}.yaml'  # noqa: E501
         if not drug_forms_path.exists():
-            self._download_data()
-        self._drug_forms = drug_forms_path
+            self._create_drug_form_yaml()
+        else:
+            self._drug_forms_file = drug_forms_path
 
     def _create_drug_form_yaml(self):
         """Create a YAML file containing RxNorm drug form values."""
-        self._drug_forms = self._src_dir / f'rxnorm_drug_forms_{self._version}.yaml'  # noqa: E501
+        self._drug_forms_file = self._src_dir / f'rxnorm_drug_forms_{self._version}.yaml'  # noqa: E501
         dfs = []
         with open(self._src_file) as f:
             data = csv.reader(f, delimiter='|')
@@ -105,12 +106,12 @@ class RxNorm(Base):
                 if row[12] == 'DF' and row[11] == 'RXNORM':
                     if row[14] not in dfs:
                         dfs.append(row[14])
-        with open(self._drug_forms, 'w') as file:
+        with open(self._drug_forms_file, 'w') as file:
             yaml.dump(dfs, file)
 
     def _transform_data(self):
         """Transform the RxNorm source."""
-        with open(self._drug_forms, 'r') as file:
+        with open(self._drug_forms_file, 'r') as file:
             drug_forms = yaml.safe_load(file)
 
         with open(self._src_file) as f:

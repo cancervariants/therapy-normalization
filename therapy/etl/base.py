@@ -35,9 +35,8 @@ class Base(ABC):
         :param Database database: application database object
         :param Path data_path: path to app data directory
         """
-        name = self.__class__.__name__.lower()
         self.database = database
-        self._src_dir: Path = data_path / name
+        self._src_dir: Path = data_path / self.__class__.__name__.lower()
         self._added_ids = []
 
     def perform_etl(self) -> List[str]:
@@ -60,6 +59,23 @@ class Base(ABC):
         """
         return bioversions.get_version(self.__class__.__name__)
 
+    def _ftp_download(self, host: str, host_dir: str, host_fn: str) -> None:
+        """Download data file from FTP site.
+        :param str host: Source's FTP host name
+        :param str host_dir: Data directory located on FTP site
+        :param str host_fn: Filename on FTP site to be downloaded
+        """
+        try:
+            with ftplib.FTP(host) as ftp:
+                ftp.login()
+                logger.debug(f"FTP login to {host} was successful")
+                ftp.cwd(host_dir)
+                with open(self._src_dir / host_fn, 'wb') as fp:
+                    ftp.retrbinary(f'RETR {host_fn}', fp.write)
+        except ftplib.all_errors as e:
+            logger.error(f'FTP download failed: {e}')
+            raise Exception(e)
+
     @abstractmethod
     def _download_data(self, *args, **kwargs):
         """Acquire source data and deposit in a usable form with correct file
@@ -68,23 +84,6 @@ class Base(ABC):
         files). Shouldn't set any instance attributes.
         """
         raise NotImplementedError
-
-    def _ftp_download(self, host: str, data_dir: str, data_fn: str) -> None:
-        """Download data file from FTP site.
-        :param str host: Source's FTP host name
-        :param str data_dir: Data directory located on FTP site
-        :param str data_fn: Filename on FTP site to be downloaded
-        """
-        try:
-            with ftplib.FTP(host) as ftp:
-                ftp.login()
-                logger.debug(f"FTP login to {host} was successful")
-                ftp.cwd(data_dir)
-                with open(self._src_dir / data_fn, 'wb') as fp:
-                    ftp.retrbinary(f'RETR {data_fn}', fp.write)
-        except ftplib.all_errors as e:
-            logger.error(f'FTP download failed: {e}')
-            raise Exception(e)
 
     def _extract_data(self) -> None:
         """Get source file from data directory.
@@ -104,6 +103,7 @@ class Base(ABC):
         if not latest:
             self._download_data()
             latest = list(self._src_dir.glob(fglob))
+        # TODO shouldnt be glob -- should just be latest version
         self._src_file = latest[0]
 
     @abstractmethod

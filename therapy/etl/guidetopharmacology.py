@@ -1,13 +1,10 @@
 """Module for Guide to PHARMACOLOGY ETL methods."""
 from typing import Optional
-from therapy import logger, PROJECT_ROOT, DownloadException
+from therapy import logger
 from therapy.etl.base import Base
 from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, \
     ApprovalStatus
-from pathlib import Path
 import requests
-import bs4
-import re
 import csv
 import html
 
@@ -15,48 +12,24 @@ import html
 class GuideToPHARMACOLOGY(Base):
     """Class for Guide to PHARMACOLOGY ETL methods."""
 
-    def __init__(self, database,
-                 data_path: Path = PROJECT_ROOT / "data") -> None:
-        """Initialize GuideToPHARMACOLOGY ETL class.
-
-        :param therapy.database.Database: DB instance to use
-        :param Path data_path: path to app data directory
-        """
-        super().__init__(database, data_path)
-        self._data_url = "https://www.guidetopharmacology.org/download.jsp"
-        self._version = self._find_version()
-        self._ligands_data_url = "https://www.guidetopharmacology.org/DATA/ligands.tsv"  # noqa: E501
-        self._ligand_id_mapping_data_url = "https://www.guidetopharmacology.org/DATA/ligand_id_mapping.tsv"  # noqa: E501
-        self._ligands_file = None
-        self._ligand_id_mapping_file = None
-
-    def _find_version(self) -> str:
-        """Find most recent data version.
-
-        :return: Most recent data version
-        """
-        r = requests.get(self._data_url)
-        status_code = r.status_code
-        if status_code == 200:
-            soup = bs4.BeautifulSoup(r.content, features="lxml")
-        else:
-            logger.error(f"GuideToPHARMACOLOGY version fetch failed with"
-                         f" status code: {status_code}")
-            raise DownloadException
-        data = soup.find("a", {"name": "data"}).find_next("div").find_next("div").find_next("b")  # noqa: E501
-        return re.search(r"\d{4}.\d+", data.contents[0]).group()
-
-    def _extract_data(self) -> None:
-        """Extract data from Guide to PHARMACOLOGY."""
-        logger.info("Extracting Guide to PHARMACOLOGY data...")
-        self._src_data_dir.mkdir(exist_ok=True, parents=True)
-        self._download_data()
-        logger.info("Successfully extracted Guide to PHARMACOLOGY data.")
+#     def __init__(self, database,
+#                  data_path: Path = APP_ROOT / "data") -> None:
+#         """Initialize GuideToPHARMACOLOGY ETL class.
+#
+#         :param therapy.database.Database: DB instance to use
+#         :param Path data_path: path to app data directory
+#         """
+#         super().__init__(database, data_path)
+#         self._data_url = "https://www.guidetopharmacology.org/download.jsp"
+#         self._ligands_data_url = "https://www.guidetopharmacology.org/DATA/ligands.tsv"  # noqa: E501
+#         self._ligand_id_mapping_data_url = "https://www.guidetopharmacology.org/DATA/ligand_id_mapping.tsv"  # noqa: E501
+#         self._ligands_file = None
+#         self._ligand_id_mapping_file = None
 
     def _download_data(self) -> None:
         """Download the latest version of Guide to PHARMACOLOGY."""
-        logger.info("Downloading Guide to PHARMACOLOGY data...")
-        dir_files = list(self._src_data_dir.iterdir())
+        logger.info('Retrieving source data for Guide to PHARMACOLOGY')
+        dir_files = list(self._src_dir.iterdir())
         if len(dir_files) > 0:
             prefix = SourceName.GUIDETOPHARMACOLOGY.value.lower()
             for f in dir_files:
@@ -70,7 +43,7 @@ class GuideToPHARMACOLOGY(Base):
         if self._ligand_id_mapping_file is None:
             self._download_file(self._ligand_id_mapping_data_url,
                                 "ligand_id_mapping")
-        logger.info("Successfully downloaded Guide to PHARMACOLOGY data.")
+        logger.info('Successfully retrieved source data for Guide to PHARMACOLOGY')  # noqa: E501
 
     def _download_file(self, file_url: str, fn: str) -> None:
         """Download individual data file.
@@ -81,13 +54,23 @@ class GuideToPHARMACOLOGY(Base):
         r = requests.get(file_url)
         if r.status_code == 200:
             prefix = SourceName.GUIDETOPHARMACOLOGY.value.lower()
-            path = self._src_data_dir / f"{prefix}_{fn}_{self._version}.tsv"
+            path = self._src_dir / f"{prefix}_{fn}_{self._version}.tsv"
             if fn == "ligands":
                 self._ligands_file = path
             else:
                 self._ligand_id_mapping_file = path
             with open(str(path), "wb") as f:
                 f.write(r.content)
+
+    def _extract_data(self) -> None:
+        """Gather GtoPdb source files."""
+        self._src_dir.mkdir(exist_ok=True, parents=True)
+        self._version = self.get_latest_version()
+        prefix = SourceName.GUIDETOPHARMACOLOGY.value.lower()
+        self._src_ligands_file = self._src_dir / f"{prefix}_ligands_{self._version}.tsv"  # noqa: E501
+        self._src_mappings_file = self._src_dir / f"{prefix}_ligand_id_mapping_{self._version}.tsv"  # noqa: E501
+        if not (self._src_ligands_file.exists() and self._src_mappings_file.exists()):  # noqa: E501
+            self._download_data()
 
     def _transform_data(self) -> None:
         """Transform Guide To PHARMACOLOGY data."""
@@ -211,7 +194,7 @@ class GuideToPHARMACOLOGY(Base):
             data_license="CC BY-SA 4.0",
             data_license_url="https://creativecommons.org/licenses/by-sa/4.0/",
             version=self._version,
-            data_url=self._data_url,
+            data_url="https://www.guidetopharmacology.org/download.jsp",
             rdp_url=None,
             data_license_attributes={
                 "non_commercial": False,
