@@ -1,16 +1,17 @@
 """ETL methods for the Drugs@FDA source."""
-from .base import Base
-from therapy import PROJECT_ROOT
-from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, \
-    ApprovalStatus
 from typing import List, Union, Dict
 import logging
-from pathlib import Path
-import requests
 import zipfile
 from io import BytesIO
 import json
 import shutil
+
+import requests
+
+from .base import Base
+from therapy import DownloadException
+from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, \
+    ApprovalStatus
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -19,34 +20,38 @@ logger.setLevel(logging.DEBUG)
 class DrugsAtFDA(Base):
     """Core Drugs@FDA import class."""
 
-    def __init__(self,
-                 database,
-                 data_path: Path = PROJECT_ROOT / 'data',
-                 src_url: str = 'https://download.open.fda.gov/drug/drugsfda/drug-drugsfda-0001-of-0001.json.zip'):  # noqa: E501
-        """Initialize ETL class.
-        :param Database database: DB instance to use
-        :param Path data_path: path to Drugs@FDA source data folder
-        :param str src_url: URL to retrieve data from
-        """
-        super().__init__(database, data_path)
-        self._src_url = src_url
-
-    def _download_data(self):
+    def _download_data(self) -> None:
         """Download source data from instance-provided source URL."""
-        r = requests.get(self._src_url)
+        logger.info('Retrieving source data for Drugs@FDA')
+        r = requests.get('https://download.open.fda.gov/drug/drugsfda/drug-drugsfda-0001-of-0001.json.zip')  # noqa: E501
         if r.status_code == 200:
             zip_file = zipfile.ZipFile(BytesIO(r.content))
         else:
             msg = f'Drugs@FDA download failed with status code: {r.status_code}'  # noqa: E501
             logger.error(msg)
             raise requests.HTTPError(r.status_code)
-
         orig_fname = 'drug-drugsfda-0001-of-0001.json'
-        tmp_file = json.loads(zip_file.read(orig_fname))
-        version = tmp_file['meta']['last_updated'].replace('-', '')
         zip_file.extract(member=orig_fname, path=self._src_data_dir)
+        version = self._get_latest_version()
         outfile_path = self._src_data_dir / f'drugsatfda_{version}.json'
         shutil.move(self._src_data_dir / orig_fname, outfile_path)
+        logger.info('Successfully retrieved source data for Drugs@FDA')
+
+    def _get_latest_version(self) -> str:
+        """Retrieve latest version of source data.
+        :return: version as a str -- expected formatting is YYYY-MM-DD
+        """
+        r = requests.get('https://api.fda.gov/download.json')
+        if r.status_code == 200:
+            json = r.json()
+            try:
+                return json["results"]["drug"]["drugsfda"]["export_date"]
+            except KeyError:
+                msg = "Unable to parse OpenFDA version API - check for breaking changes"  # noqa: E501
+                logger.error(msg)
+                raise DownloadException(msg)
+        else:
+            raise requests.HTTPError("Unable to retrieve version from FDA API")
 
     def _load_meta(self):
         """Add Drugs@FDA metadata."""
@@ -54,7 +59,7 @@ class DrugsAtFDA(Base):
             'data_license': 'CC0',
             'data_license_url': 'https://creativecommons.org/publicdomain/zero/1.0/legalcode',  # noqa: E501
             'version': self._version,
-            'data_url': self._src_url,
+            'data_url': 'https://open.fda.gov/apis/drug/drugsfda/download/',
             'rdp_url': None,
             'data_license_attributes': {
                 'non_commercial': False,
@@ -71,6 +76,13 @@ class DrugsAtFDA(Base):
         with open(self._src_file, 'r') as f:
             data = json.load(f)['results']
 
+        statuses_map = {
+            "Discontinued": ApprovalStatus.FDA_DISCONTINUED.value,
+            "Prescription": ApprovalStatus.FDA_PRESCRIPTION.value,
+            "Over-the-counter": ApprovalStatus.FDA_OTC.value,
+            "None (Tentative Approval)": ApprovalStatus.FDA_TENTATIVE.value,
+        }
+
         for result in data:
             concept_id = f'{NamespacePrefix.DRUGSATFDA.value}:{result["application_number"]}'  # noqa: E501
             therapy: Dict[str, Union[str, List]] = {'concept_id': concept_id}
@@ -83,13 +95,9 @@ class DrugsAtFDA(Base):
                 msg = f'Application {concept_id} has inconsistent marketing statuses: {statuses}'  # noqa: E501
                 logger.info(msg)
                 continue
-            status = statuses[0]
-            if status == 'Discontinued':
-                therapy['approval_status'] = ApprovalStatus.WITHDRAWN.value
-            elif status in {'Prescription', 'Over-the-counter'}:
-                therapy['approval_status'] = ApprovalStatus.APPROVED.value
-            elif status == 'None (Tentative Approval)':
-                therapy['approval_status'] = ApprovalStatus.TENTATIVE.value
+            status = statuses_map.get(statuses[0])
+            if status:
+                therapy['approval_status'] = status
 
             brand_names = [p['brand_name'] for p in products]
 
