@@ -90,6 +90,7 @@ def therapeutic_procedure():
             "Treatment",
             "TX",
             "therapeutic intervention",
+            "treatment"
         ],
         "trade_names": [],
         "xrefs": [],

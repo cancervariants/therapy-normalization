@@ -1072,30 +1072,59 @@
     "concept_id": "rxcui:10582",
     "src_name": "RxNorm"
   },
+    {
+    "label_and_type": "chembl:chembl40##identity",
+    "label": "PHENOBARBITAL",
+    "concept_id": "chembl:CHEMBL40",
+    "aliases": [
+      "Luminal",
+      "Noptil",
+      "Phenobarbital civ",
+      "NSC-9848",
+      "Talpheno",
+      "Phenemal",
+      "Phenylethylmalonylurea",
+      "Solfoton",
+      "NSC-128143-",
+      "Phenobarbital",
+      "Phenobarbitone",
+      "Eskabarb",
+      "NSC-128143"
+    ],
+    "xrefs": [],
+    "associated_with": [],
+    "approval_status": "approved",
+    "approval_year": [],
+    "has_indication": [],
+    "trade_names": [],
+    "src_name": "ChEMBL",
+    "merge_ref": "rxcui:8134"
+  },
+  {
+    "label_and_type": "PHENOBARBITAL##label",
+    "src_name": "ChEMBL",
+    "concept_id": "chembl:CHEMBL40"
+  },
   {
     "label_and_type": "rxcui:8134##identity",
     "label": "Phenobarbital",
     "concept_id": "rxcui:8134",
     "aliases": [
-      "Phenylethylmalonylurea",
-      "Phenobarbital-containing product",
-      "Phenobarbital",
-      "Phenobarbitone",
-      "Acid, Phenylethylbarbituric",
-      "Phenobarbital (substance)",
-      "PHENobarbital",
-      "Phenylethylbarbituric Acid",
-      "Phenylbarbital",
-      "Phenemal",
-      "Phenylethylbarbiturate",
-      "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
-      "5-Phenyl-5-ethylbarbituric acid",
-      "5-Ethyl-5-phenylbarbituric acid",
-      "Phenobarbituric Acid",
       "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
-      "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
+      "PHENobarbital",
+      "Phenylethylbarbiturate",
+      "Phenobarbitone",
       "Phenobarbitol",
-      "Product containing phenobarbital (medicinal product)"
+      "Phenylethylbarbituric Acid",
+      "Acid, Phenylethylbarbituric",
+      "Phenemal",
+      "Phenylethylmalonylurea",
+      "5-Phenyl-5-ethylbarbituric acid",
+      "Phenobarbituric Acid",
+      "Phenylbarbital",
+      "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
+      "5-Ethyl-5-phenylbarbituric acid",
+      "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione"
     ],
     "xrefs": ["drugbank:DB01174"],
     "associated_with": [
@@ -1171,25 +1200,25 @@
     "label_and_type": "wikidata:q407241##identity",
     "concept_id": "wikidata:Q407241",
     "aliases": [
-      "phenylethylbarbiturate",
-      "fenobarbital",
       "Phenobarbitol",
+      "fenobarbital",
       "Phenylethylbarbituric Acid",
-      "5-Ethyl-5-phenylbarbituric acid",
-      "Phenylethylbarbiturate",
-      "Phenylethylbarbitursaeure",
+      "phenylethylbarbiturate",
       "Phenylethylmalonylurea",
-      "Phenobarbital",
-      "Phenobarbitone",
-      "Phenylaethylbarbitursaeure",
       "5-Phenyl-5-ethylbarbituric acid",
-      "Phenobarbituric Acid",
+      "Phenobarbital",
+      "Phenylethylbarbitursaeure",
+      "Phenobarbitone",
+      "Luminal®",
       "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
       "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
-      "Luminal®",
       "phenobarbital sodium",
+      "Phenylethylbarbiturate",
+      "Phenylaethylbarbitursaeure",
+      "PHENYLETHYLMALONYLUREA",
+      "Phenobarbituric Acid",
       "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
-      "PHENYLETHYLMALONYLUREA"
+      "5-Ethyl-5-phenylbarbituric acid"
     ],
     "xrefs": [
       "chemidplus:50-06-6",
@@ -1264,55 +1293,72 @@
       "ncit:C739",
       "drugbank:DB01174",
       "chemidplus:50-06-6",
-      "wikidata:Q407241"
+      "wikidata:Q407241",
+      "iuphar.ligand:2804",
+      "chembl:CHEMBL40"
     ],
     "aliases": [
-      "PHENO",
-      "Phenylethylmalonylurea",
-      "PHENYLETHYLMALONYLUREA",
-      "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
-      "Phenylethylbarbitursaeure",
       "5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
-      "5-Phenyl-5-ethylbarbituric acid",
-      "PHENobarbital",
-      "Phenyläthylbarbitursäure",
-      "fenobarbital",
-      "Phenylethylbarbiturate",
+      "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
       "5-Ethyl-5-phenylbarbituric acid",
-      "Phenobarbitol",
+      "5-Phenyl-5-ethylbarbituric acid",
       "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
-      "Fenobarbital",
-      "phenobarbital",
-      "Phenobarbituric Acid",
-      "Luminal®",
-      "Acid, Phenylethylbarbituric",
-      "Phenobarbital",
-      "Phenylbarbital",
-      "phenobarbital sodium",
-      "Phenemal",
       "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
       "APRD00184",
+      "Acid, Phenylethylbarbituric",
+      "Fenobarbital",
+      "Luminal®",
+      "PHENO",
       "PHENOBARBITAL",
-      "Phenylethylbarbitursäure",
-      "phenylethylbarbiturate",
-      "Phenylethylbarbituric Acid",
+      "PHENYLETHYLMALONYLUREA",
+      "PHENobarbital",
+      "Phenemal",
+      "Phenobarbital",
+      "Phenobarbitol",
+      "Phenobarbitone",
+      "Phenobarbituric Acid",
       "Phenylaethylbarbitursaeure",
-      "Phenobarbitone"
+      "Phenylbarbital",
+      "Phenylethylbarbiturate",
+      "Phenylethylbarbituric Acid",
+      "Phenylethylbarbitursaeure",
+      "Phenylethylbarbitursäure",
+      "Phenylethylmalonylurea",
+      "Phenyläthylbarbitursäure",
+      "fenobarbital",
+      "phenobarbital",
+      "phenobarbital sodium",
+      "phenylethylbarbiturate",
+      "5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione",
+      "phenobarb",
+      "phenobarbitone",
+      "NSC-128143",
+      "NSC-128143-",
+      "NSC-9848",
+      "Phenobarbital civ",
+      "Solfoton",
+      "Luminal",
+      "Eskabarb",
+      "Noptil",
+      "Talpheno"
     ],
     "associated_with": [
+      "usp:m63400",
       "vandf:4017422",
-      "atc:N03AA02",
-      "CHEBI:8069",
       "mmsl:2390",
-      "mmsl:d00340",
-      "pubchem.compound:4763",
       "mesh:D010634",
       "mmsl:5272",
-      "umls:C0031412",
+      "mmsl:d00340",
+      "atc:N03AA02",
       "unii:YQE403BP4D",
-      "usp:m63400",
-      "chembl:CHEMBL40"
-    ]
+      "umls:C0031412",
+      "CHEBI:8069",
+      "pubchem.substance:135650817",
+      "pubchem.compound:4763",
+      "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N",
+      "drugcentral:2134"
+    ],
+    "approval_status": "approved"
   },
   {
     "label_and_type": "rxcui:2555##merger",
@@ -1323,9 +1369,16 @@
       "drugbank:DB00515",
       "chemidplus:15663-27-1",
       "wikidata:Q412415",
-      "wikidata:Q47522001"
+      "iuphar.ligand:5343",
+      "drugbank:DB12117",
+      "chembl:CHEMBL11359"
     ],
-    "trade_names": ["Cisplatin", "Platinol"],
+    "trade_names": [
+      "Cisplatin",
+      "Platinol",
+      "PLATINOL",
+      "PLATINOL-AQ"
+    ],
     "aliases": [
       "1,2-Diaminocyclohexaneplatinum II citrate",
       "APRD00359",
@@ -1341,30 +1394,44 @@
       "cis Platinum",
       "cis-Diaminedichloroplatinum",
       "cis-Diamminedichloroplatinum",
-      "cis-diamminedichloroplatinum(II)",
       "cis-Diamminedichloroplatinum(II)",
       "cis-Dichlorodiammineplatinum(II)",
       "cis-Platinum",
-      "cisplatino",
       "cis-diamminedichloroplatinum(II)",
       "Platinol-AQ",
-      "Platinol"
+      "Platinol",
+      "cisplatino",
+      "Cisplatin",
+      "Cis-Platinum II",
+      "Cisplatinum",
+      "INT-230-6 COMPONENT CISPLATIN",
+      "INT230-6 COMPONENT CISPLATIN",
+      "NSC-119875",
+      "Platinol-Aq",
+      "DACP",
+      "NSC 119875",
+      "cis-diamminedichloroplatinum III",
+      "cis-platinum",
+      "cisplatinum"
     ],
     "label": "cisplatin",
     "associated_with": [
-      "umls:C0008838",
-      "usp:m17910",
-      "vandf:4018139",
-      "mesh:D002945",
-      "mmsl:d00195",
-      "atc:L01XA01",
       "mmsl:31747",
       "mmsl:4456",
-      "pubchem.compound:5702198",
-      "unii:Q20Q21Q62J",
-      "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
+      "usp:m17910",
       "CHEBI:27899",
-      "chembl:CHEMBL11359"
+      "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
+      "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
+      "mmsl:d00195",
+      "mesh:D002945",
+      "atc:L01XA01",
+      "vandf:4018139",
+      "pubchem.compound:5702198",
+      "umls:C0008838",
+      "unii:Q20Q21Q62J",
+      "pubchem.substance:178102005",
+      "pubchem.compound:441203",
+      "unii:H8MTN7XVC2"
     ],
     "approval_status": "approved",
     "approval_year": ["1978"],
@@ -1378,7 +1445,10 @@
     "label_and_type": "ncit:c839##merger",
     "item_type": "merger",
     "concept_id": "ncit:C839",
-    "xrefs": ["chemidplus:8025-81-8"],
+    "xrefs": [
+      "chemidplus:8025-81-8",
+      "wikidata:Q422265"
+    ],
     "label": "Spiramycin",
     "aliases": [
       "SPIRAMYCIN",
@@ -1387,12 +1457,13 @@
       "Provamycin",
       "Rovamycine",
       "RP 5337",
-      "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"
+      "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside",
+      "spiramycin I"
     ],
     "associated_with": [
       "umls:C0037962",
       "unii:71ODY0V87H",
-      "chembl:CHEMBL1256397"
+      "pubchem.compound:5356392"
     ]
   },
   {
@@ -1580,20 +1651,6 @@
     "src_name": "RxNorm"
   },
   {
-    "merge_ref": "rxcui:2555",
-    "concept_id": "wikidata:Q47522001",
-    "label_and_type": "wikidata:q47522001##identity",
-    "associated_with": [],
-    "label": "Platinol",
-    "src_name": "Wikidata",
-    "xrefs": ["rxcui:202856"]
-  },
-  {
-    "concept_id": "wikidata:q47522001",
-    "label_and_type": "platinol##label",
-    "src_name": "Wikidata"
-  },
-  {
     "label_and_type": "chemidplus:220127-57-1##identity",
     "src_name": "ChemIDplus",
     "concept_id": "chemidplus:220127-57-1",
@@ -1636,7 +1693,8 @@
     "xrefs": ["chemidplus:50-06-6"],
     "associated_with": [],
     "approval_status": null,
-    "trade_names": []
+    "trade_names": [],
+    "merge_ref": "rxcui:8134"
   },
   {
     "label_and_type": "chemidplus:50-06-6##xref",
@@ -1896,7 +1954,8 @@
       "TREAT",
       "Treatment",
       "TX",
-      "therapeutic intervention"
+      "therapeutic intervention",
+      "treatment"
     ]
   },
   {
@@ -1921,7 +1980,36 @@
     "aliases": ["RO 5045337", "RG7112"],
     "associated_with": ["pubchem.compound:57406853"],
     "xrefs": ["chemidplus:939981-39-2", "chembl:CHEMBL2386346"],
-    "label": "ro-5045337"
+    "label": "ro-5045337",
+    "merge_ref": "drugbank:DB14793"
+  },
+  {
+    "label_and_type": "drugbank:db14793##merger",
+    "item_type": "merger",
+    "src_name": "DrugBank",
+    "concept_id": "drugbank:DB14793",
+    "xrefs": [
+      "iuphar.ligand:9599",
+      "chembl:CHEMBL2386346",
+      "wikidata:Q27287118"
+    ],
+    "label": "RO-5045337",
+    "aliases": [
+      "RG7112",
+      "[(4S,5R)-2-(4-tert-butyl-2-ethoxyphenyl)-4,5-bis(4-chlorophenyl)-4,5-dimethylimidazol-1-yl]-[4-(3-methylsulfonylpropyl)piperazin-1-yl]methanone",
+      "RO5045337",
+      "RG-7112",
+      "R 7112",
+      "Ro-5045337",
+      "RO 5045337"
+    ],
+    "associated_with": [
+      "pubchem.substance:340590229",
+      "pubchem.compound:57406853",
+      "unii:Q8MI0X869M",
+      "inchikey:QBGKPEROWUKSBK-QPPIDDCLSA-N"
+    ],
+    "approval_status": "investigational"
   },
   {
     "label_and_type": "ncit:c61796##identity",
@@ -1943,5 +2031,266 @@
       "unii:8883YP2R6D",
       "CHEBI:6078"
     ]
+  },
+  {
+    "label_and_type": "iuphar.ligand:5343##identity",
+    "src_name": "GuideToPHARMACOLOGY",
+    "item_type": "identity",
+    "concept_id": "iuphar.ligand:5343",
+    "label": "cisplatin",
+    "approval_status": "approved",
+    "xrefs": [
+        "chembl:CHEMBL11359",
+        "chemidplus:15663-27-1",
+        "drugbank:DB00515"
+    ],
+    "associated_with": [
+        "pubchem.substance:178102005",
+        "pubchem.compound:441203",
+        "CHEBI:27899"
+    ],
+    "aliases": [
+        "Platinol"
+    ]
+  },
+  {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "iuphar.ligand:5343",
+    "item_type": "label",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "platinol##alias",
+    "concept_id": "iuphar.ligand:5343",
+    "item_type": "alias",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "chemidplus:15663-27-1##xref",
+    "concept_id": "iuphar.ligand:5343",
+    "item_type": "xref",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "pubchem.substance:178102005##associated_with",
+    "concept_id": "iuphar.ligand:5343",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "pubchem.compound:441203##associated_with",
+    "concept_id": "iuphar.ligand:5343",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "iuphar.ligand:2169##identity",
+    "src_name": "GuideToPHARMACOLOGY",
+    "item_type": "identity",
+    "concept_id": "iuphar.ligand:2169",
+    "label": "arginine vasotocin",
+    "xrefs": [
+        "chemidplus:113-80-4"
+    ],
+    "associated_with": [
+        "pubchem.substance:135652004",
+        "pubchem.compound:68649",
+        "inchikey:OXDZADMCOWPSOC-ICBIOJHSSA-N"
+    ],
+    "aliases": [
+        "L-cysteinyl-L-tyrosyl-(3S)-DL-isoleucyl-L-glutaminyl-L-asparagyl-L-cysteinyl-DL-prolyl-L-arginyl-glycinamide (1->6)-disulfide",
+        "argiprestocin",
+        "[Arg<sup>8</sup>]vasotocin",
+        "AVT"
+    ]
+  },
+  {
+    "label_and_type": "arginine vasotocin##label",
+    "concept_id": "iuphar.ligand:2169",
+    "item_type": "label",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "avt##alias",
+    "concept_id": "iuphar.ligand:2169",
+    "item_type": "alias",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "chemidplus:113-80-4##xref",
+    "concept_id": "iuphar.ligand:2169",
+    "item_type": "xref",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "pubchem.substance:135652004##associated_with",
+    "concept_id": "iuphar.ligand:2169",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "pubchem.compound:68649##associated_with",
+    "concept_id": "iuphar.ligand:2169",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "iuphar.ligand:2804##identity",
+    "src_name": "GuideToPHARMACOLOGY",
+    "item_type": "identity",
+    "concept_id": "iuphar.ligand:2804",
+    "label": "phenobarbital",
+    "approval_status": "approved",
+    "xrefs": [
+        "chembl:CHEMBL40",
+        "chemidplus:50-06-6",
+        "drugbank:DB01174"
+    ],
+    "associated_with": [
+        "pubchem.substance:135650817",
+        "pubchem.compound:4763",
+        "CHEBI:8069",
+        "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N",
+        "drugcentral:2134"
+    ],
+    "aliases": [
+        "5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione",
+        "fenobarbital",
+        "Luminal",
+        "phenobarb",
+        "phenobarbital sodium",
+        "phenobarbitone",
+        "phenylethylbarbiturate"
+    ],
+    "merge_ref": "rxcui:8134"
+  },
+  {
+    "label_and_type": "phenobarbital##label",
+    "concept_id": "iuphar.ligand:2804",
+    "item_type": "label",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione##alias",
+    "concept_id": "iuphar.ligand:2804",
+    "item_type": "alias",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "phenobarb##alias",
+    "concept_id": "iuphar.ligand:2804",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "phenobarbitone##alias",
+    "concept_id": "iuphar.ligand:2804",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "chembl:chembl40##xref",
+    "concept_id": "iuphar.ligand:2804",
+    "item_type": "xref",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "chemidplus:50-06-6##xref",
+    "concept_id": "iuphar.ligand:2804",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "drugbank:db01174##xref",
+    "concept_id": "iuphar.ligand:2804",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "pubchem.substance:135650817##associated_with",
+    "concept_id": "iuphar.ligand:2804",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "pubchem.compound:4763##associated_with",
+    "concept_id": "iuphar.ligand:2804",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "drugcentral:2134##associated_with",
+    "concept_id": "iuphar.ligand:2804",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "iuphar.ligand:240##identity",
+    "src_name": "GuideToPHARMACOLOGY",
+    "item_type": "identity",
+    "concept_id": "iuphar.ligand:240",
+    "label": "cisapride",
+    "approval_status": "withdrawn",
+    "xrefs": [
+        "chembl:CHEMBL1729",
+        "chemidplus:81098-60-4",
+        "drugbank:DB00604"
+    ],
+    "associated_with": [
+        "pubchem.substance:135650104",
+        "pubchem.compound:2769",
+        "CHEBI:151790",
+        "inchikey:DCSUBABJRXZOMT-UHFFFAOYSA-N",
+        "drugcentral:660"
+    ],
+    "aliases": [
+        "4-amino-5-chloro-N-[1-[3-(4-fluorophenoxy)propyl]-3-methoxypiperidin-4-yl]-2-methoxybenzamide",
+        "Prepulsid",
+        "Propulsid"
+    ]
+  },
+  {
+    "label_and_type": "cisapride##label",
+    "concept_id": "iuphar.ligand:240",
+    "item_type": "label",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "prepulsid##alias",
+    "concept_id": "iuphar.ligand:240",
+    "item_type": "alias",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "drugbank:db00604##xref",
+    "concept_id": "iuphar.ligand:240",
+    "item_type": "xref",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "chembl:chembl1729##xref",
+    "concept_id": "iuphar.ligand:240",
+    "item_type": "xref",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "chemidplus:81098-60-4##xref",
+    "concept_id": "iuphar.ligand:240",
+    "item_type": "xref",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "pubchem.substance:135650104##associated_with",
+    "concept_id": "iuphar.ligand:240",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "pubchem.compound:2769##associated_with",
+    "concept_id": "iuphar.ligand:240",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "inchikey:dcsubabjrxzomt-uhfffaoysa-n##associated_with",
+    "concept_id": "iuphar.ligand:240",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY"
   }
 ]
