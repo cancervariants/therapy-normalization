@@ -188,7 +188,7 @@ class GuideToPHARMACOLOGY(Base):
                     params["associated_with"] = associated_with
 
     def _set_approval_status(self, approved: str,
-                             withdrawn: str) -> Optional[ApprovalStatus]:
+                             withdrawn: str) -> Optional[str]:
         """Set approval status.
 
         :param str approved: The drug is or has in the past been approved for
@@ -198,9 +198,9 @@ class GuideToPHARMACOLOGY(Base):
         :return: Approval status
         """
         if approved and not withdrawn:
-            approval_status = ApprovalStatus.APPROVED.value
+            approval_status = ApprovalStatus.GTOPDB_APPROVED.value
         elif withdrawn:
-            approval_status = ApprovalStatus.WITHDRAWN.value
+            approval_status = ApprovalStatus.GTOPDB_WITHDRAWN.value
         else:
             approval_status = None
         return approval_status

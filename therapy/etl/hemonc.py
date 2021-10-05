@@ -165,7 +165,7 @@ class HemOnc(Base):
                 if year == 9999:
                     logger.warning(f"HemOnc ID {row[0]} has FDA approval year"
                                    f" 9999")
-                record['approval_status'] = ApprovalStatus.APPROVED
+                record['approval_status'] = ApprovalStatus.HEMONC_APPROVED
                 if 'approval_year' in record:
                     record['approval_year'].append(year)
                 else:

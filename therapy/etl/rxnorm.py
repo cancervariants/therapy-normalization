@@ -296,7 +296,7 @@ class RxNorm(Base):
         if (term_type == 'IN' or term_type == 'PIN') and source == 'RXNORM':
             params['label'] = term
             if row[17] == '4096':
-                params['approval_status'] = ApprovalStatus.APPROVED.value
+                params['approval_status'] = ApprovalStatus.RXNORM_PRESCRIBABLE.value  # noqa: E501
         elif term_type in ALIASES:
             self._add_term(params, term, 'aliases')
         elif term_type in TRADE_NAMES:
