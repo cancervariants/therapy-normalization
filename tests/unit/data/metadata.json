@@ -109,5 +109,17 @@
       "share_alike": true,
       "attribution": true
     }
+  },
+  {
+    "src_name": "Drugs@FDA",
+    "data_lciense": "CC0",
+    "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode",
+    "version": "20211004",
+    "data_url": "https://open.fda.gov/apis/drug/drugsfda/download/",
+    "data_license_attributes": {
+      "non_commercial": false,
+      "share_alike": false,
+      "attribution": false
+    }
   }
 ]
