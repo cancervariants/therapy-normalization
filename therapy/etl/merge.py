@@ -156,9 +156,9 @@ class Merge:
 
     def _generate_merged_record(self, record_id_set: Set[str]) -> Dict:
         """Generate merged record from provided concept ID group.
-        Where attributes are sets, they should be merged, and where they are
-        scalars, assign from the highest-priority source where that attribute
-        is non-null.
+        Where attributes are 'set-like', they should be combined, and where
+        they are 'scalar-like', assign from the highest-priority source where
+        that attribute is not None.
 
         Priority is:
         RxNorm > NCIt > HemOnc.org > DrugBank > GuideToPHARMACOLOGY >
@@ -194,7 +194,7 @@ class Merge:
             'aliases': set(),
             'trade_names': set(),
             'associated_with': set(),
-            'approval_status': None,
+            'approval_status': set(),
             'approval_year': set(),
             'fda_indication': [],
         }
@@ -203,14 +203,12 @@ class Merge:
 
         # merge from constituent records
         set_fields = ['aliases', 'trade_names', 'associated_with',
-                      'approval_year']
+                      'approval_year', 'approval_status']
         for record in records:
             for field in set_fields:
                 merged_attrs[field] |= set(record.get(field, set()))
             if merged_attrs['label'] is None:
                 merged_attrs['label'] = record.get('label')
-            if merged_attrs['approval_status'] is None:
-                merged_attrs['approval_status'] = record.get('approval_status')
             for ind in record.get('fda_indication', []):
                 if ind not in merged_attrs['fda_indication']:
                     merged_attrs['fda_indication'].append(ind)
@@ -222,9 +220,8 @@ class Merge:
                 merged_attrs[field] = list(field_value)
             else:
                 del merged_attrs[field]
-        for field in ['label', 'approval_status']:
-            if merged_attrs[field] is None:
-                del merged_attrs[field]
+        if merged_attrs['label'] is None:
+            del merged_attrs['label']
 
         merged_attrs['label_and_type'] = \
             f'{merged_attrs["concept_id"].lower()}##merger'
