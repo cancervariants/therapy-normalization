@@ -1,13 +1,15 @@
 """Test merged record generation."""
 import pytest
 from therapy.etl.merge import Merge
-from therapy.schemas import ApprovalStatus
 from typing import Dict
 
 
 @pytest.fixture(scope="module")
 def merge_handler(mock_database):
-    """Provide Merge instance to test cases."""
+    """Provide Merge instance to test cases.
+    Implements interfaces for basic merge functions, injects mock DB and
+    enables some additional backend checks for correctness.
+    """
     class MergeHandler:
         def __init__(self):
             self.merge = Merge(mock_database())
@@ -230,7 +232,7 @@ def cisplatin_merged():
             "pubchem.compound:5702198",
             "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
         ],
-        "approval_status": ApprovalStatus.APPROVED,
+        "approval_status": "approval_merged",
         "approval_year": ["1978"],
         "fda_indication": [
             ["hemonc:671", "Testicular cancer", "ncit:C7251"],
@@ -349,8 +351,14 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "drugbank:DB00515",
+            "drugbank:DB12117",
             "hemonc:105",
-            "chembl:CHEMBL11359"
+            "chembl:CHEMBL11359",
+            "drugsatfda:ANDA074656",
+            "drugsatfda:ANDA074735",
+            "drugsatfda:ANDA206774",
+            "drugsatfda:ANDA207323",
+            "drugsatfda:ANDA075036",
         },
         "ncit:C376": {  # Cisplatin
             "rxcui:2555",
@@ -358,8 +366,14 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "drugbank:DB00515",
+            "drugbank:DB12117",
             "hemonc:105",
-            "chembl:CHEMBL11359"
+            "chembl:CHEMBL11359",
+            "drugsatfda:ANDA074656",
+            "drugsatfda:ANDA074735",
+            "drugsatfda:ANDA206774",
+            "drugsatfda:ANDA207323",
+            "drugsatfda:ANDA075036",
         },
         "chemidplus:15663-27-1": {  # Cisplatin
             "rxcui:2555",
@@ -367,8 +381,14 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "drugbank:DB00515",
+            "drugbank:DB12117",
             "hemonc:105",
-            "chembl:CHEMBL11359"
+            "chembl:CHEMBL11359",
+            "drugsatfda:ANDA074656",
+            "drugsatfda:ANDA074735",
+            "drugsatfda:ANDA206774",
+            "drugsatfda:ANDA207323",
+            "drugsatfda:ANDA075036",
         },
         "wikidata:Q412415": {  # Cisplatin
             "rxcui:2555",
@@ -376,8 +396,14 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "drugbank:DB00515",
+            "drugbank:DB12117",
             "hemonc:105",
-            "chembl:CHEMBL11359"
+            "chembl:CHEMBL11359",
+            "drugsatfda:ANDA074656",
+            "drugsatfda:ANDA074735",
+            "drugsatfda:ANDA206774",
+            "drugsatfda:ANDA207323",
+            "drugsatfda:ANDA075036",
         },
         "drugbank:DB00515": {  # Cisplatin
             "rxcui:2555",
@@ -385,8 +411,14 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "drugbank:DB00515",
+            "drugbank:DB12117",
             "hemonc:105",
-            "chembl:CHEMBL11359"
+            "chembl:CHEMBL11359",
+            "drugsatfda:ANDA074656",
+            "drugsatfda:ANDA074735",
+            "drugsatfda:ANDA206774",
+            "drugsatfda:ANDA207323",
+            "drugsatfda:ANDA075036",
         },
         "hemonc:105": {  # Cisplatin
             "rxcui:2555",
@@ -394,8 +426,14 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "drugbank:DB00515",
+            "drugbank:DB12117",
             "hemonc:105",
-            "chembl:CHEMBL11359"
+            "chembl:CHEMBL11359",
+            "drugsatfda:ANDA074656",
+            "drugsatfda:ANDA074735",
+            "drugsatfda:ANDA206774",
+            "drugsatfda:ANDA207323",
+            "drugsatfda:ANDA075036",
         },
         "chembl:CHEMBL11359": {  # Cisplatin
             "rxcui:2555",
@@ -403,9 +441,107 @@ def record_id_groups():
             "chemidplus:15663-27-1",
             "wikidata:Q412415",
             "drugbank:DB00515",
+            "drugbank:DB12117",
             "hemonc:105",
-            "chembl:CHEMBL11359"
+            "chembl:CHEMBL11359",
+            "drugsatfda:ANDA074656",
+            "drugsatfda:ANDA074735",
+            "drugsatfda:ANDA206774",
+            "drugsatfda:ANDA207323",
+            "drugsatfda:ANDA075036",
         },
+        "drugsatfda:ANDA074656": {  # Cisplatin
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415",
+            "drugbank:DB00515",
+            "drugbank:DB12117",
+            "hemonc:105",
+            "chembl:CHEMBL11359",
+            "drugsatfda:ANDA074656",
+            "drugsatfda:ANDA074735",
+            "drugsatfda:ANDA206774",
+            "drugsatfda:ANDA207323",
+            "drugsatfda:ANDA075036",
+        },
+        "drugsatfda:ANDA074735": {  # Cisplatin
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415",
+            "drugbank:DB00515",
+            "drugbank:DB12117",
+            "hemonc:105",
+            "chembl:CHEMBL11359",
+            "drugsatfda:ANDA074656",
+            "drugsatfda:ANDA074735",
+            "drugsatfda:ANDA206774",
+            "drugsatfda:ANDA207323",
+            "drugsatfda:ANDA075036",
+        },
+        "drugsatfda:ANDA206774": {  # Cisplatin
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415",
+            "drugbank:DB00515",
+            "drugbank:DB12117",
+            "hemonc:105",
+            "chembl:CHEMBL11359",
+            "drugsatfda:ANDA074656",
+            "drugsatfda:ANDA074735",
+            "drugsatfda:ANDA206774",
+            "drugsatfda:ANDA207323",
+            "drugsatfda:ANDA075036",
+        },
+        "drugsatfda:ANDA207323": {  # Cisplatin
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415",
+            "drugbank:DB00515",
+            "drugbank:DB12117",
+            "hemonc:105",
+            "chembl:CHEMBL11359",
+            "drugsatfda:ANDA074656",
+            "drugsatfda:ANDA074735",
+            "drugsatfda:ANDA206774",
+            "drugsatfda:ANDA207323",
+            "drugsatfda:ANDA075036",
+        },
+        "drugsatfda:ANDA075036": {  # Cisplatin
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415",
+            "drugbank:DB00515",
+            "drugbank:DB12117",
+            "hemonc:105",
+            "chembl:CHEMBL11359",
+            "drugsatfda:ANDA074656",
+            "drugsatfda:ANDA074735",
+            "drugsatfda:ANDA206774",
+            "drugsatfda:ANDA207323",
+            "drugsatfda:ANDA075036",
+        },
+        "drugbank:DB12117": {  # Cisplatin
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415",
+            "drugbank:DB00515",
+            "drugbank:DB12117",
+            "hemonc:105",
+            "chembl:CHEMBL11359",
+            "drugsatfda:ANDA074656",
+            "drugsatfda:ANDA074735",
+            "drugsatfda:ANDA206774",
+            "drugsatfda:ANDA207323",
+            "drugsatfda:ANDA075036",
+        },
+        # tests lookup of wikidata reference to rxnorm brand record, and
+        # drugbank reference to dead chemidplus record
         "rxcui:4126": {  # Amifostine
             "rxcui:4126",
             "wikidata:Q47521576",

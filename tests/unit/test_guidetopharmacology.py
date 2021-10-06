@@ -30,7 +30,7 @@ def cisplatin():
     params = {
         "concept_id": "iuphar.ligand:5343",
         "label": "cisplatin",
-        "approval_status": "approved",
+        "approval_status": "gtopdb_approved",
         "xrefs": [
             "chembl:CHEMBL11359",
             "chemidplus:15663-27-1",
@@ -78,7 +78,7 @@ def phenobarbital():
     params = {
         "concept_id": "iuphar.ligand:2804",
         "label": "phenobarbital",
-        "approval_status": "approved",
+        "approval_status": "gtopdb_approved",
         "xrefs": [
             "chembl:CHEMBL40",
             "chemidplus:50-06-6",
@@ -110,7 +110,7 @@ def cisapride():
     params = {
         "concept_id": "iuphar.ligand:240",
         "label": "cisapride",
-        "approval_status": "withdrawn",
+        "approval_status": "gtopdb_withdrawn",
         "xrefs": [
             "chembl:CHEMBL1729",
             "chemidplus:81098-60-4",

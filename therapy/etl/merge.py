@@ -1,9 +1,12 @@
 """Create concept groups and merged records."""
-from therapy.schemas import SourcePriority
-from therapy.database import Database
-from typing import Set, Dict
+from typing import Set, Dict, Optional
 import logging
 from timeit import default_timer as timer
+import re
+
+from therapy.schemas import SourcePriority
+from therapy.database import Database
+
 
 logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
@@ -12,16 +15,21 @@ logger.setLevel(logging.DEBUG)
 class Merge:
     """Handles record merging."""
 
-    def __init__(self, database: Database):
+    def __init__(self, database: Database) -> None:
         """Initialize Merge instance.
+
+        self._groups is a dictionary keying concept IDs to the Set of concept
+        IDs in that group. This is redundantly captured for all group members
+        (i.e., a group of 5 concepts would all have their own key, and the
+        value would be an identical Set of the same IDs)
 
         :param Database database: db instance to use for record retrieval
             and creation.
         """
         self._database = database
-        self._groups = {}  # dict keying concept IDs to group Sets
+        self._groups: Dict[str, Set[str]] = {}
 
-    def create_merged_concepts(self, record_ids: Set[str]):
+    def create_merged_concepts(self, record_ids: Set[str]) -> None:
         """Create concept groups, generate merged concept records, and
         update database.
 
@@ -39,6 +47,7 @@ class Merge:
         end = timer()
         logger.debug(f'Built record ID sets in {end - start} seconds')
 
+        # don't create separate records for single-member groups
         self._groups = {k: v for k, v in self._groups.items() if len(v) > 1}
 
         logger.info('Creating merged records and updating database...')
@@ -68,7 +77,8 @@ class Merge:
 
     def _get_xrefs(self, record: Dict) -> Set[str]:
         """Extract references to entries in other sources from a record.
-        Crucially, filter to allowed sources only.
+        Combine xrefs with any Drugs@FDA records that can be gathered from
+        UNII references.
 
         :param Dict record: record to process
         :return: Set of xref values
@@ -77,7 +87,40 @@ class Merge:
         xrefs = set()
         for xref in record.get('xrefs', []):
             xrefs.add(xref)
+        uniis = [a for a in record.get('associated_with', [])
+                 if a.startswith('unii:')]
+        for unii in uniis:
+            refs = self._database.get_records_by_type(unii.lower(),
+                                                      "associated_with")
+
+            def get_id(record: Dict) -> str:
+                concept_id = record["concept_id"]
+                return re.sub(r"([a]?nda)", lambda p: p.group(1).upper(),
+                              concept_id)
+
+            xrefs |= {get_id(r) for r in refs
+                      if r['src_name'] == 'Drugs@FDA'}
         return xrefs
+
+    def _rxnorm_brand_lookup(self, record_id: str) -> Optional[str]:
+        """Rx Norm provides brand references back to original therapy concepts.
+        This routine checks whether an ID from a concept group requires an
+        additional dereference to obtain the original RxNorm record.
+        :param str record_id: RxNorm concept ID to check
+        :return: concept ID for RxNorm record if successful, None otherwise
+        """
+        brand_lookup = self._database.get_records_by_type(record_id,
+                                                          'rx_brand')
+        n = len(brand_lookup)
+        if n == 1:
+            lookup_id = brand_lookup[0]['concept_id']
+            db_record = self._database.get_record_by_id(lookup_id,
+                                                        False)
+            if db_record:
+                return db_record['concept_id']
+        elif n > 1:
+            logger.warning(f"Brand lookup for {record_id} had {n} matches")
+        return None
 
     def _create_record_id_set(self, record_id: str,
                               observed_id_set: Set = set()) -> Set[str]:
@@ -89,28 +132,19 @@ class Merge:
         if record_id in self._groups:
             return self._groups[record_id]
         else:
+            # get record
             db_record = self._database.get_record_by_id(record_id)
             if not db_record:
-                # attempt RxNorm brand lookup
-                brand_lookup = self._database.get_records_by_type(record_id,
-                                                                  'rx_brand')
-                if len(brand_lookup) == 1:
-                    lookup_id = brand_lookup[0]['concept_id']
-                    db_record = self._database.get_record_by_id(lookup_id,
-                                                                False)
-                    if db_record:
-                        record_id = db_record['concept_id']
-                        return self._create_record_id_set(record_id,
+                if record_id.startswith('rxcui'):
+                    brand_lookup = self._rxnorm_brand_lookup(record_id)
+                    if brand_lookup:
+                        return self._create_record_id_set(brand_lookup,
                                                           observed_id_set)
-                    else:
-                        return observed_id_set - {record_id}
+                logger.warning(f"Unable to resolve lookup for {record_id} in "
+                               f"ID set: {observed_id_set}")
+                return observed_id_set - {record_id}
 
-                else:
-                    logger.warning(f"Record ID set creator could not resolve "
-                                   f"lookup for {record_id} in ID set: "
-                                   f"{observed_id_set}")
-                    return observed_id_set - {record_id}
-
+            # construct group
             local_id_set = self._get_xrefs(db_record)
             if not local_id_set:
                 return observed_id_set | {db_record['concept_id']}
@@ -128,7 +162,7 @@ class Merge:
 
         Priority is:
         RxNorm > NCIt > HemOnc.org > DrugBank > GuideToPHARMACOLOGY >
-            ChEMBL > ChemIDplus > Wikidata
+            ChEMBL > ChemIDplus > Wikidata > Drugs@FDA
 
         :param Set record_id_set: group of concept IDs
         :return: completed merged drug object to be stored in DB
