@@ -179,6 +179,8 @@ class Merge:
         def record_order(record):
             """Provide priority values of concepts for sort function."""
             src = record['src_name'].upper()
+            if src == 'DRUGS@FDA':
+                src = 'DRUGSATFDA'
             if src in SourcePriority.__members__:
                 source_rank = SourcePriority[src].value
             else:
@@ -190,6 +192,7 @@ class Merge:
         # initialize merged record
         merged_attrs = {
             'concept_id': records[0]['concept_id'],
+            'xrefs': [r['concept_id'] for r in records[1:]],
             'label': None,
             'aliases': set(),
             'trade_names': set(),
@@ -198,15 +201,16 @@ class Merge:
             'approval_year': set(),
             'fda_indication': [],
         }
-        if len(records) > 1:
-            merged_attrs['xrefs'] = [r['concept_id'] for r in records[1:]]
 
         # merge from constituent records
         set_fields = ['aliases', 'trade_names', 'associated_with',
-                      'approval_year', 'approval_status']
+                      'approval_year']
         for record in records:
             for field in set_fields:
                 merged_attrs[field] |= set(record.get(field, set()))
+            approval_status = record.get('approval_status')
+            if approval_status:
+                merged_attrs['approval_status'].add(approval_status)
             if merged_attrs['label'] is None:
                 merged_attrs['label'] = record.get('label')
             for ind in record.get('fda_indication', []):
@@ -220,8 +224,9 @@ class Merge:
                 merged_attrs[field] = list(field_value)
             else:
                 del merged_attrs[field]
-        if merged_attrs['label'] is None:
-            del merged_attrs['label']
+        for field in ('label', 'approval_status'):
+            if not merged_attrs[field]:
+                del merged_attrs[field]
 
         merged_attrs['label_and_type'] = \
             f'{merged_attrs["concept_id"].lower()}##merger'

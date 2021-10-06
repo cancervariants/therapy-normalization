@@ -221,8 +221,8 @@ class SourcePriority(IntEnum):
     GUIDETOPHARMACOLOGY = 5
     CHEMBL = 6
     CHEMIDPLUS = 7
-    DRUGSATFDA = 8
-    WIKIDATA = 10
+    WIKIDATA = 8
+    DRUGSATFDA = 9
 
 
 class SourceName(str, Enum):
@@ -263,7 +263,7 @@ class NamespacePrefix(Enum):
     CHEMBL = "chembl"
     RXNORM = "rxcui"
     DRUGBANK = "drugbank"
-    DRUGSATFDA = "drugsatfda"  # TODO finalize?
+    DRUGSATFDA = "drugsatfda"
     WIKIDATA = "wikidata"
     HEMONC = "hemonc"
     NCIT = "ncit"

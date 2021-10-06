@@ -1143,6 +1143,7 @@
       "atc:N03AA02"
     ],
     "src_name": "RxNorm",
+    "approval_status": "rxnorm_prescribable",
     "merge_ref": "rxcui:8134"
   },
   {
@@ -1338,6 +1339,7 @@
       "mmsl:d00340",
       "atc:N03AA02",
       "unii:YQE403BP4D",
+      "unii:H8MTN7XVC2",
       "umls:C0031412",
       "CHEBI:8069",
       "pubchem.substance:135650817",
@@ -1358,11 +1360,16 @@
       "ncit:C376",
       "hemonc:105",
       "drugbank:DB00515",
-      "chemidplus:15663-27-1",
-      "wikidata:Q412415",
-      "iuphar.ligand:5343",
       "drugbank:DB12117",
-      "chembl:CHEMBL11359"
+      "chemidplus:15663-27-1",
+      "iuphar.ligand:5343",
+      "chembl:CHEMBL11359",
+      "wikidata:Q412415",
+      "drugsatfda:ANDA074656",
+      "drugsatfda:ANDA074735",
+      "drugsatfda:ANDA206774",
+      "drugsatfda:ANDA207323",
+      "drugsatfda:ANDA075036"
     ],
     "trade_names": ["Cisplatin", "Platinol", "PLATINOL", "PLATINOL-AQ"],
     "aliases": [
@@ -1422,7 +1429,7 @@
     "approval_status": [
       "rxnorm_prescribable",
       "hemonc_approved",
-      "approved",
+      "fda_prescription",
       "chembl_phase_4"
     ],
     "approval_year": ["1978"],
