@@ -158,7 +158,11 @@ def phenobarbital_merged():
             "pubchem.substance:135650817"
         ],
         "label": "Phenobarbital",
-        "approval_status": "approved"
+        "approval_status": [
+            "rxnorm_prescribable",
+            "chembl_phase_4",
+            "gtopdb_approved"
+        ]
     }
 
 
@@ -232,7 +236,12 @@ def cisplatin_merged():
             "pubchem.compound:5702198",
             "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
         ],
-        "approval_status": "approval_merged",
+        "approval_status": [
+            "rxnorm_prescribable",
+            "hemonc_approved",
+            "approved",
+            "chembl_phase_4"
+        ],
         "approval_year": ["1978"],
         "fda_indication": [
             ["hemonc:671", "Testicular cancer", "ncit:C7251"],

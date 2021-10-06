@@ -1376,7 +1376,11 @@
       "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N",
       "drugcentral:2134"
     ],
-    "approval_status": "approval_merged"
+    "approval_status": [
+      "rxnorm_prescribable",
+      "chembl_phase_4",
+      "gtopdb_approved"
+    ]
   },
   {
     "label_and_type": "rxcui:2555##merger",
@@ -1446,7 +1450,12 @@
       "pubchem.compound:441203",
       "unii:H8MTN7XVC2"
     ],
-    "approval_status": "approval_merged",
+    "approval_status": [
+      "rxnorm_prescribable",
+      "hemonc_approved",
+      "approved",
+      "chembl_phase_4"
+    ],
     "approval_year": ["1978"],
     "fda_indication": [
       ["hemonc:671", "Testicular cancer", "ncit:C7251"],
@@ -2019,7 +2028,7 @@
       "unii:Q8MI0X869M",
       "inchikey:QBGKPEROWUKSBK-QPPIDDCLSA-N"
     ],
-    "approval_status": "approval_merged"
+    "approval_status": ["chembl_phase_1"]
   },
   {
     "label_and_type": "ncit:c61796##identity",
