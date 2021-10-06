@@ -4,7 +4,7 @@ from therapy import PREFIX_LOOKUP
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
 from os import environ
-from typing import Optional, Dict, List, Any
+from typing import Optional, Dict, List, Any, Set
 import logging
 import click
 import sys
@@ -216,7 +216,7 @@ class Database:
                             match_type: str) -> List[Dict]:
         """Retrieve records for given query and match type.
 
-        :param query: string to match against
+        :param query: string to match against (should already be lower-case)
         :param str match_type: type of match to look for. Should be one
             of {"alias", "trade_name", "label", "xref", "associated_with",
             "rx_brand"} -- use Database.get_record_by_id() for concept ID
@@ -234,10 +234,10 @@ class Database:
                          f"{e.response['Error']['Message']}")
             return []
 
-    def get_ids_for_merge(self) -> List[str]:
-        """Retrieve concept IDs for use in generating normalized records. Only
-        pulls concept IDs for sources in `therapy.ACCEPTED_SOURCES`.
-        :return: List of concept IDs as strings.
+    def get_ids_for_merge(self) -> Set[str]:
+        """Retrieve concept IDs for use in generating normalized records.
+
+        :return: Set of concept IDs as strings.
         """
         last_evaluated_key = None
         concept_ids = []
