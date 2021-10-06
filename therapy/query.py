@@ -67,11 +67,18 @@ class QueryHandler:
                 db_response = self.db.metadata.get_item(
                     Key={'src_name': src_name}
                 )
-                response = SourceMeta(**db_response['Item'])
-                self.db.cached_sources[src_name] = response
-                return response
             except ClientError as e:
-                logger.error(e.response['Error']['Message'])
+                msg = e.response['Error']['Message']
+                logger.error(msg)
+                raise Exception(msg)
+            try:
+                response = SourceMeta(**db_response['Item'])
+            except KeyError:
+                msg = (f"Metadata lookup failed for source {src_name}")
+                logger.error(msg)
+                raise Exception(msg)
+            self.db.cached_sources[src_name] = response
+            return response
 
     def _add_record(self,
                     response: Dict[str, Dict],
