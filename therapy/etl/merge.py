@@ -218,15 +218,14 @@ class Merge:
                     merged_attrs['fda_indication'].append(ind)
 
         # clear unused fields
-        for field in set_fields + ['fda_indication']:
+        for field in set_fields + ['fda_indication', 'approval_status']:
             field_value = merged_attrs[field]
             if field_value:
                 merged_attrs[field] = list(field_value)
             else:
                 del merged_attrs[field]
-        for field in ('label', 'approval_status'):
-            if not merged_attrs[field]:
-                del merged_attrs[field]
+        if not merged_attrs['label']:
+            del merged_attrs['label']
 
         merged_attrs['label_and_type'] = \
             f'{merged_attrs["concept_id"].lower()}##merger'
