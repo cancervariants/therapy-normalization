@@ -72,10 +72,8 @@ class Wikidata(Base):
         """
         super().__init__(database, data_path)
 
-    def _extract_data(self):
-        """Extract data from the Wikidata source."""
-        self._src_data_dir.mkdir(exist_ok=True, parents=True)
-
+    def _download_data(self):
+        """Download Wikidata source data."""
         data = execute_sparql_query(SPARQL_QUERY)['results']['bindings']
 
         transformed_data = list()
@@ -89,8 +87,6 @@ class Wikidata(Base):
         with open(f"{self._src_data_dir}/wikidata_{self._version}.json",
                   'w+') as f:
             json.dump(transformed_data, f)
-        self._data_src = sorted(list(self._src_data_dir.iterdir()))[-1]
-        logger.info('Successfully extracted Wikidata.')
 
     def _load_meta(self):
         """Add Wikidata metadata."""
@@ -112,7 +108,7 @@ class Wikidata(Base):
     def _transform_data(self):
         """Transform the Wikidata source data."""
         from therapy import XREF_SOURCES
-        with open(self._data_src, 'r') as f:
+        with open(self._src_file, 'r') as f:
             records = json.load(f)
 
             items = dict()
