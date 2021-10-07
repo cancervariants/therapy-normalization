@@ -385,14 +385,14 @@ class QueryHandler:
         if any(filter(lambda f: f in record, ('approval_status',
                                               'approval_year',
                                               'fda_indication'))):
-            fda_approv = {
-                "name": "fda_approval",
+            approv = {
+                "name": "regulatory_approval",
                 "value": {}
             }
             for field in ('approval_status', 'approval_year'):
                 value = record.get(field)
                 if value:
-                    fda_approv['value'][field] = value
+                    approv['value'][field] = value
             inds = record.get('fda_indication', [])
             inds_list = []
             for ind in inds:
@@ -407,8 +407,8 @@ class QueryHandler:
                 else:
                     logger.warning(f"{ind[0]} has no disease ID")
             if inds_list:
-                fda_approv['value']['has_indication'] = inds_list
-            vod['extensions'].append(fda_approv)
+                approv['value']['has_indication'] = inds_list
+            vod['extensions'].append(approv)
 
         for field, name in (('trade_names', 'trade_names'),
                             ('associated_with', 'associated_with')):

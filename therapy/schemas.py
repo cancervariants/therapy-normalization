@@ -435,7 +435,7 @@ class MatchesListed(BaseModel):
 class FDAStatus(BaseModel):
     """VOD Extension class for FDA status/indication attributes."""
 
-    approval_status: Optional[ApprovalStatus]
+    approval_status: Optional[List[ApprovalStatus]]
     approval_year: Optional[List[int]]
     has_indication: Optional[List[Union[Dict, ValueObjectDescriptor]]]
 
