@@ -21,10 +21,10 @@ def merge_handler(mock_database):
             return self.merge.create_merged_concepts(record_ids)
 
         def get_added_records(self):
-            return self.merge._database.added_records
+            return self.merge.database.added_records
 
         def get_updates(self):
-            return self.merge._database.updates
+            return self.merge.database.updates
 
         def create_record_id_set(self, record_id):
             return self.merge._create_record_id_set(record_id)
