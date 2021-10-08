@@ -1,10 +1,10 @@
 """Main application for FastAPI"""
+import html
 from therapy import __version__
 from therapy.query import QueryHandler, InvalidParameterException
 from therapy.schemas import SearchService, NormalizationService
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.openapi.utils import get_openapi
-import html
 from typing import Optional
 
 query_handler = QueryHandler()
