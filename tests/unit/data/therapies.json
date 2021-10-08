@@ -2258,7 +2258,7 @@
   {
     "label_and_type": "drugsatfda:anda075036##identity",
     "item_type": "identity",
-    "src_name": "Drugs@FDA",
+    "src_name": "DrugsAtFDA",
     "merge_ref": "rxcui:2555",
     "label": "CISPLATIN",
     "concept_id": "drugsatfda:ANDA075036",
@@ -2270,12 +2270,12 @@
     "label_and_type": "unii:q20q21q62j##associated_with",
     "concept_id": "drugsatfda:anda075036",
     "item_type": "associated_with",
-    "src_name": "Drugs@FDA"
+    "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "drugsatfda:anda206774##identity",
     "item_type": "identity",
-    "src_name": "Drugs@FDA",
+    "src_name": "DrugsAtFDA",
     "merge_ref": "rxcui:2555",
     "label": "CISPLATIN",
     "concept_id": "drugsatfda:ANDA206774",
@@ -2287,12 +2287,12 @@
     "label_and_type": "unii:q20q21q62j##associated_with",
     "concept_id": "drugsatfda:anda206774",
     "item_type": "associated_with",
-    "src_name": "Drugs@FDA"
+    "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "drugsatfda:anda207323##identity",
     "item_type": "identity",
-    "src_name": "Drugs@FDA",
+    "src_name": "DrugsAtFDA",
     "merge_ref": "rxcui:2555",
     "label": "CISPLATIN",
     "concept_id": "drugsatfda:ANDA207323",
@@ -2304,12 +2304,12 @@
     "label_and_type": "unii:q20q21q62j##associated_with",
     "concept_id": "drugsatfda:anda207323",
     "item_type": "associated_with",
-    "src_name": "Drugs@FDA"
+    "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "drugsatfda:anda074735##identity",
     "item_type": "identity",
-    "src_name": "Drugs@FDA",
+    "src_name": "DrugsAtFDA",
     "merge_ref": "rxcui:2555",
     "label": "CISPLATIN",
     "concept_id": "drugsatfda:ANDA074735",
@@ -2321,12 +2321,12 @@
     "label_and_type": "unii:q20q21q62j##associated_with",
     "concept_id": "drugsatfda:anda074735",
     "item_type": "associated_with",
-    "src_name": "Drugs@FDA"
+    "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "drugsatfda:anda074656##identity",
     "item_type": "identity",
-    "src_name": "Drugs@FDA",
+    "src_name": "DrugsAtFDA",
     "merge_ref": "rxcui:2555",
     "label": "CISPLATIN",
     "concept_id": "drugsatfda:ANDA074656",
@@ -2338,6 +2338,6 @@
     "label_and_type": "unii:q20q21q62j##associated_with",
     "concept_id": "drugsatfda:anda074656",
     "item_type": "associated_with",
-    "src_name": "Drugs@FDA"
+    "src_name": "DrugsAtFDA"
   }
 ]
