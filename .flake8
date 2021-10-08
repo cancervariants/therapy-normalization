@@ -10,3 +10,7 @@ exclude =
   outputs
   docs/*
   therapy/version.py
+import-order-style = pep8
+application-import-names =
+  tests
+  therapy
