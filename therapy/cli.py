@@ -13,7 +13,7 @@ from disease.schemas import SourceName as DiseaseSources
 from os import environ
 import logging
 
-logger = logging.getLogger('therapy')
+logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
 
@@ -23,43 +23,43 @@ class CLI:
     @staticmethod
     @click.command()
     @click.option(
-        '--normalizer',
+        "--normalizer",
         help="The normalizer(s) you wish to update separated by spaces."
     )
     @click.option(
-        '--prod',
+        "--prod",
         is_flag=True,
         help="Working in production environment."
     )
     @click.option(
-        '--db_url',
+        "--db_url",
         help="URL endpoint for the application database."
     )
     @click.option(
-        '--update_all',
+        "--update_all",
         is_flag=True,
-        help='Update all normalizer sources.'
+        help="Update all normalizer sources."
     )
     @click.option(
-        '--update_merged',
+        "--update_merged",
         is_flag=True,
-        help='Update concepts for normalize endpoint from accepted sources.'
+        help="Update concepts for normalize endpoint from accepted sources."
     )
     def update_normalizer_db(normalizer, prod, db_url, update_all,
                              update_merged):
         """Update select normalizer source(s) in the therapy database."""
         endpoint_url = None
         if prod:
-            environ['THERAPY_NORM_PROD'] = "TRUE"
-            environ['DISEASE_NORM_PROD'] = "TRUE"
+            environ["THERAPY_NORM_PROD"] = "TRUE"
+            environ["DISEASE_NORM_PROD"] = "TRUE"
             db: Database = Database()
         else:
             if db_url:
                 endpoint_url = db_url
-            elif 'THERAPY_NORM_DB_URL' in environ.keys():
-                endpoint_url = environ['THERAPY_NORM_DB_URL']
+            elif "THERAPY_NORM_DB_URL" in environ.keys():
+                endpoint_url = environ["THERAPY_NORM_DB_URL"]
             else:
-                endpoint_url = 'http://localhost:8000'
+                endpoint_url = "http://localhost:8000"
             db: Database = Database(db_url=endpoint_url)
 
         if update_all:
@@ -99,8 +99,8 @@ class CLI:
             click.echo(msg)
             try:
                 DiseaseCLI().update_normalizer_db(
-                    ['--update_all', '--update_merged',
-                     '--db_url', endpoint_url]
+                    ["--update_all", "--update_merged",
+                     "--db_url", endpoint_url]
                 )
             except Exception as e:
                 logger.error(e)
@@ -108,14 +108,14 @@ class CLI:
             except:  # noqa: E722
                 pass
 
-        if 'THERAPY_NORM_PROD' not in environ and 'hemonc' in normalizers:
+        if "THERAPY_NORM_PROD" not in environ and "hemonc" in normalizers:
             db = DiseaseDatabase(db_url=endpoint_url)
             current_tables = {table.name for table in db.dynamodb.tables.all()}
             if not all(name in current_tables
-                       for name in ('disease_concepts', 'disease_metadata')):
+                       for name in ("disease_concepts", "disease_metadata")):
                 _load_diseases()
-            elif db.diseases.scan()['Count'] == 0 or \
-                    db.metadata.scan()['Count'] < len(DiseaseSources):
+            elif db.diseases.scan()["Count"] == 0 or \
+                    db.metadata.scan()["Count"] < len(DiseaseSources):
                 _load_diseases()
 
     @staticmethod
@@ -182,70 +182,70 @@ class CLI:
         try:
             while True:
                 with database.therapies.batch_writer(
-                        overwrite_by_pkeys=['label_and_type', 'concept_id']) \
+                        overwrite_by_pkeys=["label_and_type", "concept_id"]) \
                         as batch:
                     response = database.therapies.query(
-                        IndexName='item_type_index',
-                        KeyConditionExpression=Key('item_type').eq('merger'),
+                        IndexName="item_type_index",
+                        KeyConditionExpression=Key("item_type").eq("merger"),
                     )
-                    records = response['Items']
+                    records = response["Items"]
                     if not records:
                         break
                     for record in records:
                         batch.delete_item(Key={
-                            'label_and_type': record['label_and_type'],
-                            'concept_id': record['concept_id']
+                            "label_and_type": record["label_and_type"],
+                            "concept_id": record["concept_id"]
                         })
         except ClientError as e:
-            click.echo(e.response['Error']['Message'])
+            click.echo(e.response["Error"]["Message"])
         end_delete = timer()
         delete_time = end_delete - start_delete
         click.echo(f"Deleted normalized records in {delete_time:.5f} seconds.")
 
     @staticmethod
     def _delete_data(source, database):
-        # Delete source's metadata
+        # Delete source"s metadata
         try:
             metadata = database.metadata.query(
                 KeyConditionExpression=Key(
-                    'src_name').eq(SourceName[f"{source.upper()}"].value)
+                    "src_name").eq(SourceName[f"{source.upper()}"].value)
             )
-            if metadata['Items']:
+            if metadata["Items"]:
                 database.metadata.delete_item(
-                    Key={'src_name': metadata['Items'][0]['src_name']},
+                    Key={"src_name": metadata["Items"][0]["src_name"]},
                     ConditionExpression="src_name = :src",
                     ExpressionAttributeValues={
-                        ':src': SourceName[f"{source.upper()}"].value}
+                        ":src": SourceName[f"{source.upper()}"].value}
                 )
         except ClientError as e:
-            click.echo(e.response['Error']['Message'])
+            click.echo(e.response["Error"]["Message"])
 
         try:
             while True:
                 response = database.therapies.query(
-                    IndexName='src_index',
-                    KeyConditionExpression=Key('src_name').eq(
+                    IndexName="src_index",
+                    KeyConditionExpression=Key("src_name").eq(
                         SourceName[f"{source.upper()}"].value),
                 )
 
-                records = response['Items']
+                records = response["Items"]
                 if not records:
                     break
 
                 with database.therapies.batch_writer(
-                        overwrite_by_pkeys=['label_and_type', 'concept_id']) \
+                        overwrite_by_pkeys=["label_and_type", "concept_id"]) \
                         as batch:
 
                     for record in records:
                         batch.delete_item(
                             Key={
-                                'label_and_type': record['label_and_type'],
-                                'concept_id': record['concept_id']
+                                "label_and_type": record["label_and_type"],
+                                "concept_id": record["concept_id"]
                             }
                         )
         except ClientError as e:
-            click.echo(e.response['Error']['Message'])
+            click.echo(e.response["Error"]["Message"])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     CLI().update_normalizer_db()

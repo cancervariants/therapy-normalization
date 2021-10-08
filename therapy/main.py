@@ -8,7 +8,7 @@ import html
 from typing import Optional
 
 query_handler = QueryHandler()
-app = FastAPI(docs_url='/therapy', openapi_url='/therapy/openapi.json')
+app = FastAPI(docs_url="/therapy", openapi_url="/therapy/openapi.json")
 
 
 def custom_openapi():
@@ -22,11 +22,11 @@ def custom_openapi():
         description="Normalize drugs and other therapy terms.",
         routes=app.routes
     )
-#    openapi_schema['info']['license'] = {  # TODO
+#    openapi_schema["info"]["license"] = {  # TODO
 #        "name": "Name-of-license",
 #        "url": "http://www.to-be-determined.com"
 #    }
-    openapi_schema['info']['contact'] = {  # TODO
+    openapi_schema["info"]["contact"] = {  # TODO
         "name": "Alex H. Wagner",
         "email": "Alex.Wagner@nationwidechildrens.org"
     }
@@ -45,12 +45,12 @@ keyed_descr = ("If true, return response as key-value pairs of "
                "sources to source matches.")
 incl_descr = ("Comma-separated list of source names to include in "
               "response. Will exclude all other sources. Will return HTTP "
-              "status code 422: Unprocessable Entity if both 'incl' and "
-              "'excl' parameters are given.")
+              'status code 422: Unprocessable Entity if both "incl" and '
+              '"excl" parameters are given.')
 excl_descr = ("Comma-separated list of source names to exclude in "
               "response. Will include all other sources. Will return HTTP "
-              "status code 422: Unprocessable Entity if both 'incl' and"
-              "'excl' parameters are given.")
+              'status code 422: Unprocessable Entity if both "incl" and'
+              '"excl" parameters are given.')
 search_description = ("For each source, return strongest-match concepts "
                       "for query string provided by user")
 normalize_description = ("Return merged strongest-match concept for query "
