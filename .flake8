@@ -1,7 +1,6 @@
 [flake8]
 ignore = D205, D400, I101
-select = Q0, I100, I201, I202
-inline-quotes = "
+select = Q0, I100, I201, I202, ANN001, ANN2
 exclude =
   .git
   venv
@@ -10,7 +9,10 @@ exclude =
   outputs
   docs/*
   therapy/version.py
+inline-quotes = "
 import-order-style = pep8
 application-import-names =
   therapy
   tests
+per-file-ignores =
+  tests/*:ANN001, ANN2
