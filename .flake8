@@ -1,6 +1,6 @@
 [flake8]
 ignore = D205, D400
-select = Q0
+select = Q0,I100,I101,I201,I202
 inline-quotes = "
 exclude =
   .git
@@ -10,7 +10,7 @@ exclude =
   outputs
   docs/*
   therapy/version.py
-import-order-style = pep8
+import-order-style = pycharm
 application-import-names =
-  tests
   therapy
+  tests
