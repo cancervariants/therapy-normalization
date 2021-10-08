@@ -11,7 +11,7 @@ from therapy.database import Database  # noqa: E402
 from therapy.etl.merge import Merge  # noqa: E402
 from therapy import ACCEPTED_SOURCES  # noqa: #402
 
-logger = logging.getLogger('therapy')
+logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
 
@@ -27,15 +27,15 @@ def main():
     args = dict()
     while not done:
         if start_key:
-            args['ExclusiveStartKey'] = start_key
+            args["ExclusiveStartKey"] = start_key
         response = db.therapies.scan(**args)
-        items = response['Items']
+        items = response["Items"]
         for item in items:
-            if item['label_and_type'].endswith('##identity'):
-                if item['src_name'].lower() in ACCEPTED_SOURCES:
-                    concept_ids.append(item['concept_id'])
+            if item["label_and_type"].endswith("##identity"):
+                if item["src_name"].lower() in ACCEPTED_SOURCES:
+                    concept_ids.append(item["concept_id"])
 
-        start_key = response.get('LastEvaluatedKey', None)
+        start_key = response.get("LastEvaluatedKey", None)
         done = start_key is None
 
     logger.info("Concept ID scan successful.")
@@ -48,5 +48,5 @@ def main():
     logger.info(f"Merge generation successful, time: {end - start}")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

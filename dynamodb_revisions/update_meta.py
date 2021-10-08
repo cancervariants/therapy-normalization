@@ -48,12 +48,12 @@ def main():
     }
 
     for src_name in updates.keys():
-        attrs = {k: {'Value': v} for k, v in updates[src_name].items()}
+        attrs = {k: {"Value": v} for k, v in updates[src_name].items()}
         db.metadata.update_item(
-            Key={'src_name': src_name},
+            Key={"src_name": src_name},
             AttributeUpdates=attrs
         )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

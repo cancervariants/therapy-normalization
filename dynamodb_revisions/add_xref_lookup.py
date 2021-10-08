@@ -2,6 +2,7 @@
 import sys
 from pathlib import Path
 from timeit import default_timer as timer
+
 import click
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -21,23 +22,23 @@ def add_xref_refs():
             response = db.therapies.scan(ExclusiveStartKey=last_evaluated_key)
         else:
             response = db.therapies.scan()
-        last_evaluated_key = response.get('LastEvaluatedKey')
+        last_evaluated_key = response.get("LastEvaluatedKey")
 
-        records = response['Items']
+        records = response["Items"]
         for record in records:
-            if record['label_and_type'].endswith('##identity'):
-                for xref in record.get('xrefs', []):
+            if record["label_and_type"].endswith("##identity"):
+                for xref in record.get("xrefs", []):
                     batch.put_item(Item={
-                        'label_and_type': f"{xref.lower()}##xref",
-                        'concept_id': record['concept_id'].lower(),
-                        'src_name': record['src_name']
+                        "label_and_type": f"{xref.lower()}##xref",
+                        "concept_id": record["concept_id"].lower(),
+                        "src_name": record["src_name"]
                     })
 
         if not last_evaluated_key:
             break
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     click.echo("Adding xref references...")
     start = timer()
     add_xref_refs()

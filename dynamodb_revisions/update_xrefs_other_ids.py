@@ -1,8 +1,9 @@
 """Update xrefs and other_identifiers attribute."""
 import sys
 from pathlib import Path
-import click
 from timeit import default_timer as timer
+
+import click
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.append(f"{PROJECT_ROOT}")
@@ -23,29 +24,29 @@ def update_xrefs_other_ids(db):
             response = db.dynamodb_client.scan(
                 TableName=db.therapies.name,
                 ExclusiveStartKey=last_evaluated_key,
-                FilterExpression='src_name <> :src_name',
+                FilterExpression="src_name <> :src_name",
                 ExpressionAttributeValues={
-                    ':src_name': {'S': 'ChEMBL'}
+                    ":src_name": {"S": "ChEMBL"}
                 }
             )
         else:
             response = db.dynamodb_client.scan(
                 TableName=db.therapies.name,
-                FilterExpression='src_name <> :src_name',
+                FilterExpression="src_name <> :src_name",
                 ExpressionAttributeValues={
-                    ':src_name': {'S': 'ChEMBL'}
+                    ":src_name": {"S": "ChEMBL"}
                 }
             )
-        last_evaluated_key = response.get('LastEvaluatedKey')
+        last_evaluated_key = response.get("LastEvaluatedKey")
 
-        records = response['Items']
+        records = response["Items"]
         for record in records:
-            record_identity = record['label_and_type']['S']
-            record_concept_id = record['concept_id']['S']
-            if '##identity' in record_identity:
+            record_identity = record["label_and_type"]["S"]
+            record_concept_id = record["concept_id"]["S"]
+            if "##identity" in record_identity:
                 other_ids = []
                 xrefs = []
-                for attr in ['other_identifiers', 'xrefs']:
+                for attr in ["other_identifiers", "xrefs"]:
                     _add_xrefs_other_ids(record, attr, other_ids, xrefs)
                 update_item(db, record_identity, record_concept_id,
                             other_ids, xrefs)
@@ -63,11 +64,11 @@ def _add_xrefs_other_ids(record, attr, other_ids, xrefs):
     :param list xrefs: The xrefs for the therapy concept
     """
     if attr in record:
-        if 'NULL' not in record[attr]:
-            prev_ids = record[attr]['L']
+        if "NULL" not in record[attr]:
+            prev_ids = record[attr]["L"]
             for prev_id in prev_ids:
-                other_id_xref = prev_id['S']
-                if other_id_xref.split(':')[0] in PREFIX_LOOKUP:
+                other_id_xref = prev_id["S"]
+                if other_id_xref.split(":")[0] in PREFIX_LOOKUP:
                     other_ids.append(other_id_xref)
                 else:
                     xrefs.append(other_id_xref)
@@ -86,13 +87,13 @@ def update_item(db, record_identity, record_concept_id, other_ids, xrefs):
     """
     db.therapies.update_item(
         Key={
-            'label_and_type': record_identity,
-            'concept_id': record_concept_id
+            "label_and_type": record_identity,
+            "concept_id": record_concept_id
         },
         UpdateExpression="set other_identifiers=:o, xrefs=:x",
         ExpressionAttributeValues={
-            ':o': other_ids,
-            ':x': xrefs,
+            ":o": other_ids,
+            ":x": xrefs,
         },
         ReturnValues="UPDATED_NEW"
     )
@@ -102,8 +103,8 @@ def update_item(db, record_identity, record_concept_id, other_ids, xrefs):
     if not xrefs:
         db.therapies.update_item(
             Key={
-                'label_and_type': record_identity,
-                'concept_id': record_concept_id
+                "label_and_type": record_identity,
+                "concept_id": record_concept_id
             },
             UpdateExpression="remove xrefs",
             ReturnValues="UPDATED_NEW"
@@ -112,15 +113,15 @@ def update_item(db, record_identity, record_concept_id, other_ids, xrefs):
     if not other_ids:
         db.therapies.update_item(
             Key={
-                'label_and_type': record_identity,
-                'concept_id': record_concept_id
+                "label_and_type": record_identity,
+                "concept_id": record_concept_id
             },
             UpdateExpression="remove other_identifiers",
             ReturnValues="UPDATED_NEW"
         )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     click.echo("Updating xrefs and other_identifiers...")
     start = timer()
     update_xrefs_other_ids(Database())
