@@ -1,5 +1,7 @@
 [flake8]
 ignore = D205, D400
+select = Q0
+inline-quotes = "
 exclude =
   .git
   venv
