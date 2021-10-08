@@ -4,8 +4,8 @@ from therapy.query import QueryHandler, InvalidParameterException
 import html
 from therapy.schemas import SearchService, NormalizationService
 from fastapi import FastAPI, HTTPException, Query
-from fastapi.openapi.utils import get_openapi
 from typing import Optional
+from fastapi.openapi.utils import get_openapi
 
 query_handler = QueryHandler()
 app = FastAPI(docs_url="/therapy", openapi_url="/therapy/openapi.json")
