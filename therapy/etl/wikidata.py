@@ -1,13 +1,15 @@
 """This module defines the Wikidata ETL methods."""
-from .base import Base
-from therapy import PROJECT_ROOT
-from therapy.schemas import SourceName, NamespacePrefix, \
-    SourceIDAfterNamespace, SourceMeta
 import json
 import logging
 from pathlib import Path
-from wikibaseintegrator.wbi_functions import execute_sparql_query
 import datetime
+
+from wikibaseintegrator.wbi_functions import execute_sparql_query
+
+from therapy.etl.base import Base
+from therapy import PROJECT_ROOT
+from therapy.schemas import SourceName, NamespacePrefix, \
+    SourceIDAfterNamespace, SourceMeta
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)

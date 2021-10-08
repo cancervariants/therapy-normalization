@@ -1,16 +1,17 @@
 """This module provides methods for handling queries."""
 import re
 from typing import List, Dict, Set, Optional, Tuple
-from .version import __version__
-from therapy import SOURCES, NAMESPACE_LOOKUP, \
-    PREFIX_LOOKUP, ITEM_TYPES
+from urllib.parse import quote
+from datetime import datetime
+
 from uvicorn.config import logger
+from botocore.exceptions import ClientError
+
+from therapy import SOURCES, NAMESPACE_LOOKUP, PREFIX_LOOKUP, ITEM_TYPES
 from therapy.database import Database
 from therapy.schemas import Drug, SourceMeta, MatchType, ServiceMeta, \
     HasIndication, SourcePriority, SearchService, NormalizationService
-from botocore.exceptions import ClientError
-from urllib.parse import quote
-from datetime import datetime
+from .version import __version__
 
 
 class InvalidParameterException(Exception):

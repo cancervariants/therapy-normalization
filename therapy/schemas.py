@@ -2,10 +2,11 @@
 therapy records.
 """
 from typing import List, Optional, Dict, Union, Any, Type
-from pydantic import BaseModel, StrictBool
 from enum import Enum, IntEnum
 from datetime import datetime
+
 from ga4gh.vrsatile.pydantic.vrsatile_model import ValueObjectDescriptor
+from pydantic import BaseModel, StrictBool
 
 
 class Therapy(BaseModel):

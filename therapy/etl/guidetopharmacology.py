@@ -1,15 +1,17 @@
 """Module for Guide to PHARMACOLOGY ETL methods."""
 from typing import Optional
+from pathlib import Path
+import re
+import csv
+import html
+
+import requests
+import bs4
+
 from therapy import logger, PROJECT_ROOT, DownloadException
 from therapy.etl.base import Base
 from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, \
     ApprovalStatus
-from pathlib import Path
-import requests
-import bs4
-import re
-import csv
-import html
 
 
 class GuideToPHARMACOLOGY(Base):

@@ -2,14 +2,15 @@
 
 Courtesy of the U.S. National Library of Medicine.
 """
-from .base import Base
-from therapy import PROJECT_ROOT
-from therapy.schemas import Drug, NamespacePrefix, SourceMeta, SourceName, \
-    DataLicenseAttributes
 from pathlib import Path
 import xml.etree.ElementTree as ET
 import logging
 import re
+
+from therapy.etl.base import Base
+from therapy import PROJECT_ROOT
+from therapy.schemas import Drug, NamespacePrefix, SourceMeta, SourceName, \
+    DataLicenseAttributes
 
 
 logger = logging.getLogger("therapy")

@@ -1,17 +1,19 @@
 """This module provides a CLI util to make updates to normalizer database."""
+from os import environ
+import logging
+from timeit import default_timer as timer
+
 import click
 from botocore.exceptions import ClientError
-from therapy.etl.merge import Merge
-from timeit import default_timer as timer
 from boto3.dynamodb.conditions import Key
-from therapy.schemas import SourceName
-from therapy import SOURCES_CLASS, SOURCES
-from therapy.database import Database
 from disease.database import Database as DiseaseDatabase
 from disease.cli import CLI as DiseaseCLI
 from disease.schemas import SourceName as DiseaseSources
-from os import environ
-import logging
+
+from therapy import SOURCES_CLASS, SOURCES
+from therapy.schemas import SourceName
+from therapy.database import Database
+from therapy.etl.merge import Merge
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)

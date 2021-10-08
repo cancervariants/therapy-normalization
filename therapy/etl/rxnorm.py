@@ -5,23 +5,25 @@ Library of Medicine (NLM), National Institutes of Health, Department of Health
  and Human Services; NLM is not responsible for the product and does not
  endorse or recommend this or any other product."
 """
-from .base import Base
-from therapy import PROJECT_ROOT, DownloadException, XREF_SOURCES, \
-    ASSOC_WITH_SOURCES, ITEM_TYPES
-import therapy
-from therapy.database import Database
-from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
-    ApprovalStatus
 import csv
 import datetime
 import logging
-from os import environ, remove
 import subprocess
 import shutil
 import zipfile
 import re
-import yaml
+from os import environ, remove
 from pathlib import Path
+
+import yaml
+
+import therapy
+from therapy import PROJECT_ROOT, DownloadException, XREF_SOURCES, \
+    ASSOC_WITH_SOURCES, ITEM_TYPES
+from therapy.etl.base import Base
+from therapy.database import Database
+from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
+    ApprovalStatus
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)

@@ -1,13 +1,14 @@
 """This module defines the ChEMBL ETL methods."""
-from .base import Base
-from therapy import PROJECT_ROOT
-from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, \
-    SourceMeta
 import logging
 import tarfile
 import sqlite3
 import os
 import shutil
+
+from therapy.etl.base import Base
+from therapy import PROJECT_ROOT
+from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, \
+    SourceMeta
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)

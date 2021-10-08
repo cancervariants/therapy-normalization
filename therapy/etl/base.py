@@ -3,9 +3,10 @@ from abc import ABC, abstractmethod
 from ftplib import FTP
 from pathlib import Path
 from typing import List, Dict
+import logging
+
 from therapy import PROJECT_ROOT, ITEM_TYPES
 from therapy.schemas import Drug
-import logging
 
 
 logger = logging.getLogger("therapy")

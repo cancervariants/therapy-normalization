@@ -1,13 +1,15 @@
 """Provide ETL methods for HemOnc.org data."""
-from therapy import DownloadException, PROJECT_ROOT
-from therapy.etl.base import Base
-from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, \
-    ApprovalStatus
-from disease.query import QueryHandler as DiseaseNormalizer
 from pathlib import Path
 from typing import Dict, Tuple
 import csv
 import logging
+
+from disease.query import QueryHandler as DiseaseNormalizer
+
+from therapy import DownloadException, PROJECT_ROOT
+from therapy.etl.base import Base
+from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, \
+    ApprovalStatus
 
 
 logger = logging.getLogger("therapy")
