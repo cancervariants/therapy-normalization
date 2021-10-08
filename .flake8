@@ -16,3 +16,4 @@ application-import-names =
   tests
 per-file-ignores =
   tests/*:ANN001, ANN2
+mypy-init-return = true

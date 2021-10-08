@@ -2,12 +2,12 @@
 from os import environ
 from typing import Optional, Dict, List, Any
 import logging
-import click
 import sys
-import boto3
 
-from botocore.exceptions import ClientError
+import click
+import boto3
 from boto3.dynamodb.conditions import Key
+from botocore.exceptions import ClientError
 
 from therapy import PREFIX_LOOKUP
 
@@ -73,7 +73,7 @@ class Database:
         self.batch = self.therapies.batch_writer()
         self.cached_sources = {}
 
-    def create_therapies_table(self, existing_tables: List):
+    def create_therapies_table(self, existing_tables: List) -> None:
         """Create Therapies table if it doesn"t already exist.
 
         :param List existing_tables: list of existing table names
@@ -150,7 +150,7 @@ class Database:
                 }
             )
 
-    def create_meta_data_table(self, existing_tables: List):
+    def create_meta_data_table(self, existing_tables: List[str]) -> None:
         """Create MetaData table if not exists.
 
         :param List existing_tables: list of existing table names
@@ -262,7 +262,7 @@ class Database:
                 break
         return set(concept_ids)
 
-    def add_record(self, record: Dict, record_type: str = "identity"):
+    def add_record(self, record: Dict, record_type: str = "identity") -> None:
         """Add new record to database.
 
         :param Dict record: record to upload
@@ -270,7 +270,7 @@ class Database:
         """
         id_prefix = record["concept_id"].split(":")[0].lower()
         record["src_name"] = PREFIX_LOOKUP[id_prefix]
-        label_and_type = f"{record["concept_id"].lower()}##{record_type}"
+        label_and_type = f"{record['concept_id'].lower()}##{record_type}"
         record["label_and_type"] = label_and_type
         record["item_type"] = record_type
         try:
@@ -278,7 +278,7 @@ class Database:
         except ClientError as e:
             if (len((record["label_and_type"]).encode("utf-8")) >= 2048) or \
                     (len((record["concept_id"]).encode("utf-8")) >= 1024):
-                logger.info(f"{record["concept_id"]}: An error occurred "
+                logger.info(f"{record['concept_id']}: An error occurred "
                             "(ValidationException) when calling the "
                             "BatchWriteItem operation: Hash primary key "
                             "values must be under 2048 bytes, and range "
@@ -286,10 +286,11 @@ class Database:
                             "bytes.")
             else:
                 logger.error("boto3 client error on add_record for "
-                             f"{record["concept_id"]}: "
-                             f"{e.response["Error"]["Message"]}")
+                             f"{record['concept_id']}: "
+                             f"{e.response['Error']['Message']}")
 
-    def add_ref_record(self, term: str, concept_id: str, ref_type: str):
+    def add_ref_record(self, term: str, concept_id: str, ref_type: str)\
+            -> None:
         """Add auxiliary/reference record to database.
 
         :param str term: referent term
@@ -310,7 +311,7 @@ class Database:
         except ClientError as e:
             if (len((record["label_and_type"]).encode("utf-8")) >= 2048) or \
                     (len((record["concept_id"]).encode("utf-8")) >= 1024):
-                logger.info(f"{record["concept_id"]}: An error occurred "
+                logger.info(f"{record['concept_id']}: An error occurred "
                             "(ValidationException) when calling the "
                             "BatchWriteItem operation: Hash primary key "
                             "values must be under 2048 bytes, and range "
@@ -319,10 +320,10 @@ class Database:
             else:
                 logger.error(f"boto3 client error adding reference {term} for "
                              f"{concept_id} with match type {ref_type}: "
-                             f"{e.response["Error"]["Message"]}")
+                             f"{e.response['Error']['Message']}")
 
     def update_record(self, concept_id: str, field: str, new_value: Any,
-                      item_type: str = "identity"):
+                      item_type: str = "identity") -> None:
         """Update the field of an individual record to a new value.
 
         :param str concept_id: record to update
@@ -342,9 +343,9 @@ class Database:
                                        ExpressionAttributeValues=update_values)
         except ClientError as e:
             logger.error(f"boto3 client error in `database.update_record()`: "
-                         f"{e.response["Error"]["Message"]}")
+                         f"{e.response['Error']['Message']}")
 
-    def flush_batch(self):
+    def flush_batch(self) -> None:
         """Flush internal batch_writer."""
         self.batch.__exit__(*sys.exc_info())
         self.batch = self.therapies.batch_writer()

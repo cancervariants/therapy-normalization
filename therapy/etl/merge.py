@@ -1,5 +1,5 @@
 """Create concept groups and merged records."""
-from typing import Set, Dict
+from typing import Set, Dict, Tuple
 import logging
 from timeit import default_timer as timer
 
@@ -22,7 +22,7 @@ class Merge:
         self._database = database
         self._groups = {}  # dict keying concept IDs to group Sets
 
-    def create_merged_concepts(self, record_ids: Set[str]):
+    def create_merged_concepts(self, record_ids: Set[str]) -> None:
         """Create concept groups, generate merged concept records, and
         update database.
 
@@ -143,8 +143,10 @@ class Merge:
                 logger.error(f"Merge record generator could not retrieve "
                              f"record for {record_id} in {record_id_set}")
 
-        def record_order(record):
-            """Provide priority values of concepts for sort function."""
+        def record_order(record: Dict) -> Tuple[int, str]:
+            """Provide priority values of concepts for sort function.
+            :param Dict record: individual record to sort
+            """
             src = record["src_name"].upper()
             if src in SourcePriority.__members__:
                 source_rank = SourcePriority[src].value

@@ -17,7 +17,7 @@ logger.setLevel(logging.DEBUG)
 class ChEMBL(Base):
     """ETL the ChEMBL source into therapy.db."""
 
-    def _extract_data(self, *args, **kwargs):
+    def _extract_data(self, *args, **kwargs) -> None:
         """Extract data from the ChEMBL source."""
         logger.info("Extracting chembl_27.db...")
         if "data_path" in kwargs:
@@ -46,7 +46,7 @@ class ChEMBL(Base):
         assert chembl_db.exists()
         logger.info("Finished extracting chembl_27.db.")
 
-    def _download_data(self, *args, **kwargs):
+    def _download_data(self, *args, **kwargs) -> None:
         """Download ChEMBL data from FTP."""
         logger.info(
             "Downloading ChEMBL v27, this will take a few minutes.")
@@ -55,7 +55,7 @@ class ChEMBL(Base):
                            self._src_data_dir,
                            "chembl_27_sqlite.tar.gz")
 
-    def _transform_data(self, *args, **kwargs):
+    def _transform_data(self, *args, **kwargs) -> None:
         """Transform SQLite data to JSON."""
         self._create_dictionary_synonyms_table()
         self._create_trade_names_table()
@@ -68,7 +68,7 @@ class ChEMBL(Base):
         self._conn.commit()
         self._conn.close()
 
-    def _create_dictionary_synonyms_table(self):
+    def _create_dictionary_synonyms_table(self) -> None:
         """Create temporary table to store drugs and their synonyms."""
         create_dictionary_synonyms_table = f"""
             CREATE TEMPORARY TABLE DictionarySynonyms AS
@@ -99,7 +99,7 @@ class ChEMBL(Base):
         """
         self._cursor.execute(create_dictionary_synonyms_table)
 
-    def _create_trade_names_table(self):
+    def _create_trade_names_table(self) -> None:
         """Create temporary table to store trade name data."""
         create_trade_names_table = """
             CREATE TEMPORARY TABLE TradeNames AS
@@ -115,7 +115,7 @@ class ChEMBL(Base):
         """
         self._cursor.execute(create_trade_names_table)
 
-    def _create_temp_table(self):
+    def _create_temp_table(self) -> None:
         """Create temporary table to store therapies data."""
         create_temp_table = """
             CREATE TEMPORARY TABLE temp(concept_id, label, approval_status,
@@ -169,7 +169,7 @@ class ChEMBL(Base):
         """
         self._cursor.execute(insert_temp)
 
-    def _load_json(self):
+    def _load_json(self) -> None:
         """Load ChEMBL data into database."""
         chembl_data = """
             SELECT
@@ -191,7 +191,7 @@ class ChEMBL(Base):
                     record[attr] = record[attr].split("||")
             self._load_therapy(record)
 
-    def _load_meta(self, *args, **kwargs):
+    def _load_meta(self, *args, **kwargs) -> None:
         """Add ChEMBL metadata."""
         metadata = SourceMeta(data_license="CC BY-SA 3.0",
                               data_license_url="https://creativecommons.org/licenses/by-sa/3.0/",  # noqa: E501

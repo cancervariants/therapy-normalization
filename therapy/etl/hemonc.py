@@ -7,9 +7,10 @@ import logging
 from disease.query import QueryHandler as DiseaseNormalizer
 
 from therapy import DownloadException, PROJECT_ROOT
-from therapy.etl.base import Base
+from therapy.database import Database
 from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, \
     ApprovalStatus
+from therapy.etl.base import Base
 
 
 logger = logging.getLogger("therapy")
@@ -19,7 +20,8 @@ logger.setLevel(logging.DEBUG)
 class HemOnc(Base):
     """Docstring"""
 
-    def __init__(self, database, data_path: Path = PROJECT_ROOT / "data"):
+    def __init__(self, database: Database,
+                 data_path: Path = PROJECT_ROOT / "data"):
         """Initialize HemOnc instance.
 
         :param therapy.database.Database database: application database
@@ -28,7 +30,7 @@ class HemOnc(Base):
         super().__init__(database, data_path)
         self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
 
-    def _download_data(self):
+    def _download_data(self) -> None:
         """Download HemOnc.org source data.
 
         Raises download exception for now -- HTTP authorization may be
@@ -37,7 +39,7 @@ class HemOnc(Base):
         raise DownloadException("No download for HemOnc data available -- "
                                 "must place manually in data/ directory.")
 
-    def _extract_data(self):
+    def _extract_data(self) -> None:
         """Get source files from data directory."""
         self._src_data_dir.mkdir(exist_ok=True, parents=True)
         self._src_files = []
@@ -52,7 +54,7 @@ class HemOnc(Base):
             self._src_files.append(sorted(dir_files, reverse=True)[0])
         self._version = self._src_files[0].stem.split("_", 2)[-1]
 
-    def _load_meta(self):
+    def _load_meta(self) -> None:
         """Add HemOnc metadata."""
         meta = {
             "data_license": "CC BY 4.0",
@@ -211,7 +213,7 @@ class HemOnc(Base):
         synonyms_file.close()
         return therapies
 
-    def _transform_data(self):
+    def _transform_data(self) -> None:
         """Prepare dataset for loading into normalizer database."""
         therapies, brand_names, conditions = self._get_concepts()
         therapies = self._get_rels(therapies, brand_names, conditions)

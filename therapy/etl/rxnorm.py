@@ -14,8 +14,10 @@ import zipfile
 import re
 from os import environ, remove
 from pathlib import Path
+from typing import List, Dict
 
 import yaml
+from boto3.dynamodb.table import BatchWriter
 
 import therapy
 from therapy import PROJECT_ROOT, DownloadException, XREF_SOURCES, \
@@ -49,9 +51,9 @@ class RxNorm(Base):
 
     def __init__(self,
                  database: Database,
-                 data_path=PROJECT_ROOT / "data",
-                 data_url="https://www.nlm.nih.gov/research/umls/"
-                          "rxnorm/docs/rxnormfiles.html"):
+                 data_path: Path = PROJECT_ROOT / "data",
+                 data_url: str ="https://www.nlm.nih.gov/research/umls/"
+                                "rxnorm/docs/rxnormfiles.html"):
         """Initialize the RxNorm ETL class.
 
         :param Database database: Access to DynamoDB.
@@ -61,7 +63,7 @@ class RxNorm(Base):
         super().__init__(database, data_path)
         self._data_url = data_url
 
-    def _extract_data(self, *args, **kwargs):
+    def _extract_data(self, *args, **kwargs) -> None:
         """Extract data from the RxNorm source."""
         logger.info("Extracting RxNorm...")
         if "data_path" in kwargs:
@@ -93,7 +95,7 @@ class RxNorm(Base):
             self._create_drug_form_yaml(rxn_dir)
         logger.info("Successfully extracted RxNorm.")
 
-    def _download_data(self, rxn_dir):
+    def _download_data(self, rxn_dir: Path) -> None:
         """Download RxNorm data file.
 
         :param Path rxn_dir: Path to RxNorm data directory.
@@ -137,7 +139,7 @@ class RxNorm(Base):
                          "variables.")
             raise DownloadException("RXNORM_API_KEY not found.")
 
-    def _create_drug_form_yaml(self, rxn_dir):
+    def _create_drug_form_yaml(self, rxn_dir: Path) -> None:
         """Create a YAML file containing RxNorm drug form values.
 
         :param Path rxn_dir: Path to RxNorm data directory.
@@ -155,7 +157,7 @@ class RxNorm(Base):
             with open(self._drug_forms_file, "w") as file:
                 yaml.dump(dfs, file)
 
-    def _transform_data(self):
+    def _transform_data(self) -> None:
         """Transform the RxNorm source."""
         with open(self._drug_forms_file, "r") as file:
             drug_forms = yaml.safe_load(file)
@@ -210,11 +212,11 @@ class RxNorm(Base):
                         assert Drug(**params)
                         self._load_therapy(params)
 
-    def _get_brands(self, row, ingredient_brands):
+    def _get_brands(self, row: List, ingredient_brands: Dict) -> None:
         """Add ingredient and brand to ingredient_brands.
 
-        :param list row: A row in the RxNorm data file.
-        :param dict ingredient_brands: Store brands for each ingredient
+        :param List row: A row in the RxNorm data file.
+        :param Dict ingredient_brands: Store brands for each ingredient
         """
         # SBDC: Ingredient(s) + Strength + [Brand Name]
         term = row[14]
@@ -232,14 +234,14 @@ class RxNorm(Base):
             self._add_term(ingredient_brands, brand,
                            ingredients.strip())
 
-    def _get_trade_names(self, value, precise_ingredient, ingredient_brands,
-                         sbdfs):
+    def _get_trade_names(self, value: Dict, precise_ingredient: Dict,
+                         ingredient_brands: Dict, sbdfs: Dict) -> None:
         """Get trade names for a given ingredient.
 
-        :param dict value: Therapy attributes
-        :param dict precise_ingredient: Brand names for precise ingredient
-        :param dict ingredient_brands: Brand names for ingredient
-        :param dict sbdfs: Brand names for ingredient from SBDF row
+        :param Dict value: Therapy attributes
+        :param Dict precise_ingredient: Brand names for precise ingredient
+        :param Dict ingredient_brands: Brand names for ingredient
+        :param Dict sbdfs: Brand names for ingredient from SBDF row
         """
         record_label = value["label"].lower()
         labels = [record_label]
@@ -263,7 +265,8 @@ class RxNorm(Base):
                 self._add_term(value, tn, "trade_names")
 
     @staticmethod
-    def _load_brand_concepts(value, brands, batch):
+    def _load_brand_concepts(value: Dict, brands: Dict, batch: BatchWriter)\
+            -> None:
         """Connect brand names to a concept and load into the database.
 
         :params dict value: A transformed therapy record
@@ -281,15 +284,15 @@ class RxNorm(Base):
                         "item_type": "rx_brand"
                     })
 
-    def _add_str_field(self, params, row, precise_ingredient, drug_forms,
-                       sbdfs):
+    def _add_str_field(self, params: Dict, row: List, precise_ingredient: Dict,
+                       drug_forms: List, sbdfs: Dict) -> None:
         """Differentiate STR field.
 
-        :param dict params: A transformed therapy record.
-        :param list row: A row in the RxNorm data file.
-        :param dict precise_ingredient: Precise ingredient information
-        :param list drug_forms: RxNorm Drug Form values
-        :param dict sbdfs: Brand names for precise ingredient
+        :param Dict params: A transformed therapy record.
+        :param List row: A row in the RxNorm data file.
+        :param Dict precise_ingredient: Precise ingredient information
+        :param List drug_forms: RxNorm Drug Form values
+        :param Dict sbdfs: Brand names for precise ingredient
         """
         term = row[14]
         term_type = row[12]
@@ -323,12 +326,12 @@ class RxNorm(Base):
                 self._add_term(precise_ingredient, term, row[13])
 
     @staticmethod
-    def _add_term(params, term, label_type):
+    def _add_term(params: Dict, term: str, label_type: str) -> None:
         """Add a single term to a therapy record in an associated field.
 
-        :param dict params: A transformed therapy record.
-        :param str term: The term to be added
-        :param str label_type: The type of term
+        :param Dict params: A transformed therapy record.
+        :param Str term: The term to be added
+        :param Str label_type: The type of term
         """
         if label_type in params and params[label_type]:
             if term not in params[label_type]:
@@ -336,11 +339,11 @@ class RxNorm(Base):
         else:
             params[label_type] = [term]
 
-    def _add_xref_assoc(self, params, row):
+    def _add_xref_assoc(self, params: Dict, row: List) -> None:
         """Add xref or associated_with to therapy.
 
-        :param dict params: A transformed therapy record.
-        :param list row: A row in the RxNorm data file.
+        :param Dict params: A transformed therapy record.
+        :param List row: A row in the RxNorm data file.
         """
         ref = row[11]
         if ref:
@@ -361,7 +364,7 @@ class RxNorm(Base):
             else:
                 logger.info(f"{xref_assoc} not in NameSpacePrefix.")
 
-    def _load_meta(self):
+    def _load_meta(self) -> None:
         """Add RxNorm metadata."""
         meta = SourceMeta(
             data_license="UMLS Metathesaurus",

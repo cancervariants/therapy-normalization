@@ -6,10 +6,11 @@ import datetime
 
 from wikibaseintegrator.wbi_functions import execute_sparql_query
 
-from therapy.etl.base import Base
 from therapy import PROJECT_ROOT
+from therapy.database import Database
 from therapy.schemas import SourceName, NamespacePrefix, \
     SourceIDAfterNamespace, SourceMeta
+from therapy.etl.base import Base
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -65,16 +66,16 @@ class Wikidata(Base):
     """Extract, transform, and load the Wikidata source into therapy.db."""
 
     def __init__(self,
-                 database,
+                 database: Database,
                  data_path: Path = PROJECT_ROOT / "data"):
         """Initialize wikidata ETL class.
 
-        :param therapy.database.Database: DB instance to use
+        :param Database: DB instance to use
         :param Path data_path: path to app data directory
         """
         super().__init__(database, data_path)
 
-    def _extract_data(self):
+    def _extract_data(self) -> None:
         """Extract data from the Wikidata source."""
         self._src_data_dir.mkdir(exist_ok=True, parents=True)
 
@@ -94,7 +95,7 @@ class Wikidata(Base):
         self._data_src = sorted(list(self._src_data_dir.iterdir()))[-1]
         logger.info("Successfully extracted Wikidata.")
 
-    def _load_meta(self):
+    def _load_meta(self) -> None:
         """Add Wikidata metadata."""
         metadata = SourceMeta(src_name=SourceName.WIKIDATA.value,
                               data_license="CC0 1.0",
@@ -111,7 +112,7 @@ class Wikidata(Base):
         params["src_name"] = SourceName.WIKIDATA.value
         self.database.metadata.put_item(Item=params)
 
-    def _transform_data(self):
+    def _transform_data(self) -> None:
         """Transform the Wikidata source data."""
         from therapy import XREF_SOURCES
         with open(self._data_src, "r") as f:

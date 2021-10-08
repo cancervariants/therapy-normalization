@@ -20,7 +20,7 @@ logger.setLevel(logging.DEBUG)
 class DrugBank(Base):
     """ETL the DrugBank source into therapy.db."""
 
-    def _download_data(self):
+    def _download_data(self) -> None:
         """Download DrugBank source data."""
         logger.info("Downloading DrugBank source data...")
 
@@ -35,7 +35,7 @@ class DrugBank(Base):
         most_recent = soup.find("div", {"class": "card-header"})
         version = re.search(r"[0-9]+\.[0-9]+\.[0-9]+",
                             most_recent.contents[0]).group()
-        url = f"https://go.drugbank.com/releases/{version.replace(".", "-")}/downloads/all-drugbank-vocabulary"  # noqa: E501
+        url = f"https://go.drugbank.com/releases/{version.replace('.', '-')}/downloads/all-drugbank-vocabulary"  # noqa: E501
 
         # download file
         r = requests.get(url)
@@ -55,7 +55,7 @@ class DrugBank(Base):
         shutil.rmtree(temp_dir)
         logger.info("DrugBank source data download complete.")
 
-    def _load_meta(self):
+    def _load_meta(self) -> None:
         """Add DrugBank metadata."""
         meta = {
             "data_license": "CC0 1.0",
@@ -73,7 +73,7 @@ class DrugBank(Base):
         meta["src_name"] = SourceName.DRUGBANK.value
         self.database.metadata.put_item(Item=meta)
 
-    def _transform_data(self):
+    def _transform_data(self) -> None:
         """Transform the DrugBank source."""
         with open(self._src_file, "r") as file:
             reader = csv.reader(file)

@@ -7,6 +7,7 @@ import logging
 
 from therapy import PROJECT_ROOT, ITEM_TYPES
 from therapy.schemas import Drug
+from therapy.database import Database
 
 
 logger = logging.getLogger("therapy")
@@ -16,7 +17,8 @@ logger.setLevel(logging.DEBUG)
 class Base(ABC):
     """The ETL base class."""
 
-    def __init__(self, database, data_path=PROJECT_ROOT / "data"):
+    def __init__(self, database: Database,
+                 data_path: Path = PROJECT_ROOT / "data"):
         """Extract from sources.
 
         :param Database database: application database object
@@ -41,7 +43,7 @@ class Base(ABC):
         self._transform_data()
         return self._added_ids
 
-    def _download_data(self, *args, **kwargs):
+    def _download_data(self, *args, **kwargs) -> None:
         raise NotImplementedError
 
     def _ftp_download(self, host: str, data_dir: str, source_dir: Path,
@@ -63,7 +65,7 @@ class Base(ABC):
             logger.error(f"FTP download failed: {e}")
             raise Exception(e)
 
-    def _extract_data(self):
+    def _extract_data(self) -> None:
         """Get source file from data directory."""
         self._src_data_dir.mkdir(exist_ok=True, parents=True)
         src_file_prefix = f"{type(self).__name__.lower()}_"
@@ -77,10 +79,10 @@ class Base(ABC):
         self._version = self._src_file.stem.split("_", 1)[1]
 
     @abstractmethod
-    def _transform_data(self, *args, **kwargs):
+    def _transform_data(self, *args, **kwargs) -> None:
         raise NotImplementedError
 
-    def _load_therapy(self, therapy: Dict):
+    def _load_therapy(self, therapy: Dict) -> None:
         """Load individual therapy record.
 
         :param Dict therapy: valid therapy object.
@@ -128,5 +130,5 @@ class Base(ABC):
         self._added_ids.append(concept_id)
 
     @abstractmethod
-    def _load_meta(self, *args, **kwargs):
+    def _load_meta(self, *args, **kwargs) -> None:
         raise NotImplementedError

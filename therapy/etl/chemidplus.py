@@ -142,7 +142,7 @@ class ChemIDplus(Base):
                 for loc in locator_list.findall("InternetLocator"):
                     if loc.text == "DrugBank":
                         db = f"{NamespacePrefix.DRUGBANK.value}:" \
-                             f"{loc.attrib["url"].split("/")[-1]}"
+                             f"{loc.attrib['url'].split('/')[-1]}"
                         params["xrefs"].append(db)
                     elif loc.text == "FDA SRS":
                         unii = f"{NamespacePrefix.UNII.value}:" \

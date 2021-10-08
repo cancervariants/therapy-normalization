@@ -10,6 +10,7 @@ import owlready2 as owl
 from owlready2.entity import ThingClass
 
 from therapy import PROJECT_ROOT
+from therapy.database import Database
 from therapy.schemas import SourceName, NamespacePrefix, Therapy, SourceMeta
 from therapy.etl.base import Base
 
@@ -27,7 +28,7 @@ class NCIt(Base):
     """
 
     def __init__(self,
-                 database,
+                 database: Database,
                  src_dir: str = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2020/20.09d_Release/",  # noqa F401
                  src_fname: str = "Thesaurus_20.09d.OWL.zip",
                  data_path: Path = PROJECT_ROOT / "data",
@@ -44,7 +45,7 @@ class NCIt(Base):
         self._SRC_FNAME = src_fname
         self._chemidplus_path = chemidplus_path
 
-    def _download_data(self):
+    def _download_data(self) -> None:
         """Download NCI thesaurus source file for loading into normalizer."""
         logger.info("Downloading NCI Thesaurus...")
         url = self._SRC_DIR + self._SRC_FNAME
@@ -120,7 +121,7 @@ class NCIt(Base):
             uq_nodes.add(class_object)
         return uq_nodes
 
-    def _transform_data(self):
+    def _transform_data(self) -> None:
         """Get data from file and construct objects for loading"""
         ncit = owl.get_ontology(self._src_file.absolute().as_uri())
         ncit.load()
@@ -166,7 +167,7 @@ class NCIt(Base):
             assert Therapy(**params)
             self._load_therapy(params)
 
-    def _load_meta(self):
+    def _load_meta(self) -> None:
         """Load metadata"""
         metadata = SourceMeta(data_license="CC BY 4.0",
                               data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401

@@ -1,5 +1,5 @@
 """Module for Guide to PHARMACOLOGY ETL methods."""
-from typing import Optional
+from typing import Optional, Dict
 from pathlib import Path
 import re
 import csv
@@ -9,15 +9,16 @@ import requests
 import bs4
 
 from therapy import logger, PROJECT_ROOT, DownloadException
-from therapy.etl.base import Base
+from therapy.database import Database
 from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, \
     ApprovalStatus
+from therapy.etl.base import Base
 
 
 class GuideToPHARMACOLOGY(Base):
     """Class for Guide to PHARMACOLOGY ETL methods."""
 
-    def __init__(self, database,
+    def __init__(self, database: Database,
                  data_path: Path = PROJECT_ROOT / "data") -> None:
         """Initialize GuideToPHARMACOLOGY ETL class.
 
@@ -99,7 +100,7 @@ class GuideToPHARMACOLOGY(Base):
         for param in data.values():
             self._load_therapy(param)
 
-    def _transform_ligands(self, data: dict) -> None:
+    def _transform_ligands(self, data: Dict) -> None:
         """Transform ligands data file and add this data to `data`.
 
         :param dict data: Transformed data
@@ -155,7 +156,7 @@ class GuideToPHARMACOLOGY(Base):
 
                 data[params["concept_id"]] = params
 
-    def _transform_ligand_id_mappings(self, data: dict):
+    def _transform_ligand_id_mappings(self, data: Dict) -> None:
         """Transform ligand_id_mappings and add this data to `data`
         All ligands found in this file should already be in data
 
