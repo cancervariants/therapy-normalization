@@ -1,6 +1,6 @@
 [flake8]
-ignore = D205, D400, I101
-select = Q0, I100, I201, I202, ANN001, ANN2
+ignore = D205, D400, I101, RST301
+select = Q0, I100, I201, I202, ANN001, ANN2, RST
 exclude =
   .git
   venv
@@ -9,6 +9,7 @@ exclude =
   outputs
   docs/*
   analysis/*
+  codebuild/*
   therapy/version.py
 inline-quotes = "
 import-order-style = pep8
