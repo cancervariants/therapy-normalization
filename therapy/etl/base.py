@@ -2,7 +2,7 @@
 from abc import ABC, abstractmethod
 from ftplib import FTP
 from pathlib import Path
-from typing import List, Dict
+from typing import List, Dict, Union, Set
 import logging
 
 from therapy import PROJECT_ROOT, ITEM_TYPES
@@ -27,7 +27,7 @@ class Base(ABC):
         name = self.__class__.__name__.lower()
         self.database = database
         self._src_data_dir = data_path / name
-        self._added_ids = []
+        self._added_ids: List[str] = []
 
     def perform_etl(self) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
@@ -43,7 +43,7 @@ class Base(ABC):
         self._transform_data()
         return self._added_ids
 
-    def _download_data(self, *args, **kwargs) -> None:
+    def _download_data(self) -> None:
         raise NotImplementedError
 
     def _ftp_download(self, host: str, data_dir: str, source_dir: Path,
@@ -79,7 +79,7 @@ class Base(ABC):
         self._version = self._src_file.stem.split("_", 1)[1]
 
     @abstractmethod
-    def _transform_data(self, *args, **kwargs) -> None:
+    def _transform_data(self) -> None:
         raise NotImplementedError
 
     def _load_therapy(self, therapy: Dict) -> None:
@@ -95,7 +95,7 @@ class Base(ABC):
                 value = therapy[attr_type]
                 if value is not None and value != []:
                     if isinstance(value, str):
-                        items = [value.lower()]
+                        items: Union[List, Set] = [value.lower()]
                     else:
                         therapy[attr_type] = list(set(value))
                         items = {item.lower() for item in value}
@@ -130,5 +130,5 @@ class Base(ABC):
         self._added_ids.append(concept_id)
 
     @abstractmethod
-    def _load_meta(self, *args, **kwargs) -> None:
+    def _load_meta(self) -> None:
         raise NotImplementedError

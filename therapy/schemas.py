@@ -12,12 +12,6 @@ from pydantic import BaseModel, StrictBool
 class Therapy(BaseModel):
     """A procedure or substance used in the treatment of a disease."""
 
-    label: str
-    concept_id: str
-    aliases: Optional[List[str]] = []
-    xrefs: Optional[List[str]] = []
-    associated_with: Optional[List[str]] = []
-
     class Config:
         """Configure model"""
 
@@ -87,11 +81,15 @@ class HasIndication(BaseModel):
 class Drug(Therapy):
     """A pharmacologic substance used to treat a medical condition."""
 
+    concept_id: str
+    label: Optional[str] = None
+    aliases: Optional[List[str]] = []
+    trade_names: Optional[List[str]] = []
+    xrefs: Optional[List[str]] = []
+    associated_with: Optional[List[str]] = []
     approval_status: Optional[ApprovalStatus] = None
     approval_year: Optional[List[int]] = []
     has_indication: Optional[List[HasIndication]] = []
-    trade_names: Optional[List[str]] = []
-    label: Optional[str] = None
 
     class Config:
         """Configure Drug class"""
@@ -126,14 +124,6 @@ class Drug(Therapy):
                 "has_indication": [],
                 "trade_names": ["PLATINOL", "PLATINOL-AQ", "CISPLATIN"]
             }
-
-
-class DrugGroup(Therapy):
-    """A grouping of drugs based on common pharmacological attributes."""
-
-    description: str
-    type_identifier: str
-    drugs: List[Drug]
 
 
 class MatchType(IntEnum):

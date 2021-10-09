@@ -1,6 +1,6 @@
 """This module provides methods for handling queries."""
 import re
-from typing import List, Dict, Set, Optional, Tuple
+from typing import Dict, Set, Optional, Tuple, Union, Any
 from urllib.parse import quote
 from datetime import datetime
 
@@ -17,7 +17,7 @@ from .version import __version__
 class InvalidParameterException(Exception):
     """Exception for invalid parameter args provided by the user."""
 
-    def __init__(self, message):
+    def __init__(self, message: str) -> None:
         """Create new instance
 
         :param str message: string describing the nature of the error
@@ -38,7 +38,7 @@ class QueryHandler:
         """
         self.db = Database(db_url=db_url, region_name=db_region)
 
-    def _emit_warnings(self, query_str) -> Optional[Dict]:
+    def _emit_warnings(self, query_str: str) -> Optional[Dict]:
         """Emit warnings if query contains non breaking space characters.
 
         :param str query_str: query string
@@ -73,6 +73,7 @@ class QueryHandler:
                 return response
             except ClientError as e:
                 logger.error(e.response["Error"]["Message"])
+                raise Exception(f"Unable to retrieve metadata for {src_name}")
 
     def _add_record(self,
                     response: Dict[str, Dict],
@@ -132,6 +133,7 @@ class QueryHandler:
             try:
                 match = self.db.get_record_by_id(concept_id.lower(),
                                                  case_sensitive=False)
+                assert match, f"Unable to retrieve record for {concept_id}"
                 (response, src) = self._add_record(response, match, match_type)
                 matched_sources.add(src)
             except ClientError as e:
@@ -139,7 +141,7 @@ class QueryHandler:
 
         return response, matched_sources
 
-    def _fill_no_matches(self, resp: Dict[str, Dict]) -> Dict:
+    def _fill_no_matches(self, resp: Dict[str, Any]) -> Dict:
         """Fill all empty source_matches slots with NO_MATCH results.
 
         :param Dict[str, Dict] resp: incoming response object
@@ -214,7 +216,7 @@ class QueryHandler:
         :param Set[str] sources: sources to match from
         :return: completed response object to return to client
         """
-        response = {
+        response: Dict[str, Union[None, str, Dict]] = {
             "query": query,
             "warnings": self._emit_warnings(query),
             "source_matches": {
@@ -240,7 +242,7 @@ class QueryHandler:
         # remaining sources get no match
         return self._fill_no_matches(response)
 
-    def _response_list(self, query: str, sources: List[str]) -> Dict:
+    def _response_list(self, query: str, sources: Set[str]) -> Dict:
         """Return response as list, where the first key-value in each item
         is the source name. Corresponds to `keyed=false` API parameter.
 
@@ -262,7 +264,9 @@ class QueryHandler:
 
         return response_dict
 
-    def search_sources(self, query_str, keyed=False, incl="", excl="") -> Dict:
+    def search_sources(self, query_str: str, keyed: bool = False,
+                       incl: Optional[str] = "", excl:
+                       Optional[str] = "") -> Dict:
         """Fetch normalized therapy objects.
 
         :param str query_str: query, a string, to search for
@@ -379,14 +383,14 @@ class QueryHandler:
         if any(filter(lambda f: f in record, ("approval_status",
                                               "approval_year",
                                               "fda_indication"))):
-            fda_approv = {
+            fda_approv: Dict[str, Union[str, Dict]] = {
                 "name": "fda_approval",
-                "value": {}
             }
+            fda_approv_value: Dict = {}
             for field in ("approval_status", "approval_year"):
                 value = record.get(field)
                 if value:
-                    fda_approv["value"][field] = value
+                    fda_approv_value[field] = value
             inds = record.get("fda_indication", [])
             inds_list = []
             for ind in inds:
@@ -401,7 +405,8 @@ class QueryHandler:
                 else:
                     logger.warning(f"{ind[0]} has no disease ID")
             if inds_list:
-                fda_approv["value"]["has_indication"] = inds_list
+                fda_approv_value["has_indication"] = inds_list
+            fda_approv["value"] = fda_approv_value
             vod["extensions"].append(fda_approv)
 
         for field, name in (("trade_names", "trade_names"),
@@ -423,7 +428,8 @@ class QueryHandler:
         response = self._add_merged_meta(response)
         return response
 
-    def _handle_failed_merge_ref(self, record, response, query) -> Dict:
+    def _handle_failed_merge_ref(self, record: Dict, response: Dict,
+                                 query: str) -> Dict:
         """Log + fill out response for a failed merge reference lookup.
 
         :param Dict record: record containing failed merge_ref
@@ -442,7 +448,7 @@ class QueryHandler:
         :param str query: string to search against
         """
         # prepare basic response
-        response = {
+        response: Dict[str, Any] = {
             "query": query,
             "warnings": self._emit_warnings(query),
             "service_meta_": ServiceMeta(
@@ -452,7 +458,7 @@ class QueryHandler:
             ).dict()
         }
         if query == "":
-            response["match_type"] = MatchType.NO_MATCH
+            response["match_type"] = MatchType.NO_MATCH.value
             return response
         query_str = query.lower().strip()
 
@@ -486,10 +492,11 @@ class QueryHandler:
             matching_records = \
                 [self.db.get_record_by_id(m["concept_id"], False)
                  for m in matching_refs]
-            matching_records.sort(key=self._record_order)
+            matching_records.sort(key=self._record_order)  # type: ignore
 
             # attempt merge ref resolution until successful
             for match in matching_records:
+                assert match is not None
                 record = self.db.get_record_by_id(match["concept_id"], False)
                 if record:
                     merge_ref = record.get("merge_ref")
@@ -506,6 +513,6 @@ class QueryHandler:
                         return self._add_vod(response, merge, query,
                                              MatchType[match_type.upper()])
 
-        if not matching_records:
-            response["match_type"] = MatchType.NO_MATCH
+        if not matching_records:  # type: ignore
+            response["match_type"] = MatchType.NO_MATCH.value
         return NormalizationService(**response).dict()

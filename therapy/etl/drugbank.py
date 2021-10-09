@@ -1,4 +1,5 @@
 """This module defines the DrugBank ETL methods."""
+from typing import Dict, Any
 import logging
 import csv
 import re
@@ -33,8 +34,12 @@ class DrugBank(Base):
                          f"{r.status_code}")
             raise DownloadException
         most_recent = soup.find("div", {"class": "card-header"})
-        version = re.search(r"[0-9]+\.[0-9]+\.[0-9]+",
-                            most_recent.contents[0]).group()
+        search_result = re.search(r"[0-9]+\.[0-9]+\.[0-9]+",
+                                  most_recent.contents[0])
+        if search_result:
+            version = search_result.group()
+        else:
+            raise DownloadException("Unable to parse DrugBank version.")
         url = f"https://go.drugbank.com/releases/{version.replace('.', '-')}/downloads/all-drugbank-vocabulary"  # noqa: E501
 
         # download file
@@ -80,7 +85,7 @@ class DrugBank(Base):
             next(reader)  # skip header
             for row in reader:
                 # get concept ID
-                params = {
+                params: Dict[str, Any] = {
                     "concept_id": f"{NamespacePrefix.DRUGBANK.value}:{row[0]}",
                 }
 

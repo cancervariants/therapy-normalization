@@ -4,7 +4,7 @@ import logging
 
 from .version import __version__  # noqa: F401
 
-PROJECT_ROOT = Path(__file__).resolve().parents[0]
+PROJECT_ROOT: Path = Path(__file__).resolve().parents[0]
 logging.basicConfig(
     filename="therapy.log",
     format="[%(asctime)s] - %(name)s - %(levelname)s : %(message)s")
@@ -15,7 +15,7 @@ logger.setLevel(logging.DEBUG)
 class DownloadException(Exception):
     """Exception for failures relating to source file downloads."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):  # noqa: ANN204
         """Initialize exception."""
         super().__init__(*args, **kwargs)
 

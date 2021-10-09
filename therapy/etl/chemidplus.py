@@ -2,6 +2,7 @@
 
 Courtesy of the U.S. National Library of Medicine.
 """
+from typing import Dict, Any, List
 from pathlib import Path
 import xml.etree.ElementTree as ET
 import logging
@@ -9,6 +10,7 @@ import re
 
 from therapy.etl.base import Base
 from therapy import PROJECT_ROOT
+from therapy.database import Database
 from therapy.schemas import Drug, NamespacePrefix, SourceMeta, SourceName, \
     DataLicenseAttributes
 
@@ -24,7 +26,7 @@ class ChemIDplus(Base):
     """Core ChemIDplus ETL class."""
 
     def __init__(self,
-                 database,
+                 database: Database,
                  data_path: Path = PROJECT_ROOT / "data",
                  src_server: str = "ftp.nlm.nih.gov",
                  src_dir_path: str = "nlmdata/.chemidlease/",
@@ -45,7 +47,7 @@ class ChemIDplus(Base):
         self._src_dir_path = src_dir_path
         self._src_fname = src_fname
 
-    def _download_data(self):
+    def _download_data(self) -> None:
         """Download source data from default location."""
         logger.info("Downloading ChemIDplus data...")
         outfile_path = self._src_data_dir / self._src_fname
@@ -61,7 +63,7 @@ class ChemIDplus(Base):
         outfile_path.rename(self._src_data_dir / f"chemidplus_{version}.xml")
         logger.info("Finished downloading ChemIDplus data")
 
-    def _extract_data(self):
+    def _extract_data(self) -> None:
         """Acquire ChemIDplus dataset.
 
         :arg pathlib.Path data_path: directory containing source data
@@ -80,14 +82,16 @@ class ChemIDplus(Base):
         self._data_src = file[-1]
         self._version = self._data_src.stem.split("_")[1]
 
-    def _get_file(self):
+    def _get_file(self) -> List[Path]:
+        """Acquire file paths to ChemIDplus data source.
+        :return: List of source file Paths"""
         self._download_data()
         dir_files = list(self._src_data_dir.iterdir())
         return sorted([f for f in dir_files
                        if f.name.startswith("chemidplus")])
 
     @staticmethod
-    def parse_xml(path: Path, tag: str):
+    def parse_xml(path: Path, tag: str) -> None:
         """Parse XML file and retrieve elements with matching tag value.
         :param Path path: path to XML file
         :param str tag: XML tag
@@ -100,10 +104,10 @@ class ChemIDplus(Base):
                 yield elem
                 root.clear()
 
-    def _transform_data(self):
+    def _transform_data(self) -> None:
         """Open dataset and prepare for loading into database."""
         parser = self.parse_xml(self._data_src, "Chemical")
-        for chemical in parser:
+        for chemical in parser:  # type: ignore
             if "displayName" not in chemical.attrib:
                 continue
 
@@ -112,7 +116,7 @@ class ChemIDplus(Base):
             if not display_name or not re.search(TAGS_REGEX, display_name):
                 continue
             label = re.sub(TAGS_REGEX, "", display_name)
-            params = {
+            params: Dict[str, Any] = {
                 "label": label
             }
 
@@ -146,14 +150,14 @@ class ChemIDplus(Base):
                         params["xrefs"].append(db)
                     elif loc.text == "FDA SRS":
                         unii = f"{NamespacePrefix.UNII.value}:" \
-                               f"{loc.attrib["url"].split("/")[-1]}"
+                               f"{loc.attrib['url'].split('/')[-1]}"
                         params["associated_with"].append(unii)
 
             # double-check and load full record
             assert Drug(**params)
             self._load_therapy(params)
 
-    def _load_meta(self):
+    def _load_meta(self) -> None:
         """Add source metadata."""
         meta = SourceMeta(data_license="custom",
                           data_license_url="https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501

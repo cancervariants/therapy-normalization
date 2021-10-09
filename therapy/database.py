@@ -1,6 +1,6 @@
 """This module creates the database."""
 from os import environ
-from typing import Optional, Dict, List, Any
+from typing import Optional, Dict, List, Any, Set
 import logging
 import sys
 
@@ -71,7 +71,7 @@ class Database:
         self.therapies = self.dynamodb.Table("therapy_concepts")
         self.metadata = self.dynamodb.Table("therapy_metadata")
         self.batch = self.therapies.batch_writer()
-        self.cached_sources = {}
+        self.cached_sources: Dict[str, Any] = {}
 
     def create_therapies_table(self, existing_tables: List) -> None:
         """Create Therapies table if it doesn"t already exist.
@@ -236,7 +236,7 @@ class Database:
                          f"{e.response['Error']['Message']}")
             return []
 
-    def get_ids_for_merge(self) -> List[str]:
+    def get_ids_for_merge(self) -> Set[str]:
         """Retrieve concept IDs for use in generating normalized records. Only
         pulls concept IDs for sources in `therapy.ACCEPTED_SOURCES`.
         :return: List of concept IDs as strings.

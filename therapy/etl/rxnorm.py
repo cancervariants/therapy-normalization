@@ -95,7 +95,7 @@ class RxNorm(Base):
             self._create_drug_form_yaml(rxn_dir)
         logger.info("Successfully extracted RxNorm.")
 
-    def _download_data(self, rxn_dir: Path) -> None:
+    def _download_data(self, rxn_dir: Path) -> None:  # type: ignore
         """Download RxNorm data file.
 
         :param Path rxn_dir: Path to RxNorm data directory.
@@ -164,11 +164,16 @@ class RxNorm(Base):
 
         with open(self._data_src) as f:
             rff_data = csv.reader(f, delimiter="|")
-            ingredient_brands = dict()  # Link ingredient to brand
-            precise_ingredient = dict()  # Link precise ingredient to get brand
-            data = dict()  # Transformed therapy records
-            sbdfs = dict()  # Link ingredient to brand
-            brands = dict()  # Get RXNORM|BN to concept_id
+            # Link ingredient to brand
+            ingredient_brands: Dict[str, str] = dict()
+            # Link precise ingredient to get brand
+            precise_ingredient: Dict[str, str] = dict()
+            # Transformed therapy records
+            data: Dict[str, Dict] = dict()
+            # Link ingredient to brand  <-- TODO ?
+            sbdfs: Dict[str, str] = dict()
+            # Get RXNORM|BN to concept_id
+            brands: Dict[str, str] = dict()
             for row in rff_data:
                 if row[11] in RXNORM_XREFS:
                     concept_id = f"{NamespacePrefix.RXNORM.value}:{row[0]}"
@@ -195,7 +200,7 @@ class RxNorm(Base):
                             self._add_xref_assoc(params, row)
 
             with self.database.therapies.batch_writer() as batch:
-                for key, value in data.items():
+                for value in data.values():
                     if "label" in value:
                         self._get_trade_names(value, precise_ingredient,
                                               ingredient_brands, sbdfs)
@@ -252,12 +257,12 @@ class RxNorm(Base):
                 labels.append(pin.lower())
 
         for label in labels:
-            trade_names = \
+            trade_names: List[str] = \
                 [val for key, val in ingredient_brands.items()
                  if label == key.lower()]
-            trade_names = {val for sublist in trade_names
-                           for val in sublist}
-            for tn in trade_names:
+            trade_names_uq = {val for sublist in trade_names
+                              for val in sublist}
+            for tn in trade_names_uq:
                 self._add_term(value, tn, "trade_names")
 
         if record_label in sbdfs:

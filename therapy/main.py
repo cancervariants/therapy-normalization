@@ -1,6 +1,6 @@
 """Main application for FastAPI"""
 import html
-from typing import Optional
+from typing import Optional, Dict
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.openapi.utils import get_openapi
@@ -13,7 +13,7 @@ query_handler = QueryHandler()
 app = FastAPI(docs_url="/therapy", openapi_url="/therapy/openapi.json")
 
 
-def custom_openapi():
+def custom_openapi() -> Dict:
     """Generate custom fields for OpenAPI response"""
     if app.openapi_schema:
         return app.openapi_schema
@@ -36,7 +36,7 @@ def custom_openapi():
     return app.openapi_schema
 
 
-app.openapi = custom_openapi
+app.openapi = custom_openapi  # type: ignore
 
 # endpoint description text
 get_matches_summary = ("Given query, provide highest matches from "
@@ -68,22 +68,23 @@ normalize_description = ("Return merged strongest-match concept for query "
 def search(q: str = Query(..., description=q_descr),
            keyed: Optional[bool] = Query(False, description=keyed_descr),
            incl: Optional[str] = Query(None, description=incl_descr),
-           excl: Optional[str] = Query(None, description=excl_descr)):
+           excl: Optional[str] = Query(None, description=excl_descr)) -> Dict:
     """For each source, return strongest-match concepts for query string
     provided by user.
 
-        :param q: therapy search term
-        :param keyed: if true, response is structured as key/value pair of
-            sources to source match lists.
-        :param incl: comma-separated list of sources to include, with all
-            others excluded. Raises HTTPException if both `incl` and
-            `excl` are given.
-        :param excl: comma-separated list of sources exclude, with all others
-            included. Raises HTTPException if both `incl` and `excl` are given.
-        :returns: JSON response with matched records and source metadata
+    :param q: therapy search term
+    :param keyed: if true, response is structured as key/value pair of
+        sources to source match lists.
+    :param incl: comma-separated list of sources to include, with all
+        others excluded. Raises HTTPException if both `incl` and
+        `excl` are given.
+    :param excl: comma-separated list of sources exclude, with all others
+        included. Raises HTTPException if both `incl` and `excl` are given.
+    :returns: JSON response with matched records and source metadata
     """
     try:
-        response = query_handler.search_sources(html.unescape(q), keyed=keyed,
+        response = query_handler.search_sources(html.unescape(q),
+                                                keyed=keyed,  # type: ignore
                                                 incl=incl, excl=excl)
     except InvalidParameterException as e:
         raise HTTPException(status_code=422, detail=str(e))
@@ -101,7 +102,7 @@ merged_q_descr = "Therapy to normalize."
          response_description=merged_response_descr,
          response_model=NormalizationService,
          description=normalize_description)
-def normalize(q: str = Query(..., description=merged_q_descr)):
+def normalize(q: str = Query(..., description=merged_q_descr)) -> Dict:
     """Return merged strongest-match concept for query string provided by
     user.
 

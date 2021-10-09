@@ -3,6 +3,7 @@ import json
 import logging
 from pathlib import Path
 import datetime
+from typing import Dict, Any
 
 from wikibaseintegrator.wbi_functions import execute_sparql_query
 
@@ -118,13 +119,13 @@ class Wikidata(Base):
         with open(self._data_src, "r") as f:
             records = json.load(f)
 
-            items = dict()
+            items: Dict[str, Any] = dict()
 
             for record in records:
                 record_id = record["item"].split("/")[-1]
                 concept_id = f"{NamespacePrefix.WIKIDATA.value}:{record_id}"
                 if concept_id not in items.keys():
-                    item = dict()
+                    item: Dict[str, Any] = dict()
                     item["label_and_type"] = f"{concept_id.lower()}##identity"
                     item["item_type"] = "identity"
                     item["concept_id"] = concept_id

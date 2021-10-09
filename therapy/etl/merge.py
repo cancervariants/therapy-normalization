@@ -20,7 +20,7 @@ class Merge:
             and creation.
         """
         self._database = database
-        self._groups = {}  # dict keying concept IDs to group Sets
+        self._groups: Dict[str, Set[str]] = {}
 
     def create_merged_concepts(self, record_ids: Set[str]) -> None:
         """Create concept groups, generate merged concept records, and
