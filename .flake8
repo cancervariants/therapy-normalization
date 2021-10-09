@@ -8,6 +8,7 @@ exclude =
   source
   outputs
   docs/*
+  analysis/*
   therapy/version.py
 inline-quotes = "
 import-order-style = pep8
