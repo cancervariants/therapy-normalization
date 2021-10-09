@@ -1,9 +1,11 @@
 """Test the therapy querying method."""
-from therapy.query import QueryHandler, InvalidParameterException
-from therapy.schemas import MatchType
-import pytest
 from datetime import datetime
 import os
+
+import pytest
+
+from therapy.query import QueryHandler, InvalidParameterException
+from therapy.schemas import MatchType
 
 
 @pytest.fixture(scope="module")

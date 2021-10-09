@@ -236,7 +236,7 @@ class Database:
                          f"{e.response['Error']['Message']}")
             return []
 
-    def get_ids_for_merge(self) -> Set[str]:
+    def get_ids_for_merge(self) -> List[str]:
         """Retrieve concept IDs for use in generating normalized records. Only
         pulls concept IDs for sources in `therapy.ACCEPTED_SOURCES`.
         :return: List of concept IDs as strings.
@@ -260,7 +260,7 @@ class Database:
             last_evaluated_key = response.get("LastEvaluatedKey")
             if not last_evaluated_key:
                 break
-        return set(concept_ids)
+        return concept_ids
 
     def add_record(self, record: Dict, record_type: str = "identity") -> None:
         """Add new record to database.

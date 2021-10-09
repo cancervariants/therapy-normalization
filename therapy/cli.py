@@ -2,6 +2,7 @@
 from os import environ
 import logging
 from timeit import default_timer as timer
+from typing import List, Optional
 
 import click
 from botocore.exceptions import ClientError
@@ -47,9 +48,15 @@ class CLI:
         is_flag=True,
         help="Update concepts for normalize endpoint from accepted sources."
     )
-    def update_normalizer_db(normalizer, prod, db_url, update_all,
-                             update_merged):
-        """Update select normalizer source(s) in the therapy database."""
+    def update_normalizer_db(normalizer: str, prod: bool, db_url: str,
+                             update_all: bool, update_merged: bool) -> None:
+        """Update select normalizer source(s) in the therapy database.
+        :param str normalizer: comma-separated string listing source names
+        :param bool prod: if true, utilize production environment settings
+        :param str db_url: DynamoDB endpoint URL (usually only needed locally)
+        :param bool update_all: if true, update all sources
+        :param bool update_merged: if true, update normalized group results
+        """
         endpoint_url = None
         if prod:
             environ["THERAPY_NORM_PROD"] = "TRUE"
@@ -87,14 +94,16 @@ class CLI:
             CLI()._check_disease_normalizer(normalizers, endpoint_url)
             CLI()._update_normalizers(normalizers, db, update_merged)
 
-    def _check_disease_normalizer(self, normalizers, endpoint_url):
+    def _check_disease_normalizer(self, normalizers: List[str],
+                                  endpoint_url: Optional[str]) -> None:
         """When loading HemOnc source, perform rudimentary check of Disease
             Normalizer tables, and reload them if necessary.
 
         :param list normalizers: List of sources to load
-        :param str endpoint_url: Therapy endpoint URL
+        :param Optional[str] endpoint_url: Therapy endpoint URL. If none, tries
+            to connect to cloud DynamoDB instance.
         """
-        def _load_diseases():
+        def _load_diseases() -> None:
             msg = "Disease Normalizer not loaded. " \
                   "Loading Disease Normalizer..."
             logger.debug(msg)
@@ -111,7 +120,7 @@ class CLI:
                 pass
 
         if "THERAPY_NORM_PROD" not in environ and "hemonc" in normalizers:
-            db = DiseaseDatabase(db_url=endpoint_url)
+            db = DiseaseDatabase(db_url=endpoint_url)  # type: ignore
             current_tables = {table.name for table in db.dynamodb.tables.all()}
             if not all(name in current_tables
                        for name in ("disease_concepts", "disease_metadata")):
@@ -121,7 +130,7 @@ class CLI:
                 _load_diseases()
 
     @staticmethod
-    def _help_msg():
+    def _help_msg() -> None:
         """Display help message."""
         ctx = click.get_current_context()
         click.echo(
@@ -130,8 +139,14 @@ class CLI:
         ctx.exit()
 
     @staticmethod
-    def _update_normalizers(normalizers, db, update_merged):
-        """Update selected normalizer sources."""
+    def _update_normalizers(normalizers: List[str], db: Database,
+                            update_merged: bool) -> None:
+        """Update selected normalizer sources.
+        :param List[str] normalizers: list of source names to update
+        :param Database db: database instance to use
+        :param bool update_merged: if true, store concept IDs as they're
+            processed and produce normalized records
+        """
         processed_ids = list()
         for n in normalizers:
             msg = f"Deleting {n}..."
@@ -164,21 +179,23 @@ class CLI:
         if update_merged:
             CLI()._update_merged(db, processed_ids)
 
-    def _update_merged(self, db, processed_ids):
-        """Update merged concepts"""
+    def _update_merged(self, db: Database, processed_ids: List[str]) -> None:
+        """Update merged concepts
+        :param Database db: DB instance to use
+        :param List[str] processed_ids: """
         start_merge = timer()
         if not processed_ids:
             CLI()._delete_normalized_data(db)
             processed_ids = db.get_ids_for_merge()
         merge = Merge(database=db)
         click.echo("Constructing normalized records...")
-        merge.create_merged_concepts(processed_ids)
+        merge.create_merged_concepts(set(processed_ids))
         end_merge = timer()
         click.echo(f"Merged concept generation completed in"
                    f" {(end_merge - start_merge):.5f} seconds.")
 
     @staticmethod
-    def _delete_normalized_data(database):
+    def _delete_normalized_data(database: Database) -> None:
         click.echo("\nDeleting normalized records...")
         start_delete = timer()
         try:
@@ -205,8 +222,12 @@ class CLI:
         click.echo(f"Deleted normalized records in {delete_time:.5f} seconds.")
 
     @staticmethod
-    def _delete_data(source, database):
-        # Delete source"s metadata
+    def _delete_data(source: str, database: Database) -> None:
+        """Delete all data from given source in database.
+        :param str source: name of source to delete
+        :param Database database: db instance
+        """
+        # Delete source"s metadata first
         try:
             metadata = database.metadata.query(
                 KeyConditionExpression=Key(
