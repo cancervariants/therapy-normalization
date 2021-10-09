@@ -2,7 +2,7 @@
 
 Courtesy of the U.S. National Library of Medicine.
 """
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Generator
 from pathlib import Path
 import xml.etree.ElementTree as ET
 import logging
@@ -91,7 +91,7 @@ class ChemIDplus(Base):
                        if f.name.startswith("chemidplus")])
 
     @staticmethod
-    def parse_xml(path: Path, tag: str) -> None:
+    def parse_xml(path: Path, tag: str) -> Generator:
         """Parse XML file and retrieve elements with matching tag value.
         :param Path path: path to XML file
         :param str tag: XML tag
