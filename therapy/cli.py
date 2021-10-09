@@ -69,7 +69,7 @@ class CLI:
                 endpoint_url = environ["THERAPY_NORM_DB_URL"]
             else:
                 endpoint_url = "http://localhost:8000"
-            db: Database = Database(db_url=endpoint_url)
+            db = Database(db_url=endpoint_url)
 
         if update_all:
             normalizers = list(src for src in SOURCES)

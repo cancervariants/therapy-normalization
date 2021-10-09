@@ -196,9 +196,9 @@ class QueryHandler:
         :param Dict resp: in-progress response object to return to client
         :param Set[str] sources: remaining unmatched sources
         :param str match_type: Match type to check for. Should be one of
-            {"trade_name", "label", "alias", "xref", "associated_with"}
+        {'trade_name', 'label', 'alias', 'xref', 'associated_with'}
         :return: Tuple with updated resp object and updated set of unmatched
-                 sources
+            sources
         """
         matches = self.db.get_records_by_type(query, match_type)
         if matches:
@@ -214,6 +214,7 @@ class QueryHandler:
 
         :param str query: string to match against
         :param Set[str] sources: sources to match from
+
         :return: completed response object to return to client
         """
         response: Dict[str, Union[None, str, Dict]] = {
@@ -265,8 +266,7 @@ class QueryHandler:
         return response_dict
 
     def search_sources(self, query_str: str, keyed: bool = False,
-                       incl: Optional[str] = "", excl:
-                       Optional[str] = "") -> Dict:
+                       incl: str = "", excl: str = "") -> Dict:
         """Fetch normalized therapy objects.
 
         :param str query_str: query, a string, to search for

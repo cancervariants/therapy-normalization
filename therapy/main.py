@@ -66,9 +66,9 @@ normalize_description = ("Return merged strongest-match concept for query "
          response_model=SearchService,
          description=search_description)
 def search(q: str = Query(..., description=q_descr),
-           keyed: Optional[bool] = Query(False, description=keyed_descr),
-           incl: Optional[str] = Query(None, description=incl_descr),
-           excl: Optional[str] = Query(None, description=excl_descr)) -> Dict:
+           keyed: bool = Query(False, description=keyed_descr),
+           incl: str = Query("", description=incl_descr),
+           excl: str = Query("", description=excl_descr)) -> Dict:
     """For each source, return strongest-match concepts for query string
     provided by user.
 
