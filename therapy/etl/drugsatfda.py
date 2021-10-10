@@ -7,10 +7,10 @@ import shutil
 
 import requests
 
-from .base import Base
 from therapy import DownloadException, logger
 from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, \
     ApprovalStatus
+from therapy.etl.base import Base
 
 
 class DrugsAtFDA(Base):
@@ -49,7 +49,7 @@ class DrugsAtFDA(Base):
         else:
             raise requests.HTTPError("Unable to retrieve version from FDA API")
 
-    def _load_meta(self):
+    def _load_meta(self) -> None:
         """Add Drugs@FDA metadata."""
         meta = {
             "data_license": "CC0",
@@ -91,7 +91,7 @@ class DrugsAtFDA(Base):
         else:
             return statuses_map.get(statuses[0])
 
-    def _transform_data(self):
+    def _transform_data(self) -> None:
         """Prepare source data for loading into DB."""
         with open(self._src_file, "r") as f:
             data = json.load(f)["results"]

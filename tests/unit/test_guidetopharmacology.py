@@ -1,9 +1,11 @@
 """Test Guide to PHARMACOLOGY source."""
+import re
+
 import pytest
+
 from tests.conftest import compare_response
 from therapy.query import QueryHandler
 from therapy.schemas import Drug, MatchType
-import re
 
 
 @pytest.fixture(scope="module")

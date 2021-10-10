@@ -7,7 +7,7 @@ from therapy.schemas import SourcePriority
 from therapy.database import Database
 
 
-logger = logging.getLogger('therapy')
+logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
 
@@ -34,7 +34,7 @@ class Merge:
         self.database = database
         self._groups: Dict[str, Set[str]] = {}
         self._unii_to_drugsatfda: Dict[str, Set[str]] = {}
-        self._failed_lookups = set()
+        self._failed_lookups: Set[str] = set()
 
     def create_merged_concepts(self, record_ids: Set[str]) -> None:
         """Create concept groups, generate merged concept records, and
@@ -44,7 +44,7 @@ class Merge:
             should be generated. Should *not* include any records from
             excluded sources.
         """
-        logger.info('Generating record ID sets...')
+        logger.info("Generating record ID sets...")
         start = timer()
         for record_id in record_ids:
             new_group = self._create_record_id_set(record_id)
@@ -52,12 +52,12 @@ class Merge:
                 for concept_id in new_group:
                     self._groups[concept_id] = new_group
         end = timer()
-        logger.debug(f'Built record ID sets in {end - start} seconds')
+        logger.debug(f"Built record ID sets in {end - start} seconds")
 
         # don't create separate records for single-member groups
         self._groups = {k: v for k, v in self._groups.items() if len(v) > 1}
 
-        logger.info('Creating merged records and updating database...')
+        logger.info("Creating merged records and updating database...")
         uploaded_ids = set()
         start = timer()
         for record_id, group in self._groups.items():
@@ -66,7 +66,7 @@ class Merge:
             merged_record = self._generate_merged_record(group)
 
             # add group merger item to DB
-            self.database.add_record(merged_record, 'merger')
+            self.database.add_record(merged_record, "merger")
 
             # add updated references
             for concept_id in group:
@@ -74,13 +74,13 @@ class Merge:
                     logger.error(f"Updating nonexistent record: {concept_id} "
                                  f"for {merged_record['label_and_type']}")
                 else:
-                    merge_ref = merged_record['concept_id'].lower()
-                    self.database.update_record(concept_id, 'merge_ref',
+                    merge_ref = merged_record["concept_id"].lower()
+                    self.database.update_record(concept_id, "merge_ref",
                                                 merge_ref)
             uploaded_ids |= group
-        logger.info('Merged concept generation successful.')
+        logger.info("Merged concept generation successful.")
         end = timer()
-        logger.debug(f'Generated and added concepts in {end - start} seconds')
+        logger.debug(f"Generated and added concepts in {end - start} seconds")
 
     def _rxnorm_brand_lookup(self, record_id: str) -> Optional[str]:
         """Rx Norm provides brand references back to original therapy concepts.
@@ -216,56 +216,56 @@ class Merge:
 
         def record_order(record: Dict) -> Tuple[int, str]:
             """Provide priority values of concepts for sort function."""
-            src = record['src_name'].upper()
-            if src == 'DRUGS@FDA':
-                src = 'DRUGSATFDA'
+            src = record["src_name"].upper()
+            if src == "DRUGS@FDA":
+                src = "DRUGSATFDA"
             if src in SourcePriority.__members__:
                 source_rank = SourcePriority[src].value
             else:
                 raise Exception(f"Prohibited source: {src} in concept_id "
                                 f"{record['concept_id']}")
-            return (source_rank, record['concept_id'])
+            return (source_rank, record["concept_id"])
         records.sort(key=record_order)
 
         # initialize merged record
         merged_attrs = {
-            'concept_id': records[0]['concept_id'],
-            'xrefs': [r['concept_id'] for r in records[1:]],
-            'label': None,
-            'aliases': set(),
-            'trade_names': set(),
-            'associated_with': set(),
-            'approval_status': set(),
-            'approval_year': set(),
-            'fda_indication': [],
+            "concept_id": records[0]["concept_id"],
+            "xrefs": [r["concept_id"] for r in records[1:]],
+            "label": None,
+            "aliases": set(),
+            "trade_names": set(),
+            "associated_with": set(),
+            "approval_status": set(),
+            "approval_year": set(),
+            "fda_indication": [],
         }
 
         # merge from constituent records
-        set_fields = ['aliases', 'trade_names', 'associated_with',
-                      'approval_year']
+        set_fields = ["aliases", "trade_names", "associated_with",
+                      "approval_year"]
         for record in records:
             for field in set_fields:
                 merged_attrs[field] |= set(record.get(field, set()))
-            approval_status = record.get('approval_status')
+            approval_status = record.get("approval_status")
             if approval_status:
-                merged_attrs['approval_status'].add(approval_status)
-            if merged_attrs['label'] is None:
-                merged_attrs['label'] = record.get('label')
-            for ind in record.get('fda_indication', []):
-                if ind not in merged_attrs['fda_indication']:
-                    merged_attrs['fda_indication'].append(ind)
+                merged_attrs["approval_status"].add(approval_status)
+            if merged_attrs["label"] is None:
+                merged_attrs["label"] = record.get("label")
+            for ind in record.get("fda_indication", []):
+                if ind not in merged_attrs["fda_indication"]:
+                    merged_attrs["fda_indication"].append(ind)
 
         # clear unused fields
-        for field in set_fields + ['fda_indication', 'approval_status']:
+        for field in set_fields + ["fda_indication", "approval_status"]:
             field_value = merged_attrs[field]
             if field_value:
                 merged_attrs[field] = list(field_value)
             else:
                 del merged_attrs[field]
-        if not merged_attrs['label']:
-            del merged_attrs['label']
+        if not merged_attrs["label"]:
+            del merged_attrs["label"]
 
-        merged_attrs['label_and_type'] = \
-            f'{merged_attrs["concept_id"].lower()}##merger'
-        merged_attrs['item_type'] = 'merger'
+        merged_attrs["label_and_type"] = \
+            f"{merged_attrs['concept_id'].lower()}##merger"
+        merged_attrs["item_type"] = "merger"
         return merged_attrs

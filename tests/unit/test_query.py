@@ -1,9 +1,11 @@
 """Test the therapy querying method."""
-from therapy.query import QueryHandler, InvalidParameterException
-from therapy.schemas import MatchType
-import pytest
 from datetime import datetime
 import os
+
+import pytest
+
+from therapy.query import QueryHandler, InvalidParameterException
+from therapy.schemas import MatchType
 
 
 @pytest.fixture(scope="module")
@@ -40,7 +42,7 @@ def merge_query_handler(mock_database):
 
 @pytest.fixture(scope="module")
 def phenobarbital():
-    """Create phenobarbital fixture."""
+    """Create phenobarbital VOD fixture."""
     return {
         "id": "normalize.therapy:Phenobarbital",
         "type": "TherapyDescriptor",
@@ -122,9 +124,9 @@ def phenobarbital():
             },
             {
                 "type": "Extension",
-                "name": "fda_approval",
+                "name": "regulatory_approval",
                 "value": {
-                    "approval_status": "approved",
+                    "approval_status": [],
                     "approval_year": [],
                     "has_indication": []
                 }
@@ -150,6 +152,12 @@ def cisplatin():
             "iuphar.ligand:5343",
             "drugbank:DB12117",
             "chembl:CHEMBL11359",
+            "drugsatfda:ANDA074656",
+            "drugsatfda:ANDA074735",
+            "drugsatfda:ANDA206774",
+            "drugsatfda:ANDA207323",
+            "drugsatfda:ANDA075036",
+            "drugsatfda:NDA018057",
         ],
         "alternate_labels": [
             "1,2-Diaminocyclohexaneplatinum II citrate",
@@ -221,9 +229,9 @@ def cisplatin():
             },
             {
                 "type": "Extension",
-                "name": "fda_approval",
+                "name": "regulatory_approval",
                 "value": {
-                    "approval_status": "approved",
+                    "approval_status": [],
                     "approval_year": ["1978"],
                     "has_indication": [
                         {
@@ -307,62 +315,15 @@ def therapeutic_procedure():
             "TREAT",
             "Treatment",
             "TX",
-            "therapeutic intervention",
-            "treatment"
+            "treatment",
+            "treatment or therapy",
+            "treatment_or_therapy",
         ],
         "extensions": [
             {
                 "name": "associated_with",
                 "value": ["umls:C0087111"],
                 "type": "Extension"
-            }
-        ],
-        "type": "TherapyDescriptor"
-    }
-
-
-@pytest.fixture(scope="module")
-def ro_5045337():
-    """Create fixture for ro-5045337. Tests whether query correctly
-    builds VOD on the fly from non-merged record with xref to ChEMBL.
-    """
-    return {
-        "id": "normalize.therapy:wikidata#3AQ27287118",
-        "therapy_id": "drugbank:DB14793",
-        "label": "RO-5045337",
-        "xrefs": [
-            "chembl:CHEMBL2386346",
-            "iuphar.ligand:9599",
-            "wikidata:Q27287118"
-        ],
-        "alternate_labels": [
-            "RO 5045337",
-            "RG7112",
-            "[(4S,5R)-2-(4-tert-butyl-2-ethoxyphenyl)-4,5-bis(4-chlorophenyl)-4,5-dimethylimidazol-1-yl]-[4-(3-methylsulfonylpropyl)piperazin-1-yl]methanone",  # noqa: E501
-            "RG-7112",
-            "R 7112",
-            "Ro-5045337",
-            "RO5045337"
-        ],
-        "extensions": [
-            {
-                "name": "associated_with",
-                "value": [
-                    "pubchem.compound:57406853",
-                    "pubchem.substance:340590229",
-                    "inchikey:QBGKPEROWUKSBK-QPPIDDCLSA-N",
-                    "unii:Q8MI0X869M"
-                ],
-                "type": "Extension"
-            },
-            {
-                "type": "Extension",
-                "name": "fda_approval",
-                "value": {
-                    "approval_status": "investigational",
-                    "approval_year": [],
-                    "has_indication": []
-                }
             }
         ],
         "type": "TherapyDescriptor"
@@ -444,7 +405,7 @@ def test_query(query_handler):
     assert resp["query"] == "cisplatin"
     matches = resp["source_matches"]
     assert isinstance(matches, list)
-    assert len(matches) == 8
+    assert len(matches) == 9
     wikidata = list(filter(lambda m: m["source"] == "Wikidata",
                            matches))[0]
     assert len(wikidata["records"]) == 1
@@ -467,7 +428,7 @@ def test_query_specify_sources(query_handler):
     # test blank params
     resp = query_handler.search_sources("cisplatin", keyed=True)
     matches = resp["source_matches"]
-    assert len(matches) == 8
+    assert len(matches) == 9
     assert "Wikidata" in matches
     assert "ChEMBL" in matches
     assert "NCIt" in matches
@@ -476,6 +437,7 @@ def test_query_specify_sources(query_handler):
     assert "RxNorm" in matches
     assert "HemOnc" in matches
     assert "GuideToPHARMACOLOGY" in matches
+    assert "DrugsAtFDA" in matches
 
     # test partial inclusion
     resp = query_handler.search_sources("cisplatin", keyed=True,
@@ -490,13 +452,14 @@ def test_query_specify_sources(query_handler):
     assert "ChemIDplus" not in matches
     assert "HemOnc" not in matches
     assert "GuideToPHARMACOLOGY" not in matches
+    assert "DrugsAtFDA" not in matches
 
     # test full inclusion
-    sources = "chembl,ncit,drugbank,wikidata,rxnorm,chemidplus,hemonc,guidetopharmacology"  # noqa: E501
+    sources = "chembl,ncit,drugbank,wikidata,rxnorm,chemidplus,hemonc,guidetopharmacology,drugsatfda"  # noqa: E501
     resp = query_handler.search_sources("cisplatin", keyed=True,
                                         incl=sources, excl="")
     matches = resp["source_matches"]
-    assert len(matches) == 8
+    assert len(matches) == 9
     assert "Wikidata" in matches
     assert "ChEMBL" in matches
     assert "NCIt" in matches
@@ -505,12 +468,13 @@ def test_query_specify_sources(query_handler):
     assert "RxNorm" in matches
     assert "HemOnc" in matches
     assert "GuideToPHARMACOLOGY" in matches
+    assert "DrugsAtFDA" in matches
 
     # test partial exclusion
     resp = query_handler.search_sources("cisplatin", keyed=True,
                                         excl="chemidplus")
     matches = resp["source_matches"]
-    assert len(matches) == 7
+    assert len(matches) == 8
     assert "Wikidata" in matches
     assert "ChEMBL" in matches
     assert "NCIt" in matches
@@ -519,11 +483,12 @@ def test_query_specify_sources(query_handler):
     assert "RxNorm" in matches
     assert "HemOnc" in matches
     assert "GuideToPHARMACOLOGY" in matches
+    assert "DrugsAtFDA" in matches
 
     # test full exclusion
     resp = query_handler.search_sources(
         "cisplatin", keyed=True,
-        excl="chembl, wikidata, drugbank, ncit, rxnorm, chemidplus, hemonc, guidetopharmacology"  # noqa: E501
+        excl="chembl, wikidata, drugbank, ncit, rxnorm, chemidplus, hemonc, guidetopharmacology,drugsatfda"  # noqa: E501
     )
     matches = resp["source_matches"]
     assert len(matches) == 0
@@ -535,6 +500,7 @@ def test_query_specify_sources(query_handler):
     assert "RxNorm" not in matches
     assert "HemOnc" not in matches
     assert "GuideToPHARMACOLOGY" not in matches
+    assert "DrugsAtFDA" not in matches
 
     # test case insensitive
     resp = query_handler.search_sources("cisplatin", keyed=True, excl="ChEmBl")
@@ -547,6 +513,7 @@ def test_query_specify_sources(query_handler):
     assert "RxNorm" in matches
     assert "HemOnc" in matches
     assert "GuideToPHARMACOLOGY" in matches
+    assert "DrugsAtFDA" in matches
     resp = query_handler.search_sources("cisplatin", keyed=True,
                                         incl="wIkIdAtA,cHeMbL")
     matches = resp["source_matches"]
@@ -558,6 +525,7 @@ def test_query_specify_sources(query_handler):
     assert "RxNorm" not in matches
     assert "HemOnc" not in matches
     assert "GuideToPHARMACOLOGY" not in matches
+    assert "DrugsAtFDA" not in matches
 
     # test error on invalid source names
     with pytest.raises(InvalidParameterException):
@@ -571,7 +539,7 @@ def test_query_specify_sources(query_handler):
 
 
 def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
-                      spiramycin, therapeutic_procedure, ro_5045337):
+                      spiramycin, therapeutic_procedure):
     """Test that the merged concept endpoint handles queries correctly."""
     # test merged id match
     query = "rxcui:2555"
@@ -632,12 +600,6 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     compare_vod(response, cisplatin, query, MatchType.TRADE_NAME,
                 "normalize.therapy:Cisplatin")
 
-    # test normalizing single-member group with chembl reference
-    query = "wikidata:Q27287118"
-    response = merge_query_handler.search_groups(query)
-    compare_vod(response, ro_5045337, query, MatchType.CONCEPT_ID,
-                "normalize.therapy:wikidata%3AQ27287118")
-
     # test no match
     query = "zzzz fake therapy zzzz"
     response = merge_query_handler.search_groups(query)
@@ -686,7 +648,10 @@ def test_service_meta(query_handler, merge_query_handler):
 def test_broken_db_handling(merge_query_handler):
     """Test that query fails gracefully if mission-critical DB references are
     broken.
+
+    The test database includes an identity record (fake:00001) with a
+    purposely-broken merge_ref field. This lookup should not raise an
+    exception.
     """
-    # test broken merge ref
     query = "fake:00001"
     assert merge_query_handler.search_groups(query)

@@ -3,21 +3,8 @@ name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
 
-[dev-packages]
-pytest = "*"
-pre-commit = "*"
-flake8 = "*"
-flake8-docstrings = "*"
-coverage = "*"
-pytest-cov = "*"
-jupyterlab = "*"
-thera-py = {editable = true, path = "."}
-coveralls = "*"
-civicpy = "*"
-
 [packages]
 pydantic = ">=1.8.2"
-twine = "*"
 fastapi = ">=0.65.2"
 urllib3 = ">=1.26.5"
 uvicorn = "*"
@@ -38,3 +25,22 @@ bs4 = "*"
 pyyaml = "*"
 disease-normalizer = ">=0.2.10"
 "ga4gh.vrsatile.pydantic" = ">=0.0.3"
+
+[dev-packages]
+thera-py = {editable = true, path = "."}
+pre-commit = "*"
+pytest = "*"
+coverage = "*"
+coveralls = "*"
+pytest-cov = "*"
+flake8 = "*"
+flake8-docstrings = "*"
+flake8-quotes = "*"
+flake8-import-order = "*"
+flake8-annotations = "*"
+jupyterlab = "*"
+civicpy = "*"
+mypy = "*"
+types-requests = "*"
+types-pyyaml = "*"
+tox = "*"

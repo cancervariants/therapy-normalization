@@ -2395,6 +2395,9 @@
     "src_name": "DrugsAtFDA"
   },
   {
+    "label_and_type": "drugsatfda:nda018057##identity",
+    "src_name": "DrugsAtFDA",
+    "item_type": "identity",
     "label": "CISPLATIN",
     "concept_id": "drugsatfda:NDA018057",
     "aliases": [],

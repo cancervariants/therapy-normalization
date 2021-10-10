@@ -1,8 +1,10 @@
 """Test merged record generation."""
-import pytest
-from therapy.etl.merge import Merge
 from typing import Dict
 import random
+
+import pytest
+
+from therapy.etl.merge import Merge
 
 
 @pytest.fixture(scope="module")
@@ -22,10 +24,10 @@ def merge_handler(mock_database):
             return self.merge.create_merged_concepts(record_ids)
 
         def get_added_records(self):
-            return self.merge.database.added_records
+            return self.merge.database.added_records  # type: ignore
 
         def get_updates(self):
-            return self.merge.database.updates
+            return self.merge.database.updates  # type: ignore
 
         def create_record_id_set(self, record_id):
             return self.merge._create_record_id_set(record_id)
@@ -91,49 +93,49 @@ def phenobarbital_merged():
             "iuphar.ligand:2804"
         ],
         "aliases": [
-            '5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione',
-            '5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione',
-            '5-Ethyl-5-phenylbarbituric acid',
-            '5-Phenyl-5-ethylbarbituric acid',
-            '5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione',
-            '5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione',
-            '5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione',
-            'APRD00184',
-            'Acid, Phenylethylbarbituric',
-            'Eskabarb',
-            'Fenobarbital',
-            'Luminal',
-            'Luminal®',
-            'NSC-128143',
-            'NSC-128143-',
-            'NSC-9848',
-            'Noptil',
-            'PHENO',
-            'PHENOBARBITAL',
-            'PHENYLETHYLMALONYLUREA',
-            'PHENobarbital',
-            'Phenemal',
-            'Phenobarbital',
-            'Phenobarbital civ',
-            'Phenobarbitol',
-            'Phenobarbitone',
-            'Phenobarbituric Acid',
-            'Phenylaethylbarbitursaeure',
-            'Phenylbarbital',
-            'Phenylethylbarbiturate',
-            'Phenylethylbarbituric Acid',
-            'Phenylethylbarbitursaeure',
-            'Phenylethylbarbitursäure',
-            'Phenylethylmalonylurea',
-            'Phenyläthylbarbitursäure',
-            'Solfoton',
-            'Talpheno',
-            'fenobarbital',
-            'phenobarb',
-            'phenobarbital',
-            'phenobarbital sodium',
-            'phenobarbitone',
-            'phenylethylbarbiturate'
+            "5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+            "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
+            "5-Ethyl-5-phenylbarbituric acid",
+            "5-Phenyl-5-ethylbarbituric acid",
+            "5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione",
+            "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+            "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
+            "APRD00184",
+            "Acid, Phenylethylbarbituric",
+            "Eskabarb",
+            "Fenobarbital",
+            "Luminal",
+            "Luminal®",
+            "NSC-128143",
+            "NSC-128143-",
+            "NSC-9848",
+            "Noptil",
+            "PHENO",
+            "PHENOBARBITAL",
+            "PHENYLETHYLMALONYLUREA",
+            "PHENobarbital",
+            "Phenemal",
+            "Phenobarbital",
+            "Phenobarbital civ",
+            "Phenobarbitol",
+            "Phenobarbitone",
+            "Phenobarbituric Acid",
+            "Phenylaethylbarbitursaeure",
+            "Phenylbarbital",
+            "Phenylethylbarbiturate",
+            "Phenylethylbarbituric Acid",
+            "Phenylethylbarbitursaeure",
+            "Phenylethylbarbitursäure",
+            "Phenylethylmalonylurea",
+            "Phenyläthylbarbitursäure",
+            "Solfoton",
+            "Talpheno",
+            "fenobarbital",
+            "phenobarb",
+            "phenobarbital",
+            "phenobarbital sodium",
+            "phenobarbitone",
+            "phenylethylbarbiturate"
         ],
         "associated_with": [
             "pubchem.compound:4763",
