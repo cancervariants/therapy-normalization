@@ -1,18 +1,18 @@
 """ETL methods for NCIt source"""
 import logging
-import requests
 from typing import Set
 import zipfile
 from os import remove, rename
 
+import requests
 import owlready2 as owl
 from owlready2.entity import ThingClass
 
 from therapy import DownloadException
 from therapy.schemas import SourceName, NamespacePrefix, SourceMeta
-from .base import Base
+from therapy.etl.base import Base
 
-logger = logging.getLogger('therapy')
+logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
 
@@ -27,21 +27,21 @@ class NCIt(Base):
 
     def _download_data(self) -> None:
         """Download NCI thesaurus source file."""
-        logger.info('Retrieving source data for NCIt')
-        base_url = 'https://evs.nci.nih.gov/ftp1/NCI_Thesaurus'
+        logger.info("Retrieving source data for NCIt")
+        base_url = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus"
         # ping base NCIt directory
-        release_fname = f'Thesaurus_{self._version}.OWL.zip'  # noqa: E501
-        src_url = f'{base_url}/{release_fname}'
+        release_fname = f"Thesaurus_{self._version}.OWL.zip"  # noqa: E501
+        src_url = f"{base_url}/{release_fname}"
         r_try = requests.get(src_url)
         if r_try.status_code != 200:
             # ping NCIt archive directories
-            archive_url = f'{base_url}/archive/{self._version}_Release/{release_fname}'  # noqa: E501
+            archive_url = f"{base_url}/archive/{self._version}_Release/{release_fname}"  # noqa: E501
             archive_try = requests.get(archive_url)
             if archive_try.status_code != 200:
-                old_archive_url = f'{base_url}/archive/20{self._version[0:2]}/{self._version}_Release/{release_fname}'  # noqa: E501
+                old_archive_url = f"{base_url}/archive/20{self._version[0:2]}/{self._version}_Release/{release_fname}"  # noqa: E501
                 old_archive_try = requests.get(old_archive_url)
                 if old_archive_try.status_code != 200:
-                    msg = f'NCIt download failed: tried {src_url}, {archive_url}, and {old_archive_url}'  # noqa: E501
+                    msg = f"NCIt download failed: tried {src_url}, {archive_url}, and {old_archive_url}"  # noqa: E501
                     logger.error(msg)
                     raise DownloadException(msg)
                 else:
@@ -49,20 +49,19 @@ class NCIt(Base):
             else:
                 src_url = archive_url
 
-        zip_path = self._src_dir / 'ncit.zip'
+        zip_path = self._src_dir / "ncit.zip"
         response = requests.get(src_url, stream=True)
         handle = open(zip_path, "wb")
         for chunk in response.iter_content(chunk_size=512):
             if chunk:
                 handle.write(chunk)
         handle.close()
-
-        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        with zipfile.ZipFile(zip_path, "r") as zip_ref:
             zip_ref.extractall(self._src_dir)
         remove(zip_path)
-        rename(self._src_dir / 'Thesaurus.owl',
-               self._src_dir / f'ncit_{self._version}.owl')
-        logger.info('Successfully retrieved source data for NCIt')
+        rename(self._src_dir / "Thesaurus.owl",
+               self._src_dir / f"ncit_{self._version}.owl")
+        logger.info("Successfully retrieved source data for NCIt")
 
     def _get_desc_nodes(self, node: ThingClass,
                         uq_nodes: Set[ThingClass]) -> Set[ThingClass]:
@@ -100,17 +99,18 @@ class NCIt(Base):
         """
         graph = owl.default_world.as_rdflib_graph()
 
-        query_str = '''SELECT ?x WHERE {
+        query_str = """SELECT ?x WHERE {
             ?x <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P106>
-            "Pharmacologic Substance"
-        }'''
+            \"Pharmacologic Substance\"
+        }
+        """
         typed_results = set(graph.query(query_str))
 
-        retired_query_str = '''SELECT ?x WHERE {
+        retired_query_str = """SELECT ?x WHERE {
             ?x <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P310>
-            "Retired_Concept"
+            \"Retired_Concept\"
         }
-        '''
+        """
         retired_results = set(graph.query(retired_query_str))
 
         typed_results = {r for r in (typed_results - retired_results)
@@ -118,11 +118,11 @@ class NCIt(Base):
 
         for result in typed_results:
             # parse result as URI and get ThingClass object back from NCIt
-            class_object = ncit[result[0].toPython().split('#')[1]]
+            class_object = ncit[result[0].toPython().split("#")[1]]
             uq_nodes.add(class_object)
         return uq_nodes
 
-    def _transform_data(self):
+    def _transform_data(self) -> None:
         """Get data from file and construct objects for loading"""
         ncit = owl.get_ontology(self._src_file.absolute().as_uri())
         ncit.load()
@@ -155,30 +155,32 @@ class NCIt(Base):
                                        f"{node.P320.first()}")
             if node.P368:
                 iri = node.P368.first()
-                if ':' in iri:
-                    iri = iri.split(':')[1]
+                if ":" in iri:
+                    iri = iri.split(":")[1]
                 associated_with.append(f"{NamespacePrefix.CHEBI.value}:{iri}")
             params = {
-                'concept_id': concept_id,
-                'label': label,
-                'aliases': aliases,
-                'xrefs': xrefs,
-                'associated_with': associated_with
+                "concept_id": concept_id,
+                "label": label,
+                "aliases": aliases,
+                "xrefs": xrefs,
+                "associated_with": associated_with
             }
             self._load_therapy(params)
 
-    def _load_meta(self):
+    def _load_meta(self) -> None:
         """Load metadata"""
-        metadata = SourceMeta(data_license="CC BY 4.0",
-                              data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
-                              version=self._version,
-                              data_url='https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/',  # noqa: E501
-                              rdp_url='http://reusabledata.org/ncit.html',
-                              data_license_attributes={
-                                  'non_commercial': False,
-                                  'share_alike': False,
-                                  'attribution': True
-                              })
+        metadata = SourceMeta(
+            data_license="CC BY 4.0",
+            data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
+            version=self._version,
+            data_url="https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/",
+            rdp_url="http://reusabledata.org/ncit.html",
+            data_license_attributes={
+                "non_commercial": False,
+                "share_alike": False,
+                "attribution": True
+            }
+        )
         params = dict(metadata)
-        params['src_name'] = SourceName.NCIT.value
+        params["src_name"] = SourceName.NCIT.value
         self.database.metadata.put_item(Item=params)

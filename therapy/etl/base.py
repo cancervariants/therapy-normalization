@@ -2,20 +2,21 @@
 from abc import ABC, abstractmethod
 import ftplib
 from pathlib import Path
-from typing import List, Dict
 import logging
+from typing import List, Dict, Union, Set
 
+import requests
 import bioversions
 
-from therapy import APP_ROOT, ITEM_TYPES
+from therapy import APP_ROOT, ITEM_TYPES, DownloadException
 from therapy.database import Database
 from therapy.schemas import Drug
 
 
-logger = logging.getLogger('therapy')
+logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
-DEFAULT_DATA_PATH = APP_ROOT / 'data'
+DEFAULT_DATA_PATH = APP_ROOT / "data"
 
 
 class Base(ABC):
@@ -26,6 +27,9 @@ class Base(ABC):
     as some common subtasks (getting most recent version, downloading data
     from an FTP server). Classes should expand or reimplement these methods as
     needed.
+
+    TODO
+    * base http method
     """
 
     def __init__(self, database: Database,
@@ -37,7 +41,7 @@ class Base(ABC):
         """
         self.database = database
         self._src_dir: Path = data_path / self.__class__.__name__.lower()
-        self._added_ids = []
+        self._added_ids: List[str] = []
 
     def perform_etl(self) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
@@ -59,31 +63,46 @@ class Base(ABC):
         """
         return bioversions.get_version(self.__class__.__name__)
 
-    def _ftp_download(self, host: str, host_dir: str, host_fn: str) -> None:
-        """Download data file from FTP site.
-        :param str host: Source's FTP host name
-        :param str host_dir: Data directory located on FTP site
-        :param str host_fn: Filename on FTP site to be downloaded
-        """
-        try:
-            with ftplib.FTP(host) as ftp:
-                ftp.login()
-                logger.debug(f"FTP login to {host} was successful")
-                ftp.cwd(host_dir)
-                with open(self._src_dir / host_fn, 'wb') as fp:
-                    ftp.retrbinary(f'RETR {host_fn}', fp.write)
-        except ftplib.all_errors as e:
-            logger.error(f'FTP download failed: {e}')
-            raise Exception(e)
-
     @abstractmethod
-    def _download_data(self, *args, **kwargs):
+    def _download_data(self) -> None:
         """Acquire source data and deposit in a usable form with correct file
         naming conventions (generally, `<source>_<version>.<filetype>`, or
         `<source>_<subset>_<version>.<filetype>` if sources require multiple
         files). Shouldn't set any instance attributes.
         """
         raise NotImplementedError
+
+    @staticmethod
+    def _http_download(url: str, fname: Path) -> None:
+        """Perform HTTP download of remote data file.
+        :param str url: URL to retrieve file from
+        :param Path fname: path to where file should be saved
+        """
+        r = requests.get(url)
+        if r.status_code != 200:
+            raise DownloadException(f"Failed to download {fname.name} from "
+                                    f"{url}.")
+        with open(fname, "wb") as f:
+            f.write(r.content)
+
+    def _ftp_download(self, host: str, host_dir: str, host_fn: str) -> None:
+        """Download data file from FTP site.
+        :param str host: Source's FTP host name
+        :param str host_dir: Data directory located on FTP site
+        :param str host_fn: Filename on FTP site to be downloaded
+
+        #TODO ALSO HTTP DOWNLOAD METHOD
+        """
+        try:
+            with ftplib.FTP(host) as ftp:
+                ftp.login()
+                logger.debug(f"FTP login to {host} was successful")
+                ftp.cwd(host_dir)
+                with open(self._src_dir / host_fn, "wb") as fp:
+                    ftp.retrbinary(f"RETR {host_fn}", fp.write)
+        except ftplib.all_errors as e:
+            logger.error(f"FTP download failed: {e}")
+            raise Exception(e)
 
     def _extract_data(self) -> None:
         """Get source file from data directory.
@@ -98,16 +117,17 @@ class Base(ABC):
         """
         self._src_dir.mkdir(exist_ok=True, parents=True)
         self._version = self.get_latest_version()
-        fglob = f'{self.__class__.__name__.lower()}_{self._version}.*'
+        fglob = f"{type(self).__name__.lower()}_{self._version}.*"
         latest = list(self._src_dir.glob(fglob))
         if not latest:
             self._download_data()
             latest = list(self._src_dir.glob(fglob))
-        # TODO shouldnt be glob -- should just be latest version
-        self._src_file = latest[0]
+        # TODO shouldnt be glob -- should just expect exact filename
+        self._src_file: Path = latest[0]
+
 
     @abstractmethod
-    def _transform_data(self, *args, **kwargs) -> None:
+    def _transform_data(self) -> None:
         """Prepare source data for loading into DB. Individually extract each
         record and call the Base class's `_load_therapy()` method.
         """
@@ -120,25 +140,25 @@ class Base(ABC):
         :param Dict therapy: valid therapy object.
         """
         assert Drug(**therapy)
-        concept_id = therapy['concept_id']
+        concept_id = therapy["concept_id"]
 
         for attr_type, item_type in ITEM_TYPES.items():
             if attr_type in therapy:
                 value = therapy[attr_type]
                 if value is not None and value != []:
                     if isinstance(value, str):
-                        items = [value.lower()]
+                        items: Union[List, Set] = [value.lower()]
                     else:
                         therapy[attr_type] = list(set(value))
                         items = {item.lower() for item in value}
-                        if attr_type in ['aliases', 'trade_names']:
+                        if attr_type in ["aliases", "trade_names"]:
                             # remove duplicates
-                            if 'label' in therapy:
-                                therapy[attr_type] = list(set(therapy[attr_type]) - {therapy['label']})  # noqa: E501
+                            if "label" in therapy:
+                                therapy[attr_type] = list(set(therapy[attr_type]) - {therapy["label"]})  # noqa: E501
 
-                            if attr_type == 'aliases' and \
-                                    'trade_names' in therapy:
-                                therapy['alias'] = list(set(therapy['alias']) - set(therapy['trade_names']))  # noqa: E501
+                            if attr_type == "aliases" and \
+                                    "trade_names" in therapy:
+                                therapy[attr_type] = list(set(therapy[attr_type]) - set(therapy["trade_names"]))  # noqa: E501
 
                             if len(items) > 20:
                                 logger.debug(f"{concept_id} has > 20"
@@ -153,7 +173,7 @@ class Base(ABC):
                     del therapy[attr_type]
 
         # handle detail fields
-        approval_attrs = ('approval_status', 'approval_year', 'fda_indication')
+        approval_attrs = ("approval_status", "approval_year", "fda_indication")
         for field in approval_attrs:
             if approval_attrs in therapy and therapy[field] is None:
                 del therapy[field]
@@ -162,5 +182,6 @@ class Base(ABC):
         self._added_ids.append(concept_id)
 
     @abstractmethod
-    def _load_meta(self, *args, **kwargs) -> None:
+    def _load_meta(self) -> None:
+        """TODO DOCSTRING also move up further"""
         raise NotImplementedError

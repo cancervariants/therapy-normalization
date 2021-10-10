@@ -7,27 +7,28 @@ import sqlite3
 import chembl_downloader
 import bioversions
 
-from .base import Base
+from therapy.etl.base import Base
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, \
     SourceMeta
 
-logger = logging.getLogger('therapy')
+
+logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
 
 class ChEMBL(Base):
     """ETL the ChEMBL source into therapy.db."""
 
-    def _download_data(self):
+    def _download_data(self) -> None:
         """Download latest ChEMBL database file from EBI."""
-        logger.info('Retrieving source data for ChEMBL')
-        os.environ['PYSTOW_HOME'] = str(self._src_dir.parent.absolute())
+        logger.info("Retrieving source data for ChEMBL")
+        os.environ["PYSTOW_HOME"] = str(self._src_dir.parent.absolute())
         tmp_path = chembl_downloader.download_extract_sqlite()
         shutil.move(tmp_path, self._src_dir)
         shutil.rmtree(tmp_path.parent.parent.parent)
-        logger.info('Successfully retrieved source data for ChEMBL')
+        logger.info("Successfully retrieved source data for ChEMBL")
 
-    def _extract_data(self):
+    def _extract_data(self) -> None:
         """Extract data from the ChEMBL source."""
         super()._extract_data()
         conn = sqlite3.connect(self._src_file)
@@ -35,7 +36,7 @@ class ChEMBL(Base):
         self._conn = conn
         self._cursor = conn.cursor()
 
-    def _transform_data(self):
+    def _transform_data(self) -> None:
         """Transform SQLite data to temporary JSON."""
         self._create_dictionary_synonyms_table()
         self._create_trade_names_table()
@@ -48,7 +49,7 @@ class ChEMBL(Base):
         self._conn.commit()
         self._conn.close()
 
-    def _create_dictionary_synonyms_table(self):
+    def _create_dictionary_synonyms_table(self) -> None:
         """Create temporary table to store drugs and their synonyms."""
         create_dictionary_synonyms_table = f"""
             CREATE TEMPORARY TABLE DictionarySynonyms AS
@@ -79,7 +80,7 @@ class ChEMBL(Base):
         """
         self._cursor.execute(create_dictionary_synonyms_table)
 
-    def _create_trade_names_table(self):
+    def _create_trade_names_table(self) -> None:
         """Create temporary table to store trade name data."""
         create_trade_names_table = """
             CREATE TEMPORARY TABLE TradeNames AS
@@ -95,7 +96,7 @@ class ChEMBL(Base):
         """
         self._cursor.execute(create_trade_names_table)
 
-    def _create_temp_table(self):
+    def _create_temp_table(self) -> None:
         """Create temporary table to store therapies data."""
         create_temp_table = """
             CREATE TEMPORARY TABLE temp(concept_id, label, approval_status,
@@ -149,7 +150,7 @@ class ChEMBL(Base):
         """
         self._cursor.execute(insert_temp)
 
-    def _load_json(self):
+    def _load_json(self) -> None:
         """Load ChEMBL data into database."""
         chembl_data = """
             SELECT
@@ -166,23 +167,23 @@ class ChEMBL(Base):
         self._cursor.execute("DROP TABLE temp;")
 
         for record in result:
-            for attr in ['aliases', 'trade_names']:
+            for attr in ["aliases", "trade_names"]:
                 if attr in record and record[attr]:
-                    record[attr] = record[attr].split('||')
+                    record[attr] = record[attr].split("||")
             self._load_therapy(record)
 
-    def _load_meta(self):
+    def _load_meta(self) -> None:
         """Add ChEMBL metadata."""
-        metadata = SourceMeta(data_license='CC BY-SA 3.0',
-                              data_license_url='https://creativecommons.org/licenses/by-sa/3.0/',  # noqa: E501
+        metadata = SourceMeta(data_license="CC BY-SA 3.0",
+                              data_license_url="https://creativecommons.org/licenses/by-sa/3.0/",  # noqa: E501
                               version=self._version,
-                              data_url=bioversions.resolve('chembl').homepage,  # noqa: E501
-                              rdp_url='http://reusabledata.org/chembl.html',
+                              data_url=bioversions.resolve("chembl").homepage,
+                              rdp_url="http://reusabledata.org/chembl.html",
                               data_license_attributes={
-                                  'non_commercial': False,
-                                  'share_alike': True,
-                                  'attribution': True
+                                  "non_commercial": False,
+                                  "share_alike": True,
+                                  "attribution": True
                               })
         params = dict(metadata)
-        params['src_name'] = SourceName.CHEMBL.value
+        params["src_name"] = SourceName.CHEMBL.value
         self.database.metadata.put_item(Item=params)

@@ -1,49 +1,33 @@
 """Module for Guide to PHARMACOLOGY ETL methods."""
-from typing import Optional
-from therapy import logger
-from therapy.etl.base import Base
-from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, \
-    ApprovalStatus
-import requests
+from typing import Optional, Dict, Any, List, Union
 import csv
 import html
+
+import requests
+
+from therapy import logger
+from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, \
+    ApprovalStatus
+from therapy.etl.base import Base
 
 
 class GuideToPHARMACOLOGY(Base):
     """Class for Guide to PHARMACOLOGY ETL methods."""
 
-#     def __init__(self, database,
-#                  data_path: Path = APP_ROOT / "data") -> None:
-#         """Initialize GuideToPHARMACOLOGY ETL class.
-#
-#         :param therapy.database.Database: DB instance to use
-#         :param Path data_path: path to app data directory
-#         """
-#         super().__init__(database, data_path)
-#         self._data_url = "https://www.guidetopharmacology.org/download.jsp"
-#         self._ligands_data_url = "https://www.guidetopharmacology.org/DATA/ligands.tsv"  # noqa: E501
-#         self._ligand_id_mapping_data_url = "https://www.guidetopharmacology.org/DATA/ligand_id_mapping.tsv"  # noqa: E501
-#         self._ligands_file = None
-#         self._ligand_id_mapping_file = None
+    _ligands_data_url: str = "https://www.guidetopharmacology.org/DATA/ligands.tsv"  # noqa: E501
+    _ligand_mapping_data_url: str = "https://www.guidetopharmacology.org/DATA/ligand_id_mapping.tsv"  # noqa: E501
 
     def _download_data(self) -> None:
         """Download the latest version of Guide to PHARMACOLOGY."""
-        logger.info('Retrieving source data for Guide to PHARMACOLOGY')
-        dir_files = list(self._src_dir.iterdir())
-        if len(dir_files) > 0:
-            prefix = SourceName.GUIDETOPHARMACOLOGY.value.lower()
-            for f in dir_files:
-                if f.name == f"{prefix}_ligands_{self._version}.tsv":
-                    self._ligands_file = f
-                elif f.name == f"{prefix}_ligand_id_mapping_{self._version}.tsv":  # noqa: E501
-                    self._ligand_id_mapping_file = f
-
-        if self._ligands_file is None:
-            self._download_file(self._ligands_data_url, "ligands")
-        if self._ligand_id_mapping_file is None:
-            self._download_file(self._ligand_id_mapping_data_url,
-                                "ligand_id_mapping")
-        logger.info('Successfully retrieved source data for Guide to PHARMACOLOGY')  # noqa: E501
+        logger.info("Retrieving source data for Guide to PHARMACOLOGY")
+        if not self._src_ligands_file.exists():
+            self._http_download(self._ligands_data_url, self._src_ligands_file)
+            assert self._src_ligands_file.exists()
+        if not self._src_mappings_file.exists():
+            self._http_download(self._ligand_mapping_data_url,
+                                self._src_mappings_file)
+            assert self._src_mappings_file.exists()
+        logger.info("Successfully retrieved source data for Guide to PHARMACOLOGY")  # noqa: E501
 
     def _download_file(self, file_url: str, fn: str) -> None:
         """Download individual data file.
@@ -69,18 +53,21 @@ class GuideToPHARMACOLOGY(Base):
         prefix = SourceName.GUIDETOPHARMACOLOGY.value.lower()
         self._src_ligands_file = self._src_dir / f"{prefix}_ligands_{self._version}.tsv"  # noqa: E501
         self._src_mappings_file = self._src_dir / f"{prefix}_ligand_id_mapping_{self._version}.tsv"  # noqa: E501
-        if not (self._src_ligands_file.exists() and self._src_mappings_file.exists()):  # noqa: E501
+        if not (self._src_ligands_file.exists()
+                and self._src_mappings_file.exists()):
             self._download_data()
+            assert self._src_ligands_file.exists()
+            assert self._src_mappings_file.exists()
 
     def _transform_data(self) -> None:
         """Transform Guide To PHARMACOLOGY data."""
-        data = dict()
+        data: Dict[str, Any] = dict()
         self._transform_ligands(data)
         self._transform_ligand_id_mappings(data)
         for param in data.values():
             self._load_therapy(param)
 
-    def _transform_ligands(self, data: dict) -> None:
+    def _transform_ligands(self, data: Dict) -> None:
         """Transform ligands data file and add this data to `data`.
 
         :param dict data: Transformed data
@@ -90,7 +77,7 @@ class GuideToPHARMACOLOGY(Base):
             next(rows)
 
             for row in rows:
-                params = {
+                params: Dict[str, Union[List[str], str]] = {
                     "concept_id":
                         f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}",  # noqa: E501
                     "label": row[1],
@@ -136,13 +123,13 @@ class GuideToPHARMACOLOGY(Base):
 
                 data[params["concept_id"]] = params
 
-    def _transform_ligand_id_mappings(self, data: dict):
+    def _transform_ligand_id_mappings(self, data: Dict) -> None:
         """Transform ligand_id_mappings and add this data to `data`
         All ligands found in this file should already be in data
 
         :param dict data: Transformed data
         """
-        with open(self._ligand_id_mapping_file, "r") as f:
+        with open(self._ligand_id_mapping_file.absolute(), "r") as f:
             rows = csv.reader(f, delimiter="\t")
             for row in rows:
                 concept_id = f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}"  # noqa: E501
@@ -171,7 +158,7 @@ class GuideToPHARMACOLOGY(Base):
                     params["associated_with"] = associated_with
 
     def _set_approval_status(self, approved: str,
-                             withdrawn: str) -> Optional[ApprovalStatus]:
+                             withdrawn: str) -> Optional[str]:
         """Set approval status.
 
         :param str approved: The drug is or has in the past been approved for
@@ -181,7 +168,7 @@ class GuideToPHARMACOLOGY(Base):
         :return: Approval status
         """
         if approved and not withdrawn:
-            approval_status = ApprovalStatus.APPROVED.value
+            approval_status: Optional[str] = ApprovalStatus.APPROVED.value
         elif withdrawn:
             approval_status = ApprovalStatus.WITHDRAWN.value
         else:
