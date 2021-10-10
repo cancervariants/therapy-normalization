@@ -2339,5 +2339,94 @@
     "concept_id": "drugsatfda:anda074656",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
+  },
+  {
+    "label_and_type": "drugsatfda:nda210595##identity",
+    "src_name": "DrugsAtFDA",
+    "item_type": "identity",
+    "concept_id": "drugsatfda:NDA210595",
+    "aliases": [
+      "ACLIDINIUM BROMIDE",
+      "ACLIDINIUM BROMIDE AND FORMOTEROL FUMARTE",
+      "FORMOTEROL FUMARATE"
+    ],
+    "xrefs": [
+      "rxcui:2205103",
+      "rxcui:2205104",
+      "rxcui:2205099",
+      "rxcui:2205094"
+    ],
+    "associated_with": ["unii:UQW7UF9N91", "unii:W34SHF8J2K"],
+    "approval_status": "fda_prescription",
+    "trade_names": ["DUAKLIR PRESSAIR"]
+  },
+  {
+    "label_and_type": "unii:w34shf8j2k##associated_with",
+    "concept_id": "drugsatfda:nda210595",
+    "item_type": "associated_with",
+    "src_name": "DrugsAtFDA"
+  },
+  {
+    "label_and_type": "unii:uqw7uf9n91##associated_with",
+    "concept_id": "drugsatfda:nda210595",
+    "item_type": "associated_with",
+    "src_name": "DrugsAtFDA"
+  },
+  {
+    "label_and_type": "drugsatfda:nda202450##identity",
+    "src_name": "DrugsAtFDA",
+    "item_type": "identity",
+    "concept_id": "drugsatfda:NDA202450",
+    "label": "ACLIDINIUM BROMIDE",
+    "aliases": [],
+    "xrefs": [
+      "rxcui:1607112",
+      "rxcui:1303102",
+      "rxcui:1607111",
+      "rxcui:1303107"
+    ],
+    "associated_with": ["unii:UQW7UF9N91"],
+    "approval_status": "fda_prescription",
+    "trade_names": ["TUDORZA PRESSAIR"]
+  },
+  {
+    "label_and_type": "unii:uqw7uf9n91##associated_with",
+    "concept_id": "drugsatfda:nda202450",
+    "item_type": "associated_with",
+    "src_name": "DrugsAtFDA"
+  },
+  {
+    "label_and_type": "drugsatfda:anda091141##identity",
+    "item_type": "identity",
+    "src_name": "DrugsAtFDA",
+    "concept_id": "drugsatfda:ANDA091141",
+    "label": "FORMOTEROL FUMARATE",
+    "xrefs": ["rxcui:1246319"],
+    "associated_with": ["unii:W34SHF8J2K"],
+    "approval_status": "fda_prescription"
+  },
+  {
+    "label_and_type": "unii:w34shf8j2k##associated_with",
+    "concept_id": "drugsatfda:anda091141",
+    "item_type": "associated_with",
+    "src_name": "DrugsAtFDA"
+  },
+  {
+    "label_and_type": "drugsatfda:nda022007##identity",
+    "item_type": "identity",
+    "src_name": "DrugsAtFDA",
+    "concept_id": "drugsatfda:NDA022007",
+    "label": "FORMOTEROL FUMARATE",
+    "aliases": ["FORMOTEROL FUMARATE DIHYDRATE"],
+    "xrefs": ["rxcui:1246321", "rxcui:1246319"],
+    "associated_with": ["unii:W34SHF8J2K"],
+    "approval_status": "fda_prescription",
+    "trade_names": ["PERFOROMIST"]
+  },
+  {
+    "label_and_type": "unii:w34shf8j2k##associated_with",
+    "concept_id": "drugsatfda:nda022007",
+    "item_type": "associated_with",
+    "src_name": "DrugsAtFDA"
   }
 ]

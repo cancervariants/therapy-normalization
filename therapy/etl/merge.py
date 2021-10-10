@@ -164,6 +164,8 @@ class Merge:
         """
         if record_id in self._groups:
             return self._groups[record_id]
+        elif record_id.startswith("drugsatfda:"):
+            return {record_id}
         elif record_id in self._failed_lookups:
             return observed_id_set - {record_id}
 

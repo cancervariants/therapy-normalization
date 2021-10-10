@@ -2,6 +2,7 @@
 import pytest
 from therapy.etl.merge import Merge
 from typing import Dict
+import random
 
 
 @pytest.fixture(scope="module")
@@ -31,9 +32,6 @@ def merge_handler(mock_database):
 
         def generate_merged_record(self, record_id_set):
             return self.merge._generate_merged_record(record_id_set)
-
-        def get_created_id_groups(self):
-            return self.merge._groups()
 
     return MergeHandler()
 
@@ -576,6 +574,10 @@ def record_id_groups():
         },
         "ncit:C49236": {  # Therapeutic Procedure
             "ncit:C49236"
+        },
+        # test exclusion of drugs@fda records with multiple UNIIs
+        "drugsatfda:NDA210595": {
+            "drugsatfda:NDA210595"
         }
     }
 
@@ -584,17 +586,27 @@ def test_create_record_id_set(merge_handler, record_id_groups):
     """Test creation of record ID sets. Queries DB and matches against
     record_id_groups fixture.
     """
-    # build groups from keys
-    for record_id in record_id_groups.keys():
-        new_group = merge_handler.create_record_id_set(record_id)
-        for concept_id in new_group:
-            merge_handler.merge._groups[concept_id] = new_group
-    groups = merge_handler.merge._groups
+    # try a few different orders
+    keys = list(record_id_groups.keys())
+    key_len = len(keys)
+    order0 = list(range(key_len))
+    random.seed(42)
+    orders = [random.sample(order0, key_len) for _ in range(5)]
+    for order in [order0] + orders:
+        ordered_keys = [keys[i] for i in order]
+        merge_handler.merge._groups = {}
 
-    # perform checks
-    for concept_id in groups.keys():
-        assert groups[concept_id] == record_id_groups[concept_id]
-    assert len(groups) == len(record_id_groups)  # check if any are missing
+        for record_id in ordered_keys:
+            new_group = merge_handler.create_record_id_set(record_id)
+            if new_group:
+                for concept_id in new_group:
+                    merge_handler.merge._groups[concept_id] = new_group
+        groups = merge_handler.merge._groups
+
+        # perform checks
+        for concept_id in groups.keys():
+            assert groups[concept_id] == record_id_groups[concept_id]
+        assert len(groups) == len(record_id_groups)  # check if any are missing
 
     # test dead reference
     has_dead_ref = "ncit:C107245"
@@ -660,5 +672,6 @@ def test_create_merged_concepts(merge_handler, record_id_groups,
         }
 
     # no merged record for ncit:C49236 should be generated
-    assert len(updates) == len(record_id_groups) - 1
+    assert len(updates) == len(record_id_groups) - 2
     assert "ncit:C49236" not in updates
+    assert "drugsatfda:NDA210595" not in updates
