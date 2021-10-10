@@ -2267,6 +2267,18 @@
     "approval_status": "fda_prescription"
   },
   {
+    "label_and_type": "rxcui:309311##xref",
+    "concept_id": "drugsatfda:anda075036",
+    "item_type": "xref",
+    "src_name": "DrugsAtFDA"
+  },
+  {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "drugsatfda:anda075036",
+    "item_type": "label",
+    "src_name": "DrugsAtFDA"
+  },
+  {
     "label_and_type": "unii:q20q21q62j##associated_with",
     "concept_id": "drugsatfda:anda075036",
     "item_type": "associated_with",
@@ -2282,6 +2294,18 @@
     "xrefs": ["rxcui:309311"],
     "associated_with": ["unii:Q20Q21Q62J"],
     "approval_status": "fda_prescription"
+  },
+  {
+    "label_and_type": "rxcui:309311##xref",
+    "concept_id": "drugsatfda:anda206774",
+    "item_type": "xref",
+    "src_name": "DrugsAtFDA"
+  },
+  {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "drugsatfda:anda206774",
+    "item_type": "label",
+    "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "unii:q20q21q62j##associated_with",
@@ -2301,6 +2325,18 @@
     "approval_status": "fda_prescription"
   },
   {
+    "label_and_type": "rxcui:309311##xref",
+    "concept_id": "drugsatfda:anda207323",
+    "item_type": "xref",
+    "src_name": "DrugsAtFDA"
+  },
+  {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "drugsatfda:anda207323",
+    "item_type": "label",
+    "src_name": "DrugsAtFDA"
+  },
+  {
     "label_and_type": "unii:q20q21q62j##associated_with",
     "concept_id": "drugsatfda:anda207323",
     "item_type": "associated_with",
@@ -2318,6 +2354,18 @@
     "approval_status": "fda_prescription"
   },
   {
+    "label_and_type": "rxcui:309311##xref",
+    "concept_id": "drugsatfda:anda074735",
+    "item_type": "xref",
+    "src_name": "DrugsAtFDA"
+  },
+  {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "drugsatfda:anda074735",
+    "item_type": "label",
+    "src_name": "DrugsAtFDA"
+  },
+  {
     "label_and_type": "unii:q20q21q62j##associated_with",
     "concept_id": "drugsatfda:anda074735",
     "item_type": "associated_with",
@@ -2333,6 +2381,29 @@
     "xrefs": ["rxcui:309311"],
     "associated_with": ["unii:Q20Q21Q62J"],
     "approval_status": "fda_prescription"
+  },
+  {
+    "label_and_type": "rxcui:309311##xref",
+    "concept_id": "drugsatfda:anda074656",
+    "item_type": "xref",
+    "src_name": "DrugsAtFDA"
+  },
+  {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "drugsatfda:anda074656",
+    "item_type": "label",
+    "src_name": "DrugsAtFDA"
+  },
+  {
+    "label": "CISPLATIN",
+    "concept_id": "drugsatfda:NDA018057",
+    "aliases": [],
+    "xrefs": ["rxcui:1736854"],
+    "associated_with": ["unii:Q20Q21Q62J"],
+    "approval_status": null,
+    "approval_year": [],
+    "has_indication": [],
+    "trade_names": ["PLATINOL-AQ", "PLATINOL"]
   },
   {
     "label_and_type": "unii:q20q21q62j##associated_with",
@@ -2427,6 +2498,166 @@
     "label_and_type": "unii:w34shf8j2k##associated_with",
     "concept_id": "drugsatfda:nda022007",
     "item_type": "associated_with",
+    "src_name": "DrugsAtFDA"
+  },
+  {
+    "label_and_type": "drugsatfda:nda022334##identity",
+    "item_type": "identity",
+    "src_name": "DrugsAtFDA",
+    "label": "EVEROLIMUS",
+    "concept_id": "drugsatfda:NDA022334",
+    "xrefs": [
+      "rxcui:998191",
+      "rxcui:1310144",
+      "rxcui:1310147",
+      "rxcui:845507",
+      "rxcui:845518",
+      "rxcui:845515",
+      "rxcui:1310138",
+      "rxcui:845512",
+      "rxcui:998189",
+      "rxcui:1308430",
+      "rxcui:1119402",
+      "rxcui:1308428",
+      "rxcui:1119400",
+      "rxcui:1308432"
+    ],
+    "associated_with": ["unii:9HW64Q8G6G"],
+    "approval_status": "fda_prescription",
+    "trade_names": ["AFINITOR"]
+  },
+  {
+    "label_and_type": "rxcui:998191##xref",
+    "concept_id": "drugsatfda:nda022334",
+    "src_name": "DrugsAtFDA",
+    "item_type": "xref"
+  },
+  {
+    "label_and_type": "rxcui:845507##xref",
+    "concept_id": "drugsatfda:nda022334",
+    "src_name": "DrugsAtFDA",
+    "item_type": "xref"
+  },
+  {
+    "label_and_type": "rxcui:998189##xref",
+    "concept_id": "drugsatfda:nda022334",
+    "src_name": "DrugsAtFDA",
+    "item_type": "xref"
+  },
+  {
+    "label_and_type": "rxcui:1308432##xref",
+    "concept_id": "drugsatfda:nda022334",
+    "src_name": "DrugsAtFDA",
+    "item_type": "xref"
+  },
+  {
+    "label_and_type": "unii:9HW64Q8G6G##associated_with",
+    "concept_id": "drugsatfda:nda022334",
+    "src_name": "DrugsAtFDA",
+    "item_type": "associated_with"
+  },
+  {
+    "label_and_type": "afinitor##trade_name",
+    "concept_id": "drugsatfda:nda022334",
+    "src_name": "DrugsAtFDA",
+    "item_type": "trade_name"
+  },
+  {
+    "label_and_type": "everolimus##label",
+    "concept_id": "drugsatfda:nda022334",
+    "src_name": "DrugsAtFDA",
+    "item_type": "label"
+  },
+  {
+    "label_and_type": "drugsatfda:NDA050682",
+    "src_name": "DrugsAtFDA",
+    "item_type": "identity",
+    "label": "DACTINOMYCIN",
+    "concept_id": "drugsatfda:NDA050682",
+    "xrefs": ["rxcui:105569", "rxcui:239179"],
+    "associated_with": ["unii:1CC1JFE158"],
+    "approval_status": "fda_prescription",
+    "trade_names": ["COSMEGEN"]
+  },
+  {
+    "label_and_type": "unii:1cc1jfe158##associated_with",
+    "src_name": "DrugsAtFDA",
+    "item_type": "associated_with",
+    "concept_id": "drugsatfda:nda050682"
+  },
+  {
+    "label_and_type": "rxcui:239179##xref",
+    "src_name": "DrugsAtFDA",
+    "item_type": "xref",
+    "concept_id": "drugsatfda:nda050682"
+  },
+  {
+    "label_and_type": "rxcui:105569##xref",
+    "src_name": "DrugsAtFDA",
+    "item_type": "xref",
+    "concept_id": "drugsatfda:nda050682"
+  },
+  {
+    "label_and_type": "cosmegen##trade_name",
+    "src_name": "DrugsAtFDA",
+    "item_type": "trade_name",
+    "concept_id": "drugsatfda:nda050682"
+  },
+  {
+    "label_and_type": "dactinomycin##label",
+    "src_name": "DrugsAtFDA",
+    "item_type": "label",
+    "concept_id": "drugsatfda:nda050682"
+  },
+  {
+    "label_and_type": "drugsatfda:anda072267##identity",
+    "item_type": "identity",
+    "src_name": "DrugsAtFDA",
+    "label": "FENOPROFEN CALCIUM",
+    "concept_id": "drugsatfda:ANDA072267",
+    "xrefs": ["rxcui:310291", "rxcui:351398"],
+    "associated_with": ["unii:0X2CW1QABJ"],
+    "approval_status": "fda_prescription",
+    "trade_names": ["NALFON"]
+  },
+  {
+    "label_and_type": "unii:0X2CW1QABJ##associated_with",
+    "item_type": "associated_with",
+    "concept_id": "drugsatfda:ANDA072267",
+    "src_name": "DrugsAtFDA"
+  },
+  {
+    "label_and_type": "fenoprofen calcium##label",
+    "item_type": "label",
+    "concept_id": "drugsatfda:ANDA072267",
+    "src_name": "DrugsAtFDA"
+  },
+  {
+    "label_and_type": "rxcui:310291##xref",
+    "item_type": "xref",
+    "concept_id": "drugsatfda:ANDA072267",
+    "src_name": "DrugsAtFDA"
+  },
+  {
+    "label_and_type": "drugsatfda:NDA017604##identity",
+    "item_type": "identity",
+    "src_name": "DrugsAtFDA",
+    "label": "FENOPROFEN CALCIUM",
+    "concept_id": "drugsatfda:NDA017604",
+    "xrefs": ["rxcui:197694", "rxcui:858118", "rxcui:858116", "rxcui:260323"],
+    "associated_with": ["unii:0X2CW1QABJ"],
+    "trade_names": ["NALFON", "FENORTHO"]
+  },
+  {
+    "label_and_type": "unii:0X2CW1QABJ##associated_with",
+    "item_type": "associated_with",
+    "concept_id": "drugsatfda:NDA017604",
+    "src_name": "DrugsAtFDA"
+  },
+  {
+    "label_and_type": "fenoprofen calcium##label",
+    "item_type": "label",
+    "concept_id": "drugsatfda:NDA017604",
     "src_name": "DrugsAtFDA"
   }
 ]
