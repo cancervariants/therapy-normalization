@@ -242,7 +242,7 @@ class Database:
         last_evaluated_key = None
         concept_ids = []
         params = {
-            'ProjectionExpression': 'concept_id',
+            'ProjectionExpression': 'concept_id,item_type',
         }
         while True:
             if last_evaluated_key:
