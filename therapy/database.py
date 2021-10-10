@@ -253,8 +253,9 @@ class Database:
                 response = self.therapies.scan(**params)
             records = response['Items']
             for record in records:
-                concept_id = record['concept_id']
-                concept_ids.append(concept_id)
+                if record["item_type"] == "identity":
+                    concept_id = record['concept_id']
+                    concept_ids.append(concept_id)
             last_evaluated_key = response.get('LastEvaluatedKey')
             if not last_evaluated_key:
                 break
