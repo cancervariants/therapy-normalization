@@ -125,6 +125,10 @@ class Base(ABC):
         # TODO shouldnt be glob -- should just expect exact filename
         self._src_file: Path = latest[0]
 
+    @abstractmethod
+    def _load_meta(self) -> None:
+        """Load source metadata entry."""
+        raise NotImplementedError
 
     @abstractmethod
     def _transform_data(self) -> None:
@@ -180,8 +184,3 @@ class Base(ABC):
 
         self.database.add_record(therapy)
         self._added_ids.append(concept_id)
-
-    @abstractmethod
-    def _load_meta(self) -> None:
-        """TODO DOCSTRING also move up further"""
-        raise NotImplementedError
