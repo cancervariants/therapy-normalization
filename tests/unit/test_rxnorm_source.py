@@ -397,7 +397,7 @@ def levothyroxine():
             "Thyroxin",
             "T4 Thyroid Hormone",
             "O-(4-Hydroxy-3,5-diiodophenyl)-3,5-diiodotyrosine",
-            '3,5,3",5"-Tetraiodothyronine',
+            "3,5,3',5'-Tetraiodothyronine",
             "O-(4-Hydroxy-3,5-diiodophenyl)-3,5-diiodo-L-tyrosine",
             "L-T4",
             "LT4",
