@@ -390,7 +390,7 @@ def levothyroxine():
         "label": "levothyroxine",
         "concept_id": "rxcui:10582",
         "aliases": [
-            '3,5,3",5"-Tetraiodo-L-thyronine',
+            "3,5,3',5'-Tetraiodo-L-thyronine",
             "Thyroxine",
             "thyroxine",
             "Thyroid Hormone, T4",
@@ -402,7 +402,7 @@ def levothyroxine():
             "L-T4",
             "LT4",
             "T4",
-            '3,3",5,5"-Tetraiodo-L-thyronine',
+            "3,3',5,5'-Tetraiodo-L-thyronine",
             "L-Thyroxine",
             "O-(4-Hydroxy-3,5-diidophenyl)-3,5-diiodo-L-tyrosine",
             "4-(4-Hydroxy-3,5-diiodophenoxy)-3,5-diiodo-L-phenylalanine",
