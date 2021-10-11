@@ -24,10 +24,10 @@ jobs:
                   pipenv install --dev
 
             - name: Run tests
-              run: tox -e testdb
+              run: python3 -m tox -e testdb
 
             - name: Check style
-              run: tox -e flake8
+              run: python3 -m tox -e flake8
 
             - name: Check type correctness
-              run: tox -e mypy
+              run: python3 -m tox -e mypy
