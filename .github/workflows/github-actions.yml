@@ -23,6 +23,11 @@ jobs:
                   python3 -m pip install pipenv
                   pipenv install --dev
 
-            - run: tox -e testdb
-            - run: tox -e flake8
-            - run: tox -e mypy
+            - name: Run tests
+              run: tox -e testdb
+
+            - name: Check style
+              run: tox -e flake8
+
+            - name: Check type correctness
+              run: tox -e mypy
