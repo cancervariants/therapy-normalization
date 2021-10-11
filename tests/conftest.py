@@ -3,8 +3,13 @@ import os
 from typing import Dict, Any, Optional, List
 import json
 from pathlib import Path
+import subprocess
+import tarfile
+import os
+import atexit
 
 import pytest
+import requests
 
 from therapy.schemas import Drug, MatchType
 from therapy.database import Database
@@ -12,7 +17,7 @@ from therapy.database import Database
 TEST_ROOT = Path(__file__).resolve().parents[1]
 
 
-@pytest.fixture(scope="module", autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def db():
     """Create a DynamoDB test fixture."""
 
@@ -22,7 +27,45 @@ def db():
             if os.environ.get("TEST") is not None:
                 self.load_test_data()
 
-        def load_test_data(self):
+        def setup_test_dynamodb(self) -> None:
+            ddb_dir = TEST_ROOT / "tests" / "unit" / "dynamodb_local"
+            ddb_dir.mkdir(parents=True, exist_ok=True)
+            ddb_jar = ddb_dir / "DynamoDBLocal.jar"  # TODO fix
+            if not ddb_jar.exists():
+                r = requests.get(
+                    "https://s3-us-west-2.amazonaws.com/dynamodb-local/dynamodb_local_latest.tar.gz",  # noqa: E501
+                    stream=True
+                )
+                if r.status_code != 200:
+                    raise requests.HTTPError("Unable to retrieve DynamoDB Local.")
+                ddb_tar = ddb_dir / "dynamodb_local_latest.tar.gz"
+                with open(ddb_tar, "wb") as f:
+                    f.write(r.raw.read())
+
+                tar = tarfile.open(ddb_tar)
+                tar.extractall(path=ddb_dir)
+                tar.close()
+                os.remove(ddb_tar)
+            else:
+                # clear out existing
+                os.remove(ddb_dir / "shared-local-instance.db")
+
+        def load_test_data(self) -> None:
+            ddb_jar = TEST_ROOT / "tests" / "unit" / "dynamodb_local" / "DynamoDBLocal.jar"  # noqa: E501
+            if not ddb_jar.exists():
+                raise Exception("Unable to locate DynamoDB JAR file.")
+            # initiate local dynamodb
+            self.dynamodb_local_process = subprocess.Popen(
+                [
+                    "nohup",
+                    "java", "-jar", str(ddb_jar.absolute()),
+                    "-inMemory",
+                    "-port", "8001",
+                    "&",
+                ]
+            )
+            atexit.register(lambda: self.dynamodb_local_process.kill())
+
             with open(f"{TEST_ROOT}/tests/unit/"
                       f"data/therapies.json", "r") as f:
                 therapies = json.load(f)
@@ -39,7 +82,8 @@ def db():
                         batch.put_item(Item=m)
                 f.close()
 
-    return DB().db
+    instance = DB()
+    yield instance.db
 
 
 @pytest.fixture(scope="module")
@@ -59,6 +103,7 @@ def mock_database():
             `self.updates` stores update requests, with the concept_id as the
             key, and a dict of {new_attribute: new_value} as the value.
             """
+
             infile = TEST_ROOT / "tests" / "unit" / "data" / "therapies.json"
             self.records = {}
             with open(infile, "r") as f:
