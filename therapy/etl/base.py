@@ -5,6 +5,8 @@ from pathlib import Path
 from typing import List, Dict
 import logging
 
+from pydantic import ValidationError
+
 from therapy import PROJECT_ROOT, ITEM_TYPES
 from therapy.schemas import Drug
 from therapy.database import Database
@@ -91,7 +93,11 @@ class Base(ABC):
 
         :param Dict therapy: valid therapy object.
         """
-        assert Drug(**therapy), f"Attempted to load invalid therapy: {therapy}"
+        try:
+            Drug(**therapy)
+        except ValidationError as e:
+            logger.error(f"Attempted to load invalid therapy: {therapy}")
+            raise e
         concept_id = therapy["concept_id"]
 
         for attr_type, item_type in ITEM_TYPES.items():
@@ -109,7 +115,7 @@ class Base(ABC):
                 if "label" in therapy:
                     try:
                         value.remove(therapy["label"])
-                    except KeyError:
+                    except ValueError:
                         pass
 
                 if attr_type == "aliases" and "trade_names" in therapy:
@@ -126,7 +132,7 @@ class Base(ABC):
         concept_id = therapy["concept_id"]
 
         # handle detail fields
-        approval_attrs = ("approval_status", "approval_year", "fda_indication")
+        approval_attrs = ("approval_status", "approval_year", "has_indication")
         for field in approval_attrs:
             if approval_attrs in therapy and therapy[field] is None:
                 del therapy[field]

@@ -1433,7 +1433,7 @@
       "chembl_phase_4"
     ],
     "approval_year": ["1978"],
-    "fda_indication": [
+    "has_indication": [
       ["hemonc:671", "Testicular cancer", "ncit:C7251"],
       ["hemonc:645", "Ovarian cancer", "ncit:C7431"],
       ["hemonc:569", "Bladder cancer", "ncit:C9334"]
@@ -1731,7 +1731,7 @@
     "xrefs": ["rxcui:2555"],
     "approval_status": "hemonc_approved",
     "approval_year": ["1978"],
-    "fda_indication": [
+    "has_indication": [
       ["hemonc:671", "Testicular cancer", "ncit:C7251"],
       ["hemonc:645", "Ovarian cancer", "ncit:C7431"],
       ["hemonc:569", "Bladder cancer", "ncit:C9334"]
@@ -1801,7 +1801,7 @@
     ],
     "approval_status": "hemonc_approved",
     "approval_year": ["2008", "2015"],
-    "fda_indication": [
+    "has_indication": [
       ["hemonc:581", "Chronic lymphocytic leukemia", "ncit:C3163"],
       ["hemonc:46094", "Indolent lymphoma", "ncit:C8504"]
     ]
@@ -1874,7 +1874,7 @@
     ],
     "approval_status": "hemonc_approved",
     "approval_year": ["2008", "2015"],
-    "fda_indication": [
+    "has_indication": [
       ["hemonc:581", "Chronic lymphocytic leukemia", "ncit:C3163"],
       ["hemonc:46094", "Indolent lymphoma", "ncit:C8504"]
     ]
@@ -1890,7 +1890,7 @@
     "trade_names": ["Firmagon"],
     "approval_status": "hemonc_approved",
     "approval_year": ["2008"],
-    "fda_indication": [["hemonc:658", "Prostate cancer", "ncit:C7378"]]
+    "has_indication": [["hemonc:658", "Prostate cancer", "ncit:C7378"]]
   },
   {
     "label_and_type": "rxcui:475230##xref",

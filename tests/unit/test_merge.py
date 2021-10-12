@@ -67,10 +67,10 @@ def compare_merged_records(actual: Dict, fixture: Dict):
     assert ("approval_year" in actual) == ("approval_year" in fixture)
     if "approval_year" in actual or "approval_year" in fixture:
         assert set(actual["approval_year"]) == set(fixture["approval_year"])
-    assert ("fda_indication" in actual) == ("fda_indication" in fixture)
-    if "fda_indication" in actual or "fda_indication" in fixture:
-        actual_inds = actual["fda_indication"].copy()
-        fixture_inds = fixture["fda_indication"].copy()
+    assert ("has_indication" in actual) == ("has_indication" in fixture)
+    if "has_indication" in actual or "has_indication" in fixture:
+        actual_inds = actual["has_indication"].copy()
+        fixture_inds = fixture["has_indication"].copy()
         assert len(actual_inds) == len(fixture_inds)
         actual_inds.sort(key=lambda x: x[0])
         fixture_inds.sort(key=lambda x: x[0])
@@ -251,7 +251,7 @@ def cisplatin_merged():
             "chembl_phase_4"
         ],
         "approval_year": ["1978"],
-        "fda_indication": [
+        "has_indication": [
             ["hemonc:671", "Testicular cancer", "ncit:C7251"],
             ["hemonc:645", "Ovarian cancer", "ncit:C7431"],
             ["hemonc:569", "Bladder cancer", "ncit:C9334"]

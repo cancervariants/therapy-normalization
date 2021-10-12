@@ -11,7 +11,7 @@ from owlready2.entity import ThingClass
 
 from therapy import PROJECT_ROOT
 from therapy.database import Database
-from therapy.schemas import SourceName, NamespacePrefix, Therapy, SourceMeta
+from therapy.schemas import SourceName, NamespacePrefix, Drug, SourceMeta
 from therapy.etl.base import Base
 
 logger = logging.getLogger("therapy")
@@ -164,7 +164,6 @@ class NCIt(Base):
                 "xrefs": xrefs,
                 "associated_with": associated_with
             }
-            assert Therapy(**params)
             self._load_therapy(params)
 
     def _load_meta(self) -> None:

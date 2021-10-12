@@ -9,20 +9,6 @@ from ga4gh.vrsatile.pydantic.vrsatile_model import ValueObjectDescriptor
 from pydantic import BaseModel, StrictBool
 
 
-class Therapy(BaseModel):
-    """A procedure or substance used in the treatment of a disease."""
-
-    class Config:
-        """Configure model"""
-
-        @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type["Therapy"]) -> None:
-            """Configure OpenAPI schema"""
-            for prop in schema.get("properties", {}).values():
-                prop.pop("title", None)
-
-
 class ApprovalStatus(str, Enum):
     """Define string constraints for approval status attribute.
 
@@ -138,7 +124,7 @@ class HasIndication(BaseModel):
             ]
 
 
-class Drug(Therapy):
+class Drug(BaseModel):
     """A pharmacologic substance used to treat a medical condition."""
 
     concept_id: str

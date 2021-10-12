@@ -237,7 +237,7 @@ class Merge:
             "associated_with": set(),
             "approval_status": set(),
             "approval_year": set(),
-            "fda_indication": [],
+            "has_indication": [],
         }
 
         # merge from constituent records
@@ -251,12 +251,12 @@ class Merge:
                 merged_attrs["approval_status"].add(approval_status)
             if merged_attrs["label"] is None:
                 merged_attrs["label"] = record.get("label")
-            for ind in record.get("fda_indication", []):
-                if ind not in merged_attrs["fda_indication"]:
-                    merged_attrs["fda_indication"].append(ind)
+            for ind in record.get("has_indication", []):
+                if ind not in merged_attrs["has_indication"]:
+                    merged_attrs["has_indication"].append(ind)
 
         # clear unused fields
-        for field in set_fields + ["fda_indication", "approval_status"]:
+        for field in set_fields + ["has_indication", "approval_status"]:
             field_value = merged_attrs[field]
             if field_value:
                 merged_attrs[field] = list(field_value)
