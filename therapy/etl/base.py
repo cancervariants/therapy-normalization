@@ -108,12 +108,13 @@ class Base(ABC):
                             if len(items) > 20:
                                 logger.debug(f"{concept_id} has > 20"
                                              f" {attr_type}.")
+                                logger.debug(str(len(items)) + ' abc')
                                 del therapy[attr_type]
                                 continue
-
-                    for item in items:
-                        self.database.add_ref_record(item, concept_id,
-                                                     item_type)
+                    # comment out when doing debugging,
+                    # for item in items:
+                    #     self.database.add_ref_record(item, concept_id,
+                    #                                  item_type)
                 else:
                     del therapy[attr_type]
 
@@ -123,7 +124,8 @@ class Base(ABC):
             if approval_attrs in therapy and therapy[field] is None:
                 del therapy[field]
 
-        self.database.add_record(therapy)
+        # comment out when doing debugging, the loading is what takes forever
+        # self.database.add_record(therapy)
         self._added_ids.append(concept_id)
 
     @abstractmethod
