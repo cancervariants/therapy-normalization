@@ -150,6 +150,9 @@ pytest.ini
 data/*
 therapy/data/
 
+# ignore test materials
+tests/unit/dynamodb_local/
+
 # IDE materials
 .idea/
 .vim/
