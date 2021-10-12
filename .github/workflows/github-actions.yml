@@ -18,10 +18,8 @@ jobs:
               with:
                   python-version: 3.9
 
-            - name: Install dependencies
-              run: |
-                  python3 -m pip install pipenv
-                  pipenv install --dev
+            - name: Install tox
+              run: pip install tox
 
             - name: Run tests
               run: python3 -m tox -e testdb
