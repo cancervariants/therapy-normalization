@@ -5,7 +5,6 @@ import json
 from pathlib import Path
 import subprocess
 import tarfile
-import os
 import atexit
 
 import pytest
@@ -65,6 +64,7 @@ def db():
                 ]
             )
             atexit.register(lambda: self.dynamodb_local_process.kill())
+            print("Initiated test DynamoDB_Local process")
 
             with open(f"{TEST_ROOT}/tests/unit/"
                       f"data/therapies.json", "r") as f:
