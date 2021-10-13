@@ -23,6 +23,7 @@ def db():
     class DB:
         def __init__(self):
             self.db = Database()
+            print(os.environ)
             if os.environ.get("TEST") is not None:
                 self.load_test_data()
 
