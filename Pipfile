@@ -30,8 +30,6 @@ disease-normalizer = ">=0.2.10"
 thera-py = {editable = true, path = "."}
 pre-commit = "*"
 pytest = "*"
-coverage = "*"
-coveralls = "*"
 pytest-cov = "*"
 flake8 = "*"
 flake8-docstrings = "*"
