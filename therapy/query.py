@@ -383,7 +383,7 @@ class QueryHandler:
             for field in ("approval_status", "approval_year"):
                 value = record.get(field)
                 if value:
-                    approv["value"][field] = value
+                    approv["value"][field] = value  # type: ignore
             inds = record.get("fda_indication", [])
             inds_list = []
             for ind in inds:
@@ -398,7 +398,7 @@ class QueryHandler:
                 else:
                     logger.warning(f"{ind[0]} has no disease ID")
             if inds_list:
-                approv["value"]["has_indication"] = inds_list
+                approv["value"]["has_indication"] = inds_list  # type: ignore
             vod["extensions"].append(approv)
 
         for field, name in (("trade_names", "trade_names"),
