@@ -168,7 +168,7 @@ class RxNorm(Base):
             precise_ingredient: Dict[str, str] = dict()
             # Transformed therapy records
             data: Dict[str, Dict] = dict()
-            # Link ingredient to brand  <-- TODO ?
+            # Link ingredient to brand
             sbdfs: Dict[str, str] = dict()
             # Get RXNORM|BN to concept_id
             brands: Dict[str, str] = dict()
@@ -202,9 +202,7 @@ class RxNorm(Base):
                                               ingredient_brands, sbdfs)
                         self._load_brand_concepts(value, brands, batch)
 
-                        params = {
-                            "concept_id": value["concept_id"]
-                        }
+                        params = {"concept_id": value["concept_id"]}
 
                         for field in list(ITEM_TYPES.keys()) + ["approval_status"]:
                             field_value = value.get(field)

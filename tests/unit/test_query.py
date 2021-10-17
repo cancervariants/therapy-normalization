@@ -309,8 +309,9 @@ def therapeutic_procedure():
             "TREAT",
             "Treatment",
             "TX",
-            "therapeutic intervention",
-            "treatment"
+            "treatment",
+            "treatment_or_therapy",
+            "treatment or therapy",
         ],
         "extensions": [
             {
