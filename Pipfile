@@ -28,9 +28,9 @@ disease-normalizer = ">=0.2.10"
 
 [dev-packages]
 thera-py = {editable = true, path = "."}
-pre-commit = "*"
 pytest = "*"
 pytest-cov = "*"
+pre-commit = "*"
 flake8 = "*"
 flake8-docstrings = "*"
 flake8-quotes = "*"
