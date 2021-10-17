@@ -1,5 +1,5 @@
 [flake8]
-ignore = D205, D400, I101
+ignore = D205, D400, I101, ANN101, ANN002, ANN003
 max-line-length = 88
 exclude =
   .git
