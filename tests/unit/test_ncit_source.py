@@ -90,8 +90,9 @@ def therapeutic_procedure():
             "TREAT",
             "Treatment",
             "TX",
-            "therapeutic intervention",
-            "treatment"
+            "treatment",
+            "treatment or therapy",
+            "treatment_or_therapy",
         ],
         "trade_names": [],
         "xrefs": [],
@@ -253,7 +254,7 @@ def test_meta_info(ncit):
     assert response["source_meta_"]["data_license"] == "CC BY 4.0"
     assert response["source_meta_"]["data_license_url"] == \
         "https://creativecommons.org/licenses/by/4.0/legalcode"
-    assert response["source_meta_"]["version"] == "20.09d"
+    assert response["source_meta_"]["version"] == "21.08e"
     assert response["source_meta_"]["data_url"] == \
         "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2020/20.09d_Release/"
     assert response["source_meta_"]["rdp_url"] == "http://reusabledata.org/ncit.html"
