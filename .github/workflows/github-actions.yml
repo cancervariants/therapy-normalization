@@ -18,14 +18,27 @@ jobs:
               with:
                   python-version: 3.9
 
-            - name: Install tox
-              run: pip install tox
+            - name: Install dependencies
+              run: |
+                  python3 -m pip install pipenv
+                  pipenv install --dev
+
+            - name: Build local DynamoDB
+              run: |
+                  chmod +x ./tests/scripts/dynamodb_build.bash
+                  ./tests/scripts/dynamodb_build.bash
 
             - name: Run tests
-              run: python3 -m tox -e testdb
+              run: pipenv run pytest tests/
+
+            - name: Install tox
+              run: pip install tox
 
             - name: Check style
               run: python3 -m tox -e flake8
 
             - name: Check type correctness
               run: python3 -m tox -e mypy
+
+            - name: Check that requirements are up-to-date
+              run: python3 -m tox -e reqs
