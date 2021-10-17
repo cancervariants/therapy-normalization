@@ -6,15 +6,14 @@ import html
 import requests
 
 from therapy import logger
-from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, \
-    ApprovalStatus
+from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, ApprovalStatus
 from therapy.etl.base import Base
 
 
 class GuideToPHARMACOLOGY(Base):
     """Class for Guide to PHARMACOLOGY ETL methods."""
 
-    _ligands_data_url: str = "https://www.guidetopharmacology.org/DATA/ligands.tsv"  # noqa: E501
+    _ligands_data_url: str = "https://www.guidetopharmacology.org/DATA/ligands.tsv"
     _ligand_mapping_data_url: str = "https://www.guidetopharmacology.org/DATA/ligand_id_mapping.tsv"  # noqa: E501
 
     def _download_data(self) -> None:
@@ -24,10 +23,9 @@ class GuideToPHARMACOLOGY(Base):
             self._http_download(self._ligands_data_url, self._src_ligands_file)
             assert self._src_ligands_file.exists()
         if not self._src_mappings_file.exists():
-            self._http_download(self._ligand_mapping_data_url,
-                                self._src_mappings_file)
+            self._http_download(self._ligand_mapping_data_url, self._src_mappings_file)
             assert self._src_mappings_file.exists()
-        logger.info("Successfully retrieved source data for Guide to PHARMACOLOGY")  # noqa: E501
+        logger.info("Successfully retrieved source data for Guide to PHARMACOLOGY")
 
     def _download_file(self, file_url: str, fn: str) -> None:
         """Download individual data file.
@@ -51,10 +49,9 @@ class GuideToPHARMACOLOGY(Base):
         self._src_dir.mkdir(exist_ok=True, parents=True)
         self._version = self.get_latest_version()
         prefix = SourceName.GUIDETOPHARMACOLOGY.value.lower()
-        self._src_ligands_file = self._src_dir / f"{prefix}_ligands_{self._version}.tsv"  # noqa: E501
+        self._src_ligands_file = self._src_dir / f"{prefix}_ligands_{self._version}.tsv"
         self._src_mappings_file = self._src_dir / f"{prefix}_ligand_id_mapping_{self._version}.tsv"  # noqa: E501
-        if not (self._src_ligands_file.exists()
-                and self._src_mappings_file.exists()):
+        if not (self._src_ligands_file.exists() and self._src_mappings_file.exists()):
             self._download_data()
             assert self._src_ligands_file.exists()
             assert self._src_mappings_file.exists()
@@ -79,7 +76,7 @@ class GuideToPHARMACOLOGY(Base):
             for row in rows:
                 params: Dict[str, Union[List[str], str]] = {
                     "concept_id":
-                        f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}",  # noqa: E501
+                        f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}",
                     "label": row[1],
                     "src_name": SourceName.GUIDETOPHARMACOLOGY.value
                 }
@@ -95,7 +92,7 @@ class GuideToPHARMACOLOGY(Base):
                 if row[9]:
                     associated_with.append(f"{NamespacePrefix.PUBCHEMCOMPOUND.value}:{row[9]}")  # noqa: E501
                 if row[10]:
-                    associated_with.append(f"{NamespacePrefix.UNIPROT.value}:{row[10]}")  # noqa: E501
+                    associated_with.append(f"{NamespacePrefix.UNIPROT.value}:{row[10]}")
                 if row[11]:
                     # IUPAC
                     aliases.append(row[11])
@@ -132,7 +129,7 @@ class GuideToPHARMACOLOGY(Base):
         with open(self._ligand_id_mapping_file.absolute(), "r") as f:
             rows = csv.reader(f, delimiter="\t")
             for row in rows:
-                concept_id = f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}"  # noqa: E501
+                concept_id = f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}"
 
                 if concept_id not in data:
                     logger.debug(f"{concept_id} not in ligands")
@@ -146,7 +143,7 @@ class GuideToPHARMACOLOGY(Base):
                     # CHEBI
                     associated_with.append(row[7])
                 if row[11]:
-                    xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:{row[11]}")  # noqa: E501
+                    xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:{row[11]}")
                 if row[12]:
                     xrefs.append(f"{NamespacePrefix.DRUGBANK.value}:{row[12]}")
                 if row[13]:
@@ -161,16 +158,16 @@ class GuideToPHARMACOLOGY(Base):
                              withdrawn: str) -> Optional[str]:
         """Set approval status.
 
-        :param str approved: The drug is or has in the past been approved for
-            human clinical use by a regulatory agency
-        :param str withdrawn: The drug is no longer approved for its original
-            clinical use in one or more countries
+        :param str approved: The drug is or has in the past been approved for human
+            clinical use by a regulatory agency
+        :param str withdrawn: The drug is no longer approved for its original clinical
+            use in one or more countries
         :return: Approval status
         """
         if approved and not withdrawn:
-            approval_status: Optional[str] = ApprovalStatus.APPROVED.value
+            approval_status: Optional[str] = ApprovalStatus.GTOPDB_APPROVED.value
         elif withdrawn:
-            approval_status = ApprovalStatus.WITHDRAWN.value
+            approval_status = ApprovalStatus.GTOPDB_WITHDRAWN.value
         else:
             approval_status = None
         return approval_status

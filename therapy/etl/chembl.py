@@ -112,13 +112,19 @@ class ChEMBL(Base):
                 ds.pref_name,
                 CASE
                     WHEN ds.withdrawn_flag
-                        THEN '{ApprovalStatus.WITHDRAWN.value}'
-                    WHEN ds.max_phase == 4
-                        THEN '{ApprovalStatus.APPROVED.value}'
+                        THEN '{ApprovalStatus.CHEMBL_WITHDRAWN.value}'
                     WHEN ds.max_phase == 0
-                        THEN NULL
+                        THEN '{ApprovalStatus.CHEMBL_0.value}'
+                    WHEN ds.max_phase == 1
+                        THEN '{ApprovalStatus.CHEMBL_1.value}'
+                    WHEN ds.max_phase == 2
+                        THEN '{ApprovalStatus.CHEMBL_2.value}'
+                    WHEN ds.max_phase ==3
+                        THEN '{ApprovalStatus.CHEMBL_3.value}'
+                    WHEN ds.max_phase == 4
+                        THEN '{ApprovalStatus.CHEMBL_4.value}'
                     ELSE
-                        '{ApprovalStatus.INVESTIGATIONAL.value}'
+                        '{None}'
                 END,
                 '{SourceName.CHEMBL.value}',
                 t.trade_names,
@@ -132,13 +138,19 @@ class ChEMBL(Base):
                 ds.pref_name,
                 CASE
                     WHEN ds.withdrawn_flag
-                        THEN '{ApprovalStatus.WITHDRAWN.value}'
-                    WHEN ds.max_phase == 4
-                        THEN '{ApprovalStatus.APPROVED.value}'
+                        THEN '{ApprovalStatus.CHEMBL_WITHDRAWN.value}'
                     WHEN ds.max_phase == 0
-                        THEN NULL
+                        THEN '{ApprovalStatus.CHEMBL_0.value}'
+                    WHEN ds.max_phase == 1
+                        THEN '{ApprovalStatus.CHEMBL_1.value}'
+                    WHEN ds.max_phase == 2
+                        THEN '{ApprovalStatus.CHEMBL_2.value}'
+                    WHEN ds.max_phase ==3
+                        THEN '{ApprovalStatus.CHEMBL_3.value}'
+                    WHEN ds.max_phase == 4
+                        THEN '{ApprovalStatus.CHEMBL_4.value}'
                     ELSE
-                        '{ApprovalStatus.INVESTIGATIONAL.value}'
+                        '{None}'
                 END,
                 '{SourceName.CHEMBL.value}',
                 t.trade_names,

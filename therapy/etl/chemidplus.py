@@ -75,16 +75,13 @@ class ChemIDplus(Base):
             if not display_name or not re.search(TAGS_REGEX, display_name):
                 continue
             label = re.sub(TAGS_REGEX, "", display_name)
-            params: Dict[str, Any] = {
-                "label": label
-            }
+            params: Dict[str, Any] = {"label": label}
 
             # get concept ID
             reg_no = chemical.find("NumberList").find("CASRegistryNumber")
             if not reg_no:
                 continue
-            params["concept_id"] = \
-                f"{NamespacePrefix.CASREGISTRY.value}:{reg_no.text}"
+            params["concept_id"] = f"{NamespacePrefix.CASREGISTRY.value}:{reg_no.text}"
 
             # get aliases
             aliases = []

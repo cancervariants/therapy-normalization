@@ -18,8 +18,8 @@ import yaml
 import bioversions
 from boto3.dynamodb.table import BatchWriter
 
-from therapy import APP_ROOT, DownloadException, XREF_SOURCES, \
-    ASSOC_WITH_SOURCES, ITEM_TYPES
+from therapy import APP_ROOT, DownloadException, XREF_SOURCES, ASSOC_WITH_SOURCES, \
+    ITEM_TYPES
 from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
     ApprovalStatus
 from therapy.etl.base import Base
@@ -91,8 +91,7 @@ class RxNorm(Base):
             self._create_drug_form_yaml()
             logger.info("Successfully retrieved source data for RxNorm")
         else:
-            logger.error("Could not find RXNORM_API_KEY in environment "
-                         "variables.")
+            logger.error("Could not find RXNORM_API_KEY in environment variables.")
             raise DownloadException("RXNORM_API_KEY not found.")
 
     def _extract_data(self) -> None:
@@ -102,7 +101,7 @@ class RxNorm(Base):
         generate them if they are unavailable.
         """
         super()._extract_data()
-        drug_forms_path = self._src_dir / f"rxnorm_drug_forms_{self._version}.yaml"  # noqa: E501
+        drug_forms_path = self._src_dir / f"rxnorm_drug_forms_{self._version}.yaml"
         if not drug_forms_path.exists():
             self._create_drug_form_yaml()
         else:
@@ -137,16 +136,14 @@ class RxNorm(Base):
                         if concept_id not in data.keys():
                             params = dict()
                             params["concept_id"] = concept_id
-                            self._add_str_field(params, row,
-                                                precise_ingredient,
+                            self._add_str_field(params, row, precise_ingredient,
                                                 drug_forms, sbdfs)
                             self._add_xref_assoc(params, row)
                             data[concept_id] = params
                         else:
                             # Concept already created
                             params = data[concept_id]
-                            self._add_str_field(params, row,
-                                                precise_ingredient,
+                            self._add_str_field(params, row, precise_ingredient,
                                                 drug_forms, sbdfs)
                             self._add_xref_assoc(params, row)
 
@@ -161,7 +158,7 @@ class RxNorm(Base):
                             "concept_id": value["concept_id"]
                         }
 
-                        for field in list(ITEM_TYPES.keys()) + ["approval_status"]:  # noqa: E501
+                        for field in list(ITEM_TYPES.keys()) + ["approval_status"]:
                             field_value = value.get(field)
                             if field_value:
                                 params[field] = field_value
@@ -221,8 +218,7 @@ class RxNorm(Base):
                 self._add_term(value, tn, "trade_names")
 
     @staticmethod
-    def _load_brand_concepts(value: Dict, brands: Dict, batch: BatchWriter)\
-            -> None:
+    def _load_brand_concepts(value: Dict, brands: Dict, batch: BatchWriter) -> None:
         """Connect brand names to a concept and load into the database.
 
         :params dict value: A transformed therapy record
@@ -257,7 +253,7 @@ class RxNorm(Base):
         if (term_type == "IN" or term_type == "PIN") and source == "RXNORM":
             params["label"] = term
             if row[17] == "4096":
-                params["approval_status"] = ApprovalStatus.APPROVED.value
+                params["approval_status"] = ApprovalStatus.RXNORM_PRESCRIBABLE.value
         elif term_type in ALIASES:
             self._add_term(params, term, "aliases")
         elif term_type in TRADE_NAMES:

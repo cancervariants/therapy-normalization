@@ -40,24 +40,21 @@ def custom_openapi() -> Dict:
 app.openapi = custom_openapi  # type: ignore
 
 # endpoint description text
-get_matches_summary = ("Given query, provide highest matches from "
-                       "each source.")
+get_matches_summary = ("Given query, provide highest matches from each source.")
 response_descr = "A response to a validly-formed query."
 q_descr = "Therapy to search."
-keyed_descr = ("If true, return response as key-value pairs of "
-               "sources to source matches.")
-incl_descr = ("Comma-separated list of source names to include in "
-              "response. Will exclude all other sources. Will return HTTP "
-              'status code 422: Unprocessable Entity if both "incl" and '
-              '"excl" parameters are given.')
-excl_descr = ("Comma-separated list of source names to exclude in "
-              "response. Will include all other sources. Will return HTTP "
-              'status code 422: Unprocessable Entity if both "incl" and'
-              '"excl" parameters are given.')
-search_description = ("For each source, return strongest-match concepts "
-                      "for query string provided by user")
-normalize_description = ("Return merged strongest-match concept for query "
-                         "string provided by user.")
+keyed_descr = ("If true, return response as key-value pairs of sources to source "
+               "matches.")
+incl_descr = ("Comma-separated list of source names to include in response. Will "
+              "exclude all other sources. Will return HTTP status code 422: "
+              'Unprocessable Entity if both "incl" and "excl" parameters are given.')
+excl_descr = ("Comma-separated list of source names to exclude in response. Will "
+              "include all other sources. Will return HTTP status code 422: "
+              'Unprocessable Entity if both "incl" and "excl" parameters are given.')
+search_description = ("For each source, return strongest-match concepts for query "
+                      "string provided by user")
+normalize_description = ("Return merged strongest-match concept for query string "
+                         "provided by user.")
 
 
 @app.get("/therapy/search",
@@ -74,13 +71,12 @@ def search(q: str = Query(..., description=q_descr),
     provided by user.
 
     :param q: therapy search term
-    :param keyed: if true, response is structured as key/value pair of
-        sources to source match lists.
-    :param incl: comma-separated list of sources to include, with all
-        others excluded. Raises HTTPException if both `incl` and
-        `excl` are given.
-    :param excl: comma-separated list of sources exclude, with all others
-        included. Raises HTTPException if both `incl` and `excl` are given.
+    :param keyed: if true, response is structured as key/value pair of sources to
+        source match lists.
+    :param incl: comma-separated list of sources to include, with all others excluded.
+        Raises HTTPException if both `incl` and `excl` are given.
+    :param excl: comma-separated list of sources exclude, with all others included.
+        Raises HTTPException if both `incl` and `excl` are given.
     :returns: JSON response with matched records and source metadata
     """
     try:
@@ -104,8 +100,8 @@ merged_q_descr = "Therapy to normalize."
          response_model=NormalizationService,
          description=normalize_description)
 def normalize(q: str = Query(..., description=merged_q_descr)) -> Dict:
-    """Return merged strongest-match concept for query string provided by
-    user.
+    """Normalize query or concept ID provided by user. Return strongest-match merged
+    concept.
 
     :param q: therapy search term
     """

@@ -5,7 +5,6 @@ import csv
 import zipfile
 import shutil
 from io import BytesIO
-from typing import Dict, Any
 
 import requests
 
@@ -44,7 +43,7 @@ class DrugBank(Base):
         """Add DrugBank metadata."""
         meta = {
             "data_license": "CC0 1.0",
-            "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",  # noqa: E501
+            "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
             "version": self._version,
             "data_url": "https://go.drugbank.com/releases/latest#open-data",
             "rdp_url": "http://reusabledata.org/drugbank.html",
@@ -75,25 +74,21 @@ class DrugBank(Base):
                     params["label"] = label
 
                 # get aliases
-                aliases = [
-                    a for a in row[1].split(" | ") + row[5].split(" | ") if a
-                ]
+                aliases = [a for a in row[1].split(" | ") + row[5].split(" | ") if a]
                 if aliases:
                     params["aliases"] = aliases
 
                 # get CAS reference
                 cas_ref = row[3]
                 if cas_ref:
-                    params["xrefs"] = [
-                        f"{NamespacePrefix.CHEMIDPLUS.value}:{row[3]}"
-                    ]
+                    params["xrefs"] = [f"{NamespacePrefix.CHEMIDPLUS.value}:{row[3]}"]
 
                 params["associated_with"] = []
                 # get inchi key
                 if len(row) >= 7:
                     inchi_key = row[6]
                     if inchi_key:
-                        inchi_id = f"{NamespacePrefix.INCHIKEY.value}:{inchi_key}"  # noqa: E501
+                        inchi_id = f"{NamespacePrefix.INCHIKEY.value}:{inchi_key}"
                         params["associated_with"].append(inchi_id)
                 # get UNII id
                 unii = row[4]

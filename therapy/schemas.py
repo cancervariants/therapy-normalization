@@ -1,6 +1,4 @@
-"""This module contains data models for representing VICC normalized
-therapy records.
-"""
+"""This module contains data models for representing VICC therapy records."""
 from typing import List, Optional, Dict, Union, Any, Type
 from enum import Enum, IntEnum
 from datetime import datetime
@@ -9,26 +7,72 @@ from ga4gh.vrsatile.pydantic.vrsatile_model import ValueObjectDescriptor
 from pydantic import BaseModel, StrictBool
 
 
-class Therapy(BaseModel):
-    """A procedure or substance used in the treatment of a disease."""
-
-    class Config:
-        """Configure model"""
-
-        @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type["Therapy"]) -> None:
-            """Configure OpenAPI schema"""
-            for prop in schema.get("properties", {}).values():
-                prop.pop("title", None)
-
-
 class ApprovalStatus(str, Enum):
-    """Define string constraints for approval status attribute."""
+    """Define string constraints for approval status attribute.
 
-    WITHDRAWN = "withdrawn"
-    APPROVED = "approved"
-    INVESTIGATIONAL = "investigational"
+    ChEMBL:
+        - Phase 0: "Research: The compound has not yet reached clinical trials
+    (preclinical/research compound)"
+        - Phase 1: "The compound has reached Phase I clinical trials (safety
+    studies, usually with healthy volunteers)"
+        - Phase 2: "The compound has reached Phase II clinical trials
+    (preliminary studies of effectiveness)"
+        - Phase 3: "The compound has reached Phase III clinical trials (larger
+    studies of safety and effectiveness)"
+        - Phase 4: "The compound has been approved in at least one country or
+    area."
+
+    Drugs@FDA:
+        - Prescription: "A prescription drug product requires a doctor's
+        authorization to purchase."
+        - Over-the-counter: "FDA defines OTC drugs as safe and effective for
+        use by the general public without a doctor's prescription."
+        - Discontinued: "approved products that have never been marketed, have
+        been discontinued from marketing, are for military use, are for export
+        only, or have had their approvals withdrawn for reasons other than
+        safety or efficacy after being discontinued from marketing"
+        - None (Tentatively Approved): "If a generic drug product is ready for
+        approval before the expiration of any patents or exclusivities
+        accorded to the reference listed drug product, FDA issues a tentative
+        approval letter to the applicant. FDA delays final approval of the
+        generic drug product until all patent or exclusivity issues have been
+        resolved. "
+
+    HemOnc.org:
+        - Was FDA approved yr: "Year of FDA approval."
+
+    Guide to Pharmacology:
+        - Approved: "Indicates pharmacologicaly active substances, specified by
+        their INNs, that have been approved for clinical use by a regulatory
+        agency, typically the FDA, EMA or in Japan. This classification
+        persists regardless of whether the drug may later have been withdrawn
+        or discontinued. (N.B. in some cases the information on approval
+        status was obtained indirectly via databases such as Drugbank.)"
+        - Withdrawn: "No longer approved for its original clinical use, as
+        notified by the FDA, typically as a consequence of safety or side
+        effect issues."
+
+    RxNorm:
+        - Prescribable: "The RxNorm Current Prescribable Content is a subset
+        of currently prescribable drugs found in RxNorm. We intend it to be an
+        approximation of the prescription drugs currently marketed in the US.
+        The subset also includes many over-the-counter drugs."
+    """
+
+    CHEMBL_0 = "chembl_phase_0"
+    CHEMBL_1 = "chembl_phase_1"
+    CHEMBL_2 = "chembl_phase_2"
+    CHEMBL_3 = "chembl_phase_3"
+    CHEMBL_4 = "chembl_phase_4"
+    CHEMBL_WITHDRAWN = "chembl_withdrawn"
+    FDA_OTC = "fda_otc"
+    FDA_PRESCRIPTION = "fda_prescription"
+    FDA_DISCONTINUED = "fda_discontinued"
+    FDA_TENTATIVE = "fda_tentative"
+    HEMONC_APPROVED = "hemonc_approved"
+    GTOPDB_APPROVED = "gtopdb_approved"
+    GTOPDB_WITHDRAWN = "gtopdb_withdrawn"
+    RXNORM_PRESCRIBABLE = "rxnorm_prescribable"
 
 
 class PhaseEnum(IntEnum):
@@ -78,7 +122,7 @@ class HasIndication(BaseModel):
             ]
 
 
-class Drug(Therapy):
+class Drug(BaseModel):
     """A pharmacologic substance used to treat a medical condition."""
 
     concept_id: str
@@ -152,7 +196,8 @@ class SourcePriority(IntEnum):
     GUIDETOPHARMACOLOGY = 5
     CHEMBL = 6
     CHEMIDPLUS = 7
-    WIKIDATA = 10
+    WIKIDATA = 8
+    DRUGSATFDA = 9
 
 
 class SourceName(str, Enum):
@@ -165,6 +210,7 @@ class SourceName(str, Enum):
     CHEMIDPLUS = "ChemIDplus"
     RXNORM = "RxNorm"
     HEMONC = "HemOnc"
+    DRUGSATFDA = "DrugsAtFDA"
     GUIDETOPHARMACOLOGY = "GuideToPHARMACOLOGY"
 
 
@@ -178,6 +224,7 @@ class SourceIDAfterNamespace(Enum):
     CHEMIDPLUS = ""
     RXNORM = ""
     HEMONC = ""
+    DRUGSATFDA = "ANDA"  # change to [A]?NDA regex in issue-187
     GUIDETOPHARMACOLOGY = ""
 
 
@@ -191,6 +238,7 @@ class NamespacePrefix(Enum):
     CHEMBL = "chembl"
     RXNORM = "rxcui"
     DRUGBANK = "drugbank"
+    DRUGSATFDA = "drugsatfda"
     WIKIDATA = "wikidata"
     HEMONC = "hemonc"
     NCIT = "ncit"
@@ -359,10 +407,12 @@ class MatchesListed(BaseModel):
             }
 
 
-class FDAStatus(BaseModel):
-    """VOD Extension class for FDA status/indication attributes."""
+class ApprovalStatusValue(BaseModel):
+    """VOD Extension class for regulatory approval status/indication
+    value attributes.
+    """
 
-    approval_status: Optional[ApprovalStatus]
+    approval_status: Optional[List[ApprovalStatus]]
     approval_year: Optional[List[int]]
     has_indication: Optional[List[Union[Dict, ValueObjectDescriptor]]]
 
@@ -390,7 +440,7 @@ class ServiceMeta(BaseModel):
                 "name": "thera-py",
                 "version": "0.1.0",
                 "response_datetime": "2021-04-05T16:44:15.367831",
-                "url": "https://github.com/cancervariants/therapy-normalization"  # noqa: E501
+                "url": "https://github.com/cancervariants/therapy-normalization"
             }
 
 
@@ -527,7 +577,7 @@ class NormalizationService(BaseModel):
                     "name": "thera-py",
                     "version": "0.1.0",
                     "response_datetime": "2021-04-05T16:44:15.367831",
-                    "url": "https://github.com/cancervariants/therapy-normalization"  # noqa: E501
+                    "url": "https://github.com/cancervariants/therapy-normalization"
                 }
             }
 
@@ -576,7 +626,7 @@ class SearchService(BaseModel):
                             "data_license": "custom",
                             "data_license_url": "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501
                             "version": "20210204",
-                            "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",  # noqa: E501
+                            "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
                             "rdp_url": None,
                             "data_license_attributes": {
                                 "non_commercial": False,
@@ -719,6 +769,6 @@ class SearchService(BaseModel):
                     "name": "thera-py",
                     "version": "0.1.0",
                     "response_datetime": "2021-04-05T16:44:15.367831",
-                    "url": "https://github.com/cancervariants/therapy-normalization"  # noqa: E501
+                    "url": "https://github.com/cancervariants/therapy-normalization"
                 }
             }

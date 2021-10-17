@@ -32,7 +32,7 @@ def cisplatin():
     params = {
         "concept_id": "iuphar.ligand:5343",
         "label": "cisplatin",
-        "approval_status": "approved",
+        "approval_status": "gtopdb_approved",
         "xrefs": [
             "chembl:CHEMBL11359",
             "chemidplus:15663-27-1",
@@ -80,7 +80,7 @@ def phenobarbital():
     params = {
         "concept_id": "iuphar.ligand:2804",
         "label": "phenobarbital",
-        "approval_status": "approved",
+        "approval_status": "gtopdb_approved",
         "xrefs": [
             "chembl:CHEMBL40",
             "chemidplus:50-06-6",
@@ -112,7 +112,7 @@ def cisapride():
     params = {
         "concept_id": "iuphar.ligand:240",
         "label": "cisapride",
-        "approval_status": "withdrawn",
+        "approval_status": "gtopdb_withdrawn",
         "xrefs": [
             "chembl:CHEMBL1729",
             "chemidplus:81098-60-4",
@@ -175,7 +175,7 @@ def test_alias_match(guidetopharmacology, cisplatin, arginine_vasotocin,
     resp = guidetopharmacology.search("AVT")
     compare_response(resp, MatchType.ALIAS, arginine_vasotocin)
 
-    resp = guidetopharmacology.search("5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione")  # noqa: E501
+    resp = guidetopharmacology.search("5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione")
     compare_response(resp, MatchType.ALIAS, phenobarbital)
 
     resp = guidetopharmacology.search("Prepulsid")
@@ -251,7 +251,7 @@ def test_meta_info(guidetopharmacology):
     """Test that metadata is correct."""
     resp = guidetopharmacology.fetch_meta()
     assert resp.data_license == "CC BY-SA 4.0"
-    assert resp.data_license_url == "https://creativecommons.org/licenses/by-sa/4.0/"  # noqa: E501
+    assert resp.data_license_url == "https://creativecommons.org/licenses/by-sa/4.0/"
     assert re.match(r"\d{4}.\d+", resp.version)
     assert resp.data_url == "https://www.guidetopharmacology.org/download.jsp"
     assert resp.rdp_url is None

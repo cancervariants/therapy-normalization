@@ -87,6 +87,18 @@
     }
   },
   {
+    "src_name": "Drugs@FDA",
+    "data_licence": "CC0 1.0",
+    "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode",
+    "version": "20210914",
+    "data_url": "https://download.open.fda.gov/drug/drugsfda/drug-drugsfda-0001-of-0001.json.zip",
+    "data_license_attributes": {
+      "non_commercial": false,
+      "share_alike": false,
+      "attribtution": false
+    }
+  },
+  {
     "src_name": "GuideToPHARMACOLOGY",
     "data_license": "CC BY-SA 4.0",
     "data_license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
@@ -96,6 +108,18 @@
       "non_commercial": false,
       "share_alike": true,
       "attribution": true
+    }
+  },
+  {
+    "src_name": "Drugs@FDA",
+    "data_lciense": "CC0",
+    "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode",
+    "version": "20211004",
+    "data_url": "https://open.fda.gov/apis/drug/drugsfda/download/",
+    "data_license_attributes": {
+      "non_commercial": false,
+      "share_alike": false,
+      "attribution": false
     }
   }
 ]

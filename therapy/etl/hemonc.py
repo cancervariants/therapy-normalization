@@ -64,7 +64,7 @@ class HemOnc(Base):
         """Add HemOnc metadata."""
         meta = {
             "data_license": "CC BY 4.0",
-            "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa: E501
+            "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
             "version": self._version,
             "data_url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6",  # noqa: E501
             "rdp_url": None,
@@ -115,8 +115,7 @@ class HemOnc(Base):
     def _id_to_yr(hemonc_id: str) -> int:
         """Get year from HemOnc ID corresponding to year concept.
         :param str hemonc_id: HemOnc ID to get year for
-        :return: int representing year. Raises TypeError if HemOnc ID not
-            valid.
+        :return: int representing year. Raises TypeError if HemOnc ID not valid.
         """
         id_int = int(hemonc_id)
         if id_int == 780:
@@ -132,8 +131,8 @@ class HemOnc(Base):
 
     def _get_rels(self, therapies: Dict, brand_names: Dict,
                   conditions: Dict) -> Dict:
-        """Gather relations to provide associations between therapies, brand
-        names, and conditions.
+        """Gather relations to provide associations between therapies, brand names,
+        and conditions.
 
         :param dict therapies: mapping from IDs to therapy concepts
         :param dict brand_names: mapping from IDs to therapy brand names
@@ -175,7 +174,7 @@ class HemOnc(Base):
                 if year == 9999:
                     logger.warning(f"HemOnc ID {row[0]} has FDA approval year"
                                    f" 9999")
-                record["approval_status"] = ApprovalStatus.APPROVED
+                record["approval_status"] = ApprovalStatus.HEMONC_APPROVED
                 if "approval_year" in record:
                     record["approval_year"].append(year)
                 else:
@@ -190,12 +189,16 @@ class HemOnc(Base):
                     ncit_id = ""
                     logger.warning(f"Normalization of condition id: {row[1]}"
                                    f", {label}, failed.")
-                hemonc_concept_id = f"{NamespacePrefix.HEMONC.value}:{row[1]}"  # noqa: E501
-                indication = [hemonc_concept_id, label, ncit_id]
-                if "fda_indication" in record:
-                    record["fda_indication"].append(indication)
+                hemonc_concept_id = f"{NamespacePrefix.HEMONC.value}:{row[1]}"
+                indication = {
+                    "disease_id": hemonc_concept_id,
+                    "disease_label": label,
+                    "normalized_disease_id": ncit_id
+                }
+                if "has_indication" in record:
+                    record["has_indication"].append(indication)
                 else:
-                    record["fda_indication"] = [indication]
+                    record["has_indication"] = [indication]
 
         rels_file.close()
         return therapies

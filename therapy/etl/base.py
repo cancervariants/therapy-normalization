@@ -3,14 +3,15 @@ from abc import ABC, abstractmethod
 import ftplib
 from pathlib import Path
 import logging
-from typing import List, Dict, Union, Set
+from typing import List, Dict
 
+from pydantic import ValidationError
 import requests
 import bioversions
 
 from therapy import APP_ROOT, ITEM_TYPES, DownloadException
-from therapy.database import Database
 from therapy.schemas import Drug
+from therapy.database import Database
 
 
 logger = logging.getLogger("therapy")
@@ -39,8 +40,9 @@ class Base(ABC):
         :param Database database: application database object
         :param Path data_path: path to app data directory
         """
+        name = self.__class__.__name__.lower()
         self.database = database
-        self._src_dir: Path = data_path / self.__class__.__name__.lower()
+        self._src_dir: Path = Path(data_path / name)
         self._added_ids: List[str] = []
 
     def perform_etl(self) -> List[str]:
@@ -90,8 +92,6 @@ class Base(ABC):
         :param str host: Source's FTP host name
         :param str host_dir: Data directory located on FTP site
         :param str host_fn: Filename on FTP site to be downloaded
-
-        #TODO ALSO HTTP DOWNLOAD METHOD
         """
         try:
             with ftplib.FTP(host) as ftp:
@@ -138,46 +138,53 @@ class Base(ABC):
         raise NotImplementedError
 
     def _load_therapy(self, therapy: Dict) -> None:
-        """Load individual therapy record. Subclasses should not be overriding
-        this implementation.
+        """Load individual therapy record into database.
+        This method takes responsibility for:
+            * validating record structure correctness
+            * removing duplicates from list-like fields
+            * removing empty fields
 
         :param Dict therapy: valid therapy object.
         """
-        assert Drug(**therapy)
+        try:
+            Drug(**therapy)
+        except ValidationError as e:
+            logger.error(f"Attempted to load invalid therapy: {therapy}")
+            raise e
         concept_id = therapy["concept_id"]
 
         for attr_type, item_type in ITEM_TYPES.items():
             if attr_type in therapy:
                 value = therapy[attr_type]
-                if value is not None and value != []:
-                    if isinstance(value, str):
-                        items: Union[List, Set] = [value.lower()]
-                    else:
-                        therapy[attr_type] = list(set(value))
-                        items = {item.lower() for item in value}
-                        if attr_type in ["aliases", "trade_names"]:
-                            # remove duplicates
-                            if "label" in therapy:
-                                therapy[attr_type] = list(set(therapy[attr_type]) - {therapy["label"]})  # noqa: E501
-
-                            if attr_type == "aliases" and \
-                                    "trade_names" in therapy:
-                                therapy[attr_type] = list(set(therapy[attr_type]) - set(therapy["trade_names"]))  # noqa: E501
-
-                            if len(items) > 20:
-                                logger.debug(f"{concept_id} has > 20"
-                                             f" {attr_type}.")
-                                del therapy[attr_type]
-                                continue
-
-                    for item in items:
-                        self.database.add_ref_record(item, concept_id,
-                                                     item_type)
-                else:
+                if value is None or value == []:
                     del therapy[attr_type]
+                    continue
+
+                if isinstance(value, str):
+                    self.database.add_ref_record(value.lower(),
+                                                 concept_id, item_type)
+                    continue
+
+                if "label" in therapy:
+                    try:
+                        value.remove(therapy["label"])
+                    except ValueError:
+                        pass
+
+                if attr_type == "aliases" and "trade_names" in therapy:
+                    value = list(set(value) - set(therapy["trade_names"]))
+
+                if len(value) > 20:
+                    logger.debug(f"{concept_id} has > 20 {attr_type}.")
+                    del therapy[attr_type]
+                    continue
+                for item in {item.lower() for item in value}:
+                    self.database.add_ref_record(item, concept_id, item_type)
+        assert Drug(**therapy)
+        concept_id = therapy["concept_id"]
 
         # handle detail fields
-        approval_attrs = ("approval_status", "approval_year", "fda_indication")
+        approval_attrs = ("approval_status", "approval_year", "has_indication")
         for field in approval_attrs:
             if approval_attrs in therapy and therapy[field] is None:
                 del therapy[field]
