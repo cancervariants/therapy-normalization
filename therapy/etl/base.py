@@ -104,19 +104,16 @@ class Base(ABC):
                             if "label" in therapy:
                                 therapy[attr_type] = list(set(therapy[attr_type]) - {therapy["label"]})  # noqa: E501
 
-                            if attr_type == "aliases" and \
-                                    "trade_names" in therapy:
+                            if attr_type == "aliases" and "trade_names" in therapy:
                                 therapy[attr_type] = list(set(therapy[attr_type]) - set(therapy["trade_names"]))  # noqa: E501
 
                             if len(items) > 20:
-                                logger.debug(f"{concept_id} has > 20"
-                                             f" {attr_type}.")
+                                logger.debug(f"{concept_id} has > 20 {attr_type}.")
                                 del therapy[attr_type]
                                 continue
 
                     for item in items:
-                        self.database.add_ref_record(item, concept_id,
-                                                     item_type)
+                        self.database.add_ref_record(item, concept_id, item_type)
                 else:
                     del therapy[attr_type]
 

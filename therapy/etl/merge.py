@@ -16,19 +16,16 @@ class Merge:
     def __init__(self, database: Database):
         """Initialize Merge instance.
 
-        :param Database database: db instance to use for record retrieval
-            and creation.
+        :param Database database: db instance to use for record retrieval and creation.
         """
         self._database = database
         self._groups: Dict[str, Set[str]] = {}
 
     def create_merged_concepts(self, record_ids: Set[str]) -> None:
-        """Create concept groups, generate merged concept records, and
-        update database.
+        """Create concept groups, generate merged concept records, and update database.
 
-        :param Set[str] record_ids: concept identifiers from which groups
-            should be generated. Should *not* include any records from
-            excluded sources.
+        :param Set[str] record_ids: concept identifiers from which groups should be
+            generated.
         """
         logger.info("Generating record ID sets...")
         start = timer()
@@ -60,8 +57,7 @@ class Merge:
                                  f"for {merged_record['label_and_type']}")
                 else:
                     merge_ref = merged_record["concept_id"].lower()
-                    self._database.update_record(concept_id, "merge_ref",
-                                                 merge_ref)
+                    self._database.update_record(concept_id, "merge_ref", merge_ref)
             uploaded_ids |= group
         logger.info("Merged concept generation successful.")
         end = timer()
@@ -69,7 +65,6 @@ class Merge:
 
     def _get_xrefs(self, record: Dict) -> Set[str]:
         """Extract references to entries in other sources from a record.
-        Crucially, filter to allowed sources only.
 
         :param Dict record: record to process
         :return: Set of xref values
@@ -123,9 +118,8 @@ class Merge:
 
     def _generate_merged_record(self, record_id_set: Set[str]) -> Dict:
         """Generate merged record from provided concept ID group.
-        Where attributes are sets, they should be merged, and where they are
-        scalars, assign from the highest-priority source where that attribute
-        is non-null.
+        Where attributes are sets, they should be merged, and where they are scalars,
+        assign from the highest-priority source where that attribute is non-null.
 
         Priority is:
         RxNorm > NCIt > HemOnc.org > DrugBank > GuideToPHARMACOLOGY >

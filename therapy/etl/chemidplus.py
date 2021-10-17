@@ -39,8 +39,8 @@ class ChemIDplus(Base):
         :param str src_dir_path: The directory to the chemidplus release
         :param str src_fname: name of file as stored in src_dir.
 
-        If the source file is provided locally in the data_path directory,
-        it"s unnecessary to provide `src_dir` and `src_fname` args.
+        If the source file is provided locally in the data_path directory, it's
+        unnecessary to provide `src_dir` and `src_fname` args.
         """
         super().__init__(database, data_path)
         self._src_server = src_server
@@ -74,8 +74,7 @@ class ChemIDplus(Base):
         if len(dir_files) == 0:
             file = self._get_file()
         else:
-            file = sorted([f for f in dir_files
-                           if f.name.startswith("chemidplus")])
+            file = sorted([f for f in dir_files if f.name.startswith("chemidplus")])
             if not file:
                 file = self._get_file()
 
@@ -84,7 +83,8 @@ class ChemIDplus(Base):
 
     def _get_file(self) -> List[Path]:
         """Acquire file paths to ChemIDplus data source.
-        :return: List of source file Paths"""
+        :return: List of source file Paths
+        """
         self._download_data()
         dir_files = list(self._src_data_dir.iterdir())
         return sorted([f for f in dir_files
@@ -116,16 +116,13 @@ class ChemIDplus(Base):
             if not display_name or not re.search(TAGS_REGEX, display_name):
                 continue
             label = re.sub(TAGS_REGEX, "", display_name)
-            params: Dict[str, Any] = {
-                "label": label
-            }
+            params: Dict[str, Any] = {"label": label}
 
             # get concept ID
             reg_no = chemical.find("NumberList").find("CASRegistryNumber")
             if not reg_no:
                 continue
-            params["concept_id"] = \
-                f"{NamespacePrefix.CASREGISTRY.value}:{reg_no.text}"
+            params["concept_id"] = f"{NamespacePrefix.CASREGISTRY.value}:{reg_no.text}"
 
             # get aliases
             aliases = []
@@ -162,7 +159,7 @@ class ChemIDplus(Base):
         meta = SourceMeta(data_license="custom",
                           data_license_url="https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501
                           version=self._version,
-                          data_url="ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",  # noqa: E501
+                          data_url="ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
                           rdp_url=None,
                           data_license_attributes=DataLicenseAttributes(
                               non_commercial=False,

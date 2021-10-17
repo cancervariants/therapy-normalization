@@ -710,9 +710,13 @@ def test_lymphocyte(lymphocyte, rxnorm):
     # Trade Name Match
     response = rxnorm.search("Thymoglobulin")
     assert response["match_type"] == MatchType.TRADE_NAME
+    assert len(response["records"]) == 1
+    compare_records(response["records"][0], lymphocyte)
 
     response = rxnorm.search("ATGAM")
     assert response["match_type"] == MatchType.TRADE_NAME
+    assert len(response["records"]) == 1
+    compare_records(response["records"][0], lymphocyte)
 
 
 def test_aspirin(aspirin, rxnorm):
@@ -721,6 +725,7 @@ def test_aspirin(aspirin, rxnorm):
     response = rxnorm.search("RxcUI:1191")
     assert response["match_type"] == MatchType.CONCEPT_ID
     assert len(response["records"]) == 1
+    compare_records(response["records"][0], aspirin)
 
     # (Trade Name) No Match
     response = rxnorm.search("Anacin")

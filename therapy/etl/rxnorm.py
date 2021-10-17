@@ -33,8 +33,7 @@ logger.setLevel(logging.DEBUG)
 # Designated Alias, Designated Syn, Tall Man Syn, Machine permutation
 # Generic Drug Name, Designated Preferred Name, Preferred Entry Term,
 # Clinical Drug, Entry Term, Rxnorm Preferred
-ALIASES = ["SYN", "SY", "TMSY", "PM",
-           "GN", "PT", "PEP", "CD", "ET", "RXN_PT"]
+ALIASES = ["SYN", "SY", "TMSY", "PM", "GN", "PT", "PEP", "CD", "ET", "RXN_PT"]
 
 # Fully-specified drug brand name that can be prescribed
 # Fully-specified drug brand name that can not be prescribed,
@@ -52,8 +51,8 @@ class RxNorm(Base):
     def __init__(self,
                  database: Database,
                  data_path: Path = PROJECT_ROOT / "data",
-                 data_url: str ="https://www.nlm.nih.gov/research/umls/"
-                                "rxnorm/docs/rxnormfiles.html"):
+                 data_url: str = "https://www.nlm.nih.gov/research/umls/"
+                                 "rxnorm/docs/rxnormfiles.html"):
         """Initialize the RxNorm ETL class.
 
         :param Database database: Access to DynamoDB.
@@ -135,8 +134,7 @@ class RxNorm(Base):
             shutil.move(temp_file, self._data_src)
             shutil.rmtree(rxn_dir / "rrf")
         else:
-            logger.error("Could not find RXNORM_API_KEY in environment "
-                         "variables.")
+            logger.error("Could not find RXNORM_API_KEY in environment variables.")
             raise DownloadException("RXNORM_API_KEY not found.")
 
     def _create_drug_form_yaml(self, rxn_dir: Path) -> None:
@@ -186,16 +184,14 @@ class RxNorm(Base):
                         if concept_id not in data.keys():
                             params = dict()
                             params["concept_id"] = concept_id
-                            self._add_str_field(params, row,
-                                                precise_ingredient,
+                            self._add_str_field(params, row, precise_ingredient,
                                                 drug_forms, sbdfs)
                             self._add_xref_assoc(params, row)
                             data[concept_id] = params
                         else:
                             # Concept already created
                             params = data[concept_id]
-                            self._add_str_field(params, row,
-                                                precise_ingredient,
+                            self._add_str_field(params, row, precise_ingredient,
                                                 drug_forms, sbdfs)
                             self._add_xref_assoc(params, row)
 
@@ -210,7 +206,7 @@ class RxNorm(Base):
                             "concept_id": value["concept_id"]
                         }
 
-                        for field in list(ITEM_TYPES.keys()) + ["approval_status"]:  # noqa: E501
+                        for field in list(ITEM_TYPES.keys()) + ["approval_status"]:
                             field_value = value.get(field)
                             if field_value:
                                 params[field] = field_value
@@ -270,8 +266,7 @@ class RxNorm(Base):
                 self._add_term(value, tn, "trade_names")
 
     @staticmethod
-    def _load_brand_concepts(value: Dict, brands: Dict, batch: BatchWriter)\
-            -> None:
+    def _load_brand_concepts(value: Dict, brands: Dict, batch: BatchWriter) -> None:
         """Connect brand names to a concept and load into the database.
 
         :params dict value: A transformed therapy record

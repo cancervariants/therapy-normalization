@@ -28,7 +28,7 @@ class GuideToPHARMACOLOGY(Base):
         super().__init__(database, data_path)
         self._data_url = "https://www.guidetopharmacology.org/download.jsp"
         self._version = self._find_version()
-        self._ligands_data_url = "https://www.guidetopharmacology.org/DATA/ligands.tsv"  # noqa: E501
+        self._ligands_data_url = "https://www.guidetopharmacology.org/DATA/ligands.tsv"
         self._ligand_id_mapping_data_url = "https://www.guidetopharmacology.org/DATA/ligand_id_mapping.tsv"  # noqa: E501
 
     def _find_version(self) -> str:
@@ -64,7 +64,7 @@ class GuideToPHARMACOLOGY(Base):
             for f in dir_files:
                 if f.name == f"{prefix}_ligands_{self._version}.tsv":
                     self._ligands_file = f
-                elif f.name == f"{prefix}_ligand_id_mapping_{self._version}.tsv":  # noqa: E501
+                elif f.name == f"{prefix}_ligand_id_mapping_{self._version}.tsv":
                     self._ligand_id_mapping_file = f
 
         if self._ligands_file is None:
@@ -111,7 +111,7 @@ class GuideToPHARMACOLOGY(Base):
             for row in rows:
                 params: Dict[str, Union[List[str], str]] = {
                     "concept_id":
-                        f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}",  # noqa: E501
+                        f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}",
                     "label": row[1],
                     "src_name": SourceName.GUIDETOPHARMACOLOGY.value
                 }
@@ -178,7 +178,7 @@ class GuideToPHARMACOLOGY(Base):
                     # CHEBI
                     associated_with.append(row[7])
                 if row[11]:
-                    xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:{row[11]}")  # noqa: E501
+                    xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:{row[11]}")
                 if row[12]:
                     xrefs.append(f"{NamespacePrefix.DRUGBANK.value}:{row[12]}")
                 if row[13]:
@@ -193,10 +193,10 @@ class GuideToPHARMACOLOGY(Base):
                              withdrawn: str) -> Optional[str]:
         """Set approval status.
 
-        :param str approved: The drug is or has in the past been approved for
-            human clinical use by a regulatory agency
-        :param str withdrawn: The drug is no longer approved for its original
-            clinical use in one or more countries
+        :param str approved: The drug is or has in the past been approved for human
+            clinical use by a regulatory agency
+        :param str withdrawn: The drug is no longer approved for its original clinical
+            use in one or more countries
         :return: Approval status
         """
         if approved and not withdrawn:

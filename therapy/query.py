@@ -26,8 +26,8 @@ class InvalidParameterException(Exception):
 
 
 class QueryHandler:
-    """Class for normalizer management. Stores reference to database instance
-    and normalizes query input.
+    """Class for normalizer management. Stores reference to database instance and
+    normalizes query input.
     """
 
     def __init__(self, db_url: str = "", db_region: str = "us-east-2"):
@@ -65,9 +65,7 @@ class QueryHandler:
             return self.db.cached_sources[src_name]
         else:
             try:
-                db_response = self.db.metadata.get_item(
-                    Key={"src_name": src_name}
-                )
+                db_response = self.db.metadata.get_item(Key={"src_name": src_name})
                 response = SourceMeta(**db_response["Item"])
                 self.db.cached_sources[src_name] = response
                 return response
@@ -81,8 +79,7 @@ class QueryHandler:
                     match_type: str) -> Tuple[Dict, str]:
         """Add individual record (i.e. Item in DynamoDB) to response object
 
-        :param Dict[str, Dict] response: in-progress response object to return
-            to client
+        :param Dict[str, Dict] response: in-progress response object
         :param Dict item: Item retrieved from DynamoDB
         :param MatchType match_type: type of query match
         :return: Tuple containing updated response object, and string
@@ -116,17 +113,15 @@ class QueryHandler:
                        response: Dict[str, Dict],
                        concept_ids: Set[str],
                        match_type: str) -> Tuple[Dict, Set]:
-        """Return matched Drug records as a structured response for a given
-        collection of concept IDs.
+        """Return matched Drug records as a structured response for a given collection
+        of concept IDs.
 
-        :param Dict[str, Dict] response: in-progress response object to return
-            to client.
-        :param List[str] concept_ids: List of concept IDs to build from.
-            Should be all lower-case.
-        :param str match_type: record should be assigned this type of
-            match.
-        :return: response Dict with records filled in via provided concept
-            IDs, and Set of source names of matched records
+        :param Dict[str, Dict] response: in-progress response object
+        :param List[str] concept_ids: List of concept IDs to build from.  Should be all
+            lower-case.
+        :param str match_type: record should be assigned this type of match.
+        :return: response Dict with records filled in via provided concept IDs, and Set
+            of source names of matched records
         """
         matched_sources = set()
         for concept_id in concept_ids:
@@ -145,8 +140,8 @@ class QueryHandler:
         """Fill all empty source_matches slots with NO_MATCH results.
 
         :param Dict[str, Dict] resp: incoming response object
-        :return: response object with empty source slots filled with
-                NO_MATCH results and corresponding source metadata
+        :return: response object with empty source slots filled with NO_MATCH results
+            and corresponding source metadata
         """
         for src_name in resp["source_matches"].keys():
             if resp["source_matches"][src_name] is None:
@@ -157,17 +152,14 @@ class QueryHandler:
                 }
         return resp
 
-    def _check_concept_id(self,
-                          query: str,
-                          resp: Dict,
+    def _check_concept_id(self, query: str, resp: Dict,
                           sources: Set[str]) -> Tuple[Dict, Set]:
         """Check query for concept ID match. Should only find 0 or 1 matches.
 
         :param str query: search string
         :param Dict resp: in-progress response object to return to client
         :param Set[str] sources: remaining unmatched sources
-        :return: Tuple with updated resp object and updated set of unmatched
-            sources
+        :return: Tuple with updated resp object and updated set of unmatched sources
         """
         concept_id_items = []
         if [p for p in PREFIX_LOOKUP.keys() if query.startswith(p)]:
@@ -186,10 +178,7 @@ class QueryHandler:
             sources = sources - {src_name}
         return resp, sources
 
-    def _check_match_type(self,
-                          query: str,
-                          resp: Dict,
-                          sources: Set[str],
+    def _check_match_type(self, query: str, resp: Dict, sources: Set[str],
                           match_type: str) -> Tuple[Dict, Set]:
         """Check query for selected match type.
         :param str query: search string
@@ -203,14 +192,13 @@ class QueryHandler:
         matches = self.db.get_records_by_type(query, match_type)
         if matches:
             concept_ids = {i["concept_id"] for i in matches}
-            (resp, matched_srcs) = self._fetch_records(resp, concept_ids,
-                                                       match_type)
+            (resp, matched_srcs) = self._fetch_records(resp, concept_ids, match_type)
             sources = sources - matched_srcs
         return resp, sources
 
     def _response_keyed(self, query: str, sources: Set[str]) -> Dict:
-        """Return response as dict where key is source name and value
-        is a list of records. Corresponds to `keyed=true` API parameter.
+        """Return response as dict where key is source name and value is a list of
+        records. Corresponds to `keyed=true` API parameter.
 
         :param str query: string to match against
         :param Set[str] sources: sources to match from
@@ -235,8 +223,8 @@ class QueryHandler:
             return response
 
         for match_type in ITEM_TYPES.values():
-            (response, sources) = self._check_match_type(query, response,
-                                                         sources, match_type)
+            (response, sources) = self._check_match_type(query, response, sources,
+                                                         match_type)
             if len(sources) == 0:
                 return response
 
@@ -244,8 +232,8 @@ class QueryHandler:
         return self._fill_no_matches(response)
 
     def _response_list(self, query: str, sources: Set[str]) -> Dict:
-        """Return response as list, where the first key-value in each item
-        is the source name. Corresponds to `keyed=false` API parameter.
+        """Return response as list, where the first key-value in each item is the source
+        name. Corresponds to `keyed=false` API parameter.
 
         :param str query: string to match against
         :param List[str] sources: sources to match from
@@ -254,9 +242,7 @@ class QueryHandler:
         response_dict = self._response_keyed(query, sources)
         source_list = []
         for src_name in response_dict["source_matches"].keys():
-            src = {
-                "source": src_name,
-            }
+            src = {"source": src_name}
             to_merge = response_dict["source_matches"][src_name]
             src.update(to_merge)
 
@@ -270,16 +256,16 @@ class QueryHandler:
         """Fetch normalized therapy objects.
 
         :param str query_str: query, a string, to search for
-        :param bool keyed: if true, return response as dict keying source names
-            to source objects; otherwise, return list of source objects
-        :param str incl: str containing comma-separated names of sources to
-            use. Will exclude all other sources. Case-insensitive.
-        :param str excl: str containing comma-separated names of source to
-            exclude. Will include all other source. Case-insensitive.
+        :param bool keyed: if true, return response as dict keying source names to
+            source objects; otherwise, return list of source objects
+        :param str incl: str containing comma-separated names of sources to use. Will
+            exclude all other sources. Case-insensitive.
+        :param str excl: str containing comma-separated names of source to exclude.
+            Will include all other source. Case-insensitive.
         :return: dict containing all matches found in sources.
         :rtype: dict
-        :raises InvalidParameterException: if both incl and excl args are
-            provided, or if invalid source names are given.
+        :raises InvalidParameterException: if both incl and excl args are provided, or
+            if invalid source names are given.
         """
         sources = dict()
         for k, v in SOURCES.items():
@@ -454,7 +440,7 @@ class QueryHandler:
             "service_meta_": ServiceMeta(
                 version=__version__,
                 response_datetime=datetime.now(),
-                url="https://github.com/cancervariants/therapy-normalization"  # noqa: E501
+                url="https://github.com/cancervariants/therapy-normalization"
             ).dict()
         }
         if query == "":
@@ -463,8 +449,7 @@ class QueryHandler:
         query_str = query.lower().strip()
 
         # check merged concept ID match
-        record = self.db.get_record_by_id(query_str, case_sensitive=False,
-                                          merge=True)
+        record = self.db.get_record_by_id(query_str, case_sensitive=False, merge=True)
         if record:
             return self._add_vod(response, record, query, MatchType.CONCEPT_ID)
 
@@ -473,14 +458,11 @@ class QueryHandler:
         if record:
             merge_ref = record.get("merge_ref")
             if not merge_ref:
-                return self._add_vod(response, record, query,
-                                     MatchType.CONCEPT_ID)
-            merge = self.db.get_record_by_id(merge_ref,
-                                             case_sensitive=False,
+                return self._add_vod(response, record, query, MatchType.CONCEPT_ID)
+            merge = self.db.get_record_by_id(merge_ref, case_sensitive=False,
                                              merge=True)
             if merge is None:
-                return self._handle_failed_merge_ref(record, response,
-                                                     query_str)
+                return self._handle_failed_merge_ref(record, response, query_str)
             else:
                 return self._add_vod(response, merge, query,
                                      MatchType.CONCEPT_ID)

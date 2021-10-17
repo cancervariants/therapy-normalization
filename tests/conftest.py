@@ -23,7 +23,6 @@ def db():
     class DB:
         def __init__(self):
             self.db = Database()
-            print(os.environ)
             if os.environ.get("TEST") is not None:
                 self.load_test_data()
 
@@ -95,16 +94,15 @@ def mock_database():
         """Mock database object to use in test cases."""
 
         def __init__(self):
-            """Initialize mock database object. This class"s method"s shadow the
-            actual Database class methods.
+            """Initialize mock database object. This class's methods shadow the actual
+            Database class methods.
 
             `self.records` loads preexisting DB items.
-            `self.added_records` stores add record requests, with the
-            concept_id as the key and the complete record as the value.
-            `self.updates` stores update requests, with the concept_id as the
-            key, and a dict of {new_attribute: new_value} as the value.
+            `self.added_records` stores add record requests, with the concept_id as the
+            key and the complete record as the value.
+            `self.updates` stores update requests, with the concept_id as the key, and
+            a dict of {new_attribute: new_value} as the value.
             """
-
             infile = TEST_ROOT / "tests" / "unit" / "data" / "therapies.json"
             self.records = {}
             with open(infile, "r") as f:
@@ -134,9 +132,9 @@ def mock_database():
             """Fetch record corresponding to provided concept ID.
 
             :param str record_id: concept ID for therapy record
-            :param bool case_sensitive: if true, performs exact lookup, which
-                is more efficient. Otherwise, performs filter operation, which
-                doesn"t require correct casing.
+            :param bool case_sensitive: if true, performs exact lookup, which is more
+                efficient. Otherwise, performs filter operation, which doesn"t require
+                correct casing.
             :param bool merge: if true, retrieve merged record
             :return: complete therapy record, if match is found; None otherwise
             """
@@ -231,17 +229,15 @@ def compare_response(response: Dict, match_type: MatchType,
                      fixture: Drug = None, fixture_list: List[Drug] = None,
                      num_records: int = 0):
     """Check that test response is correct. Only 1 of {fixture, fixture_list}
-    should be passed as arguments. num_records should only be passed with
-    fixture_list.
+    should be passed as arguments. num_records should only be passed with fixture_list.
 
     :param Dict response: response object returned by QueryHandler
     :param MatchType match_type: expected match type
     :param Drug fixture: single Drug object to match response against
-    :param List[Drug] fixture_list: multiple Drug objects to match response
-        against
-    :param int num_records: expected number of records in response. If not
-        given, tests for number of fixture Drugs given (ie, 1 for single
-        fixture and length of fixture_list otherwise)
+    :param List[Drug] fixture_list: multiple Drug objects to match response against
+    :param int num_records: expected number of records in response. If not given, tests
+        for number of fixture Drugs given (ie, 1 for single fixture and length of
+        fixture_list otherwise)
     """
     if fixture and fixture_list:
         raise Exception("Args provided for both `fixture` and `fixture_list`")

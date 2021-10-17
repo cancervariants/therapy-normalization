@@ -96,12 +96,12 @@ class CLI:
 
     def _check_disease_normalizer(self, normalizers: List[str],
                                   endpoint_url: Optional[str]) -> None:
-        """When loading HemOnc source, perform rudimentary check of Disease
-            Normalizer tables, and reload them if necessary.
+        """When loading HemOnc source, perform rudimentary check of Disease Normalizer
+        tables, and reload them if necessary.
 
         :param list normalizers: List of sources to load
-        :param Optional[str] endpoint_url: Therapy endpoint URL. If none, tries
-            to connect to cloud DynamoDB instance.
+        :param Optional[str] endpoint_url: Therapy endpoint URL. If none, tries to
+            connect to cloud DynamoDB instance.
         """
         def _load_diseases() -> None:
             msg = "Disease Normalizer not loaded. " \
@@ -110,13 +110,13 @@ class CLI:
             click.echo(msg)
             try:
                 DiseaseCLI().update_normalizer_db(
-                    ["--update_all", "--update_merged",
-                     "--db_url", endpoint_url]
+                    ["--update_all", "--update_merged", "--db_url", endpoint_url]
                 )
             except Exception as e:
                 logger.error(e)
                 raise Exception(e)
             except:  # noqa: E722
+                # TODO: what does this do?
                 pass
 
         if "THERAPY_NORM_PROD" not in environ and "hemonc" in normalizers:
@@ -134,7 +134,7 @@ class CLI:
         """Display help message."""
         ctx = click.get_current_context()
         click.echo(
-            "Must either enter 1 or more sources, or use `--update_all` parameter")  # noqa: E501
+            "Must either enter 1 or more sources, or use `--update_all` parameter")
         click.echo(ctx.get_help())
         ctx.exit()
 
@@ -144,18 +144,20 @@ class CLI:
         """Update selected normalizer sources.
         :param List[str] normalizers: list of source names to update
         :param Database db: database instance to use
-        :param bool update_merged: if true, store concept IDs as they're
-            processed and produce normalized records
+        :param bool update_merged: if true, store concept IDs as they're processed and
+            produce normalized records
         """
         processed_ids = list()
         for n in normalizers:
             msg = f"Deleting {n}..."
             click.echo(f"\n{msg}")
             logger.info(msg)
+
             start_delete = timer()
             CLI()._delete_data(n, db)
             end_delete = timer()
             delete_time = end_delete - start_delete
+
             msg = f"Deleted {n} in {delete_time:.5f} seconds."
             click.echo(f"{msg}\n")
             logger.info(msg)
@@ -163,14 +165,17 @@ class CLI:
             msg = f"Loading {n}..."
             click.echo(msg)
             logger.info(msg)
+
             start_load = timer()
             source = SOURCES_CLASS[n](database=db)
             processed_ids += source.perform_etl()
             end_load = timer()
             load_time = end_load - start_load
+
             msg = f"Loaded {n} in {load_time:.5f} seconds."
             click.echo(msg)
             logger.info(msg)
+
             msg = f"Total time for {n}: " \
                   f"{(delete_time + load_time):.5f} seconds."
             click.echo(msg)
@@ -180,9 +185,11 @@ class CLI:
             CLI()._update_merged(db, processed_ids)
 
     def _update_merged(self, db: Database, processed_ids: List[str]) -> None:
-        """Update merged concepts
+        """Build and upload merged records. Will construct list of IDs if given an empty
+        processed_ids list.
         :param Database db: DB instance to use
-        :param List[str] processed_ids: """
+        :param List[str] processed_ids: List of IDs to create merged groups from
+        """
         start_merge = timer()
         if not processed_ids:
             CLI()._delete_normalized_data(db)
@@ -223,7 +230,7 @@ class CLI:
 
     @staticmethod
     def _delete_data(source: str, database: Database) -> None:
-        """Delete all data from given source in database.
+        """Delete all data (records + metadata) from given source in database.
         :param str source: name of source to delete
         :param Database database: db instance
         """
