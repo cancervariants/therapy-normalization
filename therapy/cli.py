@@ -234,18 +234,19 @@ class CLI:
         :param str source: name of source to delete
         :param Database database: db instance
         """
+        source_name = SourceName[f"{source.upper()}"].value
         # Delete source"s metadata first
         try:
             metadata = database.metadata.query(
                 KeyConditionExpression=Key(
-                    "src_name").eq(SourceName[f"{source.upper()}"].value)
+                    "src_name").eq(source_name)
             )
             if metadata["Items"]:
                 database.metadata.delete_item(
                     Key={"src_name": metadata["Items"][0]["src_name"]},
                     ConditionExpression="src_name = :src",
                     ExpressionAttributeValues={
-                        ":src": SourceName[f"{source.upper()}"].value}
+                        ":src": source_name}
                 )
         except ClientError as e:
             click.echo(e.response["Error"]["Message"])
@@ -255,7 +256,7 @@ class CLI:
                 response = database.therapies.query(
                     IndexName="src_index",
                     KeyConditionExpression=Key("src_name").eq(
-                        SourceName[f"{source.upper()}"].value),
+                        source_name),
                 )
 
                 records = response["Items"]
