@@ -34,8 +34,7 @@ class ChemIDplus(Base):
         logger.info("Retrieving source data for ChemIDplus")
         url = urlparse(bioversions.resolve("chemidplus").homepage)
         _, file = url.path.rsplit("/", 1)
-        self._ftp_download("ftp.nlm.nih.gov", "nlmdata/.chemidlease",
-                           str(file))
+        self._ftp_download("ftp.nlm.nih.gov", "nlmdata/.chemidlease", str(file))
         zip_path = (self._src_dir / file).absolute()
         zip_file = zipfile.ZipFile(zip_path, "r")
         outfile = self._src_dir / f"chemidplus_{self._version}.xml"

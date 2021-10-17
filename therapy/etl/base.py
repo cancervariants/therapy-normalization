@@ -28,9 +28,6 @@ class Base(ABC):
     as some common subtasks (getting most recent version, downloading data
     from an FTP server). Classes should expand or reimplement these methods as
     needed.
-
-    TODO
-    * base http method
     """
 
     def __init__(self, database: Database,
@@ -122,7 +119,7 @@ class Base(ABC):
         if not latest:
             self._download_data()
             latest = list(self._src_dir.glob(fglob))
-        # TODO shouldnt be glob -- should just expect exact filename
+        assert len(latest) == 0  # probably unnecessary, but just to be safe
         self._src_file: Path = latest[0]
 
     @abstractmethod

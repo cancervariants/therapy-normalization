@@ -31,6 +31,10 @@ class NCIt(Base):
         retrieve a file matching the latest version number from both the subdirectory
         root (where the current version is typically posted) as well as the year-by-year
         archives if that fails.
+
+        TODO
+         * better handle of stream DL -- close?
+         * maybe use stream for pinging?
         """
         logger.info("Retrieving source data for NCIt")
         base_url = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus"

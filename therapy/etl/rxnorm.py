@@ -60,8 +60,7 @@ class RxNorm(Base):
 
     def _download_data(self) -> None:
         """Download latest RxNorm data file.
-        :raises DownloadException: if API Key is not defined in the
-            environment.
+        :raises DownloadException: if API Key is not defined in the environment.
         """
         logger.info("Retrieving source data for RxNorm")
         if "RXNORM_API_KEY" in environ.keys():
@@ -74,8 +73,7 @@ class RxNorm(Base):
 
             # Source:
             # https://documentation.uts.nlm.nih.gov/automating-downloads.html
-            subprocess.call(["bash", f"{APP_ROOT}/etl/rxnorm_download.sh",
-                             url])
+            subprocess.call(["bash", f"{APP_ROOT}/etl/rxnorm_download.sh", url])
 
             with zipfile.ZipFile(zip_path, "r") as zf:
                 zf.extractall(self._src_dir)

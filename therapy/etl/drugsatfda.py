@@ -23,14 +23,14 @@ class DrugsAtFDA(Base):
         if r.status_code == 200:
             zip_file = zipfile.ZipFile(BytesIO(r.content))
         else:
-            msg = f"Drugs@FDA download failed with status code: {r.status_code}"  # noqa: E501
+            msg = f"Drugs@FDA download failed with status code: {r.status_code}"
             logger.error(msg)
             raise requests.HTTPError(r.status_code)
         orig_fname = "drug-drugsfda-0001-of-0001.json"
-        zip_file.extract(member=orig_fname, path=self._src_data_dir)
+        zip_file.extract(member=orig_fname, path=self._src_dir)
         version = self._get_latest_version()
-        outfile_path = self._src_data_dir / f"drugsatfda_{version}.json"
-        shutil.move(self._src_data_dir / orig_fname, outfile_path)
+        outfile_path = self._src_dir / f"drugsatfda_{version}.json"
+        shutil.move(self._src_dir / orig_fname, outfile_path)
         logger.info("Successfully retrieved source data for Drugs@FDA")
 
     def _get_latest_version(self) -> str:
@@ -43,7 +43,7 @@ class DrugsAtFDA(Base):
             try:
                 return json["results"]["drug"]["drugsfda"]["export_date"]
             except KeyError:
-                msg = "Unable to parse OpenFDA version API - check for breaking changes"  # noqa: E501
+                msg = "Unable to parse OpenFDA version API - check for breaking changes"
                 logger.error(msg)
                 raise DownloadException(msg)
         else:
@@ -67,8 +67,7 @@ class DrugsAtFDA(Base):
         meta["src_name"] = SourceName.DRUGSATFDA
         self.database.metadata.put_item(Item=meta)
 
-    def _get_marketing_status(self, products: List, concept_id: str)\
-            -> Optional[str]:
+    def _get_marketing_status(self, products: List, concept_id: str) -> Optional[str]:
         """Get approval status from products list.
         :param List products: list of individual FDA product objects
         :param str concept_id: FDA application concept ID, used in reporting
@@ -146,10 +145,12 @@ class DrugsAtFDA(Base):
 
                 unii = openfda.get("unii")
                 if unii:
-                    therapy["associated_with"] = [f"{NamespacePrefix.UNII.value}:{u}" for u in unii]  # noqa: E501
+                    therapy["associated_with"] = [f"{NamespacePrefix.UNII.value}:{u}"
+                                                  for u in unii]
                 rxcui = openfda.get("rxcui")
                 if rxcui:
-                    therapy["xrefs"] = [f"{NamespacePrefix.RXNORM.value}:{r}" for r in rxcui]  # noqa: E501
+                    therapy["xrefs"] = [f"{NamespacePrefix.RXNORM.value}:{r}"
+                                        for r in rxcui]
 
             therapy["trade_names"] = brand_names
             therapy["aliases"] = aliases
