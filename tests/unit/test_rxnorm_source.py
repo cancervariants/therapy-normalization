@@ -1,5 +1,6 @@
 """Test that the therapy normalizer works as intended for the RxNorm source."""
 import os
+from datetime import datetime as dt
 
 import pytest
 from boto3.dynamodb.conditions import Key
@@ -710,12 +711,14 @@ def test_lymphocyte(lymphocyte, rxnorm):
     # Trade Name Match
     response = rxnorm.search("Thymoglobulin")
     assert response["match_type"] == MatchType.TRADE_NAME
-    assert len(response["records"]) == 1
+    assert len(response["records"]) == 2
+    response["records"].sort(key=lambda r: r["concept_id"])
     compare_records(response["records"][0], lymphocyte)
 
     response = rxnorm.search("ATGAM")
     assert response["match_type"] == MatchType.TRADE_NAME
-    assert len(response["records"]) == 1
+    assert len(response["records"]) == 2
+    response["records"].sort(key=lambda r: r["concept_id"])
     compare_records(response["records"][0], lymphocyte)
 
 
@@ -917,15 +920,13 @@ def test_no_match(rxnorm):
 def test_brand_name_to_concept(rxnorm):
     """Test that brand names are correctly linked to identity concept."""
     r = rxnorm.db.therapies.query(
-        KeyConditionExpression=Key("label_and_type").eq(
-            "rxcui:1041527##rx_brand")
+        KeyConditionExpression=Key("label_and_type").eq("rxcui:1041527##rx_brand")
     )
     assert r["Items"][0]["concept_id"] == "rxcui:161"
     assert r["Items"][0]["concept_id"] != "rxcui:1041527"
 
     r = rxnorm.db.therapies.query(
-        KeyConditionExpression=Key("label_and_type").eq(
-            "rxcui:218330##rx_brand")
+        KeyConditionExpression=Key("label_and_type").eq("rxcui:218330##rx_brand")
     )
     assert r["Items"][0]["concept_id"] == "rxcui:44"
     assert r["Items"][0]["concept_id"] != "rxcui:218330"
@@ -956,7 +957,7 @@ def test_meta_info(rxnorm):
     assert response.data_license_url == \
            "https://www.nlm.nih.gov/research/umls/rxnorm/docs/" \
            "termsofservice.html"
-    assert response.version == "20210104"
+    assert dt.strptime(response.version, "%Y%m%d")
     assert response.data_url == \
            "https://www.nlm.nih.gov/research/umls/rxnorm/docs/rxnormfiles.html"
     assert not response.rdp_url
