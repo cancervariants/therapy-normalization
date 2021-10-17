@@ -31,10 +31,6 @@ class NCIt(Base):
         retrieve a file matching the latest version number from both the subdirectory
         root (where the current version is typically posted) as well as the year-by-year
         archives if that fails.
-
-        TODO
-         * better handle of stream DL -- close?
-         * maybe use stream for pinging?
         """
         logger.info("Retrieving source data for NCIt")
         base_url = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus"
@@ -59,12 +55,12 @@ class NCIt(Base):
                 src_url = archive_url
 
         zip_path = self._src_dir / "ncit.zip"
-        response = requests.get(src_url, stream=True)
-        handle = open(zip_path, "wb")
-        for chunk in response.iter_content(chunk_size=512):
-            if chunk:
-                handle.write(chunk)
-        handle.close()
+        with requests.get(src_url, stream=True) as r:
+            r.raise_for_status()
+            with open(zip_path, "wb") as h:
+                for chunk in r.iter_content(chunk_size=8192):
+                    if chunk:
+                        h.write(chunk)
         with zipfile.ZipFile(zip_path, "r") as zip_ref:
             zip_ref.extractall(self._src_dir)
         remove(zip_path)
