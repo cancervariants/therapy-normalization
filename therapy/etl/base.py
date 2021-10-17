@@ -122,8 +122,7 @@ class Base(ABC):
                     value = list(set(value) - set(therapy["trade_names"]))
 
                 if len(value) > 20:
-                    logger.debug(f"{concept_id} has > 20"
-                                 f" {attr_type}.")
+                    logger.debug(f"{concept_id} has > 20 {attr_type}.")
                     del therapy[attr_type]
                     continue
                 for item in {item.lower() for item in value}:

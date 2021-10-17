@@ -90,8 +90,7 @@ class Wikidata(Base):
             transformed_data.append(params)
 
         self._version = datetime.datetime.today().strftime("%Y%m%d")
-        with open(f"{self._src_data_dir}/wikidata_{self._version}.json",
-                  "w+") as f:
+        with open(f"{self._src_data_dir}/wikidata_{self._version}.json", "w+") as f:
             json.dump(transformed_data, f)
         self._data_src = sorted(list(self._src_data_dir.iterdir()))[-1]
         logger.info("Successfully extracted Wikidata.")
@@ -125,11 +124,7 @@ class Wikidata(Base):
                 record_id = record["item"].split("/")[-1]
                 concept_id = f"{NamespacePrefix.WIKIDATA.value}:{record_id}"
                 if concept_id not in items.keys():
-                    item: Dict[str, Any] = dict()
-                    item["label_and_type"] = f"{concept_id.lower()}##identity"
-                    item["item_type"] = "identity"
-                    item["concept_id"] = concept_id
-                    item["src_name"] = SourceName.WIKIDATA.value
+                    item: Dict[str, Any] = {"concept_id": concept_id}
 
                     xrefs = list()
                     associated_with = list()
@@ -145,12 +140,10 @@ class Wikidata(Base):
                                     fmted_xref = \
                                         f"{IDENTIFIER_PREFIXES[key]}:{SourceIDAfterNamespace[key.upper()].value}{ref}"  # noqa: E501
                                 else:
-                                    fmted_xref = \
-                                        f"{IDENTIFIER_PREFIXES[key]}:{ref}"
+                                    fmted_xref = f"{IDENTIFIER_PREFIXES[key]}:{ref}"
                                 xrefs.append(fmted_xref)
                             else:
-                                fmted_assoc = f"{IDENTIFIER_PREFIXES[key]}:" \
-                                              f"{ref}"
+                                fmted_assoc = f"{IDENTIFIER_PREFIXES[key]}:{ref}"
                                 associated_with.append(fmted_assoc)
                     item["xrefs"] = xrefs
                     item["associated_with"] = associated_with

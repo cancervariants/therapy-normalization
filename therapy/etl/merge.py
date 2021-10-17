@@ -17,16 +17,16 @@ class Merge:
     def __init__(self, database: Database) -> None:
         """Initialize Merge instance.
 
-        * self._groups is a dictionary keying concept IDs to the Set of concept
-        IDs in that group. This is redundantly captured for all group members
-        (i.e., a group of 5 concepts would all have their own key, and the
-        value would be an identical Set of the same IDs)
+        * self._groups is a dictionary keying concept IDs to the Set of concept IDs in
+        that group. This is redundantly captured for all group members (i.e., a group
+        of 5 concepts would all have their own key, and the value would be an identical
+        Set of the same IDs)
         * self._unii_to_drugsatfda keys UNII codes to valid Drugs@FDA concepts.
-        Because UNIIs aren't stored directly in groups, we utilize a separate
-        lookup table to prevent repeat queries.
-        * self._failed_lookups stores concept IDs for which lookups have been
-        attempted and failed. Because we don't associate these IDs with groups,
-        a separate mapping is necessary to prevent repeat queries.
+        Because UNIIs aren't stored directly in groups, we utilize a separate lookup
+        table to prevent repeat queries.
+        * self._failed_lookups stores concept IDs for which lookups have been attempted
+        and failed. Because we don't associate these IDs with groups, a separate
+        mapping is necessary to prevent repeat queries.
 
         :param Database database: db instance to use for record retrieval
             and creation.
@@ -37,12 +37,10 @@ class Merge:
         self._failed_lookups: Set[str] = set()
 
     def create_merged_concepts(self, record_ids: Set[str]) -> None:
-        """Create concept groups, generate merged concept records, and
-        update database.
+        """Create concept groups, generate merged concept records, and update database.
 
-        :param Set[str] record_ids: concept identifiers from which groups
-            should be generated. Should *not* include any records from
-            excluded sources.
+        :param Set[str] record_ids: concept identifiers from which groups should be
+            generated.
         """
         logger.info("Generating record ID sets...")
         start = timer()
@@ -75,17 +73,17 @@ class Merge:
                                  f"for {merged_record['label_and_type']}")
                 else:
                     merge_ref = merged_record["concept_id"].lower()
-                    self.database.update_record(concept_id, "merge_ref",
-                                                merge_ref)
+                    self.database.update_record(concept_id, "merge_ref", merge_ref)
             uploaded_ids |= group
         logger.info("Merged concept generation successful.")
         end = timer()
         logger.debug(f"Generated and added concepts in {end - start} seconds")
 
     def _rxnorm_brand_lookup(self, record_id: str) -> Optional[str]:
-        """Rx Norm provides brand references back to original therapy concepts.
-        This routine checks whether an ID from a concept group requires an
-        additional dereference to obtain the original RxNorm record.
+        """Rx Norm provides brand references back to original therapy concepts.  This
+        routine checks whether an ID from a concept group requires an additional
+        dereference to obtain the original RxNorm record.
+
         :param str record_id: RxNorm concept ID to check
         :return: concept ID for RxNorm record if successful, None otherwise
         """
@@ -103,13 +101,12 @@ class Merge:
         return None
 
     def _get_drugsatfda_from_unii(self, ref: Dict) -> Optional[str]:
-        """Given an `associated_with` item keying a UNII code to a Drugs@FDA
-        record, verify that the record can be safely added to a concept group.
-        Drugs@FDA tracks a number of "compound therapies", and provides UNIIs
-        to each individual component. If we included them in normalized record
-        sets, they would end up merging distinct therapies under the umbrella
-        of the compound group. We're excluding Drugs@FDA records with multiple
-        UNIIs as a tentative solution.
+        """Given an `associated_with` item keying a UNII code to a Drugs@FDA record,
+        verify that the record can be safely added to a concept group.
+        Drugs@FDA tracks a number of "compound therapies", and provides UNIIs to each
+        individual component. If we included them in normalized record sets, they would
+        end up merging distinct therapies under the umbrella of the compound group.
+        We're excluding Drugs@FDA records with multiple UNIIs as a tentative solution.
 
         :param Dict ref: `associated_with` item where `label_and_type` includes
             a UNII code and `src_name` == "DrugsAtFDA"
@@ -135,8 +132,7 @@ class Merge:
         :return: Set of xref values
         """
         xrefs = set(record.get("xrefs", []))
-        uniis = [a for a in record.get("associated_with", [])
-                 if a.startswith("unii:")]
+        uniis = [a for a in record.get("associated_with", []) if a.startswith("unii:")]
         for unii in uniis:
             # get Drugs@FDA records that are associated_with this UNII
             if unii in self._unii_to_drugsatfda:
@@ -175,8 +171,7 @@ class Merge:
             if record_id.startswith("rxcui"):
                 brand_lookup = self._rxnorm_brand_lookup(record_id)
                 if brand_lookup:
-                    return self._create_record_id_set(brand_lookup,
-                                                      observed_id_set)
+                    return self._create_record_id_set(brand_lookup, observed_id_set)
             logger.warning(f"Unable to resolve lookup for {record_id} in "
                            f"ID set: {observed_id_set}")
             self._failed_lookups.add(record_id)
@@ -188,8 +183,7 @@ class Merge:
             return observed_id_set | {db_record["concept_id"]}
         merged_id_set = {record_id} | observed_id_set
         for local_record_id in local_id_set - observed_id_set:
-            merged_id_set |= self._create_record_id_set(local_record_id,
-                                                        merged_id_set)
+            merged_id_set |= self._create_record_id_set(local_record_id, merged_id_set)
         return merged_id_set
 
     def _generate_merged_record(self, record_id_set: Set[str]) -> Dict:
@@ -241,8 +235,7 @@ class Merge:
         }
 
         # merge from constituent records
-        set_fields = ["aliases", "trade_names", "associated_with",
-                      "approval_year"]
+        set_fields = ["aliases", "trade_names", "associated_with", "approval_year"]
         for record in records:
             for field in set_fields:
                 merged_attrs[field] |= set(record.get(field, set()))
@@ -265,7 +258,6 @@ class Merge:
         if not merged_attrs["label"]:
             del merged_attrs["label"]
 
-        merged_attrs["label_and_type"] = \
-            f"{merged_attrs['concept_id'].lower()}##merger"
+        merged_attrs["label_and_type"] = f"{merged_attrs['concept_id'].lower()}##merger"
         merged_attrs["item_type"] = "merger"
         return merged_attrs

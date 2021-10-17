@@ -1,5 +1,6 @@
 """Test that the therapy normalizer works as intended for the RxNorm source."""
 import os
+from datetime import datetime as dt
 
 import pytest
 from boto3.dynamodb.conditions import Key
@@ -390,19 +391,19 @@ def levothyroxine():
         "label": "levothyroxine",
         "concept_id": "rxcui:10582",
         "aliases": [
-            '3,5,3",5"-Tetraiodo-L-thyronine',
+            "3,5,3',5'-Tetraiodo-L-thyronine",
             "Thyroxine",
             "thyroxine",
             "Thyroid Hormone, T4",
             "Thyroxin",
             "T4 Thyroid Hormone",
             "O-(4-Hydroxy-3,5-diiodophenyl)-3,5-diiodotyrosine",
-            '3,5,3",5"-Tetraiodothyronine',
+            "3,5,3',5'-Tetraiodothyronine",
             "O-(4-Hydroxy-3,5-diiodophenyl)-3,5-diiodo-L-tyrosine",
             "L-T4",
             "LT4",
             "T4",
-            '3,3",5,5"-Tetraiodo-L-thyronine',
+            "3,3',5,5'-Tetraiodo-L-thyronine",
             "L-Thyroxine",
             "O-(4-Hydroxy-3,5-diidophenyl)-3,5-diiodo-L-tyrosine",
             "4-(4-Hydroxy-3,5-diiodophenoxy)-3,5-diiodo-L-phenylalanine",
@@ -710,9 +711,15 @@ def test_lymphocyte(lymphocyte, rxnorm):
     # Trade Name Match
     response = rxnorm.search("Thymoglobulin")
     assert response["match_type"] == MatchType.TRADE_NAME
+    assert len(response["records"]) == 2
+    response["records"].sort(key=lambda r: r["concept_id"])
+    compare_records(response["records"][0], lymphocyte)
 
     response = rxnorm.search("ATGAM")
     assert response["match_type"] == MatchType.TRADE_NAME
+    assert len(response["records"]) == 2
+    response["records"].sort(key=lambda r: r["concept_id"])
+    compare_records(response["records"][0], lymphocyte)
 
 
 def test_aspirin(aspirin, rxnorm):
@@ -721,6 +728,7 @@ def test_aspirin(aspirin, rxnorm):
     response = rxnorm.search("RxcUI:1191")
     assert response["match_type"] == MatchType.CONCEPT_ID
     assert len(response["records"]) == 1
+    compare_records(response["records"][0], aspirin)
 
     # (Trade Name) No Match
     response = rxnorm.search("Anacin")
@@ -912,15 +920,13 @@ def test_no_match(rxnorm):
 def test_brand_name_to_concept(rxnorm):
     """Test that brand names are correctly linked to identity concept."""
     r = rxnorm.db.therapies.query(
-        KeyConditionExpression=Key("label_and_type").eq(
-            "rxcui:1041527##rx_brand")
+        KeyConditionExpression=Key("label_and_type").eq("rxcui:1041527##rx_brand")
     )
     assert r["Items"][0]["concept_id"] == "rxcui:161"
     assert r["Items"][0]["concept_id"] != "rxcui:1041527"
 
     r = rxnorm.db.therapies.query(
-        KeyConditionExpression=Key("label_and_type").eq(
-            "rxcui:218330##rx_brand")
+        KeyConditionExpression=Key("label_and_type").eq("rxcui:218330##rx_brand")
     )
     assert r["Items"][0]["concept_id"] == "rxcui:44"
     assert r["Items"][0]["concept_id"] != "rxcui:218330"
@@ -951,7 +957,7 @@ def test_meta_info(rxnorm):
     assert response.data_license_url == \
            "https://www.nlm.nih.gov/research/umls/rxnorm/docs/" \
            "termsofservice.html"
-    assert response.version == "20210104"
+    assert dt.strptime(response.version, "%Y%m%d")
     assert response.data_url == \
            "https://www.nlm.nih.gov/research/umls/rxnorm/docs/rxnormfiles.html"
     assert not response.rdp_url

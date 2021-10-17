@@ -11,7 +11,7 @@ from owlready2.entity import ThingClass
 
 from therapy import PROJECT_ROOT
 from therapy.database import Database
-from therapy.schemas import SourceName, NamespacePrefix, Drug, SourceMeta
+from therapy.schemas import SourceName, NamespacePrefix, SourceMeta
 from therapy.etl.base import Base
 
 logger = logging.getLogger("therapy")
@@ -68,12 +68,12 @@ class NCIt(Base):
         """Create set of unique subclasses of node parameter.
         Should be originally called on ncit:C1909: Pharmacologic Substance.
 
-        :param owlready2.entity.ThingClass node: concept node to either
-            retrieve descendants of, or to normalize and add to DB
-        :param Set[owlready2.entity.ThingClass] uq_nodes: set of unique class
-            nodes found so far from recursive tree exploration
-        :return: the uq_nodes set, updated with any class nodes found from
-            recursive exploration of this branch of the class tree
+        :param owlready2.entity.ThingClass node: concept node to either retrieve
+            descendants of, or to normalize and add to DB
+        :param Set[owlready2.entity.ThingClass] uq_nodes: set of unique class nodes
+            found so far from recursive tree exploration
+        :return: the uq_nodes set, updated with any class nodes found from recursive
+            exploration of this branch of the class tree
         :rtype: Set[owlready2.entity.ThingClass]
         """
         children = node.descendants()
@@ -88,13 +88,11 @@ class NCIt(Base):
                          ncit: owl.namespace.Ontology) -> Set[ThingClass]:
         """Get all nodes with semantic_type Pharmacologic Substance
 
-        :param Set[owlready2.entity.ThingClass] uq_nodes: set of unique class
-            nodes found so far.
-        :param owl.namespace.Ontology ncit: owlready2 Ontology instance for
-            NCI Thesaurus.
-        :return: uq_nodes, with the addition of all classes found to have
-            semantic_type Pharmacologic Substance and not of type
-            Retired_Concept
+        :param Set[owlready2.entity.ThingClass] uq_nodes: set of unique class nodes
+            found so far.
+        :param owl.namespace.Ontology ncit: owlready2 Ontology instance for NCIt.
+        :return: uq_nodes, with the addition of all classes found to have semantic_type
+            Pharmacologic Substance and not of type Retired_Concept
         :rtype: Set[owlready2.entity.ThingClass]
         """
         graph = owl.default_world.as_rdflib_graph()

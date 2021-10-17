@@ -1,6 +1,4 @@
-"""This module contains data models for representing VICC normalized
-therapy records.
-"""
+"""This module contains data models for representing VICC therapy records."""
 from typing import List, Optional, Dict, Union, Any, Type
 from enum import Enum, IntEnum
 from datetime import datetime
@@ -442,7 +440,7 @@ class ServiceMeta(BaseModel):
                 "name": "thera-py",
                 "version": "0.1.0",
                 "response_datetime": "2021-04-05T16:44:15.367831",
-                "url": "https://github.com/cancervariants/therapy-normalization"  # noqa: E501
+                "url": "https://github.com/cancervariants/therapy-normalization"
             }
 
 
@@ -579,7 +577,7 @@ class NormalizationService(BaseModel):
                     "name": "thera-py",
                     "version": "0.1.0",
                     "response_datetime": "2021-04-05T16:44:15.367831",
-                    "url": "https://github.com/cancervariants/therapy-normalization"  # noqa: E501
+                    "url": "https://github.com/cancervariants/therapy-normalization"
                 }
             }
 
@@ -628,7 +626,7 @@ class SearchService(BaseModel):
                             "data_license": "custom",
                             "data_license_url": "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501
                             "version": "20210204",
-                            "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",  # noqa: E501
+                            "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
                             "rdp_url": None,
                             "data_license_attributes": {
                                 "non_commercial": False,
@@ -771,6 +769,6 @@ class SearchService(BaseModel):
                     "name": "thera-py",
                     "version": "0.1.0",
                     "response_datetime": "2021-04-05T16:44:15.367831",
-                    "url": "https://github.com/cancervariants/therapy-normalization"  # noqa: E501
+                    "url": "https://github.com/cancervariants/therapy-normalization"
                 }
             }
