@@ -1,4 +1,6 @@
 """Test NCIT source"""
+import re
+
 import pytest
 
 from therapy.schemas import Drug, MatchType
@@ -15,9 +17,11 @@ def ncit():
             self.query_handler = QueryHandler()
 
         def search(self, query_str):
-            resp = self.query_handler.search_sources(query_str, keyed=True,
-                                                     incl="ncit")
+            resp = self.query_handler.search_sources(query_str, keyed=True, incl="ncit")
             return resp["source_matches"]["NCIt"]
+
+        def fetch_meta(self):
+            return self.query_handler._fetch_meta("NCIt")
     return QueryGetter()
 
 
@@ -250,15 +254,15 @@ def test_no_match(ncit):
 
 def test_meta_info(ncit):
     """Test that the meta field is correct."""
-    response = ncit.search("voglibose")
-    assert response["source_meta_"]["data_license"] == "CC BY 4.0"
-    assert response["source_meta_"]["data_license_url"] == \
+    response = ncit.fetch_meta()
+    assert response.data_license == "CC BY 4.0"
+    assert response.data_license_url == \
         "https://creativecommons.org/licenses/by/4.0/legalcode"
-    assert response["source_meta_"]["version"] == "21.08e"
-    assert response["source_meta_"]["data_url"] == \
-        "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2020/20.09d_Release/"
-    assert response["source_meta_"]["rdp_url"] == "http://reusabledata.org/ncit.html"
-    assert response["source_meta_"]["data_license_attributes"] == {
+    assert re.match(r"[0-9][0-9]\.[0-9][0-9][a-z]", response.version)
+    assert response.data_url.startswith(
+        "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/")
+    assert response.rdp_url == "http://reusabledata.org/ncit.html"
+    assert response.data_license_attributes == {
         "non_commercial": False,
         "share_alike": False,
         "attribution": True

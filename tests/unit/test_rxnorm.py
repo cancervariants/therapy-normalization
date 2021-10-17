@@ -955,8 +955,7 @@ def test_meta_info(rxnorm):
     response = rxnorm.fetch_meta()
     assert response.data_license == "UMLS Metathesaurus"
     assert response.data_license_url == \
-           "https://www.nlm.nih.gov/research/umls/rxnorm/docs/" \
-           "termsofservice.html"
+           "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html"
     assert dt.strptime(response.version, "%Y%m%d")
     assert response.data_url == \
            "https://www.nlm.nih.gov/research/umls/rxnorm/docs/rxnormfiles.html"
