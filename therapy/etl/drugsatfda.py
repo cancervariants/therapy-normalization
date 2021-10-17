@@ -1,9 +1,6 @@
 """ETL methods for the Drugs@FDA source."""
 from typing import List, Union, Dict, Optional
-import zipfile
-from io import BytesIO
 import json
-import shutil
 
 import requests
 
@@ -19,18 +16,9 @@ class DrugsAtFDA(Base):
     def _download_data(self) -> None:
         """Download source data from instance-provided source URL."""
         logger.info("Retrieving source data for Drugs@FDA")
-        r = requests.get("https://download.open.fda.gov/drug/drugsfda/drug-drugsfda-0001-of-0001.json.zip")  # noqa: E501
-        if r.status_code == 200:
-            zip_file = zipfile.ZipFile(BytesIO(r.content))
-        else:
-            msg = f"Drugs@FDA download failed with status code: {r.status_code}"
-            logger.error(msg)
-            raise requests.HTTPError(r.status_code)
-        orig_fname = "drug-drugsfda-0001-of-0001.json"
-        zip_file.extract(member=orig_fname, path=self._src_dir)
-        version = self._get_latest_version()
-        outfile_path = self._src_dir / f"drugsatfda_{version}.json"
-        shutil.move(self._src_dir / orig_fname, outfile_path)
+        url = "https://download.open.fda.gov/drug/drugsfda/drug-drugsfda-0001-of-0001.json.zip"  # noqa: E501
+        outfile_path = self._src_dir / f"drugsatfda_{self._version}.json"
+        self._http_download(url, outfile_path, True)
         logger.info("Successfully retrieved source data for Drugs@FDA")
 
     def _get_latest_version(self) -> str:

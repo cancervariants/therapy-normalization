@@ -2,11 +2,6 @@
 from typing import Dict, Any
 import logging
 import csv
-import zipfile
-import shutil
-from io import BytesIO
-
-import requests
 
 from therapy.schemas import SourceName, SourceMeta, NamespacePrefix
 from therapy.etl.base import Base
@@ -22,21 +17,8 @@ class DrugBank(Base):
         """Download DrugBank source data."""
         logger.info("Retrieving source data for DrugBank")
         url = f"https://go.drugbank.com/releases/{self._version.replace('.', '-')}/downloads/all-drugbank-vocabulary"  # noqa: E501
-        r = requests.get(url)
-        if r.status_code == 200:
-            zip_file = zipfile.ZipFile(BytesIO(r.content))
-        else:
-            logger.error("DrugBank download failed with status code:"
-                         f" {r.status_code}")
-            raise requests.HTTPError(r.status_code)
-
-        # unpack file
-        temp_dir = self._src_dir / "temp_drugbank"
-        zip_file.extractall(temp_dir)
-        temp_file = temp_dir / "drugbank vocabulary.csv"
         csv_file = self._src_dir / f"drugbank_{self._version}.csv"
-        shutil.move(temp_file, csv_file)
-        shutil.rmtree(temp_dir)
+        self._http_download(url, csv_file, True)
         logger.info("Successfully retrieved source data for DrugBank")
 
     def _load_meta(self) -> None:

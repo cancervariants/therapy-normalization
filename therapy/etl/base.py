@@ -4,6 +4,9 @@ import ftplib
 from pathlib import Path
 import logging
 from typing import List, Dict
+import os
+import zipfile
+import tempfile
 
 from pydantic import ValidationError
 import requests
@@ -72,17 +75,44 @@ class Base(ABC):
         raise NotImplementedError
 
     @staticmethod
-    def _http_download(url: str, fname: Path) -> None:
+    def _http_download(url: str, outfile_path: Path, is_zip: bool = False) -> None:
         """Perform HTTP download of remote data file.
         :param str url: URL to retrieve file from
-        :param Path fname: path to where file should be saved
+        :param Path outfile_path: path to where file should be saved. Must be an actual
+            Path instance rather than merely a pathlike string.
+        :param bool is_zip: if True, treat downloaded object as a zipfile and extract
+            the largest file contained within to `outfile_path`. Classes needing
+            multiple files from the compressed zipfile, or needing files that aren't
+            the largest file contained within, should reimplement download logic
+            themselves. False by default.
         """
-        r = requests.get(url)
-        if r.status_code != 200:
-            raise DownloadException(f"Failed to download {fname.name} from "
-                                    f"{url}.")
-        with open(fname, "wb") as f:
-            f.write(r.content)
+        if is_zip:
+            dl_path = Path(tempfile.gettempdir()) / "tmp.zip"
+        else:
+            dl_path = outfile_path
+        # use stream to avoid saving download completely to memory
+        with requests.get(url, stream=True) as r:
+            try:
+                r.raise_for_status()
+            except requests.HTTPError:
+                raise DownloadException(
+                    f"Failed to download {outfile_path.name} from {url}."
+                )
+            with open(dl_path, "wb") as h:
+                for chunk in r.iter_content(chunk_size=8192):
+                    if chunk:
+                        h.write(chunk)
+        if is_zip:
+            with zipfile.ZipFile(dl_path, "r") as zip_ref:
+                if len(zip_ref.filelist) > 1:
+                    files = sorted(zip_ref.filelist, key=lambda z: z.file_size,
+                                   reverse=True)
+                    target = files[0]
+                else:
+                    target = zip_ref.filelist[0]
+                target.filename = outfile_path.name
+                zip_ref.extract(target, path=outfile_path.parent)
+            os.remove(dl_path)
 
     def _ftp_download(self, host: str, host_dir: str, host_fn: str) -> None:
         """Download data file from FTP site.

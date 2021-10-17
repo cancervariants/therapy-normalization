@@ -1,8 +1,6 @@
 """ETL methods for NCIt source"""
 import logging
 from typing import Set
-import zipfile
-from os import remove, rename
 
 import requests
 import owlready2 as owl
@@ -54,18 +52,7 @@ class NCIt(Base):
             else:
                 src_url = archive_url
 
-        zip_path = self._src_dir / "ncit.zip"
-        with requests.get(src_url, stream=True) as r:
-            r.raise_for_status()
-            with open(zip_path, "wb") as h:
-                for chunk in r.iter_content(chunk_size=8192):
-                    if chunk:
-                        h.write(chunk)
-        with zipfile.ZipFile(zip_path, "r") as zip_ref:
-            zip_ref.extractall(self._src_dir)
-        remove(zip_path)
-        rename(self._src_dir / "Thesaurus.owl",
-               self._src_dir / f"ncit_{self._version}.owl")
+        self._http_download(src_url, self._src_dir / f"ncit_{self._version}.owl", True)
         logger.info("Successfully retrieved source data for NCIt")
 
     def _get_desc_nodes(self, node: ThingClass,
