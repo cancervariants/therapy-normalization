@@ -838,6 +838,86 @@
     "src_name": "RxNorm"
   },
   {
+    "src_name": "RxNorm",
+    "label_and_type": "rxcui:107044##identity",
+    "item_type": "identity",
+    "label": "rabbit anti-human T-lymphocyte globulin",
+    "concept_id": "rxcui:107044",
+    "aliases": [
+      "Anti-human thymocyte immunoglobulin, rabbit",
+      "Rabbit anti-human thymocyte globulin (rATG)",
+      "Rabbit ATG",
+      "anti-thymocyte globulin (rabbit)",
+      "Anti-thymocyte globulin rabbit",
+      "Anti-thymocyte globulin (rabbit)",
+      "Rabbit anti-human thymocyte immunoglobulin",
+      "rATG",
+      "Rabbit antithymocyte globulin",
+      "Anti-T-lymphocyte immune globulin, rabbit",
+      "Rabbit anti-thymocyte immunoglobulin",
+      "Rabbit anti-human thymocyte globulin",
+      "Lapine T-lymphocyte immune globulin",
+      "Antithymocyte immunoglobulin"
+    ],
+    "xrefs": ["drugbank:DB00098"],
+    "associated_with": [
+      "atc:L04AA04",
+      "mesh:C512542",
+      "mthspl:D7RD81HE4W",
+      "mmsl:21336",
+      "mmsl:d07642"
+    ],
+    "approval_status": "approved",
+    "approval_year": [],
+    "has_indication": [],
+    "trade_names": ["Thymoglobulin"]
+  },
+  {
+    "item_type": "trade_name",
+    "label_and_type": "thymoglobulin##trade_name",
+    "concept_id": "rxcui:107044",
+    "src_name": "RxNorm"
+  },
+  {
+    "src_name": "RxNorm",
+    "label_and_type": "rxcui:91601##identity",
+    "item_type": "identity",
+    "label": "lymphocyte immune globulin, anti-thymocyte globulin, equine",
+    "concept_id": "rxcui:91601",
+    "aliases": [
+      "Lymphocyte immune globulin, anti-thymocyte globulin",
+      "equine ATG",
+      "Anti-thymocyte globulin equine",
+      "Lymphocyte Immune Globulin, Anti-Thymocyte Globulin (Equine)",
+      "Horse ATG",
+      "eATG",
+      "lymphocyte immune globulin, anti-thy (equine)",
+      "Anti-thymocyte Globulin (Equine)",
+      "hATG",
+      "Equine thymocyte immune globulin",
+      "Lymphocyte immune globulin anti-thymocyte globulin (equine)",
+      "Horse anti-thymocyte globulin"
+    ],
+    "xrefs": ["drugbank:DB09312"],
+    "associated_with": [
+      "mthspl:475247QF1Z",
+      "mmsl:27222",
+      "mesh:D000961",
+      "mmsl:d07641",
+      "atc:L04AA03"
+    ],
+    "approval_status": "approved",
+    "approval_year": [],
+    "has_indication": [],
+    "trade_names": ["ATGAM"]
+  },
+  {
+    "label_and_type": "atgam##trade_name",
+    "item_type": "trade_name",
+    "src_name": "RxNorm",
+    "concept_id": "rxcui:91601"
+  },
+  {
     "label_and_type": "lymphocyte immune globulin, anti-thymocyte globulin##label",
     "concept_id": "rxcui:1011",
     "src_name": "RxNorm"
@@ -968,7 +1048,8 @@
       "3-Aminopropionic Acid"
     ],
     "associated_with": ["mesh:D015091", "vandf:4028377", "unii:11P2JDE17B"],
-    "src_name": "RxNorm"
+    "src_name": "RxNorm",
+    "item_type": "identity"
   },
   {
     "label_and_type": "beta-alanine##label",
@@ -1011,7 +1092,6 @@
     "aliases": [
       "3,5,3',5'-Tetraiodo-L-thyronine",
       "Thyroxine",
-      "thyroxine",
       "Thyroid Hormone, T4",
       "Thyroxin",
       "T4 Thyroid Hormone",
@@ -1934,8 +2014,9 @@
       "TREAT",
       "Treatment",
       "TX",
-      "therapeutic intervention",
-      "treatment"
+      "treatment",
+      "treatment_or_therapy",
+      "treatment or therapy"
     ]
   },
   {
