@@ -12,7 +12,7 @@ from therapy.database import Database
 TEST_ROOT = Path(__file__).resolve().parents[1]
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="module", autouse=True)
 def db():
     """Create a DynamoDB test fixture."""
 
@@ -29,7 +29,6 @@ def db():
                 with self.db.therapies.batch_writer() as batch:
                     for therapy in therapies:
                         batch.put_item(Item=therapy)
-                f.close()
 
             with open(f"{TEST_ROOT}/tests/unit/"
                       f"data/metadata.json", "r") as f:
@@ -37,10 +36,8 @@ def db():
                 with self.db.metadata.batch_writer() as batch:
                     for m in metadata:
                         batch.put_item(Item=m)
-                f.close()
 
-    instance = DB()
-    yield instance.db
+    return DB().db
 
 
 @pytest.fixture(scope="module")

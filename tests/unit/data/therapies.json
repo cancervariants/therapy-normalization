@@ -866,6 +866,9 @@
     "src_name": "RxNorm"
   },
   {
+    "src_name": "RxNorm",
+    "label_and_type": "rxcui:91601##identity",
+    "item_type": "identity",
     "label": "lymphocyte immune globulin, anti-thymocyte globulin, equine",
     "concept_id": "rxcui:91601",
     "aliases": [
@@ -1032,7 +1035,8 @@
       "3-Aminopropionic Acid"
     ],
     "associated_with": ["mesh:D015091", "vandf:4028377", "unii:11P2JDE17B"],
-    "src_name": "RxNorm"
+    "src_name": "RxNorm",
+    "item_type": "identity"
   },
   {
     "label_and_type": "beta-alanine##label",
