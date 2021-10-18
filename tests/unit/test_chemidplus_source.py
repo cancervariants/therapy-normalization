@@ -195,7 +195,7 @@ def test_meta(chemidplus):
     assert response["source_meta_"]["data_license"] == "custom"
     assert response["source_meta_"]["data_license_url"] == "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html"  # noqa: E501
     version = response["source_meta_"]["version"]
-    assert datetime.datetime.strptime(version, "%Y-%m-%d")
+    assert datetime.datetime.strptime(version, "%Y%m%d")
     assert response["source_meta_"]["data_url"] == "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/"  # noqa: E501
     assert response["source_meta_"]["rdp_url"] is None
     assert response["source_meta_"]["data_license_attributes"] == {
