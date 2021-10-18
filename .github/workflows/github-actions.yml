@@ -34,8 +34,5 @@ jobs:
             - name: Check type correctness
               run: pipenv run tox -e mypy
 
-            - name: Check that requirements are up-to-date
-              run: pipenv run tox -e reqs
-
             - name: Run tests
               run: pipenv run pytest tests/
