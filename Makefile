@@ -1,6 +1,9 @@
-.PHONY: clean
+.PHONY: clean, run
 
-requirements: Pipfile
+run:
+	uvicorn therapy.main:app --reload --port=$(or $(port), 8000)
+
+reqs: Pipfile
 	pipenv lock --requirements > requirements.txt
 	pipenv lock --dev --requirements > requirements-dev.txt
 
