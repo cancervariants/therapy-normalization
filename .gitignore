@@ -151,16 +151,13 @@ data/*
 therapy/data/
 
 # ignore test materials
-tests/unit/dynamodb_local/
+dynamodb_local_latest/*
+tests/scripts/dynamodb_local/*
 
 # IDE materials
 .idea/
 .vim/
 *.swp
-
-# DynamoDB Local
-dynamodb_local_latest/*
-tests/scripts/dynamodb_local/*
 
 # Build files
 Pipfile.lock
