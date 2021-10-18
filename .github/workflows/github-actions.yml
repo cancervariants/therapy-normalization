@@ -24,13 +24,13 @@ jobs:
                   pipenv install --dev
 
             - name: Check style
-              run: python3 -m tox -e flake8
+              run: pipenv run tox -e flake8
 
             - name: Check type correctness
-              run: python3 -m tox -e mypy
+              run: pipenv run tox -e mypy
 
             - name: Check that requirements are up-to-date
-              run: python3 -m tox -e reqs
+              run: pipenv run tox -e reqs
 
             - name: Build local DynamoDB
               run: |
