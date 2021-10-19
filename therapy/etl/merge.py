@@ -193,8 +193,8 @@ class Merge:
         that attribute is not None.
 
         Priority is:
-        RxNorm > NCIt > HemOnc.org > DrugBank > GuideToPHARMACOLOGY >
-            ChEMBL > ChemIDplus > Wikidata > Drugs@FDA
+        RxNorm > NCIt > HemOnc.org > DrugBank > Drugs@FDA > GuideToPHARMACOLOGY >
+            ChEMBL > ChemIDplus > Wikidata
 
         :param Set record_id_set: group of concept IDs
         :return: completed merged drug object to be stored in DB

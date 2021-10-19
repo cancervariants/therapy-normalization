@@ -193,11 +193,11 @@ class SourcePriority(IntEnum):
     NCIT = 2
     HEMONC = 3
     DRUGBANK = 4
-    GUIDETOPHARMACOLOGY = 5
-    CHEMBL = 6
-    CHEMIDPLUS = 7
-    WIKIDATA = 8
-    DRUGSATFDA = 9
+    DRUGSATFDA = 5
+    GUIDETOPHARMACOLOGY = 6
+    CHEMBL = 7
+    CHEMIDPLUS = 8
+    WIKIDATA = 9
 
 
 class SourceName(str, Enum):
