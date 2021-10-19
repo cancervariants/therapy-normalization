@@ -36,7 +36,7 @@ class ChEMBL(Base):
             chembl_27_dir = self._src_data_dir / "chembl_27"
             temp_chembl = chembl_27_dir / "chembl_27_sqlite" / "chembl_27.db"
             chembl_db = self._src_data_dir / "chembl_27.db"
-            shutil.move(temp_chembl, chembl_db)
+            shutil.move(str(temp_chembl), str(chembl_db))
             os.remove(chembl_archive)
             shutil.rmtree(chembl_27_dir)
         conn = sqlite3.connect(chembl_db)

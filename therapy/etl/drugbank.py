@@ -55,7 +55,7 @@ class DrugBank(Base):
         zip_file.extractall(temp_dir)
         temp_file = temp_dir / "drugbank vocabulary.csv"
         csv_file = self._src_data_dir / f"drugbank_{version}.csv"
-        shutil.move(temp_file, csv_file)
+        shutil.move(str(temp_file), str(csv_file))
         shutil.rmtree(temp_dir)
         logger.info("DrugBank source data download complete.")
 
