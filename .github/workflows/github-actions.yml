@@ -29,10 +29,10 @@ jobs:
                   ./tests/scripts/dynamodb_build.bash
 
             - name: Check style
-              run: pipenv run tox -e lint
+              run: pipenv run tox -e py38-lint
 
             - name: Check type correctness
-              run: pipenv run tox -e mypy
+              run: pipenv run tox -e py38-mypy
 
             - name: Run tests
-              run: pipenv run tox -e py38
+              run: pipenv run tox -e py38-test
