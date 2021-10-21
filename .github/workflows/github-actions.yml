@@ -35,4 +35,4 @@ jobs:
               run: pipenv run tox -e py38-mypy
 
             - name: Run tests
-              run: pipenv run tox -e py38-test tests/
+              run: pipenv run tox -e githubactions
