@@ -30,7 +30,7 @@ class DrugsAtFDA(Base):
         zip_file.extract(member=orig_fname, path=self._src_data_dir)
         version = self._get_latest_version()
         outfile_path = self._src_data_dir / f"drugsatfda_{version}.json"
-        shutil.move(self._src_data_dir / orig_fname, outfile_path)
+        shutil.move(str(self._src_data_dir / orig_fname), str(outfile_path))
         logger.info("Successfully retrieved source data for Drugs@FDA")
 
     def _get_latest_version(self) -> str:
