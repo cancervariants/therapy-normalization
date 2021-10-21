@@ -53,7 +53,7 @@
     "src_name": "ChemIDplus",
     "data_license": "custom",
     "data_license_url": "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",
-    "version": "2021-02-04",
+    "version": "20210204",
     "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
     "rdp_url": null,
     "data_license_attributes": {
@@ -78,7 +78,7 @@
     "src_name": "HemOnc",
     "data_license": "CC BY 4.0",
     "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
-    "version": "2021-02-25",
+    "version": "20210225",
     "data_url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6",
     "data_license_attributes": {
       "non_commercial": false,
