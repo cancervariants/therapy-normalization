@@ -131,7 +131,7 @@ class RxNorm(Base):
 
             temp_file = rxn_dir / "rrf" / "RXNCONSO.RRF"
             self._data_src = rxn_dir / f"rxnorm_{self._version}.RRF"
-            shutil.move(temp_file, self._data_src)
+            shutil.move(str(temp_file), str(self._data_src))
             shutil.rmtree(rxn_dir / "rrf")
         else:
             logger.error("Could not find RXNORM_API_KEY in environment variables.")

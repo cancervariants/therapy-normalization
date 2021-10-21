@@ -16,7 +16,7 @@ jobs:
             - name: Setup Python
               uses: actions/setup-python@v1
               with:
-                  python-version: 3.9
+                  python-version: 3.8
 
             - name: Install dependencies
               run: |
@@ -29,10 +29,10 @@ jobs:
                   ./tests/scripts/dynamodb_build.bash
 
             - name: Check style
-              run: pipenv run tox -e lint
+              run: pipenv run tox -e py38-lint
 
             - name: Check type correctness
-              run: pipenv run tox -e mypy
+              run: pipenv run tox -e py38-mypy
 
             - name: Run tests
-              run: pipenv run pytest tests/
+              run: pipenv run tox -e githubactions

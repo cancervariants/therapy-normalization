@@ -98,7 +98,7 @@ ipython_config.py
 #   However, in case of collaboration, if having platform-specific dependencies or dependencies
 #   having no cross-platform support, pipenv may install dependencies that don't work, or not
 #   install all needed dependencies.
-#Pipfile.lock
+Pipfile.lock
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow
 __pypackages__/
@@ -146,11 +146,11 @@ cython_debug/
 # allow pytest override with pytest.ini
 pytest.ini
 
-# ignore data dir
+# data directories
 data/*
 therapy/data/
 
-# ignore test materials
+# dynamodb
 dynamodb_local_latest/*
 tests/scripts/dynamodb_local/*
 
@@ -158,6 +158,3 @@ tests/scripts/dynamodb_local/*
 .idea/
 .vim/
 *.swp
-
-# Build files
-Pipfile.lock
