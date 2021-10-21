@@ -41,11 +41,12 @@ class DrugsAtFDA(Base):
         if r.status_code == 200:
             json = r.json()
             try:
-                return json["results"]["drug"]["drugsfda"]["export_date"]
+                date_raw = json["results"]["drug"]["drugsfda"]["export_date"]
             except KeyError:
                 msg = "Unable to parse OpenFDA version API - check for breaking changes"  # noqa: E501
                 logger.error(msg)
                 raise DownloadException(msg)
+            return date_raw.replace("-", "")
         else:
             raise requests.HTTPError("Unable to retrieve version from FDA API")
 
