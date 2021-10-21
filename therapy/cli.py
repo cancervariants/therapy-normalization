@@ -50,7 +50,8 @@ class CLI:
     )
     def update_normalizer_db(normalizer: str, prod: bool, db_url: str,
                              update_all: bool, update_merged: bool) -> None:
-        """Update select normalizer source(s) in the therapy database.
+        """Update selected normalizer source(s) in the therapy database.
+        \f  # noqa: D301
         :param str normalizer: comma-separated string listing source names
         :param bool prod: if true, utilize production environment settings
         :param str db_url: DynamoDB endpoint URL (usually only needed locally)
@@ -264,8 +265,7 @@ class CLI:
                     break
 
                 with database.therapies.batch_writer(
-                        overwrite_by_pkeys=["label_and_type", "concept_id"]) \
-                        as batch:
+                        overwrite_by_pkeys=["label_and_type", "concept_id"]) as batch:
 
                     for record in records:
                         batch.delete_item(

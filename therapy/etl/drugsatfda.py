@@ -8,8 +8,7 @@ import shutil
 import requests
 
 from therapy import DownloadException, logger
-from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, \
-    ApprovalStatus
+from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, ApprovalStatus
 from therapy.etl.base import Base
 
 
@@ -23,7 +22,7 @@ class DrugsAtFDA(Base):
         if r.status_code == 200:
             zip_file = zipfile.ZipFile(BytesIO(r.content))
         else:
-            msg = f"Drugs@FDA download failed with status code: {r.status_code}"  # noqa: E501
+            msg = f"Drugs@FDA download failed with status code: {r.status_code}"
             logger.error(msg)
             raise requests.HTTPError(r.status_code)
         orig_fname = "drug-drugsfda-0001-of-0001.json"
@@ -35,7 +34,7 @@ class DrugsAtFDA(Base):
 
     def _get_latest_version(self) -> str:
         """Retrieve latest version of source data.
-        :return: version as a str -- expected formatting is YYYY-MM-DD
+        :return: version as a str -- expected formatting is YYYYMMDD
         """
         r = requests.get("https://api.fda.gov/download.json")
         if r.status_code == 200:
@@ -43,7 +42,7 @@ class DrugsAtFDA(Base):
             try:
                 date_raw = json["results"]["drug"]["drugsfda"]["export_date"]
             except KeyError:
-                msg = "Unable to parse OpenFDA version API - check for breaking changes"  # noqa: E501
+                msg = "Unable to parse OpenFDA version API - check for breaking changes"
                 logger.error(msg)
                 raise DownloadException(msg)
             return date_raw.replace("-", "")
@@ -72,10 +71,9 @@ class DrugsAtFDA(Base):
             -> Optional[str]:
         """Get approval status from products list.
         :param List products: list of individual FDA product objects
-        :param str concept_id: FDA application concept ID, used in reporting
-            error messages
-        :return: approval_status value if successful, None if ambiguous or
-            unavailable
+        :param str concept_id: FDA application concept ID, used in reporting error
+            messages
+        :return: approval_status value if successful, None if ambiguous or unavailable
         """
         statuses_map = {
             "Discontinued": ApprovalStatus.FDA_DISCONTINUED.value,
@@ -116,7 +114,6 @@ class DrugsAtFDA(Base):
             brand_names = [p["brand_name"] for p in products]
 
             aliases = []
-
             if "openfda" in result:
                 openfda = result["openfda"]
                 brand_name = openfda.get("brand_name")
@@ -147,10 +144,12 @@ class DrugsAtFDA(Base):
 
                 unii = openfda.get("unii")
                 if unii:
-                    therapy["associated_with"] = [f"{NamespacePrefix.UNII.value}:{u}" for u in unii]  # noqa: E501
+                    therapy["associated_with"] = [f"{NamespacePrefix.UNII.value}:{u}"
+                                                  for u in unii]
                 rxcui = openfda.get("rxcui")
                 if rxcui:
-                    therapy["xrefs"] = [f"{NamespacePrefix.RXNORM.value}:{r}" for r in rxcui]  # noqa: E501
+                    therapy["xrefs"] = [f"{NamespacePrefix.RXNORM.value}:{r}"
+                                        for r in rxcui]
 
             therapy["trade_names"] = brand_names
             therapy["aliases"] = aliases

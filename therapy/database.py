@@ -216,10 +216,9 @@ class Database:
         """Retrieve records for given query and match type.
 
         :param query: string to match against (should already be lower-case)
-        :param str match_type: type of match to look for. Should be one
-            of {"alias", "trade_name", "label", "xref", "associated_with",
-            "rx_brand"} -- use Database.get_record_by_id() for concept ID
-            lookup
+        :param str match_type: type of match to look for. Should be one of {"alias",
+            "trade_name", "label", "xref", "associated_with", "rx_brand"} -- use
+            Database.get_record_by_id() for concept ID lookup
         :return: list of matching records. Empty if lookup fails.
         """
         pk = f"{query}##{match_type.lower()}"
