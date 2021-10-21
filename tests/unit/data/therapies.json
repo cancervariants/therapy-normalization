@@ -867,7 +867,7 @@
       "mmsl:21336",
       "mmsl:d07642"
     ],
-    "approval_status": "approved",
+    "approval_status": "rxnorm_prescribable",
     "approval_year": [],
     "has_indication": [],
     "trade_names": ["Thymoglobulin"]
@@ -906,7 +906,7 @@
       "mmsl:d07641",
       "atc:L04AA03"
     ],
-    "approval_status": "approved",
+    "approval_status": "rxnorm_prescribable",
     "approval_year": [],
     "has_indication": [],
     "trade_names": ["ATGAM"]
