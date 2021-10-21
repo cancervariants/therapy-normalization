@@ -98,7 +98,6 @@ class QueryHandler:
                                                     normalized_disease_id=i[2])
                                       for i in inds]
 
-        print(item)
         drug = Drug(**item)
         src_name = item["src_name"]
 

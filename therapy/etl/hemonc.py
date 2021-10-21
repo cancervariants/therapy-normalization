@@ -8,8 +8,7 @@ from disease.query import QueryHandler as DiseaseNormalizer
 
 from therapy import DownloadException, PROJECT_ROOT
 from therapy.database import Database
-from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, \
-    ApprovalStatus
+from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, ApprovalStatus
 from therapy.etl.base import Base
 
 
@@ -33,8 +32,7 @@ class HemOnc(Base):
     def _download_data(self) -> None:
         """Download HemOnc.org source data.
 
-        Raises download exception for now -- HTTP authorization may be
-        possible?
+        Raises download exception for now -- HTTP authorization may be possible?
         """
         raise DownloadException("No download for HemOnc data available -- "
                                 "must place manually in data/ directory.")
