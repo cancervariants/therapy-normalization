@@ -96,7 +96,7 @@ class PhaseEnum(IntEnum):
 
 
 class HasIndication(BaseModel):
-    """Data regarding FDA indication. Currently specific to HemOnc.org data."""
+    """Data regarding FDA indication. Currently provided only by HemOnc.org data."""
 
     disease_id: str
     disease_label: str

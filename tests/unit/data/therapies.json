@@ -868,8 +868,6 @@
       "mmsl:d07642"
     ],
     "approval_status": "rxnorm_prescribable",
-    "approval_year": [],
-    "has_indication": [],
     "trade_names": ["Thymoglobulin"]
   },
   {
@@ -907,8 +905,6 @@
       "atc:L04AA03"
     ],
     "approval_status": "rxnorm_prescribable",
-    "approval_year": [],
-    "has_indication": [],
     "trade_names": ["ATGAM"]
   },
   {
@@ -2481,12 +2477,9 @@
     "item_type": "identity",
     "label": "CISPLATIN",
     "concept_id": "drugsatfda:NDA018057",
-    "aliases": [],
     "xrefs": ["rxcui:1736854"],
     "associated_with": ["unii:Q20Q21Q62J"],
     "approval_status": null,
-    "approval_year": [],
-    "has_indication": [],
     "trade_names": ["PLATINOL-AQ", "PLATINOL"]
   },
   {
@@ -2533,7 +2526,6 @@
     "item_type": "identity",
     "concept_id": "drugsatfda:NDA202450",
     "label": "ACLIDINIUM BROMIDE",
-    "aliases": [],
     "xrefs": [
       "rxcui:1607112",
       "rxcui:1303102",
