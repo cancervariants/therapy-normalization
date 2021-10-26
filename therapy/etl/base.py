@@ -149,7 +149,7 @@ class Base(ABC):
         if not latest:
             self._download_data()
             latest = list(self._src_dir.glob(fglob))
-        assert len(latest) == 0  # probably unnecessary, but just to be safe
+        assert len(latest) != 0  # probably unnecessary, but just to be safe
         self._src_file: Path = latest[0]
 
     @abstractmethod
