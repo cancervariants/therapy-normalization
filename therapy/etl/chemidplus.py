@@ -2,7 +2,7 @@
 
 Courtesy of the U.S. National Library of Medicine.
 """
-from typing import Dict, Any, List, Generator
+from typing import List, Generator
 from pathlib import Path
 import xml.etree.ElementTree as ET
 import logging
@@ -12,7 +12,7 @@ from therapy.etl.base import Base
 from therapy import PROJECT_ROOT
 from therapy.database import Database
 from therapy.schemas import Drug, NamespacePrefix, SourceMeta, SourceName, \
-    DataLicenseAttributes
+    DataLicenseAttributes, Params
 
 
 logger = logging.getLogger("therapy")
@@ -116,7 +116,7 @@ class ChemIDplus(Base):
             if not display_name or not re.search(TAGS_REGEX, display_name):
                 continue
             label = re.sub(TAGS_REGEX, "", display_name)
-            params: Dict[str, Any] = {"label": label}
+            params: Params = {"label": label}
 
             # get concept ID
             reg_no = chemical.find("NumberList").find("CASRegistryNumber")
@@ -144,11 +144,11 @@ class ChemIDplus(Base):
                     if loc.text == "DrugBank":
                         db = f"{NamespacePrefix.DRUGBANK.value}:" \
                              f"{loc.attrib['url'].split('/')[-1]}"
-                        params["xrefs"].append(db)
+                        params["xrefs"].append(db)  # type: ignore
                     elif loc.text == "FDA SRS":
                         unii = f"{NamespacePrefix.UNII.value}:" \
                                f"{loc.attrib['url'].split('/')[-1]}"
-                        params["associated_with"].append(unii)
+                        params["associated_with"].append(unii)  # type: ignore
 
             # double-check and load full record
             assert Drug(**params)

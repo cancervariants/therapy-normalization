@@ -25,7 +25,7 @@ from therapy import PROJECT_ROOT, DownloadException, XREF_SOURCES, \
 from therapy.etl.base import Base
 from therapy.database import Database
 from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
-    ApprovalStatus
+    ApprovalStatus, Params
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -182,7 +182,7 @@ class RxNorm(Base):
                         self._get_brands(row, ingredient_brands)
                     else:
                         if concept_id not in data.keys():
-                            params = dict()
+                            params: Params = {}
                             params["concept_id"] = concept_id
                             self._add_str_field(params, row, precise_ingredient,
                                                 drug_forms, sbdfs)
