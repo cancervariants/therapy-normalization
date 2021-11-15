@@ -65,7 +65,6 @@ def mock_database():
                 try:
                     label_and_type = record["label_and_type"]
                 except KeyError:
-                    print(record)
                     raise Exception
                 concept_id = record["concept_id"]
                 if self.records.get(label_and_type):
