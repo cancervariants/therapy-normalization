@@ -88,16 +88,6 @@ class ApprovalStatus(str, Enum):
     RXNORM_PRESCRIBABLE = "rxnorm_prescribable"
 
 
-class PhaseEnum(IntEnum):
-    """An enumerated drug development phase type."""
-
-    preclinical = 0
-    phase_i_trials = 1
-    phase_ii_trials = 2
-    phase_iii_trials = 3
-    approved = 4
-
-
 class HasIndication(BaseModel):
     """Data regarding FDA indication. Currently provided only by HemOnc.org data."""
 
