@@ -11,7 +11,7 @@ logger.setLevel(logging.DEBUG)
 
 
 class DrugBank(Base):
-    """ETL the DrugBank source into therapy.db."""
+    """Class for DrugBank ETL methods."""
 
     def _download_data(self) -> None:
         """Download DrugBank source data."""

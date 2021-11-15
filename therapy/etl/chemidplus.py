@@ -27,7 +27,7 @@ TAGS_REGEX = r" \[.*\]"
 
 
 class ChemIDplus(Base):
-    """Core ChemIDplus ETL class."""
+    """Class for ChemIDplus ETL methods."""
 
     def _download_data(self) -> None:
         """Download source data from default location."""

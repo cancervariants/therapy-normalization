@@ -18,7 +18,7 @@ logger.setLevel(logging.DEBUG)
 
 
 class HemOnc(Base):
-    """Docstring"""
+    """Class for HemOnc.org ETL methods."""
 
     def __init__(self, database: Database,
                  data_path: Path = APP_ROOT / "data"):

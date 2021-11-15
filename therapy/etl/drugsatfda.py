@@ -11,7 +11,7 @@ from therapy.etl.base import Base
 
 
 class DrugsAtFDA(Base):
-    """Core Drugs@FDA import class."""
+    """Class for Drugs@FDA ETL methods."""
 
     def _download_data(self) -> None:
         """Download source data from instance-provided source URL."""

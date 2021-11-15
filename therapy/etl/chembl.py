@@ -17,7 +17,7 @@ logger.setLevel(logging.DEBUG)
 
 
 class ChEMBL(Base):
-    """ETL the ChEMBL source into therapy.db."""
+    """Class for ChEMBL ETL methods."""
 
     def _download_data(self) -> None:
         """Download latest ChEMBL database file from EBI."""

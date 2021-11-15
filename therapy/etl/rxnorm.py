@@ -43,7 +43,7 @@ RXNORM_XREFS = ["ATC", "CVX", "DRUGBANK", "MMSL", "MSH", "MTHCMSFRF", "MTHSPL",
 
 
 class RxNorm(Base):
-    """Extract, transform, and load the RxNorm source."""
+    """Class for RxNorm ETL methods."""
 
     def _create_drug_form_yaml(self) -> None:
         """Create a YAML file containing RxNorm drug form values."""

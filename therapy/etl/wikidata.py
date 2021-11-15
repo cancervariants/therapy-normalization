@@ -62,7 +62,7 @@ SPARQL_QUERY = """
 
 
 class Wikidata(Base):
-    """Extract, transform, and load the Wikidata source into therapy.db."""
+    """Class for Wikidata ETL methods."""
 
     def _download_data(self) -> None:
         """Download latest Wikidata source dump."""

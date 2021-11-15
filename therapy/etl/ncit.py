@@ -15,7 +15,7 @@ logger.setLevel(logging.DEBUG)
 
 
 class NCIt(Base):
-    """Core NCIt ETL class.
+    """Class for NCIt ETL methods.
 
     Extracting both:
      * NCIt classes with semantic_type "Pharmacologic Substance" but not
