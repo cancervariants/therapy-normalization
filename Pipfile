@@ -26,7 +26,7 @@ pyyaml = "*"
 disease-normalizer = ">=0.2.10"
 "ga4gh.vrsatile.pydantic" = ">=0.0.3"
 chembl-downloader = "*"
-bioversions = ">=0.3.4"
+bioversions = ">=0.4.3"
 pystow = "*"
 
 [dev-packages]
