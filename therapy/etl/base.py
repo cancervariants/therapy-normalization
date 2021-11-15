@@ -178,6 +178,7 @@ class Base(ABC):
         except ValidationError as e:
             logger.error(f"Attempted to load invalid therapy: {therapy}")
             raise e
+
         concept_id = therapy["concept_id"]
 
         for attr_type, item_type in ITEM_TYPES.items():
@@ -207,8 +208,6 @@ class Base(ABC):
                     continue
                 for item in {item.lower() for item in value}:
                     self.database.add_ref_record(item, concept_id, item_type)
-        assert Drug(**therapy)
-        concept_id = therapy["concept_id"]
 
         # handle detail fields
         approval_attrs = ("approval_status", "approval_year", "has_indication")
