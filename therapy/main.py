@@ -74,21 +74,20 @@ def search(q: str = Query(..., description=q_descr),
     """For each source, return strongest-match concepts for query string
     provided by user.
 
-        :param q: therapy search term
-        :param keyed: if true, response is structured as key/value pair of
-            sources to source match lists.
-        :param incl: comma-separated list of sources to include, with all
-            others excluded. Raises HTTPException if both `incl` and
-            `excl` are given.
-        :param excl: comma-separated list of sources exclude, with all others
-            included. Raises HTTPException if both `incl` and `excl` are given.
-        :returns: JSON response with matched records and source metadata
+    :param q: therapy search term
+    :param keyed: if true, response is structured as key/value pair of sources to
+        source match lists.
+    :param incl: comma-separated list of sources to include, with all others excluded.
+        Raises HTTPException if both `incl` and `excl` are given.
+    :param excl: comma-separated list of sources exclude, with all others included.
+        Raises HTTPException if both `incl` and `excl` are given.
+    :returns: JSON response with matched records and source metadata
     """
     try:
         response = query_handler.search_sources(html.unescape(q),
                                                 keyed=keyed,  # type: ignore
-                                                incl=incl, excl=excl,
-                                                infer=infer_namespace)
+                                                incl=incl, excl=excl,  # type: ignore
+                                                infer=infer_namespace)  # type: ignore
     except InvalidParameterException as e:
         raise HTTPException(status_code=422, detail=str(e))
     return response
@@ -117,7 +116,7 @@ def normalize(q: str = Query(..., description=merged_q_descr),
     """
     try:
         response = query_handler.search_groups(html.unescape(q),
-                                               infer_namespace)
+                                               infer_namespace)  # type: ignore
     except InvalidParameterException as e:
         raise HTTPException(status_code=422, detail=str(e))
     return response
