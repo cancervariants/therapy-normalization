@@ -1,9 +1,11 @@
 """Test the therapy querying method."""
-from therapy.query import QueryHandler, InvalidParameterException
-from therapy.schemas import MatchType
-import pytest
 from datetime import datetime
 import os
+
+import pytest
+
+from therapy.query import QueryHandler, InvalidParameterException
+from therapy.schemas import MatchType
 
 
 @pytest.fixture(scope="module")
@@ -28,7 +30,7 @@ def merge_query_handler(mock_database):
     """Provide Merge instance to test cases."""
     class QueryGetter:
         def __init__(self):
-            self.query_handler = QueryHandler(db_url="http://localhost:8000")
+            self.query_handler = QueryHandler()
             if os.environ.get("TEST") is not None:
                 self.query_handler.db = mock_database()  # replace initial DB
 
@@ -307,8 +309,9 @@ def therapeutic_procedure():
             "TREAT",
             "Treatment",
             "TX",
-            "therapeutic intervention",
-            "treatment"
+            "treatment",
+            "treatment_or_therapy",
+            "treatment or therapy",
         ],
         "extensions": [
             {

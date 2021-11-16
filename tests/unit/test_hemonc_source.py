@@ -1,15 +1,16 @@
 """Test that the therapy normalizer works as intended for the HemOnc.org
 source.
 """
+import re
+
 import pytest
 
 from tests.conftest import compare_response
 from therapy.query import QueryHandler
 from therapy.schemas import Drug, MatchType, ApprovalStatus
-import re
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def hemonc():
     """Build HemOnc normalizer test fixture."""
     class QueryGetter:
@@ -19,16 +20,16 @@ def hemonc():
 
         def search(self, query_str):
             resp = self.query_handler.search_sources(query_str, keyed=True,
-                                                     incl='hemonc')
-            return resp['source_matches']['HemOnc']
+                                                     incl="hemonc")
+            return resp["source_matches"]["HemOnc"]
 
         def fetch_meta(self):
-            return self.query_handler._fetch_meta('HemOnc')
+            return self.query_handler._fetch_meta("HemOnc")
 
     return QueryGetter()
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def cisplatin():
     """Construct cisplatin fixture."""
     return Drug(**{
@@ -68,7 +69,7 @@ def cisplatin():
     })
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def bendamustine():
     """Construct bendamustine fixture."""
     return Drug(**{
@@ -117,7 +118,7 @@ def bendamustine():
     })
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope="module")
 def degarelix():
     """Create fixture for degarelix drug."""
     return Drug(**{
@@ -145,74 +146,74 @@ def degarelix():
 
 def test_concept_id_match(hemonc, cisplatin, bendamustine, degarelix):
     """Test that concept ID queries resolve to correct record."""
-    response = hemonc.search('hemonc:105')
+    response = hemonc.search("hemonc:105")
     compare_response(response, MatchType.CONCEPT_ID, cisplatin)
 
-    response = hemonc.search('hemonc:65')
+    response = hemonc.search("hemonc:65")
     compare_response(response, MatchType.CONCEPT_ID, bendamustine)
 
-    response = hemonc.search('hemonc:151')
+    response = hemonc.search("hemonc:151")
     compare_response(response, MatchType.CONCEPT_ID, degarelix)
 
 
 def test_label_match(hemonc, cisplatin, bendamustine, degarelix):
     """Test that label queries resolve to correct record."""
-    response = hemonc.search('cisplatin')
+    response = hemonc.search("cisplatin")
     compare_response(response, MatchType.LABEL, cisplatin)
 
-    response = hemonc.search('Bendamustine')
+    response = hemonc.search("Bendamustine")
     compare_response(response, MatchType.LABEL, bendamustine)
 
-    response = hemonc.search('DEGARELIX')
+    response = hemonc.search("DEGARELIX")
     compare_response(response, MatchType.LABEL, degarelix)
 
 
 def test_alias_match(hemonc, cisplatin, bendamustine, degarelix):
     """Test that alias queries resolve to correct record."""
-    response = hemonc.search('ddp')
+    response = hemonc.search("ddp")
     compare_response(response, MatchType.ALIAS, cisplatin)
 
-    response = hemonc.search('dacp')
+    response = hemonc.search("dacp")
     compare_response(response, MatchType.ALIAS, cisplatin)
 
-    response = hemonc.search('nsc 119875')
+    response = hemonc.search("nsc 119875")
     compare_response(response, MatchType.ALIAS, cisplatin)
 
-    response = hemonc.search('cep-18083')
+    response = hemonc.search("cep-18083")
     compare_response(response, MatchType.ALIAS, bendamustine)
 
-    response = hemonc.search('bendamustine hydrochloride')
+    response = hemonc.search("bendamustine hydrochloride")
     compare_response(response, MatchType.ALIAS, bendamustine)
 
-    response = hemonc.search('asp3550')
+    response = hemonc.search("asp3550")
     compare_response(response, MatchType.ALIAS, degarelix)
 
 
 def test_trade_name(hemonc, bendamustine, degarelix):
     """Test that trade name queries resolve to correct record."""
-    response = hemonc.search('bendamax')
+    response = hemonc.search("bendamax")
     compare_response(response, MatchType.TRADE_NAME, bendamustine)
 
-    response = hemonc.search('purplz')
+    response = hemonc.search("purplz")
     compare_response(response, MatchType.TRADE_NAME, bendamustine)
 
-    response = hemonc.search('firmagon')
+    response = hemonc.search("firmagon")
     compare_response(response, MatchType.TRADE_NAME, degarelix)
 
     # no trade names for records with > 20
-    response = hemonc.search('platinol')
-    assert response['match_type'] == MatchType.NO_MATCH
+    response = hemonc.search("platinol")
+    assert response["match_type"] == MatchType.NO_MATCH
 
 
 def test_xref_match(hemonc, cisplatin, bendamustine, degarelix):
     """Test that xref query resolves to correct record."""
-    response = hemonc.search('rxcui:2555')
+    response = hemonc.search("rxcui:2555")
     compare_response(response, MatchType.XREF, cisplatin)
 
-    response = hemonc.search('rxcui:134547')
+    response = hemonc.search("rxcui:134547")
     compare_response(response, MatchType.XREF, bendamustine)
 
-    response = hemonc.search('rxcui:475230')
+    response = hemonc.search("rxcui:475230")
     compare_response(response, MatchType.XREF, degarelix)
 
 
@@ -221,7 +222,7 @@ def test_metadata(hemonc):
     response = hemonc.fetch_meta()
     assert response.data_license == "CC BY 4.0"
     assert response.data_license_url == "https://creativecommons.org/licenses/by/4.0/legalcode"  # noqa: E501
-    assert re.match(r'202[0-9][01][0-9][0-3][0-9]', response.version)
+    assert re.match(r"202[0-9][01][0-9][0-3][0-9]", response.version)
     assert response.data_url == "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6"  # noqa: E501
     assert response.rdp_url is None
     assert response.data_license_attributes == {

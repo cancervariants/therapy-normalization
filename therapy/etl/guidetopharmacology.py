@@ -1,21 +1,24 @@
 """Module for Guide to PHARMACOLOGY ETL methods."""
-from typing import Optional
-from therapy import logger, PROJECT_ROOT, DownloadException
-from therapy.etl.base import Base
-from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, \
-    ApprovalStatus
+from typing import Optional, Dict, Any, List, Union
 from pathlib import Path
-import requests
-import bs4
 import re
 import csv
 import html
+
+import requests
+import bs4
+
+from therapy import logger, PROJECT_ROOT, DownloadException
+from therapy.database import Database
+from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, \
+    ApprovalStatus
+from therapy.etl.base import Base
 
 
 class GuideToPHARMACOLOGY(Base):
     """Class for Guide to PHARMACOLOGY ETL methods."""
 
-    def __init__(self, database,
+    def __init__(self, database: Database,
                  data_path: Path = PROJECT_ROOT / "data") -> None:
         """Initialize GuideToPHARMACOLOGY ETL class.
 
@@ -25,10 +28,8 @@ class GuideToPHARMACOLOGY(Base):
         super().__init__(database, data_path)
         self._data_url = "https://www.guidetopharmacology.org/download.jsp"
         self._version = self._find_version()
-        self._ligands_data_url = "https://www.guidetopharmacology.org/DATA/ligands.tsv"  # noqa: E501
+        self._ligands_data_url = "https://www.guidetopharmacology.org/DATA/ligands.tsv"
         self._ligand_id_mapping_data_url = "https://www.guidetopharmacology.org/DATA/ligand_id_mapping.tsv"  # noqa: E501
-        self._ligands_file = None
-        self._ligand_id_mapping_file = None
 
     def _find_version(self) -> str:
         """Find most recent data version.
@@ -44,7 +45,8 @@ class GuideToPHARMACOLOGY(Base):
                          f" status code: {status_code}")
             raise DownloadException
         data = soup.find("a", {"name": "data"}).find_next("div").find_next("div").find_next("b")  # noqa: E501
-        return re.search(r"\d{4}.\d+", data.contents[0]).group()
+        result = re.search(r"\d{4}.\d+", data.contents[0])  # type: ignore
+        return result.group()  # type: ignore
 
     def _extract_data(self) -> None:
         """Extract data from Guide to PHARMACOLOGY."""
@@ -62,7 +64,7 @@ class GuideToPHARMACOLOGY(Base):
             for f in dir_files:
                 if f.name == f"{prefix}_ligands_{self._version}.tsv":
                     self._ligands_file = f
-                elif f.name == f"{prefix}_ligand_id_mapping_{self._version}.tsv":  # noqa: E501
+                elif f.name == f"{prefix}_ligand_id_mapping_{self._version}.tsv":
                     self._ligand_id_mapping_file = f
 
         if self._ligands_file is None:
@@ -91,13 +93,13 @@ class GuideToPHARMACOLOGY(Base):
 
     def _transform_data(self) -> None:
         """Transform Guide To PHARMACOLOGY data."""
-        data = dict()
+        data: Dict[str, Any] = dict()
         self._transform_ligands(data)
         self._transform_ligand_id_mappings(data)
         for param in data.values():
             self._load_therapy(param)
 
-    def _transform_ligands(self, data: dict) -> None:
+    def _transform_ligands(self, data: Dict) -> None:
         """Transform ligands data file and add this data to `data`.
 
         :param dict data: Transformed data
@@ -107,9 +109,9 @@ class GuideToPHARMACOLOGY(Base):
             next(rows)
 
             for row in rows:
-                params = {
+                params: Dict[str, Union[List[str], str]] = {
                     "concept_id":
-                        f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}",  # noqa: E501
+                        f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}",
                     "label": row[1],
                     "src_name": SourceName.GUIDETOPHARMACOLOGY.value
                 }
@@ -153,13 +155,13 @@ class GuideToPHARMACOLOGY(Base):
 
                 data[params["concept_id"]] = params
 
-    def _transform_ligand_id_mappings(self, data: dict):
+    def _transform_ligand_id_mappings(self, data: Dict) -> None:
         """Transform ligand_id_mappings and add this data to `data`
         All ligands found in this file should already be in data
 
         :param dict data: Transformed data
         """
-        with open(self._ligand_id_mapping_file, "r") as f:
+        with open(self._ligand_id_mapping_file.absolute(), "r") as f:
             rows = csv.reader(f, delimiter="\t")
             for row in rows:
                 concept_id = f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}"  # noqa: E501
@@ -176,7 +178,7 @@ class GuideToPHARMACOLOGY(Base):
                     # CHEBI
                     associated_with.append(row[7])
                 if row[11]:
-                    xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:{row[11]}")  # noqa: E501
+                    xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:{row[11]}")
                 if row[12]:
                     xrefs.append(f"{NamespacePrefix.DRUGBANK.value}:{row[12]}")
                 if row[13]:
@@ -188,17 +190,17 @@ class GuideToPHARMACOLOGY(Base):
                     params["associated_with"] = associated_with
 
     def _set_approval_status(self, approved: str,
-                             withdrawn: str) -> Optional[ApprovalStatus]:
+                             withdrawn: str) -> Optional[str]:
         """Set approval status.
 
-        :param str approved: The drug is or has in the past been approved for
-            human clinical use by a regulatory agency
-        :param str withdrawn: The drug is no longer approved for its original
-            clinical use in one or more countries
+        :param str approved: The drug is or has in the past been approved for human
+            clinical use by a regulatory agency
+        :param str withdrawn: The drug is no longer approved for its original clinical
+            use in one or more countries
         :return: Approval status
         """
         if approved and not withdrawn:
-            approval_status = ApprovalStatus.APPROVED.value
+            approval_status: Optional[str] = ApprovalStatus.APPROVED.value
         elif withdrawn:
             approval_status = ApprovalStatus.WITHDRAWN.value
         else:

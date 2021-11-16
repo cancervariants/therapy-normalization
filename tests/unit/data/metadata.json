@@ -27,8 +27,8 @@
     "src_name": "NCIt",
     "data_license": "CC BY 4.0",
     "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
-    "version": "20.09d",
-    "data_url": "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2020/20.09d_Release/",
+    "version": "21.08e",
+    "data_url": "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2021/21.08e_Release/",
     "rdp_url": "http://reusabledata.org/ncit.html",
     "data_license_attributes": {
       "non_commercial": false,
