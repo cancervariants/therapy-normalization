@@ -11,7 +11,7 @@ from owlready2.entity import ThingClass
 
 from therapy import PROJECT_ROOT
 from therapy.database import Database
-from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Params
+from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, RecordParams
 from therapy.etl.base import Base
 
 logger = logging.getLogger("therapy")
@@ -155,7 +155,7 @@ class NCIt(Base):
                 if ":" in iri:
                     iri = iri.split(":")[1]
                 associated_with.append(f"{NamespacePrefix.CHEBI.value}:{iri}")
-            params: Params = {  # type: ignore
+            params: RecordParams = {  # type: ignore
                 "concept_id": concept_id,
                 "label": label,
                 "aliases": aliases,

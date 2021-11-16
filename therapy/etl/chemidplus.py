@@ -12,7 +12,7 @@ from therapy.etl.base import Base
 from therapy import PROJECT_ROOT
 from therapy.database import Database
 from therapy.schemas import Drug, NamespacePrefix, SourceMeta, SourceName, \
-    DataLicenseAttributes, Params
+    DataLicenseAttributes, RecordParams
 
 
 logger = logging.getLogger("therapy")
@@ -116,7 +116,7 @@ class ChemIDplus(Base):
             if not display_name or not re.search(TAGS_REGEX, display_name):
                 continue
             label = re.sub(TAGS_REGEX, "", display_name)
-            params: Params = {"label": label}
+            params: RecordParams = {"label": label}
 
             # get concept ID
             reg_no = chemical.find("NumberList").find("CASRegistryNumber")

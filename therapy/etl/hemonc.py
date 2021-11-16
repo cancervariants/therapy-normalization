@@ -8,7 +8,7 @@ from disease.query import QueryHandler as DiseaseNormalizer
 
 from therapy import DownloadException, PROJECT_ROOT
 from therapy.database import Database
-from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, Params, \
+from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, RecordParams, \
     ApprovalStatus
 from therapy.etl.base import Base
 
@@ -75,7 +75,7 @@ class HemOnc(Base):
         """Get therapy, brand name, and disease concepts from concepts file.
         :return: Tuple of dicts mapping ID to object for each type of concept
         """
-        therapies: Params = {}  # hemonc id -> record
+        therapies: RecordParams = {}  # hemonc id -> record
         brand_names: Dict[str, str] = {}  # hemonc id -> brand name
         conditions: Dict[str, str] = {}  # hemonc id -> condition name
 

@@ -9,7 +9,7 @@ import requests
 
 from therapy import DownloadException, logger
 from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, ApprovalStatus, \
-    Params
+    RecordParams
 from therapy.etl.base import Base
 
 
@@ -106,7 +106,7 @@ class DrugsAtFDA(Base):
                 # ignore biologics license applications (tentative)
                 continue
             concept_id = f"{NamespacePrefix.DRUGSATFDA.value}:{app_no}"
-            therapy: Params = {"concept_id": concept_id}
+            therapy: RecordParams = {"concept_id": concept_id}
 
             status = self._get_marketing_status(products, concept_id)
             if status:

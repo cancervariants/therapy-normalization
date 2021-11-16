@@ -7,7 +7,8 @@ from ga4gh.vrsatile.pydantic.vrsatile_model import ValueObjectDescriptor
 from pydantic import BaseModel, StrictBool
 
 
-Params = Dict[str, Union[List, Set, str, Dict[str, Any]]]
+# Working structure for object in preparation for upload to DB
+RecordParams = Dict[str, Union[List, Set, str, Dict[str, Any]]]
 
 
 class ApprovalStatus(str, Enum):
