@@ -112,6 +112,8 @@ class Base(ABC):
                                                  concept_id, item_type)
                     continue
 
+                value = list(set(value))
+
                 if "label" in therapy:
                     try:
                         value.remove(therapy["label"])
@@ -125,8 +127,10 @@ class Base(ABC):
                     logger.debug(f"{concept_id} has > 20 {attr_type}.")
                     del therapy[attr_type]
                     continue
+
                 for item in {item.lower() for item in value}:
                     self.database.add_ref_record(item, concept_id, item_type)
+
                 therapy[attr_type] = value
 
         # compress has_indication
