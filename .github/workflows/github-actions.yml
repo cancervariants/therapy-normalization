@@ -8,7 +8,7 @@ jobs:
             AWS_SECRET_ACCESS_KEY: ${{ secrets.DUMMY_AWS_SECRET_ACCESS_KEY }}
             AWS_DEFAULT_REGION: us-east-2
             AWS_DEFAULT_OUTPUT: text
-            THERAPY_NORM_DB_URL: http://localhost:8000
+            THERAPY_NORM_DB_URL: http://localhost:8001
             TEST: THERAPY_TEST
         steps:
             - uses: actions/checkout@v2
@@ -25,12 +25,14 @@ jobs:
 
             - name: Build local DynamoDB
               run: |
-                  chmod +x ./tests/unit/dynamodb_build.bash
-                  ./tests/unit/dynamodb_build.bash
+                  chmod +x ./tests/scripts/dynamodb_build.bash
+                  ./tests/scripts/dynamodb_build.bash
 
-            - name: Load and Test DynamoDB
-              run: |
-                  pipenv run pytest tests/unit/test_database.py
+            - name: Check style
+              run: pipenv run tox -e py38-lint
 
-            - run: pipenv run flake8
-            - run: pipenv run pytest tests/
+            - name: Check type correctness
+              run: pipenv run tox -e py38-mypy
+
+            - name: Run tests
+              run: pipenv run tox -e githubactions

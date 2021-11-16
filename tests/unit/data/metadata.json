@@ -27,8 +27,8 @@
     "src_name": "NCIt",
     "data_license": "CC BY 4.0",
     "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
-    "version": "20.09d",
-    "data_url": "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2020/20.09d_Release/",
+    "version": "21.08e",
+    "data_url": "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2021/21.08e_Release/",
     "rdp_url": "http://reusabledata.org/ncit.html",
     "data_license_attributes": {
       "non_commercial": false,
@@ -84,6 +84,30 @@
       "non_commercial": false,
       "share_alike": false,
       "attribution": true
+    }
+  },
+  {
+    "src_name": "GuideToPHARMACOLOGY",
+    "data_license": "CC BY-SA 4.0",
+    "data_license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "version": "2021.3",
+    "data_url": "https://www.guidetopharmacology.org/download.jsp",
+    "data_license_attributes": {
+      "non_commercial": false,
+      "share_alike": true,
+      "attribution": true
+    }
+  },
+  {
+    "src_name": "DrugsAtFDA",
+    "data_license": "CC0",
+    "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode",
+    "version": "20211004",
+    "data_url": "https://open.fda.gov/apis/drug/drugsfda/download/",
+    "data_license_attributes": {
+      "non_commercial": false,
+      "share_alike": false,
+      "attribution": false
     }
   }
 ]

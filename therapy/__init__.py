@@ -1,25 +1,30 @@
 """The VICC library for normalizing therapies."""
-from .version import __version__  # noqa: F401
 from pathlib import Path
 import logging
 
-PROJECT_ROOT = Path(__file__).resolve().parents[0]
+from .version import __version__
+
+PROJECT_ROOT: Path = Path(__file__).resolve().parents[0]
 logging.basicConfig(
-    filename='therapy.log',
-    format='[%(asctime)s] - %(name)s - %(levelname)s : %(message)s')
-logger = logging.getLogger('therapy')
+    filename="therapy.log",
+    format="[%(asctime)s] - %(name)s - %(levelname)s : %(message)s")
+logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
 
 class DownloadException(Exception):
     """Exception for failures relating to source file downloads."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):  # noqa: ANN204
         """Initialize exception."""
         super().__init__(*args, **kwargs)
 
 
-from therapy.schemas import SourceName, NamespacePrefix, ProhibitedSources, ItemTypes  # noqa: E402, E501
+from therapy.schemas import SourceName, NamespacePrefix, SourceIDAfterNamespace, ItemTypes  # noqa: E402, E501, I100, I202
+# map plural to singular form
+# eg {"label": "label", "trade_names": "trade_name"}
+# key is the field name in the record object, value is the item_type value
+# in reference objects
 ITEM_TYPES = {k.lower(): v.value for k, v in ItemTypes.__members__.items()}
 
 # Sources we import directly
@@ -34,27 +39,26 @@ PREFIX_LOOKUP = {v.value: SourceName[k].value
 
 # Namespace LUI patterns. Use for namespace inference.
 NAMESPACE_LUIS = {
-    r'^CHEMBL\d+$': SourceName.CHEMBL.value,
-    r'^\d+\-\d+\-\d+$': SourceName.CHEMIDPLUS.value,
-    r'^(Q|P)\d+$': SourceName.WIKIDATA.value,
-    r'^C\d+$': SourceName.NCIT.value,
-    r'^DB\d{5}$': SourceName.DRUGBANK.value,
+    r"^CHEMBL\d+$": SourceName.CHEMBL.value,
+    r"^\d+\-\d+\-\d+$": SourceName.CHEMIDPLUS.value,
+    r"^(Q|P)\d+$": SourceName.WIKIDATA.value,
+    r"^C\d+$": SourceName.NCIT.value,
+    r"^DB\d{5}$": SourceName.DRUGBANK.value,
 }
 
-# Sources that are not allowed in normalize endpoint due to license
-PROHIBITED_SOURCES = {s.value.lower()
-                      for s in ProhibitedSources.__members__.values()}
-
-# Sources that are allowed in normalize endpoint
-ACCEPTED_SOURCES = SOURCES.keys() - PROHIBITED_SOURCES
+# use to generate namespace prefix from source ID value
+# e.g. {'q': 'wikidata'}
+NAMESPACE_LOOKUP = {v.value.lower(): NamespacePrefix[k].value
+                    for k, v in SourceIDAfterNamespace.__members__.items()
+                    if v.value != ""}
 
 # Sources that we import directly
 XREF_SOURCES = {source for source in SourceName.__members__}
 
 # Sources that are found in data from imported sources
-ASSOC_WITH_SOURCES = {source for source in NamespacePrefix.__members__} - XREF_SOURCES  # noqa: E501
+ASSOC_WITH_SOURCES = {source for source in NamespacePrefix.__members__} - XREF_SOURCES
 
-from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm, HemOnc, DrugsAtFDA  # noqa: F401, E402, E501
+from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm, HemOnc, GuideToPHARMACOLOGY, DrugsAtFDA  # noqa: E402, E501, I202
 # used to get source class name from string
 SOURCES_CLASS = \
     {s.value.lower(): eval(s.value) for s in SourceName.__members__.values()}

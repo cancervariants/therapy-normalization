@@ -1,17 +1,19 @@
 """Main application for FastAPI"""
+import html
+from typing import Dict, Optional
+
+from fastapi import FastAPI, HTTPException, Query
+from fastapi.openapi.utils import get_openapi
+
 from therapy import __version__
 from therapy.query import QueryHandler, InvalidParameterException
 from therapy.schemas import SearchService, NormalizationService
-from fastapi import FastAPI, HTTPException, Query
-from fastapi.openapi.utils import get_openapi
-import html
-from typing import Optional
 
 query_handler = QueryHandler()
-app = FastAPI(docs_url='/therapy', openapi_url='/therapy/openapi.json')
+app = FastAPI(docs_url="/therapy", openapi_url="/therapy/openapi.json")
 
 
-def custom_openapi():
+def custom_openapi() -> Dict:
     """Generate custom fields for OpenAPI response"""
     if app.openapi_schema:
         return app.openapi_schema
@@ -22,11 +24,11 @@ def custom_openapi():
         description="Normalize drugs and other therapy terms.",
         routes=app.routes
     )
-#    openapi_schema['info']['license'] = {  # TODO
+#    openapi_schema["info"]["license"] = {  # TODO
 #        "name": "Name-of-license",
 #        "url": "http://www.to-be-determined.com"
 #    }
-    openapi_schema['info']['contact'] = {  # TODO
+    openapi_schema["info"]["contact"] = {  # TODO
         "name": "Alex H. Wagner",
         "email": "Alex.Wagner@nationwidechildrens.org"
     }
@@ -34,29 +36,26 @@ def custom_openapi():
     return app.openapi_schema
 
 
-app.openapi = custom_openapi
+app.openapi = custom_openapi  # type: ignore
 
 # endpoint description text
-get_matches_summary = ("Given query, provide highest matches from "
-                       "each source.")
+get_matches_summary = ("Given query, provide highest matches from each source.")
 response_descr = "A response to a validly-formed query."
 q_descr = "Therapy to search."
-keyed_descr = ("If true, return response as key-value pairs of "
-               "sources to source matches.")
-incl_descr = ("Comma-separated list of source names to include in "
-              "response. Will exclude all other sources. Will return HTTP "
-              "status code 422: Unprocessable Entity if both 'incl' and "
-              "'excl' parameters are given.")
-excl_descr = ("Comma-separated list of source names to exclude in "
-              "response. Will include all other sources. Will return HTTP "
-              "status code 422: Unprocessable Entity if both 'incl' and"
-              "'excl' parameters are given.")
+keyed_descr = ("If true, return response as key-value pairs of sources to source "
+               "matches.")
+incl_descr = ("Comma-separated list of source names to include in response. Will "
+              "exclude all other sources. Will return HTTP status code 422: "
+              'Unprocessable Entity if both "incl" and "excl" parameters are given.')
+excl_descr = ("Comma-separated list of source names to exclude in response. Will "
+              "include all other sources. Will return HTTP status code 422: "
+              'Unprocessable Entity if both "incl" and "excl" parameters are given.')
 infer_descr = ("If true, attempt namespace inference when queries match known "
                "Local Unique Identifier patterns.")
-search_description = ("For each source, return strongest-match concepts "
-                      "for query string provided by user")
-normalize_description = ("Return merged strongest-match concept for query "
-                         "string provided by user.")
+search_description = ("For each source, return strongest-match concepts for query "
+                      "string provided by user")
+normalize_description = ("Return merged strongest-match concept for query string "
+                         "provided by user.")
 
 
 @app.get("/therapy/search",
@@ -70,7 +69,8 @@ def search(q: str = Query(..., description=q_descr),
            incl: Optional[str] = Query(None, description=incl_descr),
            excl: Optional[str] = Query(None, description=excl_descr),
            infer_namespace: Optional[bool] = Query(True,
-                                                   description=infer_descr)):
+                                                   description=infer_descr)
+           ) -> Dict:
     """For each source, return strongest-match concepts for query string
     provided by user.
 
@@ -85,7 +85,8 @@ def search(q: str = Query(..., description=q_descr),
         :returns: JSON response with matched records and source metadata
     """
     try:
-        response = query_handler.search_sources(html.unescape(q), keyed=keyed,
+        response = query_handler.search_sources(html.unescape(q),
+                                                keyed=keyed,  # type: ignore
                                                 incl=incl, excl=excl,
                                                 infer=infer_namespace)
     except InvalidParameterException as e:
@@ -108,7 +109,7 @@ def normalize(q: str = Query(..., description=merged_q_descr),
               infer_namespace: Optional[bool] = Query(
                   True,
                   description=infer_descr)
-              ):
+              ) -> Dict:
     """Return merged strongest-match concept for query string provided by
     user.
 
