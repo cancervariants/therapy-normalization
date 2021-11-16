@@ -128,8 +128,6 @@ class Base(ABC):
                 for item in {item.lower() for item in value}:
                     self.database.add_ref_record(item, concept_id, item_type)
                 therapy[attr_type] = value
-        assert Drug(**therapy)
-        concept_id = therapy["concept_id"]
 
         # compress has_indication
         indications = therapy.get("has_indication")
