@@ -9,7 +9,7 @@ from wikibaseintegrator.wbi_functions import execute_sparql_query
 
 from therapy import PROJECT_ROOT
 from therapy.database import Database
-from therapy.schemas import SourceName, NamespacePrefix, Params, \
+from therapy.schemas import SourceName, NamespacePrefix, RecordParams, \
     SourceIDAfterNamespace, SourceMeta
 from therapy.etl.base import Base
 
@@ -84,7 +84,7 @@ class Wikidata(Base):
 
         transformed_data = []
         for item in data:
-            params: Params = {}
+            params: RecordParams = {}
             for attr in item:
                 params[attr] = item[attr]["value"]
             transformed_data.append(params)
