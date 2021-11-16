@@ -1,5 +1,5 @@
 """ETL methods for the Drugs@FDA source."""
-from typing import List, Union, Dict, Optional
+from typing import List, Optional
 import zipfile
 from io import BytesIO
 import json
@@ -8,7 +8,8 @@ import shutil
 import requests
 
 from therapy import DownloadException, logger
-from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, ApprovalStatus
+from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, ApprovalStatus, \
+    Params
 from therapy.etl.base import Base
 
 
@@ -105,7 +106,7 @@ class DrugsAtFDA(Base):
                 # ignore biologics license applications (tentative)
                 continue
             concept_id = f"{NamespacePrefix.DRUGSATFDA.value}:{app_no}"
-            therapy: Dict[str, Union[str, List]] = {"concept_id": concept_id}
+            therapy: Params = {"concept_id": concept_id}
 
             status = self._get_marketing_status(products, concept_id)
             if status:
