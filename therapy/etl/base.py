@@ -131,10 +131,12 @@ class Base(ABC):
         concept_id = therapy["concept_id"]
 
         # compress has_indication
-        inds = therapy.get("has_indication")
-        if inds:
-            therapy["has_indication"] = list(inds.values())
-            del therapy["has_indication"]
+        indications = therapy.get("has_indication")
+        if indications:
+            therapy["has_indication"] = [
+                [ind["disease_id"], ind["disease_label"], ind["normalized_disease_id"]]
+                for ind in indications
+            ]
         elif "has_indication" in therapy:
             del therapy["has_indication"]
 
