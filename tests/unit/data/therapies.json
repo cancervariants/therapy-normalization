@@ -2491,6 +2491,12 @@
     "trade_names": ["PLATINOL-AQ", "PLATINOL"]
   },
   {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "drugsatfda:nda018057",
+    "item_type": "label",
+    "src_name": "DrugsAtFDA"
+  },
+  {
     "label_and_type": "unii:q20q21q62j##associated_with",
     "concept_id": "drugsatfda:nda018057",
     "item_type": "associated_with",
@@ -2635,7 +2641,7 @@
     "item_type": "xref"
   },
   {
-    "label_and_type": "unii:9HW64Q8G6G##associated_with",
+    "label_and_type": "unii:9hw64q8g6g##associated_with",
     "concept_id": "drugsatfda:nda022334",
     "src_name": "DrugsAtFDA",
     "item_type": "associated_with"
@@ -2653,7 +2659,7 @@
     "item_type": "label"
   },
   {
-    "label_and_type": "drugsatfda:NDA050682",
+    "label_and_type": "drugsatfda:nda050682##identity",
     "src_name": "DrugsAtFDA",
     "item_type": "identity",
     "label": "DACTINOMYCIN",
@@ -2705,7 +2711,7 @@
     "trade_names": ["NALFON"]
   },
   {
-    "label_and_type": "unii:0X2CW1QABJ##associated_with",
+    "label_and_type": "unii:0x2cw1qabj##associated_with",
     "item_type": "associated_with",
     "concept_id": "drugsatfda:ANDA072267",
     "src_name": "DrugsAtFDA"
@@ -2723,7 +2729,7 @@
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:NDA017604##identity",
+    "label_and_type": "drugsatfda:nda017604##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "label": "FENOPROFEN CALCIUM",
@@ -2733,7 +2739,7 @@
     "trade_names": ["NALFON", "FENORTHO"]
   },
   {
-    "label_and_type": "unii:0X2CW1QABJ##associated_with",
+    "label_and_type": "unii:0x2cw1qabj##associated_with",
     "item_type": "associated_with",
     "concept_id": "drugsatfda:NDA017604",
     "src_name": "DrugsAtFDA"
