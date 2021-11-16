@@ -26,10 +26,12 @@ TGTTICKET=$(echo $TGT | tr "=" "\n")
 for TICKET in $TGTTICKET
 do
     if [[ "$TICKET" == *"TGT"* ]]; then
+        echo $TICKET
 	  SUBSTRING=$(echo $TICKET| cut -d'/' -f 7)
 	  TGTVALUE=$(echo $SUBSTRING | sed 's/.$//')
 	fi
 done
+echo "HERE";
 echo $TGTVALUE
 STTICKET=$(curl -d "service="$DOWNLOAD_URL -H "Content-Type: application/x-www-form-urlencoded" -X POST https://utslogin.nlm.nih.gov/cas/v1/tickets/$TGTVALUE)
 echo $STTICKET

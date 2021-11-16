@@ -7,7 +7,6 @@ Library of Medicine (NLM), National Institutes of Health, Department of Health
 """
 import csv
 import logging
-import subprocess
 import shutil
 import zipfile
 import re
@@ -17,8 +16,9 @@ from typing import List, Dict
 import yaml
 import bioversions
 from boto3.dynamodb.table import BatchWriter
+import requests
 
-from therapy import APP_ROOT, DownloadException, XREF_SOURCES, ASSOC_WITH_SOURCES, \
+from therapy import DownloadException, XREF_SOURCES, ASSOC_WITH_SOURCES, \
     ITEM_TYPES
 from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
     ApprovalStatus
@@ -60,37 +60,47 @@ class RxNorm(Base):
 
     def _download_data(self) -> None:
         """Download latest RxNorm data file.
+
         :raises DownloadException: if API Key is not defined in the environment.
         """
         logger.info("Retrieving source data for RxNorm")
-        if "RXNORM_API_KEY" in environ.keys():
-            url = bioversions.resolve("rxnorm").homepage
-            if not url:
-                raise ValueError("Could not resolve RxNorm homepage")
-
-            zip_path = str(self._src_dir / "rxnorm.zip")
-            environ["RXNORM_PATH"] = zip_path
-
-            # Source:
-            # https://documentation.uts.nlm.nih.gov/automating-downloads.html
-            subprocess.call(["bash", f"{APP_ROOT}/etl/rxnorm_download.sh", url])
-
-            with zipfile.ZipFile(zip_path, "r") as zf:
-                zf.extractall(self._src_dir)
-
-            remove(zip_path)
-            shutil.rmtree(self._src_dir / "prescribe")
-            shutil.rmtree(self._src_dir / "scripts")
-
-            temp_file = self._src_dir / "rrf" / "RXNCONSO.RRF"
-            self._src_file = self._src_dir / f"rxnorm_{self._version}.RRF"
-            shutil.move(temp_file, self._src_file)
-            shutil.rmtree(self._src_dir / "rrf")
-            self._create_drug_form_yaml()
-            logger.info("Successfully retrieved source data for RxNorm")
-        else:
+        api_key = environ.get("RXNORM_API_KEY")
+        if api_key is None:
             logger.error("Could not find RXNORM_API_KEY in environment variables.")
             raise DownloadException("RXNORM_API_KEY not found.")
+
+        url = bioversions.resolve("rxnorm").homepage
+        if not url:
+            raise DownloadException("Could not resolve RxNorm homepage")
+
+        zip_path = str(self._src_dir / "rxnorm.zip")
+
+        data = {"apikey": api_key}
+        headers = {"Content-Type": "application/x-www-form-urlencoded"}
+        api_url = "https://utslogin.nlm.nih.gov/cas/v1/api-key"
+        tgt_r = requests.post(api_url,
+                              data=data, headers=headers)
+        tgtticket = tgt_r.text.split("-")
+        for ticket in tgtticket:
+            if api_url in ticket:
+                pass
+        # Source:
+        # https://documentation.uts.nlm.nih.gov/automating-downloads.html
+        # subprocess.call(["bash", f"{APP_ROOT}/etl/rxnorm_download.sh", url])
+
+        with zipfile.ZipFile(zip_path, "r") as zf:
+            zf.extractall(self._src_dir)
+
+        remove(zip_path)
+        shutil.rmtree(self._src_dir / "prescribe")
+        shutil.rmtree(self._src_dir / "scripts")
+
+        temp_file = self._src_dir / "rrf" / "RXNCONSO.RRF"
+        self._src_file = self._src_dir / f"rxnorm_{self._version}.RRF"
+        shutil.move(temp_file, self._src_file)
+        shutil.rmtree(self._src_dir / "rrf")
+        self._create_drug_form_yaml()
+        logger.info("Successfully retrieved source data for RxNorm")
 
     def _extract_data(self) -> None:
         """Get source files from RxNorm data directory.
