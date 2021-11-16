@@ -44,6 +44,7 @@ NAMESPACE_LUIS = {
     r"^(Q|P)\d+$": SourceName.WIKIDATA.value,
     r"^C\d+$": SourceName.NCIT.value,
     r"^DB\d{5}$": SourceName.DRUGBANK.value,
+    r"^A?NDA\d+$": SourceName.DRUGSATFDA.value,
 }
 
 # use to generate namespace prefix from source ID value
