@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 import zipfile
 from os import remove
 from shutil import move
-from typing import Dict, Any, Generator
+from typing import Generator
 from pathlib import Path
 import xml.etree.ElementTree as ET
 import re
@@ -16,7 +16,7 @@ import bioversions
 
 from therapy.etl.base import Base
 from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, \
-    DataLicenseAttributes
+    DataLicenseAttributes, RecordParams
 
 
 logger = logging.getLogger("therapy")
@@ -74,7 +74,7 @@ class ChemIDplus(Base):
             if not display_name or not re.search(TAGS_REGEX, display_name):
                 continue
             label = re.sub(TAGS_REGEX, "", display_name)
-            params: Dict[str, Any] = {"label": label}
+            params: RecordParams = {"label": label}
 
             # get concept ID
             reg_no = chemical.find("NumberList").find("CASRegistryNumber")
@@ -102,11 +102,11 @@ class ChemIDplus(Base):
                     if loc.text == "DrugBank":
                         db = f"{NamespacePrefix.DRUGBANK.value}:" \
                              f"{loc.attrib['url'].split('/')[-1]}"
-                        params["xrefs"].append(db)
+                        params["xrefs"].append(db)  # type: ignore
                     elif loc.text == "FDA SRS":
                         unii = f"{NamespacePrefix.UNII.value}:" \
                                f"{loc.attrib['url'].split('/')[-1]}"
-                        params["associated_with"].append(unii)
+                        params["associated_with"].append(unii)  # type: ignore
 
             self._load_therapy(params)
 

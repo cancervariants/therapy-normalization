@@ -166,7 +166,7 @@ class Base(ABC):
 
     def _load_therapy(self, therapy: Dict) -> None:
         """Load individual therapy record into database.
-        This method takes responsibility for:
+        Additionally, this method takes responsibility for:
             * validating record structure correctness
             * removing duplicates from list-like fields
             * removing empty fields
@@ -193,6 +193,8 @@ class Base(ABC):
                                                  concept_id, item_type)
                     continue
 
+                value = list(set(value))
+
                 if "label" in therapy:
                     try:
                         value.remove(therapy["label"])
@@ -206,11 +208,23 @@ class Base(ABC):
                     logger.debug(f"{concept_id} has > 20 {attr_type}.")
                     del therapy[attr_type]
                     continue
+
                 for item in {item.lower() for item in value}:
                     self.database.add_ref_record(item, concept_id, item_type)
+                therapy[attr_type] = value
+
+        # compress has_indication
+        indications = therapy.get("has_indication")
+        if indications:
+            therapy["has_indication"] = [
+                [ind["disease_id"], ind["disease_label"], ind["normalized_disease_id"]]
+                for ind in indications
+            ]
+        elif "has_indication" in therapy:
+            del therapy["has_indication"]
 
         # handle detail fields
-        approval_attrs = ("approval_status", "approval_year", "has_indication")
+        approval_attrs = ("approval_status", "approval_year")
         for field in approval_attrs:
             if approval_attrs in therapy and therapy[field] is None:
                 del therapy[field]

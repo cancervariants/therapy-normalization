@@ -63,7 +63,8 @@
     "label_and_type": "chembl:chembl267014##identity",
     "label": "L-745870",
     "concept_id": "chembl:CHEMBL267014",
-    "src_name": "ChEMBL"
+    "src_name": "ChEMBL",
+    "approval_status": "chembl_phase_0"
   },
   {
     "label_and_type": "l-745870##label",
@@ -838,6 +839,82 @@
     "src_name": "RxNorm"
   },
   {
+    "src_name": "RxNorm",
+    "label_and_type": "rxcui:107044##identity",
+    "item_type": "identity",
+    "label": "rabbit anti-human T-lymphocyte globulin",
+    "concept_id": "rxcui:107044",
+    "aliases": [
+      "Anti-human thymocyte immunoglobulin, rabbit",
+      "Rabbit anti-human thymocyte globulin (rATG)",
+      "Rabbit ATG",
+      "anti-thymocyte globulin (rabbit)",
+      "Anti-thymocyte globulin rabbit",
+      "Anti-thymocyte globulin (rabbit)",
+      "Rabbit anti-human thymocyte immunoglobulin",
+      "rATG",
+      "Rabbit antithymocyte globulin",
+      "Anti-T-lymphocyte immune globulin, rabbit",
+      "Rabbit anti-thymocyte immunoglobulin",
+      "Rabbit anti-human thymocyte globulin",
+      "Lapine T-lymphocyte immune globulin",
+      "Antithymocyte immunoglobulin"
+    ],
+    "xrefs": ["drugbank:DB00098"],
+    "associated_with": [
+      "atc:L04AA04",
+      "mesh:C512542",
+      "mthspl:D7RD81HE4W",
+      "mmsl:21336",
+      "mmsl:d07642"
+    ],
+    "approval_status": "rxnorm_prescribable",
+    "trade_names": ["Thymoglobulin"]
+  },
+  {
+    "item_type": "trade_name",
+    "label_and_type": "thymoglobulin##trade_name",
+    "concept_id": "rxcui:107044",
+    "src_name": "RxNorm"
+  },
+  {
+    "src_name": "RxNorm",
+    "label_and_type": "rxcui:91601##identity",
+    "item_type": "identity",
+    "label": "lymphocyte immune globulin, anti-thymocyte globulin, equine",
+    "concept_id": "rxcui:91601",
+    "aliases": [
+      "Lymphocyte immune globulin, anti-thymocyte globulin",
+      "equine ATG",
+      "Anti-thymocyte globulin equine",
+      "Lymphocyte Immune Globulin, Anti-Thymocyte Globulin (Equine)",
+      "Horse ATG",
+      "eATG",
+      "lymphocyte immune globulin, anti-thy (equine)",
+      "Anti-thymocyte Globulin (Equine)",
+      "hATG",
+      "Equine thymocyte immune globulin",
+      "Lymphocyte immune globulin anti-thymocyte globulin (equine)",
+      "Horse anti-thymocyte globulin"
+    ],
+    "xrefs": ["drugbank:DB09312"],
+    "associated_with": [
+      "mthspl:475247QF1Z",
+      "mmsl:27222",
+      "mesh:D000961",
+      "mmsl:d07641",
+      "atc:L04AA03"
+    ],
+    "approval_status": "rxnorm_prescribable",
+    "trade_names": ["ATGAM"]
+  },
+  {
+    "label_and_type": "atgam##trade_name",
+    "item_type": "trade_name",
+    "src_name": "RxNorm",
+    "concept_id": "rxcui:91601"
+  },
+  {
     "label_and_type": "lymphocyte immune globulin, anti-thymocyte globulin##label",
     "concept_id": "rxcui:1011",
     "src_name": "RxNorm"
@@ -968,7 +1045,8 @@
       "3-Aminopropionic Acid"
     ],
     "associated_with": ["mesh:D015091", "vandf:4028377", "unii:11P2JDE17B"],
-    "src_name": "RxNorm"
+    "src_name": "RxNorm",
+    "item_type": "identity"
   },
   {
     "label_and_type": "beta-alanine##label",
@@ -1011,7 +1089,6 @@
     "aliases": [
       "3,5,3',5'-Tetraiodo-L-thyronine",
       "Thyroxine",
-      "thyroxine",
       "Thyroid Hormone, T4",
       "Thyroxin",
       "T4 Thyroid Hormone",
@@ -1369,7 +1446,8 @@
       "drugsatfda:ANDA074735",
       "drugsatfda:ANDA206774",
       "drugsatfda:ANDA207323",
-      "drugsatfda:ANDA075036"
+      "drugsatfda:ANDA075036",
+      "drugsatfda:NDA018057"
     ],
     "trade_names": ["Cisplatin", "Platinol", "PLATINOL", "PLATINOL-AQ"],
     "aliases": [
@@ -1421,10 +1499,10 @@
       "vandf:4018139",
       "pubchem.compound:5702198",
       "umls:C0008838",
+      "unii:H8MTN7XVC2",
       "unii:Q20Q21Q62J",
       "pubchem.substance:178102005",
-      "pubchem.compound:441203",
-      "unii:H8MTN7XVC2"
+      "pubchem.compound:441203"
     ],
     "approval_status": [
       "rxnorm_prescribable",
@@ -1934,8 +2012,9 @@
       "TREAT",
       "Treatment",
       "TX",
-      "therapeutic intervention",
-      "treatment"
+      "treatment",
+      "treatment_or_therapy",
+      "treatment or therapy"
     ]
   },
   {
@@ -2383,6 +2462,12 @@
     "approval_status": "fda_prescription"
   },
   {
+    "label_and_type": "unii:q20q21q62j##associated_with",
+    "concept_id": "drugsatfda:anda074656",
+    "item_type": "associated_with",
+    "src_name": "DrugsAtFDA"
+  },
+  {
     "label_and_type": "rxcui:309311##xref",
     "concept_id": "drugsatfda:anda074656",
     "item_type": "xref",
@@ -2400,17 +2485,20 @@
     "item_type": "identity",
     "label": "CISPLATIN",
     "concept_id": "drugsatfda:NDA018057",
-    "aliases": [],
     "xrefs": ["rxcui:1736854"],
     "associated_with": ["unii:Q20Q21Q62J"],
     "approval_status": null,
-    "approval_year": [],
-    "has_indication": [],
     "trade_names": ["PLATINOL-AQ", "PLATINOL"]
   },
   {
+    "label_and_type": "cisplatin##label",
+    "concept_id": "drugsatfda:nda018057",
+    "item_type": "label",
+    "src_name": "DrugsAtFDA"
+  },
+  {
     "label_and_type": "unii:q20q21q62j##associated_with",
-    "concept_id": "drugsatfda:anda074656",
+    "concept_id": "drugsatfda:nda018057",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
@@ -2452,7 +2540,6 @@
     "item_type": "identity",
     "concept_id": "drugsatfda:NDA202450",
     "label": "ACLIDINIUM BROMIDE",
-    "aliases": [],
     "xrefs": [
       "rxcui:1607112",
       "rxcui:1303102",
@@ -2554,7 +2641,7 @@
     "item_type": "xref"
   },
   {
-    "label_and_type": "unii:9HW64Q8G6G##associated_with",
+    "label_and_type": "unii:9hw64q8g6g##associated_with",
     "concept_id": "drugsatfda:nda022334",
     "src_name": "DrugsAtFDA",
     "item_type": "associated_with"
@@ -2572,7 +2659,7 @@
     "item_type": "label"
   },
   {
-    "label_and_type": "drugsatfda:NDA050682",
+    "label_and_type": "drugsatfda:nda050682##identity",
     "src_name": "DrugsAtFDA",
     "item_type": "identity",
     "label": "DACTINOMYCIN",
@@ -2624,7 +2711,7 @@
     "trade_names": ["NALFON"]
   },
   {
-    "label_and_type": "unii:0X2CW1QABJ##associated_with",
+    "label_and_type": "unii:0x2cw1qabj##associated_with",
     "item_type": "associated_with",
     "concept_id": "drugsatfda:ANDA072267",
     "src_name": "DrugsAtFDA"
@@ -2642,7 +2729,7 @@
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:NDA017604##identity",
+    "label_and_type": "drugsatfda:nda017604##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "label": "FENOPROFEN CALCIUM",
@@ -2652,7 +2739,7 @@
     "trade_names": ["NALFON", "FENORTHO"]
   },
   {
-    "label_and_type": "unii:0X2CW1QABJ##associated_with",
+    "label_and_type": "unii:0x2cw1qabj##associated_with",
     "item_type": "associated_with",
     "concept_id": "drugsatfda:NDA017604",
     "src_name": "DrugsAtFDA"

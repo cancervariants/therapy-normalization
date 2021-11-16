@@ -91,14 +91,13 @@ class QueryHandler:
         :return: Tuple containing updated response object, and string
             containing name of the source of the match
         """
-        inds = item.get("fda_indication")
+        inds = item.get("has_indication")
         if inds:
             item["has_indication"] = [HasIndication(disease_id=i[0],
                                                     disease_label=i[1],
                                                     normalized_disease_id=i[2])
                                       for i in inds]
 
-        print(item)
         drug = Drug(**item)
         src_name = item["src_name"]
 
@@ -375,7 +374,7 @@ class QueryHandler:
 
         if any(filter(lambda f: f in record, ("approval_status",
                                               "approval_year",
-                                              "fda_indication"))):
+                                              "has_indication"))):
             approv = {
                 "name": "regulatory_approval",
                 "value": {}
@@ -384,19 +383,16 @@ class QueryHandler:
                 value = record.get(field)
                 if value:
                     approv["value"][field] = value  # type: ignore
-            inds = record.get("fda_indication", [])
+            inds = record.get("has_indication", [])
             inds_list = []
             for ind in inds:
                 ind_obj = {
                     "id": ind[0],
                     "type": "DiseaseDescriptor",
-                    "label": ind[1]
+                    "label": ind[1],
+                    "disease_id": ind[2],
                 }
-                if ind[2]:
-                    ind_obj["disease_id"] = ind[2]
-                    inds_list.append(ind_obj)
-                else:
-                    logger.warning(f"{ind[0]} has no disease ID")
+                inds_list.append(ind_obj)
             if inds_list:
                 approv["value"]["has_indication"] = inds_list  # type: ignore
             vod["extensions"].append(approv)

@@ -21,7 +21,7 @@ import requests
 from therapy import DownloadException, XREF_SOURCES, ASSOC_WITH_SOURCES, \
     ITEM_TYPES
 from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
-    ApprovalStatus
+    ApprovalStatus, RecordParams
 from therapy.etl.base import Base
 
 logger = logging.getLogger("therapy")
@@ -142,7 +142,7 @@ class RxNorm(Base):
                         self._get_brands(row, ingredient_brands)
                     else:
                         if concept_id not in data.keys():
-                            params = dict()
+                            params: RecordParams = {}
                             params["concept_id"] = concept_id
                             self._add_str_field(params, row, precise_ingredient,
                                                 drug_forms, sbdfs)
@@ -162,9 +162,7 @@ class RxNorm(Base):
                                               ingredient_brands, sbdfs)
                         self._load_brand_concepts(value, brands, batch)
 
-                        params = {
-                            "concept_id": value["concept_id"]
-                        }
+                        params = {"concept_id": value["concept_id"]}
 
                         for field in list(ITEM_TYPES.keys()) + ["approval_status"]:
                             field_value = value.get(field)

@@ -7,7 +7,7 @@ from typing import Dict, Any
 from wikibaseintegrator.wbi_functions import execute_sparql_query
 
 from therapy import XREF_SOURCES, DownloadException
-from therapy.schemas import SourceName, NamespacePrefix, \
+from therapy.schemas import SourceName, NamespacePrefix, RecordParams, \
     SourceIDAfterNamespace, SourceMeta
 from therapy.etl.base import Base
 
@@ -73,9 +73,9 @@ class Wikidata(Base):
         else:
             data = query_results["results"]["bindings"]
 
-        transformed_data = list()
+        transformed_data = []
         for item in data:
-            params = dict()
+            params: RecordParams = {}
             for attr in item:
                 params[attr] = item[attr]["value"]
             transformed_data.append(params)

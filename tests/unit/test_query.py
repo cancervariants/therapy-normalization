@@ -30,7 +30,7 @@ def merge_query_handler(mock_database):
     """Provide Merge instance to test cases."""
     class QueryGetter:
         def __init__(self):
-            self.query_handler = QueryHandler(db_url="http://localhost:8000")
+            self.query_handler = QueryHandler()
             if os.environ.get("TEST") is not None:
                 self.query_handler.db = mock_database()  # replace initial DB
 
@@ -114,6 +114,7 @@ def phenobarbital():
                     "mmsl:d00340",
                     "atc:N03AA02",
                     "unii:YQE403BP4D",
+                    "unii:H8MTN7XVC2",
                     "umls:C0031412",
                     "CHEBI:8069",
                     "pubchem.substance:135650817",

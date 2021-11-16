@@ -8,7 +8,7 @@ from disease.query import QueryHandler as DiseaseNormalizer
 
 from therapy import DownloadException, APP_ROOT
 from therapy.database import Database
-from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, \
+from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, RecordParams, \
     ApprovalStatus
 from therapy.etl.base import Base
 
@@ -82,9 +82,9 @@ class HemOnc(Base):
         """Get therapy, brand name, and disease concepts from concepts file.
         :return: Tuple of dicts mapping ID to object for each type of concept
         """
-        therapies = {}  # hemonc id -> record
-        brand_names = {}  # hemonc id -> brand name
-        conditions = {}  # hemonc id -> condition name
+        therapies: RecordParams = {}  # hemonc id -> record
+        brand_names: Dict[str, str] = {}  # hemonc id -> brand name
+        conditions: Dict[str, str] = {}  # hemonc id -> condition name
 
         concepts_file = open(self._src_files[0], "r")
         concepts_reader = csv.reader(concepts_file)
@@ -174,7 +174,7 @@ class HemOnc(Base):
                 if year == 9999:
                     logger.warning(f"HemOnc ID {row[0]} has FDA approval year"
                                    f" 9999")
-                record["approval_status"] = ApprovalStatus.HEMONC_APPROVED
+                record["approval_status"] = ApprovalStatus.HEMONC_APPROVED.value
                 if "approval_year" in record:
                     record["approval_year"].append(year)
                 else:

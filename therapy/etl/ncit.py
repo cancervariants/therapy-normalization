@@ -7,7 +7,7 @@ import owlready2 as owl
 from owlready2.entity import ThingClass
 
 from therapy import DownloadException
-from therapy.schemas import SourceName, NamespacePrefix, SourceMeta
+from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, RecordParams
 from therapy.etl.base import Base
 
 logger = logging.getLogger("therapy")
@@ -17,7 +17,7 @@ logger.setLevel(logging.DEBUG)
 class NCIt(Base):
     """Class for NCIt ETL methods.
 
-    Extracting both:
+    Extracts:
      * NCIt classes with semantic_type "Pharmacologic Substance" but not
        Retired_Concept
      * NCIt classes that are subclasses of C1909 (Pharmacologic Substance)
@@ -125,7 +125,7 @@ class NCIt(Base):
                 label = node.P108.first()
             else:
                 label = None
-            aliases = node.P90
+            aliases = node.P90.copy()  # prevent CallbackList error
             if label and aliases and label in aliases:
                 aliases.remove(label)
 
@@ -148,7 +148,7 @@ class NCIt(Base):
                 if ":" in iri:
                     iri = iri.split(":")[1]
                 associated_with.append(f"{NamespacePrefix.CHEBI.value}:{iri}")
-            params = {
+            params: RecordParams = {  # type: ignore
                 "concept_id": concept_id,
                 "label": label,
                 "aliases": aliases,

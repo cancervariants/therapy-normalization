@@ -1,5 +1,5 @@
 """This module contains data models for representing VICC therapy records."""
-from typing import List, Optional, Dict, Union, Any, Type
+from typing import List, Optional, Dict, Union, Any, Type, Set
 from enum import Enum, IntEnum
 from datetime import datetime
 
@@ -7,56 +7,70 @@ from ga4gh.vrsatile.pydantic.vrsatile_model import ValueObjectDescriptor
 from pydantic import BaseModel, StrictBool
 
 
+# Working structure for object in preparation for upload to DB
+RecordParams = Dict[str, Union[List, Set, str, Dict[str, Any]]]
+
+
 class ApprovalStatus(str, Enum):
     """Define string constraints for approval status attribute.
 
     ChEMBL:
-        - Phase 0: "Research: The compound has not yet reached clinical trials
+     - Phase 0: "Research: The compound has not yet reached clinical trials
     (preclinical/research compound)"
-        - Phase 1: "The compound has reached Phase I clinical trials (safety
-    studies, usually with healthy volunteers)"
-        - Phase 2: "The compound has reached Phase II clinical trials
-    (preliminary studies of effectiveness)"
-        - Phase 3: "The compound has reached Phase III clinical trials (larger
-    studies of safety and effectiveness)"
-        - Phase 4: "The compound has been approved in at least one country or
-    area."
+     - Phase 1: "The compound has reached Phase I clinical trials (safety studies,
+    usually with healthy volunteers)"
+     - Phase 2: "The compound has reached Phase II clinical trials (preliminary studies
+    of effectiveness)"
+     - Phase 3: "The compound has reached Phase III clinical trials (larger studies of
+    safety and effectiveness)"
+     - Phase 4: "The compound has been approved in at least one country or area."
+     - Withdrawn: "A withdrawn drug is an approved drug contained in a medicinal
+    product that subsequently had been removed from the market. The reasons for
+    withdrawal may include toxicity, lack of efficacy, or other reasons such as an
+    unfavorable risk-to-benefit ratio following approval and marketing of the drug.
+    ChEMBL considers an approved drug to be withdrawn only if all medicinal products
+    that contain the drug as an active ingredient have been withdrawn from one (or more)
+    regions of the world. Note that all medicinal products for a drug can be withdrawn
+    in one region of the world while still being marketed in other jurisdictions."
+    https://pubs.acs.org/doi/10.1021/acs.chemrestox.0c00296
 
     Drugs@FDA:
-        - Prescription: "A prescription drug product requires a doctor's
-        authorization to purchase."
-        - Over-the-counter: "FDA defines OTC drugs as safe and effective for
-        use by the general public without a doctor's prescription."
-        - Discontinued: "approved products that have never been marketed, have
-        been discontinued from marketing, are for military use, are for export
-        only, or have had their approvals withdrawn for reasons other than
-        safety or efficacy after being discontinued from marketing"
-        - None (Tentatively Approved): "If a generic drug product is ready for
-        approval before the expiration of any patents or exclusivities
-        accorded to the reference listed drug product, FDA issues a tentative
-        approval letter to the applicant. FDA delays final approval of the
-        generic drug product until all patent or exclusivity issues have been
-        resolved. "
+     - Prescription: "A prescription drug product requires a doctor's authorization
+    to purchase."
+     - Over-the-counter: "FDA defines OTC drugs as safe and effective for use by the
+    general public without a doctor's prescription."
+     - Discontinued: "approved products that have never been marketed, have been
+    discontinued from marketing, are for military use, are for export only, or have had
+    their approvals withdrawn for reasons other than safety or efficacy after being
+    discontinued from marketing"
+     - None (Tentatively Approved): "If a generic drug product is ready for approval
+    before the expiration of any patents or exclusivities accorded to the reference
+    listed drug product, FDA issues a tentative approval letter to the applicant.  FDA
+    delays final approval of the generic drug product until all patent or exclusivity
+    issues have been resolved."
+    https://www.fda.gov/drugs/drug-approvals-and-databases/drugsfda-glossary-terms
 
     HemOnc.org:
-        - Was FDA approved yr: "Year of FDA approval."
+    - Approved: Inferred by us if "Was FDA Approved Yr" property is present (described
+    as "Year of FDA approval")
+    https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6697579/
 
     Guide to Pharmacology:
-        - Approved: "Indicates pharmacologicaly active substances, specified by
-        their INNs, that have been approved for clinical use by a regulatory
-        agency, typically the FDA, EMA or in Japan. This classification
-        persists regardless of whether the drug may later have been withdrawn
-        or discontinued. (N.B. in some cases the information on approval
-        status was obtained indirectly via databases such as Drugbank.)"
-        - Withdrawn: "No longer approved for its original clinical use, as
-        notified by the FDA, typically as a consequence of safety or side
-        effect issues."
+    - Approved: "Indicates pharmacologicaly active substances, specified by their INNs,
+    that have been approved for clinical use by a regulatory agency, typically the FDA,
+    EMA or in Japan. This classification persists regardless of whether the drug may
+    later have been withdrawn or discontinued. (N.B. in some cases the information on
+    approval status was obtained indirectly via databases such as Drugbank.)"
+    - Withdrawn: "No longer approved for its original clinical use, as notified by the
+    FDA, typically as a consequence of safety or side effect issues."
+    https://www.guidetopharmacology.org/helpPage.jsp
 
     RxNorm:
-        - Prescribable: "The RxNorm Current Prescribable Content is a subset
-        of currently prescribable drugs found in RxNorm. We intend it to be an
-        approximation of the prescription drugs currently marketed in the US.
-        The subset also includes many over-the-counter drugs."
+    - Prescribable: "The RxNorm Current Prescribable Content is a subset of currently
+    prescribable drugs found in RxNorm. We intend it to be an approximation of the
+    prescription drugs currently marketed in the US. The subset also includes many
+    over-the-counter drugs."
+    https://www.nlm.nih.gov/research/umls/rxnorm/docs/prescribe.html
     """
 
     CHEMBL_0 = "chembl_phase_0"
@@ -75,18 +89,8 @@ class ApprovalStatus(str, Enum):
     RXNORM_PRESCRIBABLE = "rxnorm_prescribable"
 
 
-class PhaseEnum(IntEnum):
-    """An enumerated drug development phase type."""
-
-    preclinical = 0
-    phase_i_trials = 1
-    phase_ii_trials = 2
-    phase_iii_trials = 3
-    approved = 4
-
-
 class HasIndication(BaseModel):
-    """Data regarding FDA indication. Currently specific to HemOnc.org data."""
+    """Data regarding FDA indication. Currently provided only by HemOnc.org data."""
 
     disease_id: str
     disease_label: str
@@ -96,8 +100,7 @@ class HasIndication(BaseModel):
         """Configure Drug class"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type["Drug"]) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["Drug"]) -> None:
             """Configure OpenAPI schema"""
             if "title" in schema.keys():
                 schema.pop("title", None)
@@ -139,8 +142,7 @@ class Drug(BaseModel):
         """Configure Drug class"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type["Drug"]) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["Drug"]) -> None:
             """Configure OpenAPI schema"""
             if "title" in schema.keys():
                 schema.pop("title", None)
@@ -193,11 +195,11 @@ class SourcePriority(IntEnum):
     NCIT = 2
     HEMONC = 3
     DRUGBANK = 4
-    GUIDETOPHARMACOLOGY = 5
-    CHEMBL = 6
-    CHEMIDPLUS = 7
-    WIKIDATA = 8
-    DRUGSATFDA = 9
+    DRUGSATFDA = 5
+    GUIDETOPHARMACOLOGY = 6
+    CHEMBL = 7
+    CHEMIDPLUS = 8
+    WIKIDATA = 9
 
 
 class SourceName(str, Enum):
@@ -302,8 +304,7 @@ class SourceMeta(BaseModel):
         """Configure OpenAPI schema"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type["SourceMeta"]) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["SourceMeta"]) -> None:
             """Configure OpenAPI schema"""
             if "title" in schema.keys():
                 schema.pop("title", None)
@@ -338,8 +339,7 @@ class MatchesKeyed(BaseModel):
         """Configure OpenAPI schema"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type["MatchesKeyed"]) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["MatchesKeyed"]) -> None:
             """Configure OpenAPI schema"""
             if "title" in schema.keys():
                 schema.pop("title", None)
@@ -379,8 +379,7 @@ class MatchesListed(BaseModel):
         """Configure openAPI schema"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type["MatchesListed"]) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["MatchesListed"]) -> None:
             """Configure OpenAPI schema"""
             if "title" in schema.keys():
                 schema.pop("title", None)
@@ -429,8 +428,7 @@ class ServiceMeta(BaseModel):
         """Configure OpenAPI schema"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type["SourceMeta"]) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["SourceMeta"]) -> None:
             """Configure OpenAPI schema"""
             if "title" in schema.keys():
                 schema.pop("title", None)
@@ -594,8 +592,7 @@ class SearchService(BaseModel):
         """Enables orm_mode"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type["SearchService"]) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["SearchService"]) -> None:
             """Configure OpenAPI schema"""
             if "title" in schema.keys():
                 schema.pop("title", None)

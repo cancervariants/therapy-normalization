@@ -393,7 +393,6 @@ def levothyroxine():
         "aliases": [
             "3,5,3',5'-Tetraiodo-L-thyronine",
             "Thyroxine",
-            "thyroxine",
             "Thyroid Hormone, T4",
             "Thyroxin",
             "T4 Thyroid Hormone",

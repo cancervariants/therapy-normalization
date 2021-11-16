@@ -1,12 +1,12 @@
 """ETL methods for the Drugs@FDA source."""
-from typing import List, Union, Dict, Optional
+from typing import List, Optional
 import json
 
 import requests
 
 from therapy import DownloadException, logger
-from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, \
-    ApprovalStatus
+from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, ApprovalStatus, \
+    RecordParams
 from therapy.etl.base import Base
 
 
@@ -23,17 +23,18 @@ class DrugsAtFDA(Base):
 
     def _get_latest_version(self) -> str:
         """Retrieve latest version of source data.
-        :return: version as a str -- expected formatting is YYYY-MM-DD
+        :return: version as a str -- expected formatting is YYYYMMDD
         """
         r = requests.get("https://api.fda.gov/download.json")
         if r.status_code == 200:
             json = r.json()
             try:
-                return json["results"]["drug"]["drugsfda"]["export_date"]
+                date_raw = json["results"]["drug"]["drugsfda"]["export_date"]
             except KeyError:
                 msg = "Unable to parse OpenFDA version API - check for breaking changes"
                 logger.error(msg)
                 raise DownloadException(msg)
+            return date_raw.replace("-", "")
         else:
             raise requests.HTTPError("Unable to retrieve version from FDA API")
 
@@ -58,10 +59,9 @@ class DrugsAtFDA(Base):
     def _get_marketing_status(self, products: List, concept_id: str) -> Optional[str]:
         """Get approval status from products list.
         :param List products: list of individual FDA product objects
-        :param str concept_id: FDA application concept ID, used in reporting
-            error messages
-        :return: approval_status value if successful, None if ambiguous or
-            unavailable
+        :param str concept_id: FDA application concept ID, used in reporting error
+            messages
+        :return: approval_status value if successful, None if ambiguous or unavailable
         """
         statuses_map = {
             "Discontinued": ApprovalStatus.FDA_DISCONTINUED.value,
@@ -93,7 +93,7 @@ class DrugsAtFDA(Base):
                 # ignore biologics license applications (tentative)
                 continue
             concept_id = f"{NamespacePrefix.DRUGSATFDA.value}:{app_no}"
-            therapy: Dict[str, Union[str, List]] = {"concept_id": concept_id}
+            therapy: RecordParams = {"concept_id": concept_id}
 
             status = self._get_marketing_status(products, concept_id)
             if status:
@@ -102,7 +102,6 @@ class DrugsAtFDA(Base):
             brand_names = [p["brand_name"] for p in products]
 
             aliases = []
-
             if "openfda" in result:
                 openfda = result["openfda"]
                 brand_name = openfda.get("brand_name")

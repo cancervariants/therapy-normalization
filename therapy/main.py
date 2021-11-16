@@ -67,8 +67,8 @@ def search(q: str = Query(..., description=q_descr),
            keyed: bool = Query(False, description=keyed_descr),
            incl: str = Query("", description=incl_descr),
            excl: str = Query("", description=excl_descr)) -> Dict:
-    """For each source, return strongest-match concepts for query string
-    provided by user.
+    """For each source, return strongest-match concepts for query string provided by
+    user.
 
     :param q: therapy search term
     :param keyed: if true, response is structured as key/value pair of sources to
