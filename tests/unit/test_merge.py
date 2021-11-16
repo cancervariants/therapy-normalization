@@ -185,6 +185,7 @@ def cisplatin_merged():
             "drugsatfda:ANDA206774",
             "drugsatfda:ANDA207323",
             "drugsatfda:ANDA075036",
+            "drugsatfda:NDA018057"
         ],
         "trade_names": [
             "Cisplatin",
@@ -376,6 +377,7 @@ def record_id_groups():
             "drugsatfda:ANDA206774",
             "drugsatfda:ANDA207323",
             "drugsatfda:ANDA075036",
+            "drugsatfda:NDA018057"
         },
         "ncit:C376": {  # Cisplatin
             "rxcui:2555",
@@ -391,6 +393,7 @@ def record_id_groups():
             "drugsatfda:ANDA206774",
             "drugsatfda:ANDA207323",
             "drugsatfda:ANDA075036",
+            "drugsatfda:NDA018057"
         },
         "chemidplus:15663-27-1": {  # Cisplatin
             "rxcui:2555",
@@ -406,6 +409,7 @@ def record_id_groups():
             "drugsatfda:ANDA206774",
             "drugsatfda:ANDA207323",
             "drugsatfda:ANDA075036",
+            "drugsatfda:NDA018057"
         },
         "wikidata:Q412415": {  # Cisplatin
             "rxcui:2555",
@@ -421,6 +425,7 @@ def record_id_groups():
             "drugsatfda:ANDA206774",
             "drugsatfda:ANDA207323",
             "drugsatfda:ANDA075036",
+            "drugsatfda:NDA018057"
         },
         "drugbank:DB00515": {  # Cisplatin
             "rxcui:2555",
@@ -436,6 +441,7 @@ def record_id_groups():
             "drugsatfda:ANDA206774",
             "drugsatfda:ANDA207323",
             "drugsatfda:ANDA075036",
+            "drugsatfda:NDA018057"
         },
         "hemonc:105": {  # Cisplatin
             "rxcui:2555",
@@ -451,6 +457,7 @@ def record_id_groups():
             "drugsatfda:ANDA206774",
             "drugsatfda:ANDA207323",
             "drugsatfda:ANDA075036",
+            "drugsatfda:NDA018057"
         },
         "chembl:CHEMBL11359": {  # Cisplatin
             "rxcui:2555",
@@ -466,6 +473,7 @@ def record_id_groups():
             "drugsatfda:ANDA206774",
             "drugsatfda:ANDA207323",
             "drugsatfda:ANDA075036",
+            "drugsatfda:NDA018057"
         },
         "drugsatfda:ANDA074656": {  # Cisplatin
             "rxcui:2555",
@@ -481,6 +489,7 @@ def record_id_groups():
             "drugsatfda:ANDA206774",
             "drugsatfda:ANDA207323",
             "drugsatfda:ANDA075036",
+            "drugsatfda:NDA018057"
         },
         "drugsatfda:ANDA074735": {  # Cisplatin
             "rxcui:2555",
@@ -496,6 +505,7 @@ def record_id_groups():
             "drugsatfda:ANDA206774",
             "drugsatfda:ANDA207323",
             "drugsatfda:ANDA075036",
+            "drugsatfda:NDA018057"
         },
         "drugsatfda:ANDA206774": {  # Cisplatin
             "rxcui:2555",
@@ -511,6 +521,7 @@ def record_id_groups():
             "drugsatfda:ANDA206774",
             "drugsatfda:ANDA207323",
             "drugsatfda:ANDA075036",
+            "drugsatfda:NDA018057"
         },
         "drugsatfda:ANDA207323": {  # Cisplatin
             "rxcui:2555",
@@ -526,6 +537,7 @@ def record_id_groups():
             "drugsatfda:ANDA206774",
             "drugsatfda:ANDA207323",
             "drugsatfda:ANDA075036",
+            "drugsatfda:NDA018057"
         },
         "drugsatfda:ANDA075036": {  # Cisplatin
             "rxcui:2555",
@@ -541,6 +553,7 @@ def record_id_groups():
             "drugsatfda:ANDA206774",
             "drugsatfda:ANDA207323",
             "drugsatfda:ANDA075036",
+            "drugsatfda:NDA018057"
         },
         "drugbank:DB12117": {  # Cisplatin
             "rxcui:2555",
@@ -556,6 +569,23 @@ def record_id_groups():
             "drugsatfda:ANDA206774",
             "drugsatfda:ANDA207323",
             "drugsatfda:ANDA075036",
+            "drugsatfda:NDA018057"
+        },
+        "drugsatfda:NDA018057": {  # Cisplatin
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415",
+            "drugbank:DB00515",
+            "drugbank:DB12117",
+            "hemonc:105",
+            "chembl:CHEMBL11359",
+            "drugsatfda:ANDA074656",
+            "drugsatfda:ANDA074735",
+            "drugsatfda:ANDA206774",
+            "drugsatfda:ANDA207323",
+            "drugsatfda:ANDA075036",
+            "drugsatfda:NDA018057"
         },
         # tests lookup of wikidata reference to rxnorm brand record, and
         # drugbank reference to dead chemidplus record
@@ -607,7 +637,7 @@ def test_create_record_id_set(merge_handler, record_id_groups):
 
         # perform checks
         for concept_id in groups.keys():
-            assert groups[concept_id] == record_id_groups[concept_id]
+            assert groups[concept_id] == record_id_groups[concept_id], f"{concept_id}"
         assert len(groups) == len(record_id_groups)  # check if any are missing
 
     # test dead reference
