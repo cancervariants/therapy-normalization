@@ -2485,7 +2485,7 @@
     "item_type": "identity",
     "label": "CISPLATIN",
     "concept_id": "drugsatfda:NDA018057",
-    "xrefs": ["rxcui:1736854"],
+    "xrefs": ["rxcui:1736854", "rxcui:309311"],
     "associated_with": ["unii:Q20Q21Q62J"],
     "approval_status": null,
     "trade_names": ["PLATINOL-AQ", "PLATINOL"]
