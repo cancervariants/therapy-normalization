@@ -177,11 +177,6 @@ def test_cisplatin(cisplatin, wikidata):
     assert len(response["records"]) == 1
     compare_records(response["records"][0], cisplatin)
 
-    response = wikidata.search("Q412415")
-    assert response["match_type"] == MatchType.CONCEPT_ID
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0], cisplatin)
-
     response = wikidata.search("cisplatin")
     assert response["match_type"] == MatchType.LABEL
     assert len(response["records"]) == 1
@@ -245,11 +240,6 @@ def test_atropine(atropine, wikidata):
     assert len(response["records"]) == 1
     compare_records(response["records"][0], atropine)
 
-    response = wikidata.search("Q26272")
-    assert response["match_type"] == MatchType.CONCEPT_ID
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0], atropine)
-
     response = wikidata.search("atropine")
     assert response["match_type"] == MatchType.LABEL
     assert len(response["records"]) == 1
@@ -298,16 +288,6 @@ def test_interferon_alfacon_1(interferon_alfacon_1, wikidata):
     assert len(response["records"]) == 1
     compare_records(response["records"][0], interferon_alfacon_1)
 
-    response = wikidata.search("Q15353101")
-    assert response["match_type"] == MatchType.CONCEPT_ID
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0], interferon_alfacon_1)
-
-    response = wikidata.search("q15353101")
-    assert response["match_type"] == MatchType.CONCEPT_ID
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0], interferon_alfacon_1)
-
     response = wikidata.search("Interferon alfacon-1")
     assert response["match_type"] == MatchType.LABEL
     assert len(response["records"]) == 1
@@ -332,11 +312,6 @@ def test_d_methamphetamine(d_methamphetamine, wikidata):
     compare_records(response["records"][0], d_methamphetamine)
 
     response = wikidata.search("wiKIdata:q191924")
-    assert response["match_type"] == MatchType.CONCEPT_ID
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0], d_methamphetamine)
-
-    response = wikidata.search("Q191924")
     assert response["match_type"] == MatchType.CONCEPT_ID
     assert len(response["records"]) == 1
     compare_records(response["records"][0], d_methamphetamine)

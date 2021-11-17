@@ -292,7 +292,7 @@ class QueryHandler:
         return response_dict
 
     def search_sources(self, query_str: str, keyed: bool = False, incl: str = "",
-                       excl: str = "", infer: bool = False) -> Dict:
+                       excl: str = "", infer: bool = True) -> Dict:
         """Fetch normalized therapy objects.
 
         :param str query_str: query, a string, to search for
