@@ -1,6 +1,6 @@
 """This module provides methods for handling queries."""
 import re
-from typing import List, Dict, Set, Tuple, Union, Any
+from typing import List, Dict, Set, Tuple, Union, Any, Optional
 from urllib.parse import quote
 from datetime import datetime
 
@@ -159,6 +159,35 @@ class QueryHandler:
                 }
         return resp
 
+    def _infer_namespace(self, query: str) -> Optional[Tuple[Dict, Dict]]:
+        """Retrieve concept ID by inferring namespace. Attempts to match given query
+        against known LUI patterns and performs concept ID lookup for all matches.
+        :param str query: user-provided query string
+        :return: Either tuple containing complete record and warnings if successful,
+        or None if unsuccessful
+        """
+        inferred_records = []
+        for pattern, source in NAMESPACE_LUIS.items():
+            if re.match(pattern, query, re.IGNORECASE):
+                namespace = NamespacePrefix[source.upper()].value
+                inferred_id = f"{namespace}:{query}"
+                record = self.db.get_record_by_id(inferred_id, case_sensitive=False)
+                if record:
+                    inferred_records.append((record, namespace, inferred_id))
+        if inferred_records:
+            inferred_records.sort(key=lambda r: self._record_order(r[0]))
+            return (
+                inferred_records[0][0],
+                {
+                    "inferred_namespace": inferred_records[0][1],
+                    "adjusted_query": inferred_records[0][2],
+                    # probably not possible but just in case
+                    "alternate_inferred_matches": [i[2] for i in inferred_records[1:]]
+                }
+            )
+        else:
+            return None
+
     def _check_concept_id(self, query: str, resp: Dict, sources: Set[str],
                           infer: bool = True) -> Tuple[Dict, Set]:
         """Check query for concept ID match. Should only find 0 or 1 matches.
@@ -170,21 +199,15 @@ class QueryHandler:
         :return: Tuple with updated resp object and updated set of unmatched sources
         """
         records = []
+        if infer:
+            infer_response = self._infer_namespace(query)
+            if infer_response:
+                records.append(infer_response[0])
+                resp["warnings"].append(infer_response[1])
         if [p for p in PREFIX_LOOKUP.keys() if query.startswith(p)]:
             record = self.db.get_record_by_id(query, False)
             if record:
                 records.append(record)
-        if infer:
-            for pattern, source in NAMESPACE_LUIS.items():
-                if re.match(pattern, query, re.IGNORECASE):
-                    namespace = NamespacePrefix[source.upper()].value
-                    concept_id = f"{namespace}:{query}"
-                    id_lookup = self.db.get_record_by_id(concept_id, False)
-                    if id_lookup:
-                        records.append(id_lookup)
-                        resp["warnings"].append({
-                            "inferred_namespace": namespace
-                        })
         for item in records:
             (resp, src_name) = self._add_record(resp, item,
                                                 MatchType.CONCEPT_ID.name)
@@ -499,23 +522,12 @@ class QueryHandler:
 
         # check concept ID match with inferred namespace
         if infer:
-            inferred_records = []
-            for pattern, source in NAMESPACE_LUIS.items():
-                if re.match(pattern, query, re.IGNORECASE):
-                    namespace = NamespacePrefix[source.upper()].value
-                    inferred_concept = f"{namespace}:{query}"
-                    record = self.db.get_record_by_id(inferred_concept,
-                                                      case_sensitive=False)
-                    if record:
-                        inferred_records.append((record, namespace))
-            if inferred_records:
-                inferred_records.sort(key=lambda r: self._record_order(r[0]))
+            inferred_response = self._infer_namespace(query)
+            if inferred_response:
                 response = self._resolve_merge(response, query,
-                                               inferred_records[0][0],
+                                               inferred_response[0],
                                                MatchType.CONCEPT_ID)
-                response["warnings"].append({
-                    "inferred_namespace": inferred_records[0][1]
-                })
+                response["warnings"].append(inferred_response[1])
                 return response
 
         # check other match types
