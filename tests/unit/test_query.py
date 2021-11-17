@@ -511,16 +511,131 @@ def test_query_specify_sources(query_handler):
                                             incl="chembl", excl="wikidata")
 
 
-def test_query_infer_option(query_handler):
-    """Test search/ infer_namespace boolean option"""
+def test_infer_option(query_handler, merge_query_handler, phenobarbital):
+    """Test infer_namespace boolean option"""
+    # drugbank
     query = "DB01174"
-    response = query_handler.search_sources(query, keyed=True)
-    assert response["source_matches"]["DrugBank"]["match_type"] == \
-        MatchType.CONCEPT_ID
+    expected_warnings = [{
+        "inferred_namespace": "drugbank",
+        "adjusted_query": "drugbank:" + query,
+        "alternate_inferred_matches": []
+    }]
 
-    response = query_handler.search_sources(query, keyed=True, infer=False)
-    assert response["source_matches"]["DrugBank"]["match_type"] == \
-        MatchType.NO_MATCH
+    response = query_handler.search_sources(query, keyed=True)
+    assert response["source_matches"]["DrugBank"]["match_type"] == MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
+
+    response = merge_query_handler.search_groups(query)
+    response["match_type"] == MatchType.CONCEPT_ID
+    response["warnings"] == expected_warnings
+
+    # ncit
+    query = "c739"
+    expected_warnings = [{
+        "inferred_namespace": "ncit",
+        "adjusted_query": "ncit:" + query,
+        "alternate_inferred_matches": []
+    }]
+
+    response = query_handler.search_sources(query, keyed=True)
+    assert response["source_matches"]["NCIt"]["match_type"] == MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
+
+    response = merge_query_handler.search_groups(query)
+    response["match_type"] == MatchType.CONCEPT_ID
+    response["warnings"] == expected_warnings
+
+    # drugs@fda
+    query = "ANDA075036"
+    expected_warnings = [{
+        "inferred_namespace": "drugsatfda",
+        "adjusted_query": "drugsatfda:" + query,
+        "alternate_inferred_matches": []
+    }]
+
+    response = query_handler.search_sources(query, keyed=True)
+    assert response["source_matches"]["DrugsAtFDA"]["match_type"] == \
+        MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
+
+    response = merge_query_handler.search_groups(query)
+    response["match_type"] == MatchType.CONCEPT_ID
+    response["warnings"] == expected_warnings
+
+    query = "NDA018057"
+    expected_warnings = [{
+        "inferred_namespace": "drugsatfda",
+        "adjusted_query": "drugsatfda:" + query,
+        "alternate_inferred_matches": []
+    }]
+
+    response = query_handler.search_sources(query, keyed=True)
+    assert response["source_matches"]["DrugsAtFDA"]["match_type"] == \
+        MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
+
+    response = merge_query_handler.search_groups(query)
+    response["match_type"] == MatchType.CONCEPT_ID
+    response["warnings"] == expected_warnings
+
+    # chemidplus
+    query = "15663-27-1"
+    expected_warnings = [{
+        "inferred_namespace": "chemidplus",
+        "adjusted_query": "chemidplus:" + query,
+        "alternate_inferred_matches": [],
+    }]
+
+    response = query_handler.search_sources(query, keyed=True)
+    assert response["source_matches"]["ChemIDplus"]["match_type"] == \
+        MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
+
+    response = merge_query_handler.search_groups(query)
+    response["match_type"] == MatchType.CONCEPT_ID
+    response["warnings"] == expected_warnings
+
+    # test chembl
+    query = "chembl11359"
+    expected_warnings = [{
+        "inferred_namespace": "wikidata",
+        "adjusted_query": "chembl:" + query,
+        "alternate_inferred_matches": [],
+    }]
+
+    response = query_handler.search_sources(query, keyed=True)
+    assert response["source_matches"]["ChEMBL"]["match_type"] == \
+        MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
+
+    response = merge_query_handler.search_groups(query)
+    response["match_type"] == MatchType.CONCEPT_ID
+    response["warnings"] == expected_warnings
+
+    # test wikidata
+    query = "q412415"
+    expected_warnings = [{
+        "inferred_namespace": "wikidata",
+        "adjusted_query": "wikidata:" + query,
+        "alternate_inferred_matches": [],
+    }]
+
+    response = query_handler.search_sources(query, keyed=True)
+    assert response["source_matches"]["Wikidata"]["match_type"] == \
+        MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
+
+    response = merge_query_handler.search_groups(query)
+    response["match_type"] == MatchType.CONCEPT_ID
+    response["warnings"] == expected_warnings
+
+    # test disabling namespace inference
+    query = "DB01174"
+    response = merge_query_handler.search_groups(query, infer=False)
+    assert response["query"] == query
+    assert response["warnings"] == []
+    assert "record" not in response
+    assert response["match_type"] == MatchType.NO_MATCH
 
 
 def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
@@ -584,21 +699,6 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     response = merge_query_handler.search_groups(query)
     compare_vod(response, cisplatin, query, MatchType.TRADE_NAME,
                 "normalize.therapy:Cisplatin")
-
-    # test normalize/ infers namespace correctly
-    query = "DB01174"
-    response = merge_query_handler.search_groups(query)
-    compare_vod(response, phenobarbital, query, MatchType.CONCEPT_ID,
-                "normalize.therapy:DB01174",
-                [{"inferred_namespace": "drugbank"}])
-
-    # test disabling namespace inference
-    query = "DB01174"
-    response = merge_query_handler.search_groups(query, infer=False)
-    assert response["query"] == query
-    assert response["warnings"] == []
-    assert "record" not in response
-    assert response["match_type"] == MatchType.NO_MATCH
 
     # test no match
     query = "zzzz fake therapy zzzz"
