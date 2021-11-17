@@ -143,7 +143,8 @@ class Wikidata(Base):
 
                             if key.upper() in XREF_SOURCES:
                                 if key != "chembl":
-                                    fmted_xref = f"{NAMESPACES[key]}:{ID_PREFIXES[key.upper()]}{ref}"  # noqa: E501
+                                    prefix = ID_PREFIXES.get(key.upper())
+                                    fmted_xref = f"{NAMESPACES[key]}:{prefix}{ref}"
                                 else:
                                     fmted_xref = f"{NAMESPACES[key]}:{ref}"
                                 xrefs.append(fmted_xref)
