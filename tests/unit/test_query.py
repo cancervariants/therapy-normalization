@@ -453,105 +453,52 @@ def test_query_specify_sources(query_handler):
     """Test inclusion and exclusion of sources in query."""
     # test blank params
     resp = query_handler.search_sources("cisplatin", keyed=True)
-    matches = resp["source_matches"]
-    assert len(matches) == 9
-    assert "Wikidata" in matches
-    assert "ChEMBL" in matches
-    assert "NCIt" in matches
-    assert "DrugBank" in matches
-    assert "ChemIDplus" in matches
-    assert "RxNorm" in matches
-    assert "HemOnc" in matches
-    assert "GuideToPHARMACOLOGY" in matches
-    assert "DrugsAtFDA" in matches
+    assert set(resp["source_matches"].keys()) == {
+        "Wikidata", "ChEMBL", "NCIt", "DrugBank", "ChemIDplus", "RxNorm", "HemOnc",
+        "GuideToPHARMACOLOGY", "DrugsAtFDA"
+    }
 
     # test partial inclusion
     resp = query_handler.search_sources("cisplatin", keyed=True,
                                         incl="chembl,ncit")
-    matches = resp["source_matches"]
-    assert len(matches) == 2
-    assert "Wikidata" not in matches
-    assert "ChEMBL" in matches
-    assert "NCIt" in matches
-    assert "DrugBank" not in matches
-    assert "RxNorm" not in matches
-    assert "ChemIDplus" not in matches
-    assert "HemOnc" not in matches
-    assert "GuideToPHARMACOLOGY" not in matches
-    assert "DrugsAtFDA" not in matches
+    assert set(resp["source_matches"].keys()) == {"ChEMBL", "NCIt"}
 
     # test full inclusion
     sources = "chembl,ncit,drugbank,wikidata,rxnorm,chemidplus,hemonc,guidetopharmacology,drugsatfda"  # noqa: E501
     resp = query_handler.search_sources("cisplatin", keyed=True,
                                         incl=sources, excl="")
-    matches = resp["source_matches"]
-    assert len(matches) == 9
-    assert "Wikidata" in matches
-    assert "ChEMBL" in matches
-    assert "NCIt" in matches
-    assert "DrugBank" in matches
-    assert "ChemIDplus" in matches
-    assert "RxNorm" in matches
-    assert "HemOnc" in matches
-    assert "GuideToPHARMACOLOGY" in matches
-    assert "DrugsAtFDA" in matches
+    assert set(resp["source_matches"].keys()) == {
+        "Wikidata", "ChEMBL", "NCIt", "DrugBank", "ChemIDplus", "RxNorm", "HemOnc",
+        "GuideToPHARMACOLOGY", "DrugsAtFDA"
+    }
 
     # test partial exclusion
     resp = query_handler.search_sources("cisplatin", keyed=True,
                                         excl="chemidplus")
-    matches = resp["source_matches"]
-    assert len(matches) == 8
-    assert "Wikidata" in matches
-    assert "ChEMBL" in matches
-    assert "NCIt" in matches
-    assert "DrugBank" in matches
-    assert "ChemIDplus" not in matches
-    assert "RxNorm" in matches
-    assert "HemOnc" in matches
-    assert "GuideToPHARMACOLOGY" in matches
-    assert "DrugsAtFDA" in matches
+    assert set(resp["source_matches"].keys()) == {
+        "Wikidata", "ChEMBL", "NCIt", "DrugBank", "RxNorm", "HemOnc",
+        "GuideToPHARMACOLOGY", "DrugsAtFDA"
+    }
 
     # test full exclusion
+    sources = "chembl, wikidata, drugbank, ncit, rxnorm, chemidplus, hemonc, " \
+        "guidetopharmacology,drugsatfda"  # noqa: E501
     resp = query_handler.search_sources(
         "cisplatin", keyed=True,
-        excl="chembl, wikidata, drugbank, ncit, rxnorm, chemidplus, hemonc, guidetopharmacology,drugsatfda"  # noqa: E501
+        excl=sources
     )
-    matches = resp["source_matches"]
-    assert len(matches) == 0
-    assert "Wikidata" not in matches
-    assert "ChEMBL" not in matches
-    assert "NCIt" not in matches
-    assert "DrugBank" not in matches
-    assert "ChemIDplus" not in matches
-    assert "RxNorm" not in matches
-    assert "HemOnc" not in matches
-    assert "GuideToPHARMACOLOGY" not in matches
-    assert "DrugsAtFDA" not in matches
+    assert set(resp["source_matches"].keys()) == set()
 
     # test case insensitive
     resp = query_handler.search_sources("cisplatin", keyed=True, excl="ChEmBl")
-    matches = resp["source_matches"]
-    assert "Wikidata" in matches
-    assert "ChEMBL" not in matches
-    assert "NCIt" in matches
-    assert "DrugBank" in matches
-    assert "ChemIDplus" in matches
-    assert "RxNorm" in matches
-    assert "HemOnc" in matches
-    assert "GuideToPHARMACOLOGY" in matches
-    assert "DrugsAtFDA" in matches
+    assert set(resp["source_matches"].keys()) == {
+        "Wikidata", "NCIt", "DrugBank", "ChemIDplus", "RxNorm", "HemOnc",
+        "GuideToPHARMACOLOGY", "DrugsAtFDA"
+    }
+
     resp = query_handler.search_sources("cisplatin", keyed=True,
                                         incl="wIkIdAtA,cHeMbL")
-    matches = resp["source_matches"]
-    assert "Wikidata" in matches
-    assert "ChEMBL" in matches
-    assert "NCIt" not in matches
-    assert "DrugBank" not in matches
-    assert "ChemIDplus" not in matches
-    assert "RxNorm" not in matches
-    assert "HemOnc" not in matches
-    assert "GuideToPHARMACOLOGY" not in matches
-    assert "DrugsAtFDA" not in matches
+    assert set(resp["source_matches"].keys()) == {"Wikidata", "ChEMBL"}
 
     # test error on invalid source names
     with pytest.raises(InvalidParameterException):
