@@ -24,7 +24,7 @@ ipykernel = "*"
 bs4 = "*"
 pyyaml = "*"
 disease-normalizer = ">=0.2.10"
-"ga4gh.vrsatile.pydantic" = ">=0.0.3"
+"ga4gh.vrsatile.pydantic" = ">=0.0.5"
 
 [dev-packages]
 thera-py = {editable = true, path = "."}
