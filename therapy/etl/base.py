@@ -98,6 +98,7 @@ class Base(ABC):
         except ValidationError as e:
             logger.error(f"Attempted to load invalid therapy: {therapy}")
             raise e
+
         concept_id = therapy["concept_id"]
 
         for attr_type, item_type in ITEM_TYPES.items():
@@ -107,21 +108,23 @@ class Base(ABC):
                     del therapy[attr_type]
                     continue
 
-                if isinstance(value, str):
+                if attr_type == "label":
                     self.database.add_ref_record(value.lower(),
                                                  concept_id, item_type)
                     continue
 
-                value = list(set(value))
-
-                if "label" in therapy:
-                    try:
-                        value.remove(therapy["label"])
-                    except ValueError:
-                        pass
-
+                # clean up listlike symbol fields
                 if attr_type == "aliases" and "trade_names" in therapy:
                     value = list(set(value) - set(therapy["trade_names"]))
+                else:
+                    value = list(set(value))
+
+                if attr_type in ("aliases, trade_names"):
+                    if "label" in therapy:
+                        try:
+                            value.remove(therapy["label"])
+                        except ValueError:
+                            pass
 
                 if len(value) > 20:
                     logger.debug(f"{concept_id} has > 20 {attr_type}.")

@@ -110,7 +110,7 @@ def cisplatin() -> List[Drug]:
         Drug(**{
             "label": "CISPLATIN",
             "concept_id": "drugsatfda:NDA018057",
-            "xrefs": ["rxcui:1736854"],
+            "xrefs": ["rxcui:1736854", "rxcui:309311"],
             "associated_with": ["unii:Q20Q21Q62J"],
             "trade_names": ["PLATINOL-AQ", "PLATINOL"]
         }),
@@ -295,7 +295,7 @@ def test_cisplatin(drugsatfda, cisplatin):
     # test xref
     response = drugsatfda.search("rxcui:309311")
     assert response["match_type"] == MatchType.XREF
-    assert len(response["records"]) == 5
+    assert len(response["records"]) == 6
     for r in response["records"]:
         fixture = [c for c in cisplatin if r["concept_id"] == c.concept_id][0]
         compare_records(r, fixture)

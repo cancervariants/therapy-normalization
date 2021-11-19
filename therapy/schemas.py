@@ -3,7 +3,7 @@ from typing import List, Optional, Dict, Union, Any, Type, Set
 from enum import Enum, IntEnum
 from datetime import datetime
 
-from ga4gh.vrsatile.pydantic.vrsatile_model import ValueObjectDescriptor
+from ga4gh.vrsatile.pydantic.vrsatile_models import ValueObjectDescriptor
 from pydantic import BaseModel, StrictBool
 
 

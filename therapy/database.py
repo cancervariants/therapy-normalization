@@ -235,7 +235,7 @@ class Database:
     def get_ids_for_merge(self) -> List[str]:
         """Retrieve concept IDs for use in generating normalized records.
 
-        :return: Set of concept IDs as strings.
+        :return: List of concept IDs as strings.
         """
         last_evaluated_key = None
         concept_ids = []
