@@ -104,12 +104,6 @@ def test_penicillin(chemidplus, penicillin_v):
     assert len(response["records"]) == 1
     compare_records(response["records"][0], penicillin_v)
 
-    # infer namespace
-    response = chemidplus.search("87-08-1")
-    assert response["match_type"] == MatchType.CONCEPT_ID
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0], penicillin_v)
-
     response = chemidplus.search("Penicillin V")
     assert response["match_type"] == MatchType.LABEL
     assert len(response["records"]) == 1

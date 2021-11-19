@@ -49,10 +49,11 @@ class QueryHandler:
         nbsp = re.search("\xa0|&nbsp;", query_str)
         if nbsp:
             warnings = [{
-                "nbsp": "Query contains non breaking space characters."
+                "non_breaking_space_characters":
+                    "Query contains non-breaking space characters"
             }]
             logger.warning(
-                f"Query ({query_str}) contains non breaking space characters."
+                f"Query ({query_str}) contains non-breaking space characters."
             )
         return warnings
 
