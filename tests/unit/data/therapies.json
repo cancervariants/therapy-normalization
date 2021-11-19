@@ -2491,6 +2491,12 @@
     "trade_names": ["PLATINOL-AQ", "PLATINOL"]
   },
   {
+    "label_and_type": "rxcui:309311##xref",
+    "concept_id": "drugsatfda:nda018057",
+    "item_type": "xref",
+    "src_name": "DrugsAtFDA"
+  },
+  {
     "label_and_type": "cisplatin##label",
     "concept_id": "drugsatfda:nda018057",
     "item_type": "label",
