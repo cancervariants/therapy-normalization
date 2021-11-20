@@ -100,7 +100,7 @@ class HasIndication(BaseModel):
         """Configure Drug class"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any], model: Type["Drug"]) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["HasIndication"]) -> None:
             """Configure OpenAPI schema"""
             if "title" in schema.keys():
                 schema.pop("title", None)
