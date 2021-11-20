@@ -116,7 +116,7 @@ def phenobarbital():
                     "mmsl:d00340",
                     "atc:N03AA02",
                     "unii:YQE403BP4D",
-                    "unii:H8MTN7XVC2",
+                    # "unii:H8MTN7XVC2",
                     "umls:C0031412",
                     "CHEBI:8069",
                     "pubchem.substance:135650817",
@@ -517,7 +517,7 @@ def test_infer_option(query_handler, merge_query_handler, phenobarbital):
     query = "DB01174"
     expected_warnings = [{
         "inferred_namespace": "drugbank",
-        "adjusted_query": "drugbank:" + query,
+        "adjusted_query": "drugbank:" + query.lower(),
         "alternate_inferred_matches": []
     }]
 
@@ -533,7 +533,7 @@ def test_infer_option(query_handler, merge_query_handler, phenobarbital):
     query = "c739"
     expected_warnings = [{
         "inferred_namespace": "ncit",
-        "adjusted_query": "ncit:" + query,
+        "adjusted_query": "ncit:" + query.lower(),
         "alternate_inferred_matches": []
     }]
 
@@ -549,7 +549,7 @@ def test_infer_option(query_handler, merge_query_handler, phenobarbital):
     query = "ANDA075036"
     expected_warnings = [{
         "inferred_namespace": "drugsatfda",
-        "adjusted_query": "drugsatfda:" + query,
+        "adjusted_query": "drugsatfda:" + query.lower(),
         "alternate_inferred_matches": []
     }]
 
@@ -565,7 +565,7 @@ def test_infer_option(query_handler, merge_query_handler, phenobarbital):
     query = "NDA018057"
     expected_warnings = [{
         "inferred_namespace": "drugsatfda",
-        "adjusted_query": "drugsatfda:" + query,
+        "adjusted_query": "drugsatfda:" + query.lower(),
         "alternate_inferred_matches": []
     }]
 
@@ -582,7 +582,7 @@ def test_infer_option(query_handler, merge_query_handler, phenobarbital):
     query = "15663-27-1"
     expected_warnings = [{
         "inferred_namespace": "chemidplus",
-        "adjusted_query": "chemidplus:" + query,
+        "adjusted_query": "chemidplus:" + query.lower(),
         "alternate_inferred_matches": [],
     }]
 
@@ -598,8 +598,8 @@ def test_infer_option(query_handler, merge_query_handler, phenobarbital):
     # test chembl
     query = "chembl11359"
     expected_warnings = [{
-        "inferred_namespace": "wikidata",
-        "adjusted_query": "chembl:" + query,
+        "inferred_namespace": "chembl",
+        "adjusted_query": "chembl:" + query.lower(),
         "alternate_inferred_matches": [],
     }]
 
@@ -616,7 +616,7 @@ def test_infer_option(query_handler, merge_query_handler, phenobarbital):
     query = "q412415"
     expected_warnings = [{
         "inferred_namespace": "wikidata",
-        "adjusted_query": "wikidata:" + query,
+        "adjusted_query": "wikidata:" + query.lower(),
         "alternate_inferred_matches": [],
     }]
 
@@ -702,20 +702,6 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
 
     # test no match
     query = "zzzz fake therapy zzzz"
-    response = merge_query_handler.search_groups(query)
-    assert response["query"] == query
-    assert response["warnings"] == []
-    assert "record" not in response
-    assert response["match_type"] == MatchType.NO_MATCH
-
-    query = "APRD00818"
-    response = merge_query_handler.search_groups(query)
-    assert response["query"] == query
-    assert response["warnings"] == []
-    assert "record" not in response
-    assert response["match_type"] == MatchType.NO_MATCH
-
-    query = "chembl:CHEMBL1200368"
     response = merge_query_handler.search_groups(query)
     assert response["query"] == query
     assert response["warnings"] == []

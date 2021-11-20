@@ -418,28 +418,8 @@ def levothyroxine():
             "mmsl:d00278",
             "unii:Q51BO43MG4"
         ],
-        "trade_names": [
-            "Eltroxin",
-            "Estre",
-            "Euthyrox",
-            "Leventa",
-            "Levo-T",
-            "Levocrine",
-            "Levotabs",
-            "Levothroid",
-            "Levothyroid",
-            "Levoxyl",
-            "Novothyrox",
-            "SOLOXINE",
-            "Synthroid",
-            "Thyro-Tabs",
-            "ThyroKare",
-            "ThyroMed",
-            "Thyrolar",
-            "Thyrox",
-            "Tirosint",
-            "Unithroid"
-        ]
+        # trade names length > 20
+        "trade_names": []
     }
     return Drug(**params)
 
