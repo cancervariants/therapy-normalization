@@ -116,7 +116,6 @@ def phenobarbital():
                     "mmsl:d00340",
                     "atc:N03AA02",
                     "unii:YQE403BP4D",
-                    # "unii:H8MTN7XVC2",
                     "umls:C0031412",
                     "CHEBI:8069",
                     "pubchem.substance:135650817",
