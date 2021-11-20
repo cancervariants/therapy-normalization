@@ -1,6 +1,7 @@
 """The VICC library for normalizing therapies."""
 from pathlib import Path
 import logging
+import re
 
 from .version import __version__
 
@@ -20,7 +21,7 @@ class DownloadException(Exception):
         super().__init__(*args, **kwargs)
 
 
-from therapy.schemas import SourceName, NamespacePrefix, SourceIDAfterNamespace, ItemTypes  # noqa: E402, E501, I100, I202
+from therapy.schemas import SourceName, NamespacePrefix, ItemTypes  # noqa: E402, E501, I100, I202
 # map plural to singular form
 # eg {"label": "label", "trade_names": "trade_name"}
 # key is the field name in the record object, value is the item_type value
@@ -38,20 +39,14 @@ PREFIX_LOOKUP = {v.value: SourceName[k].value
                  if k in SourceName.__members__.keys()}
 
 # Namespace LUI patterns. Use for namespace inference.
-NAMESPACE_LUIS = {
-    r"^CHEMBL\d+$": SourceName.CHEMBL.value,
-    r"^\d+\-\d+\-\d+$": SourceName.CHEMIDPLUS.value,
-    r"^(Q|P)\d+$": SourceName.WIKIDATA.value,
-    r"^C\d+$": SourceName.NCIT.value,
-    r"^DB\d{5}$": SourceName.DRUGBANK.value,
-    r"^A?NDA\d+$": SourceName.DRUGSATFDA.value,
-}
-
-# use to generate namespace prefix from source ID value
-# e.g. {'q': 'wikidata'}
-NAMESPACE_LOOKUP = {v.value.lower(): NamespacePrefix[k].value
-                    for k, v in SourceIDAfterNamespace.__members__.items()
-                    if v.value != ""}
+NAMESPACE_LUIS = (
+    (re.compile(r"^CHEMBL\d+$", re.IGNORECASE), SourceName.CHEMBL.value),
+    (re.compile(r"^\d+\-\d+\-\d+$", re.IGNORECASE), SourceName.CHEMIDPLUS.value),
+    (re.compile(r"^(Q|P)\d+$", re.IGNORECASE), SourceName.WIKIDATA.value),
+    (re.compile(r"^C\d+$", re.IGNORECASE), SourceName.NCIT.value),
+    (re.compile(r"^DB\d{5}$", re.IGNORECASE), SourceName.DRUGBANK.value),
+    (re.compile(r"^A?NDA\d+$", re.IGNORECASE), SourceName.DRUGSATFDA.value),
+)
 
 # Sources that we import directly
 XREF_SOURCES = {source for source in SourceName.__members__}

@@ -168,8 +168,8 @@ class QueryHandler:
         or None if unsuccessful
         """
         inferred_records = []
-        for pattern, source in NAMESPACE_LUIS.items():
-            if re.match(pattern, query, re.IGNORECASE):
+        for pattern, source in NAMESPACE_LUIS:
+            if re.match(pattern, query):
                 namespace = NamespacePrefix[source.upper()].value
                 inferred_id = f"{namespace}:{query}"
                 record = self.db.get_record_by_id(inferred_id, case_sensitive=False)
