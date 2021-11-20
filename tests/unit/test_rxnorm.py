@@ -816,16 +816,7 @@ def test_levothyroxine(levothyroxine, rxnorm):
     assert len(response["records"]) == 1
     compare_records(response["records"][0], levothyroxine)
 
-    # Trade Name Match
-    response = rxnorm.search("Unithroid")
-    assert response["match_type"] == MatchType.TRADE_NAME
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0], levothyroxine)
-
-    response = rxnorm.search("Euthyrox")
-    assert response["match_type"] == MatchType.TRADE_NAME
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0], levothyroxine)
+    # no trade name match -- trade name length > 20
 
     # Xref Match
     response = rxnorm.search("DRUGBANK:DB00451")
