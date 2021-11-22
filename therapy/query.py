@@ -376,6 +376,7 @@ class QueryHandler:
                                               "approval_year",
                                               "has_indication"))):
             approv = {
+                "type": "Extension",
                 "name": "regulatory_approval",
                 "value": {}
             }

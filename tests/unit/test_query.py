@@ -369,10 +369,23 @@ def compare_vod(response, fixture, query, match_type, response_id,
         else:
             return None
 
-    assert ("extensions" in actual.keys()) == ("extensions" in fixture.keys())  # noqa: E501
+    assert ("extensions" in actual.keys()) == ("extensions" in fixture.keys())
     if "extensions" in actual:
         ext_actual = actual["extensions"]
         ext_fixture = fixture["extensions"]
+
+        fda_actual = get_extension(ext_actual, "regulatory_approval")
+        fda_fixture = get_extension(ext_fixture, "regulatory_approval")
+        assert (fda_actual is None) == (fda_fixture is None), "regulatory_approval"
+        if fda_actual:
+            status_actual = fda_actual.get("approval_status")
+            status_fixture = fda_fixture.get("approval_status")
+            if status_actual or status_fixture:
+                assert set(status_actual) == set(status_fixture)
+            assert set(fda_actual.get("approval_year", [])) == \
+                set(fda_fixture.get("approval_year", []))
+            assert set(fda_actual.get("has_indication", [])) == \
+                set(fda_fixture.get("has_indication", []))
 
         assoc_actual = get_extension(ext_actual, "associated_with")
         assoc_fixture = get_extension(ext_fixture, "associated_with")
@@ -387,17 +400,6 @@ def compare_vod(response, fixture, query, match_type, response_id,
         if tn_actual:
             assert set(tn_actual["value"]) == set(tn_fixture["value"])
             assert tn_actual["value"]
-
-        fda_actual = get_extension(ext_actual, "fda_approval")
-        fda_fixture = get_extension(ext_fixture, "fda_approval")
-        assert (fda_actual is None) == (fda_fixture is None), "fda_approval"
-        if fda_actual:
-            assert fda_actual.get("approval_status") == \
-                fda_fixture.get("approval_status")
-            assert set(fda_actual.get("approval_year", [])) == \
-                set(fda_fixture.get("approval_year", []))
-            assert set(fda_actual.get("has_indication", [])) == \
-                set(fda_fixture.get("has_indication", []))
 
 
 def test_query(query_handler):
