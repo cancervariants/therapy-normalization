@@ -47,7 +47,7 @@ def everolimus() -> Drug:
             "rxcui:1308432"
         ],
         "associated_with": ["unii:9HW64Q8G6G"],
-        "approval_status": "fda_prescription",
+        "approval_rating": "fda_prescription",
         "trade_names": ["AFINITOR"]
     })
 
@@ -63,7 +63,7 @@ def dactinomycin() -> Drug:
             "rxcui:239179"
         ],
         "associated_with": ["unii:1CC1JFE158"],
-        "approval_status": "fda_prescription",
+        "approval_rating": "fda_prescription",
         "trade_names": ["COSMEGEN"]
     })
 
@@ -77,35 +77,35 @@ def cisplatin() -> List[Drug]:
             "concept_id": "drugsatfda:ANDA074656",
             "xrefs": ["rxcui:309311"],
             "associated_with": ["unii:Q20Q21Q62J"],
-            "approval_status": "fda_prescription",
+            "approval_rating": "fda_prescription",
         }),
         Drug(**{
             "label": "CISPLATIN",
             "concept_id": "drugsatfda:ANDA075036",
             "xrefs": ["rxcui:309311"],
             "associated_with": ["unii:Q20Q21Q62J"],
-            "approval_status": "fda_prescription",
+            "approval_rating": "fda_prescription",
         }),
         Drug(**{
             "label": "CISPLATIN",
             "concept_id": "drugsatfda:ANDA074735",
             "xrefs": ["rxcui:309311"],
             "associated_with": ["unii:Q20Q21Q62J"],
-            "approval_status": "fda_prescription",
+            "approval_rating": "fda_prescription",
         }),
         Drug(**{
             "label": "CISPLATIN",
             "concept_id": "drugsatfda:ANDA206774",
             "xrefs": ["rxcui:309311"],
             "associated_with": ["unii:Q20Q21Q62J"],
-            "approval_status": "fda_prescription",
+            "approval_rating": "fda_prescription",
         }),
         Drug(**{
             "label": "CISPLATIN",
             "concept_id": "drugsatfda:ANDA207323",
             "xrefs": ["rxcui:309311"],
             "associated_with": ["unii:Q20Q21Q62J"],
-            "approval_status": "fda_prescription",
+            "approval_rating": "fda_prescription",
         }),
         Drug(**{
             "label": "CISPLATIN",
@@ -120,7 +120,7 @@ def cisplatin() -> List[Drug]:
 @pytest.fixture(scope="module")
 def fenortho() -> List[Drug]:
     """Provide fenortho fixture. Tests for correct handling of conflicting
-    approval_status values.
+    approval_rating values.
     """
     return [
         Drug(**{
@@ -131,7 +131,7 @@ def fenortho() -> List[Drug]:
             "concept_id": "drugsatfda:ANDA072267",
             "xrefs": ["rxcui:310291", "rxcui:351398"],
             "associated_with": ["unii:0X2CW1QABJ"],
-            "approval_status": "fda_prescription",
+            "approval_rating": "fda_prescription",
             "trade_names": ["NALFON"]
         }),
         Drug(**{

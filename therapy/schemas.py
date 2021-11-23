@@ -11,8 +11,8 @@ from pydantic import BaseModel, StrictBool
 RecordParams = Dict[str, Union[List, Set, str, Dict[str, Any]]]
 
 
-class ApprovalStatus(str, Enum):
-    """Define string constraints for approval status attribute.
+class ApprovalRating(str, Enum):
+    """Define string constraints for approval rating attribute.
 
     ChEMBL:
      - Phase 0: "Research: The compound has not yet reached clinical trials
@@ -134,7 +134,7 @@ class Drug(BaseModel):
     trade_names: Optional[List[str]] = []
     xrefs: Optional[List[str]] = []
     associated_with: Optional[List[str]] = []
-    approval_status: Optional[ApprovalStatus] = None
+    approval_rating: Optional[ApprovalRating] = None
     approval_year: Optional[List[int]] = []
     has_indication: Optional[List[HasIndication]] = []
 
@@ -165,7 +165,7 @@ class Drug(BaseModel):
                 ],
                 "xrefs": [],
                 "associated_with": None,
-                "approval_status": "approved",
+                "approval_rating": "approved",
                 "approval_year": [],
                 "has_indication": [],
                 "trade_names": ["PLATINOL", "PLATINOL-AQ", "CISPLATIN"]
@@ -406,12 +406,12 @@ class MatchesListed(BaseModel):
             }
 
 
-class ApprovalStatusValue(BaseModel):
-    """VOD Extension class for regulatory approval status/indication
+class ApprovalRatingValue(BaseModel):
+    """VOD Extension class for regulatory approval rating/indication
     value attributes.
     """
 
-    approval_status: Optional[List[ApprovalStatus]]
+    approval_ratings: Optional[List[ApprovalRating]]
     approval_year: Optional[List[int]]
     has_indication: Optional[List[Union[Dict, ValueObjectDescriptor]]]
 
@@ -615,7 +615,7 @@ class SearchService(BaseModel):
                                 ],
                                 "xrefs": ["drugbank:DB00515"],
                                 "associated_with": ["fda:Q20Q21Q62J"],
-                                "approval_status": None,
+                                "approval_rating": None,
                                 "trade_names": []
                             }
                         ],
@@ -669,7 +669,7 @@ class SearchService(BaseModel):
                                     "mmsl:31747",
                                     "mmsl:4456"
                                 ],
-                                "approval_status": "approved",
+                                "approval_rating": "rxnorm_prescribable",
                                 "trade_names": [
                                     "Cisplatin",
                                     "Platinol"
@@ -703,7 +703,7 @@ class SearchService(BaseModel):
                                     "fda:Q20Q21Q62J",
                                     "chebi:CHEBI:27899"
                                 ],
-                                "approval_status": None,
+                                "approval_rating": None,
                                 "trade_names": []
                             }
                         ],
@@ -744,7 +744,7 @@ class SearchService(BaseModel):
                                 "associated_with": [
                                     "pubchem.compound:5702198"
                                 ],
-                                "approval_status": None,
+                                "approval_rating": None,
                                 "trade_names": []
                             }
                         ],

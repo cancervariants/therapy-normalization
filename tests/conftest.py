@@ -168,8 +168,8 @@ def compare_records(actual: Dict, fixt: Drug):
     assert set(actual["trade_names"]) == set(fixture["trade_names"])
     assert set(actual["xrefs"]) == set(fixture["xrefs"])
     assert set(actual["associated_with"]) == set(fixture["associated_with"])
-    if actual["approval_status"] or fixture["approval_status"]:
-        assert actual["approval_status"] == fixture["approval_status"]
+    if actual["approval_rating"] or fixture["approval_rating"]:
+        assert actual["approval_rating"] == fixture["approval_rating"]
     if actual["approval_year"] or fixture["approval_year"]:
         assert set(actual["approval_year"]) == set(fixture["approval_year"])
     if actual["has_indication"] or fixture["has_indication"]:

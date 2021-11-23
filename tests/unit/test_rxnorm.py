@@ -45,7 +45,7 @@ def bifidobacterium_infantis():
             "bifidobacterium infantis",
             "Bifidobacterium infantis"
         ],
-        "approval_status": "rxnorm_prescribable",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [
             "drugbank:DB14222"
         ],
@@ -82,7 +82,7 @@ def cisplatin():
             "CDDP",
             "Cis-DDP",
         ],
-        "approval_status": "rxnorm_prescribable",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [
             "drugbank:DB00515",
             "drugbank:DB12117"
@@ -116,7 +116,7 @@ def amiloride_hydrochloride():
             "Amiloride Hydrochloride",
             "Hydrochloride, Amiloride"
         ],
-        "approval_status": "rxnorm_prescribable",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [],
         "associated_with": [
             "usp:m2650",
@@ -154,7 +154,7 @@ def amiloride():
             "N-amidino-3,5-diamino-6-chloropyrazinecarboxamide",
             "Amyloride"
         ],
-        "approval_status": "rxnorm_prescribable",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [
             "drugbank:DB00594"
         ],
@@ -192,7 +192,7 @@ def timolol():
             "(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol"
             "-3-yl)oxy]propan-2-ol"
         ],
-        "approval_status": "rxnorm_prescribable",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [
             "drugbank:DB00373"
         ],
@@ -246,7 +246,7 @@ def lymphocyte():
             "Globulin, Anti-Thymocyte",
             "lymphocyte immune globulin, anti-thy (obs)"
         ],
-        "approval_status": "rxnorm_prescribable",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [],
         "associated_with": [
             "mesh:D000961",
@@ -282,7 +282,7 @@ def aspirin():
             "o-carboxyphenyl acetate",
             "Acetylsalicylic Acid"
         ],
-        "approval_status": "rxnorm_prescribable",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [
             "drugbank:DB00945"
         ],
@@ -317,7 +317,7 @@ def mesna():
             "2-Mercaptoethanesulphonate, Sodium",
             "Sodium 2-Mercaptoethanesulphonate"
         ],
-        "approval_status": "rxnorm_prescribable",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [],
         "associated_with": [
             "usp:m49500",
@@ -350,7 +350,7 @@ def beta_alanine():
             "3 Aminopropionic Acid",
             "3-Aminopropionic Acid"
         ],
-        "approval_status": "rxnorm_prescribable",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [],
         "associated_with": [
             "mesh:D015091",
@@ -374,7 +374,7 @@ def algestone():
             "Alphasone",
             "Dihydroxyprogesterone"
         ],
-        "approval_status": None,
+        "approval_rating": None,
         "xrefs": [],
         "associated_with": [
             "mesh:D000523"
@@ -408,7 +408,7 @@ def levothyroxine():
             "4-(4-Hydroxy-3,5-diiodophenoxy)-3,5-diiodo-L-phenylalanine",
             "Levothyroxin"
         ],
-        "approval_status": "rxnorm_prescribable",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [
             "drugbank:DB00451"
         ],
@@ -460,7 +460,7 @@ def fluoxetine():
             "(+-)-N-Methyl-3-phenyl-3-((alpha,alpha,alpha-trifluoro-"
             "P-tolyl)oxy)propylamine"
         ],
-        "approval_status": "rxnorm_prescribable",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [
             "drugbank:DB00472"
         ],
@@ -494,7 +494,7 @@ def fluoxetine_hydrochloride():
             "FLUoxetine hydrochloride",
             "Fluoxetine Hydrochloride"
         ],
-        "approval_status": "rxnorm_prescribable",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [],
         "associated_with": [
             "usp:m33780",

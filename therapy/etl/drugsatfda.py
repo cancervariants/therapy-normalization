@@ -8,7 +8,7 @@ import shutil
 import requests
 
 from therapy import DownloadException, logger
-from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, ApprovalStatus, \
+from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, ApprovalRating, \
     RecordParams
 from therapy.etl.base import Base
 
@@ -68,19 +68,19 @@ class DrugsAtFDA(Base):
         meta["src_name"] = SourceName.DRUGSATFDA
         self.database.metadata.put_item(Item=meta)
 
-    def _get_marketing_status(self, products: List, concept_id: str)\
+    def _get_marketing_status_rating(self, products: List, concept_id: str)\
             -> Optional[str]:
-        """Get approval status from products list.
+        """Get approval status rating from products list.
         :param List products: list of individual FDA product objects
         :param str concept_id: FDA application concept ID, used in reporting error
             messages
-        :return: approval_status value if successful, None if ambiguous or unavailable
+        :return: approval_rating value if successful, None if ambiguous or unavailable
         """
         statuses_map = {
-            "Discontinued": ApprovalStatus.FDA_DISCONTINUED.value,
-            "Prescription": ApprovalStatus.FDA_PRESCRIPTION.value,
-            "Over-the-counter": ApprovalStatus.FDA_OTC.value,
-            "None (Tentative Approval)": ApprovalStatus.FDA_TENTATIVE.value,
+            "Discontinued": ApprovalRating.FDA_DISCONTINUED.value,
+            "Prescription": ApprovalRating.FDA_PRESCRIPTION.value,
+            "Over-the-counter": ApprovalRating.FDA_OTC.value,
+            "None (Tentative Approval)": ApprovalRating.FDA_TENTATIVE.value,
         }
         statuses = [p["marketing_status"] for p in products]
         if not all([s == statuses[0] for s in statuses]):
@@ -108,9 +108,9 @@ class DrugsAtFDA(Base):
             concept_id = f"{NamespacePrefix.DRUGSATFDA.value}:{app_no}"
             therapy: RecordParams = {"concept_id": concept_id}
 
-            status = self._get_marketing_status(products, concept_id)
-            if status:
-                therapy["approval_status"] = status
+            rating = self._get_marketing_status_rating(products, concept_id)
+            if rating:
+                therapy["approval_rating"] = rating
 
             brand_names = [p["brand_name"] for p in products]
 

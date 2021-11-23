@@ -39,7 +39,7 @@ def cisplatin():
             "Platinol",
             "Platinol-AQ"
         ],
-        "approval_status": None,
+        "approval_rating": None,
         "xrefs": [
             "chembl:CHEMBL11359",
             "drugbank:DB00515",
@@ -62,7 +62,7 @@ def platinol():
         "concept_id": "wikidata:Q47522001",
         "aliases": [],
         "trade_names": [],
-        "approval_status": None,
+        "approval_rating": None,
         "xrefs": ["rxcui:202856"],
         "associated_with": []
     }
@@ -86,7 +86,7 @@ def interferon_alfacon_1():
             "Recombinant Consensus Interferon",
             "Recombinant methionyl human consensus interferon"
         ],
-        "approval_status": None,
+        "approval_rating": None,
         "xrefs": [
             "chembl:CHEMBL1201557",
             "drugbank:DB00069",
@@ -107,7 +107,7 @@ def d_methamphetamine():
         "label": "D-methamphetamine",
         "concept_id": "wikidata:Q191924",
         "aliases": [],
-        "approval_status": None,
+        "approval_rating": None,
         "xrefs": [
             "chembl:CHEMBL1201201",
             "drugbank:DB01577",
@@ -146,7 +146,7 @@ def atropine():
             "3-hydroxy-2-phenylpropanoate",
             "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate"
         ],
-        "approval_status": None,
+        "approval_rating": None,
         "xrefs": [
             "drugbank:DB00572",
             "chemidplus:51-55-8",

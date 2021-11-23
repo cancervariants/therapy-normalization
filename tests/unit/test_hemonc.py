@@ -47,7 +47,7 @@ def cisplatin():
         "trade_names": [],
         "xrefs": ["rxcui:2555"],
         "associated_with": [],
-        "approval_status": "hemonc_approved",
+        "approval_ratings": "hemonc_approved",
         "approval_year": [1978],
         "has_indication": [
             {
@@ -101,7 +101,7 @@ def bendamustine():
             "Treanda",
             "Xyotin"
         ],
-        "approval_status": "hemonc_approved",
+        "approval_ratings": "hemonc_approved",
         "approval_year": ["2008", "2015"],
         "has_indication": [
             {
@@ -132,7 +132,7 @@ def degarelix():
         "xrefs": ["rxcui:475230"],
         "associated_with": [],
         "trade_names": ["Firmagon"],
-        "approval_status": "hemonc_approved",
+        "approval_ratings": "hemonc_approved",
         "approval_year": ["2008"],
         "has_indication": [
             {

@@ -60,10 +60,10 @@ def compare_merged_records(actual: Dict, fixture: Dict):
         assert set(actual["associated_with"]) == \
             set(fixture["associated_with"])
 
-    assert ("approval_status" in actual) == ("approval_status" in fixture)
-    if "approval_status" in actual or "approval_status" in fixture:
-        assert set(actual["approval_status"]) == \
-            set(fixture["approval_status"])
+    assert ("approval_ratings" in actual) == ("approval_ratings" in fixture)
+    if "approval_ratings" in actual or "approval_ratings" in fixture:
+        assert set(actual["approval_ratings"]) == \
+            set(fixture["approval_ratings"])
     assert ("approval_year" in actual) == ("approval_year" in fixture)
     if "approval_year" in actual or "approval_year" in fixture:
         assert set(actual["approval_year"]) == set(fixture["approval_year"])
@@ -158,7 +158,7 @@ def phenobarbital_merged():
             "pubchem.substance:135650817"
         ],
         "label": "Phenobarbital",
-        "approval_status": [
+        "approval_ratings": [
             "rxnorm_prescribable",
             "chembl_phase_4",
             "gtopdb_approved"
@@ -245,7 +245,7 @@ def cisplatin_merged():
             "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
             "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
         ],
-        "approval_status": [
+        "approval_ratings": [
             "rxnorm_prescribable",
             "hemonc_approved",
             "fda_prescription",

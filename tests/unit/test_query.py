@@ -126,7 +126,7 @@ def phenobarbital():
                 "type": "Extension",
                 "name": "regulatory_approval",
                 "value": {
-                    "approval_status": [],
+                    "approval_ratings": [],
                     "approval_year": [],
                     "has_indication": []
                 }
@@ -231,7 +231,7 @@ def cisplatin():
                 "type": "Extension",
                 "name": "regulatory_approval",
                 "value": {
-                    "approval_status": [],
+                    "approval_ratings": [],
                     "approval_year": ["1978"],
                     "has_indication": [
                         {
@@ -377,10 +377,10 @@ def compare_vod(response, fixture, query, match_type, response_id,
         fda_fixture = get_extension(ext_fixture, "regulatory_approval")
         assert (fda_actual is None) == (fda_fixture is None), "regulatory_approval"
         if fda_actual:
-            status_actual = fda_actual.get("approval_status")
-            status_fixture = fda_fixture.get("approval_status")
-            if status_actual or status_fixture:
-                assert set(status_actual) == set(status_fixture)
+            ratings_actual = fda_actual.get("approval_ratings")
+            ratings_fixture = fda_fixture.get("approval_ratings")
+            if ratings_actual or ratings_fixture:
+                assert set(ratings_actual) == set(ratings_fixture)
             assert set(fda_actual.get("approval_year", [])) == \
                 set(fda_fixture.get("approval_year", []))
             assert set(fda_actual.get("has_indication", [])) == \
