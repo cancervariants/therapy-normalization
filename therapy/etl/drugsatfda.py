@@ -151,15 +151,15 @@ class DrugsAtFDA(Base):
                 unii = openfda.get("unii")
                 if unii:
                     unii_items = [f"{NamespacePrefix.UNII.value}:{u}" for u in unii]
-                    therapy["associated_with"] += unii_items
+                    therapy["associated_with"] += unii_items  # type: ignore
                 spl = openfda.get("spl_id")
                 if spl:
                     spl_items = [f"{NamespacePrefix.SPL.value}:{s}" for s in spl]
-                    therapy["associated_with"] += spl_items
+                    therapy["associated_with"] += spl_items  # type: ignore
                 ndc = openfda.get("product_ndc")
                 if ndc:
                     ndc_items = [f"{NamespacePrefix.NDC.value}:{n}" for n in ndc]
-                    therapy["associated_with"] += ndc_items
+                    therapy["associated_with"] += ndc_items  # type: ignore
 
                 rxcui = openfda.get("rxcui")
                 if rxcui:

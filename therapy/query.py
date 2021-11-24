@@ -386,15 +386,15 @@ class QueryHandler:
             if "approval_rating" in record:
                 value = record.get("approval_rating")
                 if value:
-                    approv["value"]["approval_ratings"] = [value]
+                    approv["value"]["approval_ratings"] = [value]  # type: ignore
             elif "approval_ratings" in record:
                 value = record.get("approval_ratings")
                 if value:
-                    approv["value"]["approval_ratings"] = value
+                    approv["value"]["approval_ratings"] = value  # type: ignore
             if "approval_year" in record:
                 value = record.get("approval_year")
                 if value:
-                    approv["value"]["approval_year"] = value
+                    approv["value"]["approval_year"] = value  # type: ignore
             inds = record.get("has_indication", [])
             inds_list = []
             for ind in inds:
