@@ -373,6 +373,7 @@ class QueryHandler:
             vod["alternate_labels"] = record["aliases"]
 
         if any(filter(lambda f: f in record, ("approval_rating",
+                                              "approval_ratings",
                                               "approval_year",
                                               "has_indication"))):
             approv = {
@@ -380,12 +381,20 @@ class QueryHandler:
                 "name": "regulatory_approval",
                 "value": {}
             }
-            for field in ("approval_rating", "approval_year"):
-                value = record.get(field)
-                if field == "approval_rating":
-                    field = "approval_ratings"
+            # temporarily handle rating vs ratings fields slightly differently
+            # to change in issue 223
+            if "approval_rating" in record:
+                value = record.get("approval_rating")
                 if value:
-                    approv["value"][field] = value  # type: ignore
+                    approv["value"]["approval_ratings"] = [value]
+            elif "approval_ratings" in record:
+                value = record.get("approval_ratings")
+                if value:
+                    approv["value"]["approval_ratings"] = value
+            if "approval_year" in record:
+                value = record.get("approval_year")
+                if value:
+                    approv["value"]["approval_year"] = value
             inds = record.get("has_indication", [])
             inds_list = []
             for ind in inds:

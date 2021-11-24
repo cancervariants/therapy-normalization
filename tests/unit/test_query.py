@@ -211,20 +211,43 @@ def cisplatin():
                 "value": [
                     "mmsl:31747",
                     "mmsl:4456",
+                    "mmsl:d00195",
                     "usp:m17910",
                     "CHEBI:27899",
                     "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
                     "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
-                    "mmsl:d00195",
                     "mesh:D002945",
                     "atc:L01XA01",
                     "vandf:4018139",
-                    "pubchem.compound:5702198",
-                    "umls:C0008838",
-                    "unii:Q20Q21Q62J",
                     "pubchem.substance:178102005",
                     "pubchem.compound:441203",
-                    "unii:H8MTN7XVC2"
+                    "pubchem.compound:5702198",
+                    "umls:C0008838",
+                    "unii:H8MTN7XVC2",
+                    "unii:Q20Q21Q62J",
+                    "ndc:0143-9504",
+                    "ndc:0143-9505",
+                    "ndc:0703-5747",
+                    "ndc:0703-5748",
+                    "ndc:16729-288",
+                    "ndc:44567-509",
+                    "ndc:44567-510",
+                    "ndc:44567-511",
+                    "ndc:44567-530",
+                    "ndc:63323-103",
+                    "ndc:68001-283",
+                    "ndc:68083-162",
+                    "ndc:68083-163",
+                    "ndc:70860-206",
+                    "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
+                    "spl:5a24d5bd-c44a-43f7-a04c-76caf3475012",
+                    "spl:a66eda32-1164-439a-ac8e-73138365ec06",
+                    "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
+                    "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c",
+                    "spl:54b3415c-c095-4c82-b216-e0e6e6bb8d03",
+                    "spl:9b008181-ab66-db2f-e053-2995a90aad57",
+                    "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
+                    "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2"
                 ]
             },
             {
@@ -351,6 +374,8 @@ def compare_vod(response, fixture, query, match_type, response_id,
 
     assert ("xrefs" in actual.keys()) == ("xrefs" in fixture.keys())
     if "xrefs" in actual:
+        print(actual["xrefs"])
+        print(fixture["xrefs"])
         assert set(actual["xrefs"]) == set(fixture["xrefs"])
 
     assert ("alternate_labels" in actual.keys()) == ("alternate_labels" in
@@ -613,7 +638,7 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
 
 def test_merged_meta(merge_query_handler):
     """Test population of source and resource metadata in merged querying."""
-    query = "pheno"
+    query = "phenobarbital"
     response = merge_query_handler.search_groups(query)
     meta_items = response["source_meta_"]
     assert "RxNorm" in meta_items.keys()

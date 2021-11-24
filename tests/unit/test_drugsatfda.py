@@ -46,7 +46,18 @@ def everolimus() -> Drug:
             "rxcui:1119400",
             "rxcui:1308432"
         ],
-        "associated_with": ["unii:9HW64Q8G6G"],
+        "associated_with": [
+            "unii:9HW64Q8G6G",
+            "ndc:0078-0566",
+            "ndc:0078-0594",
+            "ndc:0078-0566",
+            "spl:8ad662ec-6e9b-4650-9f5a-78dda1f9f8f0",
+            "ndc:0078-0567",
+            "ndc:0078-0620",
+            "ndc:0078-0628",
+            "ndc:0078-0626",
+            "ndc:0078-0627"
+        ],
         "approval_rating": "fda_prescription",
         "trade_names": ["AFINITOR"]
     })
@@ -62,7 +73,13 @@ def dactinomycin() -> Drug:
             "rxcui:105569",
             "rxcui:239179"
         ],
-        "associated_with": ["unii:1CC1JFE158"],
+        "associated_with": [
+            "unii:1CC1JFE158",
+            "ndc:55292-811",
+            "ndc:66993-489",
+            "spl:137c07d7-e2bf-4f59-8b8f-4ebe119e576d",
+            "spl:b92f5536-179c-6234-e053-2995a90a0f25"
+        ],
         "approval_rating": "fda_prescription",
         "trade_names": ["COSMEGEN"]
     })
@@ -76,42 +93,77 @@ def cisplatin() -> List[Drug]:
             "label": "CISPLATIN",
             "concept_id": "drugsatfda:ANDA074656",
             "xrefs": ["rxcui:309311"],
-            "associated_with": ["unii:Q20Q21Q62J"],
+            "associated_with": [
+                "unii:Q20Q21Q62J",
+                "ndc:0703-5747",
+                "ndc:0703-5748",
+                "spl:54b3415c-c095-4c82-b216-e0e6e6bb8d03"
+            ],
             "approval_rating": "fda_prescription",
         }),
         Drug(**{
             "label": "CISPLATIN",
             "concept_id": "drugsatfda:ANDA075036",
             "xrefs": ["rxcui:309311"],
-            "associated_with": ["unii:Q20Q21Q62J"],
+            "associated_with": [
+                "unii:Q20Q21Q62J",
+                "ndc:0143-9504",
+                "ndc:0143-9505",
+                "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c"
+            ],
             "approval_rating": "fda_prescription",
         }),
         Drug(**{
             "label": "CISPLATIN",
             "concept_id": "drugsatfda:ANDA074735",
             "xrefs": ["rxcui:309311"],
-            "associated_with": ["unii:Q20Q21Q62J"],
+            "associated_with": [
+                "unii:Q20Q21Q62J",
+                "ndc:63323-103",
+                "spl:9b008181-ab66-db2f-e053-2995a90aad57",
+            ],
             "approval_rating": "fda_prescription",
         }),
         Drug(**{
             "label": "CISPLATIN",
             "concept_id": "drugsatfda:ANDA206774",
             "xrefs": ["rxcui:309311"],
-            "associated_with": ["unii:Q20Q21Q62J"],
+            "associated_with": [
+                "unii:Q20Q21Q62J",
+                "ndc:16729-288",
+                "ndc:68001-283",
+                "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
+                "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2"
+            ],
             "approval_rating": "fda_prescription",
         }),
         Drug(**{
             "label": "CISPLATIN",
             "concept_id": "drugsatfda:ANDA207323",
             "xrefs": ["rxcui:309311"],
-            "associated_with": ["unii:Q20Q21Q62J"],
+            "associated_with": [
+                "unii:Q20Q21Q62J",
+                "ndc:68083-162",
+                "ndc:68083-163",
+                "ndc:70860-206",
+                "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
+                "spl:5a24d5bd-c44a-43f7-a04c-76caf3475012"
+            ],
             "approval_rating": "fda_prescription",
         }),
         Drug(**{
             "label": "CISPLATIN",
             "concept_id": "drugsatfda:NDA018057",
             "xrefs": ["rxcui:1736854", "rxcui:309311"],
-            "associated_with": ["unii:Q20Q21Q62J"],
+            "associated_with": [
+                "unii:Q20Q21Q62J",
+                "ndc:44567-509",
+                "ndc:44567-510",
+                "ndc:44567-511",
+                "ndc:44567-530",
+                "spl:a66eda32-1164-439a-ac8e-73138365ec06",
+                "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c"
+            ],
             "trade_names": ["PLATINOL-AQ", "PLATINOL"]
         }),
     ]
@@ -124,20 +176,20 @@ def fenortho() -> List[Drug]:
     """
     return [
         Drug(**{
-            "label_and_type": "drugsatfda:anda072267##identity",
-            "item_type": "identity",
-            "src_name": "DrugsAtFDA",
             "label": "FENOPROFEN CALCIUM",
             "concept_id": "drugsatfda:ANDA072267",
             "xrefs": ["rxcui:310291", "rxcui:351398"],
-            "associated_with": ["unii:0X2CW1QABJ"],
+            "associated_with": [
+                "unii:0X2CW1QABJ",
+                "ndc:42195-471",
+                "ndc:42195-688",
+                "spl:c1bfb82a-814b-23f3-e053-2995a90ae9cf",
+                "spl:c1bfb82a-8192-23f3-e053-2995a90ae9cf",
+            ],
             "approval_rating": "fda_prescription",
             "trade_names": ["NALFON"]
         }),
         Drug(**{
-            "label_and_type": "drugsatfda:NDA017604##identity",
-            "item_type": "identity",
-            "src_name": "DrugsAtFDA",
             "label": "FENOPROFEN CALCIUM",
             "concept_id": "drugsatfda:NDA017604",
             "xrefs": [
@@ -146,7 +198,20 @@ def fenortho() -> List[Drug]:
                 "rxcui:858116",
                 "rxcui:260323"
             ],
-            "associated_with": ["unii:0X2CW1QABJ"],
+            "associated_with": [
+                "unii:0X2CW1QABJ",
+                "ndc:15014-400",
+                "ndc:42195-100",
+                "ndc:42195-308",
+                "ndc:42195-600",
+                "ndc:69336-113",
+                "ndc:69336-124",
+                "spl:81a0da5b-6078-413e-b6d0-d31c1073b3f7",
+                "spl:bedf1661-b811-3d85-e053-2995a90acd59",
+                "spl:c1721025-8af3-5451-e053-2a95a90a7dc0",
+                "spl:c1829550-d270-e13d-e053-2995a90a4aa5",
+                "spl:c187dfec-eec5-4227-e053-2995a90ab55c"
+            ],
             "trade_names": ["NALFON", "FENORTHO"]
         }),
     ]

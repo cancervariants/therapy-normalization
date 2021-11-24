@@ -143,10 +143,20 @@ class DrugsAtFDA(Base):
                     else:
                         aliases.append(generics[0])
 
+                therapy["associated_with"] = []
                 unii = openfda.get("unii")
                 if unii:
-                    therapy["associated_with"] = [f"{NamespacePrefix.UNII.value}:{u}"
-                                                  for u in unii]
+                    unii_items = [f"{NamespacePrefix.UNII.value}:{u}" for u in unii]
+                    therapy["associated_with"] += unii_items
+                spl = openfda.get("spl_id")
+                if spl:
+                    spl_items = [f"{NamespacePrefix.SPL.value}:{s}" for s in spl]
+                    therapy["associated_with"] += spl_items
+                ndc = openfda.get("product_ndc")
+                if ndc:
+                    ndc_items = [f"{NamespacePrefix.NDC.value}:{n}" for n in ndc]
+                    therapy["associated_with"] += ndc_items
+
                 rxcui = openfda.get("rxcui")
                 if rxcui:
                     therapy["xrefs"] = [f"{NamespacePrefix.RXNORM.value}:{r}"

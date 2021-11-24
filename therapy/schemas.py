@@ -269,6 +269,8 @@ class NamespacePrefix(Enum):
     VANDF = "vandf"  # Veterans Health Administration National Drug File
     UNIPROT = "uniprot"
     DRUGCENTRAL = "drugcentral"
+    NDC = "ndc"  # National Drug Code
+    SPL = "spl"  # Structured Product Labeling
 
 
 class DataLicenseAttributes(BaseModel):
