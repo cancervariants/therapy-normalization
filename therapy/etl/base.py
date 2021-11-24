@@ -147,7 +147,7 @@ class Base(ABC):
             del therapy["has_indication"]
 
         # handle detail fields
-        approval_attrs = ("approval_status", "approval_year")
+        approval_attrs = ("approval_rating", "approval_year")
         for field in approval_attrs:
             if approval_attrs in therapy and therapy[field] is None:
                 del therapy[field]

@@ -11,8 +11,8 @@ from pydantic import BaseModel, StrictBool
 RecordParams = Dict[str, Union[List, Set, str, Dict[str, Any]]]
 
 
-class ApprovalStatus(str, Enum):
-    """Define string constraints for approval status attribute.
+class ApprovalRating(str, Enum):
+    """Define string constraints for approval rating attribute.
 
     ChEMBL:
      - Phase 0: "Research: The compound has not yet reached clinical trials
@@ -134,7 +134,7 @@ class Drug(BaseModel):
     trade_names: Optional[List[str]] = []
     xrefs: Optional[List[str]] = []
     associated_with: Optional[List[str]] = []
-    approval_status: Optional[ApprovalStatus] = None
+    approval_rating: Optional[ApprovalRating] = None
     approval_year: Optional[List[int]] = []
     has_indication: Optional[List[HasIndication]] = []
 
@@ -165,7 +165,7 @@ class Drug(BaseModel):
                 ],
                 "xrefs": [],
                 "associated_with": None,
-                "approval_status": "approved",
+                "approval_rating": "approved",
                 "approval_year": [],
                 "has_indication": [],
                 "trade_names": ["PLATINOL", "PLATINOL-AQ", "CISPLATIN"]
@@ -213,6 +213,8 @@ class SourceName(str, Enum):
     RXNORM = "RxNorm"
     HEMONC = "HemOnc"
     DRUGSATFDA = "DrugsAtFDA"
+    DRUGSATFDA_NDA = DRUGSATFDA
+    DRUGSATFDA_ANDA = DRUGSATFDA
     GUIDETOPHARMACOLOGY = "GuideToPHARMACOLOGY"
 
 
@@ -226,49 +228,52 @@ class SourceIDAfterNamespace(Enum):
     CHEMIDPLUS = ""
     RXNORM = ""
     HEMONC = ""
-    DRUGSATFDA = "ANDA"  # TODO change to [A]?NDA regex in issue-187
+    DRUGSATFDA = ""
     GUIDETOPHARMACOLOGY = ""
 
 
 class NamespacePrefix(Enum):
     """Define string constraints for namespace prefixes on concept IDs."""
 
+    ATC = "atc"  # Anatomical Therapeutic Chemical Classification System
+    BINDINGDB = "bindingdb"
+    CHEBI = "CHEBI"
+    CHEMBL = "chembl"
     CHEMIDPLUS = "chemidplus"
     CASREGISTRY = CHEMIDPLUS
-    PUBCHEMCOMPOUND = "pubchem.compound"
-    PUBCHEMSUBSTANCE = "pubchem.substance"
-    CHEMBL = "chembl"
-    RXNORM = "rxcui"
-    DRUGBANK = "drugbank"
-    DRUGSATFDA = "drugsatfda"
-    WIKIDATA = "wikidata"
-    HEMONC = "hemonc"
-    NCIT = "ncit"
-    ISO = "iso"
-    UMLS = "umls"
-    CHEBI = "CHEBI"
-    KEGGCOMPOUND = "kegg.compound"
-    KEGGDRUG = "kegg.drug"
-    BINDINGDB = "bindingdb"
-    PHARMGKB = "pharmgkb.drug"
     CHEMSPIDER = "chemspider"
-    ZINC = "zinc"
-    PDB = "pdb"
-    THERAPEUTICTARGETSDB = "ttd"
+    CVX = "cvx"  # Vaccines Administered
+    DRUGBANK = "drugbank"
+    DRUGCENTRAL = "drugcentral"
+    DRUGSATFDA_ANDA = "drugsatfda.anda"
+    DRUGSATFDA_NDA = "drugsatfda.nda"
+    HEMONC = "hemonc"
+    INCHIKEY = "inchikey"
+    ISO = "iso"
     IUPHAR = "iuphar"
     IUPHAR_LIGAND = "iuphar.ligand"
     GUIDETOPHARMACOLOGY = IUPHAR_LIGAND
-    INCHIKEY = "inchikey"
-    UNII = "unii"
-    ATC = "atc"  # Anatomical Therapeutic Chemical Classification System
-    CVX = "cvx"  # Vaccines Administered
+    KEGGCOMPOUND = "kegg.compound"
+    KEGGDRUG = "kegg.drug"
     MMSL = "mmsl"  # Multum MediSource Lexicon
     MSH = "mesh"  # Medical Subject Headings
     MTHCMSFRF = "mthcmsfrf"  # CMS Formulary Reference File
+    NCIT = "ncit"
+    NDC = "ndc"  # National Drug Code
+    PDB = "pdb"
+    PHARMGKB = "pharmgkb.drug"
+    PUBCHEMCOMPOUND = "pubchem.compound"
+    PUBCHEMSUBSTANCE = "pubchem.substance"
+    RXNORM = "rxcui"
+    SPL = "spl"  # Structured Product Labeling
+    THERAPEUTICTARGETSDB = "ttd"
+    UMLS = "umls"
+    UNII = "unii"
+    UNIPROT = "uniprot"
     USP = "usp"  # USP Compendial Nomenclature
     VANDF = "vandf"  # Veterans Health Administration National Drug File
-    UNIPROT = "uniprot"
-    DRUGCENTRAL = "drugcentral"
+    WIKIDATA = "wikidata"
+    ZINC = "zinc"
 
 
 class DataLicenseAttributes(BaseModel):
@@ -406,12 +411,12 @@ class MatchesListed(BaseModel):
             }
 
 
-class ApprovalStatusValue(BaseModel):
-    """VOD Extension class for regulatory approval status/indication
+class ApprovalRatingValue(BaseModel):
+    """VOD Extension class for regulatory approval rating/indication
     value attributes.
     """
 
-    approval_status: Optional[List[ApprovalStatus]]
+    approval_ratings: Optional[List[ApprovalRating]]
     approval_year: Optional[List[int]]
     has_indication: Optional[List[Union[Dict, ValueObjectDescriptor]]]
 
@@ -615,7 +620,7 @@ class SearchService(BaseModel):
                                 ],
                                 "xrefs": ["drugbank:DB00515"],
                                 "associated_with": ["fda:Q20Q21Q62J"],
-                                "approval_status": None,
+                                "approval_rating": None,
                                 "trade_names": []
                             }
                         ],
@@ -669,7 +674,7 @@ class SearchService(BaseModel):
                                     "mmsl:31747",
                                     "mmsl:4456"
                                 ],
-                                "approval_status": "approved",
+                                "approval_rating": "rxnorm_prescribable",
                                 "trade_names": [
                                     "Cisplatin",
                                     "Platinol"
@@ -703,7 +708,7 @@ class SearchService(BaseModel):
                                     "fda:Q20Q21Q62J",
                                     "chebi:CHEBI:27899"
                                 ],
-                                "approval_status": None,
+                                "approval_rating": None,
                                 "trade_names": []
                             }
                         ],
@@ -744,7 +749,7 @@ class SearchService(BaseModel):
                                 "associated_with": [
                                     "pubchem.compound:5702198"
                                 ],
-                                "approval_status": None,
+                                "approval_rating": None,
                                 "trade_names": []
                             }
                         ],
