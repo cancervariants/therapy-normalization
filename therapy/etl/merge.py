@@ -229,7 +229,7 @@ class Merge:
             "aliases": set(),
             "trade_names": set(),
             "associated_with": set(),
-            "approval_rating": set(),
+            "approval_ratings": set(),
             "approval_year": set(),
             "has_indication": [],
         }
@@ -241,7 +241,7 @@ class Merge:
                 merged_attrs[field] |= set(record.get(field, set()))
             approval_rating = record.get("approval_rating")
             if approval_rating:
-                merged_attrs["approval_rating"].add(approval_rating)
+                merged_attrs["approval_ratings"].add(approval_rating)
             if merged_attrs["label"] is None:
                 merged_attrs["label"] = record.get("label")
             for ind in record.get("has_indication", []):
@@ -249,7 +249,7 @@ class Merge:
                     merged_attrs["has_indication"].append(ind)
 
         # clear unused fields
-        for field in set_fields + ["has_indication", "approval_rating"]:
+        for field in set_fields + ["has_indication", "approval_ratings"]:
             field_value = merged_attrs[field]
             if field_value:
                 merged_attrs[field] = list(field_value)
