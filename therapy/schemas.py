@@ -213,6 +213,8 @@ class SourceName(str, Enum):
     RXNORM = "RxNorm"
     HEMONC = "HemOnc"
     DRUGSATFDA = "DrugsAtFDA"
+    DRUGSATFDA_NDA = DRUGSATFDA
+    DRUGSATFDA_ANDA = DRUGSATFDA
     GUIDETOPHARMACOLOGY = "GuideToPHARMACOLOGY"
 
 
@@ -226,51 +228,52 @@ class SourceIDAfterNamespace(Enum):
     CHEMIDPLUS = ""
     RXNORM = ""
     HEMONC = ""
-    DRUGSATFDA = "ANDA"  # change to [A]?NDA regex in issue-187
+    DRUGSATFDA = ""
     GUIDETOPHARMACOLOGY = ""
 
 
 class NamespacePrefix(Enum):
     """Define string constraints for namespace prefixes on concept IDs."""
 
+    ATC = "atc"  # Anatomical Therapeutic Chemical Classification System
+    BINDINGDB = "bindingdb"
+    CHEBI = "CHEBI"
+    CHEMBL = "chembl"
     CHEMIDPLUS = "chemidplus"
     CASREGISTRY = CHEMIDPLUS
-    PUBCHEMCOMPOUND = "pubchem.compound"
-    PUBCHEMSUBSTANCE = "pubchem.substance"
-    CHEMBL = "chembl"
-    RXNORM = "rxcui"
-    DRUGBANK = "drugbank"
-    DRUGSATFDA = "drugsatfda"
-    WIKIDATA = "wikidata"
-    HEMONC = "hemonc"
-    NCIT = "ncit"
-    ISO = "iso"
-    UMLS = "umls"
-    CHEBI = "CHEBI"
-    KEGGCOMPOUND = "kegg.compound"
-    KEGGDRUG = "kegg.drug"
-    BINDINGDB = "bindingdb"
-    PHARMGKB = "pharmgkb.drug"
     CHEMSPIDER = "chemspider"
-    ZINC = "zinc"
-    PDB = "pdb"
-    THERAPEUTICTARGETSDB = "ttd"
+    CVX = "cvx"  # Vaccines Administered
+    DRUGBANK = "drugbank"
+    DRUGCENTRAL = "drugcentral"
+    DRUGSATFDA_ANDA = "drugsatfda.anda"
+    DRUGSATFDA_NDA = "drugsatfda.nda"
+    HEMONC = "hemonc"
+    INCHIKEY = "inchikey"
+    ISO = "iso"
     IUPHAR = "iuphar"
     IUPHAR_LIGAND = "iuphar.ligand"
     GUIDETOPHARMACOLOGY = IUPHAR_LIGAND
-    INCHIKEY = "inchikey"
-    UNII = "unii"
-    ATC = "atc"  # Anatomical Therapeutic Chemical Classification System
-    CVX = "cvx"  # Vaccines Administered
+    KEGGCOMPOUND = "kegg.compound"
+    KEGGDRUG = "kegg.drug"
     MMSL = "mmsl"  # Multum MediSource Lexicon
     MSH = "mesh"  # Medical Subject Headings
     MTHCMSFRF = "mthcmsfrf"  # CMS Formulary Reference File
+    NCIT = "ncit"
+    NDC = "ndc"  # National Drug Code
+    PDB = "pdb"
+    PHARMGKB = "pharmgkb.drug"
+    PUBCHEMCOMPOUND = "pubchem.compound"
+    PUBCHEMSUBSTANCE = "pubchem.substance"
+    RXNORM = "rxcui"
+    SPL = "spl"  # Structured Product Labeling
+    THERAPEUTICTARGETSDB = "ttd"
+    UMLS = "umls"
+    UNII = "unii"
+    UNIPROT = "uniprot"
     USP = "usp"  # USP Compendial Nomenclature
     VANDF = "vandf"  # Veterans Health Administration National Drug File
-    UNIPROT = "uniprot"
-    DRUGCENTRAL = "drugcentral"
-    NDC = "ndc"  # National Drug Code
-    SPL = "spl"  # Structured Product Labeling
+    WIKIDATA = "wikidata"
+    ZINC = "zinc"
 
 
 class DataLicenseAttributes(BaseModel):

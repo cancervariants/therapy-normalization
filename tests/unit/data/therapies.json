@@ -1419,12 +1419,12 @@
       "iuphar.ligand:5343",
       "chembl:CHEMBL11359",
       "wikidata:Q412415",
-      "drugsatfda:ANDA074656",
-      "drugsatfda:ANDA074735",
-      "drugsatfda:ANDA206774",
-      "drugsatfda:ANDA207323",
-      "drugsatfda:ANDA075036",
-      "drugsatfda:NDA018057"
+      "drugsatfda.anda:074656",
+      "drugsatfda.anda:074735",
+      "drugsatfda.anda:206774",
+      "drugsatfda.anda:207323",
+      "drugsatfda.anda:075036",
+      "drugsatfda.nda:018057"
     ],
     "trade_names": ["Cisplatin", "Platinol", "PLATINOL", "PLATINOL-AQ"],
     "aliases": [
@@ -2336,12 +2336,12 @@
     "src_name": "GuideToPHARMACOLOGY"
   },
   {
-    "label_and_type": "drugsatfda:anda075036##identity",
+    "label_and_type": "drugsatfda.anda:075036##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "merge_ref": "rxcui:2555",
     "label": "CISPLATIN",
-    "concept_id": "drugsatfda:ANDA075036",
+    "concept_id": "drugsatfda.anda:075036",
     "xrefs": ["rxcui:309311"],
     "associated_with": [
       "unii:Q20Q21Q62J",
@@ -2353,29 +2353,29 @@
   },
   {
     "label_and_type": "rxcui:309311##xref",
-    "concept_id": "drugsatfda:anda075036",
+    "concept_id": "drugsatfda.anda:075036",
     "item_type": "xref",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "cisplatin##label",
-    "concept_id": "drugsatfda:anda075036",
+    "concept_id": "drugsatfda.anda:075036",
     "item_type": "label",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "unii:q20q21q62j##associated_with",
-    "concept_id": "drugsatfda:anda075036",
+    "concept_id": "drugsatfda.anda:075036",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:anda206774##identity",
+    "label_and_type": "drugsatfda.anda:206774##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "merge_ref": "rxcui:2555",
     "label": "CISPLATIN",
-    "concept_id": "drugsatfda:ANDA206774",
+    "concept_id": "drugsatfda.anda:206774",
     "xrefs": ["rxcui:309311"],
     "associated_with": [
       "unii:Q20Q21Q62J",
@@ -2388,29 +2388,29 @@
   },
   {
     "label_and_type": "rxcui:309311##xref",
-    "concept_id": "drugsatfda:anda206774",
+    "concept_id": "drugsatfda.anda:206774",
     "item_type": "xref",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "cisplatin##label",
-    "concept_id": "drugsatfda:anda206774",
+    "concept_id": "drugsatfda.anda:206774",
     "item_type": "label",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "unii:q20q21q62j##associated_with",
-    "concept_id": "drugsatfda:anda206774",
+    "concept_id": "drugsatfda.anda:206774",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:anda207323##identity",
+    "label_and_type": "drugsatfda.anda:207323##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "merge_ref": "rxcui:2555",
     "label": "CISPLATIN",
-    "concept_id": "drugsatfda:ANDA207323",
+    "concept_id": "drugsatfda.anda:207323",
     "xrefs": ["rxcui:309311"],
     "associated_with": [
       "unii:Q20Q21Q62J",
@@ -2424,29 +2424,29 @@
   },
   {
     "label_and_type": "rxcui:309311##xref",
-    "concept_id": "drugsatfda:anda207323",
+    "concept_id": "drugsatfda.anda:207323",
     "item_type": "xref",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "cisplatin##label",
-    "concept_id": "drugsatfda:anda207323",
+    "concept_id": "drugsatfda.anda:207323",
     "item_type": "label",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "unii:q20q21q62j##associated_with",
-    "concept_id": "drugsatfda:anda207323",
+    "concept_id": "drugsatfda.anda:207323",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:anda074735##identity",
+    "label_and_type": "drugsatfda.anda:074735##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "merge_ref": "rxcui:2555",
     "label": "CISPLATIN",
-    "concept_id": "drugsatfda:ANDA074735",
+    "concept_id": "drugsatfda.anda:074735",
     "xrefs": ["rxcui:309311"],
     "associated_with": [
       "unii:Q20Q21Q62J",
@@ -2457,29 +2457,29 @@
   },
   {
     "label_and_type": "rxcui:309311##xref",
-    "concept_id": "drugsatfda:anda074735",
+    "concept_id": "drugsatfda.anda:074735",
     "item_type": "xref",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "cisplatin##label",
-    "concept_id": "drugsatfda:anda074735",
+    "concept_id": "drugsatfda.anda:074735",
     "item_type": "label",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "unii:q20q21q62j##associated_with",
-    "concept_id": "drugsatfda:anda074735",
+    "concept_id": "drugsatfda.anda:074735",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:anda074656##identity",
+    "label_and_type": "drugsatfda.anda:074656##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "merge_ref": "rxcui:2555",
     "label": "CISPLATIN",
-    "concept_id": "drugsatfda:ANDA074656",
+    "concept_id": "drugsatfda.anda:074656",
     "xrefs": ["rxcui:309311"],
     "associated_with": [
       "unii:Q20Q21Q62J",
@@ -2491,28 +2491,28 @@
   },
   {
     "label_and_type": "unii:q20q21q62j##associated_with",
-    "concept_id": "drugsatfda:anda074656",
+    "concept_id": "drugsatfda.anda:074656",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "rxcui:309311##xref",
-    "concept_id": "drugsatfda:anda074656",
+    "concept_id": "drugsatfda.anda:074656",
     "item_type": "xref",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "cisplatin##label",
-    "concept_id": "drugsatfda:anda074656",
+    "concept_id": "drugsatfda.anda:074656",
     "item_type": "label",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:nda018057##identity",
+    "label_and_type": "drugsatfda.nda:018057##identity",
     "src_name": "DrugsAtFDA",
     "item_type": "identity",
     "label": "CISPLATIN",
-    "concept_id": "drugsatfda:NDA018057",
+    "concept_id": "drugsatfda.nda:018057",
     "xrefs": ["rxcui:1736854", "rxcui:309311"],
     "associated_with": [
       "unii:Q20Q21Q62J",
@@ -2527,27 +2527,27 @@
   },
   {
     "label_and_type": "rxcui:309311##xref",
-    "concept_id": "drugsatfda:nda018057",
+    "concept_id": "drugsatfda.nda:018057",
     "item_type": "xref",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "cisplatin##label",
-    "concept_id": "drugsatfda:nda018057",
+    "concept_id": "drugsatfda.nda:018057",
     "item_type": "label",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "unii:q20q21q62j##associated_with",
-    "concept_id": "drugsatfda:nda018057",
+    "concept_id": "drugsatfda.nda:018057",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:nda210595##identity",
+    "label_and_type": "drugsatfda.nda:210595##identity",
     "src_name": "DrugsAtFDA",
     "item_type": "identity",
-    "concept_id": "drugsatfda:NDA210595",
+    "concept_id": "drugsatfda.nda:210595",
     "aliases": [
       "ACLIDINIUM BROMIDE",
       "ACLIDINIUM BROMIDE AND FORMOTEROL FUMARTE",
@@ -2565,21 +2565,21 @@
   },
   {
     "label_and_type": "unii:w34shf8j2k##associated_with",
-    "concept_id": "drugsatfda:nda210595",
+    "concept_id": "drugsatfda.nda:210595",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "unii:uqw7uf9n91##associated_with",
-    "concept_id": "drugsatfda:nda210595",
+    "concept_id": "drugsatfda.nda:210595",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:nda202450##identity",
+    "label_and_type": "drugsatfda.nda:202450##identity",
     "src_name": "DrugsAtFDA",
     "item_type": "identity",
-    "concept_id": "drugsatfda:NDA202450",
+    "concept_id": "drugsatfda.nda:202450",
     "label": "ACLIDINIUM BROMIDE",
     "xrefs": [
       "rxcui:1607112",
@@ -2593,15 +2593,15 @@
   },
   {
     "label_and_type": "unii:uqw7uf9n91##associated_with",
-    "concept_id": "drugsatfda:nda202450",
+    "concept_id": "drugsatfda.nda:202450",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:anda091141##identity",
+    "label_and_type": "drugsatfda.anda:091141##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
-    "concept_id": "drugsatfda:ANDA091141",
+    "concept_id": "drugsatfda.anda:091141",
     "label": "FORMOTEROL FUMARATE",
     "xrefs": ["rxcui:1246319"],
     "associated_with": ["unii:W34SHF8J2K"],
@@ -2609,15 +2609,15 @@
   },
   {
     "label_and_type": "unii:w34shf8j2k##associated_with",
-    "concept_id": "drugsatfda:anda091141",
+    "concept_id": "drugsatfda.anda:091141",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:nda022007##identity",
+    "label_and_type": "drugsatfda.nda:022007##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
-    "concept_id": "drugsatfda:NDA022007",
+    "concept_id": "drugsatfda.nda:022007",
     "label": "FORMOTEROL FUMARATE",
     "aliases": ["FORMOTEROL FUMARATE DIHYDRATE"],
     "xrefs": ["rxcui:1246321", "rxcui:1246319"],
@@ -2627,16 +2627,16 @@
   },
   {
     "label_and_type": "unii:w34shf8j2k##associated_with",
-    "concept_id": "drugsatfda:nda022007",
+    "concept_id": "drugsatfda.nda:022007",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:nda022334##identity",
+    "label_and_type": "drugsatfda.nda:022334##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "label": "EVEROLIMUS",
-    "concept_id": "drugsatfda:NDA022334",
+    "concept_id": "drugsatfda.nda:022334",
     "xrefs": [
       "rxcui:998191",
       "rxcui:1310144",
@@ -2670,52 +2670,52 @@
   },
   {
     "label_and_type": "rxcui:998191##xref",
-    "concept_id": "drugsatfda:nda022334",
+    "concept_id": "drugsatfda.nda:022334",
     "src_name": "DrugsAtFDA",
     "item_type": "xref"
   },
   {
     "label_and_type": "rxcui:845507##xref",
-    "concept_id": "drugsatfda:nda022334",
+    "concept_id": "drugsatfda.nda:022334",
     "src_name": "DrugsAtFDA",
     "item_type": "xref"
   },
   {
     "label_and_type": "rxcui:998189##xref",
-    "concept_id": "drugsatfda:nda022334",
+    "concept_id": "drugsatfda.nda:022334",
     "src_name": "DrugsAtFDA",
     "item_type": "xref"
   },
   {
     "label_and_type": "rxcui:1308432##xref",
-    "concept_id": "drugsatfda:nda022334",
+    "concept_id": "drugsatfda.nda:022334",
     "src_name": "DrugsAtFDA",
     "item_type": "xref"
   },
   {
     "label_and_type": "unii:9hw64q8g6g##associated_with",
-    "concept_id": "drugsatfda:nda022334",
+    "concept_id": "drugsatfda.nda:022334",
     "src_name": "DrugsAtFDA",
     "item_type": "associated_with"
   },
   {
     "label_and_type": "afinitor##trade_name",
-    "concept_id": "drugsatfda:nda022334",
+    "concept_id": "drugsatfda.nda:022334",
     "src_name": "DrugsAtFDA",
     "item_type": "trade_name"
   },
   {
     "label_and_type": "everolimus##label",
-    "concept_id": "drugsatfda:nda022334",
+    "concept_id": "drugsatfda.nda:022334",
     "src_name": "DrugsAtFDA",
     "item_type": "label"
   },
   {
-    "label_and_type": "drugsatfda:nda050682##identity",
+    "label_and_type": "drugsatfda.nda:050682##identity",
     "src_name": "DrugsAtFDA",
     "item_type": "identity",
     "label": "DACTINOMYCIN",
-    "concept_id": "drugsatfda:NDA050682",
+    "concept_id": "drugsatfda.nda:050682",
     "xrefs": ["rxcui:105569", "rxcui:239179"],
     "associated_with": [
       "unii:1CC1JFE158",
@@ -2731,38 +2731,38 @@
     "label_and_type": "unii:1cc1jfe158##associated_with",
     "src_name": "DrugsAtFDA",
     "item_type": "associated_with",
-    "concept_id": "drugsatfda:nda050682"
+    "concept_id": "drugsatfda.nda:050682"
   },
   {
     "label_and_type": "rxcui:239179##xref",
     "src_name": "DrugsAtFDA",
     "item_type": "xref",
-    "concept_id": "drugsatfda:nda050682"
+    "concept_id": "drugsatfda.nda:050682"
   },
   {
     "label_and_type": "rxcui:105569##xref",
     "src_name": "DrugsAtFDA",
     "item_type": "xref",
-    "concept_id": "drugsatfda:nda050682"
+    "concept_id": "drugsatfda.nda:050682"
   },
   {
     "label_and_type": "cosmegen##trade_name",
     "src_name": "DrugsAtFDA",
     "item_type": "trade_name",
-    "concept_id": "drugsatfda:nda050682"
+    "concept_id": "drugsatfda.nda:050682"
   },
   {
     "label_and_type": "dactinomycin##label",
     "src_name": "DrugsAtFDA",
     "item_type": "label",
-    "concept_id": "drugsatfda:nda050682"
+    "concept_id": "drugsatfda.nda:050682"
   },
   {
-    "label_and_type": "drugsatfda:anda072267##identity",
+    "label_and_type": "drugsatfda.anda:072267##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "label": "FENOPROFEN CALCIUM",
-    "concept_id": "drugsatfda:ANDA072267",
+    "concept_id": "drugsatfda.anda:072267",
     "xrefs": ["rxcui:310291", "rxcui:351398"],
     "associated_with": [
       "unii:0X2CW1QABJ",
@@ -2777,27 +2777,27 @@
   {
     "label_and_type": "unii:0x2cw1qabj##associated_with",
     "item_type": "associated_with",
-    "concept_id": "drugsatfda:ANDA072267",
+    "concept_id": "drugsatfda.anda:072267",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "fenoprofen calcium##label",
     "item_type": "label",
-    "concept_id": "drugsatfda:ANDA072267",
+    "concept_id": "drugsatfda.anda:072267",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "rxcui:310291##xref",
     "item_type": "xref",
-    "concept_id": "drugsatfda:ANDA072267",
+    "concept_id": "drugsatfda.anda:072267",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:nda017604##identity",
+    "label_and_type": "drugsatfda.nda:017604##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "label": "FENOPROFEN CALCIUM",
-    "concept_id": "drugsatfda:NDA017604",
+    "concept_id": "drugsatfda.nda:017604",
     "associated_with": [
       "unii:0X2CW1QABJ",
       "ndc:15014-400",
@@ -2818,13 +2818,13 @@
   {
     "label_and_type": "unii:0x2cw1qabj##associated_with",
     "item_type": "associated_with",
-    "concept_id": "drugsatfda:NDA017604",
+    "concept_id": "drugsatfda.nda:017604",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "fenoprofen calcium##label",
     "item_type": "label",
-    "concept_id": "drugsatfda:NDA017604",
+    "concept_id": "drugsatfda.nda:017604",
     "src_name": "DrugsAtFDA"
   }
 ]

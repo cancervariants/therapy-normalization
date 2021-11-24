@@ -102,10 +102,14 @@ class DrugsAtFDA(Base):
             products = result["products"]
 
             app_no = result["application_number"]
-            if app_no.startswith("BLA"):
+            if app_no.startswith("NDA"):
+                namespace = NamespacePrefix.DRUGSATFDA_NDA.value
+            elif app_no.startswith("ANDA"):
+                namespace = NamespacePrefix.DRUGSATFDA_ANDA.value
+            else:
                 # ignore biologics license applications (tentative)
                 continue
-            concept_id = f"{NamespacePrefix.DRUGSATFDA.value}:{app_no}"
+            concept_id = f"{namespace}:{app_no.split('NDA')[-1]}"
             therapy: RecordParams = {"concept_id": concept_id}
 
             rating = self._get_marketing_status_rating(products, concept_id)
