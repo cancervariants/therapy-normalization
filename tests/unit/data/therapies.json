@@ -1104,28 +1104,6 @@
       "4-(4-Hydroxy-3,5-diiodophenoxy)-3,5-diiodo-L-phenylalanine",
       "Levothyroxin"
     ],
-    "trade_names": [
-      "Eltroxin",
-      "Estre",
-      "Euthyrox",
-      "Leventa",
-      "Levo-T",
-      "Levocrine",
-      "Levotabs",
-      "Levothroid",
-      "Levothyroid",
-      "Levoxyl",
-      "Novothyrox",
-      "SOLOXINE",
-      "Synthroid",
-      "Thyro-Tabs",
-      "ThyroKare",
-      "ThyroMed",
-      "Thyrolar",
-      "Thyrox",
-      "Tirosint",
-      "Unithroid"
-    ],
     "xrefs": ["drugbank:DB00451"],
     "associated_with": [
       "vandf:4022126",

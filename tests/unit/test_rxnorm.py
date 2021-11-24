@@ -418,28 +418,7 @@ def levothyroxine():
             "mmsl:d00278",
             "unii:Q51BO43MG4"
         ],
-        "trade_names": [
-            "Eltroxin",
-            "Estre",
-            "Euthyrox",
-            "Leventa",
-            "Levo-T",
-            "Levocrine",
-            "Levotabs",
-            "Levothroid",
-            "Levothyroid",
-            "Levoxyl",
-            "Novothyrox",
-            "SOLOXINE",
-            "Synthroid",
-            "Thyro-Tabs",
-            "ThyroKare",
-            "ThyroMed",
-            "Thyrolar",
-            "Thyrox",
-            "Tirosint",
-            "Unithroid"
-        ]
+        "trade_names": []
     }
     return Drug(**params)
 
@@ -836,16 +815,12 @@ def test_levothyroxine(levothyroxine, rxnorm):
     assert len(response["records"]) == 1
     compare_records(response["records"][0], levothyroxine)
 
-    # Trade Name Match
+    # trade name matches fail because they exceed the max # limit
     response = rxnorm.search("Unithroid")
-    assert response["match_type"] == MatchType.TRADE_NAME
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0], levothyroxine)
+    assert response["match_type"] == MatchType.NO_MATCH
 
     response = rxnorm.search("Euthyrox")
-    assert response["match_type"] == MatchType.TRADE_NAME
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0], levothyroxine)
+    assert response["match_type"] == MatchType.NO_MATCH
 
     # Xref Match
     response = rxnorm.search("DRUGBANK:DB00451")
