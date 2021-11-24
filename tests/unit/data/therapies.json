@@ -1124,16 +1124,6 @@
     "src_name": "RxNorm"
   },
   {
-    "label_and_type": "unithroid##trade_name",
-    "concept_id": "rxcui:10582",
-    "src_name": "RxNorm"
-  },
-  {
-    "label_and_type": "euthyrox##trade_name",
-    "concept_id": "rxcui:10582",
-    "src_name": "RxNorm"
-  },
-  {
     "label_and_type": "chembl:chembl40##identity",
     "label": "PHENOBARBITAL",
     "concept_id": "chembl:CHEMBL40",
