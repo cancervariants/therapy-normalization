@@ -55,21 +55,6 @@ def cisplatin():
 
 
 @pytest.fixture(scope="module")
-def platinol():
-    """Create a platinol drug fixture."""
-    params = {
-        "label": "Platinol",
-        "concept_id": "wikidata:Q47522001",
-        "aliases": [],
-        "trade_names": [],
-        "approval_rating": None,
-        "xrefs": ["rxcui:202856"],
-        "associated_with": []
-    }
-    return Drug(**params)
-
-
-@pytest.fixture(scope="module")
 def interferon_alfacon_1():
     """Create an Interferon alfacon-1 drug fixture."""
     params = {
