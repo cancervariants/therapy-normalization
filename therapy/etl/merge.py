@@ -28,8 +28,7 @@ class Merge:
         and failed. Because we don't associate these IDs with groups, a separate
         mapping is necessary to prevent repeat queries.
 
-        :param Database database: db instance to use for record retrieval
-            and creation.
+        :param Database database: db instance to use for record retrieval and creation.
         """
         self.database = database
         self._groups: Dict[str, Set[str]] = {}
@@ -119,7 +118,8 @@ class Merge:
                      in fetched.get("associated_with", [])
                      if a.startswith("unii")]
         else:
-            raise Exception(f"Couldn't retrieve record for {concept_id}")
+            logger.error(f"Couldn't retrieve record for {concept_id} from {ref}")
+            return None
         if len(uniis) == 1:
             return fetched["concept_id"]
         else:
@@ -132,11 +132,13 @@ class Merge:
         :return: Set of xref values
         """
         xrefs = set(record.get("xrefs", []))
-        uniis = [a for a in record.get("associated_with", []) if a.startswith("unii:")]
-        for unii in uniis:
+        unii_xrefs = [a for a in record.get("associated_with", [])
+                      if a.startswith("unii:")]
+        for unii in unii_xrefs:
             # get Drugs@FDA records that are associated_with this UNII
-            if unii in self._unii_to_drugsatfda:
-                xrefs |= self._unii_to_drugsatfda[unii]
+            drugsatfda_ids = self._unii_to_drugsatfda.get(unii)
+            if drugsatfda_ids is not None:
+                xrefs |= drugsatfda_ids
                 continue
 
             unii_assoc = self.database.get_records_by_type(unii.lower(),
@@ -192,9 +194,7 @@ class Merge:
         they are 'scalar-like', assign from the highest-priority source where
         that attribute is not None.
 
-        Priority is:
-        RxNorm > NCIt > HemOnc.org > DrugBank > Drugs@FDA > GuideToPHARMACOLOGY >
-            ChEMBL > ChemIDplus > Wikidata
+        Uses the SourcePriority schema to define source priority.
 
         :param Set record_id_set: group of concept IDs
         :return: completed merged drug object to be stored in DB
