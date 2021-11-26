@@ -12,19 +12,24 @@ RecordParams = Dict[str, Union[List, Set, str, Dict[str, Any]]]
 
 
 class ApprovalRating(str, Enum):
-    """Define string constraints for approval rating attribute.
+    """Define string constraints for approval rating attribute. This reflects a drug's
+    regulatory approval status as evaluated by an individual source. We opted to retain
+    each individual source's rating as a distinct enum value after finding that some
+    sources disagreed on the true value (either because of differences in scope like
+    US vs EU/other regulatory arenas, old or conflicting data, or other reasons). Value
+    descriptions are provided below from each listed source.
 
     ChEMBL:
-     - Phase 0: "Research: The compound has not yet reached clinical trials
+     - CHEMBL_PHASE_0: "Research: The compound has not yet reached clinical trials
     (preclinical/research compound)"
-     - Phase 1: "The compound has reached Phase I clinical trials (safety studies,
-    usually with healthy volunteers)"
-     - Phase 2: "The compound has reached Phase II clinical trials (preliminary studies
-    of effectiveness)"
-     - Phase 3: "The compound has reached Phase III clinical trials (larger studies of
-    safety and effectiveness)"
-     - Phase 4: "The compound has been approved in at least one country or area."
-     - Withdrawn: "A withdrawn drug is an approved drug contained in a medicinal
+     - CHEMBL_PHASE_1: "The compound has reached Phase I clinical trials (safety
+    studies, usually with healthy volunteers)"
+     - CHEMBL_PHASE_2: "The compound has reached Phase II clinical trials (preliminary
+    studies of effectiveness)"
+     - CHEMBL_PHASE_3: "The compound has reached Phase III clinical trials (larger
+    studies of safety and effectiveness)"
+     - CHEMBL_PHASE_4: The compound has been approved in at least one country or area."
+     - CHEMBL_WITHDRAWN: "A withdrawn drug is an approved drug contained in a medicinal
     product that subsequently had been removed from the market. The reasons for
     withdrawal may include toxicity, lack of efficacy, or other reasons such as an
     unfavorable risk-to-benefit ratio following approval and marketing of the drug.
@@ -35,40 +40,40 @@ class ApprovalRating(str, Enum):
     https://pubs.acs.org/doi/10.1021/acs.chemrestox.0c00296
 
     Drugs@FDA:
-     - Prescription: "A prescription drug product requires a doctor's authorization
+     - FDA_PRESCRIPTION: "A prescription drug product requires a doctor's authorization
     to purchase."
-     - Over-the-counter: "FDA defines OTC drugs as safe and effective for use by the
-    general public without a doctor's prescription."
-     - Discontinued: "approved products that have never been marketed, have been
+     - FDA_OTC: "FDA defines OTC drugs as safe and effective for use by the general
+    public without a doctor's prescription."
+     - FDA_DISCONTINUED: "approved products that have never been marketed, have been
     discontinued from marketing, are for military use, are for export only, or have had
     their approvals withdrawn for reasons other than safety or efficacy after being
     discontinued from marketing"
-     - None (Tentatively Approved): "If a generic drug product is ready for approval
-    before the expiration of any patents or exclusivities accorded to the reference
-    listed drug product, FDA issues a tentative approval letter to the applicant.  FDA
-    delays final approval of the generic drug product until all patent or exclusivity
-    issues have been resolved."
+     - FDA_TENTATIVE: "If a generic drug product is ready for approval before the
+    expiration of any patents or exclusivities accorded to the reference listed drug
+    product, FDA issues a tentative approval letter to the applicant.  FDA delays final
+    approval of the generic drug product until all patent or exclusivity issues have
+    been resolved."
     https://www.fda.gov/drugs/drug-approvals-and-databases/drugsfda-glossary-terms
 
     HemOnc.org:
-    - Approved: Inferred by us if "Was FDA Approved Yr" property is present (described
-    as "Year of FDA approval")
+    - HEMONC_APPROVED: Inferred by us if "Was FDA Approved Yr" property is present
+    (described as "Year of FDA approval")
     https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6697579/
 
     Guide to Pharmacology:
-    - Approved: "Indicates pharmacologicaly active substances, specified by their INNs,
-    that have been approved for clinical use by a regulatory agency, typically the FDA,
-    EMA or in Japan. This classification persists regardless of whether the drug may
-    later have been withdrawn or discontinued. (N.B. in some cases the information on
-    approval status was obtained indirectly via databases such as Drugbank.)"
-    - Withdrawn: "No longer approved for its original clinical use, as notified by the
-    FDA, typically as a consequence of safety or side effect issues."
+    - GTOPDB_APPROVED: "Indicates pharmacologicaly active substances, specified by their
+    INNs, that have been approved for clinical use by a regulatory agency, typically the
+    FDA, EMA or in Japan. This classification persists regardless of whether the drug
+    may later have been withdrawn or discontinued. (N.B. in some cases the information
+    on approval status was obtained indirectly via databases such as Drugbank.)"
+    - GTOPDB_WITHDRAWN: "No longer approved for its original clinical use, as notified
+    by the FDA, typically as a consequence of safety or side effect issues."
     https://www.guidetopharmacology.org/helpPage.jsp
 
     RxNorm:
-    - Prescribable: "The RxNorm Current Prescribable Content is a subset of currently
-    prescribable drugs found in RxNorm. We intend it to be an approximation of the
-    prescription drugs currently marketed in the US. The subset also includes many
+    - RXNORM_PRESCRIBABLE: "The RxNorm Current Prescribable Content is a subset of
+    currently prescribable drugs found in RxNorm. We intend it to be an approximation of
+    the prescription drugs currently marketed in the US. The subset also includes many
     over-the-counter drugs."
     https://www.nlm.nih.gov/research/umls/rxnorm/docs/prescribe.html
     """
@@ -97,10 +102,10 @@ class HasIndication(BaseModel):
     normalized_disease_id: Optional[str]
 
     class Config:
-        """Configure Drug class"""
+        """Configure HasIndication class"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any], model: Type["Drug"]) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["HasIndication"]) -> None:
             """Configure OpenAPI schema"""
             if "title" in schema.keys():
                 schema.pop("title", None)
@@ -173,10 +178,7 @@ class Drug(BaseModel):
 
 
 class MatchType(IntEnum):
-    """Define string constraints for use in Match Type attributes.
-
-    Concept_ID=100; Label=80; Trade Name=80; Alias=60; Fuzzy=20; No Match=0
-    """
+    """Define string constraints for use in Match Type attributes."""
 
     CONCEPT_ID = 100
     LABEL = 80
