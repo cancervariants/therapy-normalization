@@ -12,7 +12,7 @@ from therapy.version import __version__
 from therapy.database import Database
 from therapy.schemas import Drug, SourceMeta, MatchType, ServiceMeta, \
     HasIndication, SourcePriority, SearchService, NormalizationService, \
-    NamespacePrefix
+    NamespacePrefix, SourceName
 
 
 class InvalidParameterException(Exception):
@@ -169,9 +169,15 @@ class QueryHandler:
         """
         inferred_records = []
         for pattern, source in NAMESPACE_LUIS:
-            if re.match(pattern, query):
-                namespace = NamespacePrefix[source.upper()].value
-                inferred_id = f"{namespace}:{query}"
+            match = re.match(pattern, query)
+            if match:
+                if source == SourceName.DRUGSATFDA.value:
+                    subspace, lui = match.groups()
+                    namespace = f"drugsatfda.{subspace.lower()}"
+                    inferred_id = f"{namespace}:{lui}"
+                else:
+                    namespace = NamespacePrefix[source.upper()].value
+                    inferred_id = f"{namespace}:{query}"
                 record = self.db.get_record_by_id(inferred_id, case_sensitive=False)
                 if record:
                     inferred_records.append((record, namespace, inferred_id))
@@ -180,7 +186,7 @@ class QueryHandler:
             return (
                 inferred_records[0][0],
                 {
-                    "inferred_namespace": inferred_records[0][1],
+                    "inferred_namespace": namespace,
                     "adjusted_query": inferred_records[0][2],
                     # probably not possible but just in case
                     "alternate_inferred_matches": [i[2] for i in inferred_records[1:]]
