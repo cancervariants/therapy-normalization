@@ -7,7 +7,7 @@ import shutil
 
 from therapy.etl.base import Base
 from therapy import PROJECT_ROOT
-from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, \
+from therapy.schemas import SourceName, NamespacePrefix, ApprovalRating, \
     SourceMeta
 
 logger = logging.getLogger("therapy")
@@ -118,26 +118,32 @@ class ChEMBL(Base):
     def _create_temp_table(self) -> None:
         """Create temporary table to store therapies data."""
         create_temp_table = """
-            CREATE TEMPORARY TABLE temp(concept_id, label, approval_status,
+            CREATE TEMPORARY TABLE temp(concept_id, label, approval_rating,
                                         src_name, trade_names, aliases);
         """
         self._cursor.execute(create_temp_table)
 
         insert_temp = f"""
-            INSERT INTO temp(concept_id, label, approval_status, src_name,
+            INSERT INTO temp(concept_id, label, approval_rating, src_name,
                              trade_names, aliases)
             SELECT
                 ds.chembl_id,
                 ds.pref_name,
                 CASE
                     WHEN ds.withdrawn_flag
-                        THEN '{ApprovalStatus.WITHDRAWN.value}'
-                    WHEN ds.max_phase == 4
-                        THEN '{ApprovalStatus.APPROVED.value}'
+                        THEN '{ApprovalRating.CHEMBL_WITHDRAWN.value}'
                     WHEN ds.max_phase == 0
-                        THEN NULL
+                        THEN '{ApprovalRating.CHEMBL_0.value}'
+                    WHEN ds.max_phase == 1
+                        THEN '{ApprovalRating.CHEMBL_1.value}'
+                    WHEN ds.max_phase == 2
+                        THEN '{ApprovalRating.CHEMBL_2.value}'
+                    WHEN ds.max_phase ==3
+                        THEN '{ApprovalRating.CHEMBL_3.value}'
+                    WHEN ds.max_phase == 4
+                        THEN '{ApprovalRating.CHEMBL_4.value}'
                     ELSE
-                        '{ApprovalStatus.INVESTIGATIONAL.value}'
+                        '{None}'
                 END,
                 '{SourceName.CHEMBL.value}',
                 t.trade_names,
@@ -151,13 +157,19 @@ class ChEMBL(Base):
                 ds.pref_name,
                 CASE
                     WHEN ds.withdrawn_flag
-                        THEN '{ApprovalStatus.WITHDRAWN.value}'
-                    WHEN ds.max_phase == 4
-                        THEN '{ApprovalStatus.APPROVED.value}'
+                        THEN '{ApprovalRating.CHEMBL_WITHDRAWN.value}'
                     WHEN ds.max_phase == 0
-                        THEN NULL
+                        THEN '{ApprovalRating.CHEMBL_0.value}'
+                    WHEN ds.max_phase == 1
+                        THEN '{ApprovalRating.CHEMBL_1.value}'
+                    WHEN ds.max_phase == 2
+                        THEN '{ApprovalRating.CHEMBL_2.value}'
+                    WHEN ds.max_phase ==3
+                        THEN '{ApprovalRating.CHEMBL_3.value}'
+                    WHEN ds.max_phase == 4
+                        THEN '{ApprovalRating.CHEMBL_4.value}'
                     ELSE
-                        '{ApprovalStatus.INVESTIGATIONAL.value}'
+                        '{None}'
                 END,
                 '{SourceName.CHEMBL.value}',
                 t.trade_names,
@@ -175,7 +187,7 @@ class ChEMBL(Base):
             SELECT
                 concept_id,
                 label,
-                approval_status,
+                approval_rating,
                 src_name,
                 trade_names,
                 aliases

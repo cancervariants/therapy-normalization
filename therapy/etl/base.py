@@ -2,8 +2,10 @@
 from abc import ABC, abstractmethod
 from ftplib import FTP
 from pathlib import Path
-from typing import List, Dict, Union, Set
+from typing import List, Dict
 import logging
+
+from pydantic import ValidationError
 
 from therapy import PROJECT_ROOT, ITEM_TYPES
 from therapy.schemas import Drug
@@ -25,8 +27,8 @@ class Base(ABC):
         :param Path data_path: path to app data directory
         """
         name = self.__class__.__name__.lower()
-        self.database = database
-        self._src_data_dir = data_path / name
+        self.database: Database = database
+        self._src_data_dir: Path = Path(data_path / name)
         self._added_ids: List[str] = []
 
     def perform_etl(self) -> List[str]:
@@ -83,42 +85,69 @@ class Base(ABC):
         raise NotImplementedError
 
     def _load_therapy(self, therapy: Dict) -> None:
-        """Load individual therapy record.
+        """Load individual therapy record into database.
+        Additionally, this method takes responsibility for:
+            * validating record structure correctness
+            * removing duplicates from list-like fields
+            * removing empty fields
 
         :param Dict therapy: valid therapy object.
         """
-        assert Drug(**therapy)
+        try:
+            Drug(**therapy)
+        except ValidationError as e:
+            logger.error(f"Attempted to load invalid therapy: {therapy}")
+            raise e
+
         concept_id = therapy["concept_id"]
 
         for attr_type, item_type in ITEM_TYPES.items():
             if attr_type in therapy:
                 value = therapy[attr_type]
-                if value is not None and value != []:
-                    if isinstance(value, str):
-                        items: Union[List, Set] = [value.lower()]
-                    else:
-                        therapy[attr_type] = list(set(value))
-                        items = {item.lower() for item in value}
-                        if attr_type in ["aliases", "trade_names"]:
-                            # remove duplicates
-                            if "label" in therapy:
-                                therapy[attr_type] = list(set(therapy[attr_type]) - {therapy["label"]})  # noqa: E501
-
-                            if attr_type == "aliases" and "trade_names" in therapy:
-                                therapy[attr_type] = list(set(therapy[attr_type]) - set(therapy["trade_names"]))  # noqa: E501
-
-                            if len(items) > 20:
-                                logger.debug(f"{concept_id} has > 20 {attr_type}.")
-                                del therapy[attr_type]
-                                continue
-
-                    for item in items:
-                        self.database.add_ref_record(item, concept_id, item_type)
-                else:
+                if value is None or value == []:
                     del therapy[attr_type]
+                    continue
+
+                if attr_type == "label":
+                    self.database.add_ref_record(value.lower(),
+                                                 concept_id, item_type)
+                    continue
+
+                # clean up listlike symbol fields
+                if attr_type == "aliases" and "trade_names" in therapy:
+                    value = list(set(value) - set(therapy["trade_names"]))
+                else:
+                    value = list(set(value))
+
+                if attr_type in ("aliases, trade_names"):
+                    if "label" in therapy:
+                        try:
+                            value.remove(therapy["label"])
+                        except ValueError:
+                            pass
+
+                if len(value) > 20:
+                    logger.debug(f"{concept_id} has > 20 {attr_type}.")
+                    del therapy[attr_type]
+                    continue
+
+                for item in {item.lower() for item in value}:
+                    self.database.add_ref_record(item, concept_id, item_type)
+
+                therapy[attr_type] = value
+
+        # compress has_indication
+        indications = therapy.get("has_indication")
+        if indications:
+            therapy["has_indication"] = [
+                [ind["disease_id"], ind["disease_label"], ind["normalized_disease_id"]]
+                for ind in indications
+            ]
+        elif "has_indication" in therapy:
+            del therapy["has_indication"]
 
         # handle detail fields
-        approval_attrs = ("approval_status", "approval_year", "fda_indication")
+        approval_attrs = ("approval_rating", "approval_year")
         for field in approval_attrs:
             if approval_attrs in therapy and therapy[field] is None:
                 del therapy[field]

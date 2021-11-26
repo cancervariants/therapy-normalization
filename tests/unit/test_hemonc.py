@@ -1,13 +1,13 @@
 """Test that the therapy normalizer works as intended for the HemOnc.org
 source.
 """
-import re
+from datetime import datetime as dt
 
 import pytest
 
 from tests.conftest import compare_response
 from therapy.query import QueryHandler
-from therapy.schemas import Drug, MatchType, ApprovalStatus
+from therapy.schemas import Drug, MatchType
 
 
 @pytest.fixture(scope="module")
@@ -47,7 +47,7 @@ def cisplatin():
         "trade_names": [],
         "xrefs": ["rxcui:2555"],
         "associated_with": [],
-        "approval_status": ApprovalStatus.APPROVED,
+        "approval_rating": "hemonc_approved",
         "approval_year": [1978],
         "has_indication": [
             {
@@ -101,7 +101,7 @@ def bendamustine():
             "Treanda",
             "Xyotin"
         ],
-        "approval_status": ApprovalStatus.APPROVED,
+        "approval_rating": "hemonc_approved",
         "approval_year": ["2008", "2015"],
         "has_indication": [
             {
@@ -132,7 +132,7 @@ def degarelix():
         "xrefs": ["rxcui:475230"],
         "associated_with": [],
         "trade_names": ["Firmagon"],
-        "approval_status": ApprovalStatus.APPROVED,
+        "approval_rating": "hemonc_approved",
         "approval_year": ["2008"],
         "has_indication": [
             {
@@ -222,7 +222,7 @@ def test_metadata(hemonc):
     response = hemonc.fetch_meta()
     assert response.data_license == "CC BY 4.0"
     assert response.data_license_url == "https://creativecommons.org/licenses/by/4.0/legalcode"  # noqa: E501
-    assert re.match(r"202[0-9][01][0-9][0-3][0-9]", response.version)
+    assert dt.strptime(response.version, "%Y%m%d")
     assert response.data_url == "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6"  # noqa: E501
     assert response.rdp_url is None
     assert response.data_license_attributes == {

@@ -3,6 +3,7 @@ from os import environ
 from typing import Optional, Dict, List, Any
 import logging
 import sys
+import atexit
 
 import click
 import boto3
@@ -72,6 +73,7 @@ class Database:
         self.metadata = self.dynamodb.Table("therapy_metadata")
         self.batch = self.therapies.batch_writer()
         self.cached_sources: Dict[str, Any] = {}
+        atexit.register(self.flush_batch)
 
     def create_therapies_table(self, existing_tables: List[str]) -> None:
         """Create Therapies table if it doesn"t already exist.
@@ -215,11 +217,10 @@ class Database:
                             match_type: str) -> List[Dict]:
         """Retrieve records for given query and match type.
 
-        :param query: string to match against
-        :param str match_type: type of match to look for. Should be one
-            of {"alias", "trade_name", "label", "xref", "associated_with",
-            "rx_brand"} -- use Database.get_record_by_id() for concept ID
-            lookup
+        :param query: string to match against (should already be lower-case)
+        :param str match_type: type of match to look for. Should be one of {"alias",
+            "trade_name", "label", "xref", "associated_with", "rx_brand"} -- use
+            Database.get_record_by_id() for concept ID lookup
         :return: list of matching records. Empty if lookup fails.
         """
         pk = f"{query}##{match_type.lower()}"
@@ -234,14 +235,14 @@ class Database:
             return []
 
     def get_ids_for_merge(self) -> List[str]:
-        """Retrieve concept IDs for use in generating normalized records. Only
-        pulls concept IDs for sources in `therapy.ACCEPTED_SOURCES`.
+        """Retrieve concept IDs for use in generating normalized records.
+
         :return: List of concept IDs as strings.
         """
         last_evaluated_key = None
         concept_ids = []
         params = {
-            "ProjectionExpression": "concept_id",
+            "ProjectionExpression": "concept_id,item_type",
         }
         while True:
             if last_evaluated_key:
@@ -252,8 +253,9 @@ class Database:
                 response = self.therapies.scan(**params)
             records = response["Items"]
             for record in records:
-                concept_id = record["concept_id"]
-                concept_ids.append(concept_id)
+                if record["item_type"] == "identity":
+                    concept_id = record["concept_id"]
+                    concept_ids.append(concept_id)
             last_evaluated_key = response.get("LastEvaluatedKey")
             if not last_evaluated_key:
                 break

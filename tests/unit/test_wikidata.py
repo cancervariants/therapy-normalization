@@ -1,7 +1,7 @@
 """Test that the therapy normalizer works as intended for the
 Wikidata source.
 """
-from datetime import datetime
+from datetime import datetime as dt
 
 import pytest
 
@@ -39,7 +39,7 @@ def cisplatin():
             "Platinol",
             "Platinol-AQ"
         ],
-        "approval_status": None,
+        "approval_rating": None,
         "xrefs": [
             "chembl:CHEMBL11359",
             "drugbank:DB00515",
@@ -50,21 +50,6 @@ def cisplatin():
             "pubchem.compound:5702198"
         ],
         "trade_names": []
-    }
-    return Drug(**params)
-
-
-@pytest.fixture(scope="module")
-def platinol():
-    """Create a platinol drug fixture."""
-    params = {
-        "label": "Platinol",
-        "concept_id": "wikidata:Q47522001",
-        "aliases": [],
-        "trade_names": [],
-        "approval_status": None,
-        "xrefs": ["rxcui:202856"],
-        "associated_with": []
     }
     return Drug(**params)
 
@@ -86,7 +71,7 @@ def interferon_alfacon_1():
             "Recombinant Consensus Interferon",
             "Recombinant methionyl human consensus interferon"
         ],
-        "approval_status": None,
+        "approval_rating": None,
         "xrefs": [
             "chembl:CHEMBL1201557",
             "drugbank:DB00069",
@@ -107,7 +92,7 @@ def d_methamphetamine():
         "label": "D-methamphetamine",
         "concept_id": "wikidata:Q191924",
         "aliases": [],
-        "approval_status": None,
+        "approval_rating": None,
         "xrefs": [
             "chembl:CHEMBL1201201",
             "drugbank:DB01577",
@@ -146,7 +131,7 @@ def atropine():
             "3-hydroxy-2-phenylpropanoate",
             "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate"
         ],
-        "approval_status": None,
+        "approval_rating": None,
         "xrefs": [
             "drugbank:DB00572",
             "chemidplus:51-55-8",
@@ -379,7 +364,7 @@ def test_meta_info(wikidata):
     assert response["source_meta_"]["data_license"] == "CC0 1.0"
     assert response["source_meta_"]["data_license_url"] == \
            "https://creativecommons.org/publicdomain/zero/1.0/"
-    assert datetime.strptime(response["source_meta_"]["version"], "%Y%m%d")
+    assert dt.strptime(response["source_meta_"]["version"], "%Y%m%d")
     assert response["source_meta_"]["data_url"] is None
     assert not response["source_meta_"]["rdp_url"]
     assert response["source_meta_"]["data_license_attributes"] == {

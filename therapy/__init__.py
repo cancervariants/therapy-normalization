@@ -21,6 +21,10 @@ class DownloadException(Exception):
 
 
 from therapy.schemas import SourceName, NamespacePrefix, SourceIDAfterNamespace, ItemTypes  # noqa: E402, E501, I100, I202
+# map plural to singular form
+# eg {"label": "label", "trade_names": "trade_name"}
+# key is the field name in the record object, value is the item_type value
+# in reference objects
 ITEM_TYPES = {k.lower(): v.value for k, v in ItemTypes.__members__.items()}
 
 # Sources we import directly
@@ -45,7 +49,7 @@ XREF_SOURCES = {source for source in SourceName.__members__}
 # Sources that are found in data from imported sources
 ASSOC_WITH_SOURCES = {source for source in NamespacePrefix.__members__} - XREF_SOURCES
 
-from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm, HemOnc, GuideToPHARMACOLOGY  # noqa: E402, E501, I202
+from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm, HemOnc, GuideToPHARMACOLOGY, DrugsAtFDA  # noqa: E402, E501, I202
 # used to get source class name from string
 SOURCES_CLASS = \
     {s.value.lower(): eval(s.value) for s in SourceName.__members__.values()}

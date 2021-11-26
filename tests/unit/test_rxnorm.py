@@ -45,7 +45,7 @@ def bifidobacterium_infantis():
             "bifidobacterium infantis",
             "Bifidobacterium infantis"
         ],
-        "approval_status": "approved",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [
             "drugbank:DB14222"
         ],
@@ -82,7 +82,7 @@ def cisplatin():
             "CDDP",
             "Cis-DDP",
         ],
-        "approval_status": "approved",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [
             "drugbank:DB00515",
             "drugbank:DB12117"
@@ -116,7 +116,7 @@ def amiloride_hydrochloride():
             "Amiloride Hydrochloride",
             "Hydrochloride, Amiloride"
         ],
-        "approval_status": "approved",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [],
         "associated_with": [
             "usp:m2650",
@@ -154,7 +154,7 @@ def amiloride():
             "N-amidino-3,5-diamino-6-chloropyrazinecarboxamide",
             "Amyloride"
         ],
-        "approval_status": "approved",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [
             "drugbank:DB00594"
         ],
@@ -192,7 +192,7 @@ def timolol():
             "(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol"
             "-3-yl)oxy]propan-2-ol"
         ],
-        "approval_status": "approved",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [
             "drugbank:DB00373"
         ],
@@ -246,7 +246,7 @@ def lymphocyte():
             "Globulin, Anti-Thymocyte",
             "lymphocyte immune globulin, anti-thy (obs)"
         ],
-        "approval_status": "approved",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [],
         "associated_with": [
             "mesh:D000961",
@@ -282,7 +282,7 @@ def aspirin():
             "o-carboxyphenyl acetate",
             "Acetylsalicylic Acid"
         ],
-        "approval_status": "approved",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [
             "drugbank:DB00945"
         ],
@@ -317,7 +317,7 @@ def mesna():
             "2-Mercaptoethanesulphonate, Sodium",
             "Sodium 2-Mercaptoethanesulphonate"
         ],
-        "approval_status": "approved",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [],
         "associated_with": [
             "usp:m49500",
@@ -350,7 +350,7 @@ def beta_alanine():
             "3 Aminopropionic Acid",
             "3-Aminopropionic Acid"
         ],
-        "approval_status": "approved",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [],
         "associated_with": [
             "mesh:D015091",
@@ -374,7 +374,7 @@ def algestone():
             "Alphasone",
             "Dihydroxyprogesterone"
         ],
-        "approval_status": None,
+        "approval_rating": None,
         "xrefs": [],
         "associated_with": [
             "mesh:D000523"
@@ -408,7 +408,7 @@ def levothyroxine():
             "4-(4-Hydroxy-3,5-diiodophenoxy)-3,5-diiodo-L-phenylalanine",
             "Levothyroxin"
         ],
-        "approval_status": "approved",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [
             "drugbank:DB00451"
         ],
@@ -418,28 +418,7 @@ def levothyroxine():
             "mmsl:d00278",
             "unii:Q51BO43MG4"
         ],
-        "trade_names": [
-            "Eltroxin",
-            "Estre",
-            "Euthyrox",
-            "Leventa",
-            "Levo-T",
-            "Levocrine",
-            "Levotabs",
-            "Levothroid",
-            "Levothyroid",
-            "Levoxyl",
-            "Novothyrox",
-            "SOLOXINE",
-            "Synthroid",
-            "Thyro-Tabs",
-            "ThyroKare",
-            "ThyroMed",
-            "Thyrolar",
-            "Thyrox",
-            "Tirosint",
-            "Unithroid"
-        ]
+        "trade_names": []
     }
     return Drug(**params)
 
@@ -460,7 +439,7 @@ def fluoxetine():
             "(+-)-N-Methyl-3-phenyl-3-((alpha,alpha,alpha-trifluoro-"
             "P-tolyl)oxy)propylamine"
         ],
-        "approval_status": "approved",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [
             "drugbank:DB00472"
         ],
@@ -494,7 +473,7 @@ def fluoxetine_hydrochloride():
             "FLUoxetine hydrochloride",
             "Fluoxetine Hydrochloride"
         ],
-        "approval_status": "approved",
+        "approval_rating": "rxnorm_prescribable",
         "xrefs": [],
         "associated_with": [
             "usp:m33780",
@@ -836,16 +815,12 @@ def test_levothyroxine(levothyroxine, rxnorm):
     assert len(response["records"]) == 1
     compare_records(response["records"][0], levothyroxine)
 
-    # Trade Name Match
+    # trade name matches fail because they exceed the max # limit
     response = rxnorm.search("Unithroid")
-    assert response["match_type"] == MatchType.TRADE_NAME
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0], levothyroxine)
+    assert response["match_type"] == MatchType.NO_MATCH
 
     response = rxnorm.search("Euthyrox")
-    assert response["match_type"] == MatchType.TRADE_NAME
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0], levothyroxine)
+    assert response["match_type"] == MatchType.NO_MATCH
 
     # Xref Match
     response = rxnorm.search("DRUGBANK:DB00451")
@@ -954,8 +929,7 @@ def test_meta_info(rxnorm):
     response = rxnorm.fetch_meta()
     assert response.data_license == "UMLS Metathesaurus"
     assert response.data_license_url == \
-           "https://www.nlm.nih.gov/research/umls/rxnorm/docs/" \
-           "termsofservice.html"
+           "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html"
     assert dt.strptime(response.version, "%Y%m%d")
     assert response.data_url == \
            "https://www.nlm.nih.gov/research/umls/rxnorm/docs/rxnormfiles.html"

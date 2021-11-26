@@ -9,7 +9,7 @@ from disease.query import QueryHandler as DiseaseNormalizer
 from therapy import DownloadException, PROJECT_ROOT
 from therapy.database import Database
 from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, RecordParams, \
-    ApprovalStatus
+    ApprovalRating
 from therapy.etl.base import Base
 
 
@@ -33,8 +33,7 @@ class HemOnc(Base):
     def _download_data(self) -> None:
         """Download HemOnc.org source data.
 
-        Raises download exception for now -- HTTP authorization may be
-        possible?
+        Raises download exception for now -- HTTP authorization may be possible?
         """
         raise DownloadException("No download for HemOnc data available -- "
                                 "must place manually in data/ directory.")
@@ -168,7 +167,7 @@ class HemOnc(Base):
                 if year == 9999:
                     logger.warning(f"HemOnc ID {row[0]} has FDA approval year"
                                    f" 9999")
-                record["approval_status"] = ApprovalStatus.APPROVED
+                record["approval_rating"] = ApprovalRating.HEMONC_APPROVED.value
                 if "approval_year" in record:
                     record["approval_year"].append(year)
                 else:
@@ -184,11 +183,15 @@ class HemOnc(Base):
                     logger.warning(f"Normalization of condition id: {row[1]}"
                                    f", {label}, failed.")
                 hemonc_concept_id = f"{NamespacePrefix.HEMONC.value}:{row[1]}"
-                indication = [hemonc_concept_id, label, ncit_id]
-                if "fda_indication" in record:
-                    record["fda_indication"].append(indication)
+                indication = {
+                    "disease_id": hemonc_concept_id,
+                    "disease_label": label,
+                    "normalized_disease_id": ncit_id
+                }
+                if "has_indication" in record:
+                    record["has_indication"].append(indication)
                 else:
-                    record["fda_indication"] = [indication]
+                    record["has_indication"] = [indication]
 
         rels_file.close()
         return therapies

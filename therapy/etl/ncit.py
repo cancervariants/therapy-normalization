@@ -21,7 +21,7 @@ logger.setLevel(logging.DEBUG)
 class NCIt(Base):
     """Core NCIt ETL class.
 
-    Extracting both:
+    Extracts:
      * NCIt classes with semantic_type "Pharmacologic Substance" but not
        Retired_Concept
      * NCIt classes that are subclasses of C1909 (Pharmacologic Substance)
@@ -132,7 +132,7 @@ class NCIt(Base):
                 label = node.P108.first()
             else:
                 label = None
-            aliases = node.P90
+            aliases = node.P90.copy()  # prevent CallbackList error
             if label and aliases and label in aliases:
                 aliases.remove(label)
 

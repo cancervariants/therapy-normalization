@@ -25,7 +25,7 @@ from therapy import PROJECT_ROOT, DownloadException, XREF_SOURCES, \
 from therapy.etl.base import Base
 from therapy.database import Database
 from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
-    ApprovalStatus, RecordParams
+    ApprovalRating, RecordParams
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -204,7 +204,7 @@ class RxNorm(Base):
 
                         params = {"concept_id": value["concept_id"]}
 
-                        for field in list(ITEM_TYPES.keys()) + ["approval_status"]:
+                        for field in list(ITEM_TYPES.keys()) + ["approval_rating"]:
                             field_value = value.get(field)
                             if field_value:
                                 params[field] = field_value
@@ -299,7 +299,7 @@ class RxNorm(Base):
         if (term_type == "IN" or term_type == "PIN") and source == "RXNORM":
             params["label"] = term
             if row[17] == "4096":
-                params["approval_status"] = ApprovalStatus.APPROVED.value
+                params["approval_rating"] = ApprovalRating.RXNORM_PRESCRIBABLE.value
         elif term_type in ALIASES:
             self._add_term(params, term, "aliases")
         elif term_type in TRADE_NAMES:

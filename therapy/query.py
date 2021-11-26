@@ -66,12 +66,18 @@ class QueryHandler:
         else:
             try:
                 db_response = self.db.metadata.get_item(Key={"src_name": src_name})
-                response = SourceMeta(**db_response["Item"])
-                self.db.cached_sources[src_name] = response
-                return response
             except ClientError as e:
-                logger.error(e.response["Error"]["Message"])
-                raise Exception(f"Unable to retrieve metadata for {src_name}")
+                msg = e.response["Error"]["Message"]
+                logger.error(msg)
+                raise Exception(msg)
+            try:
+                response = SourceMeta(**db_response["Item"])
+            except KeyError:
+                msg = (f"Metadata lookup failed for source {src_name}")
+                logger.error(msg)
+                raise Exception(msg)
+            self.db.cached_sources[src_name] = response
+            return response
 
     def _add_record(self,
                     response: Dict[str, Dict],
@@ -85,7 +91,7 @@ class QueryHandler:
         :return: Tuple containing updated response object, and string
             containing name of the source of the match
         """
-        inds = item.get("fda_indication")
+        inds = item.get("has_indication")
         if inds:
             item["has_indication"] = [HasIndication(disease_id=i[0],
                                                     disease_label=i[1],
@@ -366,34 +372,42 @@ class QueryHandler:
         if "aliases" in record:
             vod["alternate_labels"] = record["aliases"]
 
-        if any(filter(lambda f: f in record, ("approval_status",
+        if any(filter(lambda f: f in record, ("approval_rating",
+                                              "approval_ratings",
                                               "approval_year",
-                                              "fda_indication"))):
-            fda_approv: Dict[str, Union[str, Dict]] = {
-                "name": "fda_approval",
+                                              "has_indication"))):
+            approv = {
+                "type": "Extension",
+                "name": "regulatory_approval",
+                "value": {}
             }
-            fda_approv_value: Dict = {}
-            for field in ("approval_status", "approval_year"):
-                value = record.get(field)
+            # temporarily handle rating vs ratings fields slightly differently
+            # to change in issue 223
+            if "approval_rating" in record:
+                value = record.get("approval_rating")
                 if value:
-                    fda_approv_value[field] = value
-            inds = record.get("fda_indication", [])
+                    approv["value"]["approval_ratings"] = [value]  # type: ignore
+            elif "approval_ratings" in record:
+                value = record.get("approval_ratings")
+                if value:
+                    approv["value"]["approval_ratings"] = value  # type: ignore
+            if "approval_year" in record:
+                value = record.get("approval_year")
+                if value:
+                    approv["value"]["approval_year"] = value  # type: ignore
+            inds = record.get("has_indication", [])
             inds_list = []
             for ind in inds:
                 ind_obj = {
                     "id": ind[0],
                     "type": "DiseaseDescriptor",
-                    "label": ind[1]
+                    "label": ind[1],
+                    "disease_id": ind[2],
                 }
-                if ind[2]:
-                    ind_obj["disease_id"] = ind[2]
-                    inds_list.append(ind_obj)
-                else:
-                    logger.warning(f"{ind[0]} has no disease ID")
+                inds_list.append(ind_obj)
             if inds_list:
-                fda_approv_value["has_indication"] = inds_list
-            fda_approv["value"] = fda_approv_value
-            vod["extensions"].append(fda_approv)
+                approv["value"]["has_indication"] = inds_list  # type: ignore
+            vod["extensions"].append(approv)
 
         for field, name in (("trade_names", "trade_names"),
                             ("associated_with", "associated_with")):

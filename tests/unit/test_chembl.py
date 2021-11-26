@@ -1,4 +1,6 @@
 """Test that the therapy normalizer works as intended for the ChEMBL source."""
+import re
+
 import pytest
 
 from therapy.schemas import Drug, MatchType
@@ -39,7 +41,7 @@ def cisplatin():
             "Platinol",
             "Platinol-Aq"
         ],
-        "approval_status": "approved",
+        "approval_rating": "chembl_phase_4",
         "xrefs": [],
         "associated_with": [],
         "trade_names": [
@@ -57,7 +59,7 @@ def l745870():
         "label": "L-745870",
         "concept_id": "chembl:CHEMBL267014",
         "aliases": [],
-        "approval_status": None,
+        "approval_rating": "chembl_phase_0",
         "xrefs": [],
         "associated_with": [],
         "trade_names": []
@@ -73,7 +75,7 @@ def aspirin():
         "label": "ASPIRIN",
         "concept_id": "chembl:CHEMBL25",
         "aliases": [],
-        "approval_status": "approved",
+        "approval_rating": "chembl_phase_4",
         "xrefs": [],
         "associated_with": [],
         "trade_names": []
@@ -264,10 +266,9 @@ def test_meta_info(chembl):
     assert response["source_meta_"]["data_license"] == "CC BY-SA 3.0"
     assert response["source_meta_"]["data_license_url"] == \
            "https://creativecommons.org/licenses/by-sa/3.0/"
-    assert response["source_meta_"]["version"] == "27"
-    assert response["source_meta_"]["data_url"] == \
-           "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/"
-    assert response["source_meta_"]["rdp_url"] == "http://reusabledata.org/chembl.html"  # noqa: E501
+    assert re.match(r"[0-3][0-9]", response["source_meta_"]["version"])
+    assert response["source_meta_"]["data_url"].startswith("http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/")  # noqa: E501
+    assert response["source_meta_"]["rdp_url"] == "http://reusabledata.org/chembl.html"
     assert response["source_meta_"]["data_license_attributes"] == {
         "non_commercial": False,
         "share_alike": True,

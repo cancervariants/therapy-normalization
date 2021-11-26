@@ -1,4 +1,6 @@
 """Test NCIT source"""
+import re
+
 import pytest
 
 from therapy.schemas import Drug, MatchType
@@ -15,9 +17,11 @@ def ncit():
             self.query_handler = QueryHandler()
 
         def search(self, query_str):
-            resp = self.query_handler.search_sources(query_str, keyed=True,
-                                                     incl="ncit")
+            resp = self.query_handler.search_sources(query_str, keyed=True, incl="ncit")
             return resp["source_matches"]["NCIt"]
+
+        def fetch_meta(self):
+            return self.query_handler._fetch_meta("NCIt")
     return QueryGetter()
 
 
@@ -32,7 +36,7 @@ def voglibose():
                     "N-(1,3-Dihydroxy-2-Propyl)Valiolamine", "VOGLIBOSE"],
         "xrefs": ["chemidplus:83480-29-9"],
         "associated_with": ["unii:S77P977AG8", "umls:C0532578"],
-        "approval_status": None,
+        "approval_rating": None,
         "trade_names": []
     }
     return Drug(**params)
@@ -50,7 +54,7 @@ def apricoxib():
         ],
         "xrefs": ["chemidplus:197904-84-0"],
         "associated_with": ["unii:5X5HB3VZ3Z", "umls:C1737955"],
-        "approval_status": None,
+        "approval_rating": None,
         "trade_names": []
     }
     return Drug(**params)
@@ -66,7 +70,7 @@ def trastuzumab():
         "aliases": [],
         "xrefs": ["chemidplus:180288-69-1"],
         "associated_with": ["umls:C0728747", "unii:P188ANX8CK"],
-        "approval_status": None,
+        "approval_rating": None,
         "trade_names": []
     }
     return Drug(**params)
@@ -250,14 +254,15 @@ def test_no_match(ncit):
 
 def test_meta_info(ncit):
     """Test that the meta field is correct."""
-    response = ncit.search("voglibose")
-    assert response["source_meta_"]["data_license"] == "CC BY 4.0"
-    assert response["source_meta_"]["data_license_url"] == \
+    response = ncit.fetch_meta()
+    assert response.data_license == "CC BY 4.0"
+    assert response.data_license_url == \
         "https://creativecommons.org/licenses/by/4.0/legalcode"
-    assert response["source_meta_"]["version"] == "21.08e"
-    assert response["source_meta_"]["data_url"].startswith("https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/")  # noqa: E501
-    assert response["source_meta_"]["rdp_url"] == "http://reusabledata.org/ncit.html"
-    assert response["source_meta_"]["data_license_attributes"] == {
+    assert re.match(r"[0-9][0-9]\.[0-9][0-9][a-z]", response.version)
+    assert response.data_url.startswith(
+        "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/")
+    assert response.rdp_url == "http://reusabledata.org/ncit.html"
+    assert response.data_license_attributes == {
         "non_commercial": False,
         "share_alike": False,
         "attribution": True

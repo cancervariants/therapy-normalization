@@ -11,7 +11,7 @@ import bs4
 from therapy import logger, PROJECT_ROOT, DownloadException
 from therapy.database import Database
 from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, \
-    ApprovalStatus
+    ApprovalRating
 from therapy.etl.base import Base
 
 
@@ -116,9 +116,9 @@ class GuideToPHARMACOLOGY(Base):
                     "src_name": SourceName.GUIDETOPHARMACOLOGY.value
                 }
 
-                approval_status = self._set_approval_status(row[4], row[5])
-                if approval_status:
-                    params["approval_status"] = approval_status
+                approval_rating = self._set_approval_rating(row[4], row[5])
+                if approval_rating:
+                    params["approval_rating"] = approval_rating
 
                 associated_with = list()
                 aliases = list()
@@ -189,23 +189,23 @@ class GuideToPHARMACOLOGY(Base):
                 if associated_with:
                     params["associated_with"] = associated_with
 
-    def _set_approval_status(self, approved: str,
+    def _set_approval_rating(self, approved: str,
                              withdrawn: str) -> Optional[str]:
-        """Set approval status.
+        """Set approval rating value.
 
         :param str approved: The drug is or has in the past been approved for human
             clinical use by a regulatory agency
         :param str withdrawn: The drug is no longer approved for its original clinical
             use in one or more countries
-        :return: Approval status
+        :return: Approval rating
         """
         if approved and not withdrawn:
-            approval_status: Optional[str] = ApprovalStatus.APPROVED.value
+            approval_rating: Optional[str] = ApprovalRating.GTOPDB_APPROVED.value
         elif withdrawn:
-            approval_status = ApprovalStatus.WITHDRAWN.value
+            approval_rating = ApprovalRating.GTOPDB_WITHDRAWN.value
         else:
-            approval_status = None
-        return approval_status
+            approval_rating = None
+        return approval_rating
 
     def _load_meta(self) -> None:
         """Load Guide to PHARMACOLOGY metadata to database."""
