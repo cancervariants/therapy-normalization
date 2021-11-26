@@ -582,39 +582,6 @@ def test_infer_option(query_handler, merge_query_handler):
     response["match_type"] == MatchType.CONCEPT_ID
     response["warnings"] == expected_warnings
 
-    # drugs@fda
-    query = "ANDA075036"
-    expected_warnings = [{
-        "inferred_namespace": "drugsatfda",
-        "adjusted_query": "drugsatfda:" + query.lower(),
-        "alternate_inferred_matches": []
-    }]
-
-    response = query_handler.search_sources(query, keyed=True)
-    assert response["source_matches"]["DrugsAtFDA"]["match_type"] == \
-        MatchType.CONCEPT_ID
-    assert response["warnings"] == expected_warnings
-
-    response = merge_query_handler.search_groups(query)
-    response["match_type"] == MatchType.CONCEPT_ID
-    response["warnings"] == expected_warnings
-
-    query = "NDA018057"
-    expected_warnings = [{
-        "inferred_namespace": "drugsatfda",
-        "adjusted_query": "drugsatfda:" + query.lower(),
-        "alternate_inferred_matches": []
-    }]
-
-    response = query_handler.search_sources(query, keyed=True)
-    assert response["source_matches"]["DrugsAtFDA"]["match_type"] == \
-        MatchType.CONCEPT_ID
-    assert response["warnings"] == expected_warnings
-
-    response = merge_query_handler.search_groups(query)
-    response["match_type"] == MatchType.CONCEPT_ID
-    response["warnings"] == expected_warnings
-
     # chemidplus
     query = "15663-27-1"
     expected_warnings = [{
@@ -632,7 +599,7 @@ def test_infer_option(query_handler, merge_query_handler):
     response["match_type"] == MatchType.CONCEPT_ID
     response["warnings"] == expected_warnings
 
-    # test chembl
+    # chembl
     query = "chembl11359"
     expected_warnings = [{
         "inferred_namespace": "chembl",
@@ -649,7 +616,7 @@ def test_infer_option(query_handler, merge_query_handler):
     response["match_type"] == MatchType.CONCEPT_ID
     response["warnings"] == expected_warnings
 
-    # test wikidata
+    # wikidata
     query = "q412415"
     expected_warnings = [{
         "inferred_namespace": "wikidata",

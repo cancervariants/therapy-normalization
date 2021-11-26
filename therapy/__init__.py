@@ -45,7 +45,6 @@ NAMESPACE_LUIS = (
     (re.compile(r"^(Q|P)\d+$", re.IGNORECASE), SourceName.WIKIDATA.value),
     (re.compile(r"^C\d+$", re.IGNORECASE), SourceName.NCIT.value),
     (re.compile(r"^DB\d{5}$", re.IGNORECASE), SourceName.DRUGBANK.value),
-    (re.compile(r"^A?NDA\d+$", re.IGNORECASE), SourceName.DRUGSATFDA.value),
 )
 
 # Sources that we import directly
