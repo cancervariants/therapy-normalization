@@ -633,6 +633,39 @@ def test_infer_option(query_handler, merge_query_handler):
     response["match_type"] == MatchType.CONCEPT_ID
     response["warnings"] == expected_warnings
 
+    # drugs@fda
+    query = "ANDA075036"
+    expected_warnings = [{
+        "inferred_namespace": "drugsatfda.anda",
+        "adjusted_query": "drugsatfda.anda:075036",
+        "alternate_inferred_matches": [],
+    }]
+
+    response = query_handler.search_sources(query, keyed=True)
+    assert response["source_matches"]["DrugsAtFDA"]["match_type"] == \
+        MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
+
+    response = merge_query_handler.search_groups(query)
+    response["match_type"] == MatchType.CONCEPT_ID
+    response["warnings"] == expected_warnings
+
+    query = "nda018057"
+    expected_warnings = [{
+        "inferred_namespace": "drugsatfda.nda",
+        "adjusted_query": "drugsatfda.nda:018057",
+        "alternate_inferred_matches": [],
+    }]
+
+    response = query_handler.search_sources(query, keyed=True)
+    assert response["source_matches"]["DrugsAtFDA"]["match_type"] == \
+        MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
+
+    response = merge_query_handler.search_groups(query)
+    response["match_type"] == MatchType.CONCEPT_ID
+    response["warnings"] == expected_warnings
+
     # test disabling namespace inference
     query = "DB01174"
     response = merge_query_handler.search_groups(query, infer=False)
