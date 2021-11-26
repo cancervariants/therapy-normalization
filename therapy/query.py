@@ -1,17 +1,18 @@
 """This module provides methods for handling queries."""
 import re
-from typing import Dict, Set, Optional, Tuple, Union, Any
+from typing import List, Dict, Set, Tuple, Union, Any, Optional
 from urllib.parse import quote
 from datetime import datetime
 
 from uvicorn.config import logger
 from botocore.exceptions import ClientError
 
-from therapy import SOURCES, NAMESPACE_LOOKUP, PREFIX_LOOKUP, ITEM_TYPES
+from therapy import SOURCES, PREFIX_LOOKUP, ITEM_TYPES, NAMESPACE_LUIS
+from therapy.version import __version__
 from therapy.database import Database
 from therapy.schemas import Drug, SourceMeta, MatchType, ServiceMeta, \
-    HasIndication, SourcePriority, SearchService, NormalizationService
-from .version import __version__
+    HasIndication, SourcePriority, SearchService, NormalizationService, \
+    NamespacePrefix, SourceName
 
 
 class InvalidParameterException(Exception):
@@ -38,20 +39,21 @@ class QueryHandler:
         """
         self.db = Database(db_url=db_url, region_name=db_region)
 
-    def _emit_warnings(self, query_str: str) -> Optional[Dict]:
+    def _emit_char_warnings(self, query_str: str) -> List[Dict]:
         """Emit warnings if query contains non breaking space characters.
 
         :param str query_str: query string
-        :return: dict keying warning type to warning description
+        :return: List of warnings (dicts)
         """
-        warnings = None
+        warnings: List[Dict[str, str]] = []
         nbsp = re.search("\xa0|&nbsp;", query_str)
         if nbsp:
-            warnings = {
-                "nbsp": "Query contains non breaking space characters."
-            }
+            warnings = [{
+                "non_breaking_space_characters":
+                    "Query contains non-breaking space characters"
+            }]
             logger.warning(
-                f"Query ({query_str}) contains non breaking space characters."
+                f"Query ({query_str}) contains non-breaking space characters."
             )
         return warnings
 
@@ -88,8 +90,8 @@ class QueryHandler:
         :param Dict[str, Dict] response: in-progress response object
         :param Dict item: Item retrieved from DynamoDB
         :param MatchType match_type: type of query match
-        :return: Tuple containing updated response object, and string
-            containing name of the source of the match
+        :return: Tuple containing updated response object, and string containing name of
+            the source of the match
         """
         inds = item.get("has_indication")
         if inds:
@@ -158,27 +160,62 @@ class QueryHandler:
                 }
         return resp
 
-    def _check_concept_id(self, query: str, resp: Dict,
-                          sources: Set[str]) -> Tuple[Dict, Set]:
+    def _infer_namespace(self, query: str) -> Optional[Tuple[Dict, Dict]]:
+        """Retrieve concept ID by inferring namespace. Attempts to match given query
+        against known LUI patterns and performs concept ID lookup for all matches.
+        :param str query: user-provided query string
+        :return: Either tuple containing complete record and warnings if successful,
+        or None if unsuccessful
+        """
+        inferred_records = []
+        for pattern, source in NAMESPACE_LUIS:
+            match = re.match(pattern, query)
+            if match:
+                if source == SourceName.DRUGSATFDA.value:
+                    subspace, lui = match.groups()
+                    namespace = f"drugsatfda.{subspace.lower()}"
+                    inferred_id = f"{namespace}:{lui}"
+                else:
+                    namespace = NamespacePrefix[source.upper()].value
+                    inferred_id = f"{namespace}:{query}"
+                record = self.db.get_record_by_id(inferred_id, case_sensitive=False)
+                if record:
+                    inferred_records.append((record, namespace, inferred_id))
+        if inferred_records:
+            inferred_records.sort(key=lambda r: self._record_order(r[0]))
+            return (
+                inferred_records[0][0],
+                {
+                    "inferred_namespace": namespace,
+                    "adjusted_query": inferred_records[0][2],
+                    # probably not possible but just in case
+                    "alternate_inferred_matches": [i[2] for i in inferred_records[1:]]
+                }
+            )
+        else:
+            return None
+
+    def _check_concept_id(self, query: str, resp: Dict, sources: Set[str],
+                          infer: bool = True) -> Tuple[Dict, Set]:
         """Check query for concept ID match. Should only find 0 or 1 matches.
 
         :param str query: search string
         :param Dict resp: in-progress response object to return to client
         :param Set[str] sources: remaining unmatched sources
+        :param bool infer: if true, try to infer namespaces for IDs
         :return: Tuple with updated resp object and updated set of unmatched sources
         """
-        concept_id_items = []
+        records = []
+        if infer:
+            infer_response = self._infer_namespace(query)
+            if infer_response:
+                records.append(infer_response[0])
+                resp["warnings"].append(infer_response[1])
         if [p for p in PREFIX_LOOKUP.keys() if query.startswith(p)]:
             record = self.db.get_record_by_id(query, False)
             if record:
-                concept_id_items.append(record)
-        for prefix in [p for p in NAMESPACE_LOOKUP.keys()
-                       if query.startswith(p)]:
-            concept_id = f"{NAMESPACE_LOOKUP[prefix]}:{query}"
-            id_lookup = self.db.get_record_by_id(concept_id, False)
-            if id_lookup:
-                concept_id_items.append(id_lookup)
-        for item in concept_id_items:
+                records.append(record)
+        for item in records:
             (resp, src_name) = self._add_record(resp, item,
                                                 MatchType.CONCEPT_ID.name)
             sources = sources - {src_name}
@@ -202,18 +239,19 @@ class QueryHandler:
             sources = sources - matched_srcs
         return resp, sources
 
-    def _response_keyed(self, query: str, sources: Set[str]) -> Dict:
-        """Return response as dict where key is source name and value is a list of
-        records. Corresponds to `keyed=true` API parameter.
+    def _response_keyed(self, query: str, sources: Set[str],
+                        infer: bool = True) -> Dict:
+        """Return response as dict where key is source name and value
+        is a list of records. Corresponds to `keyed=true` API parameter.
 
         :param str query: string to match against
         :param Set[str] sources: sources to match from
-
+        :param bool infer: if true, attempt to infer namespaces from IDs
         :return: completed response object to return to client
         """
-        response: Dict[str, Union[None, str, Dict]] = {
+        response: Dict[str, Union[None, str, List[Dict], Dict]] = {
             "query": query,
-            "warnings": self._emit_warnings(query),
+            "warnings": self._emit_char_warnings(query),
             "source_matches": {
                 source: None for source in sources
             }
@@ -224,7 +262,8 @@ class QueryHandler:
         query = query.lower()
 
         # check if concept ID match
-        (response, sources) = self._check_concept_id(query, response, sources)
+        (response, sources) = self._check_concept_id(query, response, sources,
+                                                     infer)
         if len(sources) == 0:
             return response
 
@@ -237,15 +276,17 @@ class QueryHandler:
         # remaining sources get no match
         return self._fill_no_matches(response)
 
-    def _response_list(self, query: str, sources: Set[str]) -> Dict:
-        """Return response as list, where the first key-value in each item is the source
-        name. Corresponds to `keyed=false` API parameter.
+    def _response_list(self, query: str, sources: Set[str],
+                       infer: bool = True) -> Dict:
+        """Return response as list, where the first key-value in each item is the
+        source name. Corresponds to `keyed=false` API parameter.
 
         :param str query: string to match against
-        :param List[str] sources: sources to match from
+        :param Set[str] sources: sources to match from
+        :param bool infer: if true, attempt to infer namespaces from IDs
         :return: Completed response object to return to client
         """
-        response_dict = self._response_keyed(query, sources)
+        response_dict = self._response_keyed(query, sources, infer)
         source_list = []
         for src_name in response_dict["source_matches"].keys():
             src = {"source": src_name}
@@ -257,8 +298,8 @@ class QueryHandler:
 
         return response_dict
 
-    def search_sources(self, query_str: str, keyed: bool = False,
-                       incl: str = "", excl: str = "") -> Dict:
+    def search_sources(self, query_str: str, keyed: bool = False, incl: str = "",
+                       excl: str = "", infer: bool = True) -> Dict:
         """Fetch normalized therapy objects.
 
         :param str query_str: query, a string, to search for
@@ -266,10 +307,11 @@ class QueryHandler:
             source objects; otherwise, return list of source objects
         :param str incl: str containing comma-separated names of sources to use. Will
             exclude all other sources. Case-insensitive.
-        :param str excl: str containing comma-separated names of source to exclude.
-            Will include all other source. Case-insensitive.
+        :param str excl: str containing comma-separated names of source to exclude. Will
+            include all other source. Case-insensitive.
+        :param bool infer: if true, try to infer namespaces using known Local Unique
+            Identifier patterns
         :return: dict containing all matches found in sources.
-        :rtype: dict
         :raises InvalidParameterException: if both incl and excl args are provided, or
             if invalid source names are given.
         """
@@ -312,9 +354,9 @@ class QueryHandler:
         query_str = query_str.strip()
 
         if keyed:
-            response = self._response_keyed(query_str, query_sources)
+            response = self._response_keyed(query_str, query_sources, infer)
         else:
-            response = self._response_list(query_str, query_sources)
+            response = self._response_list(query_str, query_sources, infer)
 
         response["service_meta_"] = ServiceMeta(
             version=__version__,
@@ -372,17 +414,29 @@ class QueryHandler:
         if "aliases" in record:
             vod["alternate_labels"] = record["aliases"]
 
-        if any(filter(lambda f: f in record, ("approval_status",
+        if any(filter(lambda f: f in record, ("approval_rating",
+                                              "approval_ratings",
                                               "approval_year",
                                               "has_indication"))):
             approv = {
+                "type": "Extension",
                 "name": "regulatory_approval",
                 "value": {}
             }
-            for field in ("approval_status", "approval_year"):
-                value = record.get(field)
+            # temporarily handle rating vs ratings fields slightly differently
+            # to change in issue 223
+            if "approval_rating" in record:
+                value = record.get("approval_rating")
                 if value:
-                    approv["value"][field] = value  # type: ignore
+                    approv["value"]["approval_ratings"] = [value]  # type: ignore
+            elif "approval_ratings" in record:
+                value = record.get("approval_ratings")
+                if value:
+                    approv["value"]["approval_ratings"] = value  # type: ignore
+            if "approval_year" in record:
+                value = record.get("approval_year")
+                if value:
+                    approv["value"]["approval_year"] = value  # type: ignore
             inds = record.get("has_indication", [])
             inds_list = []
             for ind in inds:
@@ -430,15 +484,38 @@ class QueryHandler:
         response["match_type"] = MatchType.NO_MATCH
         return response
 
-    def search_groups(self, query: str) -> Dict:
+    def _resolve_merge(self, response: Dict, query: str,
+                       record: Dict, match_type: MatchType) -> Dict:
+        """Given a record, return the corresponding normalized record
+
+        :param Dict response: in-progress response object
+        :param str query: exact query as provided by user
+        :param Dict record: TODO
+        :param MatchType match_type: type of match that returned these records
+        :return: formed response, a Dict
+        """
+        merge_ref = record.get("merge_ref")
+        if merge_ref:
+            # follow merge_ref
+            merge = self.db.get_record_by_id(merge_ref, False, True)
+            if merge is None:
+                return self._handle_failed_merge_ref(record, response, query)
+            else:
+                return self._add_vod(response, merge, query, match_type)
+        else:
+            # record is sole member of concept group
+            return self._add_vod(response, record, query, match_type)
+
+    def search_groups(self, query: str, infer: bool = True) -> Dict:
         """Return merged, normalized concept for given search term.
 
         :param str query: string to search against
+        :param bool infer: if true, try to infer namespace for IDs
         """
         # prepare basic response
         response: Dict[str, Any] = {
             "query": query,
-            "warnings": self._emit_warnings(query),
+            "warnings": self._emit_char_warnings(query),
             "service_meta_": ServiceMeta(
                 version=__version__,
                 response_datetime=datetime.now(),
@@ -458,16 +535,18 @@ class QueryHandler:
         # check concept ID match
         record = self.db.get_record_by_id(query_str, case_sensitive=False)
         if record:
-            merge_ref = record.get("merge_ref")
-            if not merge_ref:
-                return self._add_vod(response, record, query, MatchType.CONCEPT_ID)
-            merge = self.db.get_record_by_id(merge_ref, case_sensitive=False,
-                                             merge=True)
-            if merge is None:
-                return self._handle_failed_merge_ref(record, response, query_str)
-            else:
-                return self._add_vod(response, merge, query,
-                                     MatchType.CONCEPT_ID)
+            return self._resolve_merge(response, query, record,
+                                       MatchType.CONCEPT_ID)
+
+        # check concept ID match with inferred namespace
+        if infer:
+            inferred_response = self._infer_namespace(query)
+            if inferred_response:
+                response = self._resolve_merge(response, query,
+                                               inferred_response[0],
+                                               MatchType.CONCEPT_ID)
+                response["warnings"].append(inferred_response[1])
+                return response
 
         # check other match types
         for match_type in ITEM_TYPES.values():
@@ -483,19 +562,8 @@ class QueryHandler:
                 assert match is not None
                 record = self.db.get_record_by_id(match["concept_id"], False)
                 if record:
-                    merge_ref = record.get("merge_ref")
-                    if not merge_ref:
-                        return self._add_vod(response, record, query,
-                                             MatchType[match_type.upper()])
-                    merge = self.db.get_record_by_id(record["merge_ref"],
-                                                     case_sensitive=False,
-                                                     merge=True)
-                    if merge is None:
-                        return self._handle_failed_merge_ref(record, response,
-                                                             query_str)
-                    else:
-                        return self._add_vod(response, merge, query,
-                                             MatchType[match_type.upper()])
+                    return self._resolve_merge(response, query, record,
+                                               MatchType[match_type.upper()])
 
         if not matching_records:  # type: ignore
             response["match_type"] = MatchType.NO_MATCH.value

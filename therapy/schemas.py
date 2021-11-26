@@ -3,7 +3,7 @@ from typing import List, Optional, Dict, Union, Any, Type, Set
 from enum import Enum, IntEnum
 from datetime import datetime
 
-from ga4gh.vrsatile.pydantic.vrsatile_model import ValueObjectDescriptor
+from ga4gh.vrsatile.pydantic.vrsatile_models import ValueObjectDescriptor
 from pydantic import BaseModel, StrictBool
 
 
@@ -11,20 +11,25 @@ from pydantic import BaseModel, StrictBool
 RecordParams = Dict[str, Union[List, Set, str, Dict[str, Any]]]
 
 
-class ApprovalStatus(str, Enum):
-    """Define string constraints for approval status attribute.
+class ApprovalRating(str, Enum):
+    """Define string constraints for approval rating attribute. This reflects a drug's
+    regulatory approval status as evaluated by an individual source. We opted to retain
+    each individual source's rating as a distinct enum value after finding that some
+    sources disagreed on the true value (either because of differences in scope like
+    US vs EU/other regulatory arenas, old or conflicting data, or other reasons). Value
+    descriptions are provided below from each listed source.
 
     ChEMBL:
-     - Phase 0: "Research: The compound has not yet reached clinical trials
+     - CHEMBL_PHASE_0: "Research: The compound has not yet reached clinical trials
     (preclinical/research compound)"
-     - Phase 1: "The compound has reached Phase I clinical trials (safety studies,
-    usually with healthy volunteers)"
-     - Phase 2: "The compound has reached Phase II clinical trials (preliminary studies
-    of effectiveness)"
-     - Phase 3: "The compound has reached Phase III clinical trials (larger studies of
-    safety and effectiveness)"
-     - Phase 4: "The compound has been approved in at least one country or area."
-     - Withdrawn: "A withdrawn drug is an approved drug contained in a medicinal
+     - CHEMBL_PHASE_1: "The compound has reached Phase I clinical trials (safety
+    studies, usually with healthy volunteers)"
+     - CHEMBL_PHASE_2: "The compound has reached Phase II clinical trials (preliminary
+    studies of effectiveness)"
+     - CHEMBL_PHASE_3: "The compound has reached Phase III clinical trials (larger
+    studies of safety and effectiveness)"
+     - CHEMBL_PHASE_4: The compound has been approved in at least one country or area."
+     - CHEMBL_WITHDRAWN: "A withdrawn drug is an approved drug contained in a medicinal
     product that subsequently had been removed from the market. The reasons for
     withdrawal may include toxicity, lack of efficacy, or other reasons such as an
     unfavorable risk-to-benefit ratio following approval and marketing of the drug.
@@ -35,40 +40,40 @@ class ApprovalStatus(str, Enum):
     https://pubs.acs.org/doi/10.1021/acs.chemrestox.0c00296
 
     Drugs@FDA:
-     - Prescription: "A prescription drug product requires a doctor's authorization
+     - FDA_PRESCRIPTION: "A prescription drug product requires a doctor's authorization
     to purchase."
-     - Over-the-counter: "FDA defines OTC drugs as safe and effective for use by the
-    general public without a doctor's prescription."
-     - Discontinued: "approved products that have never been marketed, have been
+     - FDA_OTC: "FDA defines OTC drugs as safe and effective for use by the general
+    public without a doctor's prescription."
+     - FDA_DISCONTINUED: "approved products that have never been marketed, have been
     discontinued from marketing, are for military use, are for export only, or have had
     their approvals withdrawn for reasons other than safety or efficacy after being
     discontinued from marketing"
-     - None (Tentatively Approved): "If a generic drug product is ready for approval
-    before the expiration of any patents or exclusivities accorded to the reference
-    listed drug product, FDA issues a tentative approval letter to the applicant.  FDA
-    delays final approval of the generic drug product until all patent or exclusivity
-    issues have been resolved."
+     - FDA_TENTATIVE: "If a generic drug product is ready for approval before the
+    expiration of any patents or exclusivities accorded to the reference listed drug
+    product, FDA issues a tentative approval letter to the applicant.  FDA delays final
+    approval of the generic drug product until all patent or exclusivity issues have
+    been resolved."
     https://www.fda.gov/drugs/drug-approvals-and-databases/drugsfda-glossary-terms
 
     HemOnc.org:
-    - Approved: Inferred by us if "Was FDA Approved Yr" property is present (described
-    as "Year of FDA approval")
+    - HEMONC_APPROVED: Inferred by us if "Was FDA Approved Yr" property is present
+    (described as "Year of FDA approval")
     https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6697579/
 
     Guide to Pharmacology:
-    - Approved: "Indicates pharmacologicaly active substances, specified by their INNs,
-    that have been approved for clinical use by a regulatory agency, typically the FDA,
-    EMA or in Japan. This classification persists regardless of whether the drug may
-    later have been withdrawn or discontinued. (N.B. in some cases the information on
-    approval status was obtained indirectly via databases such as Drugbank.)"
-    - Withdrawn: "No longer approved for its original clinical use, as notified by the
-    FDA, typically as a consequence of safety or side effect issues."
+    - GTOPDB_APPROVED: "Indicates pharmacologicaly active substances, specified by their
+    INNs, that have been approved for clinical use by a regulatory agency, typically the
+    FDA, EMA or in Japan. This classification persists regardless of whether the drug
+    may later have been withdrawn or discontinued. (N.B. in some cases the information
+    on approval status was obtained indirectly via databases such as Drugbank.)"
+    - GTOPDB_WITHDRAWN: "No longer approved for its original clinical use, as notified
+    by the FDA, typically as a consequence of safety or side effect issues."
     https://www.guidetopharmacology.org/helpPage.jsp
 
     RxNorm:
-    - Prescribable: "The RxNorm Current Prescribable Content is a subset of currently
-    prescribable drugs found in RxNorm. We intend it to be an approximation of the
-    prescription drugs currently marketed in the US. The subset also includes many
+    - RXNORM_PRESCRIBABLE: "The RxNorm Current Prescribable Content is a subset of
+    currently prescribable drugs found in RxNorm. We intend it to be an approximation of
+    the prescription drugs currently marketed in the US. The subset also includes many
     over-the-counter drugs."
     https://www.nlm.nih.gov/research/umls/rxnorm/docs/prescribe.html
     """
@@ -97,10 +102,10 @@ class HasIndication(BaseModel):
     normalized_disease_id: Optional[str]
 
     class Config:
-        """Configure Drug class"""
+        """Configure HasIndication class"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any], model: Type["Drug"]) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["HasIndication"]) -> None:
             """Configure OpenAPI schema"""
             if "title" in schema.keys():
                 schema.pop("title", None)
@@ -134,7 +139,7 @@ class Drug(BaseModel):
     trade_names: Optional[List[str]] = []
     xrefs: Optional[List[str]] = []
     associated_with: Optional[List[str]] = []
-    approval_status: Optional[ApprovalStatus] = None
+    approval_rating: Optional[ApprovalRating] = None
     approval_year: Optional[List[int]] = []
     has_indication: Optional[List[HasIndication]] = []
 
@@ -165,7 +170,7 @@ class Drug(BaseModel):
                 ],
                 "xrefs": [],
                 "associated_with": None,
-                "approval_status": "approved",
+                "approval_rating": "approved",
                 "approval_year": [],
                 "has_indication": [],
                 "trade_names": ["PLATINOL", "PLATINOL-AQ", "CISPLATIN"]
@@ -173,10 +178,7 @@ class Drug(BaseModel):
 
 
 class MatchType(IntEnum):
-    """Define string constraints for use in Match Type attributes.
-
-    Concept_ID=100; Label=80; Trade Name=80; Alias=60; Fuzzy=20; No Match=0
-    """
+    """Define string constraints for use in Match Type attributes."""
 
     CONCEPT_ID = 100
     LABEL = 80
@@ -213,6 +215,8 @@ class SourceName(str, Enum):
     RXNORM = "RxNorm"
     HEMONC = "HemOnc"
     DRUGSATFDA = "DrugsAtFDA"
+    DRUGSATFDA_NDA = DRUGSATFDA
+    DRUGSATFDA_ANDA = DRUGSATFDA
     GUIDETOPHARMACOLOGY = "GuideToPHARMACOLOGY"
 
 
@@ -226,49 +230,52 @@ class SourceIDAfterNamespace(Enum):
     CHEMIDPLUS = ""
     RXNORM = ""
     HEMONC = ""
-    DRUGSATFDA = "ANDA"  # change to [A]?NDA regex in issue-187
+    DRUGSATFDA = ""
     GUIDETOPHARMACOLOGY = ""
 
 
 class NamespacePrefix(Enum):
     """Define string constraints for namespace prefixes on concept IDs."""
 
+    ATC = "atc"  # Anatomical Therapeutic Chemical Classification System
+    BINDINGDB = "bindingdb"
+    CHEBI = "CHEBI"
+    CHEMBL = "chembl"
     CHEMIDPLUS = "chemidplus"
     CASREGISTRY = CHEMIDPLUS
-    PUBCHEMCOMPOUND = "pubchem.compound"
-    PUBCHEMSUBSTANCE = "pubchem.substance"
-    CHEMBL = "chembl"
-    RXNORM = "rxcui"
-    DRUGBANK = "drugbank"
-    DRUGSATFDA = "drugsatfda"
-    WIKIDATA = "wikidata"
-    HEMONC = "hemonc"
-    NCIT = "ncit"
-    ISO = "iso"
-    UMLS = "umls"
-    CHEBI = "CHEBI"
-    KEGGCOMPOUND = "kegg.compound"
-    KEGGDRUG = "kegg.drug"
-    BINDINGDB = "bindingdb"
-    PHARMGKB = "pharmgkb.drug"
     CHEMSPIDER = "chemspider"
-    ZINC = "zinc"
-    PDB = "pdb"
-    THERAPEUTICTARGETSDB = "ttd"
+    CVX = "cvx"  # Vaccines Administered
+    DRUGBANK = "drugbank"
+    DRUGCENTRAL = "drugcentral"
+    DRUGSATFDA_ANDA = "drugsatfda.anda"
+    DRUGSATFDA_NDA = "drugsatfda.nda"
+    HEMONC = "hemonc"
+    INCHIKEY = "inchikey"
+    ISO = "iso"
     IUPHAR = "iuphar"
     IUPHAR_LIGAND = "iuphar.ligand"
     GUIDETOPHARMACOLOGY = IUPHAR_LIGAND
-    INCHIKEY = "inchikey"
-    UNII = "unii"
-    ATC = "atc"  # Anatomical Therapeutic Chemical Classification System
-    CVX = "cvx"  # Vaccines Administered
+    KEGGCOMPOUND = "kegg.compound"
+    KEGGDRUG = "kegg.drug"
     MMSL = "mmsl"  # Multum MediSource Lexicon
     MSH = "mesh"  # Medical Subject Headings
     MTHCMSFRF = "mthcmsfrf"  # CMS Formulary Reference File
+    NCIT = "ncit"
+    NDC = "ndc"  # National Drug Code
+    PDB = "pdb"
+    PHARMGKB = "pharmgkb.drug"
+    PUBCHEMCOMPOUND = "pubchem.compound"
+    PUBCHEMSUBSTANCE = "pubchem.substance"
+    RXNORM = "rxcui"
+    SPL = "spl"  # Structured Product Labeling
+    THERAPEUTICTARGETSDB = "ttd"
+    UMLS = "umls"
+    UNII = "unii"
+    UNIPROT = "uniprot"
     USP = "usp"  # USP Compendial Nomenclature
     VANDF = "vandf"  # Veterans Health Administration National Drug File
-    UNIPROT = "uniprot"
-    DRUGCENTRAL = "drugcentral"
+    WIKIDATA = "wikidata"
+    ZINC = "zinc"
 
 
 class DataLicenseAttributes(BaseModel):
@@ -406,12 +413,12 @@ class MatchesListed(BaseModel):
             }
 
 
-class ApprovalStatusValue(BaseModel):
-    """VOD Extension class for regulatory approval status/indication
+class ApprovalRatingValue(BaseModel):
+    """VOD Extension class for regulatory approval rating/indication
     value attributes.
     """
 
-    approval_status: Optional[List[ApprovalStatus]]
+    approval_ratings: Optional[List[ApprovalRating]]
     approval_year: Optional[List[int]]
     has_indication: Optional[List[Union[Dict, ValueObjectDescriptor]]]
 
@@ -446,7 +453,7 @@ class NormalizationService(BaseModel):
     """Response containing one or more merged records and source data."""
 
     query: str
-    warnings: Optional[Dict]
+    warnings: Optional[List[Dict]]
     match_type: MatchType
     therapy_descriptor: Optional[ValueObjectDescriptor]
     source_meta_: Optional[Dict[SourceName, SourceMeta]]
@@ -584,7 +591,7 @@ class SearchService(BaseModel):
     """Core response schema containing matches for each source"""
 
     query: str
-    warnings: Optional[Dict]
+    warnings: Optional[List[Dict]]
     source_matches: Union[Dict[SourceName, MatchesKeyed], List[MatchesListed]]
     service_meta_: ServiceMeta
 
@@ -615,7 +622,7 @@ class SearchService(BaseModel):
                                 ],
                                 "xrefs": ["drugbank:DB00515"],
                                 "associated_with": ["fda:Q20Q21Q62J"],
-                                "approval_status": None,
+                                "approval_rating": None,
                                 "trade_names": []
                             }
                         ],
@@ -669,7 +676,7 @@ class SearchService(BaseModel):
                                     "mmsl:31747",
                                     "mmsl:4456"
                                 ],
-                                "approval_status": "approved",
+                                "approval_rating": "rxnorm_prescribable",
                                 "trade_names": [
                                     "Cisplatin",
                                     "Platinol"
@@ -703,7 +710,7 @@ class SearchService(BaseModel):
                                     "fda:Q20Q21Q62J",
                                     "chebi:CHEBI:27899"
                                 ],
-                                "approval_status": None,
+                                "approval_rating": None,
                                 "trade_names": []
                             }
                         ],
@@ -744,7 +751,7 @@ class SearchService(BaseModel):
                                 "associated_with": [
                                     "pubchem.compound:5702198"
                                 ],
-                                "approval_status": None,
+                                "approval_rating": None,
                                 "trade_names": []
                             }
                         ],

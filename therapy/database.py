@@ -3,6 +3,7 @@ from os import environ
 from typing import Optional, Dict, List, Any
 import logging
 import sys
+import atexit
 
 import click
 import boto3
@@ -72,6 +73,7 @@ class Database:
         self.metadata = self.dynamodb.Table("therapy_metadata")
         self.batch = self.therapies.batch_writer()
         self.cached_sources: Dict[str, Any] = {}
+        atexit.register(self.flush_batch)
 
     def create_therapies_table(self, existing_tables: List[str]) -> None:
         """Create Therapies table if it doesn"t already exist.
@@ -235,7 +237,7 @@ class Database:
     def get_ids_for_merge(self) -> List[str]:
         """Retrieve concept IDs for use in generating normalized records.
 
-        :return: Set of concept IDs as strings.
+        :return: List of concept IDs as strings.
         """
         last_evaluated_key = None
         concept_ids = []

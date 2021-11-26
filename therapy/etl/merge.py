@@ -28,8 +28,7 @@ class Merge:
         and failed. Because we don't associate these IDs with groups, a separate
         mapping is necessary to prevent repeat queries.
 
-        :param Database database: db instance to use for record retrieval
-            and creation.
+        :param Database database: db instance to use for record retrieval and creation.
         """
         self.database = database
         self._groups: Dict[str, Set[str]] = {}
@@ -119,7 +118,8 @@ class Merge:
                      in fetched.get("associated_with", [])
                      if a.startswith("unii")]
         else:
-            raise Exception(f"Couldn't retrieve record for {concept_id}")
+            logger.error(f"Couldn't retrieve record for {concept_id} from {ref}")
+            return None
         if len(uniis) == 1:
             return fetched["concept_id"]
         else:
@@ -132,11 +132,13 @@ class Merge:
         :return: Set of xref values
         """
         xrefs = set(record.get("xrefs", []))
-        uniis = [a for a in record.get("associated_with", []) if a.startswith("unii:")]
-        for unii in uniis:
+        unii_xrefs = [a for a in record.get("associated_with", [])
+                      if a.startswith("unii:")]
+        for unii in unii_xrefs:
             # get Drugs@FDA records that are associated_with this UNII
-            if unii in self._unii_to_drugsatfda:
-                xrefs |= self._unii_to_drugsatfda[unii]
+            drugsatfda_ids = self._unii_to_drugsatfda.get(unii)
+            if drugsatfda_ids is not None:
+                xrefs |= drugsatfda_ids
                 continue
 
             unii_assoc = self.database.get_records_by_type(unii.lower(),
@@ -160,7 +162,7 @@ class Merge:
         """
         if record_id in self._groups:
             return self._groups[record_id]
-        elif record_id.startswith("drugsatfda:"):
+        elif record_id.startswith("drugsatfda"):
             return {record_id}
         elif record_id in self._failed_lookups:
             return observed_id_set - {record_id}
@@ -192,9 +194,7 @@ class Merge:
         they are 'scalar-like', assign from the highest-priority source where
         that attribute is not None.
 
-        Priority is:
-        RxNorm > NCIt > HemOnc.org > DrugBank > Drugs@FDA > GuideToPHARMACOLOGY >
-            ChEMBL > ChemIDplus > Wikidata
+        Uses the SourcePriority schema to define source priority.
 
         :param Set record_id_set: group of concept IDs
         :return: completed merged drug object to be stored in DB
@@ -229,7 +229,7 @@ class Merge:
             "aliases": set(),
             "trade_names": set(),
             "associated_with": set(),
-            "approval_status": set(),
+            "approval_ratings": set(),
             "approval_year": set(),
             "has_indication": [],
         }
@@ -239,9 +239,9 @@ class Merge:
         for record in records:
             for field in set_fields:
                 merged_attrs[field] |= set(record.get(field, set()))
-            approval_status = record.get("approval_status")
-            if approval_status:
-                merged_attrs["approval_status"].add(approval_status)
+            approval_rating = record.get("approval_rating")
+            if approval_rating:
+                merged_attrs["approval_ratings"].add(approval_rating)
             if merged_attrs["label"] is None:
                 merged_attrs["label"] = record.get("label")
             for ind in record.get("has_indication", []):
@@ -249,7 +249,7 @@ class Merge:
                     merged_attrs["has_indication"].append(ind)
 
         # clear unused fields
-        for field in set_fields + ["has_indication", "approval_status"]:
+        for field in set_fields + ["has_indication", "approval_ratings"]:
             field_value = merged_attrs[field]
             if field_value:
                 merged_attrs[field] = list(field_value)

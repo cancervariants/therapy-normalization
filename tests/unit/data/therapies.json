@@ -17,7 +17,7 @@
       "Platinol",
       "Platinol-Aq"
     ],
-    "approval_status": "chembl_phase_4",
+    "approval_rating": "chembl_phase_4",
     "trade_names": ["PLATINOL", "PLATINOL-AQ"]
   },
   {
@@ -39,7 +39,7 @@
     "label_and_type": "chembl:chembl2068237##identity",
     "concept_id": "chembl:CHEMBL2068237",
     "label": "CISPLATIN",
-    "approval_status": "chembl_phase_4",
+    "approval_rating": "chembl_phase_4",
     "src_name": "ChEMBL"
   },
   {
@@ -51,7 +51,7 @@
     "label_and_type": "chembl:chembl1628046##identity",
     "concept_id": "chembl:CHEMBL1628046",
     "label": "CISPLATIN",
-    "approval_status": "chembl_phase_4",
+    "approval_rating": "chembl_phase_4",
     "src_name": "ChEMBL"
   },
   {
@@ -64,7 +64,7 @@
     "label": "L-745870",
     "concept_id": "chembl:CHEMBL267014",
     "src_name": "ChEMBL",
-    "approval_status": "chembl_phase_0"
+    "approval_rating": "chembl_phase_0"
   },
   {
     "label_and_type": "l-745870##label",
@@ -75,7 +75,7 @@
     "label_and_type": "chembl:chembl25##identity",
     "label": "ASPIRIN",
     "concept_id": "chembl:CHEMBL25",
-    "approval_status": "chembl_phase_4",
+    "approval_rating": "chembl_phase_4",
     "src_name": "ChEMBL"
   },
   {
@@ -595,7 +595,7 @@
     "label_and_type": "rxcui:100213##identity",
     "concept_id": "rxcui:100213",
     "label": "Bifidobacterium Infantis",
-    "approval_status": "rxnorm_prescribable",
+    "approval_rating": "rxnorm_prescribable",
     "aliases": ["bifidobacterium infantis", "Bifidobacterium infantis"],
     "trade_names": ["Align", "Evivo"],
     "xrefs": ["drugbank:DB14222"],
@@ -632,7 +632,7 @@
     "label_and_type": "rxcui:2555##identity",
     "concept_id": "rxcui:2555",
     "label": "cisplatin",
-    "approval_status": "rxnorm_prescribable",
+    "approval_rating": "rxnorm_prescribable",
     "aliases": [
       "cis-Platinum",
       "CISplatin",
@@ -704,7 +704,7 @@
     "label_and_type": "rxcui:644##identity",
     "concept_id": "rxcui:644",
     "label": "amiloride",
-    "approval_status": "rxnorm_prescribable",
+    "approval_rating": "rxnorm_prescribable",
     "aliases": [
       "3,5-diamino-N-carbamimidoyl-6-chloropyrazine-2-carboxamide",
       "aMILoride",
@@ -761,7 +761,7 @@
     "label_and_type": "rxcui:10600##identity",
     "concept_id": "rxcui:10600",
     "label": "timolol",
-    "approval_status": "rxnorm_prescribable",
+    "approval_rating": "rxnorm_prescribable",
     "aliases": [
       "(S)-1-((1,1-Dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadazol-3-yl)oxy)-2-propanol",
       "2-Propanol, 1-((1,1-dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadiazol-3-yl)oxy)-, (S)-",
@@ -811,7 +811,7 @@
     "label_and_type": "rxcui:1011##identity",
     "concept_id": "rxcui:1011",
     "label": "lymphocyte immune globulin, anti-thymocyte globulin",
-    "approval_status": "rxnorm_prescribable",
+    "approval_rating": "rxnorm_prescribable",
     "aliases": [
       "Lymphocyte Immune Globulin, Anti-Thymocyte Globulin",
       "Anti-Thymocyte Globulin",
@@ -868,7 +868,7 @@
       "mmsl:21336",
       "mmsl:d07642"
     ],
-    "approval_status": "rxnorm_prescribable",
+    "approval_rating": "rxnorm_prescribable",
     "trade_names": ["Thymoglobulin"]
   },
   {
@@ -905,7 +905,7 @@
       "mmsl:d07641",
       "atc:L04AA03"
     ],
-    "approval_status": "rxnorm_prescribable",
+    "approval_rating": "rxnorm_prescribable",
     "trade_names": ["ATGAM"]
   },
   {
@@ -943,7 +943,7 @@
     "label_and_type": "rxcui:1191##identity",
     "concept_id": "rxcui:1191",
     "label": "aspirin",
-    "approval_status": "rxnorm_prescribable",
+    "approval_rating": "rxnorm_prescribable",
     "aliases": [
       "Salicylic acid acetate",
       "Aspirin",
@@ -992,7 +992,7 @@
     "label_and_type": "rxcui:44##identity",
     "concept_id": "rxcui:44",
     "label": "mesna",
-    "approval_status": "rxnorm_prescribable",
+    "approval_rating": "rxnorm_prescribable",
     "aliases": [
       "Mesnum",
       "Ethanesulfonic acid, 2-mercapto-, monosodium salt",
@@ -1038,7 +1038,7 @@
     "label_and_type": "rxcui:61##identity",
     "concept_id": "rxcui:61",
     "label": "beta-alanine",
-    "approval_status": "rxnorm_prescribable",
+    "approval_rating": "rxnorm_prescribable",
     "aliases": [
       "beta Alanine",
       "3 Aminopropionic Acid",
@@ -1085,7 +1085,7 @@
     "label_and_type": "rxcui:10582##identity",
     "concept_id": "rxcui:10582",
     "label": "levothyroxine",
-    "approval_status": "rxnorm_prescribable",
+    "approval_rating": "rxnorm_prescribable",
     "aliases": [
       "3,5,3',5'-Tetraiodo-L-thyronine",
       "Thyroxine",
@@ -1104,28 +1104,6 @@
       "4-(4-Hydroxy-3,5-diiodophenoxy)-3,5-diiodo-L-phenylalanine",
       "Levothyroxin"
     ],
-    "trade_names": [
-      "Eltroxin",
-      "Estre",
-      "Euthyrox",
-      "Leventa",
-      "Levo-T",
-      "Levocrine",
-      "Levotabs",
-      "Levothroid",
-      "Levothyroid",
-      "Levoxyl",
-      "Novothyrox",
-      "SOLOXINE",
-      "Synthroid",
-      "Thyro-Tabs",
-      "ThyroKare",
-      "ThyroMed",
-      "Thyrolar",
-      "Thyrox",
-      "Tirosint",
-      "Unithroid"
-    ],
     "xrefs": ["drugbank:DB00451"],
     "associated_with": [
       "vandf:4022126",
@@ -1142,16 +1120,6 @@
   },
   {
     "label_and_type": "levothyroxine##label",
-    "concept_id": "rxcui:10582",
-    "src_name": "RxNorm"
-  },
-  {
-    "label_and_type": "unithroid##trade_name",
-    "concept_id": "rxcui:10582",
-    "src_name": "RxNorm"
-  },
-  {
-    "label_and_type": "euthyrox##trade_name",
     "concept_id": "rxcui:10582",
     "src_name": "RxNorm"
   },
@@ -1174,7 +1142,7 @@
       "Eskabarb",
       "NSC-128143"
     ],
-    "approval_status": "chembl_phase_4",
+    "approval_rating": "chembl_phase_4",
     "src_name": "ChEMBL",
     "merge_ref": "rxcui:8134"
   },
@@ -1220,7 +1188,7 @@
       "atc:N03AA02"
     ],
     "src_name": "RxNorm",
-    "approval_status": "rxnorm_prescribable",
+    "approval_rating": "rxnorm_prescribable",
     "merge_ref": "rxcui:8134"
   },
   {
@@ -1416,7 +1384,6 @@
       "mmsl:d00340",
       "atc:N03AA02",
       "unii:YQE403BP4D",
-      "unii:H8MTN7XVC2",
       "umls:C0031412",
       "CHEBI:8069",
       "pubchem.substance:135650817",
@@ -1424,7 +1391,7 @@
       "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N",
       "drugcentral:2134"
     ],
-    "approval_status": [
+    "approval_ratings": [
       "rxnorm_prescribable",
       "chembl_phase_4",
       "gtopdb_approved"
@@ -1442,12 +1409,12 @@
       "iuphar.ligand:5343",
       "chembl:CHEMBL11359",
       "wikidata:Q412415",
-      "drugsatfda:ANDA074656",
-      "drugsatfda:ANDA074735",
-      "drugsatfda:ANDA206774",
-      "drugsatfda:ANDA207323",
-      "drugsatfda:ANDA075036",
-      "drugsatfda:NDA018057"
+      "drugsatfda.anda:074656",
+      "drugsatfda.anda:074735",
+      "drugsatfda.anda:206774",
+      "drugsatfda.anda:207323",
+      "drugsatfda.anda:075036",
+      "drugsatfda.nda:018057"
     ],
     "trade_names": ["Cisplatin", "Platinol", "PLATINOL", "PLATINOL-AQ"],
     "aliases": [
@@ -1489,22 +1456,45 @@
     "associated_with": [
       "mmsl:31747",
       "mmsl:4456",
+      "mmsl:d00195",
       "usp:m17910",
       "CHEBI:27899",
       "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
       "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
-      "mmsl:d00195",
       "mesh:D002945",
       "atc:L01XA01",
       "vandf:4018139",
+      "pubchem.substance:178102005",
+      "pubchem.compound:441203",
       "pubchem.compound:5702198",
       "umls:C0008838",
       "unii:H8MTN7XVC2",
       "unii:Q20Q21Q62J",
-      "pubchem.substance:178102005",
-      "pubchem.compound:441203"
+      "ndc:0143-9504",
+      "ndc:0143-9505",
+      "ndc:0703-5747",
+      "ndc:0703-5748",
+      "ndc:16729-288",
+      "ndc:44567-509",
+      "ndc:44567-510",
+      "ndc:44567-511",
+      "ndc:44567-530",
+      "ndc:63323-103",
+      "ndc:68001-283",
+      "ndc:68083-162",
+      "ndc:68083-163",
+      "ndc:70860-206",
+      "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
+      "spl:5a24d5bd-c44a-43f7-a04c-76caf3475012",
+      "spl:a66eda32-1164-439a-ac8e-73138365ec06",
+      "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
+      "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c",
+      "spl:54b3415c-c095-4c82-b216-e0e6e6bb8d03",
+      "spl:9b008181-ab66-db2f-e053-2995a90aad57",
+      "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
+      "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2"
     ],
-    "approval_status": [
+    "approval_ratings": [
       "rxnorm_prescribable",
       "hemonc_approved",
       "fda_prescription",
@@ -1588,7 +1578,7 @@
     "label_and_type": "rxcui:142424##identity",
     "concept_id": "rxcui:142424",
     "label": "amiloride hydrochloride",
-    "approval_status": "rxnorm_prescribable",
+    "approval_rating": "rxnorm_prescribable",
     "aliases": [
       "aMILoride hydrochloride",
       "Amiloride Hydrochloride",
@@ -1628,7 +1618,7 @@
     "label_and_type": "rxcui:4493##identity",
     "concept_id": "rxcui:4493",
     "label": "fluoxetine",
-    "approval_status": "rxnorm_prescribable",
+    "approval_rating": "rxnorm_prescribable",
     "aliases": [
       "FLUoxetine",
       "N-Methyl-gamma-(4-(trifluoromethyl)phenoxy)benzenepropanamine",
@@ -1664,7 +1654,7 @@
     "label_and_type": "rxcui:227224##identity",
     "concept_id": "rxcui:227224",
     "label": "fluoxetine hydrochloride",
-    "approval_status": "rxnorm_prescribable",
+    "approval_rating": "rxnorm_prescribable",
     "aliases": ["FLUoxetine hydrochloride", "Fluoxetine Hydrochloride"],
     "associated_with": [
       "usp:m33780",
@@ -1701,7 +1691,7 @@
     "merge_ref": "rxcui:4126",
     "concept_id": "rxcui:4126",
     "label_and_type": "rxcui:4126##identity",
-    "approval_status": "rxnorm_prescribable",
+    "approval_rating": "rxnorm_prescribable",
     "associated_with": [
       "usp:m2600",
       "mesh:D004999",
@@ -1739,6 +1729,7 @@
     "label_and_type": "drugbank:db01174##identity",
     "src_name": "DrugBank",
     "item_type": "identity",
+    "merge_ref": "rxcui:8134",
     "concept_id": "drugbank:DB01174",
     "label": "Phenobarbital",
     "aliases": [
@@ -1759,8 +1750,7 @@
       "Phenylethylbarbitursäure",
       "Phenylethylmalonylurea"
     ],
-    "xrefs": ["chemidplus:50-06-6"],
-    "merge_ref": "rxcui:8134"
+    "xrefs": ["chemidplus:50-06-6"]
   },
   {
     "label_and_type": "chemidplus:50-06-6##xref",
@@ -1807,7 +1797,7 @@
       "CDDP"
     ],
     "xrefs": ["rxcui:2555"],
-    "approval_status": "hemonc_approved",
+    "approval_rating": "hemonc_approved",
     "approval_year": ["1978"],
     "has_indication": [
       ["hemonc:671", "Testicular cancer", "ncit:C7251"],
@@ -1877,7 +1867,7 @@
       "Treanda",
       "Xyotin"
     ],
-    "approval_status": "hemonc_approved",
+    "approval_rating": "hemonc_approved",
     "approval_year": ["2008", "2015"],
     "has_indication": [
       ["hemonc:581", "Chronic lymphocytic leukemia", "ncit:C3163"],
@@ -1950,7 +1940,7 @@
       "Treanda",
       "Xyotin"
     ],
-    "approval_status": "hemonc_approved",
+    "approval_rating": "hemonc_approved",
     "approval_year": ["2008", "2015"],
     "has_indication": [
       ["hemonc:581", "Chronic lymphocytic leukemia", "ncit:C3163"],
@@ -1966,7 +1956,7 @@
     "aliases": ["degarelix acetate", "FE200486", "ASP3550"],
     "xrefs": ["rxcui:475230"],
     "trade_names": ["Firmagon"],
-    "approval_status": "hemonc_approved",
+    "approval_rating": "hemonc_approved",
     "approval_year": ["2008"],
     "has_indication": [["hemonc:658", "Prostate cancer", "ncit:C7378"]]
   },
@@ -2068,7 +2058,7 @@
       "unii:Q8MI0X869M",
       "inchikey:QBGKPEROWUKSBK-QPPIDDCLSA-N"
     ],
-    "approval_status": ["chembl_phase_1"]
+    "approval_ratings": ["chembl_phase_1"]
   },
   {
     "label_and_type": "ncit:c61796##identity",
@@ -2091,7 +2081,7 @@
     "item_type": "identity",
     "concept_id": "iuphar.ligand:5343",
     "label": "cisplatin",
-    "approval_status": "gtopdb_approved",
+    "approval_rating": "gtopdb_approved",
     "xrefs": [
       "chembl:CHEMBL11359",
       "chemidplus:15663-27-1",
@@ -2102,7 +2092,8 @@
       "pubchem.compound:441203",
       "CHEBI:27899"
     ],
-    "aliases": ["Platinol"]
+    "aliases": ["Platinol"],
+    "merge_ref": "rxcui:2555"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -2189,7 +2180,7 @@
     "item_type": "identity",
     "concept_id": "iuphar.ligand:2804",
     "label": "phenobarbital",
-    "approval_status": "gtopdb_approved",
+    "approval_rating": "gtopdb_approved",
     "xrefs": ["chembl:CHEMBL40", "chemidplus:50-06-6", "drugbank:DB01174"],
     "associated_with": [
       "pubchem.substance:135650817",
@@ -2271,7 +2262,7 @@
     "item_type": "identity",
     "concept_id": "iuphar.ligand:240",
     "label": "cisapride",
-    "approval_status": "gtopdb_withdrawn",
+    "approval_rating": "gtopdb_withdrawn",
     "xrefs": ["chembl:CHEMBL1729", "chemidplus:81098-60-4", "drugbank:DB00604"],
     "associated_with": [
       "pubchem.substance:135650104",
@@ -2335,178 +2326,218 @@
     "src_name": "GuideToPHARMACOLOGY"
   },
   {
-    "label_and_type": "drugsatfda:anda075036##identity",
+    "label_and_type": "drugsatfda.anda:075036##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "merge_ref": "rxcui:2555",
     "label": "CISPLATIN",
-    "concept_id": "drugsatfda:ANDA075036",
+    "concept_id": "drugsatfda.anda:075036",
     "xrefs": ["rxcui:309311"],
-    "associated_with": ["unii:Q20Q21Q62J"],
-    "approval_status": "fda_prescription"
+    "associated_with": [
+      "unii:Q20Q21Q62J",
+      "ndc:0143-9504",
+      "ndc:0143-9505",
+      "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c"
+    ],
+    "approval_rating": "fda_prescription"
   },
   {
     "label_and_type": "rxcui:309311##xref",
-    "concept_id": "drugsatfda:anda075036",
+    "concept_id": "drugsatfda.anda:075036",
     "item_type": "xref",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "cisplatin##label",
-    "concept_id": "drugsatfda:anda075036",
+    "concept_id": "drugsatfda.anda:075036",
     "item_type": "label",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "unii:q20q21q62j##associated_with",
-    "concept_id": "drugsatfda:anda075036",
+    "concept_id": "drugsatfda.anda:075036",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:anda206774##identity",
+    "label_and_type": "drugsatfda.anda:206774##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "merge_ref": "rxcui:2555",
     "label": "CISPLATIN",
-    "concept_id": "drugsatfda:ANDA206774",
+    "concept_id": "drugsatfda.anda:206774",
     "xrefs": ["rxcui:309311"],
-    "associated_with": ["unii:Q20Q21Q62J"],
-    "approval_status": "fda_prescription"
+    "associated_with": [
+      "unii:Q20Q21Q62J",
+      "ndc:16729-288",
+      "ndc:68001-283",
+      "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
+      "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2"
+    ],
+    "approval_rating": "fda_prescription"
   },
   {
     "label_and_type": "rxcui:309311##xref",
-    "concept_id": "drugsatfda:anda206774",
+    "concept_id": "drugsatfda.anda:206774",
     "item_type": "xref",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "cisplatin##label",
-    "concept_id": "drugsatfda:anda206774",
+    "concept_id": "drugsatfda.anda:206774",
     "item_type": "label",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "unii:q20q21q62j##associated_with",
-    "concept_id": "drugsatfda:anda206774",
+    "concept_id": "drugsatfda.anda:206774",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:anda207323##identity",
+    "label_and_type": "drugsatfda.anda:207323##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "merge_ref": "rxcui:2555",
     "label": "CISPLATIN",
-    "concept_id": "drugsatfda:ANDA207323",
+    "concept_id": "drugsatfda.anda:207323",
     "xrefs": ["rxcui:309311"],
-    "associated_with": ["unii:Q20Q21Q62J"],
-    "approval_status": "fda_prescription"
+    "associated_with": [
+      "unii:Q20Q21Q62J",
+      "ndc:68083-162",
+      "ndc:68083-163",
+      "ndc:70860-206",
+      "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
+      "spl:5a24d5bd-c44a-43f7-a04c-76caf3475012"
+    ],
+    "approval_rating": "fda_prescription"
   },
   {
     "label_and_type": "rxcui:309311##xref",
-    "concept_id": "drugsatfda:anda207323",
+    "concept_id": "drugsatfda.anda:207323",
     "item_type": "xref",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "cisplatin##label",
-    "concept_id": "drugsatfda:anda207323",
+    "concept_id": "drugsatfda.anda:207323",
     "item_type": "label",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "unii:q20q21q62j##associated_with",
-    "concept_id": "drugsatfda:anda207323",
+    "concept_id": "drugsatfda.anda:207323",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:anda074735##identity",
+    "label_and_type": "drugsatfda.anda:074735##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "merge_ref": "rxcui:2555",
     "label": "CISPLATIN",
-    "concept_id": "drugsatfda:ANDA074735",
+    "concept_id": "drugsatfda.anda:074735",
     "xrefs": ["rxcui:309311"],
-    "associated_with": ["unii:Q20Q21Q62J"],
-    "approval_status": "fda_prescription"
+    "associated_with": [
+      "unii:Q20Q21Q62J",
+      "ndc:63323-103",
+      "spl:9b008181-ab66-db2f-e053-2995a90aad57"
+    ],
+    "approval_rating": "fda_prescription"
   },
   {
     "label_and_type": "rxcui:309311##xref",
-    "concept_id": "drugsatfda:anda074735",
+    "concept_id": "drugsatfda.anda:074735",
     "item_type": "xref",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "cisplatin##label",
-    "concept_id": "drugsatfda:anda074735",
+    "concept_id": "drugsatfda.anda:074735",
     "item_type": "label",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "unii:q20q21q62j##associated_with",
-    "concept_id": "drugsatfda:anda074735",
+    "concept_id": "drugsatfda.anda:074735",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:anda074656##identity",
+    "label_and_type": "drugsatfda.anda:074656##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "merge_ref": "rxcui:2555",
     "label": "CISPLATIN",
-    "concept_id": "drugsatfda:ANDA074656",
+    "concept_id": "drugsatfda.anda:074656",
     "xrefs": ["rxcui:309311"],
-    "associated_with": ["unii:Q20Q21Q62J"],
-    "approval_status": "fda_prescription"
+    "associated_with": [
+      "unii:Q20Q21Q62J",
+      "ndc:0703-5747",
+      "ndc:0703-5748",
+      "spl:54b3415c-c095-4c82-b216-e0e6e6bb8d03"
+    ],
+    "approval_rating": "fda_prescription"
   },
   {
     "label_and_type": "unii:q20q21q62j##associated_with",
-    "concept_id": "drugsatfda:anda074656",
+    "concept_id": "drugsatfda.anda:074656",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "rxcui:309311##xref",
-    "concept_id": "drugsatfda:anda074656",
+    "concept_id": "drugsatfda.anda:074656",
     "item_type": "xref",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "cisplatin##label",
-    "concept_id": "drugsatfda:anda074656",
+    "concept_id": "drugsatfda.anda:074656",
     "item_type": "label",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:nda018057##identity",
+    "label_and_type": "drugsatfda.nda:018057##identity",
     "src_name": "DrugsAtFDA",
     "item_type": "identity",
     "label": "CISPLATIN",
-    "concept_id": "drugsatfda:NDA018057",
-    "xrefs": ["rxcui:1736854"],
-    "associated_with": ["unii:Q20Q21Q62J"],
-    "approval_status": null,
+    "concept_id": "drugsatfda.nda:018057",
+    "xrefs": ["rxcui:1736854", "rxcui:309311"],
+    "associated_with": [
+      "unii:Q20Q21Q62J",
+      "ndc:44567-509",
+      "ndc:44567-510",
+      "ndc:44567-511",
+      "ndc:44567-530",
+      "spl:a66eda32-1164-439a-ac8e-73138365ec06",
+      "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c"
+    ],
     "trade_names": ["PLATINOL-AQ", "PLATINOL"]
   },
   {
+    "label_and_type": "rxcui:309311##xref",
+    "concept_id": "drugsatfda.nda:018057",
+    "item_type": "xref",
+    "src_name": "DrugsAtFDA"
+  },
+  {
     "label_and_type": "cisplatin##label",
-    "concept_id": "drugsatfda:nda018057",
+    "concept_id": "drugsatfda.nda:018057",
     "item_type": "label",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "unii:q20q21q62j##associated_with",
-    "concept_id": "drugsatfda:nda018057",
+    "concept_id": "drugsatfda.nda:018057",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:nda210595##identity",
+    "label_and_type": "drugsatfda.nda:210595##identity",
     "src_name": "DrugsAtFDA",
     "item_type": "identity",
-    "concept_id": "drugsatfda:NDA210595",
+    "concept_id": "drugsatfda.nda:210595",
     "aliases": [
       "ACLIDINIUM BROMIDE",
       "ACLIDINIUM BROMIDE AND FORMOTEROL FUMARTE",
@@ -2519,26 +2550,26 @@
       "rxcui:2205094"
     ],
     "associated_with": ["unii:UQW7UF9N91", "unii:W34SHF8J2K"],
-    "approval_status": "fda_prescription",
+    "approval_rating": "fda_prescription",
     "trade_names": ["DUAKLIR PRESSAIR"]
   },
   {
     "label_and_type": "unii:w34shf8j2k##associated_with",
-    "concept_id": "drugsatfda:nda210595",
+    "concept_id": "drugsatfda.nda:210595",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "unii:uqw7uf9n91##associated_with",
-    "concept_id": "drugsatfda:nda210595",
+    "concept_id": "drugsatfda.nda:210595",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:nda202450##identity",
+    "label_and_type": "drugsatfda.nda:202450##identity",
     "src_name": "DrugsAtFDA",
     "item_type": "identity",
-    "concept_id": "drugsatfda:NDA202450",
+    "concept_id": "drugsatfda.nda:202450",
     "label": "ACLIDINIUM BROMIDE",
     "xrefs": [
       "rxcui:1607112",
@@ -2547,55 +2578,55 @@
       "rxcui:1303107"
     ],
     "associated_with": ["unii:UQW7UF9N91"],
-    "approval_status": "fda_prescription",
+    "approval_rating": "fda_prescription",
     "trade_names": ["TUDORZA PRESSAIR"]
   },
   {
     "label_and_type": "unii:uqw7uf9n91##associated_with",
-    "concept_id": "drugsatfda:nda202450",
+    "concept_id": "drugsatfda.nda:202450",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:anda091141##identity",
+    "label_and_type": "drugsatfda.anda:091141##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
-    "concept_id": "drugsatfda:ANDA091141",
+    "concept_id": "drugsatfda.anda:091141",
     "label": "FORMOTEROL FUMARATE",
     "xrefs": ["rxcui:1246319"],
     "associated_with": ["unii:W34SHF8J2K"],
-    "approval_status": "fda_prescription"
+    "approval_rating": "fda_prescription"
   },
   {
     "label_and_type": "unii:w34shf8j2k##associated_with",
-    "concept_id": "drugsatfda:anda091141",
+    "concept_id": "drugsatfda.anda:091141",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:nda022007##identity",
+    "label_and_type": "drugsatfda.nda:022007##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
-    "concept_id": "drugsatfda:NDA022007",
+    "concept_id": "drugsatfda.nda:022007",
     "label": "FORMOTEROL FUMARATE",
     "aliases": ["FORMOTEROL FUMARATE DIHYDRATE"],
     "xrefs": ["rxcui:1246321", "rxcui:1246319"],
     "associated_with": ["unii:W34SHF8J2K"],
-    "approval_status": "fda_prescription",
+    "approval_rating": "fda_prescription",
     "trade_names": ["PERFOROMIST"]
   },
   {
     "label_and_type": "unii:w34shf8j2k##associated_with",
-    "concept_id": "drugsatfda:nda022007",
+    "concept_id": "drugsatfda.nda:022007",
     "item_type": "associated_with",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:nda022334##identity",
+    "label_and_type": "drugsatfda.nda:022334##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "label": "EVEROLIMUS",
-    "concept_id": "drugsatfda:NDA022334",
+    "concept_id": "drugsatfda.nda:022334",
     "xrefs": [
       "rxcui:998191",
       "rxcui:1310144",
@@ -2612,142 +2643,178 @@
       "rxcui:1119400",
       "rxcui:1308432"
     ],
-    "associated_with": ["unii:9HW64Q8G6G"],
-    "approval_status": "fda_prescription",
+    "associated_with": [
+      "unii:9HW64Q8G6G",
+      "ndc:0078-0566",
+      "ndc:0078-0594",
+      "ndc:0078-0566",
+      "spl:8ad662ec-6e9b-4650-9f5a-78dda1f9f8f0",
+      "ndc:0078-0567",
+      "ndc:0078-0620",
+      "ndc:0078-0628",
+      "ndc:0078-0626",
+      "ndc:0078-0627"
+    ],
+    "approval_rating": "fda_prescription",
     "trade_names": ["AFINITOR"]
   },
   {
     "label_and_type": "rxcui:998191##xref",
-    "concept_id": "drugsatfda:nda022334",
+    "concept_id": "drugsatfda.nda:022334",
     "src_name": "DrugsAtFDA",
     "item_type": "xref"
   },
   {
     "label_and_type": "rxcui:845507##xref",
-    "concept_id": "drugsatfda:nda022334",
+    "concept_id": "drugsatfda.nda:022334",
     "src_name": "DrugsAtFDA",
     "item_type": "xref"
   },
   {
     "label_and_type": "rxcui:998189##xref",
-    "concept_id": "drugsatfda:nda022334",
+    "concept_id": "drugsatfda.nda:022334",
     "src_name": "DrugsAtFDA",
     "item_type": "xref"
   },
   {
     "label_and_type": "rxcui:1308432##xref",
-    "concept_id": "drugsatfda:nda022334",
+    "concept_id": "drugsatfda.nda:022334",
     "src_name": "DrugsAtFDA",
     "item_type": "xref"
   },
   {
     "label_and_type": "unii:9hw64q8g6g##associated_with",
-    "concept_id": "drugsatfda:nda022334",
+    "concept_id": "drugsatfda.nda:022334",
     "src_name": "DrugsAtFDA",
     "item_type": "associated_with"
   },
   {
     "label_and_type": "afinitor##trade_name",
-    "concept_id": "drugsatfda:nda022334",
+    "concept_id": "drugsatfda.nda:022334",
     "src_name": "DrugsAtFDA",
     "item_type": "trade_name"
   },
   {
     "label_and_type": "everolimus##label",
-    "concept_id": "drugsatfda:nda022334",
+    "concept_id": "drugsatfda.nda:022334",
     "src_name": "DrugsAtFDA",
     "item_type": "label"
   },
   {
-    "label_and_type": "drugsatfda:nda050682##identity",
+    "label_and_type": "drugsatfda.nda:050682##identity",
     "src_name": "DrugsAtFDA",
     "item_type": "identity",
     "label": "DACTINOMYCIN",
-    "concept_id": "drugsatfda:NDA050682",
+    "concept_id": "drugsatfda.nda:050682",
     "xrefs": ["rxcui:105569", "rxcui:239179"],
-    "associated_with": ["unii:1CC1JFE158"],
-    "approval_status": "fda_prescription",
+    "associated_with": [
+      "unii:1CC1JFE158",
+      "ndc:55292-811",
+      "ndc:66993-489",
+      "spl:137c07d7-e2bf-4f59-8b8f-4ebe119e576d",
+      "spl:b92f5536-179c-6234-e053-2995a90a0f25"
+    ],
+    "approval_rating": "fda_prescription",
     "trade_names": ["COSMEGEN"]
   },
   {
     "label_and_type": "unii:1cc1jfe158##associated_with",
     "src_name": "DrugsAtFDA",
     "item_type": "associated_with",
-    "concept_id": "drugsatfda:nda050682"
+    "concept_id": "drugsatfda.nda:050682"
   },
   {
     "label_and_type": "rxcui:239179##xref",
     "src_name": "DrugsAtFDA",
     "item_type": "xref",
-    "concept_id": "drugsatfda:nda050682"
+    "concept_id": "drugsatfda.nda:050682"
   },
   {
     "label_and_type": "rxcui:105569##xref",
     "src_name": "DrugsAtFDA",
     "item_type": "xref",
-    "concept_id": "drugsatfda:nda050682"
+    "concept_id": "drugsatfda.nda:050682"
   },
   {
     "label_and_type": "cosmegen##trade_name",
     "src_name": "DrugsAtFDA",
     "item_type": "trade_name",
-    "concept_id": "drugsatfda:nda050682"
+    "concept_id": "drugsatfda.nda:050682"
   },
   {
     "label_and_type": "dactinomycin##label",
     "src_name": "DrugsAtFDA",
     "item_type": "label",
-    "concept_id": "drugsatfda:nda050682"
+    "concept_id": "drugsatfda.nda:050682"
   },
   {
-    "label_and_type": "drugsatfda:anda072267##identity",
+    "label_and_type": "drugsatfda.anda:072267##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "label": "FENOPROFEN CALCIUM",
-    "concept_id": "drugsatfda:ANDA072267",
+    "concept_id": "drugsatfda.anda:072267",
     "xrefs": ["rxcui:310291", "rxcui:351398"],
-    "associated_with": ["unii:0X2CW1QABJ"],
-    "approval_status": "fda_prescription",
+    "associated_with": [
+      "unii:0X2CW1QABJ",
+      "ndc:42195-471",
+      "ndc:42195-688",
+      "spl:c1bfb82a-814b-23f3-e053-2995a90ae9cf",
+      "spl:c1bfb82a-8192-23f3-e053-2995a90ae9cf"
+    ],
+    "approval_rating": "fda_prescription",
     "trade_names": ["NALFON"]
   },
   {
     "label_and_type": "unii:0x2cw1qabj##associated_with",
     "item_type": "associated_with",
-    "concept_id": "drugsatfda:ANDA072267",
+    "concept_id": "drugsatfda.anda:072267",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "fenoprofen calcium##label",
     "item_type": "label",
-    "concept_id": "drugsatfda:ANDA072267",
+    "concept_id": "drugsatfda.anda:072267",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "rxcui:310291##xref",
     "item_type": "xref",
-    "concept_id": "drugsatfda:ANDA072267",
+    "concept_id": "drugsatfda.anda:072267",
     "src_name": "DrugsAtFDA"
   },
   {
-    "label_and_type": "drugsatfda:nda017604##identity",
+    "label_and_type": "drugsatfda.nda:017604##identity",
     "item_type": "identity",
     "src_name": "DrugsAtFDA",
     "label": "FENOPROFEN CALCIUM",
-    "concept_id": "drugsatfda:NDA017604",
+    "concept_id": "drugsatfda.nda:017604",
+    "associated_with": [
+      "unii:0X2CW1QABJ",
+      "ndc:15014-400",
+      "ndc:42195-100",
+      "ndc:42195-308",
+      "ndc:42195-600",
+      "ndc:69336-113",
+      "ndc:69336-124",
+      "spl:81a0da5b-6078-413e-b6d0-d31c1073b3f7",
+      "spl:bedf1661-b811-3d85-e053-2995a90acd59",
+      "spl:c1721025-8af3-5451-e053-2a95a90a7dc0",
+      "spl:c1829550-d270-e13d-e053-2995a90a4aa5",
+      "spl:c187dfec-eec5-4227-e053-2995a90ab55c"
+    ],
     "xrefs": ["rxcui:197694", "rxcui:858118", "rxcui:858116", "rxcui:260323"],
-    "associated_with": ["unii:0X2CW1QABJ"],
     "trade_names": ["NALFON", "FENORTHO"]
   },
   {
     "label_and_type": "unii:0x2cw1qabj##associated_with",
     "item_type": "associated_with",
-    "concept_id": "drugsatfda:NDA017604",
+    "concept_id": "drugsatfda.nda:017604",
     "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "fenoprofen calcium##label",
     "item_type": "label",
-    "concept_id": "drugsatfda:NDA017604",
+    "concept_id": "drugsatfda.nda:017604",
     "src_name": "DrugsAtFDA"
   }
 ]

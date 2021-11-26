@@ -16,10 +16,12 @@ def query_handler():
         def __init__(self):
             self.query_handler = QueryHandler()
 
-        def search_sources(self, query_str, keyed=False, incl="", excl=""):
+        def search_sources(self, query_str, keyed=False, incl="", excl="",
+                           infer=True):
             resp = self.query_handler.search_sources(query_str=query_str,
                                                      keyed=keyed,
-                                                     incl=incl, excl=excl)
+                                                     incl=incl, excl=excl,
+                                                     infer=infer)
             return resp
 
     return QueryGetter()
@@ -34,8 +36,8 @@ def merge_query_handler(mock_database):
             if os.environ.get("TEST") is not None:
                 self.query_handler.db = mock_database()  # replace initial DB
 
-        def search_groups(self, query_str):
-            return self.query_handler.search_groups(query_str)
+        def search_groups(self, query_str, infer=True):
+            return self.query_handler.search_groups(query_str, infer)
 
     return QueryGetter()
 
@@ -114,7 +116,6 @@ def phenobarbital():
                     "mmsl:d00340",
                     "atc:N03AA02",
                     "unii:YQE403BP4D",
-                    "unii:H8MTN7XVC2",
                     "umls:C0031412",
                     "CHEBI:8069",
                     "pubchem.substance:135650817",
@@ -127,7 +128,7 @@ def phenobarbital():
                 "type": "Extension",
                 "name": "regulatory_approval",
                 "value": {
-                    "approval_status": [],
+                    "approval_ratings": [],
                     "approval_year": [],
                     "has_indication": []
                 }
@@ -153,12 +154,12 @@ def cisplatin():
             "iuphar.ligand:5343",
             "drugbank:DB12117",
             "chembl:CHEMBL11359",
-            "drugsatfda:ANDA074656",
-            "drugsatfda:ANDA074735",
-            "drugsatfda:ANDA206774",
-            "drugsatfda:ANDA207323",
-            "drugsatfda:ANDA075036",
-            "drugsatfda:NDA018057",
+            "drugsatfda.anda:074656",
+            "drugsatfda.anda:074735",
+            "drugsatfda.anda:206774",
+            "drugsatfda.anda:207323",
+            "drugsatfda.anda:075036",
+            "drugsatfda.nda:018057",
         ],
         "alternate_labels": [
             "1,2-Diaminocyclohexaneplatinum II citrate",
@@ -212,27 +213,50 @@ def cisplatin():
                 "value": [
                     "mmsl:31747",
                     "mmsl:4456",
+                    "mmsl:d00195",
                     "usp:m17910",
                     "CHEBI:27899",
                     "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
                     "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
-                    "mmsl:d00195",
                     "mesh:D002945",
                     "atc:L01XA01",
                     "vandf:4018139",
-                    "pubchem.compound:5702198",
-                    "umls:C0008838",
-                    "unii:Q20Q21Q62J",
                     "pubchem.substance:178102005",
                     "pubchem.compound:441203",
-                    "unii:H8MTN7XVC2"
+                    "pubchem.compound:5702198",
+                    "umls:C0008838",
+                    "unii:H8MTN7XVC2",
+                    "unii:Q20Q21Q62J",
+                    "ndc:0143-9504",
+                    "ndc:0143-9505",
+                    "ndc:0703-5747",
+                    "ndc:0703-5748",
+                    "ndc:16729-288",
+                    "ndc:44567-509",
+                    "ndc:44567-510",
+                    "ndc:44567-511",
+                    "ndc:44567-530",
+                    "ndc:63323-103",
+                    "ndc:68001-283",
+                    "ndc:68083-162",
+                    "ndc:68083-163",
+                    "ndc:70860-206",
+                    "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
+                    "spl:5a24d5bd-c44a-43f7-a04c-76caf3475012",
+                    "spl:a66eda32-1164-439a-ac8e-73138365ec06",
+                    "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
+                    "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c",
+                    "spl:54b3415c-c095-4c82-b216-e0e6e6bb8d03",
+                    "spl:9b008181-ab66-db2f-e053-2995a90aad57",
+                    "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
+                    "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2"
                 ]
             },
             {
                 "type": "Extension",
                 "name": "regulatory_approval",
                 "value": {
-                    "approval_status": [],
+                    "approval_ratings": [],
                     "approval_year": ["1978"],
                     "has_indication": [
                         {
@@ -332,13 +356,33 @@ def therapeutic_procedure():
 
 
 def compare_vod(response, fixture, query, match_type, response_id,
-                warnings=None):
-    """Verify correctness of returned VOD object against test fixture."""
+                warnings=[]):
+    """Verify correctness of returned VOD object against test fixture.
+
+    :param Dict response: actual response
+    :param Dict fixture: expected Descriptor object
+    :param str query: query used in search
+    :param MatchType match_type: expected MatchType
+    :param str response_id: expected response_id value
+    :param List warnings: expected warnings
+    """
     assert response["query"] == query
-    if warnings is None:
-        assert response["warnings"] is None
+
+    # check warnings
+    if warnings:
+        assert len(response["warnings"]) == len(warnings), "warnings len"
+        for e_warnings in warnings:
+            for r_warnings in response["warnings"]:
+                for e_key, e_val in e_warnings.items():
+                    for _, r_val in r_warnings.items():
+                        if e_key == r_val:
+                            if isinstance(e_val, list):
+                                assert set(r_val) == set(e_val), "warnings val"
+                            else:
+                                assert r_val == e_val, "warnings val"
     else:
-        assert response["warnings"] == warnings
+        assert response["warnings"] == [], "warnings != []"
+
     assert response["match_type"] == match_type
 
     fixture = fixture.copy()
@@ -352,6 +396,8 @@ def compare_vod(response, fixture, query, match_type, response_id,
 
     assert ("xrefs" in actual.keys()) == ("xrefs" in fixture.keys())
     if "xrefs" in actual:
+        print(actual["xrefs"])
+        print(fixture["xrefs"])
         assert set(actual["xrefs"]) == set(fixture["xrefs"])
 
     assert ("alternate_labels" in actual.keys()) == ("alternate_labels" in
@@ -369,29 +415,45 @@ def compare_vod(response, fixture, query, match_type, response_id,
         else:
             return None
 
-    assert ("extensions" in actual.keys()) == ("extensions" in fixture.keys())  # noqa: E501
+    assert ("extensions" in actual.keys()) == ("extensions" in fixture.keys())
     if "extensions" in actual:
         ext_actual = actual["extensions"]
         ext_fixture = fixture["extensions"]
+
+        fda_actual = get_extension(ext_actual, "regulatory_approval")
+        fda_fixture = get_extension(ext_fixture, "regulatory_approval")
+        assert (fda_actual is None) == (fda_fixture is None), "regulatory_approval"
+        if fda_actual and fda_fixture:
+            ratings_actual = fda_actual.get("approval_ratings")
+            ratings_fixture = fda_fixture.get("approval_ratings")
+            if ratings_actual or ratings_fixture:
+                assert set(ratings_actual) == set(ratings_fixture)
+            assert set(fda_actual.get("approval_year", [])) == \
+                set(fda_fixture.get("approval_year", []))
+            assert set(fda_actual.get("has_indication", [])) == \
+                set(fda_fixture.get("has_indication", []))
 
         assoc_actual = get_extension(ext_actual, "associated_with")
         assoc_fixture = get_extension(ext_fixture, "associated_with")
         assert (assoc_actual is None) == (assoc_fixture is None)
         if assoc_actual:
+            assert assoc_fixture is not None
             assert set(assoc_actual["value"]) == set(assoc_fixture["value"])
             assert assoc_actual["value"]
 
         tn_actual = get_extension(ext_actual, "trade_names")
         tn_fixture = get_extension(ext_fixture, "trade_names")
-        assert (tn_actual is None) == (tn_fixture is None), "trade_names"
-        if tn_actual:
+        assert (tn_actual is None) == (tn_fixture is None)
+        if tn_fixture:
+            assert tn_actual is not None
             assert set(tn_actual["value"]) == set(tn_fixture["value"])
             assert tn_actual["value"]
 
         fda_actual = get_extension(ext_actual, "fda_approval")
         fda_fixture = get_extension(ext_fixture, "fda_approval")
-        assert (fda_actual is None) == (fda_fixture is None), "fda_approval"
-        if fda_actual:
+        assert (fda_actual is None) == (fda_fixture is None)
+        if fda_fixture:
+            assert fda_actual is not None
             assert fda_actual.get("approval_status") == \
                 fda_fixture.get("approval_status")
             assert set(fda_actual.get("approval_year", [])) == \
@@ -428,105 +490,52 @@ def test_query_specify_sources(query_handler):
     """Test inclusion and exclusion of sources in query."""
     # test blank params
     resp = query_handler.search_sources("cisplatin", keyed=True)
-    matches = resp["source_matches"]
-    assert len(matches) == 9
-    assert "Wikidata" in matches
-    assert "ChEMBL" in matches
-    assert "NCIt" in matches
-    assert "DrugBank" in matches
-    assert "ChemIDplus" in matches
-    assert "RxNorm" in matches
-    assert "HemOnc" in matches
-    assert "GuideToPHARMACOLOGY" in matches
-    assert "DrugsAtFDA" in matches
+    assert set(resp["source_matches"].keys()) == {
+        "Wikidata", "ChEMBL", "NCIt", "DrugBank", "ChemIDplus", "RxNorm", "HemOnc",
+        "GuideToPHARMACOLOGY", "DrugsAtFDA"
+    }
 
     # test partial inclusion
     resp = query_handler.search_sources("cisplatin", keyed=True,
                                         incl="chembl,ncit")
-    matches = resp["source_matches"]
-    assert len(matches) == 2
-    assert "Wikidata" not in matches
-    assert "ChEMBL" in matches
-    assert "NCIt" in matches
-    assert "DrugBank" not in matches
-    assert "RxNorm" not in matches
-    assert "ChemIDplus" not in matches
-    assert "HemOnc" not in matches
-    assert "GuideToPHARMACOLOGY" not in matches
-    assert "DrugsAtFDA" not in matches
+    assert set(resp["source_matches"].keys()) == {"ChEMBL", "NCIt"}
 
     # test full inclusion
     sources = "chembl,ncit,drugbank,wikidata,rxnorm,chemidplus,hemonc,guidetopharmacology,drugsatfda"  # noqa: E501
     resp = query_handler.search_sources("cisplatin", keyed=True,
                                         incl=sources, excl="")
-    matches = resp["source_matches"]
-    assert len(matches) == 9
-    assert "Wikidata" in matches
-    assert "ChEMBL" in matches
-    assert "NCIt" in matches
-    assert "DrugBank" in matches
-    assert "ChemIDplus" in matches
-    assert "RxNorm" in matches
-    assert "HemOnc" in matches
-    assert "GuideToPHARMACOLOGY" in matches
-    assert "DrugsAtFDA" in matches
+    assert set(resp["source_matches"].keys()) == {
+        "Wikidata", "ChEMBL", "NCIt", "DrugBank", "ChemIDplus", "RxNorm", "HemOnc",
+        "GuideToPHARMACOLOGY", "DrugsAtFDA"
+    }
 
     # test partial exclusion
     resp = query_handler.search_sources("cisplatin", keyed=True,
                                         excl="chemidplus")
-    matches = resp["source_matches"]
-    assert len(matches) == 8
-    assert "Wikidata" in matches
-    assert "ChEMBL" in matches
-    assert "NCIt" in matches
-    assert "DrugBank" in matches
-    assert "ChemIDplus" not in matches
-    assert "RxNorm" in matches
-    assert "HemOnc" in matches
-    assert "GuideToPHARMACOLOGY" in matches
-    assert "DrugsAtFDA" in matches
+    assert set(resp["source_matches"].keys()) == {
+        "Wikidata", "ChEMBL", "NCIt", "DrugBank", "RxNorm", "HemOnc",
+        "GuideToPHARMACOLOGY", "DrugsAtFDA"
+    }
 
     # test full exclusion
+    sources = "chembl, wikidata, drugbank, ncit, rxnorm, chemidplus, hemonc, " \
+        "guidetopharmacology,drugsatfda"  # noqa: E501
     resp = query_handler.search_sources(
         "cisplatin", keyed=True,
-        excl="chembl, wikidata, drugbank, ncit, rxnorm, chemidplus, hemonc, guidetopharmacology,drugsatfda"  # noqa: E501
+        excl=sources
     )
-    matches = resp["source_matches"]
-    assert len(matches) == 0
-    assert "Wikidata" not in matches
-    assert "ChEMBL" not in matches
-    assert "NCIt" not in matches
-    assert "DrugBank" not in matches
-    assert "ChemIDplus" not in matches
-    assert "RxNorm" not in matches
-    assert "HemOnc" not in matches
-    assert "GuideToPHARMACOLOGY" not in matches
-    assert "DrugsAtFDA" not in matches
+    assert set(resp["source_matches"].keys()) == set()
 
     # test case insensitive
     resp = query_handler.search_sources("cisplatin", keyed=True, excl="ChEmBl")
-    matches = resp["source_matches"]
-    assert "Wikidata" in matches
-    assert "ChEMBL" not in matches
-    assert "NCIt" in matches
-    assert "DrugBank" in matches
-    assert "ChemIDplus" in matches
-    assert "RxNorm" in matches
-    assert "HemOnc" in matches
-    assert "GuideToPHARMACOLOGY" in matches
-    assert "DrugsAtFDA" in matches
+    assert set(resp["source_matches"].keys()) == {
+        "Wikidata", "NCIt", "DrugBank", "ChemIDplus", "RxNorm", "HemOnc",
+        "GuideToPHARMACOLOGY", "DrugsAtFDA"
+    }
+
     resp = query_handler.search_sources("cisplatin", keyed=True,
                                         incl="wIkIdAtA,cHeMbL")
-    matches = resp["source_matches"]
-    assert "Wikidata" in matches
-    assert "ChEMBL" in matches
-    assert "NCIt" not in matches
-    assert "DrugBank" not in matches
-    assert "ChemIDplus" not in matches
-    assert "RxNorm" not in matches
-    assert "HemOnc" not in matches
-    assert "GuideToPHARMACOLOGY" not in matches
-    assert "DrugsAtFDA" not in matches
+    assert set(resp["source_matches"].keys()) == {"Wikidata", "ChEMBL"}
 
     # test error on invalid source names
     with pytest.raises(InvalidParameterException):
@@ -537,6 +546,133 @@ def test_query_specify_sources(query_handler):
     with pytest.raises(InvalidParameterException):
         resp = query_handler.search_sources("cisplatin", keyed=True,
                                             incl="chembl", excl="wikidata")
+
+
+def test_infer_option(query_handler, merge_query_handler):
+    """Test infer_namespace boolean option"""
+    # drugbank
+    query = "DB01174"
+    expected_warnings = [{
+        "inferred_namespace": "drugbank",
+        "adjusted_query": "drugbank:" + query.lower(),
+        "alternate_inferred_matches": []
+    }]
+
+    response = query_handler.search_sources(query, keyed=True)
+    assert response["source_matches"]["DrugBank"]["match_type"] == MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
+
+    response = merge_query_handler.search_groups(query)
+    response["match_type"] == MatchType.CONCEPT_ID
+    response["warnings"] == expected_warnings
+
+    # ncit
+    query = "c739"
+    expected_warnings = [{
+        "inferred_namespace": "ncit",
+        "adjusted_query": "ncit:" + query.lower(),
+        "alternate_inferred_matches": []
+    }]
+
+    response = query_handler.search_sources(query, keyed=True)
+    assert response["source_matches"]["NCIt"]["match_type"] == MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
+
+    response = merge_query_handler.search_groups(query)
+    response["match_type"] == MatchType.CONCEPT_ID
+    response["warnings"] == expected_warnings
+
+    # chemidplus
+    query = "15663-27-1"
+    expected_warnings = [{
+        "inferred_namespace": "chemidplus",
+        "adjusted_query": "chemidplus:" + query.lower(),
+        "alternate_inferred_matches": [],
+    }]
+
+    response = query_handler.search_sources(query, keyed=True)
+    assert response["source_matches"]["ChemIDplus"]["match_type"] == \
+        MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
+
+    response = merge_query_handler.search_groups(query)
+    response["match_type"] == MatchType.CONCEPT_ID
+    response["warnings"] == expected_warnings
+
+    # chembl
+    query = "chembl11359"
+    expected_warnings = [{
+        "inferred_namespace": "chembl",
+        "adjusted_query": "chembl:" + query.lower(),
+        "alternate_inferred_matches": [],
+    }]
+
+    response = query_handler.search_sources(query, keyed=True)
+    assert response["source_matches"]["ChEMBL"]["match_type"] == \
+        MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
+
+    response = merge_query_handler.search_groups(query)
+    response["match_type"] == MatchType.CONCEPT_ID
+    response["warnings"] == expected_warnings
+
+    # wikidata
+    query = "q412415"
+    expected_warnings = [{
+        "inferred_namespace": "wikidata",
+        "adjusted_query": "wikidata:" + query.lower(),
+        "alternate_inferred_matches": [],
+    }]
+
+    response = query_handler.search_sources(query, keyed=True)
+    assert response["source_matches"]["Wikidata"]["match_type"] == \
+        MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
+
+    response = merge_query_handler.search_groups(query)
+    response["match_type"] == MatchType.CONCEPT_ID
+    response["warnings"] == expected_warnings
+
+    # drugs@fda
+    query = "ANDA075036"
+    expected_warnings = [{
+        "inferred_namespace": "drugsatfda.anda",
+        "adjusted_query": "drugsatfda.anda:075036",
+        "alternate_inferred_matches": [],
+    }]
+
+    response = query_handler.search_sources(query, keyed=True)
+    assert response["source_matches"]["DrugsAtFDA"]["match_type"] == \
+        MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
+
+    response = merge_query_handler.search_groups(query)
+    response["match_type"] == MatchType.CONCEPT_ID
+    response["warnings"] == expected_warnings
+
+    query = "nda018057"
+    expected_warnings = [{
+        "inferred_namespace": "drugsatfda.nda",
+        "adjusted_query": "drugsatfda.nda:018057",
+        "alternate_inferred_matches": [],
+    }]
+
+    response = query_handler.search_sources(query, keyed=True)
+    assert response["source_matches"]["DrugsAtFDA"]["match_type"] == \
+        MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
+
+    response = merge_query_handler.search_groups(query)
+    response["match_type"] == MatchType.CONCEPT_ID
+    response["warnings"] == expected_warnings
+
+    # test disabling namespace inference
+    query = "DB01174"
+    response = merge_query_handler.search_groups(query, infer=False)
+    assert response["query"] == query
+    assert response["warnings"] == []
+    assert "record" not in response
+    assert response["match_type"] == MatchType.NO_MATCH
 
 
 def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
@@ -605,14 +741,14 @@ def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
     query = "zzzz fake therapy zzzz"
     response = merge_query_handler.search_groups(query)
     assert response["query"] == query
-    assert response["warnings"] is None
+    assert response["warnings"] == []
     assert "record" not in response
     assert response["match_type"] == MatchType.NO_MATCH
 
 
 def test_merged_meta(merge_query_handler):
     """Test population of source and resource metadata in merged querying."""
-    query = "pheno"
+    query = "phenobarbital"
     response = merge_query_handler.search_groups(query)
     meta_items = response["source_meta_"]
     assert "RxNorm" in meta_items.keys()

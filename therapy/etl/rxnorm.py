@@ -18,10 +18,9 @@ import bioversions
 from boto3.dynamodb.table import BatchWriter
 import requests
 
-from therapy import DownloadException, XREF_SOURCES, ASSOC_WITH_SOURCES, \
-    ITEM_TYPES
+from therapy import DownloadException, XREF_SOURCES, ASSOC_WITH_SOURCES, ITEM_TYPES
 from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
-    ApprovalStatus, RecordParams
+    ApprovalRating, RecordParams
 from therapy.etl.base import Base
 
 logger = logging.getLogger("therapy")
@@ -164,7 +163,7 @@ class RxNorm(Base):
 
                         params = {"concept_id": value["concept_id"]}
 
-                        for field in list(ITEM_TYPES.keys()) + ["approval_status"]:
+                        for field in list(ITEM_TYPES.keys()) + ["approval_rating"]:
                             field_value = value.get(field)
                             if field_value:
                                 params[field] = field_value
@@ -259,7 +258,7 @@ class RxNorm(Base):
         if (term_type == "IN" or term_type == "PIN") and source == "RXNORM":
             params["label"] = term
             if row[17] == "4096":
-                params["approval_status"] = ApprovalStatus.RXNORM_PRESCRIBABLE.value
+                params["approval_rating"] = ApprovalRating.RXNORM_PRESCRIBABLE.value
         elif term_type in ALIASES:
             self._add_term(params, term, "aliases")
         elif term_type in TRADE_NAMES:

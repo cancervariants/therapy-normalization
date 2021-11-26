@@ -41,7 +41,7 @@ def cisplatin():
             "Platinol",
             "Platinol-Aq"
         ],
-        "approval_status": "chembl_phase_4",
+        "approval_rating": "chembl_phase_4",
         "xrefs": [],
         "associated_with": [],
         "trade_names": [
@@ -59,7 +59,7 @@ def l745870():
         "label": "L-745870",
         "concept_id": "chembl:CHEMBL267014",
         "aliases": [],
-        "approval_status": "chembl_phase_0",
+        "approval_rating": "chembl_phase_0",
         "xrefs": [],
         "associated_with": [],
         "trade_names": []
@@ -75,7 +75,7 @@ def aspirin():
         "label": "ASPIRIN",
         "concept_id": "chembl:CHEMBL25",
         "aliases": [],
-        "approval_status": "chembl_phase_4",
+        "approval_rating": "chembl_phase_4",
         "xrefs": [],
         "associated_with": [],
         "trade_names": []
