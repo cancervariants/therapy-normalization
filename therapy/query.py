@@ -90,8 +90,8 @@ class QueryHandler:
         :param Dict[str, Dict] response: in-progress response object
         :param Dict item: Item retrieved from DynamoDB
         :param MatchType match_type: type of query match
-        :return: Tuple containing updated response object, and string
-            containing name of the source of the match
+        :return: Tuple containing updated response object, and string containing name of
+            the source of the match
         """
         inds = item.get("has_indication")
         if inds:
@@ -297,16 +297,15 @@ class QueryHandler:
         """Fetch normalized therapy objects.
 
         :param str query_str: query, a string, to search for
-        :param bool keyed: if true, return response as dict keying source names
-            to source objects; otherwise, return list of source objects
-        :param str incl: str containing comma-separated names of sources to
-            use. Will exclude all other sources. Case-insensitive.
-        :param str excl: str containing comma-separated names of source to
-            exclude. Will include all other source. Case-insensitive.
-        :param bool infer: if true, try to infer namespaces using known
-            Local Unique Identifier patterns
+        :param bool keyed: if true, return response as dict keying source names to
+            source objects; otherwise, return list of source objects
+        :param str incl: str containing comma-separated names of sources to use. Will
+            exclude all other sources. Case-insensitive.
+        :param str excl: str containing comma-separated names of source to exclude. Will
+            include all other source. Case-insensitive.
+        :param bool infer: if true, try to infer namespaces using known Local Unique
+            Identifier patterns
         :return: dict containing all matches found in sources.
-        :rtype: dict
         :raises InvalidParameterException: if both incl and excl args are provided, or
             if invalid source names are given.
         """
