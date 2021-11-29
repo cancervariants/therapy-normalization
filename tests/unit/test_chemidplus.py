@@ -1,7 +1,6 @@
 """Test ChemIDplus ETL methods."""
-from datetime import datetime as dt
-
 import pytest
+import isodate
 
 from therapy.query import QueryHandler
 from therapy.schemas import Drug, MatchType
@@ -191,7 +190,7 @@ def test_meta(chemidplus):
     response = chemidplus.search("incoherent-string-of-text")
     assert response["source_meta_"]["data_license"] == "custom"
     assert response["source_meta_"]["data_license_url"] == "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html"  # noqa: E501
-    assert dt.strptime(response["source_meta_"]["version"], "%Y%m%d")
+    assert isodate.parse_date(response["source_meta_"]["version"])
     assert response["source_meta_"]["data_url"] == "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/"  # noqa: E501
     assert response["source_meta_"]["rdp_url"] is None
     assert response["source_meta_"]["data_license_attributes"] == {

@@ -1,9 +1,8 @@
 """Test that the therapy normalizer works as intended for the HemOnc.org
 source.
 """
-from datetime import datetime as dt
-
 import pytest
+import isodate
 
 from therapy.query import QueryHandler
 from therapy.schemas import Drug, MatchType
@@ -222,7 +221,7 @@ def test_metadata(hemonc):
     response = hemonc.fetch_meta()
     assert response.data_license == "CC BY 4.0"
     assert response.data_license_url == "https://creativecommons.org/licenses/by/4.0/legalcode"  # noqa: E501
-    assert dt.strptime(response.version, "%Y%m%d")
+    assert isodate.parse_date(response.version)
     assert response.data_url == "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6"  # noqa: E501
     assert response.rdp_url is None
     assert response.data_license_attributes == {
