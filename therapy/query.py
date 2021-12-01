@@ -487,7 +487,7 @@ class QueryHandler:
 
         :param Dict response: in-progress response object
         :param str query: exact query as provided by user
-        :param Dict record: TODO
+        :param Dict record: record to retrieve normalized concept for
         :param MatchType match_type: type of match that returned these records
         :return: formed response, a Dict
         """
