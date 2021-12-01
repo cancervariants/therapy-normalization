@@ -418,7 +418,7 @@ def levothyroxine():
             "mmsl:d00278",
             "unii:Q51BO43MG4"
         ],
-        "trade_names": []
+        # trade names length > 20
     }
     return Drug(**params)
 

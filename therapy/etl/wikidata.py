@@ -9,15 +9,14 @@ from wikibaseintegrator.wbi_functions import execute_sparql_query
 
 from therapy import PROJECT_ROOT
 from therapy.database import Database
-from therapy.schemas import SourceName, NamespacePrefix, RecordParams, \
-    SourceIDAfterNamespace, SourceMeta
+from therapy.schemas import SourceName, NamespacePrefix, RecordParams, SourceMeta
 from therapy.etl.base import Base
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
-# Prefixes for translating ID namespaces
-IDENTIFIER_PREFIXES = {
+# Translate Wikidata keys to standardized namespaces
+NAMESPACES = {
     "casRegistry": NamespacePrefix.CASREGISTRY.value,
     "ChemIDplus": NamespacePrefix.CHEMIDPLUS.value,
     "pubchemCompound": NamespacePrefix.PUBCHEMCOMPOUND.value,
@@ -28,6 +27,13 @@ IDENTIFIER_PREFIXES = {
     "wikidata": NamespacePrefix.WIKIDATA.value,
 }
 
+# Provide standard concept ID prefixes
+ID_PREFIXES = {
+    "wikidata": "Q",
+    "chembl": "CHEMBL",
+    "drugbank": "DB",
+    "ncit": "C",
+}
 
 SPARQL_QUERY = """
     SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound
@@ -128,7 +134,7 @@ class Wikidata(Base):
 
                     xrefs = list()
                     associated_with = list()
-                    for key in IDENTIFIER_PREFIXES.keys():
+                    for key in NAMESPACES.keys():
                         if key in record.keys():
                             ref = record[key]
 
@@ -137,13 +143,14 @@ class Wikidata(Base):
 
                             if key.upper() in XREF_SOURCES:
                                 if key != "chembl":
-                                    fmted_xref = \
-                                        f"{IDENTIFIER_PREFIXES[key]}:{SourceIDAfterNamespace[key.upper()].value}{ref}"  # noqa: E501
+                                    prefix = ID_PREFIXES.get(key.lower(), "")
+                                    fmted_xref = f"{NAMESPACES[key]}:{prefix}{ref}"
                                 else:
-                                    fmted_xref = f"{IDENTIFIER_PREFIXES[key]}:{ref}"
+                                    fmted_xref = f"{NAMESPACES[key]}:{ref}"
                                 xrefs.append(fmted_xref)
                             else:
-                                fmted_assoc = f"{IDENTIFIER_PREFIXES[key]}:{ref}"
+                                fmted_assoc = f"{NAMESPACES[key]}:" \
+                                              f"{ref}"
                                 associated_with.append(fmted_assoc)
                     item["xrefs"] = xrefs
                     item["associated_with"] = associated_with

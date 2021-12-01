@@ -1729,6 +1729,7 @@
     "label_and_type": "drugbank:db01174##identity",
     "src_name": "DrugBank",
     "item_type": "identity",
+    "merge_ref": "rxcui:8134",
     "concept_id": "drugbank:DB01174",
     "label": "Phenobarbital",
     "aliases": [
@@ -1749,8 +1750,7 @@
       "Phenylethylbarbitursäure",
       "Phenylethylmalonylurea"
     ],
-    "xrefs": ["chemidplus:50-06-6"],
-    "merge_ref": "rxcui:8134"
+    "xrefs": ["chemidplus:50-06-6"]
   },
   {
     "label_and_type": "chemidplus:50-06-6##xref",

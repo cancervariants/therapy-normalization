@@ -6,6 +6,7 @@ from datetime import datetime
 from ga4gh.vrsatile.pydantic.vrsatile_models import ValueObjectDescriptor
 from pydantic import BaseModel, StrictBool
 
+from therapy.version import __version__
 
 # Working structure for object in preparation for upload to DB
 RecordParams = Dict[str, Union[List, Set, str, Dict[str, Any]]]
@@ -220,20 +221,6 @@ class SourceName(str, Enum):
     GUIDETOPHARMACOLOGY = "GuideToPHARMACOLOGY"
 
 
-class SourceIDAfterNamespace(Enum):
-    """Define string constraints after namespace."""
-
-    WIKIDATA = "Q"
-    CHEMBL = "CHEMBL"
-    DRUGBANK = "DB"
-    NCIT = "C"
-    CHEMIDPLUS = ""
-    RXNORM = ""
-    HEMONC = ""
-    DRUGSATFDA = ""
-    GUIDETOPHARMACOLOGY = ""
-
-
 class NamespacePrefix(Enum):
     """Define string constraints for namespace prefixes on concept IDs."""
 
@@ -427,9 +414,9 @@ class ServiceMeta(BaseModel):
     """Metadata regarding the therapy-normalization service."""
 
     name = "thera-py"
-    version: str
+    version = __version__
     response_datetime: datetime
-    url: str
+    url = "https://github.com/cancervariants/therapy-normalization"
 
     class Config:
         """Configure OpenAPI schema"""
@@ -453,7 +440,7 @@ class NormalizationService(BaseModel):
     """Response containing one or more merged records and source data."""
 
     query: str
-    warnings: Optional[Dict]
+    warnings: Optional[List[Dict]]
     match_type: MatchType
     therapy_descriptor: Optional[ValueObjectDescriptor]
     source_meta_: Optional[Dict[SourceName, SourceMeta]]
@@ -591,7 +578,7 @@ class SearchService(BaseModel):
     """Core response schema containing matches for each source"""
 
     query: str
-    warnings: Optional[Dict]
+    warnings: Optional[List[Dict]]
     source_matches: Union[Dict[SourceName, MatchesKeyed], List[MatchesListed]]
     service_meta_: ServiceMeta
 

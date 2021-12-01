@@ -124,9 +124,6 @@ def test_penicillin(chemidplus, penicillin_v):
     assert len(response["records"]) == 1
     compare_records(response["records"][0], penicillin_v)
 
-    response = chemidplus.search("87-08-1")
-    assert response["match_type"] == MatchType.NO_MATCH
-
     response = chemidplus.search("87081")
     assert response["match_type"] == MatchType.NO_MATCH
 
