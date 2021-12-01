@@ -8,7 +8,6 @@ from uvicorn.config import logger
 from botocore.exceptions import ClientError
 
 from therapy import SOURCES, PREFIX_LOOKUP, ITEM_TYPES, NAMESPACE_LUIS
-from therapy.version import __version__
 from therapy.database import Database
 from therapy.schemas import Drug, SourceMeta, MatchType, ServiceMeta, \
     HasIndication, SourcePriority, SearchService, NormalizationService, \
@@ -359,9 +358,7 @@ class QueryHandler:
             response = self._response_list(query_str, query_sources, infer)
 
         response["service_meta_"] = ServiceMeta(
-            version=__version__,
             response_datetime=datetime.now(),
-            url="https://github.com/cancervariants/therapy-normalization"
         ).dict()
         return SearchService(**response).dict()
 
@@ -517,9 +514,7 @@ class QueryHandler:
             "query": query,
             "warnings": self._emit_char_warnings(query),
             "service_meta_": ServiceMeta(
-                version=__version__,
                 response_datetime=datetime.now(),
-                url="https://github.com/cancervariants/therapy-normalization"
             ).dict()
         }
         if query == "":
