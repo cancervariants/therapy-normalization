@@ -68,8 +68,7 @@ def search(q: str = Query(..., description=q_descr),
            keyed: Optional[bool] = Query(False, description=keyed_descr),
            incl: Optional[str] = Query(None, description=incl_descr),
            excl: Optional[str] = Query(None, description=excl_descr),
-           infer_namespace: Optional[bool] = Query(True,
-                                                   description=infer_descr)
+           infer_namespace: bool = Query(True, description=infer_descr)
            ) -> Dict:
     """For each source, return strongest-match concepts for query string
     provided by user.
@@ -105,9 +104,7 @@ merged_q_descr = "Therapy to normalize."
          response_model=NormalizationService,
          description=normalize_description)
 def normalize(q: str = Query(..., description=merged_q_descr),
-              infer_namespace: Optional[bool] = Query(
-                  True,
-                  description=infer_descr)
+              infer_namespace: bool = Query(True, description=infer_descr)
               ) -> Dict:
     """Return merged strongest-match concept for query string provided by
     user.
