@@ -6,6 +6,7 @@ from datetime import datetime
 from ga4gh.vrsatile.pydantic.vrsatile_models import ValueObjectDescriptor
 from pydantic import BaseModel, StrictBool
 
+from therapy.version import __version__
 
 # Working structure for object in preparation for upload to DB
 RecordParams = Dict[str, Union[List, Set, str, Dict[str, Any]]]
@@ -220,20 +221,6 @@ class SourceName(str, Enum):
     GUIDETOPHARMACOLOGY = "GuideToPHARMACOLOGY"
 
 
-class SourceIDAfterNamespace(Enum):
-    """Define string constraints after namespace."""
-
-    WIKIDATA = "Q"
-    CHEMBL = "CHEMBL"
-    DRUGBANK = "DB"
-    NCIT = "C"
-    CHEMIDPLUS = ""
-    RXNORM = ""
-    HEMONC = ""
-    DRUGSATFDA = ""
-    GUIDETOPHARMACOLOGY = ""
-
-
 class NamespacePrefix(Enum):
     """Define string constraints for namespace prefixes on concept IDs."""
 
@@ -427,9 +414,9 @@ class ServiceMeta(BaseModel):
     """Metadata regarding the therapy-normalization service."""
 
     name = "thera-py"
-    version: str
+    version = __version__
     response_datetime: datetime
-    url: str
+    url = "https://github.com/cancervariants/therapy-normalization"
 
     class Config:
         """Configure OpenAPI schema"""
