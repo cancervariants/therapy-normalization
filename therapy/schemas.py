@@ -221,20 +221,6 @@ class SourceName(str, Enum):
     GUIDETOPHARMACOLOGY = "GuideToPHARMACOLOGY"
 
 
-class SourceIDAfterNamespace(Enum):
-    """Define string constraints after namespace."""
-
-    WIKIDATA = "Q"
-    CHEMBL = "CHEMBL"
-    DRUGBANK = "DB"
-    NCIT = "C"
-    CHEMIDPLUS = ""
-    RXNORM = ""
-    HEMONC = ""
-    DRUGSATFDA = ""
-    GUIDETOPHARMACOLOGY = ""
-
-
 class NamespacePrefix(Enum):
     """Define string constraints for namespace prefixes on concept IDs."""
 
