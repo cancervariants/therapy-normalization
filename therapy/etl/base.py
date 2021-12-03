@@ -118,6 +118,8 @@ class Base(ABC):
                 for chunk in r.iter_content(chunk_size=8192):
                     if chunk:
                         h.write(chunk)
+        if handler:
+            handler(dl_path, outfile_path)
 
     def _ftp_download(self, host: str, host_dir: str, host_fn: str) -> None:
         """Download data file from FTP site.

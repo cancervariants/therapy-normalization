@@ -62,7 +62,7 @@ class HemOnc(Base):
                     if term in file.filename:
                         file.filename = f"hemonc_{term}_{self._version}.csv"
                         zip_ref.extract(file, outfile_path)
-                    break
+
         os.remove(dl_path)
 
     def _download_data(self) -> None:
