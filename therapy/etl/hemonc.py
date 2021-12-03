@@ -6,6 +6,8 @@ import csv
 import os
 import zipfile
 
+import requests
+import isodate
 from disease.query import QueryHandler as DiseaseNormalizer
 
 from therapy import DownloadException, APP_ROOT
@@ -32,6 +34,22 @@ class HemOnc(Base):
         super().__init__(database, data_path)
         self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
 
+    def get_latest_version(self) -> str:
+        """Retrieve latest version of source data. Requires Dataverse API key to be
+        preset at env variable DATAVERSE_API_KEY.
+        :raise: Exception if retrieval is unsuccessful
+        """
+        response = requests.get("https://dataverse.harvard.edu/api/datasets/export?persistentId=doi:10.7910/DVN/9CY9C6&exporter=dataverse_json")  # noqa: E501
+        try:
+            response.raise_for_status()
+        except requests.HTTPError as e:
+            logger.error("Unable to retrieve HemOnc version from Harvard Dataverse")
+            raise e
+        iso_datetime = isodate.parse_datetime(
+            response.json()["datasetVersion"]["releaseTime"]
+        )
+        return iso_datetime.strftime(isodate.isostrf.DATE_EXT_COMPLETE)
+
     def _zip_handler(self, dl_path: Path, outfile_path: Path) -> None:
         """Extract concepts, rels, and synonyms files from tmp zip file and save to
         data directory.
@@ -57,6 +75,7 @@ class HemOnc(Base):
             hemonc_rels_<version>.csv
             hemonc_synonyms_<version>.csv
         where <version> is the date given in the original filename.
+        :raises: DownloadException if API key environment variable isn't set
         """
         api_key = os.environ.get("DATAVERSE_API_KEY")
         if api_key is None:
@@ -70,18 +89,25 @@ class HemOnc(Base):
 
     def _extract_data(self) -> None:
         """Get source files from data directory.
-        Since we don't presently retrieve source data from the web, we set
-        the version number after files are acquired, rather than acquiring the
-        version number and asserting that correctly-versioned files exist.
+
+        The following files are necessary for data processing:
+            hemonc_concepts_<version>.csv
+            hemonc_rels_<version>.csv
+            hemonc_synonyms_<version>.csv
+        This method will attempt to retrieve their latest versions if they are
+        unavailable locally.
         """
         self._src_dir.mkdir(exist_ok=True, parents=True)
-        self._src_files = []
-        for item_type in ("concepts", "rels", "synonyms"):
-            files = list(self._src_dir.glob(f"hemonc_{item_type}_*.csv"))
-            if len(files) == 0:
-                self._download_data()
-            self._src_files.append(sorted(files, reverse=True)[0])
-        self._version = self._src_files[0].stem.split("_", 2)[-1]
+        self._version = self.get_latest_version()
+        data_filenames = (
+            self._src_dir / f"hemonc_concepts_{self._version}.csv",
+            self._src_dir / f"hemonc_rels_{self._version}.csv",
+            self._src_dir / f"hemonc_synonyms_{self._version}.csv"
+        )
+        existing_files = list(self._src_dir.iterdir())
+        if not all((f in existing_files for f in data_filenames)):
+            self._download_data()
+        self._src_files = data_filenames
 
     def _load_meta(self) -> None:
         """Add HemOnc metadata."""
