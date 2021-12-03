@@ -21,7 +21,7 @@ class DrugsAtFDA(Base):
         self._http_download(url, outfile_path, handler=self._zip_handler)
         logger.info("Successfully retrieved source data for Drugs@FDA")
 
-    def _get_latest_version(self) -> str:
+    def get_latest_version(self) -> str:
         """Retrieve latest version of source data.
         :return: version as a str -- expected formatting is YYYYMMDD
         """
