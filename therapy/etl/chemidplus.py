@@ -3,7 +3,6 @@
 Courtesy of the U.S. National Library of Medicine.
 """
 import logging
-from urllib.parse import urlparse
 import zipfile
 from os import remove
 from shutil import move
@@ -32,9 +31,8 @@ class ChemIDplus(Base):
     def _download_data(self) -> None:
         """Download source data from default location."""
         logger.info("Retrieving source data for ChemIDplus")
-        url = urlparse(bioversions.resolve("chemidplus").homepage)
-        _, file = url.path.rsplit("/", 1)
-        self._ftp_download("ftp.nlm.nih.gov", "nlmdata/.chemidlease", str(file))
+        file = "currentchemid.zip"
+        self._ftp_download("ftp.nlm.nih.gov", "nlmdata/.chemidlease", file)
         zip_path = (self._src_dir / file).absolute()
         zip_file = zipfile.ZipFile(zip_path, "r")
         outfile = self._src_dir / f"chemidplus_{self._version}.xml"
