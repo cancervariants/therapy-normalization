@@ -3,6 +3,8 @@ import logging
 from pathlib import Path
 from typing import Dict, Tuple
 import csv
+import os
+import zipfile
 
 from disease.query import QueryHandler as DiseaseNormalizer
 
@@ -30,6 +32,22 @@ class HemOnc(Base):
         super().__init__(database, data_path)
         self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
 
+    def _zip_handler(self, dl_path: Path, outfile_path: Path) -> None:
+        """Extract concepts, rels, and synonyms files from tmp zip file and save to
+        data directory.
+        :param Path dl_path: path to temp data zipfile
+        :param Path outfile_path: directory to save data within
+        """
+        file_terms = ("concepts", "rels", "synonyms")
+        with zipfile.ZipFile(dl_path, "r") as zip_ref:
+            for file in zip_ref.filelist:
+                for term in file_terms:
+                    if term in file.filename:
+                        file.filename = f"hemonc_{term}_{self._version}.csv"
+                        zip_ref.extract(file, outfile_path)
+                    break
+        os.remove(dl_path)
+
     def _download_data(self) -> None:
         """Download HemOnc.org source data. Harvard's DataVerse platform
         requires a login and acceptance of terms to download, so it's not
@@ -40,10 +58,15 @@ class HemOnc(Base):
             hemonc_synonyms_<version>.csv
         where <version> is the date given in the original filename.
         """
-        msg = (f"No download for HemOnc data available -- files must be "
-               f"placed manually in the {self._src_dir.absolute()} "
-               f"directory")
-        raise DownloadException(msg)
+        api_key = os.environ.get("DATAVERSE_API_KEY")
+        if api_key is None:
+            raise DownloadException(
+                "Must provide Harvard Dataverse API key in environment variable "
+                "DATAVERSE_API_KEY."
+            )
+        url = "https://dataverse.harvard.edu//api/access/dataset/:persistentId/?persistentId=doi:10.7910/DVN/9CY9C6"  # noqa: E501
+        headers = {"X-Dataverse-key": api_key}
+        self._http_download(url, self._src_dir, headers, self._zip_handler)
 
     def _extract_data(self) -> None:
         """Get source files from data directory.

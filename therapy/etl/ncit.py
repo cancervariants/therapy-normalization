@@ -52,7 +52,8 @@ class NCIt(Base):
             else:
                 src_url = archive_url
 
-        self._http_download(src_url, self._src_dir / f"ncit_{self._version}.owl", True)
+        self._http_download(src_url, self._src_dir / f"ncit_{self._version}.owl",
+                            self._zip_handler)
         logger.info("Successfully retrieved source data for NCIt")
 
     def _get_desc_nodes(self, node: ThingClass,

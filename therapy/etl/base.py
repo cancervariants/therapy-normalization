@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 import ftplib
 from pathlib import Path
 import logging
-from typing import List, Dict
+from typing import List, Dict, Optional, Callable
 import os
 import zipfile
 import tempfile
@@ -74,24 +74,40 @@ class Base(ABC):
         """
         raise NotImplementedError
 
+    def _zip_handler(self, dl_path: Path, outfile_path: Path) -> None:
+        """Provide simple callback function to extract the largest file within a given
+        zipfile and save it within the appropriate data directory.
+        :param Path dl_path: path to temp data file
+        :param Path outfile_path: path to save file within
+        """
+        with zipfile.ZipFile(dl_path, "r") as zip_ref:
+            if len(zip_ref.filelist) > 1:
+                files = sorted(zip_ref.filelist, key=lambda z: z.file_size,
+                               reverse=True)
+                target = files[0]
+            else:
+                target = zip_ref.filelist[0]
+            target.filename = outfile_path.name
+            zip_ref.extract(target, path=outfile_path.parent)
+        os.remove(dl_path)
+
     @staticmethod
-    def _http_download(url: str, outfile_path: Path, is_zip: bool = False) -> None:
+    def _http_download(url: str, outfile_path: Path, headers: Optional[Dict] = None,
+                       handler: Optional[Callable[[Path, Path], None]] = None) -> None:
         """Perform HTTP download of remote data file.
         :param str url: URL to retrieve file from
         :param Path outfile_path: path to where file should be saved. Must be an actual
             Path instance rather than merely a pathlike string.
-        :param bool is_zip: if True, treat downloaded object as a zipfile and extract
-            the largest file contained within to `outfile_path`. Classes needing
-            multiple files from the compressed zipfile, or needing files that aren't
-            the largest file contained within, should reimplement download logic
-            themselves. False by default.
+        :param Optional[Dict] headers: Any needed HTTP headers to include in request
+        :param Optional[Callable[[Path, Path], None]] handler: provide if downloaded
+            file requires additional action, e.g. it's a zip file.
         """
-        if is_zip:
-            dl_path = Path(tempfile.gettempdir()) / "tmp.zip"
+        if handler:
+            dl_path = Path(tempfile.gettempdir()) / "therapy_dl_tmp"
         else:
             dl_path = outfile_path
         # use stream to avoid saving download completely to memory
-        with requests.get(url, stream=True) as r:
+        with requests.get(url, stream=True, headers=headers) as r:
             try:
                 r.raise_for_status()
             except requests.HTTPError:
@@ -102,17 +118,6 @@ class Base(ABC):
                 for chunk in r.iter_content(chunk_size=8192):
                     if chunk:
                         h.write(chunk)
-        if is_zip:
-            with zipfile.ZipFile(dl_path, "r") as zip_ref:
-                if len(zip_ref.filelist) > 1:
-                    files = sorted(zip_ref.filelist, key=lambda z: z.file_size,
-                                   reverse=True)
-                    target = files[0]
-                else:
-                    target = zip_ref.filelist[0]
-                target.filename = outfile_path.name
-                zip_ref.extract(target, path=outfile_path.parent)
-            os.remove(dl_path)
 
     def _ftp_download(self, host: str, host_dir: str, host_fn: str) -> None:
         """Download data file from FTP site.
