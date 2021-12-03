@@ -69,6 +69,12 @@ You must set the `RxNORM_API_KEY` environment variable to your API key. This can
 export RXNORM_API_KEY={rxnorm_api_key}
 ```
 
+HemOnc.org data requires a Harvard Dataverse API key. After creating a user account on the Harvard Dataverse website, you can follow [these instructions](https://guides.dataverse.org/en/latest/user/account.html) to generate a key. Once you have a key, set the following environment variable:
+
+```shell script
+export DATAVERSE_API_KEY={your api key}
+```
+
 #### Update source(s)
 The Therapy Normalizer currently aggregates therapy data from:
 * [ChEMBL](https://www.ebi.ac.uk/chembl/)

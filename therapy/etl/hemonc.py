@@ -35,8 +35,7 @@ class HemOnc(Base):
         self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
 
     def get_latest_version(self) -> str:
-        """Retrieve latest version of source data. Requires Dataverse API key to be
-        preset at env variable DATAVERSE_API_KEY.
+        """Retrieve latest version of source data.
         :raise: Exception if retrieval is unsuccessful
         """
         response = requests.get("https://dataverse.harvard.edu/api/datasets/export?persistentId=doi:10.7910/DVN/9CY9C6&exporter=dataverse_json")  # noqa: E501
@@ -67,21 +66,18 @@ class HemOnc(Base):
         os.remove(dl_path)
 
     def _download_data(self) -> None:
-        """Download HemOnc.org source data. Harvard's DataVerse platform
-        requires a login and acceptance of terms to download, so it's not
-        easily automatable. End users should go directly to the HemOnc page
-        to retrieve the source data, and name them as follows:
-            hemonc_concepts_<version>.csv
-            hemonc_rels_<version>.csv
-            hemonc_synonyms_<version>.csv
-        where <version> is the date given in the original filename.
+        """Download HemOnc.org source data. Requires Harvard Dataverse API key to be set
+        as environment variable DATAVERSE_API_KEY. Instructions for generating an API
+        key are available here: https://guides.dataverse.org/en/latest/user/account.html
+
         :raises: DownloadException if API key environment variable isn't set
         """
         api_key = os.environ.get("DATAVERSE_API_KEY")
         if api_key is None:
             raise DownloadException(
                 "Must provide Harvard Dataverse API key in environment variable "
-                "DATAVERSE_API_KEY."
+                "DATAVERSE_API_KEY. See "
+                "https://guides.dataverse.org/en/latest/user/account.html"
             )
         url = "https://dataverse.harvard.edu//api/access/dataset/:persistentId/?persistentId=doi:10.7910/DVN/9CY9C6"  # noqa: E501
         headers = {"X-Dataverse-key": api_key}
