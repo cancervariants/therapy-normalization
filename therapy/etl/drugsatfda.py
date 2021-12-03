@@ -18,7 +18,7 @@ class DrugsAtFDA(Base):
         logger.info("Retrieving source data for Drugs@FDA")
         url = "https://download.open.fda.gov/drug/drugsfda/drug-drugsfda-0001-of-0001.json.zip"  # noqa: E501
         outfile_path = self._src_dir / f"drugsatfda_{self._version}.json"
-        self._http_download(url, outfile_path, self._zip_handler)
+        self._http_download(url, outfile_path, handler=self._zip_handler)
         logger.info("Successfully retrieved source data for Drugs@FDA")
 
     def _get_latest_version(self) -> str:

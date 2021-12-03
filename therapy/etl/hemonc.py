@@ -108,6 +108,8 @@ class HemOnc(Base):
         if not all((f in existing_files for f in data_filenames)):
             self._download_data()
         self._src_files = data_filenames
+        for file in self._src_files:
+            assert file.exists()
 
     def _load_meta(self) -> None:
         """Add HemOnc metadata."""
