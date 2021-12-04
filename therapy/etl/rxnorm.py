@@ -12,6 +12,7 @@ import zipfile
 import re
 from os import environ, remove
 from typing import List, Dict
+from pathlib import Path
 
 import yaml
 import bioversions
@@ -57,6 +58,23 @@ class RxNorm(Base):
         with open(self._drug_forms_file, "w") as file:
             yaml.dump(dfs, file)
 
+    def _zip_handler(self, dl_path: Path, outfile_path: Path) -> None:
+        """Extract required files from RxNorm zip. This method should be passed to
+        the base class's _http_download method.
+        :param Path dl_path: path to RxNorm zip file in tmp directory
+        :param Path outfile_path: path to RxNorm data directory
+        """
+        rrf_path = outfile_path / f"rxnorm_{self._version}.RRF"
+        with zipfile.ZipFile(dl_path, "r") as zf:
+            rrf = zf.open("rrf/RXNCONSO.RRF")
+            target = open(rrf_path, "wb")
+            with rrf, target:
+                shutil.copyfileobj(rrf, target)
+        remove(dl_path)
+        self._src_file = rrf_path
+        self._create_drug_form_yaml()
+        logger.info("Successfully retrieved source data for RxNorm")
+
     def _download_data(self) -> None:
         """Download latest RxNorm data file.
 
@@ -72,34 +90,22 @@ class RxNorm(Base):
         if not url:
             raise DownloadException("Could not resolve RxNorm homepage")
 
-        zip_path = str(self._src_dir / "rxnorm.zip")
-
-        data = {"apikey": api_key}
+        tgt_data = {"apikey": api_key}
         headers = {"Content-Type": "application/x-www-form-urlencoded"}
         api_url = "https://utslogin.nlm.nih.gov/cas/v1/api-key"
         tgt_r = requests.post(api_url,
-                              data=data, headers=headers)
-        tgtticket = tgt_r.text.split("-")
-        for ticket in tgtticket:
-            if api_url in ticket:
-                pass
-        # Source:
-        # https://documentation.uts.nlm.nih.gov/automating-downloads.html
-        # subprocess.call(["bash", f"{APP_ROOT}/etl/rxnorm_download.sh", url])
+                              data=tgt_data, headers=headers)
+        tgt_matches = re.findall(r'https://.+(TGT.+)" m', tgt_r.text)
+        if not tgt_matches:
+            raise DownloadException("Unable to retrieve TGT")
+        tgt_value = tgt_matches[0]
 
-        with zipfile.ZipFile(zip_path, "r") as zf:
-            zf.extractall(self._src_dir)
+        st_data = {"service": url}
+        st_url = f"https://utslogin.nlm.nih.gov/cas/v1/tickets/{tgt_value}"
+        st_r = requests.post(st_url, data=st_data, headers=headers)
 
-        remove(zip_path)
-        shutil.rmtree(self._src_dir / "prescribe")
-        shutil.rmtree(self._src_dir / "scripts")
-
-        temp_file = self._src_dir / "rrf" / "RXNCONSO.RRF"
-        self._src_file = self._src_dir / f"rxnorm_{self._version}.RRF"
-        shutil.move(temp_file, self._src_file)
-        shutil.rmtree(self._src_dir / "rrf")
-        self._create_drug_form_yaml()
-        logger.info("Successfully retrieved source data for RxNorm")
+        self._http_download(f"{url}?ticket={st_r.text}", self._src_dir,
+                            handler=self._zip_handler)
 
     def _extract_data(self) -> None:
         """Get source files from RxNorm data directory.
