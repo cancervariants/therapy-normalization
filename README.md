@@ -79,9 +79,10 @@ export DATAVERSE_API_KEY={your api key}
 The Therapy Normalizer currently aggregates therapy data from:
 * [ChEMBL](https://www.ebi.ac.uk/chembl/)
 * [ChemIDPlus](https://chem.nlm.nih.gov/chemidplus/)
-* [DrugBank](https://go.drugbank.com/) (currently using CC0 data only)
+* [DrugBank](https://go.drugbank.com/) (using CC0 data only)
+* [Drugs@FDA](https://www.accessdata.fda.gov/scripts/cder/daf/)
 * [The IUPHAR/BPS Guide to PHARMACOLOGY](https://www.guidetopharmacology.org/)
-* [HemOnc.org](https://hemonc.org/wiki/Main_Page).
+* [HemOnc.org](https://hemonc.org/wiki/Main_Page) (using CC-BY data only).
 * [The National Cancer Institute Thesaurus](https://ncithesaurus.nci.nih.gov/ncitbrowser/)
 * [RxNorm](https://www.nlm.nih.gov/research/umls/rxnorm/index.html)
 * [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page)
@@ -98,7 +99,7 @@ You can update all sources at once with the `--update_all` flag:
 python3 -m therapy.cli --update_all
 ```
 
-The `data/` subdirectory within the application should house all desired source data. The normalizer is capable of acquiring most of these files automatically; the exception is the HemOnc.org data, which must be manually downloaded from the [Harvard Dataverse](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6) and placed within the `data/hemonc` subdirectory. Files for all sources should follow the naming convention demonstrated below (with version numbers/dates changed where applicable).
+The `data/` subdirectory within the package source should house all desired input data. Files for all sources should follow the naming convention demonstrated below (with version numbers/dates changed where applicable).
 
 ```
 therapy/data
