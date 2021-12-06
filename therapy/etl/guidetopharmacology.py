@@ -2,6 +2,7 @@
 from typing import Optional, Dict, Any, List, Union
 import csv
 import html
+from pathlib import Path
 
 import requests
 
@@ -19,12 +20,12 @@ class GuideToPHARMACOLOGY(Base):
     def _download_data(self) -> None:
         """Download the latest version of Guide to PHARMACOLOGY."""
         logger.info("Retrieving source data for Guide to PHARMACOLOGY")
-        if not self._src_ligands_file.exists():
-            self._http_download(self._ligands_data_url, self._src_ligands_file)
-            assert self._src_ligands_file.exists()
-        if not self._src_mappings_file.exists():
-            self._http_download(self._ligand_mapping_data_url, self._src_mappings_file)
-            assert self._src_mappings_file.exists()
+        if not self._ligands_file.exists():
+            self._http_download(self._ligands_data_url, self._ligands_file)
+            assert self._ligands_file.exists()
+        if not self._mapping_file.exists():
+            self._http_download(self._ligand_mapping_data_url, self._mapping_file)
+            assert self._mapping_file.exists()
         logger.info("Successfully retrieved source data for Guide to PHARMACOLOGY")
 
     def _download_file(self, file_url: str, fn: str) -> None:
@@ -38,9 +39,9 @@ class GuideToPHARMACOLOGY(Base):
             prefix = SourceName.GUIDETOPHARMACOLOGY.value.lower()
             path = self._src_dir / f"{prefix}_{fn}_{self._version}.tsv"
             if fn == "ligands":
-                self._ligands_file = path
+                self._ligands_file: Path = path
             else:
-                self._ligand_id_mapping_file = path
+                self._mapping_file: Path = path
             with open(str(path), "wb") as f:
                 f.write(r.content)
 
@@ -49,12 +50,12 @@ class GuideToPHARMACOLOGY(Base):
         self._src_dir.mkdir(exist_ok=True, parents=True)
         self._version = self.get_latest_version()
         prefix = SourceName.GUIDETOPHARMACOLOGY.value.lower()
-        self._src_ligands_file = self._src_dir / f"{prefix}_ligands_{self._version}.tsv"
-        self._src_mappings_file = self._src_dir / f"{prefix}_ligand_id_mapping_{self._version}.tsv"  # noqa: E501
-        if not (self._src_ligands_file.exists() and self._src_mappings_file.exists()):
+        self._ligands_file = self._src_dir / f"{prefix}_ligands_{self._version}.tsv"
+        self._mapping_file = self._src_dir / f"{prefix}_ligand_id_mapping_{self._version}.tsv"  # noqa: E501
+        if not (self._ligands_file.exists() and self._mapping_file.exists()):
             self._download_data()
-            assert self._src_ligands_file.exists()
-            assert self._src_mappings_file.exists()
+            assert self._ligands_file.exists()
+            assert self._mapping_file.exists()
 
     def _transform_data(self) -> None:
         """Transform Guide To PHARMACOLOGY data."""
@@ -126,7 +127,7 @@ class GuideToPHARMACOLOGY(Base):
 
         :param dict data: Transformed data
         """
-        with open(self._ligand_id_mapping_file.absolute(), "r") as f:
+        with open(self._mapping_file.absolute(), "r") as f:
             rows = csv.reader(f, delimiter="\t")
             for row in rows:
                 concept_id = f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}"
