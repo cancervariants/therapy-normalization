@@ -23,19 +23,18 @@ class DrugsAtFDA(Base):
 
     def get_latest_version(self) -> str:
         """Retrieve latest version of source data.
-        :return: version as a str -- expected formatting is YYYYMMDD
+        :return: version as a str -- expected formatting is YYYY-MM-DD
         """
         r = requests.get("https://api.fda.gov/download.json")
         if r.status_code == 200:
-            json = r.json()
+            r_json = r.json()
             try:
-                date = json["results"]["drug"]["drugsfda"]["export_date"]
+                date = r_json["results"]["drug"]["drugsfda"]["export_date"]
             except KeyError:
                 msg = "Unable to parse OpenFDA version API - check for breaking changes"
                 logger.error(msg)
                 raise DownloadException(msg)
             return date
-            # return date_raw.replace("-", "")
         else:
             raise requests.HTTPError("Unable to retrieve version from FDA API")
 

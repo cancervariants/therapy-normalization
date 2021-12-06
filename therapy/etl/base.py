@@ -206,7 +206,7 @@ class Base(ABC):
                 else:
                     value = list(set(value))
 
-                if attr_type in ("aliases, trade_names"):
+                if attr_type in ("aliases", "trade_names"):
                     if "label" in therapy:
                         try:
                             value.remove(therapy["label"])

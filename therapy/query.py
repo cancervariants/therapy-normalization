@@ -74,7 +74,7 @@ class QueryHandler:
             try:
                 response = SourceMeta(**db_response["Item"])
             except KeyError:
-                msg = (f"Metadata lookup failed for source {src_name}")
+                msg = f"Metadata lookup failed for source {src_name}"
                 logger.error(msg)
                 raise Exception(msg)
             self.db.cached_sources[src_name] = response

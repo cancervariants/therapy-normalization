@@ -90,9 +90,8 @@ class Wikidata(Base):
         logger.info("Successfully retrieved source data for Wikidata")
 
     def get_latest_version(self) -> str:
-        """Wikidata is updated immediately, so source data has no strict
-        versioning. We use the current day"s date as a pragmatic way to
-        indicate the version.
+        """Wikidata is constantly, immediately updated, so source data has no strict
+        versioning. We use the current date as a pragmatic way to indicate the version.
         """
         return datetime.datetime.today().strftime("%Y-%m-%d")
 
