@@ -20,7 +20,7 @@ from therapy.database import Database
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
-DEFAULT_DATA_PATH = APP_ROOT / "data"
+DEFAULT_DATA_PATH: Path = APP_ROOT / "data"
 
 
 class Base(ABC):
