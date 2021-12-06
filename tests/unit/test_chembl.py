@@ -31,15 +31,16 @@ def cisplatin():
         "concept_id": "chembl:CHEMBL11359",
         "aliases": [
             "Cisplatin",
-            "Cis-Platinum II",
+            "Cis-platinum ii",
             "Cisplatinum",
             "cis-diamminedichloroplatinum(II)",
             "CIS-DDP",
             "INT-230-6 COMPONENT CISPLATIN",
             "INT230-6 COMPONENT CISPLATIN",
+            "Liplacis",
             "NSC-119875",
             "Platinol",
-            "Platinol-Aq"
+            "Platinol-aq",
         ],
         "approval_rating": "chembl_phase_4",
         "xrefs": [],
@@ -267,7 +268,7 @@ def test_meta_info(chembl):
     assert response["source_meta_"]["data_license_url"] == \
            "https://creativecommons.org/licenses/by-sa/3.0/"
     assert re.match(r"[0-3][0-9]", response["source_meta_"]["version"])
-    assert response["source_meta_"]["data_url"].startswith("http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/")  # noqa: E501
+    assert response["source_meta_"]["data_url"].startswith("ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb")  # noqa: E501
     assert response["source_meta_"]["rdp_url"] == "http://reusabledata.org/chembl.html"
     assert response["source_meta_"]["data_license_attributes"] == {
         "non_commercial": False,

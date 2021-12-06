@@ -200,7 +200,7 @@ def cisplatin_merged():
             "CISplatin",
             "Cisplatin",
             "Cisplatinum",
-            "Cis-Platinum II",
+            "Cis-platinum ii",
             "Cis-DDP",
             "CIS-DDP",
             "DACP",
@@ -226,8 +226,9 @@ def cisplatin_merged():
             "NSC 119875",
             "NSC-119875",
             "Platinol-AQ",
-            "Platinol-Aq",
-            "Platinol"
+            "Platinol-aq",
+            "Platinol",
+            "Liplacis"
         ],
         "label": "cisplatin",
         "associated_with": [

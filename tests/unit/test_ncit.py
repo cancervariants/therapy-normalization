@@ -260,7 +260,7 @@ def test_meta_info(ncit):
         "https://creativecommons.org/licenses/by/4.0/legalcode"
     assert re.match(r"[0-9][0-9]\.[0-9][0-9][a-z]", response.version)
     assert response.data_url.startswith(
-        "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/")
+        "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/")
     assert response.rdp_url == "http://reusabledata.org/ncit.html"
     assert response.data_license_attributes == {
         "non_commercial": False,

@@ -7,7 +7,7 @@
     "label": "CISPLATIN",
     "aliases": [
       "Cisplatin",
-      "Cis-Platinum II",
+      "Cis-platinum ii",
       "Cisplatinum",
       "cis-diamminedichloroplatinum(II)",
       "CIS-DDP",
@@ -15,7 +15,8 @@
       "INT230-6 COMPONENT CISPLATIN",
       "NSC-119875",
       "Platinol",
-      "Platinol-Aq"
+      "Platinol-aq",
+      "Liplacis"
     ],
     "approval_rating": "chembl_phase_4",
     "trade_names": ["PLATINOL", "PLATINOL-AQ"]
@@ -1440,17 +1441,18 @@
       "Platinol",
       "cisplatino",
       "Cisplatin",
-      "Cis-Platinum II",
+      "Cis-platinum ii",
       "Cisplatinum",
       "INT-230-6 COMPONENT CISPLATIN",
       "INT230-6 COMPONENT CISPLATIN",
       "NSC-119875",
-      "Platinol-Aq",
+      "Platinol-aq",
       "DACP",
       "NSC 119875",
       "cis-diamminedichloroplatinum III",
       "cis-platinum",
-      "cisplatinum"
+      "cisplatinum",
+      "Liplacis"
     ],
     "label": "cisplatin",
     "associated_with": [

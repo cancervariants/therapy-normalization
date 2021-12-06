@@ -11,8 +11,6 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 import re
 
-import bioversions
-
 from therapy.etl.base import Base
 from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, \
     DataLicenseAttributes, RecordParams
@@ -113,7 +111,7 @@ class ChemIDplus(Base):
         meta = SourceMeta(data_license="custom",
                           data_license_url="https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501
                           version=self._version,
-                          data_url=bioversions.resolve("chemidplus").homepage,
+                          data_url="ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
                           rdp_url=None,
                           data_license_attributes=DataLicenseAttributes(
                               non_commercial=False,

@@ -1,9 +1,8 @@
 """Test that the therapy normalizer works as intended for the
 Wikidata source.
 """
-from datetime import datetime as dt
-
 import pytest
+import isodate
 
 from therapy.schemas import Drug, MatchType
 from therapy.query import QueryHandler
@@ -339,7 +338,7 @@ def test_meta_info(wikidata):
     assert response["source_meta_"]["data_license"] == "CC0 1.0"
     assert response["source_meta_"]["data_license_url"] == \
            "https://creativecommons.org/publicdomain/zero/1.0/"
-    assert dt.strptime(response["source_meta_"]["version"], "%Y%m%d")
+    assert isodate.parse_date(response["source_meta_"]["version"])
     assert response["source_meta_"]["data_url"] is None
     assert not response["source_meta_"]["rdp_url"]
     assert response["source_meta_"]["data_license_attributes"] == {

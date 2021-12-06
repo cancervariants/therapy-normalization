@@ -184,17 +184,18 @@ def cisplatin():
             "Platinol",
             "cisplatino",
             "Cisplatin",
-            "Cis-Platinum II",
+            "Cis-platinum ii",
             "Cisplatinum",
             "INT-230-6 COMPONENT CISPLATIN",
             "INT230-6 COMPONENT CISPLATIN",
             "NSC-119875",
-            "Platinol-Aq",
+            "Platinol-aq",
             "DACP",
             "NSC 119875",
             "cis-diamminedichloroplatinum III",
             "cis-platinum",
-            "cisplatinum"
+            "cisplatinum",
+            "Liplacis"
         ],
         "extensions": [
             {

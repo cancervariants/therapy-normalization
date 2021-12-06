@@ -1,8 +1,8 @@
 """Test correctness of Drugs@FDA ETL methods."""
-from datetime import datetime as dt
 from typing import List
 
 import pytest
+import isodate
 
 from tests.conftest import compare_records
 from therapy.query import QueryHandler
@@ -420,7 +420,7 @@ def test_meta(drugsatfda):
     response = drugsatfda.search("incoherent-string-of-text")
     assert response["source_meta_"]["data_license"] == "CC0"
     assert response["source_meta_"]["data_license_url"] == "https://creativecommons.org/publicdomain/zero/1.0/legalcode"  # noqa: E501
-    assert dt.strptime(response["source_meta_"]["version"], "%Y%m%d")
+    assert isodate.parse_date(response["source_meta_"]["version"])
     assert response["source_meta_"]["data_url"] == "https://open.fda.gov/apis/drug/drugsfda/download/"  # noqa: E501
     assert response["source_meta_"]["rdp_url"] is None
     assert response["source_meta_"]["data_license_attributes"] == {
