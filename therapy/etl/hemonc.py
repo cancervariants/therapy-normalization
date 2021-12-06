@@ -100,8 +100,7 @@ class HemOnc(Base):
             self._src_dir / f"hemonc_rels_{self._version}.csv",
             self._src_dir / f"hemonc_synonyms_{self._version}.csv"
         )
-        existing_files = list(self._src_dir.iterdir())
-        if not all((f in existing_files for f in data_filenames)):
+        if not all((f.exists() for f in data_filenames)):
             self._download_data()
         self._src_files = data_filenames
         for file in self._src_files:
