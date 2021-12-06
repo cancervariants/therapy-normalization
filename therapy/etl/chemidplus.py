@@ -38,7 +38,7 @@ class ChemIDplus(Base):
             if re.match(r".*\.xml", info.filename):
                 xml_filename = info.filename
                 zip_file.extract(info, path=self._src_dir)
-                move(self._src_dir / xml_filename, outfile)
+                move(str(self._src_dir / xml_filename), outfile)
                 break
         remove(zip_path)
         assert outfile.exists()
