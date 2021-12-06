@@ -85,7 +85,6 @@ class Wikidata(Base):
             for attr in item:
                 params[attr] = item[attr]["value"]
             transformed_data.append(params)
-        self._version = datetime.datetime.today().strftime("%Y%m%d")
         with open(f"{self._src_dir}/wikidata_{self._version}.json", "w+") as f:
             json.dump(transformed_data, f)
         logger.info("Successfully retrieved source data for Wikidata")
@@ -95,7 +94,7 @@ class Wikidata(Base):
         versioning. We use the current day"s date as a pragmatic way to
         indicate the version.
         """
-        return datetime.datetime.today().strftime("%Y%m%d")
+        return datetime.datetime.today().strftime("%Y-%m-%d")
 
     def _load_meta(self) -> None:
         """Add Wikidata metadata."""
