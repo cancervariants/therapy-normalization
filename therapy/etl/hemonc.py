@@ -10,11 +10,11 @@ import requests
 import isodate
 from disease.query import QueryHandler as DiseaseNormalizer
 
-from therapy import DownloadException, APP_ROOT
+from therapy import DownloadException
 from therapy.database import Database
 from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, RecordParams, \
     ApprovalRating
-from therapy.etl.base import Base
+from therapy.etl.base import Base, DEFAULT_DATA_PATH
 
 
 logger = logging.getLogger("therapy")
@@ -25,7 +25,7 @@ class HemOnc(Base):
     """Class for HemOnc.org ETL methods."""
 
     def __init__(self, database: Database,
-                 data_path: Path = APP_ROOT / "data"):
+                 data_path: Path = DEFAULT_DATA_PATH):
         """Initialize HemOnc instance.
 
         :param therapy.database.Database database: application database
