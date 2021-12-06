@@ -75,7 +75,7 @@ class Wikidata(Base):
         logger.info("Retrieving source data for Wikidata")
         query_results = execute_sparql_query(SPARQL_QUERY)
         if query_results is None:
-            raise DownloadException("Wikidata SPARQL query returned no results")  # noqa: E501
+            raise DownloadException("Wikidata SPARQL query returned no results")
         else:
             data = query_results["results"]["bindings"]
 
@@ -98,17 +98,19 @@ class Wikidata(Base):
 
     def _load_meta(self) -> None:
         """Add Wikidata metadata."""
-        metadata = SourceMeta(src_name=SourceName.WIKIDATA.value,
-                              data_license="CC0 1.0",
-                              data_license_url="https://creativecommons.org/publicdomain/zero/1.0/",  # noqa: E501
-                              version=self._version,
-                              data_url=None,
-                              rdp_url=None,
-                              data_license_attributes={
-                                  "non_commercial": False,
-                                  "share_alike": False,
-                                  "attribution": False
-                              })
+        metadata = SourceMeta(
+            src_name=SourceName.WIKIDATA.value,
+            data_license="CC0 1.0",
+            data_license_url="https://creativecommons.org/publicdomain/zero/1.0/",
+            version=self._version,
+            data_url=None,
+            rdp_url=None,
+            data_license_attributes={
+                "non_commercial": False,
+                "share_alike": False,
+                "attribution": False
+            }
+        )
         params = dict(metadata)
         params["src_name"] = SourceName.WIKIDATA.value
         self.database.metadata.put_item(Item=params)

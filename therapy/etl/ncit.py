@@ -44,7 +44,10 @@ class NCIt(Base):
                 old_archive_url = f"{base_url}/archive/20{self._version[0:2]}/{self._version}_Release/{release_fname}"  # noqa: E501
                 old_archive_try = requests.get(old_archive_url)
                 if old_archive_try.status_code != 200:
-                    msg = f"NCIt download failed: tried {src_url}, {archive_url}, and {old_archive_url}"  # noqa: E501
+                    msg = (
+                        f"NCIt download failed: tried {src_url}, {archive_url}, and "
+                        f"{old_archive_url}"
+                    )
                     logger.error(msg)
                     raise DownloadException(msg)
                 else:

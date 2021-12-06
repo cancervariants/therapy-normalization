@@ -108,16 +108,18 @@ class ChemIDplus(Base):
 
     def _load_meta(self) -> None:
         """Add source metadata."""
-        meta = SourceMeta(data_license="custom",
-                          data_license_url="https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501
-                          version=self._version,
-                          data_url="ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
-                          rdp_url=None,
-                          data_license_attributes=DataLicenseAttributes(
-                              non_commercial=False,
-                              share_alike=False,
-                              attribution=True
-                          ))
+        meta = SourceMeta(
+            data_license="custom",
+            data_license_url="https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501
+            version=self._version,
+            data_url="ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
+            rdp_url=None,
+            data_license_attributes=DataLicenseAttributes(
+                non_commercial=False,
+                share_alike=False,
+                attribution=True
+            )
+        )
         item = dict(meta)
         item["src_name"] = SourceName.CHEMIDPLUS.value
         self.database.metadata.put_item(Item=item)
