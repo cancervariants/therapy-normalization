@@ -17,9 +17,9 @@ pipenv sync
 
 ### Deploying DynamoDB Locally
 
-We use Amazon DynamoDB for our database. To deploy locally, follow [these instructions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html).
+We use Amazon DynamoDB for data storage. To deploy locally, follow [these instructions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html).
 
-### Init coding style tests
+### Initialize development environment
 
 Code style is managed by [flake8](https://github.com/PyCQA/flake8) and checked prior to commit.
 
@@ -27,26 +27,32 @@ We use [pre-commit](https://pre-commit.com/#usage) to run conformance tests.
 
 This ensures:
 
-* Check code style
-* Check for added large files
-* Detect AWS Credentials
-* Detect Private Key
+* Style correctness
+* No large files
+* AWS credentials are present
+* Private key is present
 
-Before first commit run:
+Pre-commit *must* be installed before your first commit. Use the following command:
 
 ```commandline
 pre-commit install
 ```
 
-### Running unit tests
+### Running tests
 
-Running unit tests is as easy as pytest.
+Unit tests are run with pytest.
 
 ```commandline
 pipenv run pytest
 ```
 
-### Updating the therapy normalization database
+We also provide [Tox](https://tox.wiki/en/latest/index.html) settings to test in multiple environments and check for proper type annotations and code style. If interpreters for Python 3.8 and Python 3.9 are present, the following will run all tests for all environments:
+
+```commandline
+tox
+```
+
+### Updating the database
 
 Before you use the CLI to update the database, run the following in a separate terminal to start DynamoDB on `port 8000`:
 
@@ -63,8 +69,23 @@ You must set the `RxNORM_API_KEY` environment variable to your API key. This can
 export RXNORM_API_KEY={rxnorm_api_key}
 ```
 
+HemOnc.org data requires a Harvard Dataverse API key. After creating a user account on the Harvard Dataverse website, you can follow [these instructions](https://guides.dataverse.org/en/latest/user/account.html) to generate a key. Once you have a key, set the following environment variable:
+
+```shell script
+export DATAVERSE_API_KEY={your api key}
+```
+
 #### Update source(s)
-The Therapy Normalizer currently aggregates therapy data from [ChEMBL](https://www.ebi.ac.uk/chembl/), [NCIt](https://ncithesaurus.nci.nih.gov/ncitbrowser/), [RxNorm](https://www.nlm.nih.gov/research/umls/rxnorm/index.html), [DrugBank](https://go.drugbank.com/) (currently using CC0 data only), [ChemIDPlus](https://chem.nlm.nih.gov/chemidplus/), [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page), and [HemOnc.org](https://hemonc.org/wiki/Main_Page).
+The Therapy Normalizer currently aggregates therapy data from:
+* [ChEMBL](https://www.ebi.ac.uk/chembl/)
+* [ChemIDPlus](https://chem.nlm.nih.gov/chemidplus/)
+* [DrugBank](https://go.drugbank.com/) (using CC0 data only)
+* [Drugs@FDA](https://www.accessdata.fda.gov/scripts/cder/daf/)
+* [The IUPHAR/BPS Guide to PHARMACOLOGY](https://www.guidetopharmacology.org/)
+* [HemOnc.org](https://hemonc.org/wiki/Main_Page) (using CC-BY data only).
+* [The National Cancer Institute Thesaurus](https://ncithesaurus.nci.nih.gov/ncitbrowser/)
+* [RxNorm](https://www.nlm.nih.gov/research/umls/rxnorm/index.html)
+* [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page)
 
 To update source(s), simply set `--normalizer` to the source(s) you wish to update separated by spaces. For example, the following command updates ChEMBL and Wikidata:
 
@@ -78,7 +99,7 @@ You can update all sources at once with the `--update_all` flag:
 python3 -m therapy.cli --update_all
 ```
 
-The `data/` subdirectory within the application should include all source data. The normalizer is capable of acquiring most of these files automatically; the exception is the HemOnc.org data, which must be manually downloaded from the [Harvard Dataverse](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6) and placed within the `data/hemonc` subdirectory. Files for all sources should follow the naming convention demonstrated below (with version numbers/dates changed where applicable).
+The `data/` subdirectory within the package source should house all desired input data. Files for all sources should follow the naming convention demonstrated below (with version numbers/dates changed where applicable).
 
 ```
 therapy/data
@@ -88,6 +109,9 @@ therapy/data
 │   └── chemidplus_20200327.xml
 ├── drugbank
 │   └── drugbank_5.1.8.csv
+├── guidetopharmacology
+│   ├── guidetopharmacology_ligand_id_mapping_2021.3.tsv
+│   └── guidetopharmacology_ligands_2021.3.tsv
 ├── hemonc
 │   ├── hemonc_concepts_20210225.csv
 │   ├── hemonc_rels_20210225.csv
@@ -102,7 +126,6 @@ therapy/data
 ```
 
 Updates to the HemOnc source depend on the [Disease Normalizer](https://github.com/cancervariants/disease-normalization) service. If the Disease Normalizer database appears to be empty or incomplete, updates to HemOnc will also trigger a refresh of the Disease Normalizer database. See its README for additional data requirements.
-
 
 ### Create Merged Concept Groups
 The `/normalize` endpoint relies on merged concept groups.  The `--update_merged` flag generates these groups:

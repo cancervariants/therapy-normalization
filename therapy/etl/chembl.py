@@ -1,61 +1,43 @@
 """This module defines the ChEMBL ETL methods."""
-from .base import Base
-from therapy import PROJECT_ROOT
-from therapy.schemas import SourceName, NamespacePrefix, ApprovalStatus, \
-    SourceMeta
 import logging
-import tarfile
-import sqlite3
 import os
 import shutil
+import sqlite3
 
-logger = logging.getLogger('therapy')
+import chembl_downloader
+import bioversions
+
+from therapy.etl.base import Base
+from therapy.schemas import SourceName, NamespacePrefix, ApprovalRating, \
+    SourceMeta
+
+
+logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
 
 class ChEMBL(Base):
-    """ETL the ChEMBL source into therapy.db."""
+    """Class for ChEMBL ETL methods."""
 
-    def _extract_data(self, *args, **kwargs):
+    def _download_data(self) -> None:
+        """Download latest ChEMBL database file from EBI."""
+        logger.info("Retrieving source data for ChEMBL")
+        os.environ["PYSTOW_HOME"] = str(self._src_dir.parent.absolute())
+        tmp_path = chembl_downloader.download_extract_sqlite()
+        shutil.move(tmp_path, self._src_dir)
+        shutil.rmtree(tmp_path.parent.parent.parent)
+        logger.info("Successfully retrieved source data for ChEMBL")
+
+    def _extract_data(self) -> None:
         """Extract data from the ChEMBL source."""
-        logger.info('Extracting chembl_27.db...')
-        if 'data_path' in kwargs:
-            chembl_db = kwargs['data_path']
-        else:
-            chembl_db = self._src_data_dir / 'chembl_27.db'
-        if not chembl_db.exists():
-            chembl_archive = self._src_data_dir / 'chembl_27_sqlite.tar.gz'
-            chembl_archive.parent.mkdir(exist_ok=True, parents=True)
-            self._download_data()
-            tar = tarfile.open(chembl_archive)
-            tar.extractall(path=PROJECT_ROOT / 'data' / 'chembl')
-            tar.close()
-
-            # Remove unused directories and files
-            chembl_27_dir = self._src_data_dir / 'chembl_27'
-            temp_chembl = chembl_27_dir / 'chembl_27_sqlite' / 'chembl_27.db'
-            chembl_db = self._src_data_dir / 'chembl_27.db'
-            shutil.move(temp_chembl, chembl_db)
-            os.remove(chembl_archive)
-            shutil.rmtree(chembl_27_dir)
-        conn = sqlite3.connect(chembl_db)
+        super()._extract_data()
+        conn = sqlite3.connect(self._src_file)
         conn.row_factory = sqlite3.Row
         self._conn = conn
         self._cursor = conn.cursor()
-        assert chembl_db.exists()
-        logger.info('Finished extracting chembl_27.db.')
 
-    def _download_data(self, *args, **kwargs):
-        """Download ChEMBL data from FTP."""
-        logger.info(
-            'Downloading ChEMBL v27, this will take a few minutes.')
-        self._ftp_download('ftp.ebi.ac.uk',
-                           'pub/databases/chembl/ChEMBLdb/releases/chembl_27',
-                           self._src_data_dir,
-                           'chembl_27_sqlite.tar.gz')
-
-    def _transform_data(self, *args, **kwargs):
-        """Transform SQLite data to JSON."""
+    def _transform_data(self) -> None:
+        """Transform SQLite data to temporary JSON."""
         self._create_dictionary_synonyms_table()
         self._create_trade_names_table()
         self._create_temp_table()
@@ -67,7 +49,7 @@ class ChEMBL(Base):
         self._conn.commit()
         self._conn.close()
 
-    def _create_dictionary_synonyms_table(self):
+    def _create_dictionary_synonyms_table(self) -> None:
         """Create temporary table to store drugs and their synonyms."""
         create_dictionary_synonyms_table = f"""
             CREATE TEMPORARY TABLE DictionarySynonyms AS
@@ -98,7 +80,7 @@ class ChEMBL(Base):
         """
         self._cursor.execute(create_dictionary_synonyms_table)
 
-    def _create_trade_names_table(self):
+    def _create_trade_names_table(self) -> None:
         """Create temporary table to store trade name data."""
         create_trade_names_table = """
             CREATE TEMPORARY TABLE TradeNames AS
@@ -114,29 +96,35 @@ class ChEMBL(Base):
         """
         self._cursor.execute(create_trade_names_table)
 
-    def _create_temp_table(self):
+    def _create_temp_table(self) -> None:
         """Create temporary table to store therapies data."""
         create_temp_table = """
-            CREATE TEMPORARY TABLE temp(concept_id, label, approval_status,
+            CREATE TEMPORARY TABLE temp(concept_id, label, approval_rating,
                                         src_name, trade_names, aliases);
         """
         self._cursor.execute(create_temp_table)
 
         insert_temp = f"""
-            INSERT INTO temp(concept_id, label, approval_status, src_name,
+            INSERT INTO temp(concept_id, label, approval_rating, src_name,
                              trade_names, aliases)
             SELECT
                 ds.chembl_id,
                 ds.pref_name,
                 CASE
                     WHEN ds.withdrawn_flag
-                        THEN '{ApprovalStatus.WITHDRAWN.value}'
-                    WHEN ds.max_phase == 4
-                        THEN '{ApprovalStatus.APPROVED.value}'
+                        THEN '{ApprovalRating.CHEMBL_WITHDRAWN.value}'
                     WHEN ds.max_phase == 0
-                        THEN NULL
+                        THEN '{ApprovalRating.CHEMBL_0.value}'
+                    WHEN ds.max_phase == 1
+                        THEN '{ApprovalRating.CHEMBL_1.value}'
+                    WHEN ds.max_phase == 2
+                        THEN '{ApprovalRating.CHEMBL_2.value}'
+                    WHEN ds.max_phase ==3
+                        THEN '{ApprovalRating.CHEMBL_3.value}'
+                    WHEN ds.max_phase == 4
+                        THEN '{ApprovalRating.CHEMBL_4.value}'
                     ELSE
-                        '{ApprovalStatus.INVESTIGATIONAL.value}'
+                        '{None}'
                 END,
                 '{SourceName.CHEMBL.value}',
                 t.trade_names,
@@ -150,13 +138,19 @@ class ChEMBL(Base):
                 ds.pref_name,
                 CASE
                     WHEN ds.withdrawn_flag
-                        THEN '{ApprovalStatus.WITHDRAWN.value}'
-                    WHEN ds.max_phase == 4
-                        THEN '{ApprovalStatus.APPROVED.value}'
+                        THEN '{ApprovalRating.CHEMBL_WITHDRAWN.value}'
                     WHEN ds.max_phase == 0
-                        THEN NULL
+                        THEN '{ApprovalRating.CHEMBL_0.value}'
+                    WHEN ds.max_phase == 1
+                        THEN '{ApprovalRating.CHEMBL_1.value}'
+                    WHEN ds.max_phase == 2
+                        THEN '{ApprovalRating.CHEMBL_2.value}'
+                    WHEN ds.max_phase ==3
+                        THEN '{ApprovalRating.CHEMBL_3.value}'
+                    WHEN ds.max_phase == 4
+                        THEN '{ApprovalRating.CHEMBL_4.value}'
                     ELSE
-                        '{ApprovalStatus.INVESTIGATIONAL.value}'
+                        '{None}'
                 END,
                 '{SourceName.CHEMBL.value}',
                 t.trade_names,
@@ -168,13 +162,13 @@ class ChEMBL(Base):
         """
         self._cursor.execute(insert_temp)
 
-    def _load_json(self):
+    def _load_json(self) -> None:
         """Load ChEMBL data into database."""
         chembl_data = """
             SELECT
                 concept_id,
                 label,
-                approval_status,
+                approval_rating,
                 src_name,
                 trade_names,
                 aliases
@@ -185,23 +179,23 @@ class ChEMBL(Base):
         self._cursor.execute("DROP TABLE temp;")
 
         for record in result:
-            for attr in ['aliases', 'trade_names']:
+            for attr in ["aliases", "trade_names"]:
                 if attr in record and record[attr]:
-                    record[attr] = record[attr].split('||')
+                    record[attr] = record[attr].split("||")
             self._load_therapy(record)
 
-    def _load_meta(self, *args, **kwargs):
+    def _load_meta(self) -> None:
         """Add ChEMBL metadata."""
-        metadata = SourceMeta(data_license='CC BY-SA 3.0',
-                              data_license_url='https://creativecommons.org/licenses/by-sa/3.0/',  # noqa: E501
-                              version='27',
-                              data_url='http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
-                              rdp_url='http://reusabledata.org/chembl.html',
+        metadata = SourceMeta(data_license="CC BY-SA 3.0",
+                              data_license_url="https://creativecommons.org/licenses/by-sa/3.0/",  # noqa: E501
+                              version=self._version,
+                              data_url=bioversions.resolve("chembl").homepage,
+                              rdp_url="http://reusabledata.org/chembl.html",
                               data_license_attributes={
-                                  'non_commercial': False,
-                                  'share_alike': True,
-                                  'attribution': True
+                                  "non_commercial": False,
+                                  "share_alike": True,
+                                  "attribution": True
                               })
         params = dict(metadata)
-        params['src_name'] = SourceName.CHEMBL.value
+        params["src_name"] = SourceName.CHEMBL.value
         self.database.metadata.put_item(Item=params)
