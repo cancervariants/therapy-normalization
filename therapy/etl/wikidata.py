@@ -1,14 +1,12 @@
 """This module defines the Wikidata ETL methods."""
 import json
 import logging
-from pathlib import Path
 import datetime
 from typing import Dict, Any
 
 from wikibaseintegrator.wbi_functions import execute_sparql_query
 
-from therapy import PROJECT_ROOT
-from therapy.database import Database
+from therapy import XREF_SOURCES, DownloadException
 from therapy.schemas import SourceName, NamespacePrefix, RecordParams, SourceMeta
 from therapy.etl.base import Base
 
@@ -70,23 +68,16 @@ SPARQL_QUERY = """
 
 
 class Wikidata(Base):
-    """Extract, transform, and load the Wikidata source into therapy.db."""
+    """Class for Wikidata ETL methods."""
 
-    def __init__(self,
-                 database: Database,
-                 data_path: Path = PROJECT_ROOT / "data"):
-        """Initialize wikidata ETL class.
-
-        :param Database: DB instance to use
-        :param Path data_path: path to app data directory
-        """
-        super().__init__(database, data_path)
-
-    def _extract_data(self) -> None:
-        """Extract data from the Wikidata source."""
-        self._src_data_dir.mkdir(exist_ok=True, parents=True)
-
-        data = execute_sparql_query(SPARQL_QUERY)["results"]["bindings"]
+    def _download_data(self) -> None:
+        """Download latest Wikidata source dump."""
+        logger.info("Retrieving source data for Wikidata")
+        query_results = execute_sparql_query(SPARQL_QUERY)
+        if query_results is None:
+            raise DownloadException("Wikidata SPARQL query returned no results")
+        else:
+            data = query_results["results"]["bindings"]
 
         transformed_data = []
         for item in data:
@@ -94,34 +85,38 @@ class Wikidata(Base):
             for attr in item:
                 params[attr] = item[attr]["value"]
             transformed_data.append(params)
-
-        self._version = datetime.datetime.today().strftime("%Y%m%d")
-        with open(f"{self._src_data_dir}/wikidata_{self._version}.json", "w+") as f:
+        with open(f"{self._src_dir}/wikidata_{self._version}.json", "w+") as f:
             json.dump(transformed_data, f)
-        self._data_src = sorted(list(self._src_data_dir.iterdir()))[-1]
-        logger.info("Successfully extracted Wikidata.")
+        logger.info("Successfully retrieved source data for Wikidata")
+
+    def get_latest_version(self) -> str:
+        """Wikidata is constantly, immediately updated, so source data has no strict
+        versioning. We use the current date as a pragmatic way to indicate the version.
+        """
+        return datetime.datetime.today().strftime("%Y-%m-%d")
 
     def _load_meta(self) -> None:
         """Add Wikidata metadata."""
-        metadata = SourceMeta(src_name=SourceName.WIKIDATA.value,
-                              data_license="CC0 1.0",
-                              data_license_url="https://creativecommons.org/publicdomain/zero/1.0/",  # noqa: E501
-                              version=self._version,
-                              data_url=None,
-                              rdp_url=None,
-                              data_license_attributes={
-                                  "non_commercial": False,
-                                  "share_alike": False,
-                                  "attribution": False
-                              })
+        metadata = SourceMeta(
+            src_name=SourceName.WIKIDATA.value,
+            data_license="CC0 1.0",
+            data_license_url="https://creativecommons.org/publicdomain/zero/1.0/",
+            version=self._version,
+            data_url=None,
+            rdp_url=None,
+            data_license_attributes={
+                "non_commercial": False,
+                "share_alike": False,
+                "attribution": False
+            }
+        )
         params = dict(metadata)
         params["src_name"] = SourceName.WIKIDATA.value
         self.database.metadata.put_item(Item=params)
 
     def _transform_data(self) -> None:
         """Transform the Wikidata source data."""
-        from therapy import XREF_SOURCES
-        with open(self._data_src, "r") as f:
+        with open(self._src_file, "r") as f:
             records = json.load(f)
 
             items: Dict[str, Any] = dict()

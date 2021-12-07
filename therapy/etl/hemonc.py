@@ -1,16 +1,20 @@
 """Provide ETL methods for HemOnc.org data."""
+import logging
 from pathlib import Path
 from typing import Dict, Tuple
 import csv
-import logging
+import os
+import zipfile
 
+import requests
+import isodate
 from disease.query import QueryHandler as DiseaseNormalizer
 
-from therapy import DownloadException, PROJECT_ROOT
+from therapy import DownloadException
 from therapy.database import Database
 from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, RecordParams, \
     ApprovalRating
-from therapy.etl.base import Base
+from therapy.etl.base import Base, DEFAULT_DATA_PATH
 
 
 logger = logging.getLogger("therapy")
@@ -18,10 +22,10 @@ logger.setLevel(logging.DEBUG)
 
 
 class HemOnc(Base):
-    """Docstring"""
+    """Class for HemOnc.org ETL methods."""
 
     def __init__(self, database: Database,
-                 data_path: Path = PROJECT_ROOT / "data"):
+                 data_path: Path = DEFAULT_DATA_PATH):
         """Initialize HemOnc instance.
 
         :param therapy.database.Database database: application database
@@ -30,28 +34,77 @@ class HemOnc(Base):
         super().__init__(database, data_path)
         self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
 
-    def _download_data(self) -> None:
-        """Download HemOnc.org source data.
-
-        Raises download exception for now -- HTTP authorization may be possible?
+    def get_latest_version(self) -> str:
+        """Retrieve latest version of source data.
+        :raise: Exception if retrieval is unsuccessful
         """
-        raise DownloadException("No download for HemOnc data available -- "
-                                "must place manually in data/ directory.")
+        response = requests.get("https://dataverse.harvard.edu/api/datasets/export?persistentId=doi:10.7910/DVN/9CY9C6&exporter=dataverse_json")  # noqa: E501
+        try:
+            response.raise_for_status()
+        except requests.HTTPError as e:
+            logger.error("Unable to retrieve HemOnc version from Harvard Dataverse")
+            raise e
+        iso_datetime = isodate.parse_datetime(
+            response.json()["datasetVersion"]["releaseTime"]
+        )
+        return iso_datetime.strftime(isodate.isostrf.DATE_EXT_COMPLETE)
+
+    def _zip_handler(self, dl_path: Path, outfile_path: Path) -> None:
+        """Extract concepts, rels, and synonyms files from tmp zip file and save to
+        data directory.
+        :param Path dl_path: path to temp data zipfile
+        :param Path outfile_path: directory to save data within
+        """
+        file_terms = ("concepts", "rels", "synonyms")
+        with zipfile.ZipFile(dl_path, "r") as zip_ref:
+            for file in zip_ref.filelist:
+                for term in file_terms:
+                    if term in file.filename:
+                        file.filename = f"hemonc_{term}_{self._version}.csv"
+                        zip_ref.extract(file, outfile_path)
+
+        os.remove(dl_path)
+
+    def _download_data(self) -> None:
+        """Download HemOnc.org source data. Requires Harvard Dataverse API key to be set
+        as environment variable DATAVERSE_API_KEY. Instructions for generating an API
+        key are available here: https://guides.dataverse.org/en/latest/user/account.html
+
+        :raises: DownloadException if API key environment variable isn't set
+        """
+        api_key = os.environ.get("DATAVERSE_API_KEY")
+        if api_key is None:
+            raise DownloadException(
+                "Must provide Harvard Dataverse API key in environment variable "
+                "DATAVERSE_API_KEY. See "
+                "https://guides.dataverse.org/en/latest/user/account.html"
+            )
+        url = "https://dataverse.harvard.edu//api/access/dataset/:persistentId/?persistentId=doi:10.7910/DVN/9CY9C6"  # noqa: E501
+        headers = {"X-Dataverse-key": api_key}
+        self._http_download(url, self._src_dir, headers, self._zip_handler)
 
     def _extract_data(self) -> None:
-        """Get source files from data directory."""
-        self._src_data_dir.mkdir(exist_ok=True, parents=True)
-        self._src_files = []
-        for item_type in ("concepts", "rels", "synonyms"):
-            src_file_prefix = f"hemonc_{item_type}_"
-            dir_files = [f for f in self._src_data_dir.iterdir()
-                         if f.name.startswith(src_file_prefix)]
-            if len(dir_files) == 0:
-                self._download_data()
-                dir_files = [f for f in self._src_data_dir.iterdir()
-                             if f.name.startswith(src_file_prefix)]
-            self._src_files.append(sorted(dir_files, reverse=True)[0])
-        self._version = self._src_files[0].stem.split("_", 2)[-1]
+        """Get source files from data directory.
+
+        The following files are necessary for data processing:
+            hemonc_concepts_<version>.csv
+            hemonc_rels_<version>.csv
+            hemonc_synonyms_<version>.csv
+        This method will attempt to retrieve their latest versions if they are
+        unavailable locally.
+        """
+        self._src_dir.mkdir(exist_ok=True, parents=True)
+        self._version = self.get_latest_version()
+        data_filenames = (
+            self._src_dir / f"hemonc_concepts_{self._version}.csv",
+            self._src_dir / f"hemonc_rels_{self._version}.csv",
+            self._src_dir / f"hemonc_synonyms_{self._version}.csv"
+        )
+        if not all((f.exists() for f in data_filenames)):
+            self._download_data()
+        self._src_files = data_filenames
+        for file in self._src_files:
+            assert file.exists()
 
     def _load_meta(self) -> None:
         """Add HemOnc metadata."""

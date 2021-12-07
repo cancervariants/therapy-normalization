@@ -1,9 +1,6 @@
 """ETL methods for the Drugs@FDA source."""
 from typing import List, Optional
-import zipfile
-from io import BytesIO
 import json
-import shutil
 
 import requests
 
@@ -14,39 +11,30 @@ from therapy.etl.base import Base
 
 
 class DrugsAtFDA(Base):
-    """Core Drugs@FDA import class."""
+    """Class for Drugs@FDA ETL methods."""
 
     def _download_data(self) -> None:
         """Download source data from instance-provided source URL."""
         logger.info("Retrieving source data for Drugs@FDA")
-        r = requests.get("https://download.open.fda.gov/drug/drugsfda/drug-drugsfda-0001-of-0001.json.zip")  # noqa: E501
-        if r.status_code == 200:
-            zip_file = zipfile.ZipFile(BytesIO(r.content))
-        else:
-            msg = f"Drugs@FDA download failed with status code: {r.status_code}"
-            logger.error(msg)
-            raise requests.HTTPError(r.status_code)
-        orig_fname = "drug-drugsfda-0001-of-0001.json"
-        zip_file.extract(member=orig_fname, path=self._src_data_dir)
-        version = self._get_latest_version()
-        outfile_path = self._src_data_dir / f"drugsatfda_{version}.json"
-        shutil.move(str(self._src_data_dir / orig_fname), str(outfile_path))
+        url = "https://download.open.fda.gov/drug/drugsfda/drug-drugsfda-0001-of-0001.json.zip"  # noqa: E501
+        outfile_path = self._src_dir / f"drugsatfda_{self._version}.json"
+        self._http_download(url, outfile_path, handler=self._zip_handler)
         logger.info("Successfully retrieved source data for Drugs@FDA")
 
-    def _get_latest_version(self) -> str:
+    def get_latest_version(self) -> str:
         """Retrieve latest version of source data.
-        :return: version as a str -- expected formatting is YYYYMMDD
+        :return: version as a str -- expected formatting is YYYY-MM-DD
         """
         r = requests.get("https://api.fda.gov/download.json")
         if r.status_code == 200:
-            json = r.json()
+            r_json = r.json()
             try:
-                date_raw = json["results"]["drug"]["drugsfda"]["export_date"]
+                date = r_json["results"]["drug"]["drugsfda"]["export_date"]
             except KeyError:
                 msg = "Unable to parse OpenFDA version API - check for breaking changes"
                 logger.error(msg)
                 raise DownloadException(msg)
-            return date_raw.replace("-", "")
+            return date
         else:
             raise requests.HTTPError("Unable to retrieve version from FDA API")
 

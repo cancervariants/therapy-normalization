@@ -154,12 +154,15 @@ class Merge:
         return xrefs
 
     def _create_record_id_set(self, record_id: str,
-                              observed_id_set: Set = set()) -> Set[str]:
+                              observed_id_set: Set = None) -> Set[str]:
         """Create concept ID group for an individual record ID.
 
         :param str record_id: concept ID for record to build group from
         :return: set of related identifiers pertaining to a common concept.
         """
+        if observed_id_set is None:
+            observed_id_set = set()
+
         if record_id in self._groups:
             return self._groups[record_id]
         elif record_id.startswith("drugsatfda"):
@@ -218,7 +221,7 @@ class Merge:
             else:
                 raise Exception(f"Prohibited source: {src} in concept_id "
                                 f"{record['concept_id']}")
-            return (source_rank, record["concept_id"])
+            return source_rank, record["concept_id"]
         records.sort(key=record_order)
 
         # initialize merged record

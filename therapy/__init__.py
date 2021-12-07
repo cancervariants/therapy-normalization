@@ -5,7 +5,7 @@ import re
 
 from .version import __version__
 
-PROJECT_ROOT: Path = Path(__file__).resolve().parents[0]
+APP_ROOT: Path = Path(__file__).resolve().parents[0]
 logging.basicConfig(
     filename="therapy.log",
     format="[%(asctime)s] - %(name)s - %(levelname)s : %(message)s")

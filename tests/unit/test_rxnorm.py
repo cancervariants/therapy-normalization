@@ -1,9 +1,9 @@
 """Test that the therapy normalizer works as intended for the RxNorm source."""
 import os
-from datetime import datetime as dt
 
 import pytest
 from boto3.dynamodb.conditions import Key
+import isodate
 
 from tests.conftest import compare_records
 from therapy.schemas import Drug, MatchType
@@ -930,9 +930,8 @@ def test_meta_info(rxnorm):
     assert response.data_license == "UMLS Metathesaurus"
     assert response.data_license_url == \
            "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html"
-    assert dt.strptime(response.version, "%Y%m%d")
-    assert response.data_url == \
-           "https://www.nlm.nih.gov/research/umls/rxnorm/docs/rxnormfiles.html"
+    assert isodate.parse_date(response.version)
+    assert response.data_url.startswith("https://download.nlm.nih.gov/umls/kss/rxnorm/")
     assert not response.rdp_url
     assert response.data_license_attributes == {
         "non_commercial": False,

@@ -98,37 +98,36 @@ class CLI:
     def _check_disease_normalizer(self, normalizers: List[str],
                                   endpoint_url: Optional[str]) -> None:
         """When loading HemOnc source, perform rudimentary check of Disease Normalizer
-        tables, and reload them if necessary.
+        tables, and reload them if necessary. This reload method should never be used
+        (and is restricted from use) in a production setting.
 
-        :param list normalizers: List of sources to load
-        :param Optional[str] endpoint_url: Therapy endpoint URL. If none, tries to
-            connect to cloud DynamoDB instance.
+        :param List[str] normalizers: List of sources to load
+        :param Optional[str] endpoint_url: Therapy endpoint URL. This should always be
+            a local address.
         """
-        def _load_diseases() -> None:
-            msg = "Disease Normalizer not loaded. " \
-                  "Loading Disease Normalizer..."
-            logger.debug(msg)
-            click.echo(msg)
-            try:
-                DiseaseCLI().update_normalizer_db(
-                    ["--update_all", "--update_merged", "--db_url", endpoint_url]
-                )
-            except Exception as e:
-                logger.error(e)
-                raise Exception(e)
-            except:  # noqa: E722
-                # TODO: what does this do?
-                pass
-
-        if "THERAPY_NORM_PROD" not in environ and "hemonc" in normalizers:
+        if "hemonc" in normalizers and "THERAPY_NORM_PROD" not in environ:
             db = DiseaseDatabase(db_url=endpoint_url)  # type: ignore
             current_tables = {table.name for table in db.dynamodb.tables.all()}
-            if not all(name in current_tables
-                       for name in ("disease_concepts", "disease_metadata")):
-                _load_diseases()
-            elif db.diseases.scan()["Count"] == 0 or \
-                    db.metadata.scan()["Count"] < len(DiseaseSources):
-                _load_diseases()
+            if ("disease_concepts" not in current_tables) or \
+                    ("disease_metadata" not in current_tables) or \
+                    (db.diseases.scan()["Count"] == 0) or \
+                    (db.metadata.scan()["Count"] < len(DiseaseSources)):
+                msg = "Disease Normalizer not loaded. Loading now..."
+                logger.debug(msg)
+                click.echo(msg)
+                try:
+                    DiseaseCLI().update_normalizer_db(
+                        ["--update_all", "--update_merged", "--db_url", endpoint_url]
+                    )
+                except Exception as e:
+                    logger.error(e)
+                    raise Exception(e)
+                except:  # noqa: E722
+                    # TODO: what does this do?
+                    pass
+                msg = "Disease Normalizer reloaded successfully."
+                logger.debug(msg)
+                click.echo(msg)
 
     @staticmethod
     def _help_msg() -> None:

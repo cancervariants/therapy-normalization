@@ -6,26 +6,23 @@ Library of Medicine (NLM), National Institutes of Health, Department of Health
  endorse or recommend this or any other product."
 """
 import csv
-import datetime
 import logging
-import subprocess
 import shutil
 import zipfile
 import re
 from os import environ, remove
-from pathlib import Path
 from typing import List, Dict
+from pathlib import Path
 
 import yaml
+import bioversions
 from boto3.dynamodb.table import BatchWriter
+import requests
 
-import therapy
-from therapy import PROJECT_ROOT, DownloadException, XREF_SOURCES, \
-    ASSOC_WITH_SOURCES, ITEM_TYPES
-from therapy.etl.base import Base
-from therapy.database import Database
+from therapy import DownloadException, XREF_SOURCES, ASSOC_WITH_SOURCES, ITEM_TYPES
 from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
     ApprovalRating, RecordParams
+from therapy.etl.base import Base
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -46,121 +43,89 @@ RXNORM_XREFS = ["ATC", "CVX", "DRUGBANK", "MMSL", "MSH", "MTHCMSFRF", "MTHSPL",
 
 
 class RxNorm(Base):
-    """Extract, transform, and load the RxNorm source."""
+    """Class for RxNorm ETL methods."""
 
-    def __init__(self,
-                 database: Database,
-                 data_path: Path = PROJECT_ROOT / "data",
-                 data_url: str = "https://www.nlm.nih.gov/research/umls/"
-                                 "rxnorm/docs/rxnormfiles.html"):
-        """Initialize the RxNorm ETL class.
+    def _create_drug_form_yaml(self) -> None:
+        """Create a YAML file containing RxNorm drug form values."""
+        self._drug_forms_file = self._src_dir / f"rxnorm_drug_forms_{self._version}.yaml"  # noqa: E501
+        dfs = []
+        with open(self._src_file) as f:  # type: ignore
+            data = csv.reader(f, delimiter="|")
+            for row in data:
+                if row[12] == "DF" and row[11] == "RXNORM":
+                    if row[14] not in dfs:
+                        dfs.append(row[14])
+        with open(self._drug_forms_file, "w") as file:
+            yaml.dump(dfs, file)
 
-        :param Database database: Access to DynamoDB.
-        :param Path data_path: path to app data directory
-        :param str data_url: URL to RxNorm data files.
+    def _zip_handler(self, dl_path: Path, outfile_path: Path) -> None:
+        """Extract required files from RxNorm zip. This method should be passed to
+        the base class's _http_download method.
+        :param Path dl_path: path to RxNorm zip file in tmp directory
+        :param Path outfile_path: path to RxNorm data directory
         """
-        super().__init__(database, data_path)
-        self._data_url = data_url
+        rrf_path = outfile_path / f"rxnorm_{self._version}.RRF"
+        with zipfile.ZipFile(dl_path, "r") as zf:
+            rrf = zf.open("rrf/RXNCONSO.RRF")
+            target = open(rrf_path, "wb")
+            with rrf, target:
+                shutil.copyfileobj(rrf, target)
+        remove(dl_path)
+        self._src_file = rrf_path
+        self._create_drug_form_yaml()
+        logger.info("Successfully retrieved source data for RxNorm")
 
-    def _extract_data(self, *args, **kwargs) -> None:
-        """Extract data from the RxNorm source."""
-        logger.info("Extracting RxNorm...")
-        if "data_path" in kwargs:
-            self._data_src = kwargs["data_path"]
-        else:
-            rxn_dir = PROJECT_ROOT / "data" / "rxnorm"
-            rxn_dir.mkdir(exist_ok=True, parents=True)
-            rxn_files = list(rxn_dir.iterdir())
-            if len(rxn_files) == 0:
-                self._download_data(rxn_dir)
+    def _download_data(self) -> None:
+        """Download latest RxNorm data file.
 
-            # file might already exist
-            files = sorted([fn for fn in rxn_dir.iterdir() if fn.name.
-                           startswith("rxnorm_") and fn.name.endswith(".RRF")],
-                           reverse=True)
-            file_found = False
-            for file in files:
-                version = str(file).split("_")[-1].split(".")[0]
-                try:
-                    datetime.datetime.strptime(version, "%Y%m%d")
-                    self._data_src = file
-                    self._version = version
-                    file_found = True
-                    break
-                except ValueError:
-                    pass
-            if not file_found:
-                self._download_data(rxn_dir)
-            self._create_drug_form_yaml(rxn_dir)
-        logger.info("Successfully extracted RxNorm.")
-
-    def _download_data(self, rxn_dir: Path) -> None:  # type: ignore
-        """Download RxNorm data file.
-
-        :param Path rxn_dir: Path to RxNorm data directory.
+        :raises DownloadException: if API Key is not defined in the environment.
         """
-        logger.info("Downloading RxNorm...")
-        if "RXNORM_API_KEY" in environ.keys():
-            uri = "https://download.nlm.nih.gov/umls/kss/" \
-                  "rxnorm/RxNorm_full_current.zip"
-
-            rxnorm_path = str(Path(therapy.__file__).resolve().parents[0] / "data" / "rxnorm" / "RxNorm_full_current.zip")  # noqa: E501
-            environ["RXNORM_PATH"] = rxnorm_path
-
-            # Source:
-            # https://documentation.uts.nlm.nih.gov/automating-downloads.html
-            subprocess.call(["bash", f"{PROJECT_ROOT}/etl/"
-                                     f"rxnorm_download.sh", uri])
-
-            with zipfile.ZipFile(rxnorm_path, "r") as zf:
-                zf.extractall(rxn_dir)
-
-            remove(rxnorm_path)
-            shutil.rmtree(rxn_dir / "prescribe")
-            shutil.rmtree(rxn_dir / "scripts")
-
-            readme = sorted([fn for fn in rxn_dir.iterdir() if fn.name.
-                            startswith("Readme")])[0]
-
-            # get version
-            version = str(readme).split("/")[-1].split(".")[0].split("_")[-1]
-
-            self._version = datetime.datetime.strptime(
-                version, "%m%d%Y").strftime("%Y%m%d")
-            remove(readme)
-
-            temp_file = rxn_dir / "rrf" / "RXNCONSO.RRF"
-            self._data_src = rxn_dir / f"rxnorm_{self._version}.RRF"
-            shutil.move(str(temp_file), str(self._data_src))
-            shutil.rmtree(rxn_dir / "rrf")
-        else:
+        logger.info("Retrieving source data for RxNorm")
+        api_key = environ.get("RXNORM_API_KEY")
+        if api_key is None:
             logger.error("Could not find RXNORM_API_KEY in environment variables.")
             raise DownloadException("RXNORM_API_KEY not found.")
 
-    def _create_drug_form_yaml(self, rxn_dir: Path) -> None:
-        """Create a YAML file containing RxNorm drug form values.
+        url = bioversions.resolve("rxnorm").homepage
+        if not url:
+            raise DownloadException("Could not resolve RxNorm homepage")
 
-        :param Path rxn_dir: Path to RxNorm data directory.
+        tgt_data = {"apikey": api_key}
+        headers = {"Content-Type": "application/x-www-form-urlencoded"}
+        api_url = "https://utslogin.nlm.nih.gov/cas/v1/api-key"
+        tgt_r = requests.post(api_url,
+                              data=tgt_data, headers=headers)
+        tgt_matches = re.findall(r'https://.+(TGT.+)" m', tgt_r.text)
+        if not tgt_matches:
+            raise DownloadException("Unable to retrieve TGT")
+        tgt_value = tgt_matches[0]
+
+        st_data = {"service": url}
+        st_url = f"https://utslogin.nlm.nih.gov/cas/v1/tickets/{tgt_value}"
+        st_r = requests.post(st_url, data=st_data, headers=headers)
+
+        self._http_download(f"{url}?ticket={st_r.text}", self._src_dir,
+                            handler=self._zip_handler)
+
+    def _extract_data(self) -> None:
+        """Get source files from RxNorm data directory.
+        This class expects a file named `rxnorm_<version>.RRF` and a file named
+        `rxnorm_drug_forms_<version>.yaml`. This method will download and
+        generate them if they are unavailable.
         """
-        self._drug_forms_file = rxn_dir / "drug_forms.yaml"
-        if not self._drug_forms_file.exists():
-            dfs = list()
-            with open(self._data_src) as f:
-                data = csv.reader(f, delimiter="|")
-                for row in data:
-                    if row[12] == "DF" and row[11] == "RXNORM":
-                        if row[14] not in dfs:
-                            dfs.append(row[14])
-
-            with open(self._drug_forms_file, "w") as file:
-                yaml.dump(dfs, file)
+        super()._extract_data()
+        drug_forms_path = self._src_dir / f"rxnorm_drug_forms_{self._version}.yaml"
+        if not drug_forms_path.exists():
+            self._create_drug_form_yaml()
+        else:
+            self._drug_forms_file = drug_forms_path
 
     def _transform_data(self) -> None:
         """Transform the RxNorm source."""
         with open(self._drug_forms_file, "r") as file:
             drug_forms = yaml.safe_load(file)
 
-        with open(self._data_src) as f:
+        with open(self._src_file) as f:
             rff_data = csv.reader(f, delimiter="|")
             # Link ingredient to brand
             ingredient_brands: Dict[str, str] = dict()
@@ -368,7 +333,7 @@ class RxNorm(Base):
             data_license="UMLS Metathesaurus",
             data_license_url="https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",  # noqa: E501
             version=self._version,
-            data_url=self._data_url,
+            data_url=bioversions.resolve("rxnorm").homepage,
             rdp_url=None,
             data_license_attributes={
                 "non_commercial": False,

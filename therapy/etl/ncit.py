@@ -1,16 +1,12 @@
 """ETL methods for NCIt source"""
 import logging
 from typing import Set
-from pathlib import Path
-import zipfile
-from os import remove, rename
 
 import requests
 import owlready2 as owl
 from owlready2.entity import ThingClass
 
-from therapy import PROJECT_ROOT
-from therapy.database import Database
+from therapy import DownloadException
 from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, RecordParams
 from therapy.etl.base import Base
 
@@ -19,7 +15,7 @@ logger.setLevel(logging.DEBUG)
 
 
 class NCIt(Base):
-    """Core NCIt ETL class.
+    """Class for NCIt ETL methods.
 
     Extracts:
      * NCIt classes with semantic_type "Pharmacologic Substance" but not
@@ -27,41 +23,41 @@ class NCIt(Base):
      * NCIt classes that are subclasses of C1909 (Pharmacologic Substance)
     """
 
-    def __init__(self,
-                 database: Database,
-                 src_dir: str = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2020/20.09d_Release/",  # noqa F401
-                 src_fname: str = "Thesaurus_20.09d.OWL.zip",
-                 data_path: Path = PROJECT_ROOT / "data",
-                 chemidplus_path: Path = PROJECT_ROOT / "data" / "chemidplus"):
-        """Override base class init method. Call ETL methods.
-
-        :param therapy.database.Database database: app database instance
-        :param str src_dir: URL of remote directory containing source input
-        :param str src_fname: filename for source file within source directory
-        :param pathlib.Path data_path: path to local NCIt data directory
-        """
-        super().__init__(database, data_path)
-        self._SRC_DIR = src_dir
-        self._SRC_FNAME = src_fname
-        self._chemidplus_path = chemidplus_path
-
     def _download_data(self) -> None:
-        """Download NCI thesaurus source file for loading into normalizer."""
-        logger.info("Downloading NCI Thesaurus...")
-        url = self._SRC_DIR + self._SRC_FNAME
-        zip_path = self._src_data_dir / "ncit.zip"
-        response = requests.get(url, stream=True)
-        handle = open(zip_path, "wb")
-        for chunk in response.iter_content(chunk_size=512):
-            if chunk:
-                handle.write(chunk)
-        handle.close()
-        with zipfile.ZipFile(zip_path, "r") as zip_ref:
-            zip_ref.extractall(self._src_data_dir)
-        remove(zip_path)
-        version = self._SRC_DIR.split("/")[-2].split("_")[0]
-        rename(self._src_data_dir / "Thesaurus.owl", self._src_data_dir / f"ncit_{version}.owl")  # noqa: E501
-        logger.info("Finished downloading NCI Thesaurus")
+        """Download NCI thesaurus source file.
+        The NCI directory structure can be a little tricky, so this method attempts to
+        retrieve a file matching the latest version number from both the subdirectory
+        root (where the current version is typically posted) as well as the year-by-year
+        archives if that fails.
+        """
+        logger.info("Retrieving source data for NCIt")
+        base_url = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus"
+        # ping base NCIt directory
+        release_fname = f"Thesaurus_{self._version}.OWL.zip"
+        src_url = f"{base_url}/{release_fname}"
+        r_try = requests.get(src_url)
+        if r_try.status_code != 200:
+            # ping NCIt archive directories
+            archive_url = f"{base_url}/archive/{self._version}_Release/{release_fname}"
+            archive_try = requests.get(archive_url)
+            if archive_try.status_code != 200:
+                old_archive_url = f"{base_url}/archive/20{self._version[0:2]}/{self._version}_Release/{release_fname}"  # noqa: E501
+                old_archive_try = requests.get(old_archive_url)
+                if old_archive_try.status_code != 200:
+                    msg = (
+                        f"NCIt download failed: tried {src_url}, {archive_url}, and "
+                        f"{old_archive_url}"
+                    )
+                    logger.error(msg)
+                    raise DownloadException(msg)
+                else:
+                    src_url = old_archive_url
+            else:
+                src_url = archive_url
+
+        self._http_download(src_url, self._src_dir / f"ncit_{self._version}.owl",
+                            handler=self._zip_handler)
+        logger.info("Successfully retrieved source data for NCIt")
 
     def _get_desc_nodes(self, node: ThingClass,
                         uq_nodes: Set[ThingClass]) -> Set[ThingClass]:
@@ -111,7 +107,8 @@ class NCIt(Base):
         """
         retired_results = set(graph.query(retired_query_str))
 
-        typed_results = typed_results - retired_results
+        typed_results = {r for r in (typed_results - retired_results)
+                         if r is not None}
 
         for result in typed_results:
             # parse result as URI and get ThingClass object back from NCIt
@@ -166,16 +163,18 @@ class NCIt(Base):
 
     def _load_meta(self) -> None:
         """Load metadata"""
-        metadata = SourceMeta(data_license="CC BY 4.0",
-                              data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
-                              version=self._version,
-                              data_url=self._SRC_DIR,
-                              rdp_url="http://reusabledata.org/ncit.html",
-                              data_license_attributes={
-                                  "non_commercial": False,
-                                  "share_alike": False,
-                                  "attribution": True
-                              })
+        metadata = SourceMeta(
+            data_license="CC BY 4.0",
+            data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
+            version=self._version,
+            data_url="https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/",
+            rdp_url="http://reusabledata.org/ncit.html",
+            data_license_attributes={
+                "non_commercial": False,
+                "share_alike": False,
+                "attribution": True
+            }
+        )
         params = dict(metadata)
         params["src_name"] = SourceName.NCIT.value
         self.database.metadata.put_item(Item=params)

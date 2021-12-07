@@ -1,62 +1,43 @@
 """This module defines the ChEMBL ETL methods."""
 import logging
-import tarfile
-import sqlite3
 import os
 import shutil
+import sqlite3
+
+import chembl_downloader
+import bioversions
 
 from therapy.etl.base import Base
-from therapy import PROJECT_ROOT
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalRating, \
     SourceMeta
+
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
 
 class ChEMBL(Base):
-    """ETL the ChEMBL source into therapy.db."""
+    """Class for ChEMBL ETL methods."""
 
-    def _extract_data(self, *args, **kwargs) -> None:
+    def _download_data(self) -> None:
+        """Download latest ChEMBL database file from EBI."""
+        logger.info("Retrieving source data for ChEMBL")
+        os.environ["PYSTOW_HOME"] = str(self._src_dir.parent.absolute())
+        tmp_path = chembl_downloader.download_extract_sqlite()
+        shutil.move(tmp_path, self._src_dir)
+        shutil.rmtree(tmp_path.parent.parent.parent)
+        logger.info("Successfully retrieved source data for ChEMBL")
+
+    def _extract_data(self) -> None:
         """Extract data from the ChEMBL source."""
-        logger.info("Extracting chembl_27.db...")
-        if "data_path" in kwargs:
-            chembl_db = kwargs["data_path"]
-        else:
-            chembl_db = self._src_data_dir / "chembl_27.db"
-        if not chembl_db.exists():
-            chembl_archive = self._src_data_dir / "chembl_27_sqlite.tar.gz"
-            chembl_archive.parent.mkdir(exist_ok=True, parents=True)
-            self._download_data()
-            tar = tarfile.open(chembl_archive)
-            tar.extractall(path=PROJECT_ROOT / "data" / "chembl")
-            tar.close()
-
-            # Remove unused directories and files
-            chembl_27_dir = self._src_data_dir / "chembl_27"
-            temp_chembl = chembl_27_dir / "chembl_27_sqlite" / "chembl_27.db"
-            chembl_db = self._src_data_dir / "chembl_27.db"
-            shutil.move(str(temp_chembl), str(chembl_db))
-            os.remove(chembl_archive)
-            shutil.rmtree(chembl_27_dir)
-        conn = sqlite3.connect(chembl_db)
+        super()._extract_data()
+        conn = sqlite3.connect(self._src_file)
         conn.row_factory = sqlite3.Row
         self._conn = conn
         self._cursor = conn.cursor()
-        assert chembl_db.exists()
-        logger.info("Finished extracting chembl_27.db.")
 
-    def _download_data(self, *args, **kwargs) -> None:
-        """Download ChEMBL data from FTP."""
-        logger.info(
-            "Downloading ChEMBL v27, this will take a few minutes.")
-        self._ftp_download("ftp.ebi.ac.uk",
-                           "pub/databases/chembl/ChEMBLdb/releases/chembl_27",
-                           self._src_data_dir,
-                           "chembl_27_sqlite.tar.gz")
-
-    def _transform_data(self, *args, **kwargs) -> None:
-        """Transform SQLite data to JSON."""
+    def _transform_data(self) -> None:
+        """Transform SQLite data to temporary JSON."""
         self._create_dictionary_synonyms_table()
         self._create_trade_names_table()
         self._create_temp_table()
@@ -203,12 +184,12 @@ class ChEMBL(Base):
                     record[attr] = record[attr].split("||")
             self._load_therapy(record)
 
-    def _load_meta(self, *args, **kwargs) -> None:
+    def _load_meta(self) -> None:
         """Add ChEMBL metadata."""
         metadata = SourceMeta(data_license="CC BY-SA 3.0",
                               data_license_url="https://creativecommons.org/licenses/by-sa/3.0/",  # noqa: E501
-                              version="27",
-                              data_url="http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",  # noqa: E501
+                              version=self._version,
+                              data_url=bioversions.resolve("chembl").homepage,
                               rdp_url="http://reusabledata.org/chembl.html",
                               data_license_attributes={
                                   "non_commercial": False,

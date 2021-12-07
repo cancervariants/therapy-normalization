@@ -74,7 +74,7 @@ class QueryHandler:
             try:
                 response = SourceMeta(**db_response["Item"])
             except KeyError:
-                msg = (f"Metadata lookup failed for source {src_name}")
+                msg = f"Metadata lookup failed for source {src_name}"
                 logger.error(msg)
                 raise Exception(msg)
             self.db.cached_sources[src_name] = response
@@ -210,7 +210,8 @@ class QueryHandler:
             if infer_response:
                 records.append(infer_response[0])
                 resp["warnings"].append(infer_response[1])
-        if [p for p in PREFIX_LOOKUP.keys() if query.startswith(p)]:
+        query_lower = query.lower()
+        if [p for p in PREFIX_LOOKUP.keys() if query_lower.startswith(p)]:
             record = self.db.get_record_by_id(query, False)
             if record:
                 records.append(record)
@@ -258,14 +259,14 @@ class QueryHandler:
         if query == "":
             response = self._fill_no_matches(response)
             return response
-        query = query.lower()
+        query = query.strip()
 
         # check if concept ID match
-        (response, sources) = self._check_concept_id(query, response, sources,
-                                                     infer)
+        (response, sources) = self._check_concept_id(query, response, sources, infer)
         if len(sources) == 0:
             return response
 
+        query = query.lower()
         for match_type in ITEM_TYPES.values():
             (response, sources) = self._check_match_type(query, response, sources,
                                                          match_type)
@@ -349,8 +350,6 @@ class QueryHandler:
             if invalid_sources:
                 detail = f"Invalid source name(s): {invalid_sources}"
                 raise InvalidParameterException(detail)
-
-        query_str = query_str.strip()
 
         if keyed:
             response = self._response_keyed(query_str, query_sources, infer)

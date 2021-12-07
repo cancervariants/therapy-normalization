@@ -184,17 +184,18 @@ def cisplatin():
             "Platinol",
             "cisplatino",
             "Cisplatin",
-            "Cis-Platinum II",
+            "Cis-platinum ii",
             "Cisplatinum",
             "INT-230-6 COMPONENT CISPLATIN",
             "INT230-6 COMPONENT CISPLATIN",
             "NSC-119875",
-            "Platinol-Aq",
+            "Platinol-aq",
             "DACP",
             "NSC 119875",
             "cis-diamminedichloroplatinum III",
             "cis-platinum",
-            "cisplatinum"
+            "cisplatinum",
+            "Liplacis"
         ],
         "extensions": [
             {
@@ -356,7 +357,7 @@ def therapeutic_procedure():
 
 
 def compare_vod(response, fixture, query, match_type, response_id,
-                warnings=[]):
+                warnings=None):
     """Verify correctness of returned VOD object against test fixture.
 
     :param Dict response: actual response
@@ -366,6 +367,9 @@ def compare_vod(response, fixture, query, match_type, response_id,
     :param str response_id: expected response_id value
     :param List warnings: expected warnings
     """
+    if warnings is None:
+        warnings = []
+
     assert response["query"] == query
 
     # check warnings
@@ -554,7 +558,7 @@ def test_infer_option(query_handler, merge_query_handler):
     query = "DB01174"
     expected_warnings = [{
         "inferred_namespace": "drugbank",
-        "adjusted_query": "drugbank:" + query.lower(),
+        "adjusted_query": "drugbank:" + query,
         "alternate_inferred_matches": []
     }]
 
@@ -563,14 +567,14 @@ def test_infer_option(query_handler, merge_query_handler):
     assert response["warnings"] == expected_warnings
 
     response = merge_query_handler.search_groups(query)
-    response["match_type"] == MatchType.CONCEPT_ID
-    response["warnings"] == expected_warnings
+    assert response["match_type"] == MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
 
     # ncit
     query = "c739"
     expected_warnings = [{
         "inferred_namespace": "ncit",
-        "adjusted_query": "ncit:" + query.lower(),
+        "adjusted_query": "ncit:" + query,
         "alternate_inferred_matches": []
     }]
 
@@ -579,14 +583,14 @@ def test_infer_option(query_handler, merge_query_handler):
     assert response["warnings"] == expected_warnings
 
     response = merge_query_handler.search_groups(query)
-    response["match_type"] == MatchType.CONCEPT_ID
-    response["warnings"] == expected_warnings
+    assert response["match_type"] == MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
 
     # chemidplus
     query = "15663-27-1"
     expected_warnings = [{
         "inferred_namespace": "chemidplus",
-        "adjusted_query": "chemidplus:" + query.lower(),
+        "adjusted_query": "chemidplus:" + query,
         "alternate_inferred_matches": [],
     }]
 
@@ -596,14 +600,14 @@ def test_infer_option(query_handler, merge_query_handler):
     assert response["warnings"] == expected_warnings
 
     response = merge_query_handler.search_groups(query)
-    response["match_type"] == MatchType.CONCEPT_ID
-    response["warnings"] == expected_warnings
+    assert response["match_type"] == MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
 
     # chembl
     query = "chembl11359"
     expected_warnings = [{
         "inferred_namespace": "chembl",
-        "adjusted_query": "chembl:" + query.lower(),
+        "adjusted_query": "chembl:" + query,
         "alternate_inferred_matches": [],
     }]
 
@@ -613,14 +617,14 @@ def test_infer_option(query_handler, merge_query_handler):
     assert response["warnings"] == expected_warnings
 
     response = merge_query_handler.search_groups(query)
-    response["match_type"] == MatchType.CONCEPT_ID
-    response["warnings"] == expected_warnings
+    assert response["match_type"] == MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
 
     # wikidata
     query = "q412415"
     expected_warnings = [{
         "inferred_namespace": "wikidata",
-        "adjusted_query": "wikidata:" + query.lower(),
+        "adjusted_query": "wikidata:" + query,
         "alternate_inferred_matches": [],
     }]
 
@@ -630,8 +634,8 @@ def test_infer_option(query_handler, merge_query_handler):
     assert response["warnings"] == expected_warnings
 
     response = merge_query_handler.search_groups(query)
-    response["match_type"] == MatchType.CONCEPT_ID
-    response["warnings"] == expected_warnings
+    assert response["match_type"] == MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
 
     # drugs@fda
     query = "ANDA075036"
@@ -647,8 +651,8 @@ def test_infer_option(query_handler, merge_query_handler):
     assert response["warnings"] == expected_warnings
 
     response = merge_query_handler.search_groups(query)
-    response["match_type"] == MatchType.CONCEPT_ID
-    response["warnings"] == expected_warnings
+    assert response["match_type"] == MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
 
     query = "nda018057"
     expected_warnings = [{
@@ -663,8 +667,8 @@ def test_infer_option(query_handler, merge_query_handler):
     assert response["warnings"] == expected_warnings
 
     response = merge_query_handler.search_groups(query)
-    response["match_type"] == MatchType.CONCEPT_ID
-    response["warnings"] == expected_warnings
+    assert response["match_type"] == MatchType.CONCEPT_ID
+    assert response["warnings"] == expected_warnings
 
     # test disabling namespace inference
     query = "DB01174"

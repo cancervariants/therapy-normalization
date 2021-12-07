@@ -9,6 +9,7 @@ from therapy import __version__
 from therapy.query import QueryHandler, InvalidParameterException
 from therapy.schemas import SearchService, NormalizationService
 
+
 query_handler = QueryHandler()
 app = FastAPI(docs_url="/therapy", openapi_url="/therapy/openapi.json")
 
@@ -39,7 +40,7 @@ def custom_openapi() -> Dict:
 app.openapi = custom_openapi  # type: ignore
 
 # endpoint description text
-get_matches_summary = ("Given query, provide highest matches from each source.")
+get_matches_summary = "Given query, provide highest matches from each source."
 response_descr = "A response to a validly-formed query."
 q_descr = "Therapy to search."
 keyed_descr = ("If true, return response as key-value pairs of sources to source "
@@ -74,12 +75,13 @@ def search(q: str = Query(..., description=q_descr),
     provided by user.
 
     :param q: therapy search term
-    :param keyed: if true, response is structured as key/value pair of sources to
+    :param bool keyed: if true, response is structured as key/value pair of sources to
         source match lists.
-    :param incl: comma-separated list of sources to include, with all others excluded.
+    :param str incl: comma-separated list of sources to include, with all others
+        excluded. Raises HTTPException if both `incl` and `excl` are given.
+    :param str excl: comma-separated list of sources exclude, with all others included.
         Raises HTTPException if both `incl` and `excl` are given.
-    :param excl: comma-separated list of sources exclude, with all others included.
-        Raises HTTPException if both `incl` and `excl` are given.
+    :param bool infer_namespace: if True, try to infer namespace from query term.
     :returns: JSON response with matched records and source metadata
     """
     try:
@@ -110,6 +112,8 @@ def normalize(q: str = Query(..., description=merged_q_descr),
     user.
 
     :param q: therapy search term
+    :param bool infer_namespace: if True, try to infer namespace from query term.
+    :returns: JSON response with matching normalized record and source metadata
     """
     try:
         response = query_handler.search_groups(html.unescape(q),
