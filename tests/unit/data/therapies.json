@@ -2818,5 +2818,14 @@
     "item_type": "label",
     "concept_id": "drugsatfda.nda:017604",
     "src_name": "DrugsAtFDA"
+  },
+  {
+    "label_and_type": "chemidplus:51186-83-5##identity",
+    "item_type": "identity",
+    "src_name": "ChemIDplus",
+    "concept_id": "chemidplus:51186-83-5",
+    "label": "Glycopyrronium bromide",
+    "xrefs": ["drugbank:DB00986"],
+    "associated_with": ["unii:V92SO9WP2I"]
   }
 ]
