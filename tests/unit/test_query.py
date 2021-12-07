@@ -558,7 +558,7 @@ def test_infer_option(query_handler, merge_query_handler):
     query = "DB01174"
     expected_warnings = [{
         "inferred_namespace": "drugbank",
-        "adjusted_query": "drugbank:" + query.lower(),
+        "adjusted_query": "drugbank:" + query,
         "alternate_inferred_matches": []
     }]
 
@@ -574,7 +574,7 @@ def test_infer_option(query_handler, merge_query_handler):
     query = "c739"
     expected_warnings = [{
         "inferred_namespace": "ncit",
-        "adjusted_query": "ncit:" + query.lower(),
+        "adjusted_query": "ncit:" + query,
         "alternate_inferred_matches": []
     }]
 
@@ -590,7 +590,7 @@ def test_infer_option(query_handler, merge_query_handler):
     query = "15663-27-1"
     expected_warnings = [{
         "inferred_namespace": "chemidplus",
-        "adjusted_query": "chemidplus:" + query.lower(),
+        "adjusted_query": "chemidplus:" + query,
         "alternate_inferred_matches": [],
     }]
 
@@ -607,7 +607,7 @@ def test_infer_option(query_handler, merge_query_handler):
     query = "chembl11359"
     expected_warnings = [{
         "inferred_namespace": "chembl",
-        "adjusted_query": "chembl:" + query.lower(),
+        "adjusted_query": "chembl:" + query,
         "alternate_inferred_matches": [],
     }]
 
@@ -624,7 +624,7 @@ def test_infer_option(query_handler, merge_query_handler):
     query = "q412415"
     expected_warnings = [{
         "inferred_namespace": "wikidata",
-        "adjusted_query": "wikidata:" + query.lower(),
+        "adjusted_query": "wikidata:" + query,
         "alternate_inferred_matches": [],
     }]
 
