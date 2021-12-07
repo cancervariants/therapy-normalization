@@ -14,17 +14,16 @@ from therapy.etl.base import Base
 class GuideToPHARMACOLOGY(Base):
     """Class for Guide to PHARMACOLOGY ETL methods."""
 
-    _ligands_data_url: str = "https://www.guidetopharmacology.org/DATA/ligands.tsv"
-    _ligand_mapping_data_url: str = "https://www.guidetopharmacology.org/DATA/ligand_id_mapping.tsv"  # noqa: E501
-
     def _download_data(self) -> None:
         """Download the latest version of Guide to PHARMACOLOGY."""
         logger.info("Retrieving source data for Guide to PHARMACOLOGY")
         if not self._ligands_file.exists():
-            self._http_download(self._ligands_data_url, self._ligands_file)
+            self._http_download("https://www.guidetopharmacology.org/DATA/ligands.tsv",
+                                self._ligands_file)
             assert self._ligands_file.exists()
         if not self._mapping_file.exists():
-            self._http_download(self._ligand_mapping_data_url, self._mapping_file)
+            self._http_download("https://www.guidetopharmacology.org/DATA/ligand_id_mapping.tsv",  # noqa: E501
+                                self._mapping_file)
             assert self._mapping_file.exists()
         logger.info("Successfully retrieved source data for Guide to PHARMACOLOGY")
 
