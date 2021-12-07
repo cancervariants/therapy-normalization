@@ -196,15 +196,19 @@ class Base(ABC):
                     continue
 
                 if attr_type == "label":
+                    value = value.strip()
+                    therapy["label"] = value
                     self.database.add_ref_record(value.lower(),
                                                  concept_id, item_type)
                     continue
 
+                value_set = {v.strip() for v in value}
+
                 # clean up listlike symbol fields
                 if attr_type == "aliases" and "trade_names" in therapy:
-                    value = list(set(value) - set(therapy["trade_names"]))
+                    value = list(value_set - set(therapy["trade_names"]))
                 else:
-                    value = list(set(value))
+                    value = list(value_set)
 
                 if attr_type in ("aliases", "trade_names"):
                     if "label" in therapy:

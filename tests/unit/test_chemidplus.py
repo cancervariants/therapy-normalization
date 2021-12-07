@@ -91,6 +91,21 @@ def cisplatin():
     })
 
 
+@pytest.fixture(scope="module")
+def glycopyrronium_bromide():
+    """Provide fixture for chemidplus:51186-83-5"""
+    return Drug(**{
+        "concept_id": "chemidplus:51186-83-5",
+        "label": "Glycopyrronium bromide",
+        "xrefs": [
+            "drugbank:DB00986"
+        ],
+        "associated_with": [
+            "unii:V92SO9WP2I"
+        ],
+    })
+
+
 def test_penicillin(chemidplus, penicillin_v):
     """Test record retrieval for Penicillin V."""
     response = chemidplus.search("chemidplus:87-08-1")
@@ -183,6 +198,16 @@ def test_cisplatin(chemidplus, cisplatin):
 
     response = chemidplus.search("Cisplatine")
     assert response["match_type"] == MatchType.NO_MATCH
+
+
+def test_glycopyrronium_bromide(chemidplus, glycopyrronium_bromide):
+    """This drug was processed with incorrect xref formatting -- this test is provided
+    to check on input QC.
+    """
+    response = chemidplus.search("chemidplus:51186-83-5")
+    assert response["match_type"] == MatchType.CONCEPT_ID
+    assert len(response["records"]) == 1
+    compare_records(response["records"][0], glycopyrronium_bromide)
 
 
 def test_meta(chemidplus):
