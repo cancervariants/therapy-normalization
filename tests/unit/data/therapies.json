@@ -2827,5 +2827,55 @@
     "label": "Glycopyrronium bromide",
     "xrefs": ["drugbank:DB00986"],
     "associated_with": ["unii:V92SO9WP2I"]
+  },
+  {
+    "label_and_type": "rxcui:7975##identity",
+    "item_type": "identity",
+    "src_name": "RxNorm",
+    "concept_id": "rxcui:7975",
+    "label": "penicillamine",
+    "aliases": [
+      "beta,beta Dimethylcysteine",
+      "D-3-Mercaptovaline",
+      "D Penicillamine",
+      "Mercaptovaline",
+      "D 3 Mercaptovaline",
+      "(S)-2-amino-3-mercapto-3-methylbutanoic acid",
+      "Dimethylcysteine",
+      "D-penicillamine",
+      "3-mercapto-D-valine",
+      "D-β,β-dimethylcysteine",
+      "beta,beta-Dimethylcysteine",
+      "D-(-)-penicillamine",
+      "(S)-3,3-dimethylcysteine",
+      "D-Penicillamine",
+      "(-)-penicillamine",
+      "penicillAMINE"
+    ],
+    "trade_names": ["Depen", "Cuprimine", "D-Penamine", "Penicillamine"],
+    "xrefs": ["drugbank:DB00859"],
+    "associated_with": [
+      "vandf:4017940",
+      "mmsl:5243",
+      "usp:m61380",
+      "unii:GNN1DV99GX",
+      "mesh:D010396",
+      "atc:M01CC01",
+      "mmsl:52894",
+      "mmsl:d00333"
+    ],
+    "approval_rating": "rxnorm_prescribable"
+  },
+  {
+    "label_and_type": "penicillamine##label",
+    "src_name": "RxNorm",
+    "concept_id": "rxcui:7975",
+    "item_type": "label"
+  },
+  {
+    "label_and_type": "penicillamine##trade_name",
+    "src_name": "RxNorm",
+    "concept_id": "rxcui:7975",
+    "item_type": "trade_name"
   }
 ]

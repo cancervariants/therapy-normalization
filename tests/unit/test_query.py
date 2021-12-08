@@ -479,6 +479,11 @@ def test_query(query_handler):
     wikidata_record = wikidata["records"][0]
     assert wikidata_record["label"] == "cisplatin"
 
+    # test for not including redundant records w/ same match_type
+    resp = query_handler.search_sources("penicillamine", keyed=True)
+    matches = resp["source_matches"]["RxNorm"]
+    assert len(matches["records"]) == 1
+
 
 def test_query_keyed(query_handler):
     """Test that query structures matches as dict when requested."""
