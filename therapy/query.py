@@ -112,7 +112,9 @@ class QueryHandler:
                 "source_meta_": self._fetch_meta(src_name)
             }
         elif matches[src_name]["match_type"] == MatchType[match_type.upper()]:
-            matches[src_name]["records"].append(drug)
+            if drug.concept_id not in [r.concept_id for r
+                                       in matches[src_name]["records"]]:
+                matches[src_name]["records"].append(drug)
 
         return response, src_name
 
