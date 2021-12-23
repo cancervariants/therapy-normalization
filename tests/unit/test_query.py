@@ -287,37 +287,51 @@ def cisplatin():
 
 @pytest.fixture(scope="module")
 def spiramycin():
-    """Create fixture for spiramycin."""
+    """Create fixture for normalized spiramycin record."""
     return {
         "id": "normalize.therapy:Spiramycin",
         "type": "TherapyDescriptor",
-        "therapy_id": "ncit:C839",
-        "label": "Spiramycin",
+        "label": "spiramycin",
         "xrefs": [
+            "ncit:C839",
+            "drugbank:DB06145",
             "chemidplus:8025-81-8",
             "wikidata:Q422265"
         ],
         "alternate_labels": [
-            "SPIRAMYCIN",
-            "Antibiotic 799",
-            "Rovamycin",
-            "Provamycin",
-            "Rovamycine",
             "RP 5337",
+            "SPIRAMYCIN",
+            "Foromacidine A",
+            "Spiramycine",
+            "Provamycin",
+            "Foromacidin A",
+            "Antibiotic 799",
+            "spiramycin I",
+            "Rovamycin",
+            "Spiramycin A",
+            "Spiramycin 1",
             "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside",  # noqa: E501
-            "spiramycin I"
+            "Spiramycin I",
+            "Rovamycine",
+            "Demycarosylturimycin H"
         ],
         "extensions": [
             {
                 "type": "Extension",
                 "name": "associated_with",
                 "value": [
+                    "pubchem.compound:5356392",
                     "umls:C0037962",
                     "unii:71ODY0V87H",
-                    "pubchem.compound:5356392"
+                    "inchikey:ACTOXUHEUCPTEW-KWBWCIJSSA-N",
+                    "mesh:C017186",
+                    "atc:J01FA02",
+                    "mesh:D015572",
+                    "unii:033ECH6IFG"
                 ]
             }
-        ]
+        ],
+        "therapy_id": "rxcui:9991"
     }
 
 
@@ -400,8 +414,6 @@ def compare_vod(response, fixture, query, match_type, response_id,
 
     assert ("xrefs" in actual.keys()) == ("xrefs" in fixture.keys())
     if "xrefs" in actual:
-        print(actual["xrefs"])
-        print(fixture["xrefs"])
         assert set(actual["xrefs"]) == set(fixture["xrefs"])
 
     assert ("alternate_labels" in actual.keys()) == ("alternate_labels" in
@@ -684,9 +696,9 @@ def test_infer_option(query_handler, merge_query_handler):
     assert response["match_type"] == MatchType.NO_MATCH
 
 
-def test_query_merged(merge_query_handler, phenobarbital, cisplatin,
-                      spiramycin, therapeutic_procedure):
-    """Test that the merged concept endpoint handles queries correctly."""
+def test_query_normalize(merge_query_handler, phenobarbital, cisplatin,
+                         spiramycin, therapeutic_procedure):
+    """Test that the normalized concept endpoint handles queries correctly."""
     # test merged id match
     query = "rxcui:2555"
     response = merge_query_handler.search_groups(query)

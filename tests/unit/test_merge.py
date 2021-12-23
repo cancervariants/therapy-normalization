@@ -290,24 +290,41 @@ def spiramycin_merged():
     to this group.
     """
     return {
-        "label_and_type": "ncit:c839##merger",
-        "concept_id": "ncit:C839",
+        "label_and_type": "rxcui:9991##merger",
+        "concept_id": "rxcui:9991",
         "xrefs": [
+            "ncit:C839",
+            "drugbank:DB06145",
             "chemidplus:8025-81-8",
+            "wikidata:Q422265"
         ],
-        "label": "Spiramycin",
+        "label": "spiramycin",
         "aliases": [
-            "SPIRAMYCIN",
-            "Antibiotic 799",
-            "Rovamycin",
-            "Provamycin",
-            "Rovamycine",
             "RP 5337",
-            "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside"  # noqa: E501
+            "SPIRAMYCIN",
+            "Foromacidine A",
+            "Spiramycine",
+            "Provamycin",
+            "Foromacidin A",
+            "Antibiotic 799",
+            "spiramycin I",
+            "Rovamycin",
+            "Spiramycin A",
+            "Spiramycin 1",
+            "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside",  # noqa: E501
+            "Spiramycin I",
+            "Rovamycine",
+            "Demycarosylturimycin H"
         ],
         "associated_with": [
+            "pubchem.compound:5356392",
             "umls:C0037962",
-            "unii:71ODY0V87H"
+            "unii:71ODY0V87H",
+            "inchikey:ACTOXUHEUCPTEW-KWBWCIJSSA-N",
+            "mesh:C017186",
+            "atc:J01FA02",
+            "mesh:D015572",
+            "unii:033ECH6IFG"
         ],
     }
 
@@ -379,13 +396,40 @@ def record_id_groups():
             "chembl:CHEMBL40",
             "iuphar.ligand:2804"
         },
-        "ncit:C839": {  # Spiramycin
+        "rxcui:9991": {  # Spiramycin
+            "rxcui:9991",
             "ncit:C839",
             "chemidplus:8025-81-8",
+            "drugbank:DB06145",
+            "wikidata:Q422265"
+        },
+        "ncit:C839": {  # Spiramycin
+            "rxcui:9991",
+            "ncit:C839",
+            "chemidplus:8025-81-8",
+            "drugbank:DB06145",
+            "wikidata:Q422265"
         },
         "chemidplus:8025-81-8": {  # Spiramycin
+            "rxcui:9991",
             "ncit:C839",
             "chemidplus:8025-81-8",
+            "drugbank:DB06145",
+            "wikidata:Q422265"
+        },
+        "drugbank:DB06145": {  # Spiramycin
+            "rxcui:9991",
+            "ncit:C839",
+            "chemidplus:8025-81-8",
+            "drugbank:DB06145",
+            "wikidata:Q422265"
+        },
+        "wikidata:Q422265": {  # Spiramycin
+            "rxcui:9991",
+            "ncit:C839",
+            "chemidplus:8025-81-8",
+            "drugbank:DB06145",
+            "wikidata:Q422265"
         },
         "rxcui:2555": {  # Cisplatin
             "rxcui:2555",

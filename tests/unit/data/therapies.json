@@ -1229,7 +1229,7 @@
   {
     "label_and_type": "chemidplus:8025-81-8##identity",
     "src_name": "ChemIDplus",
-    "merge_ref": "ncit:c839",
+    "merge_ref": "rxcui:9991",
     "item_type": "identity",
     "label": "Spiramycin",
     "concept_id": "chemidplus:8025-81-8",
@@ -1306,7 +1306,14 @@
     "xrefs": ["chemidplus:8025-81-8"],
     "associated_with": ["umls:C0037962", "unii:71ODY0V87H"],
     "src_name": "NCIt",
-    "merge_ref": "ncit:c839"
+    "merge_ref": "rxcui:9991",
+    "item_type": "identity"
+  },
+  {
+    "label_and_type": "chemidplus:8025-81-8##xref",
+    "concept_id": "ncit:c839",
+    "src_name": "NCIt",
+    "item_type": "xref"
   },
   {
     "label_and_type": "rp 5337##alias",
@@ -1510,25 +1517,42 @@
     ]
   },
   {
-    "label_and_type": "ncit:c839##merger",
+    "label_and_type": "rxcui:9991##merger",
     "item_type": "merger",
-    "concept_id": "ncit:C839",
-    "xrefs": ["chemidplus:8025-81-8", "wikidata:Q422265"],
-    "label": "Spiramycin",
-    "aliases": [
-      "SPIRAMYCIN",
-      "Antibiotic 799",
-      "Rovamycin",
-      "Provamycin",
-      "Rovamycine",
-      "RP 5337",
-      "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside",
-      "spiramycin I"
+    "concept_id": "rxcui:9991",
+    "xrefs": [
+      "ncit:C839",
+      "drugbank:DB06145",
+      "chemidplus:8025-81-8",
+      "wikidata:Q422265"
     ],
+    "alternate_labels": [
+      "RP 5337",
+      "SPIRAMYCIN",
+      "Foromacidine A",
+      "Spiramycine",
+      "Provamycin",
+      "Foromacidin A",
+      "Antibiotic 799",
+      "spiramycin I",
+      "Rovamycin",
+      "Spiramycin A",
+      "Spiramycin 1",
+      "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside",
+      "Spiramycin I",
+      "Rovamycine",
+      "Demycarosylturimycin H"
+    ],
+    "label": "spiramycin",
     "associated_with": [
+      "pubchem.compound:5356392",
       "umls:C0037962",
       "unii:71ODY0V87H",
-      "pubchem.compound:5356392"
+      "inchikey:ACTOXUHEUCPTEW-KWBWCIJSSA-N",
+      "mesh:C017186",
+      "atc:J01FA02",
+      "mesh:D015572",
+      "unii:033ECH6IFG"
     ]
   },
   {
@@ -2877,5 +2901,80 @@
     "src_name": "RxNorm",
     "concept_id": "rxcui:7975",
     "item_type": "trade_name"
+  },
+  {
+    "label_and_type": "drugbank:db06145##identity",
+    "concept_id": "drugbank:DB06145",
+    "aliases": [
+      "Foromacidin A",
+      "Spiramycin A",
+      "Spiramycin 1",
+      "Spiramycin I",
+      "Foromacidine A",
+      "Demycarosylturimycin H"
+    ],
+    "associated_with": [
+      "inchikey:ACTOXUHEUCPTEW-KWBWCIJSSA-N",
+      "unii:033ECH6IFG"
+    ],
+    "label": "Spiramycin",
+    "merge_ref": "rxcui:9991",
+    "xrefs": ["chemidplus:24916-50-5"],
+    "item_type": "identity",
+    "src_name": "DrugBank"
+  },
+  {
+    "label_and_type": "chemidplus:24916-50-5##xref",
+    "concept_id": "drugbank:db06145",
+    "src_name": "DrugBank",
+    "item_type": "xref"
+  },
+  {
+    "label_and_type": "wikidata:q422265##identity",
+    "concept_id": "wikidata:Q422265",
+    "aliases": ["spiramycin I"],
+    "associated_with": ["pubchem.compound:5356392"],
+    "label": "spiramycin",
+    "merge_ref": "rxcui:9991",
+    "xrefs": ["rxcui:9991", "chembl:CHEMBL1256397", "chemidplus:8025-81-8"],
+    "item_type": "identity",
+    "src_name": "Wikidata"
+  },
+  {
+    "label_and_type": "chemidplus:8025-81-8##xref",
+    "item_type": "xref",
+    "concept_id": "wikidata:q422265",
+    "src_name": "wikidata"
+  },
+  {
+    "label_and_type": "rxcui:9991##xref",
+    "item_type": "xref",
+    "concept_id": "wikidata:q422265",
+    "src_name": "wikidata"
+  },
+  {
+    "label_and_type": "rxcui:9991##identity",
+    "concept_id": "rxcui:9991",
+    "aliases": [
+      "Spiramycine",
+      "Foromacidin A",
+      "Spiramycin A",
+      "Spiramycin 1",
+      "Spiramycin I",
+      "Foromacidine A",
+      "Demycarosylturimycin H"
+    ],
+    "associated_with": ["mesh:C017186", "atc:J01FA02", "mesh:D015572"],
+    "label": "spiramycin",
+    "merge_ref": "rxcui:9991",
+    "xrefs": ["drugbank:DB06145"],
+    "item_type": "identity",
+    "src_name": "RxNorm"
+  },
+  {
+    "label_and_type": "drugbank:db06145##xref",
+    "item_type": "xref",
+    "src_name": "RxNorm",
+    "concept_id": "rxcui:9991"
   }
 ]
