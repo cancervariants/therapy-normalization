@@ -1,8 +1,9 @@
 """Module for Guide to PHARMACOLOGY ETL methods."""
-from typing import Optional, Dict, Any, List, Union
+from typing import Optional, Dict, Any, List, Union, Tuple
 import csv
 import html
 from pathlib import Path
+import re
 
 import requests
 
@@ -50,11 +51,40 @@ class GuideToPHARMACOLOGY(Base):
         :param bool use_existing: if True, don't try to fetch latest source data
         """
         self._src_dir.mkdir(exist_ok=True, parents=True)
+        prefix = SourceName.GUIDETOPHARMACOLOGY.value.lower()
         if use_existing:
-            pass
+            ligands_files = list(sorted(self._src_dir.glob(f"{prefix}_ligands_*.tsv")))
+            if len(ligands_files) < 1:
+                raise FileNotFoundError("No GtoPdb ligands files found")
+
+            mapping_file: Optional[Tuple] = None
+            for ligands_file in ligands_files[::-1]:
+                try:
+                    version = self._parse_version(
+                        ligands_file,
+                        re.compile(prefix + r"_ligands_(.+)\.tsv")
+                    )
+                except FileNotFoundError:
+                    raise FileNotFoundError(
+                        "Unable to parse GtoPdb version value from ligands file "
+                        f"located at {ligands_file.absolute().as_uri()} -- check "
+                        "filename against schema defined in README: "
+                        "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
+                    )
+                check_mapping_file = self._src_dir / f"{prefix}_ligand_id_mapping_{version}.tsv"  # noqa: E501
+                if check_mapping_file.exists():
+                    self.version = version
+                    self._ligands_file = ligands_file
+                    self._mapping_file = check_mapping_file
+                    break
+            if mapping_file is None:
+                raise FileNotFoundError(
+                    "Unable to find complete GtoPdb data set with matching version "
+                    "values. Check filenames against schema defined in README: "
+                    "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
+                )
         else:
             self._version = self.get_latest_version()
-            prefix = SourceName.GUIDETOPHARMACOLOGY.value.lower()
             self._ligands_file = self._src_dir / f"{prefix}_ligands_{self._version}.tsv"
             self._mapping_file = self._src_dir / f"{prefix}_ligand_id_mapping_{self._version}.tsv"  # noqa: E501
             if not (self._ligands_file.exists() and self._mapping_file.exists()):
