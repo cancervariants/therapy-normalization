@@ -173,8 +173,7 @@ class Base(ABC):
         self._src_dir.mkdir(exist_ok=True, parents=True)
         src_name = type(self).__name__.lower()
         if use_existing:
-            glob = f"{src_name}_*.*"
-            files = list(sorted(self._src_dir.glob(glob)))
+            files = list(sorted(self._src_dir.glob(f"{src_name}_*.*")))
             if len(files) < 1:
                 raise FileNotFoundError(f"No source data found for {src_name}")
             self._src_file: Path = files[-1]

@@ -113,8 +113,8 @@ class HemOnc(Base):
                 except FileNotFoundError:
                     raise FileNotFoundError(
                         f"Unable to parse HemOnc version value from concepts file "
-                        f"located at {concepts_file.absolute().as_uri()} -- "
-                        "check filename against schema defined in README: "
+                        f"located at {concepts_file.absolute().as_uri()} -- check "
+                        "filename against schema defined in README: "
                         "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
                     )
                 other_files = (
