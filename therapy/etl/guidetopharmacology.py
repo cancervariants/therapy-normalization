@@ -44,17 +44,23 @@ class GuideToPHARMACOLOGY(Base):
             with open(str(path), "wb") as f:
                 f.write(r.content)
 
-    def _extract_data(self) -> None:
-        """Gather GtoPdb source files."""
+    def _extract_data(self, use_existing: bool = False) -> None:
+        """Gather GtoPdb source files.
+
+        :param bool use_existing: if True, don't try to fetch latest source data
+        """
         self._src_dir.mkdir(exist_ok=True, parents=True)
-        self._version = self.get_latest_version()
-        prefix = SourceName.GUIDETOPHARMACOLOGY.value.lower()
-        self._ligands_file = self._src_dir / f"{prefix}_ligands_{self._version}.tsv"
-        self._mapping_file = self._src_dir / f"{prefix}_ligand_id_mapping_{self._version}.tsv"  # noqa: E501
-        if not (self._ligands_file.exists() and self._mapping_file.exists()):
-            self._download_data()
-            assert self._ligands_file.exists()
-            assert self._mapping_file.exists()
+        if use_existing:
+            pass
+        else:
+            self._version = self.get_latest_version()
+            prefix = SourceName.GUIDETOPHARMACOLOGY.value.lower()
+            self._ligands_file = self._src_dir / f"{prefix}_ligands_{self._version}.tsv"
+            self._mapping_file = self._src_dir / f"{prefix}_ligand_id_mapping_{self._version}.tsv"  # noqa: E501
+            if not (self._ligands_file.exists() and self._mapping_file.exists()):
+                self._download_data()
+                assert self._ligands_file.exists()
+                assert self._mapping_file.exists()
 
     def _transform_data(self) -> None:
         """Transform Guide To PHARMACOLOGY data."""

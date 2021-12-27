@@ -107,7 +107,7 @@ class RxNorm(Base):
         self._http_download(f"{url}?ticket={st_r.text}", self._src_dir,
                             handler=self._zip_handler)
 
-    def _extract_data(self, use_existing: bool) -> None:
+    def _extract_data(self, use_existing: bool = False) -> None:
         """Get source files from RxNorm data directory.
         This class expects a file named `rxnorm_<version>.RRF` and a file named
         `rxnorm_drug_forms_<version>.yaml`. This method will download and

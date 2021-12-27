@@ -157,7 +157,7 @@ class Base(ABC):
         else:
             return matches.groups()[0]
 
-    def _extract_data(self, use_existing: bool) -> None:
+    def _extract_data(self, use_existing: bool = False) -> None:
         """Get source file from data directory.
 
         This method should ensure the source data directory exists, acquire source data,
@@ -177,7 +177,7 @@ class Base(ABC):
             files = list(sorted(self._src_dir.glob(glob)))
             if len(files) < 1:
                 raise FileNotFoundError(f"No source data found for {src_name}")
-            self._src_file = files[-1]
+            self._src_file: Path = files[-1]
             try:
                 self._version = self._parse_version(self._src_file)
             except FileNotFoundError:
@@ -195,7 +195,7 @@ class Base(ABC):
                 self._download_data()
                 latest = list(self._src_dir.glob(fglob))
             assert len(latest) != 0  # probably unnecessary, but just to be safe
-            self._src_file: Path = latest[0]
+            self._src_file = latest[0]
 
     @abstractmethod
     def _load_meta(self) -> None:

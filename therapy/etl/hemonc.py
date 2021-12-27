@@ -84,7 +84,7 @@ class HemOnc(Base):
         headers = {"X-Dataverse-key": api_key}
         self._http_download(url, self._src_dir, headers, self._zip_handler)
 
-    def _extract_data(self, use_existing: bool) -> None:
+    def _extract_data(self, use_existing: bool = False) -> None:
         """Get source files from data directory.
 
         The following files are necessary for data processing:
