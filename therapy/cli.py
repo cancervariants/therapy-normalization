@@ -48,8 +48,15 @@ class CLI:
         is_flag=True,
         help="Update concepts for normalize endpoint from accepted sources."
     )
+    @click.option(
+        "--use-existing",
+        is_flag=True,
+        default=False,
+        help="Use most recent existing source data instead of fetching latest version"
+    )
     def update_normalizer_db(normalizer: str, prod: bool, db_url: str,
-                             update_all: bool, update_merged: bool) -> None:
+                             update_all: bool, update_merged: bool,
+                             use_existing: bool) -> None:
         """Update selected normalizer source(s) in the therapy database.
         \f  # noqa: D301
         :param str normalizer: comma-separated string listing source names
@@ -57,6 +64,7 @@ class CLI:
         :param str db_url: DynamoDB endpoint URL (usually only needed locally)
         :param bool update_all: if true, update all sources
         :param bool update_merged: if true, update normalized group results
+        :param bool use_existing: if true, don't try to fetch latest source data
         """
         endpoint_url = None
         if prod:
@@ -75,7 +83,7 @@ class CLI:
         if update_all:
             normalizers = list(src for src in SOURCES)
             CLI()._check_disease_normalizer(normalizers, endpoint_url)
-            CLI()._update_normalizers(normalizers, db, update_merged)
+            CLI()._update_normalizers(normalizers, db, update_merged, use_existing)
         elif not normalizer:
             if update_merged:
                 CLI()._update_merged(db, [])
@@ -93,7 +101,7 @@ class CLI:
                 raise Exception(f"Not valid source(s): {non_sources}")
 
             CLI()._check_disease_normalizer(normalizers, endpoint_url)
-            CLI()._update_normalizers(normalizers, db, update_merged)
+            CLI()._update_normalizers(normalizers, db, update_merged, use_existing)
 
     def _check_disease_normalizer(self, normalizers: List[str],
                                   endpoint_url: Optional[str]) -> None:
@@ -140,12 +148,14 @@ class CLI:
 
     @staticmethod
     def _update_normalizers(normalizers: List[str], db: Database,
-                            update_merged: bool) -> None:
+                            update_merged: bool, use_existing: bool) -> None:
         """Update selected normalizer sources.
         :param List[str] normalizers: list of source names to update
         :param Database db: database instance to use
         :param bool update_merged: if true, store concept IDs as they're processed and
             produce normalized records
+        :param bool use_existing: if true, don't try to fetch latest source data in
+            source perform_etl methods
         """
         processed_ids = list()
         for n in normalizers:
@@ -168,7 +178,7 @@ class CLI:
 
             start_load = timer()
             source = SOURCES_CLASS[n](database=db)
-            processed_ids += source.perform_etl()
+            processed_ids += source.perform_etl(use_existing)
             end_load = timer()
             load_time = end_load - start_load
 

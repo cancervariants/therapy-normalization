@@ -1,10 +1,11 @@
 """Provide ETL methods for HemOnc.org data."""
 import logging
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Optional
 import csv
 import os
 import zipfile
+import re
 
 import requests
 import isodate
@@ -83,7 +84,7 @@ class HemOnc(Base):
         headers = {"X-Dataverse-key": api_key}
         self._http_download(url, self._src_dir, headers, self._zip_handler)
 
-    def _extract_data(self) -> None:
+    def _extract_data(self, use_existing: bool) -> None:
         """Get source files from data directory.
 
         The following files are necessary for data processing:
@@ -92,19 +93,62 @@ class HemOnc(Base):
             hemonc_synonyms_<version>.csv
         This method will attempt to retrieve their latest versions if they are
         unavailable locally.
+
+        :param bool use_existing: if True, don't try to fetch latest source data
         """
         self._src_dir.mkdir(exist_ok=True, parents=True)
-        self._version = self.get_latest_version()
-        data_filenames = (
-            self._src_dir / f"hemonc_concepts_{self._version}.csv",
-            self._src_dir / f"hemonc_rels_{self._version}.csv",
-            self._src_dir / f"hemonc_synonyms_{self._version}.csv"
-        )
-        if not all((f.exists() for f in data_filenames)):
-            self._download_data()
-        self._src_files = data_filenames
-        for file in self._src_files:
-            assert file.exists()
+
+        if use_existing:
+            concepts = list(sorted(self._src_dir.glob("hemonc_concepts_*.csv")))
+            if len(concepts) < 1:
+                raise FileNotFoundError("No HemOnc concepts file found")
+
+            src_files: Optional[Tuple] = None
+            for concepts_file in concepts[::-1]:
+                try:
+                    version = self._parse_version(
+                        concepts_file,
+                        re.compile(r"hemonc_concepts_(.+)\.csv")
+                    )
+                except FileNotFoundError:
+                    raise FileNotFoundError(
+                        f"Unable to parse HemOnc version value from concepts file "
+                        f"located at {concepts_file.absolute().as_uri()} -- "
+                        "check filename against schema defined in README: "
+                        "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
+                    )
+                other_files = (
+                    self._src_dir / f"hemonc_rels_{version}.csv",
+                    self._src_dir / f"hemonc_synonyms_{version}.csv"
+                )
+                if other_files[0].exists() and other_files[1].exists():
+                    self.version = version
+                    src_files = (
+                        concepts_file,
+                        other_files[0],
+                        other_files[1]
+                    )
+                    break
+            if src_files is None:
+                raise FileNotFoundError(
+                    "Unable to find complete HemOnc data set with matching version "
+                    "values. Check filenames against schema defined in README: "
+                    "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
+                )
+            else:
+                self._src_files = src_files
+        else:
+            self._version = self.get_latest_version()
+            data_filenames = (
+                self._src_dir / f"hemonc_concepts_{self._version}.csv",
+                self._src_dir / f"hemonc_rels_{self._version}.csv",
+                self._src_dir / f"hemonc_synonyms_{self._version}.csv"
+            )
+            if not all((f.exists() for f in data_filenames)):
+                self._download_data()
+            self._src_files = data_filenames
+            for file in self._src_files:
+                assert file.exists()
 
     def _load_meta(self) -> None:
         """Add HemOnc metadata."""
