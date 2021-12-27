@@ -28,7 +28,7 @@ class ChEMBL(Base):
         shutil.rmtree(tmp_path.parent.parent.parent)
         logger.info("Successfully retrieved source data for ChEMBL")
 
-    def _extract_data(self, use_existing: bool) -> None:
+    def _extract_data(self, use_existing: bool = False) -> None:
         """Extract data from the ChEMBL source.
 
         :param bool use_existing: if True, don't try to fetch latest source data
