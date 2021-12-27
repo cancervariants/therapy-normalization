@@ -49,7 +49,7 @@ class CLI:
         help="Update concepts for normalize endpoint from accepted sources."
     )
     @click.option(
-        "--use-existing",
+        "--use_existing",
         is_flag=True,
         default=False,
         help="Use most recent existing source data instead of fetching latest version"
