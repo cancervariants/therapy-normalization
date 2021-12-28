@@ -189,7 +189,7 @@ class CLI:
                     ):
                         processed_ids += source.perform_etl()
                     else:
-                        continue
+                        raise e
             end_load = timer()
             load_time = end_load - start_load
 
