@@ -178,7 +178,18 @@ class CLI:
 
             start_load = timer()
             source = SOURCES_CLASS[n](database=db)
-            processed_ids += source.perform_etl(use_existing)
+            try:
+                processed_ids += source.perform_etl(use_existing)
+            except FileNotFoundError as e:
+                if use_existing:
+                    if click.confirm(
+                        f"Encountered FileNotFoundError while loading {n}: "
+                        f"{e.args[0] if len(e.args) > 0 else ''}\n"
+                        "Attempt to retrieve latest version from source? "
+                    ):
+                        processed_ids += source.perform_etl()
+                    else:
+                        continue
             end_load = timer()
             load_time = end_load - start_load
 
