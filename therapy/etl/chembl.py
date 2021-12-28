@@ -28,9 +28,12 @@ class ChEMBL(Base):
         shutil.rmtree(tmp_path.parent.parent.parent)
         logger.info("Successfully retrieved source data for ChEMBL")
 
-    def _extract_data(self) -> None:
-        """Extract data from the ChEMBL source."""
-        super()._extract_data()
+    def _extract_data(self, use_existing: bool = False) -> None:
+        """Extract data from the ChEMBL source.
+
+        :param bool use_existing: if True, don't try to fetch latest source data
+        """
+        super()._extract_data(use_existing)
         conn = sqlite3.connect(self._src_file)
         conn.row_factory = sqlite3.Row
         self._conn = conn

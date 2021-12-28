@@ -7,6 +7,7 @@ from typing import List, Dict, Optional, Callable
 import os
 import zipfile
 import tempfile
+import re
 
 from pydantic import ValidationError
 import requests
@@ -45,15 +46,16 @@ class Base(ABC):
         self._src_dir: Path = Path(data_path / name)
         self._added_ids: List[str] = []
 
-    def perform_etl(self) -> List[str]:
+    def perform_etl(self, use_existing: bool = False) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
         Returned concept IDs can be passed to Merge method for computing
         merged concepts.
 
+        :param bool use_existing: if True, don't try to retrieve latest source data
         :return: list of concept IDs which were successfully processed and
             uploaded.
         """
-        self._extract_data()
+        self._extract_data(use_existing)
         self._load_meta()
         self._transform_data()
         return self._added_ids
@@ -138,26 +140,61 @@ class Base(ABC):
             logger.error(f"FTP download failed: {e}")
             raise Exception(e)
 
-    def _extract_data(self) -> None:
-        """Get source file from data directory.
-        This method should create the source data directory if needed,
-        acquire the most recent version number, check that local data is
-        up-to-date and retrieve the latest data if needed, and set the
-        `self._src_file` attribute to the source file location. Child classes
-        could add additional functions, e.g. setting up DB cursors.
+    def _parse_version(self, file_path: Path, pattern: Optional[re.Pattern] = None
+                       ) -> str:
+        """Get version number from provided file path.
 
-        Sources that use multiple data files (such as RxNorm and HemOnc) will
-        have to reimplement this method.
+        :param Path file_path: path to located source data file
+        :param Optional[re.Pattern] pattern: regex pattern to use
+        :return: source data version
+        :raises: FileNotFoundError if version parsing fails
+        """
+        if pattern is None:
+            pattern = re.compile(type(self).__name__.lower() + r"_(.+)\..+")
+        matches = re.match(pattern, file_path.name)
+        if matches is None:
+            raise FileNotFoundError
+        else:
+            return matches.groups()[0]
+
+    def _extract_data(self, use_existing: bool = False) -> None:
+        """Get source file from data directory.
+
+        This method should ensure the source data directory exists, acquire source data,
+        set the source version value, and assign the source file location to
+        `self._src_file`. Child classes needing additional functionality (like setting
+        up a DB cursor, or managing multiple source files) will need to reimplement
+        this method. If `use_existing` is True, the version number will be parsed from
+        the existing filename; otherwise, it will be retrieved from the data source,
+        and if the local file is out-of-date, the newest version will be acquired.
+
+        :param bool use_existing: if True, don't try to fetch latest source data
         """
         self._src_dir.mkdir(exist_ok=True, parents=True)
-        self._version = self.get_latest_version()
-        fglob = f"{type(self).__name__.lower()}_{self._version}.*"
-        latest = list(self._src_dir.glob(fglob))
-        if not latest:
-            self._download_data()
+        src_name = type(self).__name__.lower()
+        if use_existing:
+            files = list(sorted(self._src_dir.glob(f"{src_name}_*.*")))
+            if len(files) < 1:
+                raise FileNotFoundError(f"No source data found for {src_name}")
+            self._src_file: Path = files[-1]
+            try:
+                self._version = self._parse_version(self._src_file)
+            except FileNotFoundError:
+                raise FileNotFoundError(
+                    f"Unable to parse version value from {src_name} source data file "
+                    f"located at {self._src_file.absolute().as_uri()} -- "
+                    "check filename against schema defined in README: "
+                    "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
+                )
+        else:
+            self._version = self.get_latest_version()
+            fglob = f"{src_name}_{self._version}.*"
             latest = list(self._src_dir.glob(fglob))
-        assert len(latest) != 0  # probably unnecessary, but just to be safe
-        self._src_file: Path = latest[0]
+            if not latest:
+                self._download_data()
+                latest = list(self._src_dir.glob(fglob))
+            assert len(latest) != 0  # probably unnecessary, but just to be safe
+            self._src_file = latest[0]
 
     @abstractmethod
     def _load_meta(self) -> None:
