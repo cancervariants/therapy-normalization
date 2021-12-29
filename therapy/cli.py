@@ -141,6 +141,8 @@ class CLI:
                     click.echo(msg)
                 else:
                     msg = "Unable to proceed without Disease Normalizer."
+                    click.echo(msg)
+                    logger.info(msg)
                     ctx = click.get_current_context()
                     ctx.exit()
 
