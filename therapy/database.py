@@ -40,6 +40,7 @@ class Database:
                 if click.confirm("Are you sure you want to use the "
                                  "production database?", default=False):
                     click.echo("***THERAPY PRODUCTION DATABASE IN USE***")
+                    environ["DISEASE_NORM_EB_PROD"] = "true"
                 else:
                     click.echo("Exiting.")
                     sys.exit()
