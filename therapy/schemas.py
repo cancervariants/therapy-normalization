@@ -96,11 +96,12 @@ class ApprovalRating(str, Enum):
 
 
 class HasIndication(BaseModel):
-    """Data regarding FDA indication. Currently provided only by HemOnc.org data."""
+    """Data regarding disease indications from regulatory bodies."""
 
-    disease_id: str
+    disease_id: Optional[str]
     disease_label: str
     normalized_disease_id: Optional[str]
+    meta: Optional[Dict[str, str]]
 
     class Config:
         """Configure HasIndication class"""

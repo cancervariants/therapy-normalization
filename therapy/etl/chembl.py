@@ -41,15 +41,41 @@ class ChEMBL(Base):
 
     def _transform_data(self) -> None:
         """Transform SQLite data to temporary JSON."""
-        self._create_dictionary_synonyms_table()
-        self._create_trade_names_table()
-        self._create_temp_table()
+        # self._create_dictionary_synonyms_table()
+        # self._create_trade_names_table()
+        # self._create_temp_table()
 
-        self._cursor.execute("DROP TABLE DictionarySynonyms;")
-        self._cursor.execute("DROP TABLE TradeNames;")
+        # self._cursor.execute("DROP TABLE DictionarySynonyms;")
+        # self._cursor.execute("DROP TABLE TradeNames;")
 
-        self._load_json()
-        self._conn.commit()
+        # self._load_json()
+        # self._conn.commit()
+        query = """
+            SELECT
+                md.chembl_id,
+                md.molregno,
+                md.pref_name,
+                md.max_phase,
+                md.withdrawn_flag,
+                group_concat(ms.synonyms, '||') as synonyms,
+                f.product_id,
+                group_concat(p.trade_name, '||') as trade_names,
+                d.max_phase_for_ind,
+                d.mesh_heading,
+                d.mesh_id,
+                d.efo_id,
+                d.efo_term
+            FROM molecule_dictionary md
+            LEFT JOIN molecule_synonyms ms on md.molregno = ms.molregno
+            LEFT JOIN formulations f on md.molregno = f.molregno
+            LEFT JOIN products p on f.product_id = p.product_id
+            LEFT JOIN drug_indication d on md.molregno = d.molregno
+
+            GROUP BY md.molregno
+        """
+        self._cursor.execute(query)
+        for row in self._cursor:
+            pass
         self._conn.close()
 
     def _create_dictionary_synonyms_table(self) -> None:
@@ -61,7 +87,7 @@ class ChEMBL(Base):
                 '{NamespacePrefix.CHEMBL.value}:'||md.chembl_id as chembl_id,
                 md.pref_name,
                 md.max_phase,
-                md.withdrawn_flag,
+                md.withdrawn_flag as withdrawn,
                 group_concat(
                     ms.synonyms, '||')as synonyms
             FROM molecule_dictionary md
@@ -73,7 +99,7 @@ class ChEMBL(Base):
                 '{NamespacePrefix.CHEMBL.value}:'||md.chembl_id as chembl_id,
                 md.pref_name,
                 md.max_phase,
-                md.withdrawn_flag,
+                md.withdrawn_flag as withdrawn,
                 group_concat(
                     ms.synonyms, '||') as synonyms
             FROM molecule_synonyms ms
@@ -102,20 +128,19 @@ class ChEMBL(Base):
     def _create_temp_table(self) -> None:
         """Create temporary table to store therapies data."""
         create_temp_table = """
-            CREATE TEMPORARY TABLE temp(concept_id, label, approval_rating,
+            CREATE TEMPORARY TABLE temp(concept_id, label, approval_rating, withdrawn,
                                         src_name, trade_names, aliases);
         """
         self._cursor.execute(create_temp_table)
 
         insert_temp = f"""
-            INSERT INTO temp(concept_id, label, approval_rating, src_name,
+            INSERT INTO temp(concept_id, label, approval_rating, withdrawn, src_name,
                              trade_names, aliases)
             SELECT
                 ds.chembl_id,
                 ds.pref_name,
+                ds.withdrawn_flag as withdrawn,
                 CASE
-                    WHEN ds.withdrawn_flag
-                        THEN '{ApprovalRating.CHEMBL_WITHDRAWN.value}'
                     WHEN ds.max_phase == 0
                         THEN '{ApprovalRating.CHEMBL_0.value}'
                     WHEN ds.max_phase == 1
@@ -139,9 +164,8 @@ class ChEMBL(Base):
             SELECT
                 ds.chembl_id,
                 ds.pref_name,
+                ds.withdrawn_flag as withdrawn,
                 CASE
-                    WHEN ds.withdrawn_flag
-                        THEN '{ApprovalRating.CHEMBL_WITHDRAWN.value}'
                     WHEN ds.max_phase == 0
                         THEN '{ApprovalRating.CHEMBL_0.value}'
                     WHEN ds.max_phase == 1
@@ -171,6 +195,7 @@ class ChEMBL(Base):
             SELECT
                 concept_id,
                 label,
+                withdrawn,
                 approval_rating,
                 src_name,
                 trade_names,
@@ -179,6 +204,7 @@ class ChEMBL(Base):
         """
         result = [dict(row) for row in
                   self._cursor.execute(chembl_data).fetchall()]
+        breakpoint()
         self._cursor.execute("DROP TABLE temp;")
 
         for record in result:
