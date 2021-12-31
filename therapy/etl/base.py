@@ -8,6 +8,7 @@ import os
 import zipfile
 import tempfile
 import re
+import json
 
 from pydantic import ValidationError
 import requests
@@ -267,7 +268,12 @@ class Base(ABC):
         indications = therapy.get("has_indication")
         if indications:
             therapy["has_indication"] = [
-                [ind["disease_id"], ind["disease_label"], ind["normalized_disease_id"]]
+                [
+                    ind.get("disease_id", ""),
+                    ind["disease_label"],
+                    ind["normalized_disease_id"],
+                    json.dumps(ind.get("meta", ""))
+                ]
                 for ind in indications
             ]
         elif "has_indication" in therapy:
