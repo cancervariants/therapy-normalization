@@ -9,10 +9,12 @@ import zipfile
 import tempfile
 import re
 import json
+from functools import lru_cache
 
 from pydantic import ValidationError
 import requests
 import bioversions
+from disease.query import QueryHandler as DiseaseNormalizer
 
 from therapy import APP_ROOT, ITEM_TYPES, DownloadException
 from therapy.schemas import Drug
@@ -269,10 +271,10 @@ class Base(ABC):
         if indications:
             therapy["has_indication"] = [
                 [
-                    ind.get("disease_id", ""),
+                    ind["disease_id"],
                     ind["disease_label"],
-                    ind["normalized_disease_id"],
-                    json.dumps(ind.get("meta", ""))
+                    ind.get("normalized_disease_id", None),
+                    json.dumps(ind.get("meta"))
                 ]
                 for ind in indications
             ]
@@ -287,3 +289,30 @@ class Base(ABC):
 
         self.database.add_record(therapy)
         self._added_ids.append(concept_id)
+
+
+class DiseaseIndicationBase(Base):
+    """Base class for sources that require disease normalization capabilities."""
+
+    def __init__(self, database: Database,
+                 data_path: Path = DEFAULT_DATA_PATH):
+        """Initialize source ETL instance.
+
+        :param therapy.database.Database database: application database
+        :param Path data_path: path to normalizer data directory
+        """
+        super().__init__(database, data_path)
+        self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
+
+    @lru_cache(maxsize=64)
+    def _normalize_disease(self, query: str) -> Optional[str]:
+        """Attempt normalization of disease term.
+        :param str query: term to normalize
+        :return: ID if successful, None otherwise
+        """
+        response = self.disease_normalizer.search_groups(query)
+        if response["match_type"] > 0:
+            return response["disease_descriptor"]["disease_id"]
+        else:
+            logger.warning(f"Failed to normalize disease term: {query}")
+            return None

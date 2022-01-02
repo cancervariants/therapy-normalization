@@ -3,35 +3,22 @@ import logging
 import os
 import shutil
 import sqlite3
-from typing import Optional, List
-from pathlib import Path
+from typing import Optional, List, Dict
 
 import chembl_downloader
 import bioversions
-from disease.query import QueryHandler as DiseaseNormalizer
 
-from therapy.etl.base import Base, DEFAULT_DATA_PATH
+from therapy.etl.base import DiseaseIndicationBase
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalRating, \
-    SourceMeta, HasIndication
-from therapy.database import Database
+    SourceMeta
 
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
 
-class ChEMBL(Base):
+class ChEMBL(DiseaseIndicationBase):
     """Class for ChEMBL ETL methods."""
-
-    def __init__(self, database: Database,
-                 data_path: Path = DEFAULT_DATA_PATH):
-        """Initialize HemOnc instance.
-
-        :param therapy.database.Database database: application database
-        :param Path data_path: path to normalizer data directory
-        """
-        super().__init__(database, data_path)
-        self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
 
     def _download_data(self) -> None:
         """Download latest ChEMBL database file from EBI."""
@@ -65,46 +52,54 @@ class ChEMBL(Base):
             return []
 
     @staticmethod
-    def _get_approval_rating(value: str) -> ApprovalRating:
+    def _get_approval_rating(value: int) -> ApprovalRating:
         """Standardize approval rating value
-        :param str value: value retrieved from ChEMBL database
+        :param int value: value retrieved from ChEMBL database
         :return: instantiated ApprovalRating
         :raise: ValueError if invalid value is provided
         """
-        if value == "0":
+        if value == 0:
             return ApprovalRating.CHEMBL_0
-        elif value == "1":
+        elif value == 1:
             return ApprovalRating.CHEMBL_1
-        elif value == "2":
+        elif value == 2:
             return ApprovalRating.CHEMBL_2
-        elif value == "3":
+        elif value == 3:
             return ApprovalRating.CHEMBL_3
-        elif value == "4":
+        elif value == 4:
             return ApprovalRating.CHEMBL_4
         else:
             raise ValueError(f"Unrecognized approval rating: {value}")
 
-    def _get_indications(self, value: Optional[str]) -> List[HasIndication]:
+    def _get_indications(self, value: Optional[str]) -> List[Dict]:
         """Construct indication objects to prepare for loading into DB
         :param Optional[str] value: `indication` value fetched from ChEMBL DB
-        :return: List containing valid HasIndication objects
+        :return: List containing indication dicts
         """
         if value:
             indications = []
             indication_groups = value.split("|||")
-            for group in indication_groups:
+            for group in set(indication_groups):
                 ind_group = group.split("||")
-                for term in ind_group[:4]:
-                    response = self.disease_normalizer.search_groups(term)
-                    if response["match_type"] > 0:
-                        descriptor = response["disease_descriptor"]
-                        phase = self._get_approval_rating(ind_group[4])
-                        indications.append(HasIndication(
-                            disease_label=descriptor["label"],
-                            normalized_disease_id=descriptor["disease_id"],
-                            meta={"chembl_max_phase_for_ind": phase}
-                        ))
+                phase = self._get_approval_rating(int(ind_group[4]))
+                for i, term in enumerate(ind_group[:4]):
+                    normalized_response = self._normalize_disease(term)
+                    if normalized_response is not None:
+                        label = ind_group[0] if i % 2 == 0 else ind_group[1]
+                        disease_id = ind_group[2] if i % 2 == 0 else ind_group[3]
+                        indications.append({
+                            "disease_id": disease_id,
+                            "disease_label": label,
+                            "normalized_disease_id": normalized_response[1],
+                            "meta": {"chembl_max_phase_for_ind": phase}
+                        })
                         break
+                    else:
+                        indications.append({
+                            "disease_id": ind_group[0],
+                            "disease_label": ind_group[1],
+                            "meta": {"chembl_max_phase_for_ind": phase}
+                        })
             return indications
         else:
             return []
@@ -118,46 +113,58 @@ class ChEMBL(Base):
             md.pref_name,
             md.max_phase,
             md.withdrawn_flag,
-            group_concat(ms.synonyms, '||')   as aliases,
-            group_concat(ms_tn.synonyms, '||') as trade_names_syn,
-            f.product_id,
-            group_concat(p.trade_name, '||')  as trade_names,
-            group_concat(d.indication, '|||') as indication
+            ms.aliases,
+            tn.trade_names,
+            d.indications
         FROM molecule_dictionary md
         LEFT JOIN (
-            SELECT DISTINCT molregno, synonyms, syn_type
-            FROM molecule_synonyms
-            WHERE syn_type != 'TRADE_NAME'
+            SELECT molregno, GROUP_CONCAT(synonyms, '||') aliases
+            FROM (
+                SELECT DISTINCT molregno, synonyms
+                FROM molecule_synonyms
+                WHERE syn_type != 'TRADE_NAME'
+            ) GROUP BY molregno
         ) ms on md.molregno = ms.molregno
-        LEFT JOIN(
-            SELECT DISTINCT molregno, synonyms, syn_type
-            FROM molecule_synonyms
-            WHERE syn_type == 'TRADE_NAME'
-        ) ms_tn on md.molregno = ms_tn.molregno
-        LEFT JOIN formulations f on md.molregno = f.molregno
         LEFT JOIN (
-            SELECT DISTINCT product_id, trade_name
-            FROM products
-        ) p on f.product_id = p.product_id
+            SELECT molregno, GROUP_CONCAT(trade_name, '||') trade_names
+            FROM (
+                SELECT DISTINCT molregno, trade_name
+                FROM (
+                    SELECT molregno, synonyms as trade_name
+                    FROM molecule_synonyms
+                    WHERE syn_type == 'TRADE_NAME'
+                    UNION
+                    SELECT molregno, trade_name
+                    FROM (
+                        SELECT f.molregno, p.trade_name
+                        FROM formulations f
+                        LEFT JOIN products p
+                        ON f.product_id = p.product_id
+                    )
+                )
+            ) GROUP BY molregno
+        ) tn on md.molregno = tn.molregno
         LEFT JOIN (
-            SELECT DISTINCT
-                d.molregno,
+            SELECT molregno, GROUP_CONCAT(indication, '|||') as indications
+            FROM (
+                SELECT DISTINCT d.molregno,
                 'mesh:' || d.mesh_id || '||' || d.efo_id || '||' || d.mesh_heading
-                    || '||' || d.efo_term || '||' || d.max_phase_for_ind as indication
-            FROM drug_indication AS d
-            WHERE (
-                d.molregno IS NOT NULL
-                AND d.mesh_heading IS NOT NULL
-                AND d.mesh_id IS NOT NULL
-                AND d.efo_term IS NOT NULL
-                AND d.efo_id IS NOT NULL
-                AND d.max_phase_for_ind IS NOT NULL
-            )
+                 || '||' || d.efo_term || '||' || d.max_phase_for_ind as indication
+                FROM drug_indication AS d
+                WHERE (
+                    d.molregno IS NOT NULL
+                    AND d.mesh_heading IS NOT NULL
+                    AND d.mesh_id IS NOT NULL
+                    AND d.efo_term IS NOT NULL
+                    AND d.efo_id IS NOT NULL
+                    AND d.max_phase_for_ind IS NOT NULL
+                )
+            ) GROUP BY molregno
         ) d on md.molregno = d.molregno
         GROUP BY md.molregno;
         """
-
         self._cursor.execute(query)
+
         for row in self._cursor:
             appr_ratings = []
             max_phase = self._get_approval_rating(row["max_phase"])
@@ -166,16 +173,14 @@ class ChEMBL(Base):
             if row["withdrawn_flag"] == "1":
                 appr_ratings.append(ApprovalRating.CHEMBL_WITHDRAWN)
 
-            has_indication = self._get_indications(row["indication"])
+            has_indication = self._get_indications(row["indications"])
 
             params = {
                 "concept_id": f"{NamespacePrefix.CHEMBL.value}:{row['chembl_id']}",
                 "label": row["pref_name"],
                 "approval_ratings": appr_ratings,
                 "aliases": self._unwrap_group_concat(row["aliases"]),
-                "trade_names": self._unwrap_group_concat(
-                    row.get("trade_names", []) + row.get("trade_names_syn", [])
-                ),
+                "trade_names": self._unwrap_group_concat(row["trade_names"]),
                 "has_indication": has_indication
             }
             self._load_therapy(params)
