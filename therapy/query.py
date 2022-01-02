@@ -3,6 +3,7 @@ import re
 from typing import List, Dict, Set, Tuple, Union, Any, Optional
 from urllib.parse import quote
 from datetime import datetime
+import json
 
 from uvicorn.config import logger
 from botocore.exceptions import ClientError
@@ -80,6 +81,23 @@ class QueryHandler:
             self.db.cached_sources[src_name] = response
             return response
 
+    @staticmethod
+    def _get_indication(indication: List[str]) -> HasIndication:
+        """Construct HasIndication object from data stored in DB
+        :param List[str] indication: List of values as retrieved from DB
+        :return: completed HasIndication instance
+        """
+        if indication[3]:
+            meta = json.loads(indication[3])
+        else:
+            meta = None
+        return HasIndication(
+            disease_id=indication[0],
+            disease_label=indication[1],
+            normalized_disease_id=indication[2],
+            meta=meta
+        )
+
     def _add_record(self,
                     response: Dict[str, Dict],
                     item: Dict,
@@ -94,10 +112,7 @@ class QueryHandler:
         """
         inds = item.get("has_indication")
         if inds:
-            item["has_indication"] = [HasIndication(disease_id=i[0],
-                                                    disease_label=i[1],
-                                                    normalized_disease_id=i[2])
-                                      for i in inds]
+            item["has_indication"] = [self._get_indication(i) for i in inds]
 
         drug = Drug(**item)
         src_name = item["src_name"]
@@ -436,15 +451,26 @@ class QueryHandler:
                 if value:
                     approv["value"]["approval_year"] = value  # type: ignore
             inds = record.get("has_indication", [])
+
             inds_list = []
-            for ind in inds:
-                ind_obj = {
-                    "id": ind[0],
+            for ind_db in inds:
+                indication = self._get_indication(ind_db)
+
+                ind_value_obj = {
+                    "id": indication.disease_id,
                     "type": "DiseaseDescriptor",
-                    "label": ind[1],
-                    "disease_id": ind[2],
+                    "label": indication.disease_label,
+                    "disease_id": indication.normalized_disease_id,
                 }
-                inds_list.append(ind_obj)
+                if indication.meta:
+                    ind_value_obj["extensions"] = [
+                        {
+                            "type": "Extension",
+                            "name": "indication_meta",
+                            "value": indication.meta
+                        }
+                    ]
+                inds_list.append(ind_value_obj)
             if inds_list:
                 approv["value"]["has_indication"] = inds_list  # type: ignore
             vod["extensions"].append(approv)

@@ -98,10 +98,10 @@ class ApprovalRating(str, Enum):
 class HasIndication(BaseModel):
     """Data regarding disease indications from regulatory bodies."""
 
-    disease_id: Optional[str]
+    disease_id: str
     disease_label: str
     normalized_disease_id: Optional[str]
-    meta: Optional[Dict[str, str]]
+    meta: Optional[Dict[str, str]] = None
 
     class Config:
         """Configure HasIndication class"""
