@@ -466,9 +466,10 @@ class QueryHandler:
                     ind_value_obj["extensions"] = [
                         {
                             "type": "Extension",
-                            "name": "indication_meta",
-                            "value": indication.meta
+                            "name": k,
+                            "value": v
                         }
+                        for k, v in indication.meta.items()
                     ]
                 inds_list.append(ind_value_obj)
             if inds_list:
