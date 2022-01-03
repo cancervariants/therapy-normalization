@@ -119,7 +119,7 @@ class GuideToPHARMACOLOGY(Base):
 
                 approval_rating = self._set_approval_rating(row[4], row[5])
                 if approval_rating:
-                    params["approval_rating"] = approval_rating
+                    params["approval_ratings"] = [approval_rating]
 
                 associated_with = list()
                 aliases = list()

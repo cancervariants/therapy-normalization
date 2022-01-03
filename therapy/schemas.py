@@ -141,7 +141,7 @@ class Drug(BaseModel):
     trade_names: Optional[List[str]] = []
     xrefs: Optional[List[str]] = []
     associated_with: Optional[List[str]] = []
-    approval_rating: Optional[ApprovalRating] = None
+    approval_ratings: Optional[List[ApprovalRating]] = None
     approval_year: Optional[List[int]] = []
     has_indication: Optional[List[HasIndication]] = []
 
@@ -172,7 +172,7 @@ class Drug(BaseModel):
                 ],
                 "xrefs": [],
                 "associated_with": None,
-                "approval_rating": "approved",
+                "approval_ratings": "approved",
                 "approval_year": [],
                 "has_indication": [],
                 "trade_names": ["PLATINOL", "PLATINOL-AQ", "CISPLATIN"]
@@ -610,7 +610,7 @@ class SearchService(BaseModel):
                                 ],
                                 "xrefs": ["drugbank:DB00515"],
                                 "associated_with": ["fda:Q20Q21Q62J"],
-                                "approval_rating": None,
+                                "approval_ratings": None,
                                 "trade_names": []
                             }
                         ],
@@ -664,7 +664,7 @@ class SearchService(BaseModel):
                                     "mmsl:31747",
                                     "mmsl:4456"
                                 ],
-                                "approval_rating": "rxnorm_prescribable",
+                                "approval_ratings": ["rxnorm_prescribable"],
                                 "trade_names": [
                                     "Cisplatin",
                                     "Platinol"
@@ -698,7 +698,7 @@ class SearchService(BaseModel):
                                     "fda:Q20Q21Q62J",
                                     "chebi:CHEBI:27899"
                                 ],
-                                "approval_rating": None,
+                                "approval_ratings": None,
                                 "trade_names": []
                             }
                         ],
@@ -739,7 +739,7 @@ class SearchService(BaseModel):
                                 "associated_with": [
                                     "pubchem.compound:5702198"
                                 ],
-                                "approval_rating": None,
+                                "approval_ratings": None,
                                 "trade_names": []
                             }
                         ],

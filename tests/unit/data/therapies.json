@@ -18,7 +18,7 @@
       "Platinol-aq",
       "Liplacis"
     ],
-    "approval_rating": "chembl_phase_4",
+    "approval_ratings": ["chembl_phase_4"],
     "trade_names": ["PLATINOL", "PLATINOL-AQ"]
   },
   {
@@ -40,7 +40,7 @@
     "label_and_type": "chembl:chembl2068237##identity",
     "concept_id": "chembl:CHEMBL2068237",
     "label": "CISPLATIN",
-    "approval_rating": "chembl_phase_4",
+    "approval_ratings": ["chembl_phase_4"],
     "src_name": "ChEMBL"
   },
   {
@@ -52,7 +52,7 @@
     "label_and_type": "chembl:chembl1628046##identity",
     "concept_id": "chembl:CHEMBL1628046",
     "label": "CISPLATIN",
-    "approval_rating": "chembl_phase_4",
+    "approval_ratings": ["chembl_phase_4"],
     "src_name": "ChEMBL"
   },
   {
@@ -65,7 +65,7 @@
     "label": "L-745870",
     "concept_id": "chembl:CHEMBL267014",
     "src_name": "ChEMBL",
-    "approval_rating": "chembl_phase_0"
+    "approval_ratings": ["chembl_phase_0"]
   },
   {
     "label_and_type": "l-745870##label",
@@ -76,7 +76,7 @@
     "label_and_type": "chembl:chembl25##identity",
     "label": "ASPIRIN",
     "concept_id": "chembl:CHEMBL25",
-    "approval_rating": "chembl_phase_4",
+    "approval_ratings": ["chembl_phase_4"],
     "src_name": "ChEMBL"
   },
   {
@@ -596,7 +596,7 @@
     "label_and_type": "rxcui:100213##identity",
     "concept_id": "rxcui:100213",
     "label": "Bifidobacterium Infantis",
-    "approval_rating": "rxnorm_prescribable",
+    "approval_ratings": ["rxnorm_prescribable"],
     "aliases": ["bifidobacterium infantis", "Bifidobacterium infantis"],
     "trade_names": ["Align", "Evivo"],
     "xrefs": ["drugbank:DB14222"],
@@ -633,7 +633,7 @@
     "label_and_type": "rxcui:2555##identity",
     "concept_id": "rxcui:2555",
     "label": "cisplatin",
-    "approval_rating": "rxnorm_prescribable",
+    "approval_ratings": ["rxnorm_prescribable"],
     "aliases": [
       "cis-Platinum",
       "CISplatin",
@@ -705,7 +705,7 @@
     "label_and_type": "rxcui:644##identity",
     "concept_id": "rxcui:644",
     "label": "amiloride",
-    "approval_rating": "rxnorm_prescribable",
+    "approval_ratings": ["rxnorm_prescribable"],
     "aliases": [
       "3,5-diamino-N-carbamimidoyl-6-chloropyrazine-2-carboxamide",
       "aMILoride",
@@ -762,7 +762,7 @@
     "label_and_type": "rxcui:10600##identity",
     "concept_id": "rxcui:10600",
     "label": "timolol",
-    "approval_rating": "rxnorm_prescribable",
+    "approval_ratings": ["rxnorm_prescribable"],
     "aliases": [
       "(S)-1-((1,1-Dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadazol-3-yl)oxy)-2-propanol",
       "2-Propanol, 1-((1,1-dimethylethyl)amino)-3-((4-(4-morpholinyl)-1,2,5-thiadiazol-3-yl)oxy)-, (S)-",
@@ -812,7 +812,7 @@
     "label_and_type": "rxcui:1011##identity",
     "concept_id": "rxcui:1011",
     "label": "lymphocyte immune globulin, anti-thymocyte globulin",
-    "approval_rating": "rxnorm_prescribable",
+    "approval_ratings": ["rxnorm_prescribable"],
     "aliases": [
       "Lymphocyte Immune Globulin, Anti-Thymocyte Globulin",
       "Anti-Thymocyte Globulin",
@@ -869,7 +869,7 @@
       "mmsl:21336",
       "mmsl:d07642"
     ],
-    "approval_rating": "rxnorm_prescribable",
+    "approval_ratings": ["rxnorm_prescribable"],
     "trade_names": ["Thymoglobulin"]
   },
   {
@@ -906,7 +906,7 @@
       "mmsl:d07641",
       "atc:L04AA03"
     ],
-    "approval_rating": "rxnorm_prescribable",
+    "approval_ratings": ["rxnorm_prescribable"],
     "trade_names": ["ATGAM"]
   },
   {
@@ -944,7 +944,7 @@
     "label_and_type": "rxcui:1191##identity",
     "concept_id": "rxcui:1191",
     "label": "aspirin",
-    "approval_rating": "rxnorm_prescribable",
+    "approval_ratings": ["rxnorm_prescribable"],
     "aliases": [
       "Salicylic acid acetate",
       "Aspirin",
@@ -993,7 +993,7 @@
     "label_and_type": "rxcui:44##identity",
     "concept_id": "rxcui:44",
     "label": "mesna",
-    "approval_rating": "rxnorm_prescribable",
+    "approval_ratings": ["rxnorm_prescribable"],
     "aliases": [
       "Mesnum",
       "Ethanesulfonic acid, 2-mercapto-, monosodium salt",
@@ -1039,7 +1039,7 @@
     "label_and_type": "rxcui:61##identity",
     "concept_id": "rxcui:61",
     "label": "beta-alanine",
-    "approval_rating": "rxnorm_prescribable",
+    "approval_ratings": ["rxnorm_prescribable"],
     "aliases": [
       "beta Alanine",
       "3 Aminopropionic Acid",
@@ -1086,7 +1086,7 @@
     "label_and_type": "rxcui:10582##identity",
     "concept_id": "rxcui:10582",
     "label": "levothyroxine",
-    "approval_rating": "rxnorm_prescribable",
+    "approval_ratings": ["rxnorm_prescribable"],
     "aliases": [
       "3,5,3',5'-Tetraiodo-L-thyronine",
       "Thyroxine",
@@ -1143,7 +1143,7 @@
       "Eskabarb",
       "NSC-128143"
     ],
-    "approval_rating": "chembl_phase_4",
+    "approval_ratings": ["chembl_phase_4"],
     "src_name": "ChEMBL",
     "merge_ref": "rxcui:8134"
   },
@@ -1189,7 +1189,7 @@
       "atc:N03AA02"
     ],
     "src_name": "RxNorm",
-    "approval_rating": "rxnorm_prescribable",
+    "approval_ratings": ["rxnorm_prescribable"],
     "merge_ref": "rxcui:8134"
   },
   {
@@ -1604,7 +1604,7 @@
     "label_and_type": "rxcui:142424##identity",
     "concept_id": "rxcui:142424",
     "label": "amiloride hydrochloride",
-    "approval_rating": "rxnorm_prescribable",
+    "approval_ratings": ["rxnorm_prescribable"],
     "aliases": [
       "aMILoride hydrochloride",
       "Amiloride Hydrochloride",
@@ -1644,7 +1644,7 @@
     "label_and_type": "rxcui:4493##identity",
     "concept_id": "rxcui:4493",
     "label": "fluoxetine",
-    "approval_rating": "rxnorm_prescribable",
+    "approval_ratings": ["rxnorm_prescribable"],
     "aliases": [
       "FLUoxetine",
       "N-Methyl-gamma-(4-(trifluoromethyl)phenoxy)benzenepropanamine",
@@ -1680,7 +1680,7 @@
     "label_and_type": "rxcui:227224##identity",
     "concept_id": "rxcui:227224",
     "label": "fluoxetine hydrochloride",
-    "approval_rating": "rxnorm_prescribable",
+    "approval_ratings": ["rxnorm_prescribable"],
     "aliases": ["FLUoxetine hydrochloride", "Fluoxetine Hydrochloride"],
     "associated_with": [
       "usp:m33780",
@@ -1717,7 +1717,7 @@
     "merge_ref": "rxcui:4126",
     "concept_id": "rxcui:4126",
     "label_and_type": "rxcui:4126##identity",
-    "approval_rating": "rxnorm_prescribable",
+    "approval_ratings": ["rxnorm_prescribable"],
     "associated_with": [
       "usp:m2600",
       "mesh:D004999",
@@ -1823,7 +1823,7 @@
       "CDDP"
     ],
     "xrefs": ["rxcui:2555"],
-    "approval_rating": "hemonc_approved",
+    "approval_ratings": ["hemonc_approved"],
     "approval_year": ["1978"],
     "has_indication": [
       ["hemonc:671", "Testicular cancer", "ncit:C7251"],
@@ -1893,7 +1893,7 @@
       "Treanda",
       "Xyotin"
     ],
-    "approval_rating": "hemonc_approved",
+    "approval_ratings": ["hemonc_approved"],
     "approval_year": ["2008", "2015"],
     "has_indication": [
       ["hemonc:581", "Chronic lymphocytic leukemia", "ncit:C3163"],
@@ -1966,7 +1966,7 @@
       "Treanda",
       "Xyotin"
     ],
-    "approval_rating": "hemonc_approved",
+    "approval_ratings": ["hemonc_approved"],
     "approval_year": ["2008", "2015"],
     "has_indication": [
       ["hemonc:581", "Chronic lymphocytic leukemia", "ncit:C3163"],
@@ -1982,7 +1982,7 @@
     "aliases": ["degarelix acetate", "FE200486", "ASP3550"],
     "xrefs": ["rxcui:475230"],
     "trade_names": ["Firmagon"],
-    "approval_rating": "hemonc_approved",
+    "approval_ratings": ["hemonc_approved"],
     "approval_year": ["2008"],
     "has_indication": [["hemonc:658", "Prostate cancer", "ncit:C7378"]]
   },
@@ -2107,7 +2107,7 @@
     "item_type": "identity",
     "concept_id": "iuphar.ligand:5343",
     "label": "cisplatin",
-    "approval_rating": "gtopdb_approved",
+    "approval_ratings": ["gtopdb_approved"],
     "xrefs": [
       "chembl:CHEMBL11359",
       "chemidplus:15663-27-1",
@@ -2206,7 +2206,7 @@
     "item_type": "identity",
     "concept_id": "iuphar.ligand:2804",
     "label": "phenobarbital",
-    "approval_rating": "gtopdb_approved",
+    "approval_ratings": ["gtopdb_approved"],
     "xrefs": ["chembl:CHEMBL40", "chemidplus:50-06-6", "drugbank:DB01174"],
     "associated_with": [
       "pubchem.substance:135650817",
@@ -2288,7 +2288,7 @@
     "item_type": "identity",
     "concept_id": "iuphar.ligand:240",
     "label": "cisapride",
-    "approval_rating": "gtopdb_withdrawn",
+    "approval_ratings": ["gtopdb_withdrawn"],
     "xrefs": ["chembl:CHEMBL1729", "chemidplus:81098-60-4", "drugbank:DB00604"],
     "associated_with": [
       "pubchem.substance:135650104",
@@ -2365,7 +2365,7 @@
       "ndc:0143-9505",
       "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c"
     ],
-    "approval_rating": "fda_prescription"
+    "approval_ratings": ["fda_prescription"]
   },
   {
     "label_and_type": "rxcui:309311##xref",
@@ -2400,7 +2400,7 @@
       "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
       "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2"
     ],
-    "approval_rating": "fda_prescription"
+    "approval_ratings": ["fda_prescription"]
   },
   {
     "label_and_type": "rxcui:309311##xref",
@@ -2436,7 +2436,7 @@
       "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
       "spl:5a24d5bd-c44a-43f7-a04c-76caf3475012"
     ],
-    "approval_rating": "fda_prescription"
+    "approval_ratings": ["fda_prescription"]
   },
   {
     "label_and_type": "rxcui:309311##xref",
@@ -2469,7 +2469,7 @@
       "ndc:63323-103",
       "spl:9b008181-ab66-db2f-e053-2995a90aad57"
     ],
-    "approval_rating": "fda_prescription"
+    "approval_ratings": ["fda_prescription"]
   },
   {
     "label_and_type": "rxcui:309311##xref",
@@ -2503,7 +2503,7 @@
       "ndc:0703-5748",
       "spl:54b3415c-c095-4c82-b216-e0e6e6bb8d03"
     ],
-    "approval_rating": "fda_prescription"
+    "approval_ratings": ["fda_prescription"]
   },
   {
     "label_and_type": "unii:q20q21q62j##associated_with",
@@ -2576,7 +2576,7 @@
       "rxcui:2205094"
     ],
     "associated_with": ["unii:UQW7UF9N91", "unii:W34SHF8J2K"],
-    "approval_rating": "fda_prescription",
+    "approval_ratings": ["fda_prescription"],
     "trade_names": ["DUAKLIR PRESSAIR"]
   },
   {
@@ -2604,7 +2604,7 @@
       "rxcui:1303107"
     ],
     "associated_with": ["unii:UQW7UF9N91"],
-    "approval_rating": "fda_prescription",
+    "approval_ratings": ["fda_prescription"],
     "trade_names": ["TUDORZA PRESSAIR"]
   },
   {
@@ -2621,7 +2621,7 @@
     "label": "FORMOTEROL FUMARATE",
     "xrefs": ["rxcui:1246319"],
     "associated_with": ["unii:W34SHF8J2K"],
-    "approval_rating": "fda_prescription"
+    "approval_ratings": ["fda_prescription"]
   },
   {
     "label_and_type": "unii:w34shf8j2k##associated_with",
@@ -2638,7 +2638,7 @@
     "aliases": ["FORMOTEROL FUMARATE DIHYDRATE"],
     "xrefs": ["rxcui:1246321", "rxcui:1246319"],
     "associated_with": ["unii:W34SHF8J2K"],
-    "approval_rating": "fda_prescription",
+    "approval_ratings": ["fda_prescription"],
     "trade_names": ["PERFOROMIST"]
   },
   {
@@ -2681,7 +2681,7 @@
       "ndc:0078-0626",
       "ndc:0078-0627"
     ],
-    "approval_rating": "fda_prescription",
+    "approval_ratings": ["fda_prescription"],
     "trade_names": ["AFINITOR"]
   },
   {
@@ -2740,7 +2740,7 @@
       "spl:137c07d7-e2bf-4f59-8b8f-4ebe119e576d",
       "spl:b92f5536-179c-6234-e053-2995a90a0f25"
     ],
-    "approval_rating": "fda_prescription",
+    "approval_ratings": ["fda_prescription"],
     "trade_names": ["COSMEGEN"]
   },
   {
@@ -2787,7 +2787,7 @@
       "spl:c1bfb82a-814b-23f3-e053-2995a90ae9cf",
       "spl:c1bfb82a-8192-23f3-e053-2995a90ae9cf"
     ],
-    "approval_rating": "fda_prescription",
+    "approval_ratings": ["fda_prescription"],
     "trade_names": ["NALFON"]
   },
   {
@@ -2888,7 +2888,7 @@
       "mmsl:52894",
       "mmsl:d00333"
     ],
-    "approval_rating": "rxnorm_prescribable"
+    "approval_ratings": ["rxnorm_prescribable"]
   },
   {
     "label_and_type": "penicillamine##label",

@@ -57,13 +57,11 @@ def compare_merged_records(actual: Dict, fixture: Dict):
         assert set(actual["xrefs"]) == set(fixture["xrefs"])
     assert ("associated_with" in actual) == ("associated_with" in fixture)
     if "associated_with" in actual or "associated_with" in fixture:
-        assert set(actual["associated_with"]) == \
-            set(fixture["associated_with"])
+        assert set(actual["associated_with"]) == set(fixture["associated_with"])
 
     assert ("approval_ratings" in actual) == ("approval_ratings" in fixture)
     if "approval_ratings" in actual or "approval_ratings" in fixture:
-        assert set(actual["approval_ratings"]) == \
-            set(fixture["approval_ratings"])
+        assert set(actual["approval_ratings"]) == set(fixture["approval_ratings"])
     assert ("approval_year" in actual) == ("approval_year" in fixture)
     if "approval_year" in actual or "approval_year" in fixture:
         assert set(actual["approval_year"]) == set(fixture["approval_year"])

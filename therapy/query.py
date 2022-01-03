@@ -427,8 +427,7 @@ class QueryHandler:
         if "aliases" in record:
             vod["alternate_labels"] = record["aliases"]
 
-        if any(filter(lambda f: f in record, ("approval_rating",
-                                              "approval_ratings",
+        if any(filter(lambda f: f in record, ("approval_ratings",
                                               "approval_year",
                                               "has_indication"))):
             approv = {
@@ -436,13 +435,7 @@ class QueryHandler:
                 "name": "regulatory_approval",
                 "value": {}
             }
-            # temporarily handle rating vs ratings fields slightly differently
-            # to change in issue 223
-            if "approval_rating" in record:
-                value = record.get("approval_rating")
-                if value:
-                    approv["value"]["approval_ratings"] = [value]  # type: ignore
-            elif "approval_ratings" in record:
+            if "approval_ratings" in record:
                 value = record.get("approval_ratings")
                 if value:
                     approv["value"]["approval_ratings"] = value  # type: ignore
