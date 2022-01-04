@@ -408,7 +408,7 @@ class ApprovalRatingValue(BaseModel):
 
     approval_ratings: Optional[List[ApprovalRating]]
     approval_year: Optional[List[int]]
-    has_indication: Optional[List[Union[Dict, ValueObjectDescriptor]]]
+    has_indication: Optional[List[ValueObjectDescriptor]]
 
 
 class ServiceMeta(BaseModel):
