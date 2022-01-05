@@ -82,21 +82,13 @@ class QueryHandler:
             return response
 
     @staticmethod
-    def _get_indication(indication: List[str]) -> HasIndication:
+    def _get_indication(indication: str) -> HasIndication:
         """Construct HasIndication object from data stored in DB
-        :param List[str] indication: List of values as retrieved from DB
+        :param str indication: values as retrieved from DB
         :return: completed HasIndication instance
         """
-        if indication[3]:
-            meta = json.loads(indication[3])
-        else:
-            meta = None
-        return HasIndication(
-            disease_id=indication[0],
-            disease_label=indication[1],
-            normalized_disease_id=indication[2],
-            meta=meta
-        )
+        values = json.loads(indication)
+        return HasIndication(**values)
 
     def _add_record(self,
                     response: Dict[str, Dict],
@@ -443,12 +435,11 @@ class QueryHandler:
                 value = record.get("approval_year")
                 if value:
                     approv["value"]["approval_year"] = value  # type: ignore
-            inds = record.get("has_indication", [])
 
+            inds = record.get("has_indication", [])
             inds_list = []
             for ind_db in inds:
                 indication = self._get_indication(ind_db)
-
                 ind_value_obj = {
                     "id": indication.disease_id,
                     "type": "DiseaseDescriptor",

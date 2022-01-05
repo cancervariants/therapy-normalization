@@ -269,15 +269,16 @@ class Base(ABC):
         # compress has_indication
         indications = therapy.get("has_indication")
         if indications:
-            therapy["has_indication"] = [
-                [
+            therapy["has_indication"] = list({
+                json.dumps([
                     ind["disease_id"],
                     ind["disease_label"],
-                    ind.get("normalized_disease_id", None),
-                    json.dumps(ind.get("meta"))
-                ]
+                    ind.get("normalized_disease_id"),
+                    ind.get("meta")
+                ])
                 for ind in indications
-            ]
+            })
+            breakpoint()
         elif "has_indication" in therapy:
             del therapy["has_indication"]
 

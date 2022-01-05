@@ -1826,9 +1826,24 @@
     "approval_ratings": ["hemonc_approved"],
     "approval_year": ["1978"],
     "has_indication": [
-      ["hemonc:671", "Testicular cancer", "ncit:C7251"],
-      ["hemonc:645", "Ovarian cancer", "ncit:C7431"],
-      ["hemonc:569", "Bladder cancer", "ncit:C9334"]
+      [
+        "hemonc:671",
+        "Testicular cancer",
+        "ncit:C7251",
+        "{\"regulatory_body\": \"FDA\"}"
+      ],
+      [
+        "hemonc:645",
+        "Ovarian cancer",
+        "ncit:C7431",
+        "{\"regulatory_body\": \"FDA\"}"
+      ],
+      [
+        "hemonc:569",
+        "Bladder cancer",
+        "ncit:C9334",
+        "{\"regulatory_body\": \"FDA\"}"
+      ]
     ]
   },
   {
@@ -1896,8 +1911,18 @@
     "approval_ratings": ["hemonc_approved"],
     "approval_year": ["2008", "2015"],
     "has_indication": [
-      ["hemonc:581", "Chronic lymphocytic leukemia", "ncit:C3163"],
-      ["hemonc:46094", "Indolent lymphoma", "ncit:C8504"]
+      [
+        "hemonc:581",
+        "Chronic lymphocytic leukemia",
+        "ncit:C3163",
+        "{\"regulatory_body\": \"FDA\"}"
+      ],
+      [
+        "hemonc:46094",
+        "Indolent lymphoma",
+        "ncit:C8504",
+        "{\"regulatory_body\": \"FDA\"}"
+      ]
     ]
   },
   {
@@ -1969,8 +1994,18 @@
     "approval_ratings": ["hemonc_approved"],
     "approval_year": ["2008", "2015"],
     "has_indication": [
-      ["hemonc:581", "Chronic lymphocytic leukemia", "ncit:C3163"],
-      ["hemonc:46094", "Indolent lymphoma", "ncit:C8504"]
+      [
+        "hemonc:581",
+        "Chronic lymphocytic leukemia",
+        "ncit:C3163",
+        "{\"regulatory_body\": \"FDA\"}"
+      ],
+      [
+        "hemonc:46094",
+        "Indolent lymphoma",
+        "ncit:C8504",
+        "{\"regulatory_body\": \"FDA\"}"
+      ]
     ]
   },
   {
@@ -1984,7 +2019,14 @@
     "trade_names": ["Firmagon"],
     "approval_ratings": ["hemonc_approved"],
     "approval_year": ["2008"],
-    "has_indication": [["hemonc:658", "Prostate cancer", "ncit:C7378"]]
+    "has_indication": [
+      [
+        "hemonc:658",
+        "Prostate cancer",
+        "ncit:C7378",
+        "{\"regulatory_body\": \"FDA\"}"
+      ]
+    ]
   },
   {
     "label_and_type": "rxcui:475230##xref",

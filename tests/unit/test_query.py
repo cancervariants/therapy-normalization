@@ -264,19 +264,40 @@ def cisplatin():
                             "id": "hemonc:671",
                             "type": "DiseaseDescriptor",
                             "disease_id": "ncit:C7251",
-                            "label": "Testicular cancer"
+                            "label": "Testicular cancer",
+                            "extensions": [
+                                {
+                                    "type": "Extension",
+                                    "name": "regulatory_body",
+                                    "value": "FDA"
+                                }
+                            ]
                         },
                         {
                             "id": "hemonc:645",
                             "type": "DiseaseDescriptor",
                             "disease_id": "ncit:C7431",
-                            "label": "Ovarian cancer"
+                            "label": "Ovarian cancer",
+                            "extensions": [
+                                {
+                                    "type": "Extension",
+                                    "name": "regulatory_body",
+                                    "value": "FDA"
+                                }
+                            ]
                         },
                         {
                             "id": "hemonc:569",
                             "type": "DiseaseDescriptor",
                             "disease_id": "ncit:C9334",
-                            "label": "Bladder cancer"
+                            "label": "Bladder cancer",
+                            "extensions": [
+                                {
+                                    "type": "Extension",
+                                    "name": "regulatory_body",
+                                    "value": "FDA"
+                                }
+                            ]
                         }
                     ]
                 }
