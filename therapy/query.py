@@ -82,13 +82,18 @@ class QueryHandler:
             return response
 
     @staticmethod
-    def _get_indication(indication: str) -> HasIndication:
-        """Construct HasIndication object from data stored in DB
-        :param str indication: values as retrieved from DB
-        :return: completed HasIndication instance
+    def _get_indication(indication_string: str) -> HasIndication:
+        """Load indication data.
+        :param str indication_string: dumped JSON string from db
+        :return: complete HasIndication object
         """
-        values = json.loads(indication)
-        return HasIndication(**values)
+        indication_values = json.loads(indication_string)
+        return HasIndication(
+            disease_id=indication_values[0],
+            disease_label=indication_values[1],
+            normalized_disease_id=indication_values[2],
+            meta=indication_values[3]
+        )
 
     def _add_record(self,
                     response: Dict[str, Dict],

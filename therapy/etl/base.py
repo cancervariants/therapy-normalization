@@ -278,7 +278,6 @@ class Base(ABC):
                 ])
                 for ind in indications
             })
-            breakpoint()
         elif "has_indication" in therapy:
             del therapy["has_indication"]
 

@@ -97,7 +97,7 @@ class ChEMBL(DiseaseIndicationBase):
                     else:
                         indications.append({
                             "disease_id": ind_group[0],
-                            "disease_label": ind_group[1],
+                            "disease_label": ind_group[2],
                             "meta": {"chembl_max_phase_for_ind": phase}
                         })
             return indications
