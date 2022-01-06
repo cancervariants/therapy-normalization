@@ -120,31 +120,23 @@ class CLI:
                     ("disease_metadata" not in current_tables) or \
                     (db.diseases.scan()["Count"] == 0) or \
                     (db.metadata.scan()["Count"] < len(DiseaseSources)):
-                if click.confirm("Disease Normalizer appears to be incomplete -- "
-                                 "attempt update?"):
-                    logger.info("Loading Disease Normalizer...")
-                    try:
-                        DiseaseCLI().update_normalizer_db(
-                            [
-                                "--update_all", "--update_merged", "--db_url",
-                                endpoint_url
-                            ]
-                        )
-                    except Exception as e:
-                        logger.error(e)
-                        raise Exception(e)
-                    except:  # noqa: E722
-                        # TODO: what does this do?
-                        pass
-                    msg = "Disease Normalizer reloaded successfully."
-                    logger.debug(msg)
-                    click.echo(msg)
-                else:
-                    msg = "Unable to proceed without Disease Normalizer."
-                    click.echo(msg)
-                    logger.info(msg)
-                    ctx = click.get_current_context()
-                    ctx.exit()
+
+                msg = "Disease Normalizer not loaded. Loading now..."
+                logger.debug(msg)
+                click.echo(msg)
+                try:
+                    DiseaseCLI().update_normalizer_db(
+                        ["--update_all", "--update_merged", "--db_url", endpoint_url]
+                    )
+                except Exception as e:
+                    logger.error(e)
+                    raise Exception(e)
+                except:  # noqa: E722
+                    # TODO: what does this do?
+                    pass
+                msg = "Disease Normalizer reloaded successfully."
+                logger.debug(msg)
+                click.echo(msg)
 
     @staticmethod
     def _help_msg() -> None:
