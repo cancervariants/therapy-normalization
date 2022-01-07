@@ -1,0 +1,46 @@
+{
+  "id": "normalize.therapy:Spiramycin",
+  "type": "TherapyDescriptor",
+  "label": "spiramycin",
+  "description": null,
+  "xrefs": [
+    "ncit:C839",
+    "drugbank:DB06145",
+    "chemidplus:8025-81-8",
+    "wikidata:Q422265"
+  ],
+  "alternate_labels": [
+    "Provamycin",
+    "Spiramycin A",
+    "Rovamycine",
+    "Rovamycin",
+    "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside",
+    "SPIRAMYCIN",
+    "Foromacidine A",
+    "RP 5337",
+    "spiramycin I",
+    "Spiramycin 1",
+    "Antibiotic 799",
+    "Spiramycine",
+    "Demycarosylturimycin H",
+    "Spiramycin I",
+    "Foromacidin A"
+  ],
+  "extensions": [
+    {
+      "type": "Extension",
+      "name": "associated_with",
+      "value": [
+        "pubchem.compound:5356392",
+        "mesh:D015572",
+        "mesh:C017186",
+        "inchikey:ACTOXUHEUCPTEW-CEUOBAOPSA-N",
+        "unii:71ODY0V87H",
+        "unii:033ECH6IFG",
+        "atc:J01FA02",
+        "umls:C0037962"
+      ]
+    }
+  ],
+  "therapy_id": "rxcui:9991"
+}

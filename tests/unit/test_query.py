@@ -1,6 +1,8 @@
 """Test the therapy querying method."""
 from datetime import datetime
 import os
+import json
+from pathlib import Path
 
 import pytest
 
@@ -43,352 +45,29 @@ def merge_query_handler(mock_database):
 
 
 @pytest.fixture(scope="module")
-def phenobarbital():
+def phenobarbital(test_data: Path):
     """Create phenobarbital VOD fixture."""
-    return {
-        "id": "normalize.therapy:Phenobarbital",
-        "type": "TherapyDescriptor",
-        "therapy_id": "rxcui:8134",
-        "label": "phenobarbital",
-        "xrefs": [
-            "ncit:C739",
-            "drugbank:DB01174",
-            "chemidplus:50-06-6",
-            "wikidata:Q407241",
-            "iuphar.ligand:2804",
-            "chembl:CHEMBL40"
-        ],
-        "alternate_labels": [
-            "5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
-            "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
-            "5-Ethyl-5-phenylbarbituric acid",
-            "5-Phenyl-5-ethylbarbituric acid",
-            "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
-            "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
-            "APRD00184",
-            "Acid, Phenylethylbarbituric",
-            "Fenobarbital",
-            "Luminal®",
-            "PHENO",
-            "PHENOBARBITAL",
-            "PHENYLETHYLMALONYLUREA",
-            "PHENobarbital",
-            "Phenemal",
-            "Phenobarbital",
-            "Phenobarbitol",
-            "Phenobarbitone",
-            "Phenobarbituric Acid",
-            "Phenylaethylbarbitursaeure",
-            "Phenylbarbital",
-            "Phenylethylbarbiturate",
-            "Phenylethylbarbituric Acid",
-            "Phenylethylbarbitursaeure",
-            "Phenylethylbarbitursäure",
-            "Phenylethylmalonylurea",
-            "Phenyläthylbarbitursäure",
-            "fenobarbital",
-            "phenobarbital",
-            "phenobarbital sodium",
-            "phenylethylbarbiturate",
-            "5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione",
-            "phenobarb",
-            "phenobarbitone",
-            "NSC-128143",
-            "NSC-128143-",
-            "NSC-9848",
-            "Phenobarbital civ",
-            "Solfoton",
-            "Luminal",
-            "Eskabarb",
-            "Noptil",
-            "Talpheno"
-        ],
-        "extensions": [
-            {
-                "type": "Extension",
-                "name": "associated_with",
-                "value": [
-                    "usp:m63400",
-                    "vandf:4017422",
-                    "mmsl:2390",
-                    "mesh:D010634",
-                    "mmsl:5272",
-                    "mmsl:d00340",
-                    "atc:N03AA02",
-                    "unii:YQE403BP4D",
-                    "umls:C0031412",
-                    "CHEBI:8069",
-                    "pubchem.substance:135650817",
-                    "pubchem.compound:4763",
-                    "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N",
-                    "drugcentral:2134"
-                ]
-            },
-            {
-                "type": "Extension",
-                "name": "regulatory_approval",
-                "value": {
-                    "approval_ratings": [],
-                    "approval_year": [],
-                    "has_indication": []
-                }
-            }
-        ]
-    }
+    return json.load(open(test_data / "phenobarbital_response.json", "r"))
 
 
 @pytest.fixture(scope="module")
-def cisplatin():
+def cisplatin(test_data: Path):
     """Create cisplatin fixture."""
-    return {
-        "id": "normalize.therapy:Cisplatin",
-        "type": "TherapyDescriptor",
-        "therapy_id": "rxcui:2555",
-        "label": "cisplatin",
-        "xrefs": [
-            "ncit:C376",
-            "hemonc:105",
-            "drugbank:DB00515",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415",
-            "iuphar.ligand:5343",
-            "drugbank:DB12117",
-            "chembl:CHEMBL11359",
-            "drugsatfda.anda:074656",
-            "drugsatfda.anda:074735",
-            "drugsatfda.anda:206774",
-            "drugsatfda.anda:207323",
-            "drugsatfda.anda:075036",
-            "drugsatfda.nda:018057",
-        ],
-        "alternate_labels": [
-            "1,2-Diaminocyclohexaneplatinum II citrate",
-            "APRD00359",
-            "CDDP",
-            "CISplatin",
-            "Cis-DDP",
-            "CIS-DDP",
-            "DDP",
-            "Diamminodichloride, Platinum",
-            "Dichlorodiammineplatinum",
-            "Platinum Diamminodichloride",
-            "cis Diamminedichloroplatinum",
-            "cis Platinum",
-            "cis-Diaminedichloroplatinum",
-            "cis-Diamminedichloroplatinum",
-            "cis-Diamminedichloroplatinum(II)",
-            "cis-Dichlorodiammineplatinum(II)",
-            "cis-Platinum",
-            "cis-diamminedichloroplatinum(II)",
-            "Platinol-AQ",
-            "Platinol",
-            "cisplatino",
-            "Cisplatin",
-            "Cis-platinum ii",
-            "Cisplatinum",
-            "INT-230-6 COMPONENT CISPLATIN",
-            "INT230-6 COMPONENT CISPLATIN",
-            "NSC-119875",
-            "Platinol-aq",
-            "DACP",
-            "NSC 119875",
-            "cis-diamminedichloroplatinum III",
-            "cis-platinum",
-            "cisplatinum",
-            "Liplacis"
-        ],
-        "extensions": [
-            {
-                "type": "Extension",
-                "name": "trade_names",
-                "value": [
-                    "Cisplatin",
-                    "Platinol",
-                    "PLATINOL",
-                    "PLATINOL-AQ"
-                ],
-            },
-            {
-                "type": "Extension",
-                "name": "associated_with",
-                "value": [
-                    "mmsl:31747",
-                    "mmsl:4456",
-                    "mmsl:d00195",
-                    "usp:m17910",
-                    "CHEBI:27899",
-                    "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
-                    "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
-                    "mesh:D002945",
-                    "atc:L01XA01",
-                    "vandf:4018139",
-                    "pubchem.substance:178102005",
-                    "pubchem.compound:441203",
-                    "pubchem.compound:5702198",
-                    "umls:C0008838",
-                    "unii:H8MTN7XVC2",
-                    "unii:Q20Q21Q62J",
-                    "ndc:0143-9504",
-                    "ndc:0143-9505",
-                    "ndc:0703-5747",
-                    "ndc:0703-5748",
-                    "ndc:16729-288",
-                    "ndc:44567-509",
-                    "ndc:44567-510",
-                    "ndc:44567-511",
-                    "ndc:44567-530",
-                    "ndc:63323-103",
-                    "ndc:68001-283",
-                    "ndc:68083-162",
-                    "ndc:68083-163",
-                    "ndc:70860-206",
-                    "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
-                    "spl:5a24d5bd-c44a-43f7-a04c-76caf3475012",
-                    "spl:a66eda32-1164-439a-ac8e-73138365ec06",
-                    "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
-                    "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c",
-                    "spl:54b3415c-c095-4c82-b216-e0e6e6bb8d03",
-                    "spl:9b008181-ab66-db2f-e053-2995a90aad57",
-                    "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
-                    "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2"
-                ]
-            },
-            {
-                "type": "Extension",
-                "name": "regulatory_approval",
-                "value": {
-                    "approval_ratings": [],
-                    "approval_year": ["1978"],
-                    "has_indication": [
-                        {
-                            "id": "hemonc:671",
-                            "type": "DiseaseDescriptor",
-                            "disease_id": "ncit:C7251",
-                            "label": "Testicular cancer",
-                            "extensions": [
-                                {
-                                    "type": "Extension",
-                                    "name": "regulatory_body",
-                                    "value": "FDA"
-                                }
-                            ]
-                        },
-                        {
-                            "id": "hemonc:645",
-                            "type": "DiseaseDescriptor",
-                            "disease_id": "ncit:C7431",
-                            "label": "Ovarian cancer",
-                            "extensions": [
-                                {
-                                    "type": "Extension",
-                                    "name": "regulatory_body",
-                                    "value": "FDA"
-                                }
-                            ]
-                        },
-                        {
-                            "id": "hemonc:569",
-                            "type": "DiseaseDescriptor",
-                            "disease_id": "ncit:C9334",
-                            "label": "Bladder cancer",
-                            "extensions": [
-                                {
-                                    "type": "Extension",
-                                    "name": "regulatory_body",
-                                    "value": "FDA"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            }
-        ]
-    }
+    return json.load(open(test_data / "cisplatin_response.json", "r"))
 
 
 @pytest.fixture(scope="module")
-def spiramycin():
+def spiramycin(test_data: Path):
     """Create fixture for normalized spiramycin record."""
-    return {
-        "id": "normalize.therapy:Spiramycin",
-        "type": "TherapyDescriptor",
-        "label": "spiramycin",
-        "xrefs": [
-            "ncit:C839",
-            "drugbank:DB06145",
-            "chemidplus:8025-81-8",
-            "wikidata:Q422265"
-        ],
-        "alternate_labels": [
-            "RP 5337",
-            "SPIRAMYCIN",
-            "Foromacidine A",
-            "Spiramycine",
-            "Provamycin",
-            "Foromacidin A",
-            "Antibiotic 799",
-            "spiramycin I",
-            "Rovamycin",
-            "Spiramycin A",
-            "Spiramycin 1",
-            "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside",  # noqa: E501
-            "Spiramycin I",
-            "Rovamycine",
-            "Demycarosylturimycin H"
-        ],
-        "extensions": [
-            {
-                "type": "Extension",
-                "name": "associated_with",
-                "value": [
-                    "pubchem.compound:5356392",
-                    "umls:C0037962",
-                    "unii:71ODY0V87H",
-                    "inchikey:ACTOXUHEUCPTEW-KWBWCIJSSA-N",
-                    "mesh:C017186",
-                    "atc:J01FA02",
-                    "mesh:D015572",
-                    "unii:033ECH6IFG"
-                ]
-            }
-        ],
-        "therapy_id": "rxcui:9991"
-    }
+    return json.load(open(test_data / "spiramycin_response.json", "r"))
 
 
 @pytest.fixture(scope="module")
-def therapeutic_procedure():
+def therapeutic_procedure(test_data: Path):
     """Create a fixture for the Therapeutic Procedure concept. Used to validate
     single-member concept groups for the normalize endpoint.
     """
-    return {
-        "id": "normalize.therapy:ncit%3AC49236",
-        "therapy_id": "ncit:C49236",
-        "label": "Therapeutic Procedure",
-        "alternate_labels": [
-            "any therapy",
-            "any_therapy",
-            "Therapeutic Interventions",
-            "Therapeutic Method",
-            "Therapeutic Technique",
-            "therapy",
-            "Therapy",
-            "TREAT",
-            "Treatment",
-            "TX",
-            "treatment",
-            "treatment or therapy",
-            "treatment_or_therapy",
-        ],
-        "extensions": [
-            {
-                "name": "associated_with",
-                "value": ["umls:C0087111"],
-                "type": "Extension"
-            }
-        ],
-        "type": "TherapyDescriptor"
-    }
+    return json.load(open(test_data / "therapeutic_procedure_response.json", "r"))
 
 
 def compare_vod(response, fixture, query, match_type, response_id,
@@ -433,15 +112,13 @@ def compare_vod(response, fixture, query, match_type, response_id,
     assert actual["therapy_id"] == fixture["therapy_id"]
     assert actual["label"] == fixture["label"]
 
-    assert ("xrefs" in actual.keys()) == ("xrefs" in fixture.keys())
-    if "xrefs" in actual:
+    assert bool(actual.get("xrefs")) == bool(fixture.get("xrefs"))
+    if actual.get("xrefs"):
         assert set(actual["xrefs"]) == set(fixture["xrefs"])
 
-    assert ("alternate_labels" in actual.keys()) == ("alternate_labels" in
-                                                     fixture.keys())
-    if "alternate_labels" in actual:
-        assert set(actual["alternate_labels"]) == \
-            set(fixture["alternate_labels"])
+    assert bool(actual.get("alternate_labels")) == bool(fixture.get("alternate_labels"))
+    if actual.get("alternate_labels"):
+        assert set(actual["alternate_labels"]) == set(fixture["alternate_labels"])
 
     def get_extension(extensions, name):
         matches = [e for e in extensions if e["name"] == name]
@@ -452,8 +129,8 @@ def compare_vod(response, fixture, query, match_type, response_id,
         else:
             return None
 
-    assert ("extensions" in actual.keys()) == ("extensions" in fixture.keys())
-    if "extensions" in actual:
+    assert bool(actual.get("extensions")) == bool(fixture.get("extensions"))
+    if actual.get("extensions"):
         ext_actual = actual["extensions"]
         ext_fixture = fixture["extensions"]
 

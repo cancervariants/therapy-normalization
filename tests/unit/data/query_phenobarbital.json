@@ -1,0 +1,246 @@
+{
+  "id": "normalize.therapy:Phenobarbital",
+  "type": "TherapyDescriptor",
+  "label": "phenobarbital",
+  "description": null,
+  "xrefs": [
+    "ncit:C739",
+    "drugbank:DB01174",
+    "iuphar.ligand:2804",
+    "chembl:CHEMBL40",
+    "chemidplus:50-06-6",
+    "wikidata:Q407241"
+  ],
+  "alternate_labels": [
+    "fenobarbital",
+    "APRD00184",
+    "5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione",
+    "phenobarbitone",
+    "phenobarbital",
+    "PHENobarbital",
+    "PHENYLETHYLMALONYLUREA",
+    "5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+    "NSC-128143",
+    "Phenemal",
+    "Phenobarbital civ",
+    "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
+    "Fenobarbital",
+    "5-Phenyl-5-ethylbarbituric acid",
+    "phenobarbital sodium",
+    "Luminal®",
+    "Phenobarbital",
+    "Phenylbarbital",
+    "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+    "PHENO",
+    "Phenylethylbarbitursäure",
+    "phenylethylbarbiturate",
+    "PHENOBARBITAL",
+    "Phenylethylbarbiturate",
+    "NSC-128143-",
+    "Phenylaethylbarbitursaeure",
+    "Phenyläthylbarbitursäure",
+    "Phenobarbitone",
+    "Phenobarbitol",
+    "Phenylethylbarbituric Acid",
+    "Phenylethylbarbitursaeure",
+    "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
+    "Luminal",
+    "5-Ethyl-5-phenylbarbituric acid",
+    "Acid, Phenylethylbarbituric",
+    "phenobarb",
+    "Phenylethylmalonylurea",
+    "NSC-9848",
+    "Phenobarbituric Acid"
+  ],
+  "extensions": [
+    {
+      "type": "Extension",
+      "name": "regulatory_approval",
+      "value": {
+        "approval_ratings": [
+          "chembl_phase_4",
+          "rxnorm_prescribable",
+          "gtopdb_approved"
+        ],
+        "has_indication": [
+          {
+            "id": "mesh:D009357",
+            "type": "DiseaseDescriptor",
+            "label": "Neonatal Abstinence Syndrome",
+            "disease_id": "ncit:C87101",
+            "extensions": [
+              {
+                "type": "Extension",
+                "name": "chembl_max_phase_for_ind",
+                "value": "chembl_phase_3"
+              }
+            ]
+          },
+          {
+            "id": "mesh:D012559",
+            "type": "DiseaseDescriptor",
+            "label": "Schizophrenia",
+            "disease_id": "mondo:0005090",
+            "extensions": [
+              {
+                "type": "Extension",
+                "name": "chembl_max_phase_for_ind",
+                "value": "chembl_phase_3"
+              }
+            ]
+          },
+          {
+            "id": "mesh:D001007",
+            "type": "DiseaseDescriptor",
+            "label": "Anxiety",
+            "disease_id": "mondo:0011918",
+            "extensions": [
+              {
+                "type": "Extension",
+                "name": "chembl_max_phase_for_ind",
+                "value": "chembl_phase_3"
+              }
+            ]
+          },
+          {
+            "id": "mesh:D012640",
+            "type": "DiseaseDescriptor",
+            "label": "Seizures",
+            "disease_id": "ncit:C3980",
+            "extensions": [
+              {
+                "type": "Extension",
+                "name": "chembl_max_phase_for_ind",
+                "value": "chembl_phase_3"
+              }
+            ]
+          },
+          {
+            "id": "mesh:D009503",
+            "type": "DiseaseDescriptor",
+            "label": "Neutropenia",
+            "disease_id": "mondo:0001475",
+            "extensions": [
+              {
+                "type": "Extension",
+                "name": "chembl_max_phase_for_ind",
+                "value": "chembl_phase_1"
+              }
+            ]
+          },
+          {
+            "id": "mesh:D008223",
+            "type": "DiseaseDescriptor",
+            "label": "Lymphoma",
+            "disease_id": "ncit:C3208",
+            "extensions": [
+              {
+                "type": "Extension",
+                "name": "chembl_max_phase_for_ind",
+                "value": "chembl_phase_1"
+              }
+            ]
+          },
+          {
+            "id": "mesh:D013226",
+            "type": "DiseaseDescriptor",
+            "label": "Status Epilepticus",
+            "disease_id": "ncit:C85079",
+            "extensions": [
+              {
+                "type": "Extension",
+                "name": "chembl_max_phase_for_ind",
+                "value": "chembl_phase_3"
+              }
+            ]
+          },
+          {
+            "id": "mesh:D003704",
+            "type": "DiseaseDescriptor",
+            "label": "Dementia",
+            "disease_id": "mondo:0001627",
+            "extensions": [
+              {
+                "type": "Extension",
+                "name": "chembl_max_phase_for_ind",
+                "value": "chembl_phase_3"
+              }
+            ]
+          },
+          {
+            "id": "mesh:D004827",
+            "type": "DiseaseDescriptor",
+            "label": "Epilepsy",
+            "disease_id": "ncit:C3020",
+            "extensions": [
+              {
+                "type": "Extension",
+                "name": "chembl_max_phase_for_ind",
+                "value": "chembl_phase_4"
+              }
+            ]
+          },
+          {
+            "id": "mesh:D003866",
+            "type": "DiseaseDescriptor",
+            "label": "Depressive Disorder",
+            "disease_id": "mondo:0002050",
+            "extensions": [
+              {
+                "type": "Extension",
+                "name": "chembl_max_phase_for_ind",
+                "value": "chembl_phase_3"
+              }
+            ]
+          },
+          {
+            "id": "mesh:D001007",
+            "type": "DiseaseDescriptor",
+            "label": "EFO:0005230",
+            "disease_id": null,
+            "extensions": [
+              {
+                "type": "Extension",
+                "name": "chembl_max_phase_for_ind",
+                "value": "chembl_phase_3"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "type": "Extension",
+      "name": "trade_names",
+      "value": [
+        "Phenobarbitone",
+        "Luminal",
+        "Solfoton",
+        "Eskabarb",
+        "Talpheno",
+        "Noptil"
+      ]
+    },
+    {
+      "type": "Extension",
+      "name": "associated_with",
+      "value": [
+        "mmsl:d00340",
+        "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N",
+        "pubchem.compound:4763",
+        "unii:YQE403BP4D",
+        "usp:m63400",
+        "atc:N03AA02",
+        "CHEBI:8069",
+        "mesh:D010634",
+        "mmsl:2390",
+        "drugcentral:2134",
+        "mmsl:5272",
+        "vandf:4017422",
+        "pubchem.substance:135650817",
+        "umls:C0031412"
+      ]
+    }
+  ],
+  "therapy_id": "rxcui:8134"
+}
