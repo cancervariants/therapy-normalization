@@ -2857,18 +2857,20 @@
     "label": "FENOPROFEN CALCIUM",
     "concept_id": "drugsatfda.nda:017604",
     "associated_with": [
-      "unii:0X2CW1QABJ",
+      "ndc:0276-0501",
+      "ndc:0276-0502",
+      "ndc:0276-0503",
       "ndc:15014-400",
       "ndc:42195-100",
       "ndc:42195-308",
       "ndc:42195-600",
       "ndc:69336-113",
-      "ndc:69336-124",
-      "spl:81a0da5b-6078-413e-b6d0-d31c1073b3f7",
       "spl:bedf1661-b811-3d85-e053-2995a90acd59",
       "spl:c1721025-8af3-5451-e053-2a95a90a7dc0",
       "spl:c1829550-d270-e13d-e053-2995a90a4aa5",
-      "spl:c187dfec-eec5-4227-e053-2995a90ab55c"
+      "spl:c187dfec-eec5-4227-e053-2995a90ab55c",
+      "spl:d33ad32a-f205-5df2-e053-2995a90ab978",
+      "unii:0X2CW1QABJ"
     ],
     "xrefs": ["rxcui:197694", "rxcui:858118", "rxcui:858116", "rxcui:260323"],
     "trade_names": ["NALFON", "FENORTHO"]
