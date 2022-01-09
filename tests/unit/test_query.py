@@ -45,29 +45,35 @@ def merge_query_handler(mock_database):
 
 
 @pytest.fixture(scope="module")
-def phenobarbital(test_data: Path):
+def fixture_data(test_data: Path):
+    """Fetch fixture data"""
+    return json.load(open(test_data / "test_query_data.json", "r"))
+
+
+@pytest.fixture(scope="module")
+def phenobarbital(fixture_data):
     """Create phenobarbital VOD fixture."""
-    return json.load(open(test_data / "phenobarbital_response.json", "r"))
+    return fixture_data["phenobarbital"]
 
 
 @pytest.fixture(scope="module")
-def cisplatin(test_data: Path):
+def cisplatin(fixture_data):
     """Create cisplatin fixture."""
-    return json.load(open(test_data / "cisplatin_response.json", "r"))
+    return fixture_data["cisplatin"]
 
 
 @pytest.fixture(scope="module")
-def spiramycin(test_data: Path):
+def spiramycin(fixture_data):
     """Create fixture for normalized spiramycin record."""
-    return json.load(open(test_data / "spiramycin_response.json", "r"))
+    return fixture_data["spiramycin"]
 
 
 @pytest.fixture(scope="module")
-def therapeutic_procedure(test_data: Path):
+def therapeutic_procedure(fixture_data):
     """Create a fixture for the Therapeutic Procedure concept. Used to validate
     single-member concept groups for the normalize endpoint.
     """
-    return json.load(open(test_data / "therapeutic_procedure_response.json", "r"))
+    return fixture_data["therapeutic_procedure"]
 
 
 def compare_vod(response, fixture, query, match_type, response_id,

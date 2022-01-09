@@ -1,5 +1,7 @@
 """Test that the therapy normalizer works as intended for the ChEMBL source."""
 import re
+import json
+from pathlib import Path
 
 import pytest
 
@@ -24,64 +26,28 @@ def chembl():
 
 
 @pytest.fixture(scope="module")
-def cisplatin():
-    """Create a cisplatin drug fixture."""
-    params = {
-        "label": "CISPLATIN",
-        "concept_id": "chembl:CHEMBL11359",
-        "aliases": [
-            "Cisplatin",
-            "Cis-platinum ii",
-            "Cisplatinum",
-            "cis-diamminedichloroplatinum(II)",
-            "CIS-DDP",
-            "INT-230-6 COMPONENT CISPLATIN",
-            "INT230-6 COMPONENT CISPLATIN",
-            "Liplacis",
-            "NSC-119875",
-            "Platinol",
-            "Platinol-aq",
-        ],
-        "approval_ratings": ["chembl_phase_4"],
-        "xrefs": [],
-        "associated_with": [],
-        "trade_names": [
-            "PLATINOL",
-            "PLATINOL-AQ"
-        ]
-    }
-    return Drug(**params)
+def fixture_data(test_data: Path):
+    """Fetch fixture data"""
+    return json.load(open(test_data / "test_chembl_data.json", "r"))
 
 
 @pytest.fixture(scope="module")
-def l745870():
+def cisplatin(fixture_data):
+    """Create a cisplatin drug fixture."""
+    return Drug(**fixture_data["cisplatin"])
+
+
+@pytest.fixture(scope="module")
+def l745870(fixture_data):
     """Create a L-745870 drug fixture."""
-    params = {
-        "label": "L-745870",
-        "concept_id": "chembl:CHEMBL267014",
-        "aliases": [],
-        "approval_ratings": ["chembl_phase_0"],
-        "xrefs": [],
-        "associated_with": [],
-        "trade_names": []
-    }
-    return Drug(**params)
+    return Drug(**fixture_data["l745870"])
 
 
 # Test with aliases and trade names > 20
 @pytest.fixture(scope="module")
-def aspirin():
+def aspirin(fixture_data):
     """Create an aspirin drug fixture."""
-    params = {
-        "label": "ASPIRIN",
-        "concept_id": "chembl:CHEMBL25",
-        "aliases": [],
-        "approval_ratings": ["chembl_phase_4"],
-        "xrefs": [],
-        "associated_with": [],
-        "trade_names": []
-    }
-    return Drug(**params)
+    return Drug(**fixture_data["aspirin"])
 
 
 def test_concept_id_cisplatin(cisplatin, chembl):
