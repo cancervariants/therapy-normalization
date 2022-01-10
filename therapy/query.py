@@ -445,7 +445,7 @@ class QueryHandler:
             inds_list = []
             for ind_db in inds:
                 indication = self._get_indication(ind_db)
-                ind_value_obj = {
+                ind_value_obj: Dict[str, Optional[Union[str, List]]] = {
                     "id": indication.disease_id,
                     "type": "DiseaseDescriptor",
                     "label": indication.disease_label,
