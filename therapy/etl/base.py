@@ -274,7 +274,7 @@ class Base(ABC):
                     ind["disease_id"],
                     ind["disease_label"],
                     ind.get("normalized_disease_id"),
-                    ind.get("meta")
+                    ind.get("supplemental_info")
                 ])
                 for ind in indications
             })

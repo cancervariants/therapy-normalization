@@ -91,7 +91,7 @@ class ChEMBL(DiseaseIndicationBase):
                             "disease_id": disease_id,
                             "disease_label": label,
                             "normalized_disease_id": normalized_disease_id,
-                            "meta": {"chembl_max_phase_for_ind": phase}
+                            "supplemental_info": {"chembl_max_phase_for_ind": phase}
                         })
                         break
                     else:

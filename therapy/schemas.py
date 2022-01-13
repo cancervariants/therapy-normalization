@@ -101,7 +101,7 @@ class HasIndication(BaseModel):
     disease_id: str
     disease_label: str
     normalized_disease_id: Optional[str]
-    meta: Optional[Dict[str, str]] = None
+    supplemental_info: Optional[Dict[str, str]] = None
 
     class Config:
         """Configure HasIndication class"""
@@ -115,19 +115,20 @@ class HasIndication(BaseModel):
                 prop.pop("title", None)
             schema["example"] = [
                 {
-                    "disease_id": "hemonc:671",
-                    "disease_label": "Testicular cancer",
-                    "normalized_disease_id": "ncit:C7251"
+                    "disease_id": "mesh:D016778",
+                    "disease_label": "Malaria, Falciparum",
+                    "normalized_disease_id": "ncit:C34798",
+                    "supplemental_info": {
+                        "chembl_max_phase_for_ind": "chembl_phase_2"
+                    }
                 },
                 {
-                    "disease_id": "hemonc:645",
-                    "disease_label": "Ovarian cancer",
-                    "normalized_disease_id": "ncit:C7431"
-                },
-                {
-                    "disease_id": "hemonc:569",
-                    "disease_label": "Bladder cancer",
-                    "normalized_disease_id": "ncit:C9334"
+                    "disease_id": "hemonc:634",
+                    "disease_label": "Myelodysplastic syndrome",
+                    "normalized_disease_id": "ncit:C3247",
+                    "supplemental_info": {
+                        "regulatory_body": "FDA"
+                    }
                 }
             ]
 

@@ -266,7 +266,7 @@ class HemOnc(DiseaseIndicationBase):
                     "disease_id": hemonc_concept_id,
                     "disease_label": label,
                     "normalized_disease_id": norm_id,
-                    "meta": {"regulatory_body": "FDA"}
+                    "supplemental_info": {"regulatory_body": "FDA"}
                 }
                 if "has_indication" in record:
                     record["has_indication"].append(indication)

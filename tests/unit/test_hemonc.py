@@ -53,7 +53,7 @@ def cisplatin():
                 "disease_id": "hemonc:569",
                 "disease_label": "Bladder cancer",
                 "normalized_disease_id": "ncit:C9334",
-                "meta": {
+                "supplemental_info": {
                     "regulatory_body": "FDA"
                 }
             },
@@ -61,7 +61,7 @@ def cisplatin():
                 "disease_id": "hemonc:645",
                 "disease_label": "Ovarian cancer",
                 "normalized_disease_id": "ncit:C7431",
-                "meta": {
+                "supplemental_info": {
                     "regulatory_body": "FDA"
                 }
             },
@@ -69,7 +69,7 @@ def cisplatin():
                 "disease_id": "hemonc:671",
                 "disease_label": "Testicular cancer",
                 "normalized_disease_id": "ncit:C7251",
-                "meta": {
+                "supplemental_info": {
                     "regulatory_body": "FDA"
                 }
             }
@@ -116,7 +116,7 @@ def bendamustine():
                 "disease_id": "hemonc:581",
                 "disease_label": "Chronic lymphocytic leukemia",
                 "normalized_disease_id": "ncit:C3163",
-                "meta": {
+                "supplemental_info": {
                     "regulatory_body": "FDA"
                 }
             },
@@ -124,7 +124,7 @@ def bendamustine():
                 "disease_id": "hemonc:46094",
                 "disease_label": "Indolent lymphoma",
                 "normalized_disease_id": "ncit:C8504",
-                "meta": {
+                "supplemental_info": {
                     "regulatory_body": "FDA"
                 }
             }
@@ -153,7 +153,7 @@ def degarelix():
                 "disease_id": "hemonc:658",
                 "disease_label": "Prostate cancer",
                 "normalized_disease_id": "ncit:C7378",
-                "meta": {
+                "supplemental_info": {
                     "regulatory_body": "FDA"
                 }
             }

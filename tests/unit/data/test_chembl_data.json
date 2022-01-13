@@ -28,7 +28,7 @@
         "disease_id": "mesh:D009959",
         "disease_label": "Oropharyngeal Neoplasms",
         "normalized_disease_id": "ncit:C7398",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -36,7 +36,7 @@
         "disease_id": "mesh:D013953",
         "disease_label": "Thymus Neoplasms",
         "normalized_disease_id": "ncit:C4962",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -44,7 +44,7 @@
         "disease_id": "mesh:D010412",
         "disease_label": "Penile Neoplasms",
         "normalized_disease_id": "ncit:C3317",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -52,7 +52,7 @@
         "disease_id": "mesh:D002289",
         "disease_label": "Carcinoma, Non-Small-Cell Lung",
         "normalized_disease_id": "ncit:C2926",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -60,7 +60,7 @@
         "disease_id": "mesh:D000230",
         "disease_label": "Adenocarcinoma",
         "normalized_disease_id": "ncit:C2852",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -68,7 +68,7 @@
         "disease_id": "mesh:D010610",
         "disease_label": "Pharyngeal Neoplasms",
         "normalized_disease_id": "ncit:C7545",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -76,7 +76,7 @@
         "disease_id": "EFO:0009708",
         "disease_label": "metastasis",
         "normalized_disease_id": "ncit:C3261",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -84,7 +84,7 @@
         "disease_id": "mesh:D006528",
         "disease_label": "Carcinoma, Hepatocellular",
         "normalized_disease_id": "ncit:C3099",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -92,7 +92,7 @@
         "disease_id": "mesh:D014987",
         "disease_label": "Xerostomia",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -100,7 +100,7 @@
         "disease_id": "mesh:D014594",
         "disease_label": "Uterine Neoplasms",
         "normalized_disease_id": "ncit:C3552",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -108,7 +108,7 @@
         "disease_id": "mesh:D007674",
         "disease_label": "Kidney Diseases",
         "normalized_disease_id": "ncit:C3149",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -116,7 +116,7 @@
         "disease_id": "mesh:D008175",
         "disease_label": "Lung Neoplasms",
         "normalized_disease_id": "ncit:C3200",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -124,7 +124,7 @@
         "disease_id": "mesh:D002822",
         "disease_label": "Choriocarcinoma",
         "normalized_disease_id": "ncit:C2948",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -132,7 +132,7 @@
         "disease_id": "mesh:D009369",
         "disease_label": "Neoplasms",
         "normalized_disease_id": "ncit:C3262",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_4"
         }
       },
@@ -140,7 +140,7 @@
         "disease_id": "mesh:D018281",
         "disease_label": "Cholangiocarcinoma",
         "normalized_disease_id": "ncit:C4436",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -148,7 +148,7 @@
         "disease_id": "mesh:D012509",
         "disease_label": "Sarcoma",
         "normalized_disease_id": "ncit:C9118",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -156,7 +156,7 @@
         "disease_id": "EFO:0005570",
         "disease_label": "oral cavity cancer",
         "normalized_disease_id": "ncit:C9314",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -164,7 +164,7 @@
         "disease_id": "mesh:D015266",
         "disease_label": "Carcinoma, Merkel Cell",
         "normalized_disease_id": "ncit:C9231",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -172,7 +172,7 @@
         "disease_id": "mesh:D002292",
         "disease_label": "Carcinoma, Renal Cell",
         "normalized_disease_id": "mondo:0005086",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -180,7 +180,7 @@
         "disease_id": "mesh:D018242",
         "disease_label": "Neuroectodermal Tumors, Primitive",
         "normalized_disease_id": "ncit:C3222",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -188,7 +188,7 @@
         "disease_id": "mesh:D005185",
         "disease_label": "Fallopian Tube Neoplasms",
         "normalized_disease_id": "ncit:C3867",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -196,7 +196,7 @@
         "disease_id": "mesh:D046152",
         "disease_label": "Gastrointestinal Stromal Tumors",
         "normalized_disease_id": "ncit:C3868",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -204,7 +204,7 @@
         "disease_id": "mesh:D013280",
         "disease_label": "Stomatitis",
         "normalized_disease_id": "ncit:C26887",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -212,7 +212,7 @@
         "disease_id": "mesh:D008228",
         "disease_label": "Lymphoma, Non-Hodgkin",
         "normalized_disease_id": "ncit:C3211",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -220,7 +220,7 @@
         "disease_id": "mesh:D013964",
         "disease_label": "Thyroid Neoplasms",
         "normalized_disease_id": "ncit:C7510",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -228,7 +228,7 @@
         "disease_id": "mesh:D000077192",
         "disease_label": "Adenocarcinoma of Lung",
         "normalized_disease_id": "ncit:C3512",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -236,7 +236,7 @@
         "disease_id": "mesh:D001005",
         "disease_label": "Anus Neoplasms",
         "normalized_disease_id": "ncit:C2877",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -244,7 +244,7 @@
         "disease_id": "mesh:D004938",
         "disease_label": "Esophageal Neoplasms",
         "normalized_disease_id": "ncit:C7478",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -252,7 +252,7 @@
         "disease_id": "mesh:D013945",
         "disease_label": "Thymoma",
         "normalized_disease_id": "ncit:C3411",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -260,7 +260,7 @@
         "disease_id": "EFO:0003868",
         "disease_label": "mouth neoplasm",
         "normalized_disease_id": "ncit:C7606",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -268,7 +268,7 @@
         "disease_id": "mesh:D008479",
         "disease_label": "Mediastinal Neoplasms",
         "normalized_disease_id": "ncit:C3549",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -276,7 +276,7 @@
         "disease_id": "mesh:D009373",
         "disease_label": "Neoplasms, Germ Cell and Embryonal",
         "normalized_disease_id": "ncit:C3708",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -284,7 +284,7 @@
         "disease_id": "mesh:D016483",
         "disease_label": "Lymphoma, AIDS-Related",
         "normalized_disease_id": "ncit:C3471",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -292,7 +292,7 @@
         "disease_id": "mesh:D004066",
         "disease_label": "Digestive System Diseases",
         "normalized_disease_id": "ncit:C3959",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -300,7 +300,7 @@
         "disease_id": "mesh:D055752",
         "disease_label": "Small Cell Lung Carcinoma",
         "normalized_disease_id": "ncit:C4917",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -308,7 +308,7 @@
         "disease_id": "mesh:D014565",
         "disease_label": "Urogenital Neoplasms",
         "normalized_disease_id": "mondo:0025370",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -316,7 +316,7 @@
         "disease_id": "mesh:D009062",
         "disease_label": "Mouth Neoplasms",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -324,7 +324,7 @@
         "disease_id": "mesh:D000306",
         "disease_label": "Adrenal Cortex Neoplasms",
         "normalized_disease_id": "ncit:C9325",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -332,7 +332,7 @@
         "disease_id": "mesh:D009101",
         "disease_label": "Multiple Myeloma",
         "normalized_disease_id": "ncit:C3242",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -340,7 +340,7 @@
         "disease_id": "mesh:D002277",
         "disease_label": "Carcinoma",
         "normalized_disease_id": "ncit:C2916",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -348,7 +348,7 @@
         "disease_id": "mesh:D007938",
         "disease_label": "Leukemia",
         "normalized_disease_id": "ncit:C3161",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -356,7 +356,7 @@
         "disease_id": "EFO:1000043",
         "disease_label": "ovarian serous cystadenocarcinoma",
         "normalized_disease_id": "ncit:C7978",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -364,7 +364,7 @@
         "disease_id": "mesh:D010996",
         "disease_label": "Pleural Effusion",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -372,7 +372,7 @@
         "disease_id": "mesh:D008527",
         "disease_label": "Medulloblastoma",
         "normalized_disease_id": "ncit:C3222",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -380,7 +380,7 @@
         "disease_id": "mesh:D007119",
         "disease_label": "Immunoblastic Lymphadenopathy",
         "normalized_disease_id": "ncit:C7528",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -388,7 +388,7 @@
         "disease_id": "mesh:D009447",
         "disease_label": "Neuroblastoma",
         "normalized_disease_id": "ncit:C3270",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -396,7 +396,7 @@
         "disease_id": "mesh:D016483",
         "disease_label": "Lymphoma, AIDS-Related",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -404,7 +404,7 @@
         "disease_id": "mesh:D006689",
         "disease_label": "Hodgkin Disease",
         "normalized_disease_id": "ncit:C9357",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -412,7 +412,7 @@
         "disease_id": "mesh:D020250",
         "disease_label": "Postoperative Nausea and Vomiting",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -420,7 +420,7 @@
         "disease_id": "mesh:D031901",
         "disease_label": "Gestational Trophoblastic Disease",
         "normalized_disease_id": "ncit:C4699",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -428,7 +428,7 @@
         "disease_id": "mesh:D001661",
         "disease_label": "Biliary Tract Neoplasms",
         "normalized_disease_id": "mondo:0003060",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -436,7 +436,7 @@
         "disease_id": "mesh:D016889",
         "disease_label": "Endometrial Neoplasms",
         "normalized_disease_id": "ncit:C3012",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -444,7 +444,7 @@
         "disease_id": "mesh:D014846",
         "disease_label": "Vulvar Neoplasms",
         "normalized_disease_id": "ncit:C7502",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -452,7 +452,7 @@
         "disease_id": "mesh:D018197",
         "disease_label": "Hepatoblastoma",
         "normalized_disease_id": "ncit:C3728",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -460,7 +460,7 @@
         "disease_id": "mesh:D013736",
         "disease_label": "Testicular Neoplasms",
         "normalized_disease_id": "ncit:C7251",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -468,7 +468,7 @@
         "disease_id": "mesh:D013274",
         "disease_label": "Stomach Neoplasms",
         "normalized_disease_id": "ncit:C3387",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -476,7 +476,7 @@
         "disease_id": "mesh:D018305",
         "disease_label": "Ganglioneuroblastoma",
         "normalized_disease_id": "ncit:C3790",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -484,7 +484,7 @@
         "disease_id": "mesh:D015179",
         "disease_label": "Colorectal Neoplasms",
         "normalized_disease_id": "ncit:C2956",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -492,7 +492,7 @@
         "disease_id": "mesh:D000740",
         "disease_label": "Anemia",
         "normalized_disease_id": "ncit:C2869",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -500,7 +500,7 @@
         "disease_id": "mesh:D012175",
         "disease_label": "Retinoblastoma",
         "normalized_disease_id": "ncit:C7541",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -508,7 +508,7 @@
         "disease_id": "mesh:D018312",
         "disease_label": "Sex Cord-Gonadal Stromal Tumors",
         "normalized_disease_id": "ncit:C3794",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -516,7 +516,7 @@
         "disease_id": "mesh:D009190",
         "disease_label": "Myelodysplastic Syndromes",
         "normalized_disease_id": "ncit:C3247",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -524,7 +524,7 @@
         "disease_id": "mesh:D020522",
         "disease_label": "Lymphoma, Mantle-Cell",
         "normalized_disease_id": "ncit:C4337",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -532,7 +532,7 @@
         "disease_id": "mesh:D016403",
         "disease_label": "Lymphoma, Large B-Cell, Diffuse",
         "normalized_disease_id": "ncit:C8851",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -540,7 +540,7 @@
         "disease_id": "mesh:D008545",
         "disease_label": "Melanoma",
         "normalized_disease_id": "ncit:C3224",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -548,7 +548,7 @@
         "disease_id": "mesh:D016543",
         "disease_label": "Central Nervous System Neoplasms",
         "normalized_disease_id": "ncit:C4627",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -556,7 +556,7 @@
         "disease_id": "mesh:D001932",
         "disease_label": "Brain Neoplasms",
         "normalized_disease_id": "ncit:C3568",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -564,7 +564,7 @@
         "disease_id": "mesh:D008224",
         "disease_label": "Lymphoma, Follicular",
         "normalized_disease_id": "ncit:C3209",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -572,7 +572,7 @@
         "disease_id": "mesh:D012516",
         "disease_label": "Osteosarcoma",
         "normalized_disease_id": "ncit:C53707",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -580,7 +580,7 @@
         "disease_id": "mesh:D005910",
         "disease_label": "Glioma",
         "normalized_disease_id": "ncit:C3059",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -588,7 +588,7 @@
         "disease_id": "mesh:D008107",
         "disease_label": "Liver Diseases",
         "normalized_disease_id": "ncit:C3196",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -596,7 +596,7 @@
         "disease_id": "mesh:D008654",
         "disease_label": "Mesothelioma",
         "normalized_disease_id": "ncit:C3234",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -604,7 +604,7 @@
         "disease_id": "mesh:D009362",
         "disease_label": "Neoplasm Metastasis",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -612,7 +612,7 @@
         "disease_id": "mesh:D001943",
         "disease_label": "Breast Neoplasms",
         "normalized_disease_id": "ncit:C2910",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -620,7 +620,7 @@
         "disease_id": "mesh:D016545",
         "disease_label": "Choroid Plexus Neoplasms",
         "normalized_disease_id": "ncit:C4533",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -628,7 +628,7 @@
         "disease_id": "mesh:D018269",
         "disease_label": "Carcinoma, Endometrioid",
         "normalized_disease_id": "ncit:C7558",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -636,7 +636,7 @@
         "disease_id": "mesh:D018239",
         "disease_label": "Seminoma",
         "normalized_disease_id": "ncit:C9309",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -644,7 +644,7 @@
         "disease_id": "mesh:D006103",
         "disease_label": "Granuloma, Lethal Midline",
         "normalized_disease_id": "mondo:0006828",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -652,7 +652,7 @@
         "disease_id": "mesh:D004067",
         "disease_label": "Digestive System Neoplasms",
         "normalized_disease_id": "ncit:C4890",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -660,7 +660,7 @@
         "disease_id": "mesh:D005706",
         "disease_label": "Gallbladder Neoplasms",
         "normalized_disease_id": "ncit:C7481",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -668,7 +668,7 @@
         "disease_id": "mesh:D012468",
         "disease_label": "Salivary Gland Neoplasms",
         "normalized_disease_id": "ncit:C3811",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -676,7 +676,7 @@
         "disease_id": "mesh:D006258",
         "disease_label": "Head and Neck Neoplasms",
         "normalized_disease_id": "ncit:C4013",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -684,7 +684,7 @@
         "disease_id": "mesh:D007680",
         "disease_label": "Kidney Neoplasms",
         "normalized_disease_id": "ncit:C7548",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -692,7 +692,7 @@
         "disease_id": "mesh:D018278",
         "disease_label": "Carcinoma, Neuroendocrine",
         "normalized_disease_id": "ncit:C3773",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -700,7 +700,7 @@
         "disease_id": "mesh:D014062",
         "disease_label": "Tongue Neoplasms",
         "normalized_disease_id": "ncit:C9345",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -708,7 +708,7 @@
         "disease_id": "mesh:D010190",
         "disease_label": "Pancreatic Neoplasms",
         "normalized_disease_id": "ncit:C3305",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -716,7 +716,7 @@
         "disease_id": "mesh:D002583",
         "disease_label": "Uterine Cervical Neoplasms",
         "normalized_disease_id": "ncit:C9311",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -724,7 +724,7 @@
         "disease_id": "mesh:D021441",
         "disease_label": "Carcinoma, Pancreatic Ductal",
         "normalized_disease_id": "ncit:C9120",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -732,7 +732,7 @@
         "disease_id": "mesh:D002294",
         "disease_label": "Carcinoma, Squamous Cell",
         "normalized_disease_id": "ncit:C2929",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -740,7 +740,7 @@
         "disease_id": "mesh:D017728",
         "disease_label": "Lymphoma, Large-Cell, Anaplastic",
         "normalized_disease_id": "ncit:C3720",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -748,7 +748,7 @@
         "disease_id": "mesh:D008113",
         "disease_label": "Liver Neoplasms",
         "normalized_disease_id": "ncit:C34803",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -756,7 +756,7 @@
         "disease_id": "mesh:D064726",
         "disease_label": "Triple Negative Breast Neoplasms",
         "normalized_disease_id": "ncit:C71732",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -764,7 +764,7 @@
         "disease_id": "mesh:D010255",
         "disease_label": "Paranasal Sinus Neoplasms",
         "normalized_disease_id": "ncit:C6014",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -772,7 +772,7 @@
         "disease_id": "mesh:D018236",
         "disease_label": "Carcinoma, Embryonal",
         "normalized_disease_id": "ncit:C3752",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -780,7 +780,7 @@
         "disease_id": "mesh:D015459",
         "disease_label": "Leukemia-Lymphoma, Adult T-Cell",
         "normalized_disease_id": "ncit:C3184",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -788,7 +788,7 @@
         "disease_id": "mesh:D018293",
         "disease_label": "Cystadenoma, Serous",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -796,7 +796,7 @@
         "disease_id": "mesh:D008288",
         "disease_label": "Malaria",
         "normalized_disease_id": "ncit:C34797",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -804,7 +804,7 @@
         "disease_id": "mesh:D010534",
         "disease_label": "Peritoneal Neoplasms",
         "normalized_disease_id": "ncit:C3322",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -812,7 +812,7 @@
         "disease_id": "mesh:D018273",
         "disease_label": "Carcinoma, Islet Cell",
         "normalized_disease_id": "ncit:C3770",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -820,7 +820,7 @@
         "disease_id": "mesh:D009303",
         "disease_label": "Nasopharyngeal Neoplasms",
         "normalized_disease_id": "ncit:C3257",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -828,7 +828,7 @@
         "disease_id": "mesh:D009325",
         "disease_label": "Nausea",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -836,7 +836,7 @@
         "disease_id": "mesh:D016411",
         "disease_label": "Lymphoma, T-Cell, Peripheral",
         "normalized_disease_id": "ncit:C3468",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -844,7 +844,7 @@
         "disease_id": "mesh:D014523",
         "disease_label": "Urethral Neoplasms",
         "normalized_disease_id": "ncit:C3619",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -852,7 +852,7 @@
         "disease_id": "mesh:D018240",
         "disease_label": "Endodermal Sinus Tumor",
         "normalized_disease_id": "ncit:C3011",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -860,7 +860,7 @@
         "disease_id": "mesh:D007822",
         "disease_label": "Laryngeal Neoplasms",
         "normalized_disease_id": "ncit:C3156",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -868,7 +868,7 @@
         "disease_id": "mesh:D058922",
         "disease_label": "Inflammatory Breast Neoplasms",
         "normalized_disease_id": "ncit:C4001",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -876,7 +876,7 @@
         "disease_id": "mesh:D001749",
         "disease_label": "Urinary Bladder Neoplasms",
         "normalized_disease_id": "ncit:C9334",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -884,7 +884,7 @@
         "disease_id": "mesh:D004806",
         "disease_label": "Ependymoma",
         "normalized_disease_id": "ncit:C3017",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -892,7 +892,7 @@
         "disease_id": "mesh:D018285",
         "disease_label": "Klatskin Tumor",
         "normalized_disease_id": "ncit:C36077",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -900,7 +900,7 @@
         "disease_id": "mesh:D064129",
         "disease_label": "Prostatic Neoplasms, Castration-Resistant",
         "normalized_disease_id": "DOID:0080909",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -908,7 +908,7 @@
         "disease_id": "mesh:D013724",
         "disease_label": "Teratoma",
         "normalized_disease_id": "ncit:C3403",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -916,7 +916,7 @@
         "disease_id": "mesh:D010051",
         "disease_label": "Ovarian Neoplasms",
         "normalized_disease_id": "ncit:C7431",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -924,7 +924,7 @@
         "disease_id": "mesh:D000077195",
         "disease_label": "Squamous Cell Carcinoma of Head and Neck",
         "normalized_disease_id": "ncit:C4044",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -932,7 +932,7 @@
         "disease_id": "mesh:D002280",
         "disease_label": "Carcinoma, Basal Cell",
         "normalized_disease_id": "ncit:C156767",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -940,7 +940,7 @@
         "disease_id": "mesh:D008223",
         "disease_label": "Lymphoma",
         "normalized_disease_id": "ncit:C3208",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -948,7 +948,7 @@
         "disease_id": "mesh:D007012",
         "disease_label": "Hypopharyngeal Neoplasms",
         "normalized_disease_id": "ncit:C7190",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -956,7 +956,7 @@
         "disease_id": "mesh:D052016",
         "disease_label": "Mucositis",
         "normalized_disease_id": "ncit:C3853",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -964,7 +964,7 @@
         "disease_id": "mesh:D002276",
         "disease_label": "Carcinoid Tumor",
         "normalized_disease_id": "ncit:C2915",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -972,7 +972,7 @@
         "disease_id": "mesh:D012208",
         "disease_label": "Rhabdomyosarcoma",
         "normalized_disease_id": "ncit:C3359",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_0"
         }
       }
@@ -1009,7 +1009,7 @@
         "disease_id": "mesh:D001024",
         "disease_label": "Aortic Valve Stenosis",
         "normalized_disease_id": "mondo:0004978",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1017,7 +1017,7 @@
         "disease_id": "mesh:D045169",
         "disease_label": "Severe Acute Respiratory Syndrome",
         "normalized_disease_id": "ncit:C85064",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1025,7 +1025,7 @@
         "disease_id": "mesh:D002289",
         "disease_label": "Carcinoma, Non-Small-Cell Lung",
         "normalized_disease_id": "ncit:C2926",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1033,7 +1033,7 @@
         "disease_id": "mesh:D003123",
         "disease_label": "Colorectal Neoplasms, Hereditary Nonpolyposis",
         "normalized_disease_id": "ncit:C8494",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1041,7 +1041,7 @@
         "disease_id": "mesh:D006528",
         "disease_label": "Carcinoma, Hepatocellular",
         "normalized_disease_id": "ncit:C3099",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1049,7 +1049,7 @@
         "disease_id": "mesh:D007249",
         "disease_label": "Inflammation",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -1057,7 +1057,7 @@
         "disease_id": "mesh:D020521",
         "disease_label": "Stroke",
         "normalized_disease_id": "ncit:C3390",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_4"
         }
       },
@@ -1065,7 +1065,7 @@
         "disease_id": "mesh:D010020",
         "disease_label": "Osteonecrosis",
         "normalized_disease_id": "ncit:C34880",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1073,7 +1073,7 @@
         "disease_id": "mesh:D012004",
         "disease_label": "Rectal Neoplasms",
         "normalized_disease_id": "ncit:C3350",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1081,7 +1081,7 @@
         "disease_id": "mesh:D011471",
         "disease_label": "Prostatic Neoplasms",
         "normalized_disease_id": "ncit:C7378",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1089,7 +1089,7 @@
         "disease_id": "mesh:D020246",
         "disease_label": "Venous Thrombosis",
         "normalized_disease_id": "mondo:0008559",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1097,7 +1097,7 @@
         "disease_id": "mesh:D013276",
         "disease_label": "Stomach Ulcer",
         "normalized_disease_id": "ncit:C3388",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1105,7 +1105,7 @@
         "disease_id": "mesh:D014652",
         "disease_label": "Vascular Diseases",
         "normalized_disease_id": "ncit:C35117",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1113,7 +1113,7 @@
         "disease_id": "mesh:D014456",
         "disease_label": "Ulcer",
         "normalized_disease_id": "mondo:0043839",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -1121,7 +1121,7 @@
         "disease_id": "mesh:D015658",
         "disease_label": "HIV Infections",
         "normalized_disease_id": "ncit:C3108",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1129,7 +1129,7 @@
         "disease_id": "mesh:D012214",
         "disease_label": "Rheumatic Heart Disease",
         "normalized_disease_id": "ncit:C34882",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1137,7 +1137,7 @@
         "disease_id": "mesh:D014376",
         "disease_label": "Tuberculosis",
         "normalized_disease_id": "ncit:C3423",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1145,7 +1145,7 @@
         "disease_id": "mesh:D003093",
         "disease_label": "Colitis, Ulcerative",
         "normalized_disease_id": "ncit:C2952",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1153,7 +1153,7 @@
         "disease_id": "mesh:D008545",
         "disease_label": "Melanoma",
         "normalized_disease_id": "ncit:C3224",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1161,7 +1161,7 @@
         "disease_id": "mesh:D006471",
         "disease_label": "Gastrointestinal Hemorrhage",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1169,7 +1169,7 @@
         "disease_id": "mesh:D006976",
         "disease_label": "Hypertension, Pulmonary",
         "normalized_disease_id": "mondo:0005149",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1177,7 +1177,7 @@
         "disease_id": "mesh:D014808",
         "disease_label": "Vitamin D Deficiency",
         "normalized_disease_id": "ncit:C114830",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1185,7 +1185,7 @@
         "disease_id": "mesh:D009203",
         "disease_label": "Myocardial Infarction",
         "normalized_disease_id": "ncit:C27996",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1193,7 +1193,7 @@
         "disease_id": "mesh:D004938",
         "disease_label": "Esophageal Neoplasms",
         "normalized_disease_id": "ncit:C7478",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1201,7 +1201,7 @@
         "disease_id": "EFO:0000339",
         "disease_label": "chronic myelogenous leukemia",
         "normalized_disease_id": "ncit:C3174",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1209,7 +1209,7 @@
         "disease_id": "Orphanet:309005",
         "disease_label": "Disorder of lipid metabolism",
         "normalized_disease_id": "ncit:C97092",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1217,7 +1217,7 @@
         "disease_id": "mesh:D061218",
         "disease_label": "Depressive Disorder, Treatment-Resistant",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1225,7 +1225,7 @@
         "disease_id": "mesh:D012559",
         "disease_label": "Schizophrenia",
         "normalized_disease_id": "mondo:0005090",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1233,7 +1233,7 @@
         "disease_id": "mesh:D007319",
         "disease_label": "Sleep Initiation and Maintenance Disorders",
         "normalized_disease_id": "mondo:0013600",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_0"
         }
       },
@@ -1241,7 +1241,7 @@
         "disease_id": "mesh:D012128",
         "disease_label": "Respiratory Distress Syndrome",
         "normalized_disease_id": "mondo:0100130",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1249,7 +1249,7 @@
         "disease_id": "mesh:D001778",
         "disease_label": "Blood Coagulation Disorders",
         "normalized_disease_id": "ncit:C2902",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1257,7 +1257,7 @@
         "disease_id": "mesh:D003139",
         "disease_label": "Common Cold",
         "normalized_disease_id": "ncit:C34500",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1265,7 +1265,7 @@
         "disease_id": "mesh:D012131",
         "disease_label": "Respiratory Insufficiency",
         "normalized_disease_id": "ncit:C26872",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1273,7 +1273,7 @@
         "disease_id": "mesh:D012170",
         "disease_label": "Retinal Vein Occlusion",
         "normalized_disease_id": "ncit:C34981",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1281,7 +1281,7 @@
         "disease_id": "mesh:D060050",
         "disease_label": "Angina, Stable",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1289,7 +1289,7 @@
         "disease_id": "mesh:D052439",
         "disease_label": "Lipid Metabolism Disorders",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1297,7 +1297,7 @@
         "disease_id": "mesh:D009080",
         "disease_label": "Mucocutaneous Lymph Node Syndrome",
         "normalized_disease_id": "ncit:C34825",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1305,7 +1305,7 @@
         "disease_id": "mesh:D001714",
         "disease_label": "Bipolar Disorder",
         "normalized_disease_id": "mondo:0004985",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1313,7 +1313,7 @@
         "disease_id": "mesh:D009101",
         "disease_label": "Multiple Myeloma",
         "normalized_disease_id": "ncit:C3242",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1321,7 +1321,7 @@
         "disease_id": "mesh:D005221",
         "disease_label": "Fatigue",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_0"
         }
       },
@@ -1329,7 +1329,7 @@
         "disease_id": "mesh:D008581",
         "disease_label": "Meningitis",
         "normalized_disease_id": "ncit:C79598",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1337,7 +1337,7 @@
         "disease_id": "mesh:D002532",
         "disease_label": "Intracranial Aneurysm",
         "normalized_disease_id": "mondo:0005291",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1345,7 +1345,7 @@
         "disease_id": "mesh:D006937",
         "disease_label": "Hypercholesterolemia",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1353,7 +1353,7 @@
         "disease_id": "mesh:D056586",
         "disease_label": "Acute Chest Syndrome",
         "normalized_disease_id": "ncit:C138179",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1361,7 +1361,7 @@
         "disease_id": "mesh:D018805",
         "disease_label": "Sepsis",
         "normalized_disease_id": "ncit:C3364",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1369,7 +1369,7 @@
         "disease_id": "mesh:D003924",
         "disease_label": "Diabetes Mellitus, Type 2",
         "normalized_disease_id": "ncit:C26747",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1377,7 +1377,7 @@
         "disease_id": "mesh:D001281",
         "disease_label": "Atrial Fibrillation",
         "normalized_disease_id": "ncit:C50466",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1385,7 +1385,7 @@
         "disease_id": "mesh:D011014",
         "disease_label": "Pneumonia",
         "normalized_disease_id": "ncit:C3333",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1393,7 +1393,7 @@
         "disease_id": "mesh:D029424",
         "disease_label": "Pulmonary Disease, Chronic Obstructive",
         "normalized_disease_id": "ncit:C3199",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1401,7 +1401,7 @@
         "disease_id": "mesh:D006333",
         "disease_label": "Heart Failure",
         "normalized_disease_id": "ncit:C50577",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1409,7 +1409,7 @@
         "disease_id": "mesh:D011024",
         "disease_label": "Pneumonia, Viral",
         "normalized_disease_id": "mondo:0006012",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1417,7 +1417,7 @@
         "disease_id": "mesh:D006562",
         "disease_label": "Herpes Zoster",
         "normalized_disease_id": "ncit:C71079",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -1425,7 +1425,7 @@
         "disease_id": "mesh:D010612",
         "disease_label": "Pharyngitis",
         "normalized_disease_id": "ncit:C26851",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1433,7 +1433,7 @@
         "disease_id": "mesh:D002583",
         "disease_label": "Uterine Cervical Neoplasms",
         "normalized_disease_id": "ncit:C9311",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1441,7 +1441,7 @@
         "disease_id": "mesh:D010051",
         "disease_label": "Ovarian Neoplasms",
         "normalized_disease_id": "ncit:C7431",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1449,7 +1449,7 @@
         "disease_id": "mesh:D019851",
         "disease_label": "Thrombophilia",
         "normalized_disease_id": "ncit:C84479",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1457,7 +1457,7 @@
         "disease_id": "mesh:D006470",
         "disease_label": "Hemorrhage",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1465,7 +1465,7 @@
         "disease_id": "mesh:D013274",
         "disease_label": "Stomach Neoplasms",
         "normalized_disease_id": "ncit:C3387",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1473,7 +1473,7 @@
         "disease_id": "mesh:D003865",
         "disease_label": "Depressive Disorder, Major",
         "normalized_disease_id": "mondo:0002009",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1481,7 +1481,7 @@
         "disease_id": "mesh:D013920",
         "disease_label": "Thrombocythemia, Essential",
         "normalized_disease_id": "ncit:C3407",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1489,7 +1489,7 @@
         "disease_id": "mesh:D000077192",
         "disease_label": "Adenocarcinoma of Lung",
         "normalized_disease_id": "ncit:C3512",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_0"
         }
       },
@@ -1497,7 +1497,7 @@
         "disease_id": "mesh:D014808",
         "disease_label": "Vitamin D Deficiency",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1505,7 +1505,7 @@
         "disease_id": "mesh:D014029",
         "disease_label": "Tobacco Use Disorder",
         "normalized_disease_id": "DOID:0050742",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1513,7 +1513,7 @@
         "disease_id": "mesh:D015179",
         "disease_label": "Colorectal Neoplasms",
         "normalized_disease_id": "ncit:C2956",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1521,7 +1521,7 @@
         "disease_id": "mesh:D001471",
         "disease_label": "Barrett Esophagus",
         "normalized_disease_id": "ncit:C2891",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1529,7 +1529,7 @@
         "disease_id": "mesh:D050723",
         "disease_label": "Fractures, Bone",
         "normalized_disease_id": "mondo:0005315",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_0"
         }
       },
@@ -1537,7 +1537,7 @@
         "disease_id": "mesh:D010146",
         "disease_label": "Pain",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_4"
         }
       },
@@ -1545,7 +1545,7 @@
         "disease_id": "mesh:D004211",
         "disease_label": "Disseminated Intravascular Coagulation",
         "normalized_disease_id": "ncit:C2992",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1553,7 +1553,7 @@
         "disease_id": "mesh:D008268",
         "disease_label": "Macular Degeneration",
         "normalized_disease_id": "ncit:C123330",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1561,7 +1561,7 @@
         "disease_id": "mesh:D010003",
         "disease_label": "Osteoarthritis",
         "normalized_disease_id": "ncit:C3293",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1569,7 +1569,7 @@
         "disease_id": "mesh:D064129",
         "disease_label": "Prostatic Neoplasms, Castration-Resistant",
         "normalized_disease_id": "DOID:0080909",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1577,7 +1577,7 @@
         "disease_id": "mesh:D051436",
         "disease_label": "Renal Insufficiency, Chronic",
         "normalized_disease_id": "ncit:C9438",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1585,7 +1585,7 @@
         "disease_id": "mesh:D016491",
         "disease_label": "Peripheral Vascular Diseases",
         "normalized_disease_id": "ncit:C35136",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_0"
         }
       },
@@ -1593,7 +1593,7 @@
         "disease_id": "mesh:D005909",
         "disease_label": "Glioblastoma",
         "normalized_disease_id": "ncit:C3058",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1601,7 +1601,7 @@
         "disease_id": "mesh:D009369",
         "disease_label": "Neoplasms",
         "normalized_disease_id": "ncit:C3262",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1609,7 +1609,7 @@
         "disease_id": "mesh:D006973",
         "disease_label": "Hypertension",
         "normalized_disease_id": "mondo:0005044",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1617,7 +1617,7 @@
         "disease_id": "mesh:D005334",
         "disease_label": "Fever",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_4"
         }
       },
@@ -1625,7 +1625,7 @@
         "disease_id": "mesh:D009303",
         "disease_label": "Nasopharyngeal Neoplasms",
         "normalized_disease_id": "ncit:C3257",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1633,7 +1633,7 @@
         "disease_id": "mesh:D011125",
         "disease_label": "Adenomatous Polyposis Coli",
         "normalized_disease_id": "ncit:C3339",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1641,7 +1641,7 @@
         "disease_id": "mesh:D062788",
         "disease_label": "Adenomyosis",
         "normalized_disease_id": "ncit:C6996",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_0"
         }
       },
@@ -1649,7 +1649,7 @@
         "disease_id": "mesh:D014947",
         "disease_label": "Wounds and Injuries",
         "normalized_disease_id": "mondo:0021178",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1657,7 +1657,7 @@
         "disease_id": "mesh:D001943",
         "disease_label": "Breast Neoplasms",
         "normalized_disease_id": "ncit:C2910",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1665,7 +1665,7 @@
         "disease_id": "mesh:D003920",
         "disease_label": "Diabetes Mellitus",
         "normalized_disease_id": "ncit:C2985",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1673,7 +1673,7 @@
         "disease_id": "mesh:D006331",
         "disease_label": "Heart Diseases",
         "normalized_disease_id": "ncit:C3079",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1681,7 +1681,7 @@
         "disease_id": "mesh:D003327",
         "disease_label": "Coronary Disease",
         "normalized_disease_id": "ncit:C26732",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1689,7 +1689,7 @@
         "disease_id": "mesh:D000083242",
         "disease_label": "Ischemic Stroke",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1697,7 +1697,7 @@
         "disease_id": "mesh:D003930",
         "disease_label": "Diabetic Retinopathy",
         "normalized_disease_id": "ncit:C34538",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1705,7 +1705,7 @@
         "disease_id": "mesh:D011618",
         "disease_label": "Psychotic Disorders",
         "normalized_disease_id": "mondo:0001265",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1713,7 +1713,7 @@
         "disease_id": "EFO:0008585",
         "disease_label": "ST Elevation Myocardial Infarction",
         "normalized_disease_id": "mondo:0041656",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1721,7 +1721,7 @@
         "disease_id": "mesh:D002544",
         "disease_label": "Cerebral Infarction",
         "normalized_disease_id": "ncit:C50486",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1729,7 +1729,7 @@
         "disease_id": "mesh:D001249",
         "disease_label": "Asthma",
         "normalized_disease_id": "ncit:C28397",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1737,7 +1737,7 @@
         "disease_id": "mesh:D017202",
         "disease_label": "Myocardial Ischemia",
         "normalized_disease_id": "ncit:C50625",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1745,7 +1745,7 @@
         "disease_id": "mesh:D054058",
         "disease_label": "Acute Coronary Syndrome",
         "normalized_disease_id": "ncit:C53652",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1753,7 +1753,7 @@
         "disease_id": "mesh:D002312",
         "disease_label": "Cardiomyopathy, Hypertrophic",
         "normalized_disease_id": "ncit:C34449",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1761,7 +1761,7 @@
         "disease_id": "mesh:D000236",
         "disease_label": "Adenoma",
         "normalized_disease_id": "ncit:C2855",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1769,7 +1769,7 @@
         "disease_id": "mesh:D050197",
         "disease_label": "Atherosclerosis",
         "normalized_disease_id": "ncit:C35768",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1777,7 +1777,7 @@
         "disease_id": "mesh:D000026",
         "disease_label": "Abortion, Habitual",
         "normalized_disease_id": "mondo:0006774",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1785,7 +1785,7 @@
         "disease_id": "mesh:D008881",
         "disease_label": "Migraine Disorders",
         "normalized_disease_id": "ncit:C89715",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_4"
         }
       },
@@ -1793,7 +1793,7 @@
         "disease_id": "mesh:D017116",
         "disease_label": "Low Back Pain",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1801,7 +1801,7 @@
         "disease_id": "mesh:D013927",
         "disease_label": "Thrombosis",
         "normalized_disease_id": "ncit:C26891",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_4"
         }
       },
@@ -1809,7 +1809,7 @@
         "disease_id": "mesh:D015464",
         "disease_label": "Leukemia, Myelogenous, Chronic, BCR-ABL Positive",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1817,7 +1817,7 @@
         "disease_id": "mesh:D004381",
         "disease_label": "Duodenal Ulcer",
         "normalized_disease_id": "ncit:C26755",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1825,7 +1825,7 @@
         "disease_id": "mesh:D016889",
         "disease_label": "Endometrial Neoplasms",
         "normalized_disease_id": "ncit:C3012",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1833,7 +1833,7 @@
         "disease_id": "mesh:D006258",
         "disease_label": "Head and Neck Neoplasms",
         "normalized_disease_id": "ncit:C4013",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -1841,7 +1841,7 @@
         "disease_id": "mesh:D002294",
         "disease_label": "Carcinoma, Squamous Cell",
         "normalized_disease_id": "ncit:C2929",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1849,7 +1849,7 @@
         "disease_id": "mesh:D005317",
         "disease_label": "Fetal Growth Retardation",
         "normalized_disease_id": "ncit:C114875",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1857,7 +1857,7 @@
         "disease_id": "mesh:D008180",
         "disease_label": "Lupus Erythematosus, Systemic",
         "normalized_disease_id": "ncit:C3201",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1865,7 +1865,7 @@
         "disease_id": "mesh:D000083242",
         "disease_label": "Ischemic Stroke",
         "normalized_disease_id": "ncit:C95802",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1873,7 +1873,7 @@
         "disease_id": "mesh:D000755",
         "disease_label": "Anemia, Sickle Cell",
         "normalized_disease_id": "ncit:C34383",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -1881,7 +1881,7 @@
         "disease_id": "mesh:D002546",
         "disease_label": "Ischemic Attack, Transient",
         "normalized_disease_id": "ncit:C50781",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1889,7 +1889,7 @@
         "disease_id": "mesh:D055371",
         "disease_label": "Acute Lung Injury",
         "normalized_disease_id": "mondo:0015796",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1897,7 +1897,7 @@
         "disease_id": "mesh:D014647",
         "disease_label": "Varicose Ulcer",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1905,7 +1905,7 @@
         "disease_id": "mesh:D011087",
         "disease_label": "Polycythemia Vera",
         "normalized_disease_id": "ncit:C3336",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1913,7 +1913,7 @@
         "disease_id": "mesh:D016893",
         "disease_label": "Carotid Stenosis",
         "normalized_disease_id": "ncit:C95804",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1921,7 +1921,7 @@
         "disease_id": "mesh:D002318",
         "disease_label": "Cardiovascular Diseases",
         "normalized_disease_id": "ncit:C2931",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1929,7 +1929,7 @@
         "disease_id": "mesh:D006561",
         "disease_label": "Herpes Simplex",
         "normalized_disease_id": "mondo:0004609",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -1937,7 +1937,7 @@
         "disease_id": "mesh:D010437",
         "disease_label": "Peptic Ulcer",
         "normalized_disease_id": "ncit:C3318",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1945,7 +1945,7 @@
         "disease_id": "mesh:D011247",
         "disease_label": "Pregnancy",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1953,7 +1953,7 @@
         "disease_id": "mesh:D007972",
         "disease_label": "Leukoplakia, Oral",
         "normalized_disease_id": "ncit:C3187",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -1961,7 +1961,7 @@
         "disease_id": "mesh:D004066",
         "disease_label": "Digestive System Diseases",
         "normalized_disease_id": "ncit:C3959",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -1969,7 +1969,7 @@
         "disease_id": "mesh:D002386",
         "disease_label": "Cataract",
         "normalized_disease_id": "ncit:C26713",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -1977,7 +1977,7 @@
         "disease_id": "mesh:D010518",
         "disease_label": "Periodontitis",
         "normalized_disease_id": "ncit:C34918",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1985,7 +1985,7 @@
         "disease_id": "mesh:D010927",
         "disease_label": "Placental Insufficiency",
         "normalized_disease_id": "mondo:0005919",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -1993,7 +1993,7 @@
         "disease_id": "mesh:D058729",
         "disease_label": "Peripheral Arterial Disease",
         "normalized_disease_id": "ncit:C84496",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -2001,7 +2001,7 @@
         "disease_id": "mesh:D015228",
         "disease_label": "Hypertriglyceridemia",
         "normalized_disease_id": "mondo:0005347",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_1"
         }
       },
@@ -2009,7 +2009,7 @@
         "disease_id": "mesh:D003110",
         "disease_label": "Colonic Neoplasms",
         "normalized_disease_id": "ncit:C2953",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -2017,7 +2017,7 @@
         "disease_id": "mesh:D000072658",
         "disease_label": "Non-ST Elevated Myocardial Infarction",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -2025,7 +2025,7 @@
         "disease_id": "mesh:D002537",
         "disease_label": "Intracranial Arteriosclerosis",
         "normalized_disease_id": "mondo:0001632",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -2033,7 +2033,7 @@
         "disease_id": "mesh:D024821",
         "disease_label": "Metabolic Syndrome",
         "normalized_disease_id": "mondo:0011565",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -2041,7 +2041,7 @@
         "disease_id": "mesh:D006261",
         "disease_label": "Headache",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -2049,7 +2049,7 @@
         "disease_id": "mesh:D007511",
         "disease_label": "Ischemia",
         "normalized_disease_id": "mondo:0005053",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -2057,7 +2057,7 @@
         "disease_id": "mesh:D002561",
         "disease_label": "Cerebrovascular Disorders",
         "normalized_disease_id": "ncit:C2938",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -2065,7 +2065,7 @@
         "disease_id": "mesh:D015356",
         "disease_label": "Retinal Artery Occlusion",
         "normalized_disease_id": "ncit:C34978",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -2073,7 +2073,7 @@
         "disease_id": "mesh:D020246",
         "disease_label": "Venous Thrombosis",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -2081,7 +2081,7 @@
         "disease_id": "mesh:D000072657",
         "disease_label": "ST Elevation Myocardial Infarction",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -2089,7 +2089,7 @@
         "disease_id": "mesh:D007246",
         "disease_label": "Infertility",
         "normalized_disease_id": "mondo:0005047",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -2097,7 +2097,7 @@
         "disease_id": "mesh:D018781",
         "disease_label": "Tension-Type Headache",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       },
@@ -2105,7 +2105,7 @@
         "disease_id": "mesh:D001766",
         "disease_label": "Blindness",
         "normalized_disease_id": "ncit:C97109",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -2113,7 +2113,7 @@
         "disease_id": "mesh:D054556",
         "disease_label": "Venous Thromboembolism",
         "normalized_disease_id": "ncit:C99537",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -2121,7 +2121,7 @@
         "disease_id": "mesh:D020520",
         "disease_label": "Brain Infarction",
         "normalized_disease_id": "mondo:0005394",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -2129,7 +2129,7 @@
         "disease_id": "mesh:D011225",
         "disease_label": "Pre-Eclampsia",
         "normalized_disease_id": "ncit:C85021",
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_3"
         }
       },
@@ -2137,7 +2137,7 @@
         "disease_id": "mesh:D018805",
         "disease_label": "Sepsis",
         "normalized_disease_id": null,
-        "meta": {
+        "supplemental_info": {
           "chembl_max_phase_for_ind": "chembl_phase_2"
         }
       }

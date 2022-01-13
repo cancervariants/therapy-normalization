@@ -92,7 +92,7 @@ class QueryHandler:
             disease_id=indication_values[0],
             disease_label=indication_values[1],
             normalized_disease_id=indication_values[2],
-            meta=indication_values[3]
+            supplemental_info=indication_values[3]
         )
 
     def _add_record(self,
@@ -451,14 +451,14 @@ class QueryHandler:
                     "label": indication.disease_label,
                     "disease_id": indication.normalized_disease_id,
                 }
-                if indication.meta:
+                if indication.supplemental_info:
                     ind_value_obj["extensions"] = [
                         {
                             "type": "Extension",
                             "name": k,
                             "value": v
                         }
-                        for k, v in indication.meta.items()
+                        for k, v in indication.supplemental_info.items()
                     ]
                 inds_list.append(ind_value_obj)
             if inds_list:
