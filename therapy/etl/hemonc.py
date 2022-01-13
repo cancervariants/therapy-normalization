@@ -9,31 +9,19 @@ import re
 
 import requests
 import isodate
-from disease.query import QueryHandler as DiseaseNormalizer
 
 from therapy import DownloadException
-from therapy.database import Database
 from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, RecordParams, \
     ApprovalRating
-from therapy.etl.base import Base, DEFAULT_DATA_PATH
+from therapy.etl.base import DiseaseIndicationBase
 
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
 
-class HemOnc(Base):
+class HemOnc(DiseaseIndicationBase):
     """Class for HemOnc.org ETL methods."""
-
-    def __init__(self, database: Database,
-                 data_path: Path = DEFAULT_DATA_PATH):
-        """Initialize HemOnc instance.
-
-        :param therapy.database.Database database: application database
-        :param Path data_path: path to normalizer data directory
-        """
-        super().__init__(database, data_path)
-        self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
 
     def get_latest_version(self) -> str:
         """Retrieve latest version of source data.
@@ -264,7 +252,7 @@ class HemOnc(Base):
                 if year == 9999:
                     logger.warning(f"HemOnc ID {row[0]} has FDA approval year"
                                    f" 9999")
-                record["approval_rating"] = ApprovalRating.HEMONC_APPROVED.value
+                record["approval_ratings"] = [ApprovalRating.HEMONC_APPROVED.value]
                 if "approval_year" in record:
                     record["approval_year"].append(year)
                 else:
@@ -272,18 +260,13 @@ class HemOnc(Base):
 
             elif rel_type == "Has FDA indication":
                 label = conditions[row[1]]
-                norm_response = self.disease_normalizer.search_groups(label)
-                if norm_response["match_type"] > 0:
-                    ncit_id = norm_response["disease_descriptor"]["disease_id"]
-                else:
-                    ncit_id = ""
-                    logger.warning(f"Normalization of condition id: {row[1]}"
-                                   f", {label}, failed.")
+                norm_id = self._normalize_disease(label)
                 hemonc_concept_id = f"{NamespacePrefix.HEMONC.value}:{row[1]}"
                 indication = {
                     "disease_id": hemonc_concept_id,
                     "disease_label": label,
-                    "normalized_disease_id": ncit_id
+                    "normalized_disease_id": norm_id,
+                    "supplemental_info": {"regulatory_body": "FDA"}
                 }
                 if "has_indication" in record:
                     record["has_indication"].append(indication)

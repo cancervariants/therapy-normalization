@@ -120,6 +120,7 @@ class CLI:
                     ("disease_metadata" not in current_tables) or \
                     (db.diseases.scan()["Count"] == 0) or \
                     (db.metadata.scan()["Count"] < len(DiseaseSources)):
+
                 msg = "Disease Normalizer not loaded. Loading now..."
                 logger.debug(msg)
                 click.echo(msg)

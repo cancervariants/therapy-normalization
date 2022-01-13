@@ -3,11 +3,12 @@ import logging
 import os
 import shutil
 import sqlite3
+from typing import Optional, List, Dict
 
 import chembl_downloader
 import bioversions
 
-from therapy.etl.base import Base
+from therapy.etl.base import DiseaseIndicationBase
 from therapy.schemas import SourceName, NamespacePrefix, ApprovalRating, \
     SourceMeta
 
@@ -16,7 +17,7 @@ logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
 
-class ChEMBL(Base):
+class ChEMBL(DiseaseIndicationBase):
     """Class for ChEMBL ETL methods."""
 
     def _download_data(self) -> None:
@@ -39,153 +40,151 @@ class ChEMBL(Base):
         self._conn = conn
         self._cursor = conn.cursor()
 
+    @staticmethod
+    def _unwrap_group_concat(value: Optional[str]) -> List[str]:
+        """Process concatenated values retrieved from ChEMBL DB.
+        :param Optional[str] value: the value provided by the cursor
+        :return: List of separated values (empty if none present)
+        """
+        if value:
+            return value.split("||")
+        else:
+            return []
+
+    @staticmethod
+    def _get_approval_rating(value: int) -> ApprovalRating:
+        """Standardize approval rating value
+        :param int value: value retrieved from ChEMBL database
+        :return: instantiated ApprovalRating
+        :raise: ValueError if invalid value is provided
+        """
+        if value == 0:
+            return ApprovalRating.CHEMBL_0
+        elif value == 1:
+            return ApprovalRating.CHEMBL_1
+        elif value == 2:
+            return ApprovalRating.CHEMBL_2
+        elif value == 3:
+            return ApprovalRating.CHEMBL_3
+        elif value == 4:
+            return ApprovalRating.CHEMBL_4
+        else:
+            raise ValueError(f"Unrecognized approval rating: {value}")
+
+    def _get_indications(self, value: Optional[str]) -> List[Dict]:
+        """Construct indication objects to prepare for loading into DB
+        :param Optional[str] value: `indication` value fetched from ChEMBL DB
+        :return: List containing indication dicts
+        """
+        if value:
+            indications = []
+            indication_groups = value.split("|||")
+            for group in set(indication_groups):
+                ind_group = group.split("||")
+                phase = self._get_approval_rating(int(ind_group[4]))
+                for i, term in enumerate(ind_group[:4]):
+                    normalized_disease_id = self._normalize_disease(term)
+                    if normalized_disease_id is not None:
+                        label = ind_group[2] if i % 2 == 0 else ind_group[3]
+                        disease_id = ind_group[0] if i % 2 == 0 else ind_group[1]
+                        indications.append({
+                            "disease_id": disease_id,
+                            "disease_label": label,
+                            "normalized_disease_id": normalized_disease_id,
+                            "supplemental_info": {"chembl_max_phase_for_ind": phase}
+                        })
+                        break
+                    else:
+                        indications.append({
+                            "disease_id": ind_group[0],
+                            "disease_label": ind_group[2],
+                            "meta": {"chembl_max_phase_for_ind": phase}
+                        })
+            return indications
+        else:
+            return []
+
     def _transform_data(self) -> None:
-        """Transform SQLite data to temporary JSON."""
-        self._create_dictionary_synonyms_table()
-        self._create_trade_names_table()
-        self._create_temp_table()
+        """Transform SQLite data and load to DB."""
+        query = """
+        SELECT
+            md.chembl_id,
+            md.molregno,
+            md.pref_name,
+            md.max_phase,
+            md.withdrawn_flag,
+            ms.aliases,
+            tn.trade_names,
+            d.indications
+        FROM molecule_dictionary md
+        LEFT JOIN (
+            SELECT molregno, GROUP_CONCAT(synonyms, '||') aliases
+            FROM (
+                SELECT DISTINCT molregno, synonyms
+                FROM molecule_synonyms
+                WHERE syn_type != 'TRADE_NAME'
+            ) GROUP BY molregno
+        ) ms on md.molregno = ms.molregno
+        LEFT JOIN (
+            SELECT molregno, GROUP_CONCAT(trade_name, '||') trade_names
+            FROM (
+                SELECT DISTINCT molregno, trade_name
+                FROM (
+                    SELECT molregno, synonyms as trade_name
+                    FROM molecule_synonyms
+                    WHERE syn_type == 'TRADE_NAME'
+                    UNION
+                    SELECT molregno, trade_name
+                    FROM (
+                        SELECT f.molregno, p.trade_name
+                        FROM formulations f
+                        LEFT JOIN products p
+                        ON f.product_id = p.product_id
+                    )
+                )
+            ) GROUP BY molregno
+        ) tn on md.molregno = tn.molregno
+        LEFT JOIN (
+            SELECT molregno, GROUP_CONCAT(indication, '|||') as indications
+            FROM (
+                SELECT DISTINCT d.molregno,
+                'mesh:' || d.mesh_id || '||' || d.efo_id || '||' || d.mesh_heading
+                 || '||' || d.efo_term || '||' || d.max_phase_for_ind as indication
+                FROM drug_indication AS d
+                WHERE (
+                    d.molregno IS NOT NULL
+                    AND d.mesh_heading IS NOT NULL
+                    AND d.mesh_id IS NOT NULL
+                    AND d.efo_term IS NOT NULL
+                    AND d.efo_id IS NOT NULL
+                    AND d.max_phase_for_ind IS NOT NULL
+                )
+            ) GROUP BY molregno
+        ) d on md.molregno = d.molregno
+        GROUP BY md.molregno;
+        """
+        self._cursor.execute(query)
 
-        self._cursor.execute("DROP TABLE DictionarySynonyms;")
-        self._cursor.execute("DROP TABLE TradeNames;")
+        for row in self._cursor:
+            appr_ratings = []
+            max_phase = self._get_approval_rating(row["max_phase"])
+            if max_phase is not None:
+                appr_ratings.append(max_phase)
+            if row["withdrawn_flag"] == "1":
+                appr_ratings.append(ApprovalRating.CHEMBL_WITHDRAWN)
 
-        self._load_json()
-        self._conn.commit()
+            has_indication = self._get_indications(row["indications"])
+
+            params = {
+                "concept_id": f"{NamespacePrefix.CHEMBL.value}:{row['chembl_id']}",
+                "label": row["pref_name"],
+                "approval_ratings": appr_ratings,
+                "aliases": self._unwrap_group_concat(row["aliases"]),
+                "trade_names": self._unwrap_group_concat(row["trade_names"]),
+                "has_indication": has_indication
+            }
+            self._load_therapy(params)
         self._conn.close()
-
-    def _create_dictionary_synonyms_table(self) -> None:
-        """Create temporary table to store drugs and their synonyms."""
-        create_dictionary_synonyms_table = f"""
-            CREATE TEMPORARY TABLE DictionarySynonyms AS
-            SELECT
-                md.molregno,
-                '{NamespacePrefix.CHEMBL.value}:'||md.chembl_id as chembl_id,
-                md.pref_name,
-                md.max_phase,
-                md.withdrawn_flag,
-                group_concat(
-                    ms.synonyms, '||')as synonyms
-            FROM molecule_dictionary md
-            LEFT JOIN molecule_synonyms ms USING(molregno)
-            GROUP BY md.molregno
-            UNION ALL
-            SELECT
-                md.molregno,
-                '{NamespacePrefix.CHEMBL.value}:'||md.chembl_id as chembl_id,
-                md.pref_name,
-                md.max_phase,
-                md.withdrawn_flag,
-                group_concat(
-                    ms.synonyms, '||') as synonyms
-            FROM molecule_synonyms ms
-            LEFT JOIN molecule_dictionary md USING(molregno)
-            WHERE md.molregno IS NULL
-            GROUP BY md.molregno
-        """
-        self._cursor.execute(create_dictionary_synonyms_table)
-
-    def _create_trade_names_table(self) -> None:
-        """Create temporary table to store trade name data."""
-        create_trade_names_table = """
-            CREATE TEMPORARY TABLE TradeNames AS
-            SELECT
-                f.molregno,
-                f.product_id,
-                group_concat(
-                    p.trade_name, '||') as trade_names
-            FROM formulations f
-            LEFT JOIN products p
-                ON f.product_id = p.product_id
-            GROUP BY f.molregno;
-        """
-        self._cursor.execute(create_trade_names_table)
-
-    def _create_temp_table(self) -> None:
-        """Create temporary table to store therapies data."""
-        create_temp_table = """
-            CREATE TEMPORARY TABLE temp(concept_id, label, approval_rating,
-                                        src_name, trade_names, aliases);
-        """
-        self._cursor.execute(create_temp_table)
-
-        insert_temp = f"""
-            INSERT INTO temp(concept_id, label, approval_rating, src_name,
-                             trade_names, aliases)
-            SELECT
-                ds.chembl_id,
-                ds.pref_name,
-                CASE
-                    WHEN ds.withdrawn_flag
-                        THEN '{ApprovalRating.CHEMBL_WITHDRAWN.value}'
-                    WHEN ds.max_phase == 0
-                        THEN '{ApprovalRating.CHEMBL_0.value}'
-                    WHEN ds.max_phase == 1
-                        THEN '{ApprovalRating.CHEMBL_1.value}'
-                    WHEN ds.max_phase == 2
-                        THEN '{ApprovalRating.CHEMBL_2.value}'
-                    WHEN ds.max_phase ==3
-                        THEN '{ApprovalRating.CHEMBL_3.value}'
-                    WHEN ds.max_phase == 4
-                        THEN '{ApprovalRating.CHEMBL_4.value}'
-                    ELSE
-                        '{None}'
-                END,
-                '{SourceName.CHEMBL.value}',
-                t.trade_names,
-                ds.synonyms
-            FROM DictionarySynonyms ds
-            LEFT JOIN TradeNames t USING(molregno)
-            GROUP BY ds.molregno
-            UNION ALL
-            SELECT
-                ds.chembl_id,
-                ds.pref_name,
-                CASE
-                    WHEN ds.withdrawn_flag
-                        THEN '{ApprovalRating.CHEMBL_WITHDRAWN.value}'
-                    WHEN ds.max_phase == 0
-                        THEN '{ApprovalRating.CHEMBL_0.value}'
-                    WHEN ds.max_phase == 1
-                        THEN '{ApprovalRating.CHEMBL_1.value}'
-                    WHEN ds.max_phase == 2
-                        THEN '{ApprovalRating.CHEMBL_2.value}'
-                    WHEN ds.max_phase ==3
-                        THEN '{ApprovalRating.CHEMBL_3.value}'
-                    WHEN ds.max_phase == 4
-                        THEN '{ApprovalRating.CHEMBL_4.value}'
-                    ELSE
-                        '{None}'
-                END,
-                '{SourceName.CHEMBL.value}',
-                t.trade_names,
-                ds.synonyms
-            FROM TradeNames t
-            LEFT JOIN DictionarySynonyms ds USING(molregno)
-            WHERE ds.molregno IS NULL
-            GROUP BY ds.molregno;
-        """
-        self._cursor.execute(insert_temp)
-
-    def _load_json(self) -> None:
-        """Load ChEMBL data into database."""
-        chembl_data = """
-            SELECT
-                concept_id,
-                label,
-                approval_rating,
-                src_name,
-                trade_names,
-                aliases
-            FROM temp;
-        """
-        result = [dict(row) for row in
-                  self._cursor.execute(chembl_data).fetchall()]
-        self._cursor.execute("DROP TABLE temp;")
-
-        for record in result:
-            for attr in ["aliases", "trade_names"]:
-                if attr in record and record[attr]:
-                    record[attr] = record[attr].split("||")
-            self._load_therapy(record)
 
     def _load_meta(self) -> None:
         """Add ChEMBL metadata."""

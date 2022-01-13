@@ -9,7 +9,15 @@ import pytest
 from therapy.schemas import Drug, MatchType
 from therapy.database import Database
 
+
 TEST_ROOT = Path(__file__).resolve().parents[1]
+TEST_DATA_DIRECTORY = TEST_ROOT / "tests" / "unit" / "data"
+
+
+@pytest.fixture(scope="session")
+def test_data():
+    """Provide test data location to test modules"""
+    return TEST_DATA_DIRECTORY
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -23,15 +31,13 @@ def db():
                 self.load_test_data()
 
         def load_test_data(self) -> None:
-            with open(f"{TEST_ROOT}/tests/unit/"
-                      f"data/therapies.json", "r") as f:
+            with open(TEST_DATA_DIRECTORY / "therapies.json", "r") as f:
                 therapies = json.load(f)
                 with self.db.therapies.batch_writer() as batch:
                     for therapy in therapies:
                         batch.put_item(Item=therapy)
 
-            with open(f"{TEST_ROOT}/tests/unit/"
-                      f"data/metadata.json", "r") as f:
+            with open(TEST_DATA_DIRECTORY / "metadata.json", "r") as f:
                 metadata = json.load(f)
                 with self.db.metadata.batch_writer() as batch:
                     for m in metadata:
@@ -57,7 +63,7 @@ def mock_database():
             `self.updates` stores update requests, with the concept_id as the key, and
             a dict of {new_attribute: new_value} as the value.
             """
-            infile = TEST_ROOT / "tests" / "unit" / "data" / "therapies.json"
+            infile = TEST_DATA_DIRECTORY / "therapies.json"
             self.records = {}
             with open(infile, "r") as f:
                 records_json = json.load(f)
@@ -74,7 +80,7 @@ def mock_database():
             self.added_records: Dict[str, Dict[Any, Any]] = {}
             self.updates: Dict[str, Dict[Any, Any]] = {}
 
-            meta = TEST_ROOT / "tests" / "unit" / "data" / "metadata.json"
+            meta = TEST_DATA_DIRECTORY / "metadata.json"
             with open(meta, "r") as f:
                 meta_json = json.load(f)
             self.cached_sources = {}
@@ -168,8 +174,8 @@ def compare_records(actual: Dict, fixt: Drug):
     assert set(actual["trade_names"]) == set(fixture["trade_names"])
     assert set(actual["xrefs"]) == set(fixture["xrefs"])
     assert set(actual["associated_with"]) == set(fixture["associated_with"])
-    if actual["approval_rating"] or fixture["approval_rating"]:
-        assert actual["approval_rating"] == fixture["approval_rating"]
+    if actual["approval_ratings"] or fixture["approval_ratings"]:
+        assert set(actual["approval_ratings"]) == set(fixture["approval_ratings"])
     if actual["approval_year"] or fixture["approval_year"]:
         assert set(actual["approval_year"]) == set(fixture["approval_year"])
     if actual["has_indication"] or fixture["has_indication"]:

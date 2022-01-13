@@ -36,7 +36,7 @@ def voglibose():
                     "N-(1,3-Dihydroxy-2-Propyl)Valiolamine", "VOGLIBOSE"],
         "xrefs": ["chemidplus:83480-29-9"],
         "associated_with": ["unii:S77P977AG8", "umls:C0532578"],
-        "approval_rating": None,
+        "approval_ratings": None,
         "trade_names": []
     }
     return Drug(**params)
@@ -54,7 +54,7 @@ def apricoxib():
         ],
         "xrefs": ["chemidplus:197904-84-0"],
         "associated_with": ["unii:5X5HB3VZ3Z", "umls:C1737955"],
-        "approval_rating": None,
+        "approval_ratings": None,
         "trade_names": []
     }
     return Drug(**params)
@@ -70,7 +70,7 @@ def trastuzumab():
         "aliases": [],
         "xrefs": ["chemidplus:180288-69-1"],
         "associated_with": ["umls:C0728747", "unii:P188ANX8CK"],
-        "approval_rating": None,
+        "approval_ratings": None,
         "trade_names": []
     }
     return Drug(**params)

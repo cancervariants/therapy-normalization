@@ -46,23 +46,32 @@ def cisplatin():
         "trade_names": [],
         "xrefs": ["rxcui:2555"],
         "associated_with": [],
-        "approval_rating": "hemonc_approved",
+        "approval_ratings": ["hemonc_approved"],
         "approval_year": [1978],
         "has_indication": [
             {
-                "disease_id": "hemonc:671",
-                "disease_label": "Testicular cancer",
-                "normalized_disease_id": "ncit:C7251"
+                "disease_id": "hemonc:569",
+                "disease_label": "Bladder cancer",
+                "normalized_disease_id": "ncit:C9334",
+                "supplemental_info": {
+                    "regulatory_body": "FDA"
+                }
             },
             {
                 "disease_id": "hemonc:645",
                 "disease_label": "Ovarian cancer",
-                "normalized_disease_id": "ncit:C7431"
+                "normalized_disease_id": "ncit:C7431",
+                "supplemental_info": {
+                    "regulatory_body": "FDA"
+                }
             },
             {
-                "disease_id": "hemonc:569",
-                "disease_label": "Bladder cancer",
-                "normalized_disease_id": "ncit:C9334"
+                "disease_id": "hemonc:671",
+                "disease_label": "Testicular cancer",
+                "normalized_disease_id": "ncit:C7251",
+                "supplemental_info": {
+                    "regulatory_body": "FDA"
+                }
             }
         ]
     })
@@ -100,18 +109,24 @@ def bendamustine():
             "Treanda",
             "Xyotin"
         ],
-        "approval_rating": "hemonc_approved",
+        "approval_ratings": ["hemonc_approved"],
         "approval_year": ["2008", "2015"],
         "has_indication": [
             {
                 "disease_id": "hemonc:581",
                 "disease_label": "Chronic lymphocytic leukemia",
-                "normalized_disease_id": "ncit:C3163"
+                "normalized_disease_id": "ncit:C3163",
+                "supplemental_info": {
+                    "regulatory_body": "FDA"
+                }
             },
             {
                 "disease_id": "hemonc:46094",
                 "disease_label": "Indolent lymphoma",
-                "normalized_disease_id": "ncit:C8504"
+                "normalized_disease_id": "ncit:C8504",
+                "supplemental_info": {
+                    "regulatory_body": "FDA"
+                }
             }
         ]
     })
@@ -131,15 +146,18 @@ def degarelix():
         "xrefs": ["rxcui:475230"],
         "associated_with": [],
         "trade_names": ["Firmagon"],
-        "approval_rating": "hemonc_approved",
+        "approval_ratings": ["hemonc_approved"],
         "approval_year": ["2008"],
         "has_indication": [
             {
                 "disease_id": "hemonc:658",
                 "disease_label": "Prostate cancer",
-                "normalized_disease_id": "ncit:C7378"
+                "normalized_disease_id": "ncit:C7378",
+                "supplemental_info": {
+                    "regulatory_body": "FDA"
+                }
             }
-        ],
+        ]
     })
 
 

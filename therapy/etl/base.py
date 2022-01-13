@@ -8,10 +8,13 @@ import os
 import zipfile
 import tempfile
 import re
+import json
+from functools import lru_cache
 
 from pydantic import ValidationError
 import requests
 import bioversions
+from disease.query import QueryHandler as DiseaseNormalizer
 
 from therapy import APP_ROOT, ITEM_TYPES, DownloadException
 from therapy.schemas import Drug
@@ -266,18 +269,50 @@ class Base(ABC):
         # compress has_indication
         indications = therapy.get("has_indication")
         if indications:
-            therapy["has_indication"] = [
-                [ind["disease_id"], ind["disease_label"], ind["normalized_disease_id"]]
+            therapy["has_indication"] = list({
+                json.dumps([
+                    ind["disease_id"],
+                    ind["disease_label"],
+                    ind.get("normalized_disease_id"),
+                    ind.get("supplemental_info")
+                ])
                 for ind in indications
-            ]
+            })
         elif "has_indication" in therapy:
             del therapy["has_indication"]
 
         # handle detail fields
-        approval_attrs = ("approval_rating", "approval_year")
+        approval_attrs = ("approval_ratings", "approval_year")
         for field in approval_attrs:
             if approval_attrs in therapy and therapy[field] is None:
                 del therapy[field]
 
         self.database.add_record(therapy)
         self._added_ids.append(concept_id)
+
+
+class DiseaseIndicationBase(Base):
+    """Base class for sources that require disease normalization capabilities."""
+
+    def __init__(self, database: Database,
+                 data_path: Path = DEFAULT_DATA_PATH):
+        """Initialize source ETL instance.
+
+        :param therapy.database.Database database: application database
+        :param Path data_path: path to normalizer data directory
+        """
+        super().__init__(database, data_path)
+        self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
+
+    @lru_cache(maxsize=64)
+    def _normalize_disease(self, query: str) -> Optional[str]:
+        """Attempt normalization of disease term.
+        :param str query: term to normalize
+        :return: ID if successful, None otherwise
+        """
+        response = self.disease_normalizer.search_groups(query)
+        if response["match_type"] > 0:
+            return response["disease_descriptor"]["disease_id"]
+        else:
+            logger.warning(f"Failed to normalize disease term: {query}")
+            return None

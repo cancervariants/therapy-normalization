@@ -3,6 +3,7 @@ import re
 from typing import List, Dict, Set, Tuple, Union, Any, Optional
 from urllib.parse import quote
 from datetime import datetime
+import json
 
 from uvicorn.config import logger
 from botocore.exceptions import ClientError
@@ -80,6 +81,20 @@ class QueryHandler:
             self.db.cached_sources[src_name] = response
             return response
 
+    @staticmethod
+    def _get_indication(indication_string: str) -> HasIndication:
+        """Load indication data.
+        :param str indication_string: dumped JSON string from db
+        :return: complete HasIndication object
+        """
+        indication_values = json.loads(indication_string)
+        return HasIndication(
+            disease_id=indication_values[0],
+            disease_label=indication_values[1],
+            normalized_disease_id=indication_values[2],
+            supplemental_info=indication_values[3]
+        )
+
     def _add_record(self,
                     response: Dict[str, Dict],
                     item: Dict,
@@ -94,10 +109,7 @@ class QueryHandler:
         """
         inds = item.get("has_indication")
         if inds:
-            item["has_indication"] = [HasIndication(disease_id=i[0],
-                                                    disease_label=i[1],
-                                                    normalized_disease_id=i[2])
-                                      for i in inds]
+            item["has_indication"] = [self._get_indication(i) for i in inds]
 
         drug = Drug(**item)
         src_name = item["src_name"]
@@ -412,8 +424,7 @@ class QueryHandler:
         if "aliases" in record:
             vod["alternate_labels"] = record["aliases"]
 
-        if any(filter(lambda f: f in record, ("approval_rating",
-                                              "approval_ratings",
+        if any(filter(lambda f: f in record, ("approval_ratings",
                                               "approval_year",
                                               "has_indication"))):
             approv = {
@@ -421,13 +432,7 @@ class QueryHandler:
                 "name": "regulatory_approval",
                 "value": {}
             }
-            # temporarily handle rating vs ratings fields slightly differently
-            # to change in issue 223
-            if "approval_rating" in record:
-                value = record.get("approval_rating")
-                if value:
-                    approv["value"]["approval_ratings"] = [value]  # type: ignore
-            elif "approval_ratings" in record:
+            if "approval_ratings" in record:
                 value = record.get("approval_ratings")
                 if value:
                     approv["value"]["approval_ratings"] = value  # type: ignore
@@ -435,16 +440,27 @@ class QueryHandler:
                 value = record.get("approval_year")
                 if value:
                     approv["value"]["approval_year"] = value  # type: ignore
+
             inds = record.get("has_indication", [])
             inds_list = []
-            for ind in inds:
-                ind_obj = {
-                    "id": ind[0],
+            for ind_db in inds:
+                indication = self._get_indication(ind_db)
+                ind_value_obj: Dict[str, Optional[Union[str, List]]] = {
+                    "id": indication.disease_id,
                     "type": "DiseaseDescriptor",
-                    "label": ind[1],
-                    "disease_id": ind[2],
+                    "label": indication.disease_label,
+                    "disease_id": indication.normalized_disease_id,
                 }
-                inds_list.append(ind_obj)
+                if indication.supplemental_info:
+                    ind_value_obj["extensions"] = [
+                        {
+                            "type": "Extension",
+                            "name": k,
+                            "value": v
+                        }
+                        for k, v in indication.supplemental_info.items()
+                    ]
+                inds_list.append(ind_value_obj)
             if inds_list:
                 approv["value"]["has_indication"] = inds_list  # type: ignore
             vod["extensions"].append(approv)
