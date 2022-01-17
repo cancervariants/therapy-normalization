@@ -11,7 +11,11 @@ from therapy.schemas import SearchService, NormalizationService
 
 
 query_handler = QueryHandler()
-app = FastAPI(docs_url="/therapy", openapi_url="/therapy/openapi.json")
+app = FastAPI(
+    docs_url="/therapy",
+    openapi_url="/therapy/openapi.json",
+    swagger_ui_parameters={"tryItOutEnabled": True}
+)
 
 
 def custom_openapi() -> Dict:
