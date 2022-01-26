@@ -249,7 +249,7 @@ class HemOnc(DiseaseIndicationBase):
                     logger.error(f"Failed parse of FDA approval year ID "
                                  f"{row[1]} for HemOnc ID {row[0]}")
                     continue
-                if year == 9999:
+                if year == "9999":
                     logger.warning(f"HemOnc ID {row[0]} has FDA approval year"
                                    f" 9999")
                 record["approval_ratings"] = [ApprovalRating.HEMONC_APPROVED.value]

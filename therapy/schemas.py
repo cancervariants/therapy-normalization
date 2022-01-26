@@ -143,7 +143,7 @@ class Drug(BaseModel):
     xrefs: Optional[List[str]] = []
     associated_with: Optional[List[str]] = []
     approval_ratings: Optional[List[ApprovalRating]] = None
-    approval_year: Optional[List[int]] = []
+    approval_year: Optional[List[str]] = []
     has_indication: Optional[List[HasIndication]] = []
 
     class Config:
@@ -408,7 +408,7 @@ class ApprovalRatingValue(BaseModel):
     """
 
     approval_ratings: Optional[List[ApprovalRating]]
-    approval_year: Optional[List[int]]
+    approval_year: Optional[List[str]]
     has_indication: Optional[List[ValueObjectDescriptor]]
 
 
