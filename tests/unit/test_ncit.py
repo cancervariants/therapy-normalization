@@ -17,8 +17,8 @@ def ncit():
             self.query_handler = QueryHandler()
 
         def search(self, query_str):
-            resp = self.query_handler.search_sources(query_str, keyed=True, incl="ncit")
-            return resp["source_matches"]["NCIt"]
+            resp = self.query_handler.search(query_str, keyed=True, incl="ncit")
+            return resp.source_matches["NCIt"]
 
         def fetch_meta(self):
             return self.query_handler._fetch_meta("NCIt")
@@ -239,17 +239,17 @@ def test_assoc_with_match(ncit, voglibose, apricoxib, trastuzumab):
 def test_no_match(ncit):
     """Test that a term normalizes to NO match."""
     response = ncit.search("voglibo")
-    assert response["match_type"] == MatchType.NO_MATCH
-    assert len(response["records"]) == 0
+    assert response.match_type == MatchType.NO_MATCH
+    assert len(response.records) == 0
 
     # Test white space in between label
     response = ncit.search("Volgibo")
-    assert response["match_type"] == MatchType.NO_MATCH
+    assert response.match_type == MatchType.NO_MATCH
 
     # Test empty query
     response = ncit.search("")
-    assert response["match_type"] == MatchType.NO_MATCH
-    assert len(response["records"]) == 0
+    assert response.match_type == MatchType.NO_MATCH
+    assert len(response.records) == 0
 
 
 def test_meta_info(ncit):

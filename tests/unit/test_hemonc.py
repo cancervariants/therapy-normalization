@@ -18,9 +18,8 @@ def hemonc():
             self.query_handler = QueryHandler()
 
         def search(self, query_str):
-            resp = self.query_handler.search_sources(query_str, keyed=True,
-                                                     incl="hemonc")
-            return resp["source_matches"]["HemOnc"]
+            resp = self.query_handler.search(query_str, keyed=True, incl="hemonc")
+            return resp.source_matches["HemOnc"]
 
         def fetch_meta(self):
             return self.query_handler._fetch_meta("HemOnc")
@@ -47,7 +46,7 @@ def cisplatin():
         "xrefs": ["rxcui:2555"],
         "associated_with": [],
         "approval_ratings": ["hemonc_approved"],
-        "approval_year": [1978],
+        "approval_year": ["1978"],
         "has_indication": [
             {
                 "disease_id": "hemonc:569",
@@ -219,7 +218,7 @@ def test_trade_name(hemonc, bendamustine, degarelix):
 
     # no trade names for records with > 20
     response = hemonc.search("platinol")
-    assert response["match_type"] == MatchType.NO_MATCH
+    assert response.match_type == MatchType.NO_MATCH
 
 
 def test_xref_match(hemonc, cisplatin, bendamustine, degarelix):

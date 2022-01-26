@@ -18,9 +18,8 @@ def drugsatfda():
             self.normalizer = QueryHandler()
 
         def search(self, query_str):
-            resp = self.normalizer.search_sources(query_str, keyed=True,
-                                                  incl="drugsatfda")
-            return resp["source_matches"]["DrugsAtFDA"]
+            resp = self.normalizer.search(query_str, keyed=True, incl="drugsatfda")
+            return resp.source_matches["DrugsAtFDA"]
     return QueryGetter()
 
 
@@ -55,7 +54,7 @@ def everolimus() -> Drug:
             "ndc:0078-0626",
             "ndc:0078-0627",
             "ndc:0078-0628",
-            "spl:8ad662ec-6e9b-4650-9f5a-78dda1f9f8f0",
+            "spl:e42ff4e2-3984-443d-be20-17b96e63da53",
             "unii:9HW64Q8G6G",
         ],
         "approval_ratings": ["fda_prescription"],
@@ -194,6 +193,7 @@ def fenortho() -> List[Drug]:
             "concept_id": "drugsatfda.nda:017604",
             "xrefs": [
                 "rxcui:197694",
+                "rxcui:197695",
                 "rxcui:260323",
                 "rxcui:858116",
                 "rxcui:858118",
@@ -225,50 +225,50 @@ def test_everolimus(drugsatfda, everolimus):
 
     # test concept ID
     response = drugsatfda.search(concept_id)
-    assert response["match_type"] == MatchType.CONCEPT_ID
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0], everolimus)
+    assert response.match_type == MatchType.CONCEPT_ID
+    assert len(response.records) == 1
+    compare_records(response.records[0], everolimus)
 
     response = drugsatfda.search("drugsatfda.anda:022334")
-    assert response["match_type"] == MatchType.NO_MATCH
+    assert response.match_type == MatchType.NO_MATCH
 
     # test label
     response = drugsatfda.search("everolimus")
-    assert response["match_type"] == MatchType.LABEL
-    records = [r for r in response["records"] if r["concept_id"] == concept_id]
+    assert response.match_type == MatchType.LABEL
+    records = [r for r in response.records if r.concept_id == concept_id]
     compare_records(records[0], everolimus)
 
     # test trade name
     response = drugsatfda.search("afinitor")
-    assert response["match_type"] == MatchType.TRADE_NAME
-    records = [r for r in response["records"] if r["concept_id"] == concept_id]
+    assert response.match_type == MatchType.TRADE_NAME
+    records = [r for r in response.records if r.concept_id == concept_id]
     compare_records(records[0], everolimus)
 
     # test xref
     response = drugsatfda.search("rxcui:998191")
-    assert response["match_type"] == MatchType.XREF
-    records = [r for r in response["records"] if r["concept_id"] == concept_id]
+    assert response.match_type == MatchType.XREF
+    records = [r for r in response.records if r.concept_id == concept_id]
     compare_records(records[0], everolimus)
 
     response = drugsatfda.search("rxcui:845507")
-    assert response["match_type"] == MatchType.XREF
-    records = [r for r in response["records"] if r["concept_id"] == concept_id]
+    assert response.match_type == MatchType.XREF
+    records = [r for r in response.records if r.concept_id == concept_id]
     compare_records(records[0], everolimus)
 
     response = drugsatfda.search("rxcui:998189")
-    assert response["match_type"] == MatchType.XREF
-    records = [r for r in response["records"] if r["concept_id"] == concept_id]
+    assert response.match_type == MatchType.XREF
+    records = [r for r in response.records if r.concept_id == concept_id]
     compare_records(records[0], everolimus)
 
     response = drugsatfda.search("rxcui:1308432")
-    assert response["match_type"] == MatchType.XREF
-    records = [r for r in response["records"] if r["concept_id"] == concept_id]
+    assert response.match_type == MatchType.XREF
+    records = [r for r in response.records if r.concept_id == concept_id]
     compare_records(records[0], everolimus)
 
     # test assoc_with
     response = drugsatfda.search("unii:9HW64Q8G6G")
-    assert response["match_type"] == MatchType.ASSOCIATED_WITH
-    records = [r for r in response["records"] if r["concept_id"] == concept_id]
+    assert response.match_type == MatchType.ASSOCIATED_WITH
+    records = [r for r in response.records if r.concept_id == concept_id]
     compare_records(records[0], everolimus)
 
 
@@ -278,37 +278,37 @@ def test_dactinomycin(drugsatfda, dactinomycin):
 
     # test concept ID
     response = drugsatfda.search(concept_id)
-    assert response["match_type"] == MatchType.CONCEPT_ID
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0], dactinomycin)
+    assert response.match_type == MatchType.CONCEPT_ID
+    assert len(response.records) == 1
+    compare_records(response.records[0], dactinomycin)
 
     # test label
     response = drugsatfda.search("DACTINOMYCIN")
-    assert response["match_type"] == MatchType.LABEL
-    records = [r for r in response["records"] if r["concept_id"] == concept_id]
+    assert response.match_type == MatchType.LABEL
+    records = [r for r in response.records if r.concept_id == concept_id]
     compare_records(records[0], dactinomycin)
 
     # test trade name
     response = drugsatfda.search("cosmegen")
-    assert response["match_type"] == MatchType.TRADE_NAME
-    records = [r for r in response["records"] if r["concept_id"] == concept_id]
+    assert response.match_type == MatchType.TRADE_NAME
+    records = [r for r in response.records if r.concept_id == concept_id]
     compare_records(records[0], dactinomycin)
 
     # test xref
     response = drugsatfda.search("rxcui:105569")
-    assert response["match_type"] == MatchType.XREF
-    records = [r for r in response["records"] if r["concept_id"] == concept_id]
+    assert response.match_type == MatchType.XREF
+    records = [r for r in response.records if r.concept_id == concept_id]
     compare_records(records[0], dactinomycin)
 
     response = drugsatfda.search("rxcui:239179")
-    assert response["match_type"] == MatchType.XREF
-    records = [r for r in response["records"] if r["concept_id"] == concept_id]
+    assert response.match_type == MatchType.XREF
+    records = [r for r in response.records if r.concept_id == concept_id]
     compare_records(records[0], dactinomycin)
 
     # test assoc_with
     response = drugsatfda.search("unii:1cc1jfe158")
-    assert response["match_type"] == MatchType.XREF
-    records = [r for r in response["records"] if r["concept_id"] == concept_id]
+    assert response.match_type == MatchType.XREF
+    records = [r for r in response.records if r.concept_id == concept_id]
     compare_records(records[0], dactinomycin)
 
 
@@ -317,94 +317,94 @@ def test_cisplatin(drugsatfda, cisplatin):
     # test concept IDs
     concept_id = "drugsatfda.anda:074656"
     response = drugsatfda.search(concept_id)
-    assert response["match_type"] == MatchType.CONCEPT_ID
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0],
+    assert response.match_type == MatchType.CONCEPT_ID
+    assert len(response.records) == 1
+    compare_records(response.records[0],
                     [c for c in cisplatin if c.concept_id == concept_id][0])
 
     concept_id = "drugsatfda.anda:075036"
     response = drugsatfda.search(concept_id)
-    assert response["match_type"] == MatchType.CONCEPT_ID
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0],
+    assert response.match_type == MatchType.CONCEPT_ID
+    assert len(response.records) == 1
+    compare_records(response.records[0],
                     [c for c in cisplatin
                      if c.concept_id.lower() == concept_id.lower()][0])
 
     concept_id = "drugsatfda.anda:074735"
     response = drugsatfda.search(concept_id)
-    assert response["match_type"] == MatchType.CONCEPT_ID
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0],
+    assert response.match_type == MatchType.CONCEPT_ID
+    assert len(response.records) == 1
+    compare_records(response.records[0],
                     [c for c in cisplatin if c.concept_id == concept_id][0])
 
     concept_id = "drugsatfda.anda:206774"
     response = drugsatfda.search(concept_id)
-    assert response["match_type"] == MatchType.CONCEPT_ID
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0],
+    assert response.match_type == MatchType.CONCEPT_ID
+    assert len(response.records) == 1
+    compare_records(response.records[0],
                     [c for c in cisplatin if c.concept_id == concept_id][0])
 
     concept_id = "drugsatfda.anda:207323"
     response = drugsatfda.search(concept_id)
-    assert response["match_type"] == MatchType.CONCEPT_ID
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0],
+    assert response.match_type == MatchType.CONCEPT_ID
+    assert len(response.records) == 1
+    compare_records(response.records[0],
                     [c for c in cisplatin if c.concept_id == concept_id][0])
 
     # test label
     response = drugsatfda.search("cisplatin")
-    assert response["match_type"] == MatchType.LABEL
-    assert len(response["records"]) == 6
-    for r in response["records"]:
-        fixture = [c for c in cisplatin if r["concept_id"] == c.concept_id][0]
+    assert response.match_type == MatchType.LABEL
+    assert len(response.records) == 6
+    for r in response.records:
+        fixture = [c for c in cisplatin if r.concept_id == c.concept_id][0]
         compare_records(r, fixture)
 
     # test xref
     response = drugsatfda.search("rxcui:309311")
-    assert response["match_type"] == MatchType.XREF
-    assert len(response["records"]) == 6
-    for r in response["records"]:
-        fixture = [c for c in cisplatin if r["concept_id"] == c.concept_id][0]
+    assert response.match_type == MatchType.XREF
+    assert len(response.records) == 6
+    for r in response.records:
+        fixture = [c for c in cisplatin if r.concept_id == c.concept_id][0]
         compare_records(r, fixture)
 
     # test assoc_with
     response = drugsatfda.search("unii:q20q21q62j")
-    assert response["match_type"] == MatchType.ASSOCIATED_WITH
-    assert len(response["records"]) == 6
-    for r in response["records"]:
-        fixture = [c for c in cisplatin if r["concept_id"] == c.concept_id][0]
+    assert response.match_type == MatchType.ASSOCIATED_WITH
+    assert len(response.records) == 6
+    for r in response.records:
+        fixture = [c for c in cisplatin if r.concept_id == c.concept_id][0]
         compare_records(r, fixture)
 
 
 def test_fenortho(fenortho, drugsatfda):
     """Test fenortho."""
     response = drugsatfda.search("drugsatfda.anda:072267")
-    assert response["match_type"] == MatchType.CONCEPT_ID
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0], fenortho[0])
+    assert response.match_type == MatchType.CONCEPT_ID
+    assert len(response.records) == 1
+    compare_records(response.records[0], fenortho[0])
 
     response = drugsatfda.search("drugsatfda.nda:017604")
-    assert response["match_type"] == MatchType.CONCEPT_ID
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0], fenortho[1])
+    assert response.match_type == MatchType.CONCEPT_ID
+    assert len(response.records) == 1
+    compare_records(response.records[0], fenortho[1])
 
     response = drugsatfda.search("fenoprofen calcium")
-    assert response["match_type"] == MatchType.LABEL
-    assert len(response["records"]) == 2
-    for r in response["records"]:
-        fixture = [f for f in fenortho if r["concept_id"] == f.concept_id][0]
+    assert response.match_type == MatchType.LABEL
+    assert len(response.records) == 2
+    for r in response.records:
+        fixture = [f for f in fenortho if r.concept_id == f.concept_id][0]
         compare_records(r, fixture)
 
     response = drugsatfda.search("rxcui:310291")
-    assert response["match_type"] == MatchType.XREF
-    assert len(response["records"]) == 1
-    compare_records(response["records"][0], fenortho[0])
+    assert response.match_type == MatchType.XREF
+    assert len(response.records) == 1
+    compare_records(response.records[0], fenortho[0])
 
     response = drugsatfda.search("unii:0X2CW1QABJ")
-    assert response["match_type"] == MatchType.ASSOCIATED_WITH
-    assert len(response["records"]) == 2
-    for r in response["records"]:
-        fixture = [f for f in fenortho if r["concept_id"] == f.concept_id][0]
+    assert response.match_type == MatchType.ASSOCIATED_WITH
+    assert len(response.records) == 2
+    for r in response.records:
+        fixture = [f for f in fenortho if r.concept_id == f.concept_id][0]
         compare_records(r, fixture)
 
 
@@ -414,18 +414,18 @@ def test_other_parameters(drugsatfda):
     """
     # test dropping BLA records
     response = drugsatfda.search("drugsatfda:BLA020725")
-    assert response["match_type"] == MatchType.NO_MATCH
+    assert response.match_type == MatchType.NO_MATCH
 
 
 def test_meta(drugsatfda):
     """Test correctness of source metadata."""
     response = drugsatfda.search("incoherent-string-of-text")
-    assert response["source_meta_"]["data_license"] == "CC0"
-    assert response["source_meta_"]["data_license_url"] == "https://creativecommons.org/publicdomain/zero/1.0/legalcode"  # noqa: E501
-    assert isodate.parse_date(response["source_meta_"]["version"])
-    assert response["source_meta_"]["data_url"] == "https://open.fda.gov/apis/drug/drugsfda/download/"  # noqa: E501
-    assert response["source_meta_"]["rdp_url"] is None
-    assert response["source_meta_"]["data_license_attributes"] == {
+    assert response.source_meta_.data_license == "CC0"
+    assert response.source_meta_.data_license_url == "https://creativecommons.org/publicdomain/zero/1.0/legalcode"  # noqa: E501
+    assert isodate.parse_date(response.source_meta_.version)
+    assert response.source_meta_.data_url == "https://open.fda.gov/apis/drug/drugsfda/download/"  # noqa: E501
+    assert response.source_meta_.rdp_url is None
+    assert response.source_meta_.data_license_attributes == {
         "non_commercial": False,
         "share_alike": False,
         "attribution": False,

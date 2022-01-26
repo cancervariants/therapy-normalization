@@ -310,9 +310,9 @@ class DiseaseIndicationBase(Base):
         :param str query: term to normalize
         :return: ID if successful, None otherwise
         """
-        response = self.disease_normalizer.search_groups(query)
-        if response["match_type"] > 0:
-            return response["disease_descriptor"]["disease_id"]
+        response = self.disease_normalizer.normalize(query)
+        if response.match_type > 0:
+            return response.disease_descriptor.disease_id
         else:
             logger.warning(f"Failed to normalize disease term: {query}")
             return None

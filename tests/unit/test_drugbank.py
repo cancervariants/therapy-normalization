@@ -19,9 +19,8 @@ def drugbank():
             self.query_handler = QueryHandler()
 
         def search(self, query_str):
-            resp = self.query_handler.search_sources(query_str, keyed=True,
-                                                     incl="drugbank")
-            return resp["source_matches"]["DrugBank"]
+            resp = self.query_handler.search(query_str, keyed=True, incl="drugbank")
+            return resp.source_matches["DrugBank"]
 
         def fetch_meta(self):
             return self.query_handler._fetch_meta("DrugBank")
@@ -149,7 +148,7 @@ def test_label_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
     compare_response(response, MatchType.LABEL, aloe_ferox_leaf)
 
 
-def test_alias_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
+def test_alias_match(drugbank, cisplatin, bentiromide):
     """Test that alias query resolves to correct record."""
     response = drugbank.search("CISPLATINO")
     compare_response(response, MatchType.ALIAS, cisplatin)
@@ -165,10 +164,10 @@ def test_alias_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
 
     # verify aliases > 20 not stored
     response = drugbank.search("Aloe Capensis")
-    assert response["match_type"] == MatchType.NO_MATCH
+    assert response.match_type == MatchType.NO_MATCH
 
     response = drugbank.search("Aloe Ferox Juice")
-    assert response["match_type"] == MatchType.NO_MATCH
+    assert response.match_type == MatchType.NO_MATCH
 
 
 def test_xref_match(drugbank, cisplatin, bentiromide):
@@ -195,17 +194,17 @@ def test_assoc_with_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
 def test_no_match(drugbank):
     """Test that a term normalizes to correct drug concept as a NO match."""
     response = drugbank.search("lepirudi")
-    assert response["match_type"] == MatchType.NO_MATCH
-    assert len(response["records"]) == 0
+    assert response.match_type == MatchType.NO_MATCH
+    assert len(response.records) == 0
 
     # Test white space in between id
     response = drugbank.search("DB 00001")
-    assert response["match_type"] == MatchType.NO_MATCH
+    assert response.match_type == MatchType.NO_MATCH
 
     # Test empty query
     response = drugbank.search("")
-    assert response["match_type"] == MatchType.NO_MATCH
-    assert len(response["records"]) == 0
+    assert response.match_type == MatchType.NO_MATCH
+    assert len(response.records) == 0
 
 
 def test_meta_info(drugbank):

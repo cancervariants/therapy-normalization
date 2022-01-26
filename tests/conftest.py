@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from therapy.schemas import Drug, MatchType
+from therapy.schemas import Drug, MatchType, MatchesKeyed
 from therapy.database import Database
 
 
@@ -165,30 +165,47 @@ def mock_database():
     return MockDatabase
 
 
-def compare_records(actual: Dict, fixt: Drug):
+def compare_records(actual: Drug, fixt: Drug):
     """Check that identity records are identical."""
-    fixture = fixt.dict()
-    assert actual["concept_id"] == fixture["concept_id"]
-    assert actual["label"] == fixture["label"]
-    assert set(actual["aliases"]) == set(fixture["aliases"])
-    assert set(actual["trade_names"]) == set(fixture["trade_names"])
-    assert set(actual["xrefs"]) == set(fixture["xrefs"])
-    assert set(actual["associated_with"]) == set(fixture["associated_with"])
-    if actual["approval_ratings"] or fixture["approval_ratings"]:
-        assert set(actual["approval_ratings"]) == set(fixture["approval_ratings"])
-    if actual["approval_year"] or fixture["approval_year"]:
-        assert set(actual["approval_year"]) == set(fixture["approval_year"])
-    if actual["has_indication"] or fixture["has_indication"]:
-        actual_inds = actual["has_indication"].copy()
-        fixture_inds = fixture["has_indication"].copy()
+    assert actual.concept_id == fixt.concept_id
+    assert actual.label == fixt.label
+
+    assert (actual.aliases is None) == (fixt.aliases is None)
+    if (actual.aliases is not None) and (fixt.aliases is not None):
+        assert set(actual.aliases) == set(fixt.aliases)
+
+    assert (actual.trade_names is None) == (fixt.trade_names is None)
+    if (actual.trade_names is not None) and (fixt.trade_names is not None):
+        assert set(actual.trade_names) == set(fixt.trade_names)
+
+    assert (actual.xrefs is None) == (fixt.xrefs is None)
+    if (actual.xrefs is not None) and (fixt.xrefs is not None):
+        assert set(actual.xrefs) == set(fixt.xrefs)
+
+    assert (actual.associated_with is None) == (fixt.associated_with is None)
+    if (actual.associated_with is not None) and (fixt.associated_with is not None):
+        assert set(actual.associated_with) == set(fixt.associated_with)
+
+    assert (not actual.approval_ratings) == (not fixt.approval_ratings)
+    if (actual.approval_ratings) and (fixt.approval_ratings):
+        assert set(actual.approval_ratings) == set(fixt.approval_ratings)
+
+    assert (actual.approval_year is None) == (fixt.approval_year is None)
+    if (actual.approval_year is not None) and (fixt.approval_year is not None):
+        assert set(actual.approval_year) == set(fixt.approval_year)
+
+    assert (actual.has_indication is None) == (fixt.has_indication is None)
+    if (actual.has_indication is not None) and (fixt.has_indication is not None):
+        actual_inds = actual.has_indication.copy()
+        fixture_inds = fixt.has_indication.copy()
         assert len(actual_inds) == len(fixture_inds)
-        actual_inds.sort(key=lambda x: x["disease_id"])
-        fixture_inds.sort(key=lambda x: x["disease_id"])
+        actual_inds.sort(key=lambda x: x.disease_id)
+        fixture_inds.sort(key=lambda x: x.disease_id)
         for i in range(len(actual_inds)):
             assert actual_inds[i] == fixture_inds[i]
 
 
-def compare_response(response: Dict, match_type: MatchType,
+def compare_response(response: MatchesKeyed, match_type: MatchType,
                      fixture: Drug = None, fixture_list: List[Drug] = None,
                      num_records: int = 0):
     """Check that test response is correct. Only 1 of {fixture, fixture_list}
@@ -210,17 +227,17 @@ def compare_response(response: Dict, match_type: MatchType,
         raise Exception("`num_records` should only be given with "
                         "`fixture_list`.")
 
-    assert response["match_type"] == match_type
+    assert response.match_type == match_type
     if fixture:
-        assert len(response["records"]) == 1
-        compare_records(response["records"][0], fixture)
+        assert len(response.records) == 1
+        compare_records(response.records[0], fixture)
     elif fixture_list:
         if not num_records:
-            assert len(response["records"]) == len(fixture_list)
+            assert len(response.records) == len(fixture_list)
         else:
-            assert len(response["records"]) == num_records
+            assert len(response.records) == num_records
         for fixt in fixture_list:
-            for record in response["records"]:
+            for record in response.records:
                 if fixt.concept_id == record.concept_id:
                     compare_records(record, fixt)
                     break
