@@ -190,22 +190,22 @@ class HemOnc(DiseaseIndicationBase):
         return therapies, brand_names, conditions
 
     @staticmethod
-    def _id_to_yr(hemonc_id: str) -> int:
+    def _id_to_yr(hemonc_id: str) -> str:
         """Get year from HemOnc ID corresponding to year concept.
         :param str hemonc_id: HemOnc ID to get year for
-        :return: int representing year. Raises TypeError if HemOnc ID not valid.
+        :return: str representing year. Raises TypeError if HemOnc ID not valid.
         """
         id_int = int(hemonc_id)
         if id_int == 780:
-            return 9999
+            return "9999"
         elif id_int == 48349:
-            return 2020
+            return "2020"
         elif id_int == 5963:
-            return 2021
+            return "2021"
         elif id_int < 699 or id_int > 780:
             raise TypeError("ID not a valid HemOnc year concept")
         else:
-            return id_int + 1240
+            return str(id_int + 1240)
 
     def _get_rels(self, therapies: Dict, brand_names: Dict,
                   conditions: Dict) -> Dict:
@@ -249,7 +249,7 @@ class HemOnc(DiseaseIndicationBase):
                     logger.error(f"Failed parse of FDA approval year ID "
                                  f"{row[1]} for HemOnc ID {row[0]}")
                     continue
-                if year == 9999:
+                if year == "9999":
                     logger.warning(f"HemOnc ID {row[0]} has FDA approval year"
                                    f" 9999")
                 record["approval_ratings"] = [ApprovalRating.HEMONC_APPROVED.value]

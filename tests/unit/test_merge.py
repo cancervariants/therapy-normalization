@@ -220,7 +220,8 @@ def record_id_groups():
             "drugsatfda.anda:206774",
             "drugsatfda.anda:207323",
             "drugsatfda.anda:075036",
-            "drugsatfda.nda:018057"
+            "drugsatfda.nda:018057",
+            "iuphar.ligand:5343"
         },
         "ncit:C376": {  # Cisplatin
             "rxcui:2555",
@@ -236,6 +237,7 @@ def record_id_groups():
             "drugsatfda.anda:206774",
             "drugsatfda.anda:207323",
             "drugsatfda.anda:075036",
+            "iuphar.ligand:5343",
             "drugsatfda.nda:018057"
         },
         "chemidplus:15663-27-1": {  # Cisplatin
@@ -252,6 +254,7 @@ def record_id_groups():
             "drugsatfda.anda:206774",
             "drugsatfda.anda:207323",
             "drugsatfda.anda:075036",
+            "iuphar.ligand:5343",
             "drugsatfda.nda:018057"
         },
         "wikidata:Q412415": {  # Cisplatin
@@ -268,6 +271,7 @@ def record_id_groups():
             "drugsatfda.anda:206774",
             "drugsatfda.anda:207323",
             "drugsatfda.anda:075036",
+            "iuphar.ligand:5343",
             "drugsatfda.nda:018057"
         },
         "drugbank:DB00515": {  # Cisplatin
@@ -284,6 +288,7 @@ def record_id_groups():
             "drugsatfda.anda:206774",
             "drugsatfda.anda:207323",
             "drugsatfda.anda:075036",
+            "iuphar.ligand:5343",
             "drugsatfda.nda:018057"
         },
         "hemonc:105": {  # Cisplatin
@@ -300,6 +305,7 @@ def record_id_groups():
             "drugsatfda.anda:206774",
             "drugsatfda.anda:207323",
             "drugsatfda.anda:075036",
+            "iuphar.ligand:5343",
             "drugsatfda.nda:018057"
         },
         "chembl:CHEMBL11359": {  # Cisplatin
@@ -316,6 +322,7 @@ def record_id_groups():
             "drugsatfda.anda:206774",
             "drugsatfda.anda:207323",
             "drugsatfda.anda:075036",
+            "iuphar.ligand:5343",
             "drugsatfda.nda:018057"
         },
         "drugsatfda.anda:074656": {  # Cisplatin
@@ -332,6 +339,7 @@ def record_id_groups():
             "drugsatfda.anda:206774",
             "drugsatfda.anda:207323",
             "drugsatfda.anda:075036",
+            "iuphar.ligand:5343",
             "drugsatfda.nda:018057"
         },
         "drugsatfda.anda:074735": {  # Cisplatin
@@ -348,6 +356,7 @@ def record_id_groups():
             "drugsatfda.anda:206774",
             "drugsatfda.anda:207323",
             "drugsatfda.anda:075036",
+            "iuphar.ligand:5343",
             "drugsatfda.nda:018057"
         },
         "drugsatfda.anda:206774": {  # Cisplatin
@@ -364,6 +373,7 @@ def record_id_groups():
             "drugsatfda.anda:206774",
             "drugsatfda.anda:207323",
             "drugsatfda.anda:075036",
+            "iuphar.ligand:5343",
             "drugsatfda.nda:018057"
         },
         "drugsatfda.anda:207323": {  # Cisplatin
@@ -380,6 +390,7 @@ def record_id_groups():
             "drugsatfda.anda:206774",
             "drugsatfda.anda:207323",
             "drugsatfda.anda:075036",
+            "iuphar.ligand:5343",
             "drugsatfda.nda:018057"
         },
         "drugsatfda.anda:075036": {  # Cisplatin
@@ -396,6 +407,7 @@ def record_id_groups():
             "drugsatfda.anda:206774",
             "drugsatfda.anda:207323",
             "drugsatfda.anda:075036",
+            "iuphar.ligand:5343",
             "drugsatfda.nda:018057"
         },
         "drugbank:DB12117": {  # Cisplatin
@@ -412,6 +424,7 @@ def record_id_groups():
             "drugsatfda.anda:206774",
             "drugsatfda.anda:207323",
             "drugsatfda.anda:075036",
+            "iuphar.ligand:5343",
             "drugsatfda.nda:018057"
         },
         "drugsatfda.nda:018057": {  # Cisplatin
@@ -428,6 +441,24 @@ def record_id_groups():
             "drugsatfda.anda:206774",
             "drugsatfda.anda:207323",
             "drugsatfda.anda:075036",
+            "iuphar.ligand:5343",
+            "drugsatfda.nda:018057"
+        },
+        "iuphar.ligand:5343": {  # Cisplatin
+            "rxcui:2555",
+            "ncit:C376",
+            "chemidplus:15663-27-1",
+            "wikidata:Q412415",
+            "drugbank:DB00515",
+            "drugbank:DB12117",
+            "hemonc:105",
+            "chembl:CHEMBL11359",
+            "drugsatfda.anda:074656",
+            "drugsatfda.anda:074735",
+            "drugsatfda.anda:206774",
+            "drugsatfda.anda:207323",
+            "drugsatfda.anda:075036",
+            "iuphar.ligand:5343",
             "drugsatfda.nda:018057"
         },
         # tests lookup of wikidata reference to rxnorm brand record, and

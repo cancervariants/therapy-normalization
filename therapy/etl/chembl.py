@@ -82,24 +82,26 @@ class ChEMBL(DiseaseIndicationBase):
             for group in set(indication_groups):
                 ind_group = group.split("||")
                 phase = self._get_approval_rating(int(ind_group[4]))
+                indication = {}
                 for i, term in enumerate(ind_group[:4]):
                     normalized_disease_id = self._normalize_disease(term)
                     if normalized_disease_id is not None:
                         label = ind_group[2] if i % 2 == 0 else ind_group[3]
                         disease_id = ind_group[0] if i % 2 == 0 else ind_group[1]
-                        indications.append({
+                        indication = {
                             "disease_id": disease_id,
                             "disease_label": label,
                             "normalized_disease_id": normalized_disease_id,
                             "supplemental_info": {"chembl_max_phase_for_ind": phase}
-                        })
+                        }
                         break
-                    else:
-                        indications.append({
-                            "disease_id": ind_group[0],
-                            "disease_label": ind_group[2],
-                            "meta": {"chembl_max_phase_for_ind": phase}
-                        })
+                if not indication:
+                    indication = {
+                        "disease_id": ind_group[0],
+                        "disease_label": ind_group[2],
+                        "supplemental_info": {"chembl_max_phase_for_ind": phase}
+                    }
+                indications.append(indication)
             return indications
         else:
             return []
