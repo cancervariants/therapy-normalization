@@ -242,9 +242,9 @@ class Merge:
         for record in records:
             for field in set_fields:
                 merged_attrs[field] |= set(record.get(field, set()))
-            approval_rating = record.get("approval_rating")
-            if approval_rating:
-                merged_attrs["approval_ratings"].add(approval_rating)
+            approval_ratings = record.get("approval_ratings")
+            if approval_ratings:
+                merged_attrs["approval_ratings"] |= set(approval_ratings)
             if merged_attrs["label"] is None:
                 merged_attrs["label"] = record.get("label")
             for ind in record.get("has_indication", []):

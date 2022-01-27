@@ -7,10 +7,14 @@ from typing import List, Dict, Optional, Callable
 import os
 import zipfile
 import tempfile
+import re
+import json
+from functools import lru_cache
 
 from pydantic import ValidationError
 import requests
 import bioversions
+from disease.query import QueryHandler as DiseaseNormalizer
 
 from therapy import APP_ROOT, ITEM_TYPES, DownloadException
 from therapy.schemas import Drug
@@ -45,15 +49,16 @@ class Base(ABC):
         self._src_dir: Path = Path(data_path / name)
         self._added_ids: List[str] = []
 
-    def perform_etl(self) -> List[str]:
+    def perform_etl(self, use_existing: bool = False) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
         Returned concept IDs can be passed to Merge method for computing
         merged concepts.
 
+        :param bool use_existing: if True, don't try to retrieve latest source data
         :return: list of concept IDs which were successfully processed and
             uploaded.
         """
-        self._extract_data()
+        self._extract_data(use_existing)
         self._load_meta()
         self._transform_data()
         return self._added_ids
@@ -138,26 +143,61 @@ class Base(ABC):
             logger.error(f"FTP download failed: {e}")
             raise Exception(e)
 
-    def _extract_data(self) -> None:
-        """Get source file from data directory.
-        This method should create the source data directory if needed,
-        acquire the most recent version number, check that local data is
-        up-to-date and retrieve the latest data if needed, and set the
-        `self._src_file` attribute to the source file location. Child classes
-        could add additional functions, e.g. setting up DB cursors.
+    def _parse_version(self, file_path: Path, pattern: Optional[re.Pattern] = None
+                       ) -> str:
+        """Get version number from provided file path.
 
-        Sources that use multiple data files (such as RxNorm and HemOnc) will
-        have to reimplement this method.
+        :param Path file_path: path to located source data file
+        :param Optional[re.Pattern] pattern: regex pattern to use
+        :return: source data version
+        :raises: FileNotFoundError if version parsing fails
+        """
+        if pattern is None:
+            pattern = re.compile(type(self).__name__.lower() + r"_(.+)\..+")
+        matches = re.match(pattern, file_path.name)
+        if matches is None:
+            raise FileNotFoundError
+        else:
+            return matches.groups()[0]
+
+    def _extract_data(self, use_existing: bool = False) -> None:
+        """Get source file from data directory.
+
+        This method should ensure the source data directory exists, acquire source data,
+        set the source version value, and assign the source file location to
+        `self._src_file`. Child classes needing additional functionality (like setting
+        up a DB cursor, or managing multiple source files) will need to reimplement
+        this method. If `use_existing` is True, the version number will be parsed from
+        the existing filename; otherwise, it will be retrieved from the data source,
+        and if the local file is out-of-date, the newest version will be acquired.
+
+        :param bool use_existing: if True, don't try to fetch latest source data
         """
         self._src_dir.mkdir(exist_ok=True, parents=True)
-        self._version = self.get_latest_version()
-        fglob = f"{type(self).__name__.lower()}_{self._version}.*"
-        latest = list(self._src_dir.glob(fglob))
-        if not latest:
-            self._download_data()
+        src_name = type(self).__name__.lower()
+        if use_existing:
+            files = list(sorted(self._src_dir.glob(f"{src_name}_*.*")))
+            if len(files) < 1:
+                raise FileNotFoundError(f"No source data found for {src_name}")
+            self._src_file: Path = files[-1]
+            try:
+                self._version = self._parse_version(self._src_file)
+            except FileNotFoundError:
+                raise FileNotFoundError(
+                    f"Unable to parse version value from {src_name} source data file "
+                    f"located at {self._src_file.absolute().as_uri()} -- "
+                    "check filename against schema defined in README: "
+                    "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
+                )
+        else:
+            self._version = self.get_latest_version()
+            fglob = f"{src_name}_{self._version}.*"
             latest = list(self._src_dir.glob(fglob))
-        assert len(latest) != 0  # probably unnecessary, but just to be safe
-        self._src_file: Path = latest[0]
+            if not latest:
+                self._download_data()
+                latest = list(self._src_dir.glob(fglob))
+            assert len(latest) != 0  # probably unnecessary, but just to be safe
+            self._src_file = latest[0]
 
     @abstractmethod
     def _load_meta(self) -> None:
@@ -229,18 +269,50 @@ class Base(ABC):
         # compress has_indication
         indications = therapy.get("has_indication")
         if indications:
-            therapy["has_indication"] = [
-                [ind["disease_id"], ind["disease_label"], ind["normalized_disease_id"]]
+            therapy["has_indication"] = list({
+                json.dumps([
+                    ind["disease_id"],
+                    ind["disease_label"],
+                    ind.get("normalized_disease_id"),
+                    ind.get("supplemental_info")
+                ])
                 for ind in indications
-            ]
+            })
         elif "has_indication" in therapy:
             del therapy["has_indication"]
 
         # handle detail fields
-        approval_attrs = ("approval_rating", "approval_year")
+        approval_attrs = ("approval_ratings", "approval_year")
         for field in approval_attrs:
             if approval_attrs in therapy and therapy[field] is None:
                 del therapy[field]
 
         self.database.add_record(therapy)
         self._added_ids.append(concept_id)
+
+
+class DiseaseIndicationBase(Base):
+    """Base class for sources that require disease normalization capabilities."""
+
+    def __init__(self, database: Database,
+                 data_path: Path = DEFAULT_DATA_PATH):
+        """Initialize source ETL instance.
+
+        :param therapy.database.Database database: application database
+        :param Path data_path: path to normalizer data directory
+        """
+        super().__init__(database, data_path)
+        self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
+
+    @lru_cache(maxsize=64)
+    def _normalize_disease(self, query: str) -> Optional[str]:
+        """Attempt normalization of disease term.
+        :param str query: term to normalize
+        :return: ID if successful, None otherwise
+        """
+        response = self.disease_normalizer.normalize(query)
+        if response.match_type > 0:
+            return response.disease_descriptor.disease_id
+        else:
+            logger.warning(f"Failed to normalize disease term: {query}")
+            return None

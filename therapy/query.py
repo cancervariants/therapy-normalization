@@ -3,6 +3,7 @@ import re
 from typing import List, Dict, Set, Tuple, Union, Any, Optional
 from urllib.parse import quote
 from datetime import datetime
+import json
 
 from uvicorn.config import logger
 from botocore.exceptions import ClientError
@@ -80,6 +81,20 @@ class QueryHandler:
             self.db.cached_sources[src_name] = response
             return response
 
+    @staticmethod
+    def _get_indication(indication_string: str) -> HasIndication:
+        """Load indication data.
+        :param str indication_string: dumped JSON string from db
+        :return: complete HasIndication object
+        """
+        indication_values = json.loads(indication_string)
+        return HasIndication(
+            disease_id=indication_values[0],
+            disease_label=indication_values[1],
+            normalized_disease_id=indication_values[2],
+            supplemental_info=indication_values[3]
+        )
+
     def _add_record(self,
                     response: Dict[str, Dict],
                     item: Dict,
@@ -94,10 +109,7 @@ class QueryHandler:
         """
         inds = item.get("has_indication")
         if inds:
-            item["has_indication"] = [HasIndication(disease_id=i[0],
-                                                    disease_label=i[1],
-                                                    normalized_disease_id=i[2])
-                                      for i in inds]
+            item["has_indication"] = [self._get_indication(i) for i in inds]
 
         drug = Drug(**item)
         src_name = item["src_name"]
@@ -300,8 +312,8 @@ class QueryHandler:
 
         return response_dict
 
-    def search_sources(self, query_str: str, keyed: bool = False, incl: str = "",
-                       excl: str = "", infer: bool = True) -> Dict:
+    def search(self, query_str: str, keyed: bool = False, incl: str = "",
+               excl: str = "", infer: bool = True) -> SearchService:
         """Fetch normalized therapy objects.
 
         :param str query_str: query, a string, to search for
@@ -361,7 +373,7 @@ class QueryHandler:
         response["service_meta_"] = ServiceMeta(
             response_datetime=datetime.now(),
         ).dict()
-        return SearchService(**response).dict()
+        return SearchService(**response)
 
     def _add_merged_meta(self, response: Dict) -> Dict:
         """Add source metadata to response object.
@@ -391,7 +403,7 @@ class QueryHandler:
         return source_rank, record["concept_id"]
 
     def _add_vod(self, response: Dict, record: Dict, query: str,
-                 match_type: MatchType) -> Dict:
+                 match_type: MatchType) -> NormalizationService:
         """Format received DB record as VOD and update response object.
         :param Dict response: in-progress response object
         :param Dict record: record as stored in DB
@@ -412,8 +424,7 @@ class QueryHandler:
         if "aliases" in record:
             vod["alternate_labels"] = record["aliases"]
 
-        if any(filter(lambda f: f in record, ("approval_rating",
-                                              "approval_ratings",
+        if any(filter(lambda f: f in record, ("approval_ratings",
                                               "approval_year",
                                               "has_indication"))):
             approv = {
@@ -421,13 +432,7 @@ class QueryHandler:
                 "name": "regulatory_approval",
                 "value": {}
             }
-            # temporarily handle rating vs ratings fields slightly differently
-            # to change in issue 223
-            if "approval_rating" in record:
-                value = record.get("approval_rating")
-                if value:
-                    approv["value"]["approval_ratings"] = [value]  # type: ignore
-            elif "approval_ratings" in record:
+            if "approval_ratings" in record:
                 value = record.get("approval_ratings")
                 if value:
                     approv["value"]["approval_ratings"] = value  # type: ignore
@@ -435,16 +440,27 @@ class QueryHandler:
                 value = record.get("approval_year")
                 if value:
                     approv["value"]["approval_year"] = value  # type: ignore
+
             inds = record.get("has_indication", [])
             inds_list = []
-            for ind in inds:
-                ind_obj = {
-                    "id": ind[0],
+            for ind_db in inds:
+                indication = self._get_indication(ind_db)
+                ind_value_obj: Dict[str, Optional[Union[str, List]]] = {
+                    "id": indication.disease_id,
                     "type": "DiseaseDescriptor",
-                    "label": ind[1],
-                    "disease_id": ind[2],
+                    "label": indication.disease_label,
+                    "disease_id": indication.normalized_disease_id,
                 }
-                inds_list.append(ind_obj)
+                if indication.supplemental_info:
+                    ind_value_obj["extensions"] = [
+                        {
+                            "type": "Extension",
+                            "name": k,
+                            "value": v
+                        }
+                        for k, v in indication.supplemental_info.items()
+                    ]
+                inds_list.append(ind_value_obj)
             if inds_list:
                 approv["value"]["has_indication"] = inds_list  # type: ignore
             vod["extensions"].append(approv)
@@ -466,10 +482,10 @@ class QueryHandler:
         response["match_type"] = match_type
         response["therapy_descriptor"] = vod
         response = self._add_merged_meta(response)
-        return response
+        return NormalizationService(**response)
 
     def _handle_failed_merge_ref(self, record: Dict, response: Dict,
-                                 query: str) -> Dict:
+                                 query: str) -> NormalizationService:
         """Log + fill out response for a failed merge reference lookup.
 
         :param Dict record: record containing failed merge_ref
@@ -480,17 +496,17 @@ class QueryHandler:
         logger.error(f"Merge ref lookup failed for ref {record['merge_ref']} "
                      f"in record {record['concept_id']} from query `{query}`")
         response["match_type"] = MatchType.NO_MATCH
-        return response
+        return NormalizationService(**response)
 
-    def _resolve_merge(self, response: Dict, query: str,
-                       record: Dict, match_type: MatchType) -> Dict:
+    def _resolve_merge(self, response: Dict, query: str, record: Dict,
+                       match_type: MatchType) -> NormalizationService:
         """Given a record, return the corresponding normalized record
 
         :param Dict response: in-progress response object
         :param str query: exact query as provided by user
         :param Dict record: record to retrieve normalized concept for
         :param MatchType match_type: type of match that returned these records
-        :return: formed response, a Dict
+        :return: Normalized response object
         """
         merge_ref = record.get("merge_ref")
         if merge_ref:
@@ -504,11 +520,12 @@ class QueryHandler:
             # record is sole member of concept group
             return self._add_vod(response, record, query, match_type)
 
-    def search_groups(self, query: str, infer: bool = True) -> Dict:
+    def normalize(self, query: str, infer: bool = True) -> NormalizationService:
         """Return merged, normalized concept for given search term.
 
         :param str query: string to search against
         :param bool infer: if true, try to infer namespace for IDs
+        :return: Normalized response object
         """
         # prepare basic response
         response: Dict[str, Any] = {
@@ -520,7 +537,7 @@ class QueryHandler:
         }
         if query == "":
             response["match_type"] = MatchType.NO_MATCH.value
-            return response
+            return NormalizationService(**response)
         query_str = query.lower().strip()
 
         # check merged concept ID match
@@ -538,11 +555,14 @@ class QueryHandler:
         if infer:
             inferred_response = self._infer_namespace(query)
             if inferred_response:
-                response = self._resolve_merge(response, query,
-                                               inferred_response[0],
-                                               MatchType.CONCEPT_ID)
-                response["warnings"].append(inferred_response[1])
-                return response
+                norm_response = self._resolve_merge(response, query,
+                                                    inferred_response[0],
+                                                    MatchType.CONCEPT_ID)
+                if norm_response.warnings:
+                    norm_response.warnings.append(inferred_response[1])
+                else:
+                    norm_response.warnings = [inferred_response[1]]
+                return norm_response
 
         # check other match types
         for match_type in ITEM_TYPES.values():
@@ -563,4 +583,4 @@ class QueryHandler:
 
         if not matching_records:  # type: ignore
             response["match_type"] = MatchType.NO_MATCH.value
-        return NormalizationService(**response).dict()
+        return NormalizationService(**response)

@@ -48,7 +48,7 @@ def test_item_type(db):  # noqa: F811
     assert "item_type" in item
     assert item["item_type"] == "trade_name"
 
-    filter_exp = Key("label_and_type").eq("ncit:c839##merger")
+    filter_exp = Key("label_and_type").eq("rxcui:9991##merger")
     item = db.therapies.query(KeyConditionExpression=filter_exp)["Items"][0]
     assert "item_type" in item
     assert item["item_type"] == "merger"

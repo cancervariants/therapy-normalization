@@ -6,42 +6,45 @@
 #
 
 -i https://pypi.org/simple
-anyio==3.4.0; python_full_version >= '3.6.2'
+anyio==3.5.0; python_full_version >= '3.6.2'
 appnope==0.1.2; platform_system == 'Darwin'
-asgiref==3.4.1; python_version >= '3.6'
+asgiref==3.5.0; python_version >= '3.7'
+asttokens==2.0.5
 backcall==0.2.0
 backoff==1.11.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
 beautifulsoup4==4.10.0; python_version >= '3.1'
-bioregistry==0.4.26; python_version >= '3.6'
+bioregistry==0.4.48; python_version >= '3.6'
 bioversions==0.4.4
-boto3==1.20.23
-botocore==1.23.23; python_version >= '3.6'
+black==21.12b0; python_full_version >= '3.6.2'
+boto3==1.20.43
+botocore==1.23.43; python_version >= '3.6'
 bs4==0.0.1
 cachier==1.5.4
 certifi==2021.10.8
-charset-normalizer==2.0.9; python_version >= '3'
-chembl-downloader==0.1.2
+charset-normalizer==2.0.10; python_version >= '3'
+chembl-downloader==0.2.1
 click-default-group==1.2.2
 click==8.0.3
-cython==0.29.25
+cython==0.29.26
 dataclasses-json==0.5.6; python_version >= '3.6'
 debugpy==1.5.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'
-decorator==5.1.0; python_version >= '3.5'
-disease-normalizer==0.2.11
+decorator==5.1.1; python_version >= '3.5'
+disease-normalizer==0.2.12
 entrypoints==0.3; python_version >= '2.7'
-fastapi==0.70.1
+executing==0.8.2
+fastapi==0.73.0
 ga4gh.vrsatile.pydantic==0.0.6
-h11==0.12.0; python_version >= '3.6'
+h11==0.13.0; python_version >= '3.6'
 httptools==0.3.0
 idna==3.3; python_version >= '3.5'
-ipykernel==6.6.0
-ipython==7.30.1; python_version >= '3.7'
+ipykernel==6.7.0
+ipython==8.0.1; python_version >= '3.8'
 isodate==0.6.1
 jedi==0.18.1; python_version >= '3.6'
 jmespath==0.10.0; python_version >= '2.6' and python_version not in '3.0, 3.1, 3.2, 3.3'
-jupyter-client==7.1.0; python_full_version >= '3.6.1'
+jupyter-client==7.1.2; python_full_version >= '3.6.1'
 jupyter-core==4.9.1; python_version >= '3.6'
-lxml==4.6.5
+lxml==4.7.1
 marshmallow-enum==1.5.1
 marshmallow==3.14.1; python_version >= '3.6'
 matplotlib-inline==0.1.3; python_version >= '3.5'
@@ -50,41 +53,46 @@ mwoauth==0.3.7
 mypy-extensions==0.4.3
 nest-asyncio==1.5.4; python_version >= '3.5'
 oauthlib==3.1.1; python_version >= '3.6'
-owlready2==0.35
+owlready2==0.36
 parso==0.8.3; python_version >= '3.6'
+pathspec==0.9.0
 pathtools==0.1.2
 pexpect==4.8.0; sys_platform != 'win32'
 pickleshare==0.7.5
+platformdirs==2.4.1; python_version >= '3.7'
 portalocker==2.3.2
 prompt-toolkit==3.0.24; python_full_version >= '3.6.2'
 ptyprocess==0.7.0
-pydantic==1.8.2
-pygments==2.10.0; python_version >= '3.5'
+pure-eval==0.2.2
+pydantic==1.9.0
+pygments==2.11.2; python_version >= '3.5'
 pyjwt==1.7.1
 pyparsing==2.4.7
-pystow==0.2.6
+pystow==0.3.1
 python-dateutil==2.8.2; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 pyyaml==6.0
 pyzmq==22.3.0; python_version >= '3.6'
-rdflib==6.0.2
+rdflib==6.1.1
 requests-ftp==0.3.1
 requests-oauthlib==1.3.0
-requests==2.26.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5'
+requests==2.27.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5'
 s3transfer==0.5.0; python_version >= '3.6'
-setuptools==59.6.0; python_version >= '3.6'
+setuptools==60.5.0; python_version >= '3.7'
 simplejson==3.17.6; python_version >= '2.5' and python_version not in '3.0, 3.1, 3.2, 3.3'
 six==1.16.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 sniffio==1.2.0; python_version >= '3.5'
 soupsieve==2.3.1; python_version >= '3.6'
-starlette==0.16.0; python_version >= '3.6'
+stack-data==0.1.4
+starlette==0.17.1; python_version >= '3.6'
 tabulate==0.8.9
+tomli==1.2.3; python_version >= '3.6'
 tornado==6.1; python_version >= '3.5'
 tqdm==4.62.3; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 traitlets==5.1.1; python_version >= '3.7'
 typing-extensions==4.0.1
 typing-inspect==0.7.1
-urllib3==1.26.7
-uvicorn==0.16.0
+urllib3==1.26.8
+uvicorn==0.17.0.post1
 uvloop==0.16.0
 watchdog==2.1.6; python_version >= '3.6'
 wcwidth==0.2.5

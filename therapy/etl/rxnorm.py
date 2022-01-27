@@ -107,13 +107,15 @@ class RxNorm(Base):
         self._http_download(f"{url}?ticket={st_r.text}", self._src_dir,
                             handler=self._zip_handler)
 
-    def _extract_data(self) -> None:
+    def _extract_data(self, use_existing: bool = False) -> None:
         """Get source files from RxNorm data directory.
         This class expects a file named `rxnorm_<version>.RRF` and a file named
         `rxnorm_drug_forms_<version>.yaml`. This method will download and
         generate them if they are unavailable.
+
+        :param bool use_existing: if True, don't try to fetch latest source data
         """
-        super()._extract_data()
+        super()._extract_data(use_existing)
         drug_forms_path = self._src_dir / f"rxnorm_drug_forms_{self._version}.yaml"
         if not drug_forms_path.exists():
             self._create_drug_form_yaml()
@@ -169,7 +171,7 @@ class RxNorm(Base):
 
                         params = {"concept_id": value["concept_id"]}
 
-                        for field in list(ITEM_TYPES.keys()) + ["approval_rating"]:
+                        for field in list(ITEM_TYPES.keys()) + ["approval_ratings"]:
                             field_value = value.get(field)
                             if field_value:
                                 params[field] = field_value
@@ -264,7 +266,7 @@ class RxNorm(Base):
         if (term_type == "IN" or term_type == "PIN") and source == "RXNORM":
             params["label"] = term
             if row[17] == "4096":
-                params["approval_rating"] = ApprovalRating.RXNORM_PRESCRIBABLE.value
+                params["approval_ratings"] = [ApprovalRating.RXNORM_PRESCRIBABLE.value]
         elif term_type in ALIASES:
             self._add_term(params, term, "aliases")
         elif term_type in TRADE_NAMES:

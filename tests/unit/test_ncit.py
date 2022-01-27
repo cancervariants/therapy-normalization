@@ -17,8 +17,8 @@ def ncit():
             self.query_handler = QueryHandler()
 
         def search(self, query_str):
-            resp = self.query_handler.search_sources(query_str, keyed=True, incl="ncit")
-            return resp["source_matches"]["NCIt"]
+            resp = self.query_handler.search(query_str, keyed=True, incl="ncit")
+            return resp.source_matches["NCIt"]
 
         def fetch_meta(self):
             return self.query_handler._fetch_meta("NCIt")
@@ -36,7 +36,7 @@ def voglibose():
                     "N-(1,3-Dihydroxy-2-Propyl)Valiolamine", "VOGLIBOSE"],
         "xrefs": ["chemidplus:83480-29-9"],
         "associated_with": ["unii:S77P977AG8", "umls:C0532578"],
-        "approval_rating": None,
+        "approval_ratings": None,
         "trade_names": []
     }
     return Drug(**params)
@@ -54,7 +54,7 @@ def apricoxib():
         ],
         "xrefs": ["chemidplus:197904-84-0"],
         "associated_with": ["unii:5X5HB3VZ3Z", "umls:C1737955"],
-        "approval_rating": None,
+        "approval_ratings": None,
         "trade_names": []
     }
     return Drug(**params)
@@ -70,7 +70,7 @@ def trastuzumab():
         "aliases": [],
         "xrefs": ["chemidplus:180288-69-1"],
         "associated_with": ["umls:C0728747", "unii:P188ANX8CK"],
-        "approval_rating": None,
+        "approval_ratings": None,
         "trade_names": []
     }
     return Drug(**params)
@@ -239,17 +239,17 @@ def test_assoc_with_match(ncit, voglibose, apricoxib, trastuzumab):
 def test_no_match(ncit):
     """Test that a term normalizes to NO match."""
     response = ncit.search("voglibo")
-    assert response["match_type"] == MatchType.NO_MATCH
-    assert len(response["records"]) == 0
+    assert response.match_type == MatchType.NO_MATCH
+    assert len(response.records) == 0
 
     # Test white space in between label
     response = ncit.search("Volgibo")
-    assert response["match_type"] == MatchType.NO_MATCH
+    assert response.match_type == MatchType.NO_MATCH
 
     # Test empty query
     response = ncit.search("")
-    assert response["match_type"] == MatchType.NO_MATCH
-    assert len(response["records"]) == 0
+    assert response.match_type == MatchType.NO_MATCH
+    assert len(response.records) == 0
 
 
 def test_meta_info(ncit):

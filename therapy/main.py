@@ -11,7 +11,11 @@ from therapy.schemas import SearchService, NormalizationService
 
 
 query_handler = QueryHandler()
-app = FastAPI(docs_url="/therapy", openapi_url="/therapy/openapi.json")
+app = FastAPI(
+    docs_url="/therapy",
+    openapi_url="/therapy/openapi.json",
+    swagger_ui_parameters={"tryItOutEnabled": True}
+)
 
 
 def custom_openapi() -> Dict:
@@ -29,9 +33,10 @@ def custom_openapi() -> Dict:
 #        "name": "Name-of-license",
 #        "url": "http://www.to-be-determined.com"
 #    }
-    openapi_schema["info"]["contact"] = {  # TODO
+    openapi_schema["info"]["contact"] = {
         "name": "Alex H. Wagner",
-        "email": "Alex.Wagner@nationwidechildrens.org"
+        "email": "Alex.Wagner@nationwidechildrens.org",
+        "url": "https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine/research-labs/wagner-lab"  # noqa: E501
     }
     app.openapi_schema = openapi_schema
     return app.openapi_schema
@@ -70,7 +75,7 @@ def search(q: str = Query(..., description=q_descr),
            incl: Optional[str] = Query(None, description=incl_descr),
            excl: Optional[str] = Query(None, description=excl_descr),
            infer_namespace: bool = Query(True, description=infer_descr)
-           ) -> Dict:
+           ) -> SearchService:
     """For each source, return strongest-match concepts for query string
     provided by user.
 
@@ -85,10 +90,10 @@ def search(q: str = Query(..., description=q_descr),
     :returns: JSON response with matched records and source metadata
     """
     try:
-        response = query_handler.search_sources(html.unescape(q),
-                                                keyed=keyed,  # type: ignore
-                                                incl=incl, excl=excl,  # type: ignore
-                                                infer=infer_namespace)  # type: ignore
+        response = query_handler.search(html.unescape(q),
+                                        keyed=keyed,  # type: ignore
+                                        incl=incl, excl=excl,  # type: ignore
+                                        infer=infer_namespace)  # type: ignore
     except InvalidParameterException as e:
         raise HTTPException(status_code=422, detail=str(e))
     return response
@@ -107,7 +112,7 @@ merged_q_descr = "Therapy to normalize."
          description=normalize_description)
 def normalize(q: str = Query(..., description=merged_q_descr),
               infer_namespace: bool = Query(True, description=infer_descr)
-              ) -> Dict:
+              ) -> NormalizationService:
     """Return merged strongest-match concept for query string provided by
     user.
 
@@ -116,8 +121,8 @@ def normalize(q: str = Query(..., description=merged_q_descr),
     :returns: JSON response with matching normalized record and source metadata
     """
     try:
-        response = query_handler.search_groups(html.unescape(q),
-                                               infer_namespace)  # type: ignore
+        response = query_handler.normalize(html.unescape(q),
+                                           infer_namespace)  # type: ignore
     except InvalidParameterException as e:
         raise HTTPException(status_code=422, detail=str(e))
     return response

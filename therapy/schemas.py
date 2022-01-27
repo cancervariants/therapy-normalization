@@ -96,11 +96,12 @@ class ApprovalRating(str, Enum):
 
 
 class HasIndication(BaseModel):
-    """Data regarding FDA indication. Currently provided only by HemOnc.org data."""
+    """Data regarding disease indications from regulatory bodies."""
 
     disease_id: str
     disease_label: str
     normalized_disease_id: Optional[str]
+    supplemental_info: Optional[Dict[str, str]] = None
 
     class Config:
         """Configure HasIndication class"""
@@ -114,19 +115,20 @@ class HasIndication(BaseModel):
                 prop.pop("title", None)
             schema["example"] = [
                 {
-                    "disease_id": "hemonc:671",
-                    "disease_label": "Testicular cancer",
-                    "normalized_disease_id": "ncit:C7251"
+                    "disease_id": "mesh:D016778",
+                    "disease_label": "Malaria, Falciparum",
+                    "normalized_disease_id": "ncit:C34798",
+                    "supplemental_info": {
+                        "chembl_max_phase_for_ind": "chembl_phase_2"
+                    }
                 },
                 {
-                    "disease_id": "hemonc:645",
-                    "disease_label": "Ovarian cancer",
-                    "normalized_disease_id": "ncit:C7431"
-                },
-                {
-                    "disease_id": "hemonc:569",
-                    "disease_label": "Bladder cancer",
-                    "normalized_disease_id": "ncit:C9334"
+                    "disease_id": "hemonc:634",
+                    "disease_label": "Myelodysplastic syndrome",
+                    "normalized_disease_id": "ncit:C3247",
+                    "supplemental_info": {
+                        "regulatory_body": "FDA"
+                    }
                 }
             ]
 
@@ -140,8 +142,8 @@ class Drug(BaseModel):
     trade_names: Optional[List[str]] = []
     xrefs: Optional[List[str]] = []
     associated_with: Optional[List[str]] = []
-    approval_rating: Optional[ApprovalRating] = None
-    approval_year: Optional[List[int]] = []
+    approval_ratings: Optional[List[ApprovalRating]] = None
+    approval_year: Optional[List[str]] = []
     has_indication: Optional[List[HasIndication]] = []
 
     class Config:
@@ -171,7 +173,7 @@ class Drug(BaseModel):
                 ],
                 "xrefs": [],
                 "associated_with": None,
-                "approval_rating": "approved",
+                "approval_ratings": "approved",
                 "approval_year": [],
                 "has_indication": [],
                 "trade_names": ["PLATINOL", "PLATINOL-AQ", "CISPLATIN"]
@@ -406,8 +408,8 @@ class ApprovalRatingValue(BaseModel):
     """
 
     approval_ratings: Optional[List[ApprovalRating]]
-    approval_year: Optional[List[int]]
-    has_indication: Optional[List[Union[Dict, ValueObjectDescriptor]]]
+    approval_year: Optional[List[str]]
+    has_indication: Optional[List[ValueObjectDescriptor]]
 
 
 class ServiceMeta(BaseModel):
@@ -609,7 +611,7 @@ class SearchService(BaseModel):
                                 ],
                                 "xrefs": ["drugbank:DB00515"],
                                 "associated_with": ["fda:Q20Q21Q62J"],
-                                "approval_rating": None,
+                                "approval_ratings": None,
                                 "trade_names": []
                             }
                         ],
@@ -663,7 +665,7 @@ class SearchService(BaseModel):
                                     "mmsl:31747",
                                     "mmsl:4456"
                                 ],
-                                "approval_rating": "rxnorm_prescribable",
+                                "approval_ratings": ["rxnorm_prescribable"],
                                 "trade_names": [
                                     "Cisplatin",
                                     "Platinol"
@@ -697,7 +699,7 @@ class SearchService(BaseModel):
                                     "fda:Q20Q21Q62J",
                                     "chebi:CHEBI:27899"
                                 ],
-                                "approval_rating": None,
+                                "approval_ratings": None,
                                 "trade_names": []
                             }
                         ],
@@ -738,7 +740,7 @@ class SearchService(BaseModel):
                                 "associated_with": [
                                     "pubchem.compound:5702198"
                                 ],
-                                "approval_rating": None,
+                                "approval_ratings": None,
                                 "trade_names": []
                             }
                         ],

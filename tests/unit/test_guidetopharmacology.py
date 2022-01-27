@@ -17,9 +17,9 @@ def guidetopharmacology():
             self.query_handler = QueryHandler()
 
         def search(self, query_str):
-            resp = self.query_handler.search_sources(
+            resp = self.query_handler.search(
                 query_str, keyed=True, incl="guidetopharmacology")
-            return resp["source_matches"]["GuideToPHARMACOLOGY"]
+            return resp.source_matches["GuideToPHARMACOLOGY"]
 
         def fetch_meta(self):
             return self.query_handler._fetch_meta("GuideToPHARMACOLOGY")
@@ -32,7 +32,7 @@ def cisplatin():
     params = {
         "concept_id": "iuphar.ligand:5343",
         "label": "cisplatin",
-        "approval_rating": "gtopdb_approved",
+        "approval_ratings": ["gtopdb_approved"],
         "xrefs": [
             "chembl:CHEMBL11359",
             "chemidplus:15663-27-1",
@@ -80,7 +80,7 @@ def phenobarbital():
     params = {
         "concept_id": "iuphar.ligand:2804",
         "label": "phenobarbital",
-        "approval_rating": "gtopdb_approved",
+        "approval_ratings": ["gtopdb_approved"],
         "xrefs": [
             "chembl:CHEMBL40",
             "chemidplus:50-06-6",
@@ -112,7 +112,7 @@ def cisapride():
     params = {
         "concept_id": "iuphar.ligand:240",
         "label": "cisapride",
-        "approval_rating": "gtopdb_withdrawn",
+        "approval_ratings": ["gtopdb_withdrawn"],
         "xrefs": [
             "chembl:CHEMBL1729",
             "chemidplus:81098-60-4",
@@ -235,16 +235,16 @@ def test_associated_with_match(guidetopharmacology, cisplatin,
 def test_no_match(guidetopharmacology):
     """Test that no match queries work correctly."""
     resp = guidetopharmacology.search("178102005")
-    assert resp["match_type"] == MatchType.NO_MATCH
-    assert len(resp["records"]) == 0
+    assert resp.match_type == MatchType.NO_MATCH
+    assert len(resp.records) == 0
 
     resp = guidetopharmacology.search("guidetopharmacology:5343")
-    assert resp["match_type"] == MatchType.NO_MATCH
-    assert len(resp["records"]) == 0
+    assert resp.match_type == MatchType.NO_MATCH
+    assert len(resp.records) == 0
 
     resp = guidetopharmacology.search("")
-    assert resp["match_type"] == MatchType.NO_MATCH
-    assert len(resp["records"]) == 0
+    assert resp.match_type == MatchType.NO_MATCH
+    assert len(resp.records) == 0
 
 
 def test_meta_info(guidetopharmacology):

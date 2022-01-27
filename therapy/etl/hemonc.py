@@ -1,38 +1,27 @@
 """Provide ETL methods for HemOnc.org data."""
 import logging
 from pathlib import Path
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Optional
 import csv
 import os
 import zipfile
+import re
 
 import requests
 import isodate
-from disease.query import QueryHandler as DiseaseNormalizer
 
 from therapy import DownloadException
-from therapy.database import Database
 from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, RecordParams, \
     ApprovalRating
-from therapy.etl.base import Base, DEFAULT_DATA_PATH
+from therapy.etl.base import DiseaseIndicationBase
 
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
 
-class HemOnc(Base):
+class HemOnc(DiseaseIndicationBase):
     """Class for HemOnc.org ETL methods."""
-
-    def __init__(self, database: Database,
-                 data_path: Path = DEFAULT_DATA_PATH):
-        """Initialize HemOnc instance.
-
-        :param therapy.database.Database database: application database
-        :param Path data_path: path to normalizer data directory
-        """
-        super().__init__(database, data_path)
-        self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
 
     def get_latest_version(self) -> str:
         """Retrieve latest version of source data.
@@ -83,7 +72,7 @@ class HemOnc(Base):
         headers = {"X-Dataverse-key": api_key}
         self._http_download(url, self._src_dir, headers, self._zip_handler)
 
-    def _extract_data(self) -> None:
+    def _extract_data(self, use_existing: bool = False) -> None:
         """Get source files from data directory.
 
         The following files are necessary for data processing:
@@ -92,19 +81,62 @@ class HemOnc(Base):
             hemonc_synonyms_<version>.csv
         This method will attempt to retrieve their latest versions if they are
         unavailable locally.
+
+        :param bool use_existing: if True, don't try to fetch latest source data
         """
         self._src_dir.mkdir(exist_ok=True, parents=True)
-        self._version = self.get_latest_version()
-        data_filenames = (
-            self._src_dir / f"hemonc_concepts_{self._version}.csv",
-            self._src_dir / f"hemonc_rels_{self._version}.csv",
-            self._src_dir / f"hemonc_synonyms_{self._version}.csv"
-        )
-        if not all((f.exists() for f in data_filenames)):
-            self._download_data()
-        self._src_files = data_filenames
-        for file in self._src_files:
-            assert file.exists()
+
+        if use_existing:
+            concepts = list(sorted(self._src_dir.glob("hemonc_concepts_*.csv")))
+            if len(concepts) < 1:
+                raise FileNotFoundError("No HemOnc concepts file found")
+
+            src_files: Optional[Tuple] = None
+            for concepts_file in concepts[::-1]:
+                try:
+                    version = self._parse_version(
+                        concepts_file,
+                        re.compile(r"hemonc_concepts_(.+)\.csv")
+                    )
+                except FileNotFoundError:
+                    raise FileNotFoundError(
+                        f"Unable to parse HemOnc version value from concepts file "
+                        f"located at {concepts_file.absolute().as_uri()} -- check "
+                        "filename against schema defined in README: "
+                        "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
+                    )
+                other_files = (
+                    self._src_dir / f"hemonc_rels_{version}.csv",
+                    self._src_dir / f"hemonc_synonyms_{version}.csv"
+                )
+                if other_files[0].exists() and other_files[1].exists():
+                    self.version = version
+                    src_files = (
+                        concepts_file,
+                        other_files[0],
+                        other_files[1]
+                    )
+                    break
+            if src_files is None:
+                raise FileNotFoundError(
+                    "Unable to find complete HemOnc data set with matching version "
+                    "values. Check filenames against schema defined in README: "
+                    "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
+                )
+            else:
+                self._src_files = src_files
+        else:
+            self._version = self.get_latest_version()
+            data_filenames = (
+                self._src_dir / f"hemonc_concepts_{self._version}.csv",
+                self._src_dir / f"hemonc_rels_{self._version}.csv",
+                self._src_dir / f"hemonc_synonyms_{self._version}.csv"
+            )
+            if not all((f.exists() for f in data_filenames)):
+                self._download_data()
+            self._src_files = data_filenames
+            for file in self._src_files:
+                assert file.exists()
 
     def _load_meta(self) -> None:
         """Add HemOnc metadata."""
@@ -158,22 +190,22 @@ class HemOnc(Base):
         return therapies, brand_names, conditions
 
     @staticmethod
-    def _id_to_yr(hemonc_id: str) -> int:
+    def _id_to_yr(hemonc_id: str) -> str:
         """Get year from HemOnc ID corresponding to year concept.
         :param str hemonc_id: HemOnc ID to get year for
-        :return: int representing year. Raises TypeError if HemOnc ID not valid.
+        :return: str representing year. Raises TypeError if HemOnc ID not valid.
         """
         id_int = int(hemonc_id)
         if id_int == 780:
-            return 9999
+            return "9999"
         elif id_int == 48349:
-            return 2020
+            return "2020"
         elif id_int == 5963:
-            return 2021
+            return "2021"
         elif id_int < 699 or id_int > 780:
             raise TypeError("ID not a valid HemOnc year concept")
         else:
-            return id_int + 1240
+            return str(id_int + 1240)
 
     def _get_rels(self, therapies: Dict, brand_names: Dict,
                   conditions: Dict) -> Dict:
@@ -217,10 +249,10 @@ class HemOnc(Base):
                     logger.error(f"Failed parse of FDA approval year ID "
                                  f"{row[1]} for HemOnc ID {row[0]}")
                     continue
-                if year == 9999:
+                if year == "9999":
                     logger.warning(f"HemOnc ID {row[0]} has FDA approval year"
                                    f" 9999")
-                record["approval_rating"] = ApprovalRating.HEMONC_APPROVED.value
+                record["approval_ratings"] = [ApprovalRating.HEMONC_APPROVED.value]
                 if "approval_year" in record:
                     record["approval_year"].append(year)
                 else:
@@ -228,18 +260,13 @@ class HemOnc(Base):
 
             elif rel_type == "Has FDA indication":
                 label = conditions[row[1]]
-                norm_response = self.disease_normalizer.search_groups(label)
-                if norm_response["match_type"] > 0:
-                    ncit_id = norm_response["disease_descriptor"]["disease_id"]
-                else:
-                    ncit_id = ""
-                    logger.warning(f"Normalization of condition id: {row[1]}"
-                                   f", {label}, failed.")
+                norm_id = self._normalize_disease(label)
                 hemonc_concept_id = f"{NamespacePrefix.HEMONC.value}:{row[1]}"
                 indication = {
                     "disease_id": hemonc_concept_id,
                     "disease_label": label,
-                    "normalized_disease_id": ncit_id
+                    "normalized_disease_id": norm_id,
+                    "supplemental_info": {"regulatory_body": "FDA"}
                 }
                 if "has_indication" in record:
                     record["has_indication"].append(indication)

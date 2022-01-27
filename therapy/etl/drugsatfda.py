@@ -102,7 +102,7 @@ class DrugsAtFDA(Base):
 
             rating = self._get_marketing_status_rating(products, concept_id)
             if rating:
-                therapy["approval_rating"] = rating
+                therapy["approval_ratings"] = [rating]
 
             brand_names = [p["brand_name"] for p in products]
 
