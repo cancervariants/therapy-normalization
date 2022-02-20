@@ -8,4 +8,4 @@ from .hemonc import HemOnc
 from .ncit import NCIt
 from .rxnorm import RxNorm
 from .wikidata import Wikidata
-from .merge import Merge
+from .normalize import NormalizeBuilder

@@ -3,13 +3,12 @@ from abc import ABC, abstractmethod
 import ftplib
 from pathlib import Path
 import logging
-from typing import List, Dict, Optional, Callable
+from typing import Dict, Optional, Callable
 import os
 import zipfile
 import tempfile
 import re
 import json
-from functools import lru_cache
 
 from pydantic import ValidationError
 import requests
@@ -47,9 +46,8 @@ class Base(ABC):
         name = self.__class__.__name__.lower()
         self.database = database
         self._src_dir: Path = Path(data_path / name)
-        self._added_ids: List[str] = []
 
-    def perform_etl(self, use_existing: bool = False) -> List[str]:
+    def perform_etl(self, use_existing: bool = False) -> None:
         """Public-facing method to begin ETL procedures on given data.
         Returned concept IDs can be passed to Merge method for computing
         merged concepts.
@@ -61,7 +59,6 @@ class Base(ABC):
         self._extract_data(use_existing)
         self._load_meta()
         self._transform_data()
-        return self._added_ids
 
     def get_latest_version(self) -> str:
         """Get most recent version of source data. Should be overriden by
@@ -288,7 +285,6 @@ class Base(ABC):
                 del therapy[field]
 
         self.database.add_record(therapy)
-        self._added_ids.append(concept_id)
 
 
 class DiseaseIndicationBase(Base):
@@ -303,16 +299,23 @@ class DiseaseIndicationBase(Base):
         """
         super().__init__(database, data_path)
         self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
+        self._normalized_diseases: Dict[str, Optional[str]] = {}
 
-    @lru_cache(maxsize=64)
     def _normalize_disease(self, query: str) -> Optional[str]:
         """Attempt normalization of disease term.
         :param str query: term to normalize
         :return: ID if successful, None otherwise
         """
+        query_lower = query.lower()
+        normalized_term = self._normalized_diseases.get(query_lower)
+        if normalized_term:
+            return normalized_term
         response = self.disease_normalizer.normalize(query)
         if response.match_type > 0:
-            return response.disease_descriptor.disease_id
+            normalized_term = response.disease_descriptor.disease_id  # type: ignore
+            self._normalized_diseases[query_lower] = normalized_term
+            return normalized_term
         else:
             logger.warning(f"Failed to normalize disease term: {query}")
+            self._normalized_diseases[query_lower] = None
             return None

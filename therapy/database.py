@@ -1,6 +1,6 @@
 """This module creates the database."""
 from os import environ
-from typing import Optional, Dict, List, Any
+from typing import Optional, Dict, List, Any, Generator
 import logging
 import sys
 import atexit
@@ -234,32 +234,24 @@ class Database:
                          f"{e.response['Error']['Message']}")
             return []
 
-    def get_ids_for_merge(self) -> List[str]:
-        """Retrieve concept IDs for use in generating normalized records.
-
-        :return: List of concept IDs as strings.
+    def scan(self) -> Generator[Dict, None, None]:
+        """Iterate through every record in the database.
+        :return: Generator that yields every individual record.
         """
         last_evaluated_key = None
-        concept_ids = []
-        params = {
-            "ProjectionExpression": "concept_id,item_type",
-        }
         while True:
             if last_evaluated_key:
-                response = self.therapies.scan(
-                    ExclusiveStartKey=last_evaluated_key, **params
-                )
+                response = self.therapies.scan(ExclusiveStartKey=last_evaluated_key)
             else:
-                response = self.therapies.scan(**params)
+                response = self.therapies.scan()
+
+            last_evaluated_key = response.get("LastEvaluatedKey")
             records = response["Items"]
             for record in records:
-                if record["item_type"] == "identity":
-                    concept_id = record["concept_id"]
-                    concept_ids.append(concept_id)
-            last_evaluated_key = response.get("LastEvaluatedKey")
+                yield record
+
             if not last_evaluated_key:
                 break
-        return concept_ids
 
     def add_record(self, record: Dict, record_type: str = "identity") -> None:
         """Add new record to database.

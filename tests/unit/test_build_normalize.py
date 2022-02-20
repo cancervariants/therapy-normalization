@@ -1,43 +1,45 @@
 """Test merged record generation."""
-from typing import Dict
-import random
+from typing import Dict, List
 import json
 from pathlib import Path
 
 import pytest
 
-from therapy.etl.merge import Merge
+from therapy.etl.normalize import NormalizeBuilder
+
+
+class MockNormalizeBuilder(NormalizeBuilder):
+    """Mock version of NormalizeBuilder."""
+
+    def __init__(self, database):
+        """Initialize instance.
+        :param MockDatabase database: mock database to use
+        """
+        super().__init__(database)
+
+    def get_added_records(self) -> List:
+        """Fetch records that have been added.
+        :return: List of added records
+        """
+        return self.database.added_records  # type: ignore
+
+    def get_updates(self) -> List:
+        """Fetch update commands that have been issued.
+        :return: List of update items
+        """
+        return self.database.updates  # type: ignore
+
+    def refresh_changes(self):
+        """Clear changes to set up for another test run."""
+        self.database.updates = {}  # type: ignore
+        self.database.added_records = {}  # type: ignore
+        self._groups = {}
 
 
 @pytest.fixture(scope="module")
-def merge_handler(mock_database):
-    """Provide Merge instance to test cases.
-    Implements interfaces for basic merge functions, injects mock DB and
-    enables some additional backend checks for correctness.
-    """
-    class MergeHandler:
-        def __init__(self):
-            self.merge = Merge(mock_database())
-
-        def get_merge(self):
-            return self.merge
-
-        def create_merged_concepts(self, record_ids):
-            return self.merge.create_merged_concepts(record_ids)
-
-        def get_added_records(self):
-            return self.merge.database.added_records  # type: ignore
-
-        def get_updates(self):
-            return self.merge.database.updates  # type: ignore
-
-        def create_record_id_set(self, record_id):
-            return self.merge._create_record_id_set(record_id)
-
-        def generate_merged_record(self, record_id_set):
-            return self.merge._generate_merged_record(record_id_set)
-
-    return MergeHandler()
+def normalize_builder(mock_database):
+    """Provide Merge instance to test cases."""
+    return MockNormalizeBuilder(mock_database)
 
 
 def compare_merged_records(actual: Dict, fixture: Dict):
@@ -488,36 +490,54 @@ def record_id_groups():
     }
 
 
-def test_create_record_id_set(merge_handler, record_id_groups):
+def test_create_record_id_set(normalize_builder: MockNormalizeBuilder,
+                              # record_id_groups
+                              ):
     """Test creation of record ID sets. Queries DB and matches against
     record_id_groups fixture.
     """
+    normalize_builder._create_normalized_groups()
+    breakpoint()
     # try a few different orders
-    keys = list(record_id_groups.keys())
-    key_len = len(keys)
-    order0 = list(range(key_len))
-    random.seed(42)
-    orders = [random.sample(order0, key_len) for _ in range(5)]
-    for order in [order0] + orders:
-        ordered_keys = [keys[i] for i in order]
-        merge_handler.merge._groups = {}
+    # random.seed(42)
+    # for _ in range(10):
+    #     records = normalize_builder.records
+    #     for key in records:
+    #         to_shuffle = list(records[key].items())
+    #         random.shuffle(to_shuffle)
+    #         records[key] = dict(to_shuffle)
+    #     to_shuffle = list(records.items())  # type: ignore
+    #     random.shuffle(to_shuffle)
+    #     normalize_builder.records = to_shuffle
 
-        for record_id in ordered_keys:
-            new_group = merge_handler.create_record_id_set(record_id)
-            if new_group:
-                for concept_id in new_group:
-                    merge_handler.merge._groups[concept_id] = new_group
-        groups = merge_handler.merge._groups
+    #     normalize_builder.
+    # keys = list(record_id_groups.keys())
+    # key_len = len(keys)
+    # order0 = list(range(key_len))
+    # random.seed(42)
+    # orders = [random.sample(order0, key_len) for _ in range(5)]
+    # for order in [order0] + orders:
+    #     ordered_keys = [keys[i] for i in order]
+    #     merge_handler.merge._groups = {}
 
-        # perform checks
-        for concept_id in groups.keys():
-            assert groups[concept_id] == record_id_groups[concept_id], f"{concept_id}"
-        assert len(groups) == len(record_id_groups)  # check if any are missing
+    #     for record_id in ordered_keys:
+    #         new_group = merge_handler.create_record_id_set(record_id)
+    #         if new_group:
+    #             for concept_id in new_group:
+    #                 merge_handler.merge._groups[concept_id] = new_group
+    #     groups = merge_handler.merge._groups
 
-    # test dead reference
-    has_dead_ref = "ncit:C107245"
-    dead_group = merge_handler.create_record_id_set(has_dead_ref)
-    assert dead_group == {has_dead_ref}
+    #     # perform checks
+    #     for concept_id in groups.keys():
+    #         assert groups[concept_id] == record_id_groups[concept_id],
+    # f"{concept_id}"
+    #     assert len(groups) == len(record_id_groups)
+    # # check if any are missing
+
+    # # test dead reference
+    # has_dead_ref = "ncit:C107245"
+    # dead_group = merge_handler.create_record_id_set(has_dead_ref)
+    # assert dead_group == {has_dead_ref}
 
 
 def test_generate_merged_record(merge_handler, record_id_groups,

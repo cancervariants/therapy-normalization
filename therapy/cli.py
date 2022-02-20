@@ -14,7 +14,7 @@ from disease.schemas import SourceName as DiseaseSources
 from therapy import SOURCES_CLASS, SOURCES
 from therapy.schemas import SourceName
 from therapy.database import Database
-from therapy.etl.merge import Merge
+from therapy.etl.normalize import NormalizeBuilder
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -86,7 +86,7 @@ class CLI:
             CLI()._update_normalizers(normalizers, db, update_merged, use_existing)
         elif not normalizer:
             if update_merged:
-                CLI()._update_merged(db, [])
+                CLI()._update_merged(db)
             else:
                 CLI()._help_msg()
         else:
@@ -158,7 +158,6 @@ class CLI:
         :param bool use_existing: if true, don't try to fetch latest source data in
             source perform_etl methods
         """
-        processed_ids = list()
         for n in normalizers:
             msg = f"Deleting {n}..."
             click.echo(f"\n{msg}")
@@ -180,7 +179,7 @@ class CLI:
             start_load = timer()
             source = SOURCES_CLASS[n](database=db)
             try:
-                processed_ids += source.perform_etl(use_existing)
+                source.perform_etl(use_existing)
             except FileNotFoundError as e:
                 if use_existing:
                     if click.confirm(
@@ -188,7 +187,7 @@ class CLI:
                         f"{e.args[0] if len(e.args) > 0 else ''}\n"
                         "Attempt to retrieve latest version from source? "
                     ):
-                        processed_ids += source.perform_etl()
+                        source.perform_etl()
                     else:
                         raise e
             end_load = timer()
@@ -204,21 +203,17 @@ class CLI:
             logger.info(msg)
 
         if update_merged:
-            CLI()._update_merged(db, processed_ids)
+            CLI()._update_merged(db)
 
-    def _update_merged(self, db: Database, processed_ids: List[str]) -> None:
-        """Build and upload merged records. Will construct list of IDs if given an empty
-        processed_ids list.
+    def _update_merged(self, db: Database) -> None:
+        """Build and upload merged records.
         :param Database db: DB instance to use
-        :param List[str] processed_ids: List of IDs to create merged groups from
         """
         start_merge = timer()
-        if not processed_ids:
-            CLI()._delete_normalized_data(db)
-            processed_ids = db.get_ids_for_merge()
-        merge = Merge(database=db)
+        CLI()._delete_normalized_data(db)
+        merge = NormalizeBuilder(database=db)
         click.echo("Constructing normalized records...")
-        merge.create_merged_concepts(set(processed_ids))
+        merge.create_merged_concepts()
         end_merge = timer()
         click.echo(f"Merged concept generation completed in"
                    f" {(end_merge - start_merge):.5f} seconds.")
