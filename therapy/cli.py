@@ -300,4 +300,4 @@ class CLI:
 
 
 if __name__ == "__main__":
-    CLI().update_normalizer_db()
+    CLI().update_normalizer_db()  # type: ignore
