@@ -152,7 +152,7 @@ def mock_database():
             self.added_records[record["concept_id"]] = record
 
         def update_record(self, concept_id: str, attribute: str,
-                          new_value: Any):
+                          new_value: Any):  # noqa: ANN401
             """Store update request sent to database.
 
             :param str concept_id: record to update

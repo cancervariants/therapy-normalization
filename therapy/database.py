@@ -319,7 +319,7 @@ class Database:
                              f"{concept_id} with match type {ref_type}: "
                              f"{e.response['Error']['Message']}")
 
-    def update_record(self, concept_id: str, field: str, new_value: Any,
+    def update_record(self, concept_id: str, field: str, new_value: Any,  # noqa: ANN401
                       item_type: str = "identity") -> None:
         """Update the field of an individual record to a new value.
 
