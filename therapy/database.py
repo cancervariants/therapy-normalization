@@ -1,6 +1,6 @@
 """This module creates the database."""
 from os import environ
-from typing import Optional, Dict, List, Any, Generator
+from typing import Optional, Dict, List, Any, Generator, Set
 import logging
 import sys
 import atexit
@@ -11,6 +11,7 @@ from boto3.dynamodb.conditions import Key
 from botocore.exceptions import ClientError
 
 from therapy import PREFIX_LOOKUP
+from therapy.schemas import SourceName
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -253,6 +254,35 @@ class Database:
             if not last_evaluated_key:
                 break
 
+    def get_source_concept_ids(self, source_name: SourceName) -> Set[str]:
+        """Get all concept IDs currently associated with a given source.
+        :param SourceName source_name: name of source to fetch IDs for
+        :return: Set of all concept IDs currently loaded for given source
+        """
+        concept_ids = []
+        start_key = None
+        while True:
+            if start_key:
+                response = self.therapies.query(
+                    IndexName="src_index",
+                    KeyConditionExpression=Key("src_name").eq(source_name.value),
+                    ExclusiveStartKey=start_key
+                )
+            else:
+                response = self.therapies.query(
+                    IndexName="src_index",
+                    KeyConditionExpression=Key("src_name").eq(source_name.value)
+                )
+
+            query_ids = [r["concept_id"] for r in response.get("Items", [])]
+            concept_ids += query_ids
+
+            start_key = response.get("LastEvaluatedKey")
+            if not start_key:
+                break
+
+        return set(concept_ids)
+
     def add_record(self, record: Dict, record_type: str = "identity") -> None:
         """Add new record to database.
 
@@ -311,8 +341,9 @@ class Database:
                              f"{concept_id} with match type {ref_type}: "
                              f"{e.response['Error']['Message']}")
 
-    def update_record(self, concept_id: str, field: str, new_value: Any,
-                      item_type: str = "identity") -> None:
+    def update_record(self, concept_id: str, field: str,
+                      new_value: Any, item_type: str = "identity"  # noqa: ANN401
+                      ) -> None:
         """Update the field of an individual record to a new value.
 
         :param str concept_id: record to update

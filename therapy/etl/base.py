@@ -16,7 +16,7 @@ import bioversions
 from disease.query import QueryHandler as DiseaseNormalizer
 
 from therapy import APP_ROOT, ITEM_TYPES, DownloadException
-from therapy.schemas import Drug
+from therapy.schemas import Drug, ItemTypes, SourceName
 from therapy.database import Database
 
 
@@ -58,6 +58,9 @@ class Base(ABC):
         """
         self._extract_data(use_existing)
         self._load_meta()
+        self._existing_concept_ids = self.database.get_source_concept_ids(
+            SourceName[self.__class__.__name__.upper()]
+        )
         self._transform_data()
 
     def get_latest_version(self) -> str:
@@ -208,6 +211,19 @@ class Base(ABC):
         """
         raise NotImplementedError
 
+    def _create_record(self, record: Dict) -> None:
+        """WIP"""
+        concept_id = record["concept_id"]
+        if "label" in record:
+            self.database.add_ref_record(record["label"].lower(),
+                                         concept_id, ItemTypes.LABEL)
+
+    def _create_or_update_record(self, record: Dict) -> None:
+        """WIP"""
+        existing_record = self.database.get_record_by_id(record["concept_id"])
+        print(existing_record)
+        return None
+
     def _load_therapy(self, therapy: Dict) -> None:
         """Load individual therapy record into database.
         Additionally, this method takes responsibility for:
@@ -235,8 +251,8 @@ class Base(ABC):
                 if attr_type == "label":
                     value = value.strip()
                     therapy["label"] = value
-                    self.database.add_ref_record(value.lower(),
-                                                 concept_id, item_type)
+                    # self.database.add_ref_record(value.lower(),
+                    #                              concept_id, item_type)
                     continue
 
                 value_set = {v.strip() for v in value}
@@ -259,8 +275,8 @@ class Base(ABC):
                     del therapy[attr_type]
                     continue
 
-                for item in {item.lower() for item in value}:
-                    self.database.add_ref_record(item, concept_id, item_type)
+                # for item in {item.lower() for item in value}:
+                #     self.database.add_ref_record(item, concept_id, item_type)
                 therapy[attr_type] = value
 
         # compress has_indication
@@ -284,7 +300,8 @@ class Base(ABC):
             if approval_attrs in therapy and therapy[field] is None:
                 del therapy[field]
 
-        self.database.add_record(therapy)
+        self._create_or_update_record(therapy)
+        # self.database.add_record(therapy)
 
 
 class DiseaseIndicationBase(Base):
