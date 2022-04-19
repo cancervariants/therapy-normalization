@@ -1,18 +1,22 @@
 """This module provides methods for handling queries."""
 import re
-from typing import List, Dict, Set, Tuple, Union, Any, Optional
+from typing import Callable, List, Dict, Set, Tuple, TypeVar, Union, Any, Optional
 from urllib.parse import quote
 from datetime import datetime
 import json
 
 from uvicorn.config import logger
 from botocore.exceptions import ClientError
+from ga4gh.vrsatile.pydantic.vrsatile_models import ValueObjectDescriptor
 
 from therapy import SOURCES, PREFIX_LOOKUP, ITEM_TYPES, NAMESPACE_LUIS
 from therapy.database import Database
 from therapy.schemas import Drug, SourceMeta, MatchType, ServiceMeta, \
     HasIndication, SourcePriority, SearchService, NormalizationService, \
-    NamespacePrefix, SourceName
+    NamespacePrefix, SourceName, UnmergedNormalizationService, MatchesNormalized
+
+
+NormService = TypeVar("NormService")
 
 
 class InvalidParameterException(Exception):
@@ -276,14 +280,14 @@ class QueryHandler:
         query = query.strip()
 
         # check if concept ID match
-        (response, sources) = self._check_concept_id(query, response, sources, infer)
+        response, sources = self._check_concept_id(query, response, sources, infer)
         if len(sources) == 0:
             return response
 
         query = query.lower()
         for match_type in ITEM_TYPES.values():
-            (response, sources) = self._check_match_type(query, response, sources,
-                                                         match_type)
+            response, sources = self._check_match_type(query, response, sources,
+                                                       match_type)
             if len(sources) == 0:
                 return response
 
@@ -375,21 +379,23 @@ class QueryHandler:
         ).dict()
         return SearchService(**response)
 
-    def _add_merged_meta(self, response: Dict) -> Dict:
+    def _add_merged_meta(self, response: NormalizationService) -> NormalizationService:
         """Add source metadata to response object.
 
-        :param Dict response: in-progress response object
+        :param NormalizationService response: in-progress response object
         :return: completed response object.
         """
         sources_meta = {}
-        vod = response["therapy_descriptor"]
-        ids = [vod["therapy_id"]] + vod.get("xrefs", [])
+        vod = response.therapy_descriptor
+
+        xrefs = vod.xrefs or []  # type: ignore
+        ids = [vod.therapy_id] + xrefs  # type: ignore
         for concept_id in ids:
             prefix = concept_id.split(":")[0]
             src_name = PREFIX_LOOKUP[prefix.lower()]
             if src_name not in sources_meta:
                 sources_meta[src_name] = self._fetch_meta(src_name)
-        response["source_meta_"] = sources_meta
+        response.source_meta_ = sources_meta
         return response
 
     def _record_order(self, record: Dict) -> Tuple[int, str]:
@@ -402,10 +408,10 @@ class QueryHandler:
         source_rank = SourcePriority[src]
         return source_rank, record["concept_id"]
 
-    def _add_vod(self, response: Dict, record: Dict, query: str,
+    def _add_vod(self, response: NormalizationService, record: Dict, query: str,
                  match_type: MatchType) -> NormalizationService:
         """Format received DB record as VOD and update response object.
-        :param Dict response: in-progress response object
+        :param NormalizationService response: in-progress response object
         :param Dict record: record as stored in DB
         :param str query: query string from user request
         :param MatchType match_type: type of match achieved
@@ -479,33 +485,22 @@ class QueryHandler:
         if not vod["extensions"]:
             del vod["extensions"]
 
-        response["match_type"] = match_type
-        response["therapy_descriptor"] = vod
+        response.match_type = match_type
+        response.therapy_descriptor = ValueObjectDescriptor(**vod)  # type: ignore
         response = self._add_merged_meta(response)
-        return NormalizationService(**response)
+        return response
 
-    def _handle_failed_merge_ref(self, record: Dict, response: Dict,
-                                 query: str) -> NormalizationService:
-        """Log + fill out response for a failed merge reference lookup.
-
-        :param Dict record: record containing failed merge_ref
-        :param Dict response: in-progress response object
-        :param str query: original query value
-        :return: response with no match
-        """
-        logger.error(f"Merge ref lookup failed for ref {record['merge_ref']} "
-                     f"in record {record['concept_id']} from query `{query}`")
-        response["match_type"] = MatchType.NO_MATCH
-        return NormalizationService(**response)
-
-    def _resolve_merge(self, response: Dict, query: str, record: Dict,
-                       match_type: MatchType) -> NormalizationService:
+    def _resolve_merge(
+        self, response: NormService, query: str, record: Dict,
+        match_type: MatchType, callback: Callable
+    ) -> NormService:
         """Given a record, return the corresponding normalized record
 
-        :param Dict response: in-progress response object
+        :param NormalizationService response: in-progress response object
         :param str query: exact query as provided by user
         :param Dict record: record to retrieve normalized concept for
         :param MatchType match_type: type of match that returned these records
+        :param Callable callback: response constructor method
         :return: Normalized response object
         """
         merge_ref = record.get("merge_ref")
@@ -513,12 +508,38 @@ class QueryHandler:
             # follow merge_ref
             merge = self.db.get_record_by_id(merge_ref, False, True)
             if merge is None:
-                return self._handle_failed_merge_ref(record, response, query)
+                logger.error(f"Merge ref lookup failed for ref {record['merge_ref']} "
+                             f"in record {record['concept_id']} from query `{query}`")
+                return response
             else:
-                return self._add_vod(response, merge, query, match_type)
+                return callback(response, merge, match_type)
         else:
             # record is sole member of concept group
-            return self._add_vod(response, record, query, match_type)
+            return callback(response, record, match_type)
+
+    def _prepare_normalized_response(self, query: str) -> Dict[str, Any]:
+        """Provide base response object for normalize endpoints.
+
+        :param str query: user-provided query
+        :return: basic normalization response boilerplate
+        """
+        return {
+            "query": query,
+            "match_type": MatchType.NO_MATCH,
+            "warnings": self._emit_char_warnings(query),
+            "service_meta_": ServiceMeta(response_datetime=datetime.now())
+        }
+
+    def _get_matches_by_type(self, query: str, match_type: str) -> List[Dict]:
+        """Get matches list for match tier.
+        :param str query: user-provided query
+        :param str match_type: keyword of match type to check
+        :return: List of records matching the query and match level
+        """
+        matching_refs = self.db.get_records_by_type(query, match_type)
+        matching_records = [self.db.get_record_by_id(m["concept_id"], False)
+                            for m in matching_refs]
+        return sorted(matching_records, key=self._record_order)  # type: ignore
 
     def normalize(self, query: str, infer: bool = True) -> NormalizationService:
         """Return merged, normalized concept for given search term.
@@ -528,16 +549,10 @@ class QueryHandler:
         :return: Normalized response object
         """
         # prepare basic response
-        response: Dict[str, Any] = {
-            "query": query,
-            "warnings": self._emit_char_warnings(query),
-            "service_meta_": ServiceMeta(
-                response_datetime=datetime.now(),
-            ).dict()
-        }
+        response = NormalizationService(**self._prepare_normalized_response(query))
+
         if query == "":
-            response["match_type"] = MatchType.NO_MATCH.value
-            return NormalizationService(**response)
+            return response
         query_str = query.lower().strip()
 
         # check merged concept ID match
@@ -545,42 +560,139 @@ class QueryHandler:
         if record:
             return self._add_vod(response, record, query, MatchType.CONCEPT_ID)
 
+        # use as callback for shared merge ID resolution method:
+        add_vod_curry = lambda res, rec, mat: self._add_vod(res, rec, query, mat)  # noqa: E501 E731
+
         # check concept ID match
         record = self.db.get_record_by_id(query_str, case_sensitive=False)
         if record:
-            return self._resolve_merge(response, query, record,
-                                       MatchType.CONCEPT_ID)
+            return self._resolve_merge(response, query, record, MatchType.CONCEPT_ID,
+                                       add_vod_curry)
 
         # check concept ID match with inferred namespace
         if infer:
             inferred_response = self._infer_namespace(query)
             if inferred_response:
-                norm_response = self._resolve_merge(response, query,
-                                                    inferred_response[0],
-                                                    MatchType.CONCEPT_ID)
-                if norm_response.warnings:
-                    norm_response.warnings.append(inferred_response[1])
+                if response.warnings:
+                    response.warnings.append(inferred_response[1])
                 else:
-                    norm_response.warnings = [inferred_response[1]]
-                return norm_response
+                    response.warnings = [inferred_response[1]]
+                return self._resolve_merge(response, query, inferred_response[0],
+                                           MatchType.CONCEPT_ID, add_vod_curry)
 
         # check other match types
         for match_type in ITEM_TYPES.values():
-            # get matches list for match tier
-            matching_refs = self.db.get_records_by_type(query_str, match_type)
-            matching_records = \
-                [self.db.get_record_by_id(m["concept_id"], False)
-                 for m in matching_refs]
-            matching_records.sort(key=self._record_order)  # type: ignore
+            matching_records = self._get_matches_by_type(query_str, match_type)
+
+            # attempt merge ref resolution until successful
+            for match in matching_records:
+                record = self.db.get_record_by_id(match["concept_id"], False)
+                if record:
+                    return self._resolve_merge(response, query, record,
+                                               MatchType[match_type.upper()],
+                                               add_vod_curry)
+        return response
+
+    def _construct_drug_match(self, record: Dict) -> Drug:
+        """Create individual Drug match for unmerged normalization endpoint.
+
+        :param Dict record: record to add
+        :return: completed Drug object
+        """
+        inds = record.get("has_indication")
+        if inds:
+            record["has_indication"] = [self._get_indication(i) for i in inds]
+        return Drug(**record)
+
+    def _add_normalized_records(self, response: UnmergedNormalizationService,
+                                normalized_record: Dict,
+                                match_type: MatchType) -> UnmergedNormalizationService:
+        """Add individual records to unmerged normalize response.
+
+        :param UnmergedNormalizationService response: in-progress response object
+        :param Dict normalized_record: record associated with normalized concept,
+            either merged or single identity
+        :param MatchType match_type: type of match achieved
+        :return: Completed response object
+        """
+        response.match_type = match_type
+        response.normalized_concept_id = normalized_record["concept_id"]
+        if normalized_record["item_type"] == "identity":
+            record_source = SourceName[normalized_record["src_name"].upper()]
+            response.matches[record_source] = MatchesNormalized(
+                records=[self._construct_drug_match(normalized_record)],
+                source_meta_=self._fetch_meta(record_source.value)
+            )
+        else:
+            concept_ids = [normalized_record["concept_id"]] + \
+                normalized_record.get("xrefs", [])
+            for concept_id in concept_ids:
+                record = self.db.get_record_by_id(concept_id, case_sensitive=False)
+                if not record:
+                    continue  # cover a few chemidplus edge cases
+                record_source = SourceName[record["src_name"].upper()]
+                drug = self._construct_drug_match(record)
+                if record_source in response.matches:
+                    response.matches[record_source].records.append(drug)
+                else:
+                    response.matches[record_source] = MatchesNormalized(
+                        records=[drug],
+                        source_meta_=self._fetch_meta(record_source.value)
+                    )
+        return response
+
+    def normalize_unmerged(
+        self, query: str, infer: bool = True
+    ) -> UnmergedNormalizationService:
+        """Return all source records under the normalized concept for the provided
+        query string.
+
+        :param str query: string to search against
+        :param bool infer: if true, try to infer namespace for IDs
+        :return: Normalized response object
+        """
+        response = UnmergedNormalizationService(
+            matches={},
+            **self._prepare_normalized_response(query)
+        )
+        if query == "":
+            return response
+        query_str = query.lower().strip()
+
+        # check merged concept ID match
+        record = self.db.get_record_by_id(query_str, case_sensitive=False, merge=True)
+        if record:
+            return self._add_normalized_records(response, record, MatchType.CONCEPT_ID)
+
+        # check concept ID match
+        record = self.db.get_record_by_id(query_str, case_sensitive=False)
+        if record:
+            return self._resolve_merge(response, query, record, MatchType.CONCEPT_ID,
+                                       self._add_normalized_records)
+
+        # check concept ID match with inferred namespace
+        if infer:
+            inferred_response = self._infer_namespace(query)
+            if inferred_response:
+                if response.warnings:
+                    response.warnings.append(inferred_response[1])
+                else:
+                    response.warnings = [inferred_response[1]]
+                return self._resolve_merge(response, query, inferred_response[0],
+                                           MatchType.CONCEPT_ID,
+                                           self._add_normalized_records)
+
+        # check other match types
+        for match_type in ITEM_TYPES.values():
+            matching_records = self._get_matches_by_type(query_str, match_type)
 
             # attempt merge ref resolution until successful
             for match in matching_records:
                 assert match is not None
                 record = self.db.get_record_by_id(match["concept_id"], False)
                 if record:
+                    match_type_value = MatchType[match_type.upper()]
                     return self._resolve_merge(response, query, record,
-                                               MatchType[match_type.upper()])
-
-        if not matching_records:  # type: ignore
-            response["match_type"] = MatchType.NO_MATCH.value
-        return NormalizationService(**response)
+                                               match_type_value,
+                                               self._add_normalized_records)
+        return response

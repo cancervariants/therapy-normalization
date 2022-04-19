@@ -3406,5 +3406,69 @@
     "item_type": "xref",
     "src_name": "RxNorm",
     "concept_id": "rxcui:9991"
+  },
+  {
+    "label_and_type": "iuphar.ligand:3303##identity",
+    "item_type": "identity",
+    "src_name": "GuideToPHARMACOLOGY",
+    "concept_id": "iuphar.ligand:3303",
+    "label": "L745870",
+    "aliases": [
+      "L-745,870",
+      "L 745870",
+      "3-[[4-(4-chlorophenyl)piperazin-1-yl]methyl]-1H-pyrrolo[2,3-b]pyridine"
+    ],
+    "xrefs": ["chemidplus:158985-00-3", "chembl:CHEMBL267014"],
+    "associated_with": [
+      "pubchem.substance:178100340",
+      "pubchem.compound:5311200",
+      "inchikey:OGJGQVFWEPNYSB-UHFFFAOYSA-N"
+    ],
+    "merge_ref": "iuphar.ligand:3303"
+  },
+  {
+    "label_and_type": "l745870##label",
+    "item_type": "label",
+    "src_name": "GuideToPHARMACOLOGY",
+    "concept_id": "iuphar.ligand:3303"
+  },
+  {
+    "label_and_type": "pubchem.substance:178100340##associated_with",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY",
+    "concept_id": "iuphar.ligand:3303"
+  },
+  {
+    "label_and_type": "3-[[4-(4-chlorophenyl)piperazin-1-yl]methyl]-1H-pyrrolo[2,3-b]pyridine##alias",
+    "item_type": "alias",
+    "src_name": "GuideToPHARMACOLOGY",
+    "concept_id": "iuphar.ligand:3303"
+  },
+  {
+    "label_and_type": "chembl:chembl267014##identity",
+    "src_name": "ChEMBL",
+    "item_type": "identity",
+    "concept_id": "chembl:CHEMBL267014",
+    "label": "L-745870",
+    "approval_ratings": ["chembl_phase_0"],
+    "merge_ref": "iuphar.ligand:3303"
+  },
+  {
+    "label_and_type": "iuphar.ligand:3303##merger",
+    "concept_id": "iuphar.ligand:3303",
+    "item_type": "merger",
+    "label": "L745870",
+    "xrefs": ["chembl:CHEMBL267014"],
+    "aliases": [
+      "3-[[4-(4-chlorophenyl)piperazin-1-yl]methyl]-1H-pyrrolo[2,3-b]pyridine",
+      "L-745,870",
+      "L 745870"
+    ],
+    "approval_ratings": ["chembl_phase_0"],
+    "associated_with": [
+      "pubchem.compound:5311200",
+      "pubchem.substance:178100340",
+      "inchikey:OGJGQVFWEPNYSB-UHFFFAOYSA-N"
+    ]
   }
 ]

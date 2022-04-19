@@ -3,6 +3,7 @@ from typing import List, Optional, Dict, Union, Any, Type, Set
 from enum import Enum, IntEnum
 from datetime import datetime
 
+from ga4gh.vrsatile.pydantic.vrs_models import CURIE
 from ga4gh.vrsatile.pydantic.vrsatile_models import ValueObjectDescriptor
 from pydantic import BaseModel, StrictBool
 
@@ -382,7 +383,7 @@ class MatchesListed(BaseModel):
             for prop in schema.get("properties", {}).values():
                 prop.pop("title", None)
             schema["example"] = {
-                "normalizer": "ChEMBL",
+                "source": "ChEMBL",
                 "match_type": 0,
                 "records": [],
                 "source_meta_": {
@@ -424,7 +425,7 @@ class ServiceMeta(BaseModel):
         """Configure OpenAPI schema"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any], model: Type["SourceMeta"]) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["ServiceMeta"]) -> None:
             """Configure OpenAPI schema"""
             if "title" in schema.keys():
                 schema.pop("title", None)
@@ -438,15 +439,49 @@ class ServiceMeta(BaseModel):
             }
 
 
-class NormalizationService(BaseModel):
-    """Response containing one or more merged records and source data."""
+class MatchesNormalized(BaseModel):
+    """Matches associated with normalized concept from a single source."""
+
+    records: List[Drug]
+    source_meta_: SourceMeta
+
+    class Config:
+        """Configure OpenAPI schema"""
+
+        @staticmethod
+        def schema_extra(schema: Dict[str, Any],
+                         model: Type["MatchesNormalized"]) -> None:
+            """Configure OpenAPI schema"""
+            if "title" in schema.keys():
+                schema.pop("title", None)
+            for prop in schema.get("properties", {}).values():
+                prop.pop("title", None)
+
+
+class BaseNormalizationService(BaseModel):
+    """Base method providing shared attributes to Normalization service classes."""
 
     query: str
     warnings: Optional[List[Dict]]
     match_type: MatchType
+    service_meta_: ServiceMeta
+
+
+class UnmergedNormalizationService(BaseNormalizationService):
+    """Response providing source records corresponding to normalization of user query.
+    Enables retrieval of normalized concept while retaining sourcing for accompanying
+    attributes.
+    """
+
+    normalized_concept_id: Optional[CURIE]
+    matches: Dict[SourceName, MatchesNormalized]
+
+
+class NormalizationService(BaseNormalizationService):
+    """Response containing one or more merged records and source data."""
+
     therapy_descriptor: Optional[ValueObjectDescriptor]
     source_meta_: Optional[Dict[SourceName, SourceMeta]]
-    service_meta_: ServiceMeta
 
     class Config:
         """Configure OpenAPI schema"""
