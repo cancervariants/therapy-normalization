@@ -395,7 +395,7 @@ class QueryHandler:
             src_name = PREFIX_LOOKUP[prefix.lower()]
             if src_name not in sources_meta:
                 sources_meta[src_name] = self._fetch_meta(src_name)
-        response.source_meta_ = sources_meta
+        response.source_meta_ = sources_meta  # type: ignore
         return response
 
     def _record_order(self, record: Dict) -> Tuple[int, str]:
