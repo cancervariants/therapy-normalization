@@ -57,6 +57,6 @@ ASSOC_WITH_SOURCES = {source for source in NamespacePrefix.__members__} - XREF_S
 
 from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm, HemOnc, GuideToPHARMACOLOGY, DrugsAtFDA  # noqa: E402, E501, I202
 
-# used to get source class name from string this is going to be too long and break some rules to see how linting is handled okay this should be long enough
+# used to get source class name from string
 SOURCES_CLASS = \
     {s.value.lower(): eval(s.value) for s in SourceName.__members__.values()}
