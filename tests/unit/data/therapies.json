@@ -2459,6 +2459,24 @@
     ]
   },
   {
+    "label_and_type": "umls:c0087111##associated_with",
+    "concept_id": "ncit:c49236",
+    "item_type": "associated_with",
+    "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "therapeutic procedure##label",
+    "concept_id": "ncit:c49236",
+    "src_name": "NCIt",
+    "item_type": "label"
+  },
+  {
+    "label_and_type": "treat##alias",
+    "concept_id": "ncit:c49236",
+    "src_name": "NCIt",
+    "item_type": "alias"
+  },
+  {
     "label_and_type": "any therapy##alias",
     "concept_id": "ncit:c49236",
     "src_name": "NCIt",
@@ -2793,6 +2811,12 @@
     "approval_ratings": ["fda_prescription"]
   },
   {
+    "label_and_type": "ndc:0143-9504##associated_with",
+    "item_type": "associated_with",
+    "src_name": "DrugsAtFDA",
+    "concept_id": "drugsatfda.anda:075036"
+  },
+  {
     "label_and_type": "rxcui:309311##xref",
     "concept_id": "drugsatfda.anda:075036",
     "item_type": "xref",
@@ -2964,7 +2988,14 @@
       "spl:a66eda32-1164-439a-ac8e-73138365ec06",
       "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c"
     ],
-    "trade_names": ["PLATINOL-AQ", "PLATINOL"]
+    "trade_names": ["PLATINOL-AQ", "PLATINOL"],
+    "merge_ref": "rxcui:2555"
+  },
+  {
+    "label_and_type": "platinol-aq##trade_name",
+    "concept_id": "drugsatfda.nda:018057",
+    "item_type": "trade_name",
+    "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "rxcui:309311##xref",
@@ -3430,6 +3461,12 @@
     "merge_ref": "iuphar.ligand:3303"
   },
   {
+    "label_and_type": "chemidplus:158985-00-3##xref",
+    "item_type": "xref",
+    "src_name": "GuideToPHARMACOLOGY",
+    "concept_id": "iuphar.ligand:3303"
+  },
+  {
     "label_and_type": "l745870##label",
     "item_type": "label",
     "src_name": "GuideToPHARMACOLOGY",
@@ -3442,7 +3479,7 @@
     "concept_id": "iuphar.ligand:3303"
   },
   {
-    "label_and_type": "3-[[4-(4-chlorophenyl)piperazin-1-yl]methyl]-1H-pyrrolo[2,3-b]pyridine##alias",
+    "label_and_type": "l 745870##alias",
     "item_type": "alias",
     "src_name": "GuideToPHARMACOLOGY",
     "concept_id": "iuphar.ligand:3303"

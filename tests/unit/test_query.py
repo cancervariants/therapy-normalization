@@ -601,7 +601,7 @@ def test_unmerged_normalize(normalize_query_handler, unmerged_normalize_l745870,
     compare_unmerged_response(response, query, [], MatchType.ASSOCIATED_WITH,
                               unmerged_normalize_l745870)
 
-    query = "3-[[4-(4-chlorophenyl)piperazin-1-yl]methyl]-1H-pyrrolo[2,3-b]pyridine"
+    query = "L 745870"
     response = normalize_query_handler.normalize_unmerged(query)
     compare_unmerged_response(response, query, [], MatchType.ALIAS,
                               unmerged_normalize_l745870)
