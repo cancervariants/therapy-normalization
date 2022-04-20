@@ -58,28 +58,6 @@ jobs:
 
             - name: Check style
               run: python3 -m tox -e py38-lint
-    typing:
-        name: typing py${{ matrix.python-version }}
-        runs-on: ubuntu-latest
-        env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.DUMMY_AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.DUMMY_AWS_SECRET_ACCESS_KEY }}
-            AWS_DEFAULT_REGION: us-east-2
-            AWS_DEFAULT_OUTPUT: text
-        strategy:
-            matrix:
-              python-version: [3.8, 3.9]
-        steps:
-            - uses: actions/checkout@v2
-
-            - name: Setup Python
-              uses: actions/setup-python@v1
-              with:
-                  python-version: 3.8
-
-            - name: Install dependencies
-              run: |
-                  python3 -m pip install -e ".[dev]"
 
             - name: Check type correctness
               run: python3 -m tox -e py38-mypy
