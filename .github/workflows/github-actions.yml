@@ -2,6 +2,7 @@ name: github-actions
 on: [push, pull_request]
 jobs:
     test:
+        name: test py${{ matrix.python-version }}
         runs-on: ubuntu-latest
         env:
             AWS_ACCESS_KEY_ID: ${{ secrets.DUMMY_AWS_ACCESS_KEY_ID }}
@@ -10,13 +11,16 @@ jobs:
             AWS_DEFAULT_OUTPUT: text
             THERAPY_NORM_DB_URL: http://localhost:8001
             TEST: THERAPY_TEST
+        strategy:
+            matrix:
+              python-version: [3.8, 3.9]
         steps:
             - uses: actions/checkout@v2
 
             - name: Setup Python
               uses: actions/setup-python@v1
               with:
-                  python-version: 3.8
+                  python-version: ${{ matrix.python-version }}
 
             - name: Install dependencies
               run: |
@@ -30,12 +34,16 @@ jobs:
             - name: Run tests
               run: python3 -m tox -e githubactions
     lint:
+        name: lint py${{ matrix.python-version }}
         runs-on: ubuntu-latest
         env:
             AWS_ACCESS_KEY_ID: ${{ secrets.DUMMY_AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY: ${{ secrets.DUMMY_AWS_SECRET_ACCESS_KEY }}
             AWS_DEFAULT_REGION: us-east-2
             AWS_DEFAULT_OUTPUT: text
+        strategy:
+            matrix:
+              python-version: [3.8, 3.9]
         steps:
             - uses: actions/checkout@v2
 
@@ -51,12 +59,16 @@ jobs:
             - name: Check style
               run: python3 -m tox -e py38-lint
     typing:
+        name: typing py${{ matrix.python-version }}
         runs-on: ubuntu-latest
         env:
             AWS_ACCESS_KEY_ID: ${{ secrets.DUMMY_AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY: ${{ secrets.DUMMY_AWS_SECRET_ACCESS_KEY }}
             AWS_DEFAULT_REGION: us-east-2
             AWS_DEFAULT_OUTPUT: text
+        strategy:
+            matrix:
+              python-version: [3.8, 3.9]
         steps:
             - uses: actions/checkout@v2
 
