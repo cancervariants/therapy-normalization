@@ -27,12 +27,6 @@ jobs:
                   chmod +x ./tests/scripts/dynamodb_build.bash
                   ./tests/scripts/dynamodb_build.bash
 
-            - name: Check style
-              run: python3 -m tox -e py38-lint
-
-            - name: Check type correctness
-              run: python3 -m tox -e py38-mypy
-
             - name: Run tests
               run: python3 -m tox -e githubactions
     lint:
