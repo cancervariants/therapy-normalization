@@ -753,7 +753,8 @@
     "xrefs": ["chemidplus:15663-27-1"],
     "associated_with": ["umls:C0008838", "unii:Q20Q21Q62J"],
     "src_name": "NCIt",
-    "merge_ref": "rxcui:2555"
+    "merge_ref": "rxcui:2555",
+    "item_type": "identity"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -932,7 +933,8 @@
       "mmsl:4456"
     ],
     "src_name": "RxNorm",
-    "merge_ref": "rxcui:2555"
+    "merge_ref": "rxcui:2555",
+    "item_type": "identity"
   },
   {
     "label_and_type": "mesh:d002945##associated_with",
@@ -1707,6 +1709,7 @@
   },
   {
     "label_and_type": "rxcui:2555##merger",
+    "item_type": "merger",
     "concept_id": "rxcui:2555",
     "xrefs": [
       "ncit:C376",
