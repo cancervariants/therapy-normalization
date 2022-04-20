@@ -20,7 +20,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  python3 -m pip install -e ".[test]"
+                  python3 -m pip install -e ".[test,dev]"
 
             - name: Build local DynamoDB
               run: |
