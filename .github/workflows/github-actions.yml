@@ -24,7 +24,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  python3 -m pip install -e ".[test]"
+                  python3 -m pip install tox
 
             - name: Build local DynamoDB
               run: |
@@ -54,7 +54,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  python3 -m pip install -e ".[dev]"
+                  python3 -m pip install tox
 
             - name: Check style
               run: python3 -m tox -e py38-lint
