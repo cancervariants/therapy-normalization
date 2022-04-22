@@ -476,6 +476,99 @@ class UnmergedNormalizationService(BaseNormalizationService):
     normalized_concept_id: Optional[CURIE]
     matches: Dict[SourceName, MatchesNormalized]
 
+    class Config:
+        """Configure OpenAPI schema"""
+
+        @staticmethod
+        def schema_extra(schema: Dict[str, Any],
+                         model: Type["UnmergedNormalizationService"]) -> None:
+            """Configure OpenAPI schema example"""
+            if "title" in schema.keys():
+                schema.pop("title", None)
+            for prop in schema.get("properties", {}).values():
+                prop.pop("title", None)
+            schema["example"] = {
+                "query": "L745870",
+                "warnings": [],
+                "match_type": 80,
+                "service_meta_": {
+                    "response_datetime": "2022-04-22T11:40:18.921859",
+                    "name": "thera-py",
+                    "version": "0.3.4",
+                    "url": "https://github.com/cancervariants/therapy-normalization"
+                },
+                "normalized_concept_id": "iuphar.ligand:3303",
+                "matches": {
+                    "GuideToPHARMACOLOGY": {
+                        "records": [
+                            {
+                                "concept_id": "iuphar.ligand:3303",
+                                "label": "L745870",
+                                "aliases": [
+                                    "L-745,870",
+                                    "L 745870",
+                                    "3-[[4-(4-chlorophenyl)piperazin-1-yl]methyl]-1H-pyrrolo[2,3-b]pyridine"  # noqa: E501
+                                ],
+                                "trade_names": [],
+                                "xrefs": [
+                                    "chemidplus:158985-00-3",
+                                    "chembl:CHEMBL267014"
+                                ],
+                                "associated_with": [
+                                    "pubchem.substance:178100340",
+                                    "pubchem.compound:5311200",
+                                    "inchikey:OGJGQVFWEPNYSB-UHFFFAOYSA-N"
+                                ],
+                                "approval_ratings": None,
+                                "approval_year": [],
+                                "has_indication": []
+                            }
+                        ],
+                        "source_meta_": {
+                            "data_license": "CC BY-SA 4.0",
+                            "data_license_url": "https://creativecommons.org/licenses/by-sa/4.0/",  # noqa: E501
+                            "version": "2021.4",
+                            "data_url": "https://www.guidetopharmacology.org/download.jsp",  # noqa: E501
+                            "rdp_url": None,
+                            "data_license_attributes": {
+                                "non_commercial": False,
+                                "share_alike": True,
+                                "attribution": True
+                            }
+                        }
+                    },
+                    "ChEMBL": {
+                        "records": [
+                            {
+                                "concept_id": "chembl:CHEMBL267014",
+                                "label": "L-745870",
+                                "aliases": [],
+                                "trade_names": [],
+                                "xrefs": [],
+                                "associated_with": [],
+                                "approval_ratings": [
+                                    "chembl_phase_0"
+                                ],
+                                "approval_year": [],
+                                "has_indication": []
+                            }
+                        ],
+                        "source_meta_": {
+                            "data_license": "CC BY-SA 3.0",
+                            "data_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",  # noqa: E501
+                            "version": "29",
+                            "data_url": "ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_29",  # noqa: E501
+                            "rdp_url": "http://reusabledata.org/chembl.html",
+                            "data_license_attributes": {
+                                "non_commercial": False,
+                                "share_alike": True,
+                                "attribution": True
+                            }
+                        }
+                    }
+                }
+            }
+
 
 class NormalizationService(BaseNormalizationService):
     """Response containing one or more merged records and source data."""
