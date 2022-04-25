@@ -751,9 +751,10 @@
     "label": "Cisplatin",
     "concept_id": "ncit:C376",
     "xrefs": ["chemidplus:15663-27-1"],
-    "associated_with": ["umls:C0008838", "unii:Q20Q21Q62J"],
+    "associated_with": ["umls:C0008838", "unii:Q20Q21Q62J", "CHEBI:27899"],
     "src_name": "NCIt",
-    "merge_ref": "rxcui:2555"
+    "merge_ref": "rxcui:2555",
+    "item_type": "identity"
   },
   {
     "label_and_type": "cisplatin##label",
@@ -932,7 +933,8 @@
       "mmsl:4456"
     ],
     "src_name": "RxNorm",
-    "merge_ref": "rxcui:2555"
+    "merge_ref": "rxcui:2555",
+    "item_type": "identity"
   },
   {
     "label_and_type": "mesh:d002945##associated_with",
@@ -1707,6 +1709,7 @@
   },
   {
     "label_and_type": "rxcui:2555##merger",
+    "item_type": "merger",
     "concept_id": "rxcui:2555",
     "xrefs": [
       "ncit:C376",
@@ -2456,6 +2459,24 @@
     ]
   },
   {
+    "label_and_type": "umls:c0087111##associated_with",
+    "concept_id": "ncit:c49236",
+    "item_type": "associated_with",
+    "src_name": "NCIt"
+  },
+  {
+    "label_and_type": "therapeutic procedure##label",
+    "concept_id": "ncit:c49236",
+    "src_name": "NCIt",
+    "item_type": "label"
+  },
+  {
+    "label_and_type": "treat##alias",
+    "concept_id": "ncit:c49236",
+    "src_name": "NCIt",
+    "item_type": "alias"
+  },
+  {
     "label_and_type": "any therapy##alias",
     "concept_id": "ncit:c49236",
     "src_name": "NCIt",
@@ -2790,6 +2811,12 @@
     "approval_ratings": ["fda_prescription"]
   },
   {
+    "label_and_type": "ndc:0143-9504##associated_with",
+    "item_type": "associated_with",
+    "src_name": "DrugsAtFDA",
+    "concept_id": "drugsatfda.anda:075036"
+  },
+  {
     "label_and_type": "rxcui:309311##xref",
     "concept_id": "drugsatfda.anda:075036",
     "item_type": "xref",
@@ -2961,7 +2988,14 @@
       "spl:a66eda32-1164-439a-ac8e-73138365ec06",
       "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c"
     ],
-    "trade_names": ["PLATINOL-AQ", "PLATINOL"]
+    "trade_names": ["PLATINOL-AQ", "PLATINOL"],
+    "merge_ref": "rxcui:2555"
+  },
+  {
+    "label_and_type": "platinol-aq##trade_name",
+    "concept_id": "drugsatfda.nda:018057",
+    "item_type": "trade_name",
+    "src_name": "DrugsAtFDA"
   },
   {
     "label_and_type": "rxcui:309311##xref",
@@ -3406,5 +3440,75 @@
     "item_type": "xref",
     "src_name": "RxNorm",
     "concept_id": "rxcui:9991"
+  },
+  {
+    "label_and_type": "iuphar.ligand:3303##identity",
+    "item_type": "identity",
+    "src_name": "GuideToPHARMACOLOGY",
+    "concept_id": "iuphar.ligand:3303",
+    "label": "L745870",
+    "aliases": [
+      "L-745,870",
+      "L 745870",
+      "3-[[4-(4-chlorophenyl)piperazin-1-yl]methyl]-1H-pyrrolo[2,3-b]pyridine"
+    ],
+    "xrefs": ["chemidplus:158985-00-3", "chembl:CHEMBL267014"],
+    "associated_with": [
+      "pubchem.substance:178100340",
+      "pubchem.compound:5311200",
+      "inchikey:OGJGQVFWEPNYSB-UHFFFAOYSA-N"
+    ],
+    "merge_ref": "iuphar.ligand:3303"
+  },
+  {
+    "label_and_type": "chemidplus:158985-00-3##xref",
+    "item_type": "xref",
+    "src_name": "GuideToPHARMACOLOGY",
+    "concept_id": "iuphar.ligand:3303"
+  },
+  {
+    "label_and_type": "l745870##label",
+    "item_type": "label",
+    "src_name": "GuideToPHARMACOLOGY",
+    "concept_id": "iuphar.ligand:3303"
+  },
+  {
+    "label_and_type": "pubchem.substance:178100340##associated_with",
+    "item_type": "associated_with",
+    "src_name": "GuideToPHARMACOLOGY",
+    "concept_id": "iuphar.ligand:3303"
+  },
+  {
+    "label_and_type": "l 745870##alias",
+    "item_type": "alias",
+    "src_name": "GuideToPHARMACOLOGY",
+    "concept_id": "iuphar.ligand:3303"
+  },
+  {
+    "label_and_type": "chembl:chembl267014##identity",
+    "src_name": "ChEMBL",
+    "item_type": "identity",
+    "concept_id": "chembl:CHEMBL267014",
+    "label": "L-745870",
+    "approval_ratings": ["chembl_phase_0"],
+    "merge_ref": "iuphar.ligand:3303"
+  },
+  {
+    "label_and_type": "iuphar.ligand:3303##merger",
+    "concept_id": "iuphar.ligand:3303",
+    "item_type": "merger",
+    "label": "L745870",
+    "xrefs": ["chembl:CHEMBL267014"],
+    "aliases": [
+      "3-[[4-(4-chlorophenyl)piperazin-1-yl]methyl]-1H-pyrrolo[2,3-b]pyridine",
+      "L-745,870",
+      "L 745870"
+    ],
+    "approval_ratings": ["chembl_phase_0"],
+    "associated_with": [
+      "pubchem.compound:5311200",
+      "pubchem.substance:178100340",
+      "inchikey:OGJGQVFWEPNYSB-UHFFFAOYSA-N"
+    ]
   }
 ]
