@@ -11,12 +11,12 @@ from ga4gh.vrsatile.pydantic.vrsatile_models import ValueObjectDescriptor
 
 from therapy import SOURCES, PREFIX_LOOKUP, ITEM_TYPES, NAMESPACE_LUIS
 from therapy.database import Database
-from therapy.schemas import Drug, SourceMeta, MatchType, ServiceMeta, \
-    HasIndication, SourcePriority, SearchService, NormalizationService, \
+from therapy.schemas import BaseNormalizationService, Drug, SourceMeta, MatchType, \
+    ServiceMeta, HasIndication, SourcePriority, SearchService, NormalizationService, \
     NamespacePrefix, SourceName, UnmergedNormalizationService, MatchesNormalized
 
 
-NormService = TypeVar("NormService")
+NormService = TypeVar("NormService", bound=BaseNormalizationService)
 
 
 class InvalidParameterException(Exception):
@@ -551,47 +551,8 @@ class QueryHandler:
         # prepare basic response
         response = NormalizationService(**self._prepare_normalized_response(query))
 
-        if query == "":
-            return response
-        query_str = query.lower().strip()
-
-        # check merged concept ID match
-        record = self.db.get_record_by_id(query_str, case_sensitive=False, merge=True)
-        if record:
-            return self._add_vod(response, record, query, MatchType.CONCEPT_ID)
-
-        # use as callback for shared merge ID resolution method:
         add_vod_curry = lambda res, rec, mat: self._add_vod(res, rec, query, mat)  # noqa: E501 E731
-
-        # check concept ID match
-        record = self.db.get_record_by_id(query_str, case_sensitive=False)
-        if record:
-            return self._resolve_merge(response, query, record, MatchType.CONCEPT_ID,
-                                       add_vod_curry)
-
-        # check concept ID match with inferred namespace
-        if infer:
-            inferred_response = self._infer_namespace(query)
-            if inferred_response:
-                if response.warnings:
-                    response.warnings.append(inferred_response[1])
-                else:
-                    response.warnings = [inferred_response[1]]
-                return self._resolve_merge(response, query, inferred_response[0],
-                                           MatchType.CONCEPT_ID, add_vod_curry)
-
-        # check other match types
-        for match_type in ITEM_TYPES.values():
-            matching_records = self._get_matches_by_type(query_str, match_type)
-
-            # attempt merge ref resolution until successful
-            for match in matching_records:
-                record = self.db.get_record_by_id(match["concept_id"], False)
-                if record:
-                    return self._resolve_merge(response, query, record,
-                                               MatchType[match_type.upper()],
-                                               add_vod_curry)
-        return response
+        return self._perform_normalized_lookup(response, query, infer, add_vod_curry)
 
     def _construct_drug_match(self, record: Dict) -> Drug:
         """Create individual Drug match for unmerged normalization endpoint.
@@ -641,6 +602,58 @@ class QueryHandler:
                     )
         return response
 
+    def _perform_normalized_lookup(self, response: NormService, query: str, infer: bool,
+                                   response_builder: Callable) -> NormService:
+        """Retrieve normalized concept, for use in normalization endpoints
+        :param NormService response: in-progress response object
+        :param str query: user-provided query
+        :param bool infer: whether to try namespace inference
+        :param Callable response_builder: response constructor callback method
+        :return: completed service response object
+        """
+        if query == "":
+            return response
+        query_str = query.lower().strip()
+
+        # check merged concept ID match
+        record = self.db.get_record_by_id(query_str, case_sensitive=False, merge=True)
+        if record:
+            return response_builder(response, record, MatchType.CONCEPT_ID)
+
+        # check concept ID match
+        record = self.db.get_record_by_id(query_str, case_sensitive=False)
+        if record:
+            return self._resolve_merge(response, query, record, MatchType.CONCEPT_ID,
+                                       response_builder)
+
+        # check concept ID match with inferred namespace
+        if infer:
+            inferred_response = self._infer_namespace(query)
+            if inferred_response:
+                if response.warnings:
+                    response.warnings.append(inferred_response[1])
+                else:
+                    response.warnings = [inferred_response[1]]
+                return self._resolve_merge(response, query, inferred_response[0],
+                                           MatchType.CONCEPT_ID,
+                                           response_builder)
+
+        # check other match types
+        for match_type in ITEM_TYPES.values():
+            matching_records = self._get_matches_by_type(query_str, match_type)
+
+            # attempt merge ref resolution until successful
+            for match in matching_records:
+                assert match is not None
+                record = self.db.get_record_by_id(match["concept_id"], False)
+                if record:
+                    match_type_value = MatchType[match_type.upper()]
+                    return self._resolve_merge(response, query, record,
+                                               match_type_value,
+                                               response_builder)
+
+        return response
+
     def normalize_unmerged(
         self, query: str, infer: bool = True
     ) -> UnmergedNormalizationService:
@@ -655,44 +668,5 @@ class QueryHandler:
             source_matches={},
             **self._prepare_normalized_response(query)
         )
-        if query == "":
-            return response
-        query_str = query.lower().strip()
-
-        # check merged concept ID match
-        record = self.db.get_record_by_id(query_str, case_sensitive=False, merge=True)
-        if record:
-            return self._add_normalized_records(response, record, MatchType.CONCEPT_ID)
-
-        # check concept ID match
-        record = self.db.get_record_by_id(query_str, case_sensitive=False)
-        if record:
-            return self._resolve_merge(response, query, record, MatchType.CONCEPT_ID,
-                                       self._add_normalized_records)
-
-        # check concept ID match with inferred namespace
-        if infer:
-            inferred_response = self._infer_namespace(query)
-            if inferred_response:
-                if response.warnings:
-                    response.warnings.append(inferred_response[1])
-                else:
-                    response.warnings = [inferred_response[1]]
-                return self._resolve_merge(response, query, inferred_response[0],
-                                           MatchType.CONCEPT_ID,
-                                           self._add_normalized_records)
-
-        # check other match types
-        for match_type in ITEM_TYPES.values():
-            matching_records = self._get_matches_by_type(query_str, match_type)
-
-            # attempt merge ref resolution until successful
-            for match in matching_records:
-                assert match is not None
-                record = self.db.get_record_by_id(match["concept_id"], False)
-                if record:
-                    match_type_value = MatchType[match_type.upper()]
-                    return self._resolve_merge(response, query, record,
-                                               match_type_value,
+        return self._perform_normalized_lookup(response, query, infer,
                                                self._add_normalized_records)
-        return response
