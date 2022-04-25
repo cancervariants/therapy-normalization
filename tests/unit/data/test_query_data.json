@@ -1975,7 +1975,7 @@
   },
   "unmerged_normalize_l745870": {
     "normalized_concept_id": "iuphar.ligand:3303",
-    "matches": {
+    "source_matches": {
       "GuideToPHARMACOLOGY": {
         "records": [
           {
@@ -2042,7 +2042,7 @@
   },
   "unmerged_normalize_therapeutic_procedure": {
     "normalized_concept_id": "ncit:C49236",
-    "matches": {
+    "source_matches": {
       "NCIt": {
         "records": [
           {
@@ -2088,7 +2088,7 @@
   },
   "unmerged_normalize_cisplatin": {
     "normalized_concept_id": "rxcui:2555",
-    "matches": {
+    "source_matches": {
       "RxNorm": {
         "records": [
           {

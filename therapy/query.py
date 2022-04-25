@@ -619,7 +619,7 @@ class QueryHandler:
         response.normalized_concept_id = normalized_record["concept_id"]
         if normalized_record["item_type"] == "identity":
             record_source = SourceName[normalized_record["src_name"].upper()]
-            response.matches[record_source] = MatchesNormalized(
+            response.source_matches[record_source] = MatchesNormalized(
                 records=[self._construct_drug_match(normalized_record)],
                 source_meta_=self._fetch_meta(record_source.value)
             )
@@ -632,10 +632,10 @@ class QueryHandler:
                     continue  # cover a few chemidplus edge cases
                 record_source = SourceName[record["src_name"].upper()]
                 drug = self._construct_drug_match(record)
-                if record_source in response.matches:
-                    response.matches[record_source].records.append(drug)
+                if record_source in response.source_matches:
+                    response.source_matches[record_source].records.append(drug)
                 else:
-                    response.matches[record_source] = MatchesNormalized(
+                    response.source_matches[record_source] = MatchesNormalized(
                         records=[drug],
                         source_meta_=self._fetch_meta(record_source.value)
                     )
@@ -652,7 +652,7 @@ class QueryHandler:
         :return: Normalized response object
         """
         response = UnmergedNormalizationService(
-            matches={},
+            source_matches={},
             **self._prepare_normalized_response(query)
         )
         if query == "":

@@ -215,13 +215,13 @@ def compare_unmerged_response(actual, query, warnings, match_type, fixture):
     assert actual.match_type == match_type
     assert actual.normalized_concept_id == fixture["normalized_concept_id"]
 
-    for source, match in actual.matches.items():
+    for source, match in actual.source_matches.items():
         assert match.source_meta_  # check that it's there
         for record in match.records:
             concept_id = record.concept_id
             fixture_drug = None
             # get corresponding fixture record
-            for drug in fixture["matches"][source.value]["records"]:
+            for drug in fixture["source_matches"][source.value]["records"]:
                 if drug["concept_id"] == concept_id:
                     fixture_drug = Drug(**drug)
                     break

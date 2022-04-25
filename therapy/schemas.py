@@ -474,7 +474,7 @@ class UnmergedNormalizationService(BaseNormalizationService):
     """
 
     normalized_concept_id: Optional[CURIE]
-    matches: Dict[SourceName, MatchesNormalized]
+    source_matches: Dict[SourceName, MatchesNormalized]
 
     class Config:
         """Configure OpenAPI schema"""
@@ -498,7 +498,7 @@ class UnmergedNormalizationService(BaseNormalizationService):
                     "url": "https://github.com/cancervariants/therapy-normalization"
                 },
                 "normalized_concept_id": "iuphar.ligand:3303",
-                "matches": {
+                "source_matches": {
                     "GuideToPHARMACOLOGY": {
                         "records": [
                             {
