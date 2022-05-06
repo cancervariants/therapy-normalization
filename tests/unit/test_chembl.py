@@ -49,6 +49,12 @@ def aspirin(fixture_data):
     return Drug(**fixture_data["aspirin"])
 
 
+@pytest.fixture(scope="module")
+def rosiglitazone(fixture_data):
+    """Create a rosiglitazone fixture for checking import of withdrawn flag."""
+    return Drug(**fixture_data["rosiglitazone"])
+
+
 def test_concept_id_cisplatin(cisplatin, chembl):
     """Test that cisplatin drug normalizes to correct drug concept
     as a CONCEPT_ID match.
@@ -224,6 +230,14 @@ def test_aspirin_label(aspirin, chembl):
            MatchType.LABEL
     assert len(response.records) == 1
     compare_records(response.records[0], aspirin)
+
+
+def test_rosiglitazone(rosiglitazone, chembl):
+    """Test rosiglitazone -- checks for presence of chembl_withdrawn rating."""
+    response = chembl.search("chembl:CHEMBL843")
+    assert response.match_type == MatchType.CONCEPT_ID
+    assert len(response.records) == 1
+    compare_records(response.records[0], rosiglitazone)
 
 
 def test_meta_info(chembl):
