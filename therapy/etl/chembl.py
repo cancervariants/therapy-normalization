@@ -172,7 +172,7 @@ class ChEMBL(DiseaseIndicationBase):
             max_phase = self._get_approval_rating(row["max_phase"])
             if max_phase is not None:
                 appr_ratings.append(max_phase)
-            if row["withdrawn_flag"] == "1":
+            if row["withdrawn_flag"] == 1:
                 appr_ratings.append(ApprovalRating.CHEMBL_WITHDRAWN)
 
             has_indication = self._get_indications(row["indications"])
