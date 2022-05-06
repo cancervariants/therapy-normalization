@@ -2,6 +2,7 @@
   {
     "label_and_type": "chembl:chembl11359##identity",
     "concept_id": "chembl:CHEMBL11359",
+    "merge_ref": "rxcui:2555",
     "aliases": [
       "Cis-diamminedichloroplatinum",
       "Cis-platin",
@@ -363,7 +364,8 @@
     ],
     "label": "ASPIRIN",
     "item_type": "identity",
-    "src_name": "ChEMBL"
+    "src_name": "ChEMBL",
+    "merge_ref": "rxcui:1191"
   },
 
   {
