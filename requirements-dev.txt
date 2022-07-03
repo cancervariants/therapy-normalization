@@ -6,7 +6,7 @@ backcall==0.2.0
 backoff==1.11.1
 beautifulsoup4==4.11.1
 bioregistry[align]==0.5.34
-bioversions==0.5.37
+bioversions==0.5.38
 boto3==1.24.22
 botocore==1.27.22
 bs4==0.0.1
@@ -110,7 +110,6 @@ flake8-docstrings==1.6.0
 flake8-import-order==0.18.1
 flake8-quotes==3.3.1
 identify==2.5.1
-importlib-metadata==4.12.0
 iniconfig==1.1.1
 ipython-genutils==0.2.0
 jinja2==3.1.2
@@ -164,4 +163,3 @@ vcfpy==0.13.4
 virtualenv==20.15.1
 webencodings==0.5.1
 websocket-client==1.3.3
-zipp==3.8.0

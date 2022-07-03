@@ -6,7 +6,7 @@ backcall==0.2.0
 backoff==1.11.1
 beautifulsoup4==4.11.1
 bioregistry[align]==0.5.34
-bioversions==0.5.37
+bioversions==0.5.38
 boto3==1.24.22
 botocore==1.27.22
 bs4==0.0.1
