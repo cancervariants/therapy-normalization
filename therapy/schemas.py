@@ -1,11 +1,13 @@
 """This module contains data models for representing VICC therapy records."""
-from typing import List, Optional, Dict, Union, Any, Type, Set
+from typing import List, Literal, Optional, Dict, Union, Any, Type, Set
 from enum import Enum, IntEnum
 from datetime import datetime
 
-from ga4gh.vrsatile.pydantic.vrs_models import CURIE
-from ga4gh.vrsatile.pydantic.vrsatile_models import ValueObjectDescriptor
-from pydantic import BaseModel, StrictBool
+from ga4gh.vrsatile.pydantic import return_value
+from ga4gh.vrsatile.pydantic.core_models import CURIE
+from ga4gh.vrsatile.pydantic.vrsatile_models import DiseaseDescriptor, \
+    ValueObjectDescriptorBaseModel
+from pydantic import BaseModel, StrictBool, validator
 
 from therapy.version import __version__
 
@@ -410,7 +412,16 @@ class ApprovalRatingValue(BaseModel):
 
     approval_ratings: Optional[List[ApprovalRating]]
     approval_year: Optional[List[str]]
-    has_indication: Optional[List[ValueObjectDescriptor]]
+    has_indication: Optional[List[DiseaseDescriptor]]
+
+
+class TherapyDescriptor(ValueObjectDescriptorBaseModel):
+    """Create therapy descriptor model"""
+
+    type: Literal["TherapyDescriptor"] = "TherapyDescriptor"
+    therapy_id: CURIE
+
+    _get_therapy_id_val = validator("therapy_id", allow_reuse=True)(return_value)
 
 
 class ServiceMeta(BaseModel):
@@ -573,7 +584,7 @@ class UnmergedNormalizationService(BaseNormalizationService):
 class NormalizationService(BaseNormalizationService):
     """Response containing one or more merged records and source data."""
 
-    therapy_descriptor: Optional[ValueObjectDescriptor]
+    therapy_descriptor: Optional[TherapyDescriptor]
     source_meta_: Optional[Dict[SourceName, SourceMeta]]
 
     class Config:

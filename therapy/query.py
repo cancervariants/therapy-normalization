@@ -7,13 +7,13 @@ import json
 
 from uvicorn.config import logger
 from botocore.exceptions import ClientError
-from ga4gh.vrsatile.pydantic.vrsatile_models import ValueObjectDescriptor
 
 from therapy import SOURCES, PREFIX_LOOKUP, ITEM_TYPES, NAMESPACE_LUIS
 from therapy.database import Database
 from therapy.schemas import BaseNormalizationService, Drug, SourceMeta, MatchType, \
     ServiceMeta, HasIndication, SourcePriority, SearchService, NormalizationService, \
-    NamespacePrefix, SourceName, UnmergedNormalizationService, MatchesNormalized
+    NamespacePrefix, SourceName, TherapyDescriptor, UnmergedNormalizationService, \
+    MatchesNormalized
 
 
 NormService = TypeVar("NormService", bound=BaseNormalizationService)
@@ -486,7 +486,7 @@ class QueryHandler:
             del vod["extensions"]
 
         response.match_type = match_type
-        response.therapy_descriptor = ValueObjectDescriptor(**vod)  # type: ignore
+        response.therapy_descriptor = TherapyDescriptor(**vod)  # type: ignore
         response = self._add_merged_meta(response)
         return response
 
