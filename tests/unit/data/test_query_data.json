@@ -1948,7 +1948,7 @@
     "type": "TherapyDescriptor",
     "label": "Therapeutic Procedure",
     "description": null,
-    "xrefs": null,
+    "xrefs": [],
     "alternate_labels": [
       "Therapeutic Interventions",
       "any therapy",
