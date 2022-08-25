@@ -4,7 +4,7 @@ import logging
 import datetime
 from typing import Dict, Any
 
-from wikibaseintegrator.wbi_functions import execute_sparql_query
+from wikibaseintegrator.wbi_helpers import execute_sparql_query
 
 from therapy import XREF_SOURCES, DownloadException
 from therapy.schemas import SourceName, NamespacePrefix, RecordParams, SourceMeta

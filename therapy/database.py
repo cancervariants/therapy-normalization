@@ -16,6 +16,16 @@ logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
 
+def confirm_aws_db_use(env_name: str) -> None:
+    """Check to ensure that AWS instance should actually be used."""
+    if click.confirm(f"Are you sure you want to use the AWS {env_name} database?",
+                     default=False):
+        click.echo(f"***THERAPY {env_name.upper()} DATABASE IN USE***")
+    else:
+        click.echo("Exiting.")
+        sys.exit()
+
+
 class Database:
     """The database class."""
 
@@ -25,6 +35,9 @@ class Database:
         :param str db_url: database endpoint URL to connect to
         :param str region_name: AWS region name to use
         """
+        therapy_concepts_table = "therapy_concepts"  # default
+        therapy_metadata_table = "therapy_metadata"  # default
+
         if "THERAPY_NORM_PROD" in environ or "THERAPY_NORM_EB_PROD" in environ:
             boto_params = {
                 "region_name": region_name
@@ -43,6 +56,19 @@ class Database:
                 else:
                     click.echo("Exiting.")
                     sys.exit()
+        elif "THERAPY_NORM_NONPROD" in environ:
+            # This is a nonprod table. Only to be used for creating backups which
+            # prod will restore. Will need to manually delete / create this table
+            # on an as needed basis.
+            therapy_concepts_table = "therapy_concepts_nonprod"
+            therapy_metadata_table = "therapy_metadata_nonprod"
+
+            boto_params = {
+                "region_name": region_name
+            }
+
+            # This is used only for updating nonprod via CLI
+            confirm_aws_db_use("NONPROD")
         else:
             if db_url:
                 self.endpoint_url = db_url
@@ -62,15 +88,16 @@ class Database:
         self.dynamodb = boto3.resource("dynamodb", **boto_params)
         self.dynamodb_client = boto3.client("dynamodb", **boto_params)
 
-        # Table creation for local database
-        if "THERAPY_NORM_PROD" not in environ and \
-                "THERAPY_NORM_EB_PROD" not in environ:
+        # Only create tables for local instance
+        envs_do_not_create_tables = {"THERAPY_NORM_PROD", "THERAPY_NORM_EB_PROD",
+                                     "THERAPY_NORM_NONPROD"}
+        if not set(envs_do_not_create_tables) & set(environ):
             existing_tables = self.dynamodb_client.list_tables()["TableNames"]
             self.create_therapies_table(existing_tables)
             self.create_meta_data_table(existing_tables)
 
-        self.therapies = self.dynamodb.Table("therapy_concepts")
-        self.metadata = self.dynamodb.Table("therapy_metadata")
+        self.therapies = self.dynamodb.Table(therapy_concepts_table)
+        self.metadata = self.dynamodb.Table(therapy_metadata_table)
         self.batch = self.therapies.batch_writer()
         self.cached_sources: Dict[str, Any] = {}
         atexit.register(self.flush_batch)

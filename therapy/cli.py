@@ -13,7 +13,7 @@ from disease.schemas import SourceName as DiseaseSources
 
 from therapy import SOURCES_CLASS, SOURCES
 from therapy.schemas import SourceName
-from therapy.database import Database
+from therapy.database import Database, confirm_aws_db_use
 from therapy.etl.merge import Merge
 
 logger = logging.getLogger("therapy")
@@ -66,6 +66,11 @@ class CLI:
         :param bool update_merged: if true, update normalized group results
         :param bool use_existing: if true, don't try to fetch latest source data
         """
+        # Sometimes THERAPY_NORM_EB_PROD is accidentally set. We should verify that
+        # it should actually be used in CLI
+        if "THERAPY_NORM_EB_PROD" in environ:
+            confirm_aws_db_use("PROD")
+
         endpoint_url = None
         if prod:
             environ["THERAPY_NORM_PROD"] = "TRUE"

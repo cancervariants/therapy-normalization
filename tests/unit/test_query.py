@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 
 from therapy.query import QueryHandler, InvalidParameterException
-from therapy.schemas import MatchType, SourceName, ValueObjectDescriptor, Drug
+from therapy.schemas import MatchType, SourceName, TherapyDescriptor, Drug
 from tests.conftest import compare_records
 
 
@@ -131,7 +131,7 @@ def compare_vod(response, fixture, query, match_type, response_id,
 
     assert response.match_type == match_type
 
-    fixture = ValueObjectDescriptor(**fixture.copy())
+    fixture = TherapyDescriptor(**fixture.copy())
     fixture.id = response_id
     actual = response.therapy_descriptor
 
