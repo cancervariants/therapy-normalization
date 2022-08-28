@@ -5,9 +5,10 @@ import json
 from pathlib import Path
 
 import pytest
+from ga4gh.vrsatile.pydantic.vrsatile_models import TherapeuticDescriptor
 
 from therapy.query import QueryHandler, InvalidParameterException
-from therapy.schemas import MatchType, SourceName, TherapyDescriptor, Drug
+from therapy.schemas import MatchType, SourceName, Drug
 from tests.conftest import compare_records
 
 
@@ -131,7 +132,7 @@ def compare_vod(response, fixture, query, match_type, response_id,
 
     assert response.match_type == match_type
 
-    fixture = TherapyDescriptor(**fixture.copy())
+    fixture = TherapeuticDescriptor(**fixture.copy())
     fixture.id = response_id
     actual = response.therapy_descriptor
 

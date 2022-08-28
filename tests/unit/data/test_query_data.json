@@ -1,7 +1,7 @@
 {
   "normalize_cisplatin": {
     "id": "normalize.therapy:rxcui%3A2555",
-    "type": "TherapyDescriptor",
+    "type": "TherapeuticDescriptor",
     "label": "cisplatin",
     "description": null,
     "xrefs": [
@@ -1666,7 +1666,7 @@
   },
   "normalize_phenobarbital": {
     "id": "normalize.therapy:Phenobarbital",
-    "type": "TherapyDescriptor",
+    "type": "TherapeuticDescriptor",
     "label": "phenobarbital",
     "description": null,
     "xrefs": [
@@ -1899,7 +1899,7 @@
   },
   "normalize_spiramycin": {
     "id": "normalize.therapy:Spiramycin",
-    "type": "TherapyDescriptor",
+    "type": "TherapeuticDescriptor",
     "label": "spiramycin",
     "description": null,
     "xrefs": [
@@ -1945,7 +1945,7 @@
   },
   "normalize_therapeutic_procedure": {
     "id": "normalize.therapy:ncit%3AC49236",
-    "type": "TherapyDescriptor",
+    "type": "TherapeuticDescriptor",
     "label": "Therapeutic Procedure",
     "description": null,
     "xrefs": [],
