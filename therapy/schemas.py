@@ -595,7 +595,7 @@ class NormalizationService(BaseNormalizationService):
                 "therapeutic_descriptor": {
                     "id": "normalize.therapy:cisplatin",
                     "type": "TherapeuticDescriptor",
-                    "therapeutic_id": "rxcui:2555",
+                    "therapeutic": "rxcui:2555",
                     "label": "cisplatin",
                     "xrefs": [
                         "ncit:C376", "chemidplus:15663-27-1",
