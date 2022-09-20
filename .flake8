@@ -1,5 +1,6 @@
 [flake8]
-ignore = D205, D400
+ignore = D205, D400, I101, ANN101, ANN002, ANN003
+max-line-length = 88
 exclude =
   .git
   venv
@@ -7,3 +8,15 @@ exclude =
   source
   outputs
   docs/*
+  analysis/*
+  codebuild/*
+  therapy/version.py
+inline-quotes = "
+import-order-style = pep8
+application-import-names =
+  therapy
+  tests
+per-file-ignores =
+  tests/*:ANN001, ANN2
+  *__init__.py:F401
+mypy-init-return = true

@@ -1,115 +1,197 @@
-"""This module contains data models for representing VICC normalized
-therapy records.
-"""
-from typing import List, Optional, Dict, Union, Any, Type
-from pydantic import BaseModel, StrictBool
+"""This module contains data models for representing VICC therapy records."""
+from typing import List, Literal, Optional, Dict, Union, Any, Type, Set
 from enum import Enum, IntEnum
 from datetime import datetime
 
+from ga4gh.vrsatile.pydantic import return_value
+from ga4gh.vrsatile.pydantic.core_models import CURIE
+from ga4gh.vrsatile.pydantic.vrsatile_models import DiseaseDescriptor, \
+    ValueObjectDescriptorBaseModel
+from pydantic import BaseModel, StrictBool, validator
 
-class Therapy(BaseModel):
-    """A procedure or substance used in the treatment of a disease."""
+from therapy.version import __version__
 
-    label: str
-    concept_id: str
-    aliases: Optional[List[str]]
-    other_identifiers: Optional[List[str]]
-    xrefs: Optional[List[str]]
+# Working structure for object in preparation for upload to DB
+RecordParams = Dict[str, Union[List, Set, str, Dict[str, Any]]]
+
+
+class ApprovalRating(str, Enum):
+    """Define string constraints for approval rating attribute. This reflects a drug's
+    regulatory approval status as evaluated by an individual source. We opted to retain
+    each individual source's rating as a distinct enum value after finding that some
+    sources disagreed on the true value (either because of differences in scope like
+    US vs EU/other regulatory arenas, old or conflicting data, or other reasons). Value
+    descriptions are provided below from each listed source.
+
+    ChEMBL:
+     - CHEMBL_PHASE_0: "Research: The compound has not yet reached clinical trials
+    (preclinical/research compound)"
+     - CHEMBL_PHASE_1: "The compound has reached Phase I clinical trials (safety
+    studies, usually with healthy volunteers)"
+     - CHEMBL_PHASE_2: "The compound has reached Phase II clinical trials (preliminary
+    studies of effectiveness)"
+     - CHEMBL_PHASE_3: "The compound has reached Phase III clinical trials (larger
+    studies of safety and effectiveness)"
+     - CHEMBL_PHASE_4: The compound has been approved in at least one country or area."
+     - CHEMBL_WITHDRAWN: "A withdrawn drug is an approved drug contained in a medicinal
+    product that subsequently had been removed from the market. The reasons for
+    withdrawal may include toxicity, lack of efficacy, or other reasons such as an
+    unfavorable risk-to-benefit ratio following approval and marketing of the drug.
+    ChEMBL considers an approved drug to be withdrawn only if all medicinal products
+    that contain the drug as an active ingredient have been withdrawn from one (or more)
+    regions of the world. Note that all medicinal products for a drug can be withdrawn
+    in one region of the world while still being marketed in other jurisdictions."
+    https://pubs.acs.org/doi/10.1021/acs.chemrestox.0c00296
+
+    Drugs@FDA:
+     - FDA_PRESCRIPTION: "A prescription drug product requires a doctor's authorization
+    to purchase."
+     - FDA_OTC: "FDA defines OTC drugs as safe and effective for use by the general
+    public without a doctor's prescription."
+     - FDA_DISCONTINUED: "approved products that have never been marketed, have been
+    discontinued from marketing, are for military use, are for export only, or have had
+    their approvals withdrawn for reasons other than safety or efficacy after being
+    discontinued from marketing"
+     - FDA_TENTATIVE: "If a generic drug product is ready for approval before the
+    expiration of any patents or exclusivities accorded to the reference listed drug
+    product, FDA issues a tentative approval letter to the applicant.  FDA delays final
+    approval of the generic drug product until all patent or exclusivity issues have
+    been resolved."
+    https://www.fda.gov/drugs/drug-approvals-and-databases/drugsfda-glossary-terms
+
+    HemOnc.org:
+    - HEMONC_APPROVED: Inferred by us if "Was FDA Approved Yr" property is present
+    (described as "Year of FDA approval")
+    https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6697579/
+
+    Guide to Pharmacology:
+    - GTOPDB_APPROVED: "Indicates pharmacologicaly active substances, specified by their
+    INNs, that have been approved for clinical use by a regulatory agency, typically the
+    FDA, EMA or in Japan. This classification persists regardless of whether the drug
+    may later have been withdrawn or discontinued. (N.B. in some cases the information
+    on approval status was obtained indirectly via databases such as Drugbank.)"
+    - GTOPDB_WITHDRAWN: "No longer approved for its original clinical use, as notified
+    by the FDA, typically as a consequence of safety or side effect issues."
+    https://www.guidetopharmacology.org/helpPage.jsp
+
+    RxNorm:
+    - RXNORM_PRESCRIBABLE: "The RxNorm Current Prescribable Content is a subset of
+    currently prescribable drugs found in RxNorm. We intend it to be an approximation of
+    the prescription drugs currently marketed in the US. The subset also includes many
+    over-the-counter drugs."
+    https://www.nlm.nih.gov/research/umls/rxnorm/docs/prescribe.html
+    """
+
+    CHEMBL_0 = "chembl_phase_0"
+    CHEMBL_1 = "chembl_phase_1"
+    CHEMBL_2 = "chembl_phase_2"
+    CHEMBL_3 = "chembl_phase_3"
+    CHEMBL_4 = "chembl_phase_4"
+    CHEMBL_WITHDRAWN = "chembl_withdrawn"
+    FDA_OTC = "fda_otc"
+    FDA_PRESCRIPTION = "fda_prescription"
+    FDA_DISCONTINUED = "fda_discontinued"
+    FDA_TENTATIVE = "fda_tentative"
+    HEMONC_APPROVED = "hemonc_approved"
+    GTOPDB_APPROVED = "gtopdb_approved"
+    GTOPDB_WITHDRAWN = "gtopdb_withdrawn"
+    RXNORM_PRESCRIBABLE = "rxnorm_prescribable"
+
+
+class HasIndication(BaseModel):
+    """Data regarding disease indications from regulatory bodies."""
+
+    disease_id: str
+    disease_label: str
+    normalized_disease_id: Optional[str]
+    supplemental_info: Optional[Dict[str, str]] = None
 
     class Config:
-        """Configure model"""
-
-        orm_mode = True
+        """Configure HasIndication class"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type['Therapy']) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["HasIndication"]) -> None:
             """Configure OpenAPI schema"""
-            for prop in schema.get('properties', {}).values():
-                prop.pop('title', None)
+            if "title" in schema.keys():
+                schema.pop("title", None)
+            for prop in schema.get("properties", {}).values():
+                prop.pop("title", None)
+            schema["example"] = [
+                {
+                    "disease_id": "mesh:D016778",
+                    "disease_label": "Malaria, Falciparum",
+                    "normalized_disease_id": "ncit:C34798",
+                    "supplemental_info": {
+                        "chembl_max_phase_for_ind": "chembl_phase_2"
+                    }
+                },
+                {
+                    "disease_id": "hemonc:634",
+                    "disease_label": "Myelodysplastic syndrome",
+                    "normalized_disease_id": "ncit:C3247",
+                    "supplemental_info": {
+                        "regulatory_body": "FDA"
+                    }
+                }
+            ]
 
 
-class ApprovalStatus(str, Enum):
-    """Define string constraints for approval status attribute."""
-
-    WITHDRAWN = "withdrawn"
-    APPROVED = "approved"
-    INVESTIGATIONAL = "investigational"
-
-
-class PhaseEnum(IntEnum):
-    """An enumerated drug development phase type."""
-
-    preclinical = 0
-    phase_i_trials = 1
-    phase_ii_trials = 2
-    phase_iii_trials = 3
-    approved = 4
-
-
-class Drug(Therapy):
+class Drug(BaseModel):
     """A pharmacologic substance used to treat a medical condition."""
 
-    approval_status: Optional[ApprovalStatus]
-    trade_names: Optional[List[str]]
-    label: Optional[str]
+    concept_id: str
+    label: Optional[str] = None
+    aliases: Optional[List[str]] = []
+    trade_names: Optional[List[str]] = []
+    xrefs: Optional[List[str]] = []
+    associated_with: Optional[List[str]] = []
+    approval_ratings: Optional[List[ApprovalRating]] = None
+    approval_year: Optional[List[str]] = []
+    has_indication: Optional[List[HasIndication]] = []
 
     class Config:
-        """Enables orm_mode"""
-
-        orm_mode = True
+        """Configure Drug class"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type['Drug']) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["Drug"]) -> None:
             """Configure OpenAPI schema"""
-            if 'title' in schema.keys():
-                schema.pop('title', None)
-            for prop in schema.get('properties', {}).values():
-                prop.pop('title', None)
-            schema['example'] = {
-                'label': 'CISPLATIN',
-                'concept_identifier': 'chembl:CHEMBL11359',
-                'aliases': [
-                    'Cisplatin',
-                    'Cis-Platinum II',
-                    'Cisplatinum',
-                    'cis-diamminedichloroplatinum(II)',
-                    'CIS-DDP',
-                    'INT-230-6 COMPONENT CISPLATIN',
-                    'INT230-6 COMPONENT CISPLATIN',
-                    'NSC-119875',
-                    'Platinol',
-                    'Platinol-Aq'
+            if "title" in schema.keys():
+                schema.pop("title", None)
+            for prop in schema.get("properties", {}).values():
+                prop.pop("title", None)
+            schema["example"] = {
+                "label": "CISPLATIN",
+                "concept_id": "chembl:CHEMBL11359",
+                "aliases": [
+                    "Cisplatin",
+                    "Cis-Platinum II",
+                    "Cisplatinum",
+                    "cis-diamminedichloroplatinum(II)",
+                    "CIS-DDP",
+                    "INT-230-6 COMPONENT CISPLATIN",
+                    "INT230-6 COMPONENT CISPLATIN",
+                    "NSC-119875",
+                    "Platinol",
+                    "Platinol-Aq"
                 ],
-                'other_identifiers': [],
-                'trade_name': [
-                    'PLATINOL',
-                    'PLATINOL-AQ',
-                    'CISPLATIN'
-                ]
+                "xrefs": [],
+                "associated_with": None,
+                "approval_ratings": "approved",
+                "approval_year": [],
+                "has_indication": [],
+                "trade_names": ["PLATINOL", "PLATINOL-AQ", "CISPLATIN"]
             }
 
 
-class DrugGroup(Therapy):
-    """A grouping of drugs based on common pharmacological attributes."""
-
-    description: str
-    type_identifier: str
-    drugs: List[Drug]
-
-
 class MatchType(IntEnum):
-    """Define string constraints for use in Match Type attributes.
-
-    Concept_ID=100; Label=80; Trade Name=80; Alias=60; Fuzzy=20; No Match=0
-    """
+    """Define string constraints for use in Match Type attributes."""
 
     CONCEPT_ID = 100
     LABEL = 80
     TRADE_NAME = 80
     ALIAS = 60
-    OTHER_ID = 60
+    XREF = 60
+    ASSOCIATED_WITH = 60
     FUZZY_MATCH = 20
     NO_MATCH = 0
 
@@ -119,8 +201,13 @@ class SourcePriority(IntEnum):
 
     RXNORM = 1
     NCIT = 2
-    CHEMIDPLUS = 5
-    WIKIDATA = 6
+    HEMONC = 3
+    DRUGBANK = 4
+    DRUGSATFDA = 5
+    GUIDETOPHARMACOLOGY = 6
+    CHEMBL = 7
+    CHEMIDPLUS = 8
+    WIKIDATA = 9
 
 
 class SourceName(str, Enum):
@@ -132,62 +219,55 @@ class SourceName(str, Enum):
     DRUGBANK = "DrugBank"
     CHEMIDPLUS = "ChemIDplus"
     RXNORM = "RxNorm"
-
-
-class SourceIDAfterNamespace(Enum):
-    """Define string constraints after namespace."""
-
-    WIKIDATA = "Q"
-    CHEMBL = "CHEMBL"
-    DRUGBANK = "DB"
-    NCIT = "C"
-    CHEMIDPLUS = ""
-    RXNORM = ""
-
-
-class ProhibitedSources(Enum):
-    """Define constraints for sources that are prohibited in normalize
-    endpoint.
-    """
-
-    CHEMBL = SourceName.CHEMBL.value
-    DRUGBANK = SourceName.DRUGBANK.value
+    HEMONC = "HemOnc"
+    DRUGSATFDA = "DrugsAtFDA"
+    DRUGSATFDA_NDA = DRUGSATFDA
+    DRUGSATFDA_ANDA = DRUGSATFDA
+    GUIDETOPHARMACOLOGY = "GuideToPHARMACOLOGY"
 
 
 class NamespacePrefix(Enum):
     """Define string constraints for namespace prefixes on concept IDs."""
 
+    ATC = "atc"  # Anatomical Therapeutic Chemical Classification System
+    BINDINGDB = "bindingdb"
+    CHEBI = "CHEBI"
+    CHEMBL = "chembl"
     CHEMIDPLUS = "chemidplus"
     CASREGISTRY = CHEMIDPLUS
-    PUBCHEMCOMPOUND = "pubchem.compound"
-    PUBCHEMSUBSTANCE = "pubchem.substance"
-    CHEMBL = "chembl"
-    RXNORM = "rxcui"
+    CHEMSPIDER = "chemspider"
+    CVX = "cvx"  # Vaccines Administered
     DRUGBANK = "drugbank"
-    WIKIDATA = "wikidata"
-    NCIT = "ncit"
-    FDA = "fda"
+    DRUGCENTRAL = "drugcentral"
+    DRUGSATFDA_ANDA = "drugsatfda.anda"
+    DRUGSATFDA_NDA = "drugsatfda.nda"
+    HEMONC = "hemonc"
+    INCHIKEY = "inchikey"
     ISO = "iso"
-    UMLS = "umls"
-    CHEBI = "chebi"
+    IUPHAR = "iuphar"
+    IUPHAR_LIGAND = "iuphar.ligand"
+    GUIDETOPHARMACOLOGY = IUPHAR_LIGAND
     KEGGCOMPOUND = "kegg.compound"
     KEGGDRUG = "kegg.drug"
-    BINDINGDB = "bindingdb"
-    PHARMGKB = "pharmgkb.drug"
-    CHEMSPIDER = "chemspider"
-    ZINC = "zinc"
-    PDB = "pdb"
-    THERAPEUTICTARGETSDB = "ttd"
-    IUPHAR = "iuphar"
-    GUIDETOPHARMACOLOGY = "gtopdb"
-    ATC = "atc"  # Anatomical Therapeutic Chemical Classification System
-    CVX = "cvx"  # Vaccines Administered
     MMSL = "mmsl"  # Multum MediSource Lexicon
     MSH = "mesh"  # Medical Subject Headings
     MTHCMSFRF = "mthcmsfrf"  # CMS Formulary Reference File
-    MTHSPL = "mthspl"  # FDA Structured Product Labels
+    NCIT = "ncit"
+    NDC = "ndc"  # National Drug Code
+    PDB = "pdb"
+    PHARMGKB = "pharmgkb.drug"
+    PUBCHEMCOMPOUND = "pubchem.compound"
+    PUBCHEMSUBSTANCE = "pubchem.substance"
+    RXNORM = "rxcui"
+    SPL = "spl"  # Structured Product Labeling
+    THERAPEUTICTARGETSDB = "ttd"
+    UMLS = "umls"
+    UNII = "unii"
+    UNIPROT = "uniprot"
     USP = "usp"  # USP Compendial Nomenclature
     VANDF = "vandf"  # Veterans Health Administration National Drug File
+    WIKIDATA = "wikidata"
+    ZINC = "zinc"
 
 
 class DataLicenseAttributes(BaseModel):
@@ -196,6 +276,17 @@ class DataLicenseAttributes(BaseModel):
     non_commercial: StrictBool
     share_alike: StrictBool
     attribution: StrictBool
+
+
+class ItemTypes(str, Enum):
+    """Item types used in DynamoDB."""
+
+    # Must be in descending MatchType order.
+    LABEL = "label"
+    TRADE_NAMES = "trade_name"
+    ALIASES = "alias"
+    XREFS = "xref"
+    ASSOCIATED_WITH = "associated_with"
 
 
 class SourceMeta(BaseModel):
@@ -209,28 +300,27 @@ class SourceMeta(BaseModel):
     data_license_attributes: Dict[str, StrictBool]
 
     class Config:
-        """Enables orm_mode"""
+        """Configure OpenAPI schema"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type['SourceMeta']) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["SourceMeta"]) -> None:
             """Configure OpenAPI schema"""
-            if 'title' in schema.keys():
-                schema.pop('title', None)
-            for prop in schema.get('properties', {}).values():
-                prop.pop('title', None)
-            schema['example'] = {
-                'data_license': 'CC BY-SA 3.0',
-                'data_license_url':
-                    'https://creativecommons.org/licenses/by-sa/3.0/',
-                'version': '27',
-                'data_url':
-                    'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
-                'rdp_url': 'http://reusabledata.org/chembl.html',
-                'data_license_attributes': {
-                    'non_commercial': False,
-                    'share_alike': True,
-                    'attribution': True
+            if "title" in schema.keys():
+                schema.pop("title", None)
+            for prop in schema.get("properties", {}).values():
+                prop.pop("title", None)
+            schema["example"] = {
+                "data_license": "CC BY-SA 3.0",
+                "data_license_url":
+                    "https://creativecommons.org/licenses/by-sa/3.0/",
+                "version": "27",
+                "data_url":
+                    "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",  # noqa: E501
+                "rdp_url": "http://reusabledata.org/chembl.html",
+                "data_license_attributes": {
+                    "non_commercial": False,
+                    "share_alike": True,
+                    "attribution": True
                 }
             }
 
@@ -245,31 +335,30 @@ class MatchesKeyed(BaseModel):
     source_meta_: SourceMeta
 
     class Config:
-        """Enables orm_mode"""
+        """Configure OpenAPI schema"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type['MatchesKeyed']) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["MatchesKeyed"]) -> None:
             """Configure OpenAPI schema"""
-            if 'title' in schema.keys():
-                schema.pop('title', None)
-            for prop in schema.get('properties', {}).values():
-                prop.pop('title', None)
-            schema['example'] = {
-                'match_type': 0,
-                'records': [],
-                'source_meta_': {
-                    'data_license': 'CC BY-SA 3.0',
-                    'data_license_url':
-                        'https://creativecommons.org/licenses/by-sa/3.0/',
-                    'version': '27',
-                    'data_url':
-                        'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
-                    'rdp_url': 'http://reusabledata.org/chembl.html',
-                    'data_license_attributes': {
-                        'non_commercial': False,
-                        'share_alike': True,
-                        'attribution': True
+            if "title" in schema.keys():
+                schema.pop("title", None)
+            for prop in schema.get("properties", {}).values():
+                prop.pop("title", None)
+            schema["example"] = {
+                "match_type": 0,
+                "records": [],
+                "source_meta_": {
+                    "data_license": "CC BY-SA 3.0",
+                    "data_license_url":
+                        "https://creativecommons.org/licenses/by-sa/3.0/",
+                    "version": "27",
+                    "data_url":
+                        "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",  # noqa: E501
+                    "rdp_url": "http://reusabledata.org/chembl.html",
+                    "data_license_attributes": {
+                        "non_commercial": False,
+                        "share_alike": True,
+                        "attribution": True
                     }
                 },
             }
@@ -286,118 +375,237 @@ class MatchesListed(BaseModel):
     source_meta_: SourceMeta
 
     class Config:
-        """Enables orm_mode"""
+        """Configure openAPI schema"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type['MatchesListed']) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["MatchesListed"]) -> None:
             """Configure OpenAPI schema"""
-            if 'title' in schema.keys():
-                schema.pop('title', None)
-            for prop in schema.get('properties', {}).values():
-                prop.pop('title', None)
-            schema['example'] = {
-                'normalizer': 'ChEMBL',
-                'match_type': 0,
-                'records': [],
-                'source_meta_': {
-                    'data_license': 'CC BY-SA 3.0',
-                    'data_license_url':
-                        'https://creativecommons.org/licenses/by-sa/3.0/',
-                    'version': '27',
-                    'data_url':
-                        'http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/',  # noqa: E501
-                    'rdp_url': 'http://reusabledata.org/chembl.html',
-                    'data_license_attributes': {
-                        'non_commercial': False,
-                        'share_alike': True,
-                        'attribution': True
+            if "title" in schema.keys():
+                schema.pop("title", None)
+            for prop in schema.get("properties", {}).values():
+                prop.pop("title", None)
+            schema["example"] = {
+                "source": "ChEMBL",
+                "match_type": 0,
+                "records": [],
+                "source_meta_": {
+                    "data_license": "CC BY-SA 3.0",
+                    "data_license_url":
+                        "https://creativecommons.org/licenses/by-sa/3.0/",
+                    "version": "27",
+                    "data_url":
+                        "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",  # noqa: E501
+                    "rdp_url": "http://reusabledata.org/chembl.html",
+                    "data_license_attributes": {
+                        "non_commercial": False,
+                        "share_alike": True,
+                        "attribution": True
                     }
                 },
             }
 
 
-class Extension(BaseModel):
-    """Value Object Descriptor Extension class."""
-
-    type: str
-    name: str
-    value: Union[bool, List[str]]
-
-
-class ValueObjectDescriptor(BaseModel):
-    """VOD class. Provide additional Extension classes for trade_names and
-    references to non-normalized sources.
+class ApprovalRatingValue(BaseModel):
+    """VOD Extension class for regulatory approval rating/indication
+    value attributes.
     """
 
-    id: str
-    type: str
-    value: Any
-    label: str
-    xrefs: Optional[List[str]]
-    alternate_labels: Optional[List[str]]
-    extensions: Optional[List[Extension]]
+    approval_ratings: Optional[List[ApprovalRating]]
+    approval_year: Optional[List[str]]
+    has_indication: Optional[List[DiseaseDescriptor]]
+
+
+class TherapyDescriptor(ValueObjectDescriptorBaseModel):
+    """Create therapy descriptor model"""
+
+    type: Literal["TherapyDescriptor"] = "TherapyDescriptor"
+    therapy_id: CURIE
+
+    _get_therapy_id_val = validator("therapy_id", allow_reuse=True)(return_value)
 
 
 class ServiceMeta(BaseModel):
     """Metadata regarding the therapy-normalization service."""
 
     name = "thera-py"
-    version: str
+    version = __version__
     response_datetime: datetime
-    url: str
+    url = "https://github.com/cancervariants/therapy-normalization"
 
     class Config:
-        """Enables orm_mode"""
+        """Configure OpenAPI schema"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type['SourceMeta']) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["ServiceMeta"]) -> None:
             """Configure OpenAPI schema"""
-            if 'title' in schema.keys():
-                schema.pop('title', None)
-            for prop in schema.get('properties', {}).values():
-                prop.pop('title', None)
-            schema['example'] = {
-                'name': 'thera-py',
-                'version': '0.1.0',
-                'response_datetime': '2021-04-05T16:44:15.367831',
-                'url': 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
+            if "title" in schema.keys():
+                schema.pop("title", None)
+            for prop in schema.get("properties", {}).values():
+                prop.pop("title", None)
+            schema["example"] = {
+                "name": "thera-py",
+                "version": "0.1.0",
+                "response_datetime": "2021-04-05T16:44:15.367831",
+                "url": "https://github.com/cancervariants/therapy-normalization"
             }
 
 
-class NormalizationService(BaseModel):
-    """Response containing one or more merged records and source data."""
+class MatchesNormalized(BaseModel):
+    """Matches associated with normalized concept from a single source."""
 
-    query: str
-    warnings: Optional[Dict]
-    match_type: MatchType
-    value_object_descriptor: Optional[ValueObjectDescriptor]
-    source_meta_: Optional[Dict[SourceName, SourceMeta]]
-    service_meta_: ServiceMeta
+    records: List[Drug]
+    source_meta_: SourceMeta
 
     class Config:
-        """Enables orm_mode"""
+        """Configure OpenAPI schema"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any],
-                         model: Type['NormalizationService']) -> None:
+                         model: Type["MatchesNormalized"]) -> None:
             """Configure OpenAPI schema"""
-            if 'title' in schema.keys():
-                schema.pop('title', None)
-            for prop in schema.get('properties', {}).values():
-                prop.pop('title', None)
-            schema['example'] = {
+            if "title" in schema.keys():
+                schema.pop("title", None)
+            for prop in schema.get("properties", {}).values():
+                prop.pop("title", None)
+
+
+class BaseNormalizationService(BaseModel):
+    """Base method providing shared attributes to Normalization service classes."""
+
+    query: str
+    warnings: Optional[List[Dict]]
+    match_type: MatchType
+    service_meta_: ServiceMeta
+
+
+class UnmergedNormalizationService(BaseNormalizationService):
+    """Response providing source records corresponding to normalization of user query.
+    Enables retrieval of normalized concept while retaining sourcing for accompanying
+    attributes.
+    """
+
+    normalized_concept_id: Optional[CURIE]
+    source_matches: Dict[SourceName, MatchesNormalized]
+
+    class Config:
+        """Configure OpenAPI schema"""
+
+        @staticmethod
+        def schema_extra(schema: Dict[str, Any],
+                         model: Type["UnmergedNormalizationService"]) -> None:
+            """Configure OpenAPI schema example"""
+            if "title" in schema.keys():
+                schema.pop("title", None)
+            for prop in schema.get("properties", {}).values():
+                prop.pop("title", None)
+            schema["example"] = {
+                "query": "L745870",
+                "warnings": [],
+                "match_type": 80,
+                "service_meta_": {
+                    "response_datetime": "2022-04-22T11:40:18.921859",
+                    "name": "thera-py",
+                    "version": "0.3.4",
+                    "url": "https://github.com/cancervariants/therapy-normalization"
+                },
+                "normalized_concept_id": "iuphar.ligand:3303",
+                "source_matches": {
+                    "GuideToPHARMACOLOGY": {
+                        "records": [
+                            {
+                                "concept_id": "iuphar.ligand:3303",
+                                "label": "L745870",
+                                "aliases": [
+                                    "L-745,870",
+                                    "L 745870",
+                                    "3-[[4-(4-chlorophenyl)piperazin-1-yl]methyl]-1H-pyrrolo[2,3-b]pyridine"  # noqa: E501
+                                ],
+                                "trade_names": [],
+                                "xrefs": [
+                                    "chemidplus:158985-00-3",
+                                    "chembl:CHEMBL267014"
+                                ],
+                                "associated_with": [
+                                    "pubchem.substance:178100340",
+                                    "pubchem.compound:5311200",
+                                    "inchikey:OGJGQVFWEPNYSB-UHFFFAOYSA-N"
+                                ],
+                                "approval_ratings": None,
+                                "approval_year": [],
+                                "has_indication": []
+                            }
+                        ],
+                        "source_meta_": {
+                            "data_license": "CC BY-SA 4.0",
+                            "data_license_url": "https://creativecommons.org/licenses/by-sa/4.0/",  # noqa: E501
+                            "version": "2021.4",
+                            "data_url": "https://www.guidetopharmacology.org/download.jsp",  # noqa: E501
+                            "rdp_url": None,
+                            "data_license_attributes": {
+                                "non_commercial": False,
+                                "share_alike": True,
+                                "attribution": True
+                            }
+                        }
+                    },
+                    "ChEMBL": {
+                        "records": [
+                            {
+                                "concept_id": "chembl:CHEMBL267014",
+                                "label": "L-745870",
+                                "aliases": [],
+                                "trade_names": [],
+                                "xrefs": [],
+                                "associated_with": [],
+                                "approval_ratings": [
+                                    "chembl_phase_0"
+                                ],
+                                "approval_year": [],
+                                "has_indication": []
+                            }
+                        ],
+                        "source_meta_": {
+                            "data_license": "CC BY-SA 3.0",
+                            "data_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",  # noqa: E501
+                            "version": "29",
+                            "data_url": "ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_29",  # noqa: E501
+                            "rdp_url": "http://reusabledata.org/chembl.html",
+                            "data_license_attributes": {
+                                "non_commercial": False,
+                                "share_alike": True,
+                                "attribution": True
+                            }
+                        }
+                    }
+                }
+            }
+
+
+class NormalizationService(BaseNormalizationService):
+    """Response containing one or more merged records and source data."""
+
+    therapy_descriptor: Optional[TherapyDescriptor]
+    source_meta_: Optional[Dict[SourceName, SourceMeta]]
+
+    class Config:
+        """Configure OpenAPI schema"""
+
+        @staticmethod
+        def schema_extra(schema: Dict[str, Any],
+                         model: Type["NormalizationService"]) -> None:
+            """Configure OpenAPI schema"""
+            if "title" in schema.keys():
+                schema.pop("title", None)
+            for prop in schema.get("properties", {}).values():
+                prop.pop("title", None)
+            schema["example"] = {
                 "query": "cisplatin",
                 "warnings": None,
                 "match_type": 80,
-                "value_object_descriptor": {
+                "therapy_descriptor": {
                     "id": "normalize.therapy:cisplatin",
                     "type": "TherapyDescriptor",
-                    "value": {
-                        "type": "Therapy",
-                        "therapy_id": "rxcui:2555"
-                    },
+                    "therapy_id": "rxcui:2555",
                     "label": "cisplatin",
                     "xrefs": [
                         "ncit:C376", "chemidplus:15663-27-1",
@@ -499,10 +707,10 @@ class NormalizationService(BaseModel):
                     }
                 },
                 "service_meta_": {
-                    'name': 'thera-py',
-                    'version': '0.1.0',
-                    'response_datetime': '2021-04-05T16:44:15.367831',
-                    'url': 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
+                    "name": "thera-py",
+                    "version": "0.1.0",
+                    "response_datetime": "2021-04-05T16:44:15.367831",
+                    "url": "https://github.com/cancervariants/therapy-normalization"
                 }
             }
 
@@ -511,7 +719,7 @@ class SearchService(BaseModel):
     """Core response schema containing matches for each source"""
 
     query: str
-    warnings: Optional[Dict]
+    warnings: Optional[List[Dict]]
     source_matches: Union[Dict[SourceName, MatchesKeyed], List[MatchesListed]]
     service_meta_: ServiceMeta
 
@@ -519,14 +727,13 @@ class SearchService(BaseModel):
         """Enables orm_mode"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type['SearchService']) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["SearchService"]) -> None:
             """Configure OpenAPI schema"""
-            if 'title' in schema.keys():
-                schema.pop('title', None)
-            for prop in schema.get('properties', {}).values():
-                prop.pop('title', None)
-            schema['example'] = {
+            if "title" in schema.keys():
+                schema.pop("title", None)
+            for prop in schema.get("properties", {}).values():
+                prop.pop("title", None)
+            schema["example"] = {
                 "query": "cisplatin",
                 "warnings": None,
                 "source_matches": [
@@ -541,9 +748,9 @@ class SearchService(BaseModel):
                                     "cis-Diaminedichloroplatinum",
                                     "1,2-Diaminocyclohexaneplatinum II citrate"
                                 ],
-                                "other_identifiers": ["drugbank:DB00515"],
-                                "xrefs": ["fda:Q20Q21Q62J"],
-                                "approval_status": None,
+                                "xrefs": ["drugbank:DB00515"],
+                                "associated_with": ["fda:Q20Q21Q62J"],
+                                "approval_ratings": None,
                                 "trade_names": []
                             }
                         ],
@@ -551,7 +758,7 @@ class SearchService(BaseModel):
                             "data_license": "custom",
                             "data_license_url": "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501
                             "version": "20210204",
-                            "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",  # noqa: E501
+                            "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
                             "rdp_url": None,
                             "data_license_attributes": {
                                 "non_commercial": False,
@@ -583,11 +790,11 @@ class SearchService(BaseModel):
                                     "DDP",
                                     "Diamminodichloride, Platinum"
                                 ],
-                                "other_identifiers": [
+                                "xrefs": [
                                     "drugbank:DB00515",
                                     "drugbank:DB12117"
                                 ],
-                                "xrefs": [
+                                "associated_with": [
                                     "usp:m17910",
                                     "vandf:4018139",
                                     "mesh:D002945",
@@ -597,7 +804,7 @@ class SearchService(BaseModel):
                                     "mmsl:31747",
                                     "mmsl:4456"
                                 ],
-                                "approval_status": "approved",
+                                "approval_ratings": ["rxnorm_prescribable"],
                                 "trade_names": [
                                     "Cisplatin",
                                     "Platinol"
@@ -625,13 +832,13 @@ class SearchService(BaseModel):
                                 "label": "Cisplatin",
                                 "concept_id": "ncit:C376",
                                 "aliases": [],
-                                "other_identifiers": ["chemidplus:15663-27-1"],
-                                "xrefs": [
+                                "xrefs": ["chemidplus:15663-27-1"],
+                                "associated_with": [
                                     "umls:C0008838",
                                     "fda:Q20Q21Q62J",
                                     "chebi:CHEBI:27899"
                                 ],
-                                "approval_status": None,
+                                "approval_ratings": None,
                                 "trade_names": []
                             }
                         ],
@@ -663,14 +870,16 @@ class SearchService(BaseModel):
                                     "CIS-DDP",
                                     "Platinol-AQ"
                                 ],
-                                "other_identifiers": [
+                                "xrefs": [
                                     "chemidplus:15663-27-1",
                                     "chembl:CHEMBL11359",
                                     "rxcui:2555",
                                     "drugbank:DB00515"
                                 ],
-                                "xrefs": ["pubchem.compound:5702198"],
-                                "approval_status": None,
+                                "associated_with": [
+                                    "pubchem.compound:5702198"
+                                ],
+                                "approval_ratings": None,
                                 "trade_names": []
                             }
                         ],
@@ -689,9 +898,9 @@ class SearchService(BaseModel):
                     }
                 ],
                 "service_meta_": {
-                    'name': 'thera-py',
-                    'version': '0.1.0',
-                    'response_datetime': '2021-04-05T16:44:15.367831',
-                    'url': 'https://github.com/cancervariants/therapy-normalization'  # noqa: E501
+                    "name": "thera-py",
+                    "version": "0.1.0",
+                    "response_datetime": "2021-04-05T16:44:15.367831",
+                    "url": "https://github.com/cancervariants/therapy-normalization"
                 }
             }

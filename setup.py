@@ -1,4 +1,5 @@
 """Defines how metakb is packaged and distributed."""
 from setuptools import setup
 
-setup(version="0.2.13")
+exec(open("therapy/version.py").read())
+setup(version=__version__)  # noqa: F821
