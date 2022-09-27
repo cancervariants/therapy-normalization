@@ -138,7 +138,7 @@ def compare_vod(response, fixture, query, match_type, response_id,
 
     assert actual.id == fixture.id
     assert actual.type == fixture.type
-    assert actual.therapeutic_id == fixture.therapeutic_id
+    assert actual.therapeutic == fixture.therapeutic
     assert actual.label == fixture.label
 
     assert bool(actual.xrefs) == bool(fixture.xrefs)

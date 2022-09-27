@@ -389,7 +389,7 @@ class QueryHandler:
         vod = response.therapeutic_descriptor
 
         xrefs = vod.xrefs or []  # type: ignore
-        ids = [vod.therapeutic_id] + xrefs  # type: ignore
+        ids = [vod.therapeutic] + xrefs  # type: ignore
         for concept_id in ids:
             prefix = concept_id.split(":")[0]
             src_name = PREFIX_LOOKUP[prefix.lower()]
@@ -420,7 +420,7 @@ class QueryHandler:
         vod = {
             "id": f"normalize.therapy:{quote(query.strip())}",
             "type": "TherapeuticDescriptor",
-            "therapeutic_id": record["concept_id"],
+            "therapeutic": record["concept_id"],
             "label": record.get("label"),
             "extensions": [],
         }
@@ -455,7 +455,7 @@ class QueryHandler:
                     "id": indication.disease_id,
                     "type": "DiseaseDescriptor",
                     "label": indication.disease_label,
-                    "disease_id": indication.normalized_disease_id,
+                    "disease": indication.normalized_disease_id,
                 }
                 if indication.supplemental_info:
                     ind_value_obj["extensions"] = [
