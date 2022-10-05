@@ -46,3 +46,7 @@ mypy = "*"
 types-requests = "*"
 types-pyyaml = "*"
 tox = "*"
+matplotlib = "*"
+networkx = "*"
+plotly = "*"
+
