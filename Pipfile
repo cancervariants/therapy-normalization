@@ -28,6 +28,9 @@ disease-normalizer = ">=0.2.14"
 chembl-downloader = "*"
 bioversions = ">=0.4.3"
 pystow = "*"
+matplotlib = "*"
+networkx = "*"
+plotly = "*"
 
 [dev-packages]
 thera-py = {editable = true, path = "."}
@@ -46,7 +49,3 @@ mypy = "*"
 types-requests = "*"
 types-pyyaml = "*"
 tox = "*"
-matplotlib = "*"
-networkx = "*"
-plotly = "*"
-
