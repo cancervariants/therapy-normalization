@@ -22,7 +22,7 @@ def get_graph_positions(
     for source in response.source_matches.values():
         for record in source.records:
             nodes.add(record.concept_id)
-            for ref in record.xrefs:
+            for ref in record.xrefs:  # type: ignore
                 edges.append((record.concept_id, ref))
     edges = [(e1, e2) for (e1, e2) in edges if e1 in nodes and e2 in nodes]
 
