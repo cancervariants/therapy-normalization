@@ -3568,5 +3568,19 @@
     ],
     "item_type": "identity",
     "src_name": "ChEMBL"
+  },
+  {
+    "label_and_type": "wikidata:q418702##identity",
+    "item_type": "identity",
+    "src_name": "Wikidata",
+    "label": "Basiliximab",
+    "concept_id": "wikidata:Q418702",
+    "aliases": ["SDZ-CHI-621", "CHI-621", "CHI621", "chimeric mouse-human antiCD25"],
+    "xrefs": [
+      "drugbank:DB00074",
+      "rxcui:196102",
+      "chembl:CHEMBL1201439",
+      "chemidplus:179045-86-4",
+    ],
   }
 ]
