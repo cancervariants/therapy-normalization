@@ -17,8 +17,9 @@ import bioversions
 from disease.query import QueryHandler as DiseaseNormalizer
 
 from therapy import APP_ROOT, ITEM_TYPES, DownloadException
-from therapy.schemas import Drug
+from therapy.schemas import Drug, SourceName
 from therapy.database import Database
+from therapy.etl.rules import Rules
 
 
 logger = logging.getLogger("therapy")
@@ -37,17 +38,17 @@ class Base(ABC):
     needed.
     """
 
-    def __init__(self, database: Database,
-                 data_path: Path = DEFAULT_DATA_PATH) -> None:
+    def __init__(self, database: Database, data_path: Path = DEFAULT_DATA_PATH) -> None:
         """Extract from sources.
 
         :param Database database: application database object
         :param Path data_path: path to app data directory
         """
-        name = self.__class__.__name__.lower()
+        name = self.__class__.__name__
         self.database = database
-        self._src_dir: Path = Path(data_path / name)
+        self._src_dir: Path = Path(data_path / name.lower())
         self._added_ids: List[str] = []
+        self._rules = Rules(SourceName(name))
 
     def perform_etl(self, use_existing: bool = False) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
@@ -87,8 +88,9 @@ class Base(ABC):
         """
         with zipfile.ZipFile(dl_path, "r") as zip_ref:
             if len(zip_ref.filelist) > 1:
-                files = sorted(zip_ref.filelist, key=lambda z: z.file_size,
-                               reverse=True)
+                files = sorted(
+                    zip_ref.filelist, key=lambda z: z.file_size, reverse=True
+                )
                 target = files[0]
             else:
                 target = zip_ref.filelist[0]
@@ -97,8 +99,12 @@ class Base(ABC):
         os.remove(dl_path)
 
     @staticmethod
-    def _http_download(url: str, outfile_path: Path, headers: Optional[Dict] = None,
-                       handler: Optional[Callable[[Path, Path], None]] = None) -> None:
+    def _http_download(
+        url: str,
+        outfile_path: Path,
+        headers: Optional[Dict] = None,
+        handler: Optional[Callable[[Path, Path], None]] = None,
+    ) -> None:
         """Perform HTTP download of remote data file.
         :param str url: URL to retrieve file from
         :param Path outfile_path: path to where file should be saved. Must be an actual
@@ -143,8 +149,9 @@ class Base(ABC):
             logger.error(f"FTP download failed: {e}")
             raise Exception(e)
 
-    def _parse_version(self, file_path: Path, pattern: Optional[re.Pattern] = None
-                       ) -> str:
+    def _parse_version(
+        self, file_path: Path, pattern: Optional[re.Pattern] = None
+    ) -> str:
         """Get version number from provided file path.
 
         :param Path file_path: path to located source data file
@@ -220,6 +227,7 @@ class Base(ABC):
 
         :param Dict therapy: valid therapy object.
         """
+        therapy = self._rules.apply_rules_to_therapy(therapy)
         try:
             Drug(**therapy)
         except ValidationError as e:
@@ -238,8 +246,7 @@ class Base(ABC):
                 if attr_type == "label":
                     value = value.strip()
                     therapy["label"] = value
-                    self.database.add_ref_record(value.lower(),
-                                                 concept_id, item_type)
+                    self.database.add_ref_record(value.lower(), concept_id, item_type)
                     continue
 
                 value_set = {v.strip() for v in value}
@@ -269,15 +276,19 @@ class Base(ABC):
         # compress has_indication
         indications = therapy.get("has_indication")
         if indications:
-            therapy["has_indication"] = list({
-                json.dumps([
-                    ind["disease_id"],
-                    ind["disease_label"],
-                    ind.get("normalized_disease_id"),
-                    ind.get("supplemental_info")
-                ])
-                for ind in indications
-            })
+            therapy["has_indication"] = list(
+                {
+                    json.dumps(
+                        [
+                            ind["disease_id"],
+                            ind["disease_label"],
+                            ind.get("normalized_disease_id"),
+                            ind.get("supplemental_info"),
+                        ]
+                    )
+                    for ind in indications
+                }
+            )
         elif "has_indication" in therapy:
             del therapy["has_indication"]
 
@@ -294,8 +305,7 @@ class Base(ABC):
 class DiseaseIndicationBase(Base):
     """Base class for sources that require disease normalization capabilities."""
 
-    def __init__(self, database: Database,
-                 data_path: Path = DEFAULT_DATA_PATH):
+    def __init__(self, database: Database, data_path: Path = DEFAULT_DATA_PATH):
         """Initialize source ETL instance.
 
         :param therapy.database.Database database: application database
