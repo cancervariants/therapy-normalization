@@ -26,7 +26,7 @@ def cisplatin():
             "CIS-DDP",
             "cis-diamminedichloroplatinum(II)",
             "Platinol",
-            "Platinol-AQ"
+            "Platinol-AQ",
         ],
         "approval_ratings": [],
         "xrefs": [
@@ -35,10 +35,8 @@ def cisplatin():
             "rxcui:2555",
             "chemidplus:15663-27-1",
         ],
-        "associated_with": [
-            "pubchem.compound:5702198"
-        ],
-        "trade_names": []
+        "associated_with": ["pubchem.compound:5702198"],
+        "trade_names": [],
     }
     return Drug(**params)
 
@@ -58,17 +56,17 @@ def interferon_alfacon_1():
             "methionyl-interferon-consensus",
             "rCon-IFN",
             "Recombinant Consensus Interferon",
-            "Recombinant methionyl human consensus interferon"
+            "Recombinant methionyl human consensus interferon",
         ],
         "approval_ratings": [],
         "xrefs": [
             "chembl:CHEMBL1201557",
             "drugbank:DB00069",
             "rxcui:59744",
-            "chemidplus:118390-30-0"
+            "chemidplus:118390-30-0",
         ],
         "associated_with": [],
-        "trade_names": []
+        "trade_names": [],
     }
     return Drug(**params)
 
@@ -91,7 +89,7 @@ def d_methamphetamine():
         "associated_with": [
             "pubchem.compound:10836",
         ],
-        "trade_names": []
+        "trade_names": [],
     }
     return Drug(**params)
 
@@ -116,25 +114,57 @@ def atropine():
             "(3-Endo)-8-methyl-8-azabicyclo[3.2.1]oct-3-yl tropate",
             "[(1S,5R)-8-Methyl-8-azabicyclo[3.2.1]oct-3-yl] "
             "3-hydroxy-2-phenyl-propanoate",
-            "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl "
-            "3-hydroxy-2-phenylpropanoate",
-            "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate"
+            "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl " "3-hydroxy-2-phenylpropanoate",
+            "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate",
         ],
         "approval_ratings": [],
-        "xrefs": [
-            "drugbank:DB00572",
-            "chemidplus:51-55-8",
-            "rxcui:1223"
-        ],
+        "xrefs": ["drugbank:DB00572", "chemidplus:51-55-8", "rxcui:1223"],
         "associated_with": [
             "pubchem.compound:174174",
         ],
-        "trade_names": []
+        "trade_names": [],
     }
     return Drug(**params)
 
 
-def test_cisplatin(cisplatin, wikidata, compare_records):
+@pytest.fixture(scope="module")
+def basiliximab():
+    """Create basiliximab test fixture to demonstrate rule-based filtering."""
+    return Drug(
+        label="Basiliximab",
+        concept_id="wikidata:Q418702",
+        aliases=["SDZ-CHI-621", "CHI-621", "CHI621", "chimeric mouse-human antiCD25"],
+        xrefs=[
+            "drugbank:DB00074",
+            "rxcui:196102",
+            "chembl:CHEMBL1201439",
+            "chemidplus:179045-86-4",
+        ],
+    )
+
+
+def test_basiliximab(basiliximab, wikidata):
+    """Test that basiliximab terms resolve correctly"""
+    response = wikidata.search("wikidata:Q418702")
+    assert response.match_type == MatchType.CONCEPT_ID
+    assert len(response.records) == 1
+    compare_records(response.records[0], basiliximab)
+
+    response = wikidata.search("basiliximab")
+    assert response.match_type == MatchType.LABEL
+    assert len(response.records) == 1
+    compare_records(response.records[0], basiliximab)
+
+    response = wikidata.search("CHI621")
+    assert response.match_type == MatchType.ALIAS
+    assert len(response.records) == 1
+    compare_records(response.records[0], basiliximab)
+
+    response = wikidata.search("Ig gamma-1 chain C region")
+    assert response.match_type == MatchType.NO_MATCH
+
+
+def test_cisplatin(cisplatin, wikidata):
     """Test that cisplatin drug normalizes to correct drug concept."""
     response = wikidata.search("wikidata:Q412415")
     assert response.match_type == MatchType.CONCEPT_ID
@@ -326,13 +356,15 @@ def test_meta_info(wikidata):
     """Test that the meta field is correct."""
     response = wikidata.search("cisplatin")
     assert response.source_meta_.data_license == "CC0 1.0"
-    assert response.source_meta_.data_license_url == \
-           "https://creativecommons.org/publicdomain/zero/1.0/"
+    assert (
+        response.source_meta_.data_license_url
+        == "https://creativecommons.org/publicdomain/zero/1.0/"  # noqa: W503
+    )
     assert isodate.parse_date(response.source_meta_.version)
     assert response.source_meta_.data_url is None
     assert not response.source_meta_.rdp_url
     assert response.source_meta_.data_license_attributes == {
         "non_commercial": False,
         "share_alike": False,
-        "attribution": False
+        "attribution": False,
     }
