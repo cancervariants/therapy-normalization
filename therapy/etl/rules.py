@@ -1,6 +1,6 @@
 """Apply manual data restrictions and annotations to extracted records."""
 import csv
-from typing import Dict, Union, List
+from typing import Dict, Union, List, Tuple
 
 from therapy import APP_ROOT
 from therapy.schemas import SourceName
@@ -26,7 +26,7 @@ class Rules:
         :param source_name: name of source to use, for filtering unneeded rules
         """
         rules_path = APP_ROOT / "etl" / "rules.csv"
-        self.rules = {}
+        self.rules: Dict[str, List[Tuple[str, str]]] = {}
         with open(rules_path, "r") as rules_file:
             reader = csv.DictReader(rules_file, delimiter=",")
             for row in reader:
