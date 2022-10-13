@@ -43,15 +43,7 @@ jobs:
             AWS_DEFAULT_OUTPUT: text
         strategy:
             matrix:
-              python-version: ['3.8', '3.9', '3.10']
-              tox-python-version: ['38', '39', '310']
-              include:
-                - python-version: '3.8'
-                  tox-python-version: '38'
-                - python-version: '3.9'
-                  tox-python-version: '39'
-                - python-version: '3.10'
-                  tox-python-version: '310'
+              python-version: [{full: '3.8', tox: '38'}, {full: '3.9', tox: '39'}, {full: '3.10', tox: '310'}]
         steps:
             - name: debug
               run: echo ${{ matrix.python-version }} ${{ matrix.tox-python-version }}
@@ -60,16 +52,16 @@ jobs:
             - name: Setup Python
               uses: actions/setup-python@v4
               with:
-                  python-version: ${{ matrix.python-version }}
+                  python-version: ${{ matrix.python-version.full }}
 
             - name: Install dependencies
               run: |
                   python3 -m pip install tox
 
             - name: Check style
-              run: python3 -m tox -e py${{ matrix.tox-python-version }}-lint
+              run: python3 -m tox -e py${{ matrix.python-version.tox }}-lint
 
             - name: Check type correctness
               if: ${{ always() }}
-              run: python3 -m tox -e py${{ matrix.tox-python-version }}-mypy
+              run: python3 -m tox -e py${{ matrix.python-version.tox }}-mypy
 
