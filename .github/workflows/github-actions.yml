@@ -13,12 +13,12 @@ jobs:
             TEST: THERAPY_TEST
         strategy:
             matrix:
-              python-version: [3.8, 3.9]
+              python-version: ['3.8', '3.9', '3.10']
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
 
             - name: Setup Python
-              uses: actions/setup-python@v1
+              uses: actions/setup-python@v4
               with:
                   python-version: ${{ matrix.python-version }}
 
@@ -34,7 +34,7 @@ jobs:
             - name: Run tests
               run: python3 -m tox -e githubactions
     lint:
-        name: lint py${{ matrix.python-version }}
+        name: lint py${{ matrix.python-version.full }}
         runs-on: ubuntu-latest
         env:
             AWS_ACCESS_KEY_ID: ${{ secrets.DUMMY_AWS_ACCESS_KEY_ID }}
@@ -43,23 +43,23 @@ jobs:
             AWS_DEFAULT_OUTPUT: text
         strategy:
             matrix:
-              python-version: [3.8, 3.9]
+              python-version: [{full: '3.8', tox: '38'}, {full: '3.9', tox: '39'}, {full: '3.10', tox: '310'}]
         steps:
-            - uses: actions/checkout@v2
+            - uses: actions/checkout@v3
 
             - name: Setup Python
-              uses: actions/setup-python@v1
+              uses: actions/setup-python@v4
               with:
-                  python-version: 3.8
+                  python-version: ${{ matrix.python-version.full }}
 
             - name: Install dependencies
               run: |
                   python3 -m pip install tox
 
             - name: Check style
-              run: python3 -m tox -e py38-lint
+              run: python3 -m tox -e py${{ matrix.python-version.tox }}-lint
 
             - name: Check type correctness
               if: ${{ always() }}
-              run: python3 -m tox -e py38-mypy
+              run: python3 -m tox -e py${{ matrix.python-version.tox }}-mypy
 
