@@ -153,27 +153,6 @@ def basiliximab():
     )
 
 
-def test_basiliximab(basiliximab, wikidata):
-    """Test that basiliximab terms resolve correctly"""
-    response = wikidata.search("wikidata:Q418702")
-    assert response.match_type == MatchType.CONCEPT_ID
-    assert len(response.records) == 1
-    compare_records(response.records[0], basiliximab)
-
-    response = wikidata.search("basiliximab")
-    assert response.match_type == MatchType.LABEL
-    assert len(response.records) == 1
-    compare_records(response.records[0], basiliximab)
-
-    response = wikidata.search("CHI621")
-    assert response.match_type == MatchType.ALIAS
-    assert len(response.records) == 1
-    compare_records(response.records[0], basiliximab)
-
-    response = wikidata.search("Ig gamma-1 chain C region")
-    assert response.match_type == MatchType.NO_MATCH
-
-
 def test_cisplatin(cisplatin, wikidata):
     """Test that cisplatin drug normalizes to correct drug concept."""
     response = wikidata.search("wikidata:Q412415")
@@ -344,6 +323,27 @@ def test_d_methamphetamine(d_methamphetamine, wikidata):
     assert response.match_type == MatchType.XREF
     assert len(response.records) == 1
     compare_records(response.records[0], d_methamphetamine)
+
+
+def test_basiliximab(basiliximab, wikidata):
+    """Test that basiliximab terms resolve correctly"""
+    response = wikidata.search("wikidata:Q418702")
+    assert response.match_type == MatchType.CONCEPT_ID
+    assert len(response.records) == 1
+    compare_records(response.records[0], basiliximab)
+
+    response = wikidata.search("basiliximab")
+    assert response.match_type == MatchType.LABEL
+    assert len(response.records) == 1
+    compare_records(response.records[0], basiliximab)
+
+    response = wikidata.search("CHI621")
+    assert response.match_type == MatchType.ALIAS
+    assert len(response.records) == 1
+    compare_records(response.records[0], basiliximab)
+
+    response = wikidata.search("Ig gamma-1 chain C region")
+    assert response.match_type == MatchType.NO_MATCH
 
 
 def test_case_no_match(wikidata):

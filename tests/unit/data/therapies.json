@@ -3575,12 +3575,29 @@
     "src_name": "Wikidata",
     "concept_id": "wikidata:Q418702",
     "label": "Basiliximab",
-    "aliases": ["SDZ-CHI-621", "CHI-621", "CHI621", "chimeric mouse-human antiCD25"],
+    "aliases": [
+      "SDZ-CHI-621",
+      "CHI-621",
+      "CHI621",
+      "chimeric mouse-human antiCD25"
+    ],
     "xrefs": [
       "drugbank:DB00074",
       "rxcui:196102",
       "chembl:CHEMBL1201439",
       "chemidplus:179045-86-4"
     ]
+  },
+  {
+    "label_and_type": "baxiliximab##label",
+    "item_type": "label",
+    "src_name": "Wikidata",
+    "concept_id": "wikidata:Q418702"
+  },
+  {
+    "label_and_type": "chi621##alias",
+    "item_type": "alias",
+    "src_name": "Wikidata",
+    "concept_id": "wikidata:Q418702"
   }
 ]
