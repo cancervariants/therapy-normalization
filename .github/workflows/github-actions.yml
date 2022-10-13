@@ -13,7 +13,7 @@ jobs:
             TEST: THERAPY_TEST
         strategy:
             matrix:
-              python-version: [3.8, 3.9]
+              python-version: ['3.8', '3.9', '3.10']
         steps:
             - uses: actions/checkout@v3
 
@@ -53,6 +53,8 @@ jobs:
                 - python-version: '3.10'
                   tox-python-version: '310'
         steps:
+            - name: debug
+              run: echo ${{ matrix.python-version }} ${{ matrix.tox-python-version }}
             - uses: actions/checkout@v3
 
             - name: Setup Python
