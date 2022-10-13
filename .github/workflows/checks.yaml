@@ -45,6 +45,8 @@ jobs:
             matrix:
               python-version: ['3.8', '3.9', '3.10']
         steps:
+            - name: debug
+              run: echo ${{ matrix.python-version }} ${{ matrix.tox-python-version }}
             - uses: actions/checkout@v3
 
             - name: Setup Python
