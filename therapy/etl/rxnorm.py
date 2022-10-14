@@ -311,7 +311,8 @@ class RxNorm(Base):
         :param List row: A row in the RxNorm data file.
         """
         ref = row[11]
-        if ref:
+        lui = row[13]
+        if ref and lui != "NOCODE":
             if ref == "MTHSPL":
                 xref_assoc = "UNII"
             else:
@@ -319,12 +320,12 @@ class RxNorm(Base):
 
             if xref_assoc in XREF_SOURCES:
                 source_id =\
-                    f"{NamespacePrefix[xref_assoc].value}:{row[13]}"
+                    f"{NamespacePrefix[xref_assoc].value}:{lui}"
                 if source_id != params["concept_id"]:
                     # Sometimes concept_id is included in the source field
                     self._add_term(params, source_id, "xrefs")
             elif xref_assoc in ASSOC_WITH_SOURCES:
-                source_id = f"{NamespacePrefix[xref_assoc].value}:{row[13]}"
+                source_id = f"{NamespacePrefix[xref_assoc].value}:{lui}"
                 self._add_term(params, source_id, "associated_with")
             else:
                 logger.info(f"{xref_assoc} not in NameSpacePrefix.")
