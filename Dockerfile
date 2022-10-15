@@ -3,6 +3,7 @@
 # Healthchecks service up every 5m.  
 
 FROM python:3.7
+RUN apt update ; apt install -y rsync
 RUN pip install pipenv uvicorn[standard]
 COPY . /app
 WORKDIR /app
