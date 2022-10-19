@@ -9,8 +9,6 @@
 # python image that has the "latest" tag (currently 3.10.8).
 FROM python
 
-RUN apt update ; apt install -y rsync
-
 # Install pipenv and uvicorn from PyPI into the container.
 RUN pip install pipenv uvicorn[standard]
 
