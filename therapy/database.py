@@ -369,6 +369,18 @@ class Database:
             logger.error(f"boto3 client error in `database.update_record()`: "
                          f"{e.response['Error']['Message']}")
 
+    def delete_record(self, label_and_type: str, concept_id: str):
+        """
+        TODO
+        """
+        self.batch.delete_item(
+            Key={
+                "label_and_type": label_and_type,
+                "concept_id": concept_id
+            }
+        )
+
+
     def flush_batch(self) -> None:
         """Flush internal batch_writer."""
         self.batch.__exit__(*sys.exc_info())

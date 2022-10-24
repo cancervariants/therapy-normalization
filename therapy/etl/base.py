@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 import ftplib
 from pathlib import Path
 import logging
-from typing import List, Dict, Optional, Callable
+from typing import List, Dict, Optional, Callable, Set
 import os
 import zipfile
 import tempfile
@@ -44,11 +44,37 @@ class Base(ABC):
         :param Database database: application database object
         :param Path data_path: path to app data directory
         """
-        name = self.__class__.__name__
+        self.name = self.__class__.__name__
         self.database = database
-        self._src_dir: Path = Path(data_path / name.lower())
+        self._src_dir: Path = Path(data_path / self.name.lower())
         self._added_ids: List[str] = []
-        self._rules = Rules(SourceName(name))
+        self._set_existing_ids()
+        self._rules = Rules(SourceName(self.name))
+
+    def _set_existing_ids(self):
+        """
+        TODO
+        """
+        last_evaluated_key = None
+        concept_ids = []
+        params = {
+            "ProjectionExpression": "concept_id,item_type",
+        }
+        while True:
+            if last_evaluated_key:
+                response = self.database.therapies.scan(
+                    ExclusiveStartKey=last_evaluated_key, **params
+                )
+            else:
+                response = self.database.therapies.scan(**params)
+            records = response["Items"]
+            for record in records:
+                if record["item_type"] == "identity" and record["src_name"] == self.name:
+                    concept_ids.append(record["concept_id"])
+            last_evaluated_key = response.get("LastEvaluatedKey")
+            if not last_evaluated_key:
+                break
+        self._existing_ids = set(concept_ids)
 
     def perform_etl(self, use_existing: bool = False) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
@@ -217,6 +243,28 @@ class Base(ABC):
         record and call the Base class's `_load_therapy()` method.
         """
         raise NotImplementedError
+
+    def _new_load_therapy(self, therapy: Dict) -> None:
+        """
+        TODO
+        """
+        if therapy["concept_id"] not in self._existing_ids:
+            self._load_therapy(therapy)
+        else:
+            update_expressions = []
+            update_values = {}
+            existing = self.database.get_record_by_id(therapy['concept_id'], True)
+            if existing is None:
+                raise Exception  # TODO
+            if therapy["label"] != existing["label"]:
+                update_expressions.append("set label=:a")
+                update_values["a"] = therapy["label"]
+
+
+
+            # determine difference
+
+            # run updates
 
     def _load_therapy(self, therapy: Dict) -> None:
         """Load individual therapy record into database.
