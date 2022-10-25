@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 import ftplib
 from pathlib import Path
 import logging
-from typing import List, Dict, Optional, Callable, Set
+from typing import List, Dict, Optional, Callable, Any
 import os
 import zipfile
 import tempfile
@@ -51,14 +51,12 @@ class Base(ABC):
         self._set_existing_ids()
         self._rules = Rules(SourceName(self.name))
 
-    def _set_existing_ids(self):
-        """
-        TODO
-        """
+    def _set_existing_ids(self) -> None:
+        """Assign all existing concept IDs to `self._existing_ids`"""
         last_evaluated_key = None
         concept_ids = []
         params = {
-            "ProjectionExpression": "concept_id,item_type",
+            "ProjectionExpression": "concept_id,item_type,src_name",
         }
         while True:
             if last_evaluated_key:
@@ -69,7 +67,10 @@ class Base(ABC):
                 response = self.database.therapies.scan(**params)
             records = response["Items"]
             for record in records:
-                if record["item_type"] == "identity" and record["src_name"] == self.name:
+                if (
+                    record["item_type"] == "identity"
+                    and record["src_name"] == self.name  # noqa: W503
+                ):
                     concept_ids.append(record["concept_id"])
             last_evaluated_key = response.get("LastEvaluatedKey")
             if not last_evaluated_key:
@@ -88,6 +89,8 @@ class Base(ABC):
         self._extract_data(use_existing)
         self._load_meta()
         self._transform_data()
+        for old_concept in self._existing_ids:
+            self.database.delete_record(f"{old_concept.lower()}##identity", old_concept)
         return self._added_ids
 
     def get_latest_version(self) -> str:
@@ -244,27 +247,145 @@ class Base(ABC):
         """
         raise NotImplementedError
 
+    def _load_completed_therapy(self, therapy: Dict) -> None:
+        """Load finalized therapy object into DB
+        :param therapy: processed therapy object
+        """
+        self.database.add_record(therapy)
+        concept_id = therapy["concept_id"]
+
+        for attr_type, item_type in ITEM_TYPES.items():
+            value = therapy.get(attr_type)
+            if value:
+                if attr_type in therapy:
+                    if attr_type == "label":
+                        self.database.add_ref_record(value, concept_id, item_type)
+                    else:
+                        for item in value:
+                            self.database.add_ref_record(
+                                item.lower(), concept_id, item_type
+                            )
+
     def _new_load_therapy(self, therapy: Dict) -> None:
         """
         TODO
+        * how to update merge refs?
+        * nightmare: how to handle rxnorm deprecated names?
         """
-        if therapy["concept_id"] not in self._existing_ids:
-            self._load_therapy(therapy)
+        concept_id = therapy["concept_id"]
+        if concept_id not in self._existing_ids:
+            self._load_completed_therapy(therapy)
         else:
+            remove_expressions = []
             update_expressions = []
             update_values = {}
-            existing = self.database.get_record_by_id(therapy['concept_id'], True)
+            existing = self.database.get_record_by_id(concept_id, True)
             if existing is None:
-                raise Exception  # TODO
-            if therapy["label"] != existing["label"]:
-                update_expressions.append("set label=:a")
-                update_values["a"] = therapy["label"]
+                raise Exception  # TODO shouldn't be possible
 
+            # queue updates
+            label = therapy.get("label")
+            existing_label = existing.get("label")
+            if label != existing_label:
+                if label and existing_label:
+                    self.database.batch.delete_item(
+                        Key={
+                            "label_and_type": f"{existing_label.lower()}##label",
+                            "concept_id": concept_id.lower(),
+                        }
+                    )
+                    update_expressions.append("label=:a")
+                    update_values["a"] = label
+                    self.database.add_ref_record(label.lower(), concept_id, "label")
+                elif label:
+                    update_expressions.append("label=:a")
+                    update_values["a"] = label
+                    self.database.add_ref_record(label.lower(), concept_id, "label")
+                elif existing_label:
+                    remove_expressions.append("label")
+                    self.database.batch.delete_item(
+                        Key={
+                            "label_and_type": f"{existing_label.lower()}##label",
+                            "concept_id": concept_id.lower(),
+                        }
+                    )
 
+            for item_type, property_name, ref in [
+                ("alias", "aliases", ":b"),
+                ("trade_name", "trade_names", ":c"),
+                ("xref", "xrefs", ":d"),
+                ("associated_with", "associated_with", ":e"),
+            ]:
+                new_field = set(therapy.get(property_name, []))
+                existing_field = set(existing.get(property_name, []))
+                if new_field != existing_field:
+                    if new_field:
+                        update_expressions.append(f"{property_name}={ref}")
+                        update_values[ref] = list(existing_field)
+                    elif existing_field:
+                        remove_expressions.append(property_name)
+                    for new_ref in new_field - existing_field:
+                        self.database.add_ref_record(new_ref, concept_id, item_type)
+                    for old_ref in existing_field - new_field:
+                        self.database.batch.delete_item(
+                            Key={
+                                "label_and_type": f"{old_ref.lower()}##{item_type}",
+                                "concept_id": concept_id.lower(),
+                            }
+                        )
+                    if item_type == "xref":
+                        remove_expressions.append("merge_ref")
 
-            # determine difference
+            for prop_type, symbol in (
+                ("has_indication", ":g"),
+                ("approval_ratings", ":h"),
+                ("approval_year", ":i"),
+            ):
+                new_prop = set(therapy.get(prop_type, []))
+                existing_prop = set(existing.get(prop_type, []))
+                if new_prop != existing_prop:
+                    if not existing_prop:
+                        remove_expressions.append(prop_type)
+                    else:
+                        update_expressions.append(f"{prop_type}={symbol}")
+                        update_values[symbol] = list(new_prop)
 
-            # run updates
+            if remove_expressions:
+                self.database.therapies.update_item(
+                    Key={
+                        "label_and_type": f"{existing['concept_id'].lower()}##identity",
+                        "concept_id": concept_id,
+                    },
+                    UpdateExpression=f"REMOVE {', '.join(remove_expressions)}",
+                )
+            if update_expressions:
+                self.database.therapies.update_item(
+                    Key={
+                        "label_and_type": f"{existing['concept_id'].lower()}##identity",
+                        "concept_id": concept_id,
+                    },
+                    UpdateExpression=f"SET {', '.join(update_expressions)}",
+                    ExpressionAttributeValues=update_values,
+                )
+
+    def _remove_properties(
+        self,
+        concept_id: str,
+        update_statements: List[str],
+        update_values: Dict[str, Any],
+    ) -> None:
+        """
+        TODO
+        * finish this
+        """
+        self.database.therapies.update_item(
+            Key={
+                "label_and_type": f"{concept_id.lower()}##identity",
+                "concept_id": concept_id,
+            },
+            UpdateExpression=f"SET {', '.join(update_statements)}",
+            ExpressionAttributeValues=update_values,
+        )
 
     def _load_therapy(self, therapy: Dict) -> None:
         """Load individual therapy record into database.
@@ -294,7 +415,7 @@ class Base(ABC):
                 if attr_type == "label":
                     value = value.strip()
                     therapy["label"] = value
-                    self.database.add_ref_record(value.lower(), concept_id, item_type)
+                    # self.database.add_ref_record(value.lower(), concept_id, item_type)
                     continue
 
                 value_set = {v.strip() for v in value}
@@ -317,8 +438,8 @@ class Base(ABC):
                     del therapy[attr_type]
                     continue
 
-                for item in {item.lower() for item in value}:
-                    self.database.add_ref_record(item, concept_id, item_type)
+                # for item in {item.lower() for item in value}:
+                #     self.database.add_ref_record(item, concept_id, item_type)
                 therapy[attr_type] = value
 
         # compress has_indication
@@ -346,7 +467,8 @@ class Base(ABC):
             if approval_attrs in therapy and therapy[field] is None:
                 del therapy[field]
 
-        self.database.add_record(therapy)
+        # self.database.add_record(therapy)
+        self._new_load_therapy(therapy)
         self._added_ids.append(concept_id)
 
 

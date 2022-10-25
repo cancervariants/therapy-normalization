@@ -369,9 +369,10 @@ class Database:
             logger.error(f"boto3 client error in `database.update_record()`: "
                          f"{e.response['Error']['Message']}")
 
-    def delete_record(self, label_and_type: str, concept_id: str):
-        """
-        TODO
+    def delete_record(self, label_and_type: str, concept_id: str) -> None:
+        """Delete DB record.
+        :param label_and_type: DDB primary key
+        :param concept_id: DDB sort key
         """
         self.batch.delete_item(
             Key={
@@ -379,7 +380,6 @@ class Database:
                 "concept_id": concept_id
             }
         )
-
 
     def flush_batch(self) -> None:
         """Flush internal batch_writer."""

@@ -165,19 +165,6 @@ class CLI:
         """
         processed_ids = list()
         for n in normalizers:
-            msg = f"Deleting {n}..."
-            click.echo(f"\n{msg}")
-            logger.info(msg)
-
-            start_delete = timer()
-            CLI()._delete_data(n, db)
-            end_delete = timer()
-            delete_time = end_delete - start_delete
-
-            msg = f"Deleted {n} in {delete_time:.5f} seconds."
-            click.echo(f"{msg}\n")
-            logger.info(msg)
-
             msg = f"Loading {n}..."
             click.echo(msg)
             logger.info(msg)
@@ -200,11 +187,6 @@ class CLI:
             load_time = end_load - start_load
 
             msg = f"Loaded {n} in {load_time:.5f} seconds."
-            click.echo(msg)
-            logger.info(msg)
-
-            msg = f"Total time for {n}: " \
-                  f"{(delete_time + load_time):.5f} seconds."
             click.echo(msg)
             logger.info(msg)
 
