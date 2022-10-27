@@ -1,0 +1,3 @@
+# Have Docker CLI exclude /therapy/data before sending context to Docker
+# daemon for building image.
+therapy/data
