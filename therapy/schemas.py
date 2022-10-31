@@ -4,9 +4,8 @@ from enum import Enum, IntEnum
 from datetime import datetime
 
 from ga4gh.vrsatile.pydantic import return_value
-from ga4gh.vrsatile.pydantic.core_models import CURIE
-from ga4gh.vrsatile.pydantic.vrsatile_models import DiseaseDescriptor, \
-    ValueObjectDescriptorBaseModel
+from ga4gh.vrsatile.pydantic.vrs_models import CURIE
+from ga4gh.vrsatile.pydantic.vrsatile_models import ValueObjectDescriptor
 from pydantic import BaseModel, StrictBool, validator
 
 from therapy.version import __version__
@@ -412,10 +411,10 @@ class ApprovalRatingValue(BaseModel):
 
     approval_ratings: Optional[List[ApprovalRating]]
     approval_year: Optional[List[str]]
-    has_indication: Optional[List[DiseaseDescriptor]]
+    has_indication: Optional[List[ValueObjectDescriptor]]
 
 
-class TherapyDescriptor(ValueObjectDescriptorBaseModel):
+class TherapyDescriptor(ValueObjectDescriptor):
     """Create therapy descriptor model"""
 
     type: Literal["TherapyDescriptor"] = "TherapyDescriptor"
