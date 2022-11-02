@@ -11,9 +11,11 @@ from disease.database import Database as DiseaseDatabase
 from disease.cli import CLI as DiseaseCLI
 from disease.schemas import SourceName as DiseaseSources
 
-from therapy import SOURCES_CLASS, SOURCES
+from therapy import SOURCES
 from therapy.schemas import SourceName
-from therapy.database import Database, confirm_aws_db_use
+from therapy.database import Database, confirm_aws_db_use, SKIP_AWS_DB_ENV_NAME, \
+    VALID_AWS_ENV_NAMES, AWS_ENV_VAR_NAME
+from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm, HemOnc, GuideToPHARMACOLOGY, DrugsAtFDA  # noqa: F401, E501
 from therapy.etl.merge import Merge
 
 logger = logging.getLogger("therapy")
@@ -30,9 +32,10 @@ class CLI:
         help="The normalizer(s) you wish to update separated by spaces."
     )
     @click.option(
-        "--prod",
+        "--aws_instance",
         is_flag=True,
-        help="Working in production environment."
+        help=" Must be `Dev`, `Staging`, or `Prod`. This determines the AWS instance to"
+             " use. `Dev` uses nonprod. `Staging` and `Prod` uses prod."
     )
     @click.option(
         "--db_url",
@@ -54,28 +57,28 @@ class CLI:
         default=False,
         help="Use most recent existing source data instead of fetching latest version"
     )
-    def update_normalizer_db(normalizer: str, prod: bool, db_url: str,
+    def update_normalizer_db(normalizer: str, aws_instance: str, db_url: str,
                              update_all: bool, update_merged: bool,
                              use_existing: bool) -> None:
         """Update selected normalizer source(s) in the therapy database.
         \f  # noqa: D301
         :param str normalizer: comma-separated string listing source names
-        :param bool prod: if true, utilize production environment settings
+        :param str aws_instance: The AWS environment name.
+            Must be one of: `Dev`, `Staging`, or `Prod`
         :param str db_url: DynamoDB endpoint URL (usually only needed locally)
         :param bool update_all: if true, update all sources
         :param bool update_merged: if true, update normalized group results
         :param bool use_existing: if true, don't try to fetch latest source data
         """
-        # Sometimes THERAPY_NORM_EB_PROD is accidentally set. We should verify that
-        # it should actually be used in CLI
-        if "THERAPY_NORM_EB_PROD" in environ:
-            confirm_aws_db_use("PROD")
-
-        endpoint_url = None
-        if prod:
-            environ["THERAPY_NORM_PROD"] = "TRUE"
-            environ["DISEASE_NORM_PROD"] = "TRUE"
-            db: Database = Database()
+        # If SKIP_AWS_CONFIRMATION is accidentally set, we should verify that the
+        # aws instance should actually be used
+        invalid_aws_msg = f"{AWS_ENV_VAR_NAME} must be set to one of {VALID_AWS_ENV_NAMES}"  # noqa: E501
+        aws_env_name = environ.get(AWS_ENV_VAR_NAME) or aws_instance
+        if aws_env_name:
+            assert aws_env_name in VALID_AWS_ENV_NAMES, invalid_aws_msg
+            environ[AWS_ENV_VAR_NAME] = aws_env_name
+            confirm_aws_db_use(aws_env_name.upper())
+            environ[SKIP_AWS_DB_ENV_NAME] = "true"  # this is already checked above
         else:
             if db_url:
                 endpoint_url = db_url
@@ -164,6 +167,11 @@ class CLI:
             source perform_etl methods
         """
         processed_ids = list()
+
+        # used to get source class name from string
+        SOURCES_CLASS = \
+            {s.value.lower(): eval(s.value) for s in SourceName.__members__.values()}
+
         for n in normalizers:
             msg = f"Deleting {n}..."
             click.echo(f"\n{msg}")
