@@ -1,6 +1,7 @@
 """This module creates the database."""
 from os import environ
 from typing import Optional, Dict, List, Any
+from enum import Enum
 import logging
 import sys
 import atexit
@@ -15,12 +16,31 @@ from therapy import PREFIX_LOOKUP
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
+# can be set to either `Dev`, `Staging`, or `Prod`
+# ONLY set when wanting to access aws instance
+AWS_ENV_VAR_NAME = "THERAPY_NORM_ENV"
+
+# Set to "true" if want to skip db confirmation check. Should ONLY be used for
+# deployment needs
+SKIP_AWS_DB_ENV_NAME = "SKIP_AWS_CONFIRMATION"
+
+
+class AwsEnvName(str, Enum):
+    """AWS environment name that is being used"""
+
+    DEVELOPMENT = "Dev"
+    STAGING = "Staging"
+    PRODUCTION = "Prod"
+
+
+VALID_AWS_ENV_NAMES = {v.value for v in AwsEnvName.__members__.values()}
+
 
 def confirm_aws_db_use(env_name: str) -> None:
     """Check to ensure that AWS instance should actually be used."""
     if click.confirm(f"Are you sure you want to use the AWS {env_name} database?",
                      default=False):
-        click.echo(f"***THERAPY {env_name.upper()} DATABASE IN USE***")
+        click.echo(f"***THERAPY AWS {env_name.upper()} DATABASE IN USE***")
     else:
         click.echo("Exiting.")
         sys.exit()
@@ -38,37 +58,21 @@ class Database:
         therapy_concepts_table = "therapy_concepts"  # default
         therapy_metadata_table = "therapy_metadata"  # default
 
-        if "THERAPY_NORM_PROD" in environ or "THERAPY_NORM_EB_PROD" in environ:
-            boto_params = {
-                "region_name": region_name
-            }
-            self.endpoint_url = ""
-            if "THERAPY_NORM_PROD" in environ:
-                environ["DISEASE_NORM_PROD"] = "true"
-            if "THERAPY_NORM_EB_PROD" in environ:
-                environ["DISEASE_NORM_EB_PROD"] = "true"
-            else:
-                # EB Instance should not have to confirm.
-                # This is used only for using production via CLI
-                if click.confirm("Are you sure you want to use the "
-                                 "production database?", default=False):
-                    click.echo("***THERAPY PRODUCTION DATABASE IN USE***")
-                else:
-                    click.echo("Exiting.")
-                    sys.exit()
-        elif "THERAPY_NORM_NONPROD" in environ:
-            # This is a nonprod table. Only to be used for creating backups which
-            # prod will restore. Will need to manually delete / create this table
-            # on an as needed basis.
-            therapy_concepts_table = "therapy_concepts_nonprod"
-            therapy_metadata_table = "therapy_metadata_nonprod"
+        if AWS_ENV_VAR_NAME in environ:
+            aws_env = environ[AWS_ENV_VAR_NAME]
+            assert aws_env in VALID_AWS_ENV_NAMES, f"{AWS_ENV_VAR_NAME} must be one of {VALID_AWS_ENV_NAMES}"  # noqa: E501
+
+            skip_confirmation = environ.get(SKIP_AWS_DB_ENV_NAME)
+            if (not skip_confirmation) or (skip_confirmation and skip_confirmation != "true"):  # noqa: E501
+                confirm_aws_db_use(environ[AWS_ENV_VAR_NAME])
 
             boto_params = {
                 "region_name": region_name
             }
 
-            # This is used only for updating nonprod via CLI
-            confirm_aws_db_use("NONPROD")
+            if aws_env == AwsEnvName.DEVELOPMENT:
+                therapy_concepts_table = "therapy_concepts_nonprod"
+                therapy_metadata_table = "therapy_metadata_nonprod"
         else:
             if db_url:
                 self.endpoint_url = db_url
@@ -89,9 +93,7 @@ class Database:
         self.dynamodb_client = boto3.client("dynamodb", **boto_params)
 
         # Only create tables for local instance
-        envs_do_not_create_tables = {"THERAPY_NORM_PROD", "THERAPY_NORM_EB_PROD",
-                                     "THERAPY_NORM_NONPROD"}
-        if not set(envs_do_not_create_tables) & set(environ):
+        if not {AWS_ENV_VAR_NAME} & set(environ):
             existing_tables = self.dynamodb_client.list_tables()["TableNames"]
             self.create_therapies_table(existing_tables)
             self.create_meta_data_table(existing_tables)
