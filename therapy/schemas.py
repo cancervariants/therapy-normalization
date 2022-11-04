@@ -246,6 +246,7 @@ class NamespacePrefix(Enum):
     IUPHAR = "iuphar"
     IUPHAR_LIGAND = "iuphar.ligand"
     GUIDETOPHARMACOLOGY = IUPHAR_LIGAND
+    HCPCS = "hcpcs"  # Healthcare Commmon Procedure Coding System
     KEGGCOMPOUND = "kegg.compound"
     KEGGDRUG = "kegg.drug"
     MMSL = "mmsl"  # Multum MediSource Lexicon

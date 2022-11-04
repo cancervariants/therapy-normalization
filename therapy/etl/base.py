@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 import ftplib
 from pathlib import Path
 import logging
-from typing import List, Dict, Optional, Callable, Any
+from typing import List, Dict, Optional, Callable
 import os
 import zipfile
 import tempfile
@@ -261,16 +261,16 @@ class Base(ABC):
                     if attr_type == "label":
                         self.database.add_ref_record(value, concept_id, item_type)
                     else:
-                        for item in value:
-                            self.database.add_ref_record(
-                                item.lower(), concept_id, item_type
-                            )
+                        for item in {v.lower() for v in value}:
+                            self.database.add_ref_record(item, concept_id, item_type)
 
     def _new_load_therapy(self, therapy: Dict) -> None:
         """
         TODO
         * how to update merge refs?
         * nightmare: how to handle rxnorm deprecated names?
+        * pkeys are lower-cased. When diffing, don't create new refs if it's just a
+            casing change.
         """
         concept_id = therapy["concept_id"]
         if concept_id not in self._existing_ids:
@@ -368,35 +368,13 @@ class Base(ABC):
                     ExpressionAttributeValues=update_values,
                 )
 
-    def _remove_properties(
-        self,
-        concept_id: str,
-        update_statements: List[str],
-        update_values: Dict[str, Any],
-    ) -> None:
+    def _prepare_therapy(self, raw_therapy: Dict) -> Dict:
+        """Construct ready-to-upload therapy object. Removes redundant property
+        entries, adds DB-specific fields like `src_name` and `label_and_type`, etc.
+        :param raw_therapy: therapy as built by source importer.
+        :return: DB-ready therapy
         """
-        TODO
-        * finish this
-        """
-        self.database.therapies.update_item(
-            Key={
-                "label_and_type": f"{concept_id.lower()}##identity",
-                "concept_id": concept_id,
-            },
-            UpdateExpression=f"SET {', '.join(update_statements)}",
-            ExpressionAttributeValues=update_values,
-        )
-
-    def _load_therapy(self, therapy: Dict) -> None:
-        """Load individual therapy record into database.
-        Additionally, this method takes responsibility for:
-            * validating record structure correctness
-            * removing duplicates from list-like fields
-            * removing empty fields
-
-        :param Dict therapy: valid therapy object.
-        """
-        therapy = self._rules.apply_rules_to_therapy(therapy)
+        therapy = self._rules.apply_rules_to_therapy(raw_therapy)
         try:
             Drug(**therapy)
         except ValidationError as e:
@@ -405,7 +383,7 @@ class Base(ABC):
 
         concept_id = therapy["concept_id"]
 
-        for attr_type, item_type in ITEM_TYPES.items():
+        for attr_type in ITEM_TYPES.keys():
             if attr_type in therapy:
                 value = therapy[attr_type]
                 if value is None or value == []:
@@ -415,7 +393,6 @@ class Base(ABC):
                 if attr_type == "label":
                     value = value.strip()
                     therapy["label"] = value
-                    # self.database.add_ref_record(value.lower(), concept_id, item_type)
                     continue
 
                 value_set = {v.strip() for v in value}
@@ -426,20 +403,19 @@ class Base(ABC):
                 else:
                     value = list(value_set)
 
-                if attr_type in ("aliases", "trade_names"):
-                    if "label" in therapy:
-                        try:
-                            value.remove(therapy["label"])
-                        except ValueError:
-                            pass
+                if (
+                    attr_type == "aliases" or attr_type == "trade_names"
+                ) and "label" in therapy:
+                    try:
+                        value.remove(therapy["label"])
+                    except ValueError:
+                        pass
 
                 if len(value) > 20:
                     logger.debug(f"{concept_id} has > 20 {attr_type}.")
                     del therapy[attr_type]
                     continue
 
-                # for item in {item.lower() for item in value}:
-                #     self.database.add_ref_record(item, concept_id, item_type)
                 therapy[attr_type] = value
 
         # compress has_indication
@@ -462,14 +438,24 @@ class Base(ABC):
             del therapy["has_indication"]
 
         # handle detail fields
-        approval_attrs = ("approval_ratings", "approval_year")
-        for field in approval_attrs:
-            if approval_attrs in therapy and therapy[field] is None:
+        for field in ("approval_ratings", "approval_year"):
+            field_value = therapy.get(field)
+            if field in therapy and field_value is None:
                 del therapy[field]
+        return therapy
 
-        # self.database.add_record(therapy)
+    def _load_therapy(self, raw_therapy: Dict) -> None:
+        """Load individual therapy record into database.
+        Additionally, this method takes responsibility for:
+            * validating record structure correctness
+            * removing duplicates from list-like fields
+            * removing empty fields
+
+        :param Dict therapy: valid therapy object.
+        """
+        therapy = self._prepare_therapy(raw_therapy)
         self._new_load_therapy(therapy)
-        self._added_ids.append(concept_id)
+        self._added_ids.append(therapy["concept_id"])
 
 
 class DiseaseIndicationBase(Base):

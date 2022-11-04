@@ -26,37 +26,30 @@ class CLI:
     @staticmethod
     @click.command()
     @click.option(
-        "--normalizer",
-        help="The normalizer(s) you wish to update separated by spaces."
+        "--normalizer", help="The normalizer(s) you wish to update separated by spaces."
     )
-    @click.option(
-        "--prod",
-        is_flag=True,
-        help="Working in production environment."
-    )
-    @click.option(
-        "--db_url",
-        help="URL endpoint for the application database."
-    )
-    @click.option(
-        "--update_all",
-        is_flag=True,
-        help="Update all normalizer sources."
-    )
+    @click.option("--prod", is_flag=True, help="Working in production environment.")
+    @click.option("--db_url", help="URL endpoint for the application database.")
+    @click.option("--update_all", is_flag=True, help="Update all normalizer sources.")
     @click.option(
         "--update_merged",
         is_flag=True,
-        help="Update concepts for normalize endpoint from accepted sources."
+        help="Update concepts for normalize endpoint from accepted sources.",
     )
     @click.option(
         "--use_existing",
         is_flag=True,
         default=False,
-        help="Use most recent existing source data instead of fetching latest version"
+        help="Use most recent existing source data instead of fetching latest version",
     )
-    def update_normalizer_db(normalizer: str, prod: bool, db_url: str,
-                             update_all: bool, update_merged: bool,
-                             use_existing: bool) -> None:
+    def update_normalizer_db(
+        normalizer: str,
+        prod: bool,
+        db_url: str,
+        update_all: bool,
+        update_merged: bool,
+        use_existing: bool,
+    ) -> None:
         """Update selected normalizer source(s) in the therapy database.
         \f  # noqa: D301
         :param str normalizer: comma-separated string listing source names
@@ -108,23 +101,28 @@ class CLI:
             CLI()._check_disease_normalizer(normalizers, endpoint_url)
             CLI()._update_normalizers(normalizers, db, update_merged, use_existing)
 
-    def _check_disease_normalizer(self, normalizers: List[str],
-                                  endpoint_url: Optional[str]) -> None:
-        """When loading HemOnc source, perform rudimentary check of Disease Normalizer
-        tables, and reload them if necessary. This reload method should never be used
-        (and is restricted from use) in a production setting.
+    def _check_disease_normalizer(
+        self, normalizers: List[str], endpoint_url: Optional[str]
+    ) -> None:
+        """When loading HemOnc or ChEMBL, perform rudimentary check of the Disease
+        Normalizer tables, and reload them if necessary. This reload method should
+        never be used (and is restricted from use) in a production setting.
 
         :param List[str] normalizers: List of sources to load
         :param Optional[str] endpoint_url: Therapy endpoint URL. This should always be
             a local address.
         """
-        if "hemonc" in normalizers and "THERAPY_NORM_PROD" not in environ:
+        if (
+            "hemonc" in normalizers or "chembl" in normalizers
+        ) and "THERAPY_NORM_PROD" not in environ:
             db = DiseaseDatabase(db_url=endpoint_url)  # type: ignore
             current_tables = {table.name for table in db.dynamodb.tables.all()}
-            if ("disease_concepts" not in current_tables) or \
-                    ("disease_metadata" not in current_tables) or \
-                    (db.diseases.scan()["Count"] == 0) or \
-                    (db.metadata.scan()["Count"] < len(DiseaseSources)):
+            if (
+                ("disease_concepts" not in current_tables)
+                or ("disease_metadata" not in current_tables)  # noqa: W503
+                or (db.diseases.scan()["Count"] == 0)  # noqa: W503
+                or (db.metadata.scan()["Count"] < len(DiseaseSources))  # noqa: W503
+            ):
 
                 msg = "Disease Normalizer not loaded. Loading now..."
                 logger.debug(msg)
@@ -148,13 +146,15 @@ class CLI:
         """Display help message."""
         ctx = click.get_current_context()
         click.echo(
-            "Must either enter 1 or more sources, or use `--update_all` parameter")
+            "Must either enter 1 or more sources, or use `--update_all` parameter"
+        )
         click.echo(ctx.get_help())
         ctx.exit()
 
     @staticmethod
-    def _update_normalizers(normalizers: List[str], db: Database,
-                            update_merged: bool, use_existing: bool) -> None:
+    def _update_normalizers(
+        normalizers: List[str], db: Database, update_merged: bool, use_existing: bool
+    ) -> None:
         """Update selected normalizer sources.
         :param List[str] normalizers: list of source names to update
         :param Database db: database instance to use
@@ -207,8 +207,10 @@ class CLI:
         click.echo("Constructing normalized records...")
         merge.create_merged_concepts(set(processed_ids))
         end_merge = timer()
-        click.echo(f"Merged concept generation completed in"
-                   f" {(end_merge - start_merge):.5f} seconds.")
+        click.echo(
+            f"Merged concept generation completed in"
+            f" {(end_merge - start_merge):.5f} seconds."
+        )
 
     @staticmethod
     def _delete_normalized_data(database: Database) -> None:
@@ -217,8 +219,8 @@ class CLI:
         try:
             while True:
                 with database.therapies.batch_writer(
-                        overwrite_by_pkeys=["label_and_type", "concept_id"]) \
-                        as batch:
+                    overwrite_by_pkeys=["label_and_type", "concept_id"]
+                ) as batch:
                     response = database.therapies.query(
                         IndexName="item_type_index",
                         KeyConditionExpression=Key("item_type").eq("merger"),
@@ -227,10 +229,12 @@ class CLI:
                     if not records:
                         break
                     for record in records:
-                        batch.delete_item(Key={
-                            "label_and_type": record["label_and_type"],
-                            "concept_id": record["concept_id"]
-                        })
+                        batch.delete_item(
+                            Key={
+                                "label_and_type": record["label_and_type"],
+                                "concept_id": record["concept_id"],
+                            }
+                        )
         except ClientError as e:
             click.echo(e.response["Error"]["Message"])
         end_delete = timer()
@@ -244,18 +248,16 @@ class CLI:
         :param Database database: db instance
         """
         source_name = SourceName[f"{source.upper()}"].value
-        # Delete source"s metadata first
+        # Delete source's metadata first
         try:
             metadata = database.metadata.query(
-                KeyConditionExpression=Key(
-                    "src_name").eq(source_name)
+                KeyConditionExpression=Key("src_name").eq(source_name)
             )
             if metadata["Items"]:
                 database.metadata.delete_item(
                     Key={"src_name": metadata["Items"][0]["src_name"]},
                     ConditionExpression="src_name = :src",
-                    ExpressionAttributeValues={
-                        ":src": source_name}
+                    ExpressionAttributeValues={":src": source_name},
                 )
         except ClientError as e:
             click.echo(e.response["Error"]["Message"])
@@ -264,8 +266,7 @@ class CLI:
             while True:
                 response = database.therapies.query(
                     IndexName="src_index",
-                    KeyConditionExpression=Key("src_name").eq(
-                        source_name),
+                    KeyConditionExpression=Key("src_name").eq(source_name),
                 )
 
                 records = response["Items"]
@@ -273,13 +274,14 @@ class CLI:
                     break
 
                 with database.therapies.batch_writer(
-                        overwrite_by_pkeys=["label_and_type", "concept_id"]) as batch:
+                    overwrite_by_pkeys=["label_and_type", "concept_id"]
+                ) as batch:
 
                     for record in records:
                         batch.delete_item(
                             Key={
                                 "label_and_type": record["label_and_type"],
-                                "concept_id": record["concept_id"]
+                                "concept_id": record["concept_id"],
                             }
                         )
         except ClientError as e:

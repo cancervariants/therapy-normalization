@@ -236,6 +236,12 @@ class HemOnc(DiseaseIndicationBase):
                     record["xrefs"].append(xref)
                 elif src_raw == "RxNorm Extension":
                     continue  # skip
+                elif src_raw == "NDC":
+                    xref = f"{NamespacePrefix.NDC.value}:{row[1]}"
+                    record["xrefs"].append(xref)
+                elif src_raw == "HCPCS":
+                    xref = f"{NamespacePrefix.HCPCS.value}:{row[1]}"
+                    record["xrefs"].append(xref)
                 else:
                     logger.warning(f"Unrecognized `Maps To` source: {src_raw}")
 
