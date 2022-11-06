@@ -106,7 +106,17 @@ class GuideToPHARMACOLOGY(Base):
         """
         with open(self._ligands_file, "r") as f:
             rows = csv.reader(f, delimiter="\t")
-            next(rows)
+
+            # check that file structure is the same
+            assert next(rows) == ["# GtoPdb Version: 2022.3 - published: 2022-10-13"]
+            assert next(rows) == [
+                "Ligand ID", "Name", "Species", "Type", "Approved", "Withdrawn",
+                "Labelled", "Radioactive", "PubChem SID", "PubChem CID", "UniProt ID",
+                "Ensembl ID", "Ligand Subunit IDs", "Ligand Subunit Name",
+                "Ligand Subunit UniProt IDs", "Ligand Subunit Ensembl IDs",
+                "IUPAC name", "INN", "Synonyms", "SMILES", "InChIKey", "InChI",
+                "GtoImmuPdb", "GtoMPdb", "Antibacterial"
+            ]
 
             for row in rows:
                 params: Dict[str, Union[List[str], str]] = {
@@ -128,15 +138,14 @@ class GuideToPHARMACOLOGY(Base):
                     associated_with.append(f"{NamespacePrefix.PUBCHEMCOMPOUND.value}:{row[9]}")  # noqa: E501
                 if row[10]:
                     associated_with.append(f"{NamespacePrefix.UNIPROT.value}:{row[10]}")
-                if row[11]:
-                    # IUPAC
-                    aliases.append(row[11])
-                if row[12]:
+                if row[16]:
+                    aliases.append(row[16])  # IUPAC
+                if row[17]:
                     # International Non-proprietary Name assigned by the WHO
-                    aliases.append(row[12])
-                if row[13]:
+                    aliases.append(row[17])
+                if row[18]:
                     # synonyms
-                    synonyms = row[13].split("|")
+                    synonyms = row[18].split("|")
                     for s in synonyms:
                         if "&" in s and ";" in s:
                             name_code = s[s.index("&"):s.index(";") + 1]
@@ -145,8 +154,8 @@ class GuideToPHARMACOLOGY(Base):
                                 s = s.replace(name_code, "")
                             s = html.unescape(s)
                         aliases.append(s)
-                if row[15]:
-                    associated_with.append(f"{NamespacePrefix.INCHIKEY.value}:{row[15]}")  # noqa: E501
+                if row[20]:
+                    associated_with.append(f"{NamespacePrefix.INCHIKEY.value}:{row[20]}")  # noqa: E501
 
                 if associated_with:
                     params["associated_with"] = associated_with
@@ -154,6 +163,19 @@ class GuideToPHARMACOLOGY(Base):
                     params["aliases"] = aliases
 
                 data[params["concept_id"]] = params
+
+    @staticmethod
+    def _get_xrefs(ref: str, namespace: str) -> List[str]:
+        """Construct xrefs from raw string.
+        :param ref: raw ref value (may need to be separated)
+        :param namspace: namespace prefix to use
+        :return: List (usually with just one member) of xref IDs
+        """
+        xrefs = []
+        for split_ref in ref.split("|"):
+            xref = f"{namespace}:{split_ref}"
+            xrefs.append(xref)
+        return xrefs
 
     def _transform_ligand_id_mappings(self, data: Dict) -> None:
         """Transform ligand_id_mappings and add this data to `data`
@@ -163,6 +185,12 @@ class GuideToPHARMACOLOGY(Base):
         """
         with open(self._mapping_file.absolute(), "r") as f:
             rows = csv.reader(f, delimiter="\t")
+            assert next(rows) == ["# GtoPdb Version: 2022.3 - published: 2022-10-13"]
+            assert next(rows) == [
+                "Ligand id", "Name", "Species", "Type", "PubChem SID", "PubChem CID",
+                "ChEMBl ID", "Chebi ID", "UniProt id", "Ensembl ID", "IUPAC name",
+                "INN", "CAS", "DrugBank ID", "Drug Central ID"
+            ]
             for row in rows:
                 concept_id = f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}"
 
@@ -173,17 +201,22 @@ class GuideToPHARMACOLOGY(Base):
                 xrefs = list()
                 associated_with = params.get("associated_with", [])
                 if row[6]:
-                    xrefs.append(f"{NamespacePrefix.CHEMBL.value}:{row[6]}")
+                    xrefs += self._get_xrefs(row[6], NamespacePrefix.CHEMBL.value)
                 if row[7]:
-                    # CHEBI
+                    # CHEBI IDs are already namespaced
                     associated_with.append(row[7])
-                if row[11]:
-                    xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:{row[11]}")
+                if row[8]:
+                    associated_with += self._get_xrefs(
+                        row[8], NamespacePrefix.UNIPROT.value
+                    )
                 if row[12]:
-                    xrefs.append(f"{NamespacePrefix.DRUGBANK.value}:{row[12]}")
+                    xrefs += self._get_xrefs(row[12], NamespacePrefix.CASREGISTRY.value)
                 if row[13]:
-                    associated_with.append(f"{NamespacePrefix.DRUGCENTRAL.value}:{row[13]}")  # noqa: E501
-
+                    xrefs += self._get_xrefs(row[13], NamespacePrefix.DRUGBANK.value)
+                if row[14]:
+                    associated_with += self._get_xrefs(
+                        row[14], NamespacePrefix.DRUGCENTRAL.value
+                    )
                 if xrefs:
                     params["xrefs"] = xrefs
                 if associated_with:

@@ -121,8 +121,36 @@ def cisapride():
     return Drug(**params)
 
 
+@pytest.fixture(scope="module")
+def rolipram():
+    """Create rolipram test fixture.
+    Checks for correct handling of multiple references under same namespace.
+    """
+    return Drug(**{
+        "concept_id": "iuphar.ligand:5260",
+        "label": "rolipram",
+        "xrefs": [
+            "chembl:CHEMBL63",
+            "chemidplus:61413-54-5",
+            "drugbank:DB04149",
+            "drugbank:DB03606"
+        ],
+        "aliases": [
+            "4-[3-(cyclopentyloxy)-4-methoxyphenyl]pyrrolidin-2-one",
+            "(R,S)-rolipram",
+            "(±)-rolipram"
+        ],
+        "associated_with": [
+            "CHEBI:104872",
+            "pubchem.substance:178101944",
+            "pubchem.compound:5092",
+            "inchikey:HJORMJIFDVBMOB-UHFFFAOYSA-N"
+        ]
+    })
+
+
 def test_concept_id_match(guidetopharmacology, compare_response, cisplatin,
-                          arginine_vasotocin, phenobarbital, cisapride):
+                          arginine_vasotocin, phenobarbital, cisapride, rolipram):
     """Test that concept ID queries work correctly."""
     resp = guidetopharmacology.search("iuphar.ligand:5343")
     compare_response(resp, MatchType.CONCEPT_ID, cisplatin)
@@ -136,9 +164,12 @@ def test_concept_id_match(guidetopharmacology, compare_response, cisplatin,
     resp = guidetopharmacology.search("iuphar.ligand:240")
     compare_response(resp, MatchType.CONCEPT_ID, cisapride)
 
+    resp = guidetopharmacology.search("iuphar.ligand:5260")
+    compare_response(resp, MatchType.CONCEPT_ID, rolipram)
+
 
 def test_label_match(guidetopharmacology, compare_response, cisplatin,
-                     arginine_vasotocin, phenobarbital, cisapride):
+                     arginine_vasotocin, phenobarbital, cisapride, rolipram):
     """Test that label queries work correctly."""
     resp = guidetopharmacology.search("cisplatin")
     compare_response(resp, MatchType.LABEL, cisplatin)
@@ -152,9 +183,12 @@ def test_label_match(guidetopharmacology, compare_response, cisplatin,
     resp = guidetopharmacology.search("cisapride")
     compare_response(resp, MatchType.LABEL, cisapride)
 
+    resp = guidetopharmacology.search("rolipram")
+    compare_response(resp, MatchType.LABEL, rolipram)
+
 
 def test_alias_match(guidetopharmacology, compare_response, cisplatin,
-                     arginine_vasotocin, phenobarbital, cisapride):
+                     arginine_vasotocin, phenobarbital, cisapride, rolipram):
     """Test that alias queries work correctly."""
     resp = guidetopharmacology.search("platinol")
     compare_response(resp, MatchType.ALIAS, cisplatin)
@@ -168,9 +202,12 @@ def test_alias_match(guidetopharmacology, compare_response, cisplatin,
     resp = guidetopharmacology.search("Prepulsid")
     compare_response(resp, MatchType.ALIAS, cisapride)
 
+    resp = guidetopharmacology.search("(R,S)-rolipram")
+    compare_response(resp, MatchType.ALIAS, rolipram)
+
 
 def test_xref_match(guidetopharmacology, compare_response, cisplatin,
-                    arginine_vasotocin, phenobarbital, cisapride):
+                    arginine_vasotocin, phenobarbital, cisapride, rolipram):
     """Test that xref queries work correctly."""
     resp = guidetopharmacology.search("chemidplus:15663-27-1")
     compare_response(resp, MatchType.XREF, cisplatin)
@@ -184,9 +221,12 @@ def test_xref_match(guidetopharmacology, compare_response, cisplatin,
     resp = guidetopharmacology.search("drugbank:DB00604")
     compare_response(resp, MatchType.XREF, cisapride)
 
+    resp = guidetopharmacology.search("drugbank:DB03606")
+    compare_response(resp, MatchType.XREF, rolipram)
+
 
 def test_associated_with_match(guidetopharmacology, compare_response, cisplatin,
-                               arginine_vasotocin, phenobarbital, cisapride):
+                               arginine_vasotocin, phenobarbital, cisapride, rolipram):
     """Test that associated_with queries work correctly."""
     resp = guidetopharmacology.search("pubchem.substance:178102005")
     compare_response(resp, MatchType.ASSOCIATED_WITH, cisplatin)
@@ -218,6 +258,9 @@ def test_associated_with_match(guidetopharmacology, compare_response, cisplatin,
     resp = guidetopharmacology.search("inchikey:DCSUBABJRXZOMT-UHFFFAOYSA-N")
     compare_response(resp, MatchType.ASSOCIATED_WITH, cisapride)
 
+    resp = guidetopharmacology.search("pubchem.substance:178101944")
+    compare_response(resp, MatchType.ASSOCIATED_WITH, rolipram)
+
 
 def test_no_match(guidetopharmacology):
     """Test that no match queries work correctly."""
@@ -239,7 +282,7 @@ def test_meta_info(guidetopharmacology):
     resp = guidetopharmacology.query_handler._fetch_meta("GuideToPHARMACOLOGY")
     assert resp.data_license == "CC BY-SA 4.0"
     assert resp.data_license_url == "https://creativecommons.org/licenses/by-sa/4.0/"
-    assert re.match(r"\d{4}.\d+", resp.version)
+    assert re.match("2022.3", resp.version)
     assert resp.data_url == "https://www.guidetopharmacology.org/download.jsp"
     assert resp.rdp_url is None
     assert resp.data_license_attributes == {
