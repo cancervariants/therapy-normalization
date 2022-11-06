@@ -1,5 +1,4 @@
 """Pytest test config tools."""
-import os
 from typing import Dict, Any, Optional, List
 import json
 from pathlib import Path
@@ -11,7 +10,7 @@ from therapy.database import Database
 
 
 TEST_ROOT = Path(__file__).resolve().parents[1]
-TEST_DATA_DIRECTORY = TEST_ROOT / "tests" / "unit" / "data"
+TEST_DATA_DIRECTORY = TEST_ROOT / "tests" / "data"
 
 
 @pytest.fixture(scope="session")
@@ -20,30 +19,22 @@ def test_data():
     return TEST_DATA_DIRECTORY
 
 
-@pytest.fixture(scope="module", autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def db():
-    """Create a DynamoDB test fixture."""
+    """Provide a database instance to be used by tests."""
+    return Database()
 
-    class DB:
-        def __init__(self):
-            self.db = Database()
-            if os.environ.get("TEST") is not None:
-                self.load_test_data()
 
-        def load_test_data(self) -> None:
-            with open(TEST_DATA_DIRECTORY / "therapies.json", "r") as f:
-                therapies = json.load(f)
-                with self.db.therapies.batch_writer() as batch:
-                    for therapy in therapies:
-                        batch.put_item(Item=therapy)
+@pytest.fixture(scope="session")
+def disease_normalizer():
+    """TODO"""
+    with open(TEST_DATA_DIRECTORY / "disease_normalization.json", "r") as f:
+        disease_data = json.load(f)
 
-            with open(TEST_DATA_DIRECTORY / "metadata.json", "r") as f:
-                metadata = json.load(f)
-                with self.db.metadata.batch_writer() as batch:
-                    for m in metadata:
-                        batch.put_item(Item=m)
+        def _normalize_disease(query: str):
+            return disease_data.get(query.lower())
 
-    return DB().db
+    return _normalize_disease
 
 
 @pytest.fixture(scope="module")
@@ -56,7 +47,6 @@ def mock_database():
         def __init__(self):
             """Initialize mock database object. This class's methods shadow the actual
             Database class methods.
-
             `self.records` loads preexisting DB items.
             `self.added_records` stores add record requests, with the concept_id as the
             key and the complete record as the value.
@@ -206,7 +196,8 @@ def compare_records(actual: Drug, fixt: Drug):
 
 
 def compare_response(response: MatchesKeyed, match_type: MatchType,
-                     fixture: Drug = None, fixture_list: List[Drug] = None,
+                     fixture: Optional[Drug] = None,
+                     fixture_list: Optional[List[Drug]] = None,
                      num_records: int = 0):
     """Check that test response is correct. Only 1 of {fixture, fixture_list}
     should be passed as arguments. num_records should only be passed with fixture_list.
