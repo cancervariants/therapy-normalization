@@ -295,7 +295,7 @@ def test_meta_info(guidetopharmacology):
     resp = guidetopharmacology.fetch_meta()
     assert resp.data_license == "CC BY-SA 4.0"
     assert resp.data_license_url == "https://creativecommons.org/licenses/by-sa/4.0/"
-    assert re.match("2022.3", resp.version)
+    assert re.match(r"\d{4}.\d+", resp.version)
     assert resp.data_url == "https://www.guidetopharmacology.org/download.jsp"
     assert resp.rdp_url is None
     assert resp.data_license_attributes == {
