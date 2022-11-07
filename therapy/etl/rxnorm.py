@@ -47,7 +47,6 @@ class RxNorm(Base):
 
     def _create_drug_form_yaml(self) -> None:
         """Create a YAML file containing RxNorm drug form values."""
-        self._drug_forms_file = self._src_dir / f"rxnorm_drug_forms_{self._version}.yaml"  # noqa: E501
         dfs = []
         with open(self._src_file) as f:  # type: ignore
             data = csv.reader(f, delimiter="|")
@@ -107,6 +106,10 @@ class RxNorm(Base):
         self._http_download(f"{url}?ticket={st_r.text}", self._src_dir,
                             handler=self._zip_handler)
 
+    def _get_rrf(self, use_existing: bool) -> None:
+        """TODO"""
+        super()._extract_data(use_existing)
+
     def _extract_data(self, use_existing: bool = False) -> None:
         """Get source files from RxNorm data directory.
         This class expects a file named `rxnorm_<version>.RRF` and a file named
@@ -115,12 +118,10 @@ class RxNorm(Base):
 
         :param bool use_existing: if True, don't try to fetch latest source data
         """
-        super()._extract_data(use_existing)
-        drug_forms_path = self._src_dir / f"rxnorm_drug_forms_{self._version}.yaml"
-        if not drug_forms_path.exists():
+        self._get_rrf(use_existing)
+        self._drug_forms_file = self._src_dir / f"rxnorm_drug_forms_{self._version}.yaml"  # noqa: E501
+        if not self._drug_forms_file.exists():
             self._create_drug_form_yaml()
-        else:
-            self._drug_forms_file = drug_forms_path
 
     def _transform_data(self) -> None:
         """Transform the RxNorm source."""

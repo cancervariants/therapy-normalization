@@ -8,7 +8,7 @@ from therapy.etl import ChEMBL
 ch = ChEMBL(Database())
 ch._extract_data()
 
-TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data"
+TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "chembl"
 out_db_path = TEST_DATA_DIR / ch._src_file.name
 
 try:
@@ -44,6 +44,7 @@ test_chembl_ids = [
     "'CHEMBL25'",
     "'CHEMBL843'",
     "'CHEMBL40'",
+    "'CHEMBL121'"
 ]
 
 md_query = f"""

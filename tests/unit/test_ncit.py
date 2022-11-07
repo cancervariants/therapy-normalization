@@ -3,26 +3,14 @@ import re
 
 import pytest
 
+from therapy.etl.ncit import NCIt
 from therapy.schemas import Drug, MatchType
-from therapy.query import QueryHandler
-from tests.conftest import compare_response
 
 
 @pytest.fixture(scope="module")
-def ncit():
-    """Build NCIt normalizer test fixture."""
-    class QueryGetter:
-
-        def __init__(self):
-            self.query_handler = QueryHandler()
-
-        def search(self, query_str):
-            resp = self.query_handler.search(query_str, keyed=True, incl="ncit")
-            return resp.source_matches["NCIt"]
-
-        def fetch_meta(self):
-            return self.query_handler._fetch_meta("NCIt")
-    return QueryGetter()
+def ncit(test_source):
+    """Provide test ncit query endpoint"""
+    return test_source(NCIt)
 
 
 @pytest.fixture(scope="module")
@@ -133,7 +121,7 @@ def ivermectin():
     return Drug(**params)
 
 
-def test_concept_id_match(ncit, voglibose, apricoxib, trastuzumab,
+def test_concept_id_match(ncit, compare_response, voglibose, apricoxib, trastuzumab,
                           therapeutic_procedure, ivermectin):
     """Test that concept ID query resolves to correct record."""
     response = ncit.search("ncit:C95221")
@@ -179,7 +167,7 @@ def test_concept_id_match(ncit, voglibose, apricoxib, trastuzumab,
     compare_response(response, MatchType.CONCEPT_ID, ivermectin)
 
 
-def test_label_match(ncit, voglibose, apricoxib, trastuzumab):
+def test_label_match(ncit, compare_response, voglibose, apricoxib, trastuzumab):
     """Test that label query resolves to correct record."""
     response = ncit.search("voglibose")
     compare_response(response, MatchType.LABEL, voglibose)
@@ -200,7 +188,7 @@ def test_label_match(ncit, voglibose, apricoxib, trastuzumab):
     compare_response(response, MatchType.LABEL, apricoxib)
 
 
-def test_alias_match(ncit, voglibose, apricoxib):
+def test_alias_match(ncit, compare_response, voglibose, apricoxib):
     """Test that alias query resolves to correct record."""
     response = ncit.search("BASEN")
     compare_response(response, MatchType.ALIAS, voglibose)
@@ -212,7 +200,7 @@ def test_alias_match(ncit, voglibose, apricoxib):
     compare_response(response, MatchType.ALIAS, apricoxib)
 
 
-def test_xref_match(ncit, voglibose, apricoxib, trastuzumab):
+def test_xref_match(ncit, compare_response, voglibose, apricoxib, trastuzumab):
     """Test that xref query resolves to correct record."""
     response = ncit.search("chemidplus:83480-29-9")
     compare_response(response, MatchType.XREF, voglibose)
@@ -224,7 +212,7 @@ def test_xref_match(ncit, voglibose, apricoxib, trastuzumab):
     compare_response(response, MatchType.XREF, trastuzumab)
 
 
-def test_assoc_with_match(ncit, voglibose, apricoxib, trastuzumab):
+def test_assoc_with_match(ncit, compare_response, voglibose, apricoxib, trastuzumab):
     """Test that associated_with query resolves to correct record."""
     response = ncit.search("unii:S77P977AG8")
     compare_response(response, MatchType.ASSOCIATED_WITH, voglibose)
@@ -254,7 +242,7 @@ def test_no_match(ncit):
 
 def test_meta_info(ncit):
     """Test that the meta field is correct."""
-    response = ncit.fetch_meta()
+    response = ncit.query_handler._fetch_meta("NCIt")
     assert response.data_license == "CC BY 4.0"
     assert response.data_license_url == \
         "https://creativecommons.org/licenses/by/4.0/legalcode"

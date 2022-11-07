@@ -3,27 +3,14 @@ import re
 
 import pytest
 
-from tests.conftest import compare_response
-from therapy.query import QueryHandler
+from therapy.etl.guidetopharmacology import GuideToPHARMACOLOGY
 from therapy.schemas import Drug, MatchType
 
 
 @pytest.fixture(scope="module")
-def guidetopharmacology():
-    """Build Guide To PHARMACOLOGY test fixture."""
-    class QueryGetter:
-
-        def __init__(self):
-            self.query_handler = QueryHandler()
-
-        def search(self, query_str):
-            resp = self.query_handler.search(
-                query_str, keyed=True, incl="guidetopharmacology")
-            return resp.source_matches["GuideToPHARMACOLOGY"]
-
-        def fetch_meta(self):
-            return self.query_handler._fetch_meta("GuideToPHARMACOLOGY")
-    return QueryGetter()
+def guidetopharmacology(test_source):
+    """Provide test gtop query endpoint"""
+    return test_source(GuideToPHARMACOLOGY)
 
 
 @pytest.fixture(scope="module")
@@ -134,8 +121,8 @@ def cisapride():
     return Drug(**params)
 
 
-def test_concept_id_match(guidetopharmacology, cisplatin, arginine_vasotocin,
-                          phenobarbital, cisapride):
+def test_concept_id_match(guidetopharmacology, compare_response, cisplatin,
+                          arginine_vasotocin, phenobarbital, cisapride):
     """Test that concept ID queries work correctly."""
     resp = guidetopharmacology.search("iuphar.ligand:5343")
     compare_response(resp, MatchType.CONCEPT_ID, cisplatin)
@@ -150,8 +137,8 @@ def test_concept_id_match(guidetopharmacology, cisplatin, arginine_vasotocin,
     compare_response(resp, MatchType.CONCEPT_ID, cisapride)
 
 
-def test_label_match(guidetopharmacology, cisplatin, arginine_vasotocin,
-                     phenobarbital, cisapride):
+def test_label_match(guidetopharmacology, compare_response, cisplatin,
+                     arginine_vasotocin, phenobarbital, cisapride):
     """Test that label queries work correctly."""
     resp = guidetopharmacology.search("cisplatin")
     compare_response(resp, MatchType.LABEL, cisplatin)
@@ -166,8 +153,8 @@ def test_label_match(guidetopharmacology, cisplatin, arginine_vasotocin,
     compare_response(resp, MatchType.LABEL, cisapride)
 
 
-def test_alias_match(guidetopharmacology, cisplatin, arginine_vasotocin,
-                     phenobarbital, cisapride):
+def test_alias_match(guidetopharmacology, compare_response, cisplatin,
+                     arginine_vasotocin, phenobarbital, cisapride):
     """Test that alias queries work correctly."""
     resp = guidetopharmacology.search("platinol")
     compare_response(resp, MatchType.ALIAS, cisplatin)
@@ -182,8 +169,8 @@ def test_alias_match(guidetopharmacology, cisplatin, arginine_vasotocin,
     compare_response(resp, MatchType.ALIAS, cisapride)
 
 
-def test_xref_match(guidetopharmacology, cisplatin, arginine_vasotocin,
-                    phenobarbital, cisapride):
+def test_xref_match(guidetopharmacology, compare_response, cisplatin,
+                    arginine_vasotocin, phenobarbital, cisapride):
     """Test that xref queries work correctly."""
     resp = guidetopharmacology.search("chemidplus:15663-27-1")
     compare_response(resp, MatchType.XREF, cisplatin)
@@ -198,7 +185,7 @@ def test_xref_match(guidetopharmacology, cisplatin, arginine_vasotocin,
     compare_response(resp, MatchType.XREF, cisapride)
 
 
-def test_associated_with_match(guidetopharmacology, cisplatin,
+def test_associated_with_match(guidetopharmacology, compare_response, cisplatin,
                                arginine_vasotocin, phenobarbital, cisapride):
     """Test that associated_with queries work correctly."""
     resp = guidetopharmacology.search("pubchem.substance:178102005")

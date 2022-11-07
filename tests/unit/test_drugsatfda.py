@@ -4,23 +4,14 @@ from typing import List
 import pytest
 import isodate
 
-from tests.conftest import compare_records
-from therapy.query import QueryHandler
+from therapy.etl.drugsatfda import DrugsAtFDA
 from therapy.schemas import MatchType, Drug
 
 
 @pytest.fixture(scope="module")
-def drugsatfda():
-    """Build Drugs@FDA test fixture."""
-    class QueryGetter:
-
-        def __init__(self):
-            self.normalizer = QueryHandler()
-
-        def search(self, query_str):
-            resp = self.normalizer.search(query_str, keyed=True, incl="drugsatfda")
-            return resp.source_matches["DrugsAtFDA"]
-    return QueryGetter()
+def drugsatfda(test_source):
+    """Provide test Drugs@FDA query endpoint"""
+    return test_source(DrugsAtFDA)
 
 
 @pytest.fixture(scope="module")
@@ -219,7 +210,7 @@ def fenortho() -> List[Drug]:
     ]
 
 
-def test_everolimus(drugsatfda, everolimus):
+def test_everolimus(drugsatfda, compare_records, everolimus):
     """Test everolimus/afinitor"""
     concept_id = "drugsatfda.nda:022334"
 
@@ -272,7 +263,7 @@ def test_everolimus(drugsatfda, everolimus):
     compare_records(records[0], everolimus)
 
 
-def test_dactinomycin(drugsatfda, dactinomycin):
+def test_dactinomycin(drugsatfda, compare_records, dactinomycin):
     """Test dactinomycin"""
     concept_id = "drugsatfda.nda:050682"
 
@@ -312,7 +303,7 @@ def test_dactinomycin(drugsatfda, dactinomycin):
     compare_records(records[0], dactinomycin)
 
 
-def test_cisplatin(drugsatfda, cisplatin):
+def test_cisplatin(drugsatfda, compare_records, cisplatin):
     """Test cisplatin"""
     # test concept IDs
     concept_id = "drugsatfda.anda:074656"
@@ -376,7 +367,7 @@ def test_cisplatin(drugsatfda, cisplatin):
         compare_records(r, fixture)
 
 
-def test_fenortho(fenortho, drugsatfda):
+def test_fenortho(fenortho, compare_records, drugsatfda):
     """Test fenortho."""
     response = drugsatfda.search("drugsatfda.anda:072267")
     assert response.match_type == MatchType.CONCEPT_ID

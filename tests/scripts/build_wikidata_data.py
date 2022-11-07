@@ -29,7 +29,7 @@ for item in result["results"]["bindings"]:
             params[attr] = item[attr]["value"]
         test_data.append(params)
 
-TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data"
+TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "wikidata"
 date = datetime.datetime.today().strftime("%Y-%m-%d")
 outfile_path = TEST_DATA_DIR / f"wikidata_{date}.json"
 with open(outfile_path, "w+") as f:
