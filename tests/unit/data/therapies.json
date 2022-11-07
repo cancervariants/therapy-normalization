@@ -3624,7 +3624,8 @@
     ],
     "approval_ratings": null,
     "approval_year": [],
-    "has_indication": []
+    "has_indication": [],
+    "src_name": "GuideToPHARMACOLOGY"
   },
   {
     "label_and_type": "rolipram##label",
