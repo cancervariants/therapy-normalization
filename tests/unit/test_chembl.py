@@ -1,35 +1,18 @@
 """Test that the therapy normalizer works as intended for the ChEMBL source."""
 import json
-import os
 from pathlib import Path
-from typing import Callable
 
 import pytest
 
 from tests.conftest import compare_records
-from therapy.database import Database
 from therapy.etl import ChEMBL
-from therapy.query import QueryHandler
 from therapy.schemas import Drug, MatchType
 
 
 @pytest.fixture(scope="module")
-def chembl(db: Database, test_data: Path, disease_normalizer: Callable):
-    """Build ChEMBL normalizer test fixture."""
-    if os.environ.get("TEST") is not None:
-        chembl = ChEMBL(db, test_data)
-        chembl._normalize_disease = disease_normalizer  # type: ignore
-        chembl.perform_etl(use_existing=True)
-
-    class QueryGetter:
-
-        def __init__(self):
-            self.query_handler = QueryHandler()
-
-        def search(self, query_str):
-            resp = self.query_handler.search(query_str, keyed=True, incl="chembl")
-            return resp.source_matches["ChEMBL"]
-    return QueryGetter()
+def chembl(test_source):
+    """TODO"""
+    return test_source(ChEMBL)
 
 
 @pytest.fixture(scope="module")

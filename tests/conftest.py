@@ -1,10 +1,13 @@
 """Pytest test config tools."""
-from typing import Dict, Any, Optional, List
+import os
+from typing import Dict, Any, Optional, List, Callable
 import json
 from pathlib import Path
 
 import pytest
 
+from therapy.etl.base import Base
+from therapy.query import QueryHandler
 from therapy.schemas import Drug, MatchType, MatchesKeyed
 from therapy.database import Database
 
@@ -35,6 +38,35 @@ def disease_normalizer():
             return disease_data.get(query.lower())
 
     return _normalize_disease
+
+
+@pytest.fixture(scope="session")
+def test_source(
+        db: Database, test_data: Path,
+        disease_normalizer: Callable
+):
+    """TODO"""
+    def test_source_factory(EtlClass: Base):
+        if os.environ.get("THERAPY_TEST") is not None:
+            test_class = EtlClass(db, test_data)  # type: ignore
+            test_class._normalize_disease = disease_normalizer  # type: ignore
+            test_class.perform_etl(use_existing=True)
+
+        class QueryGetter:
+
+            def __init__(self):
+                self.query_handler = QueryHandler()
+                self._src_name = EtlClass.__name__  # type: ignore
+
+            def search(self, query_str: str):
+                resp = self.query_handler.search(
+                    query_str, keyed=True, incl=self._src_name
+                )
+                return resp.source_matches[self._src_name]
+
+        return QueryGetter()
+
+    return test_source_factory
 
 
 @pytest.fixture(scope="module")
