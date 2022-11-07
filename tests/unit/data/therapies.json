@@ -3601,7 +3601,7 @@
     "concept_id": "wikidata:Q418702"
   },
   {
-    "label_and_type": "iuphar.ligand:5260##identity"
+    "label_and_type": "iuphar.ligand:5260##identity",
     "concept_id": "iuphar.ligand:5260",
     "label": "rolipram",
     "aliases": [
