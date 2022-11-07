@@ -3640,7 +3640,7 @@
     "item_type": "alias"
   },
   {
-    "label_and_type": "drugbank:03605##xref",
+    "label_and_type": "drugbank:db03606##xref",
     "concept_id": "iuphar.ligand:5260",
     "src_name": "GuideToPHARMACOLOGY",
     "item_type": "xref"
