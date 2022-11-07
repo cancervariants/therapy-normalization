@@ -11,7 +11,7 @@ from therapy.schemas import Drug, MatchType
 
 @pytest.fixture(scope="module")
 def chembl(test_source):
-    """TODO"""
+    """Provide test chembl query endpoint"""
     return test_source(ChEMBL)
 
 
