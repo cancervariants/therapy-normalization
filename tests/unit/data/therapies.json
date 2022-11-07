@@ -3599,5 +3599,56 @@
     "item_type": "alias",
     "src_name": "Wikidata",
     "concept_id": "wikidata:Q418702"
+  },
+  {
+    "label_and_type": "iuphar.ligand:5260##identity",
+    "concept_id": "iuphar.ligand:5260",
+    "label": "rolipram",
+    "aliases": [
+      "4-[3-(cyclopentyloxy)-4-methoxyphenyl]pyrrolidin-2-one",
+      "(R,S)-rolipram",
+      "(±)-rolipram"
+    ],
+    "trade_names": [],
+    "xrefs": [
+      "chembl:CHEMBL63",
+      "chemidplus:61413-54-5",
+      "drugbank:DB04149",
+      "drugbank:DB03606"
+    ],
+    "associated_with": [
+      "CHEBI:104872",
+      "pubchem.substance:178101944",
+      "pubchem.compound:5092",
+      "inchikey:HJORMJIFDVBMOB-UHFFFAOYSA-N"
+    ],
+    "approval_ratings": null,
+    "approval_year": [],
+    "has_indication": [],
+    "src_name": "GuideToPHARMACOLOGY"
+  },
+  {
+    "label_and_type": "rolipram##label",
+    "concept_id": "iuphar.ligand:5260",
+    "src_name": "GuideToPHARMACOLOGY",
+    "item_type": "label"
+  },
+  {
+    "label_and_type": "(r,s)-rolipram##alias",
+    "concept_id": "iuphar.ligand:5260",
+    "src_name": "GuideToPHARMACOLOGY",
+    "item_type": "alias"
+  },
+  {
+    "label_and_type": "drugbank:db03606##xref",
+    "concept_id": "iuphar.ligand:5260",
+    "src_name": "GuideToPHARMACOLOGY",
+    "item_type": "xref"
+  },
+  {
+    "label_and_type": "pubchem.substance:178101944##associated_with",
+    "concept_id": "iuphar.ligand:5260",
+    "src_name": "GuideToPHARMACOLOGY",
+    "item_type": "associated_with"
   }
 ]
