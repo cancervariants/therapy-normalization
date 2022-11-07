@@ -30,7 +30,7 @@ def db():
 
 @pytest.fixture(scope="session")
 def disease_normalizer():
-    """TODO"""
+    """Provide mock disease normalizer."""
     with open(TEST_DATA_DIRECTORY / "disease_normalization.json", "r") as f:
         disease_data = json.load(f)
 
@@ -45,7 +45,11 @@ def test_source(
         db: Database, test_data: Path,
         disease_normalizer: Callable
 ):
-    """TODO"""
+    """Provide query endpoint for testing sources. If THERAPY_TEST is set, will try to
+    load DB from test data.
+    :return: factory function that takes an ETL class instance and returns a query
+    endpoint.
+    """
     def test_source_factory(EtlClass: Base):
         if os.environ.get("THERAPY_TEST") is not None:
             test_class = EtlClass(db, test_data)  # type: ignore
