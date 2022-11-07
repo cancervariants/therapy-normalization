@@ -191,7 +191,7 @@ def mock_database():
     return MockDatabase
 
 
-def compare_records(actual: Drug, fixt: Drug):
+def _compare_records(actual: Drug, fixt: Drug):
     """Check that identity records are identical."""
     assert actual.concept_id == fixt.concept_id
     assert actual.label == fixt.label
@@ -231,10 +231,15 @@ def compare_records(actual: Drug, fixt: Drug):
             assert actual_inds[i] == fixture_inds[i]
 
 
-def compare_response(response: MatchesKeyed, match_type: MatchType,
-                     fixture: Optional[Drug] = None,
-                     fixture_list: Optional[List[Drug]] = None,
-                     num_records: int = 0):
+def compare_records():
+    """Provide record comparison function"""
+    return _compare_records
+
+
+def _compare_response(
+    response: MatchesKeyed, match_type: MatchType, fixture: Optional[Drug] = None,
+    fixture_list: Optional[List[Drug]] = None, num_records: int = 0
+):
     """Check that test response is correct. Only 1 of {fixture, fixture_list}
     should be passed as arguments. num_records should only be passed with fixture_list.
 
@@ -270,3 +275,8 @@ def compare_response(response: MatchesKeyed, match_type: MatchType,
                     break
             else:
                 assert False  # test fixture not found in response
+
+
+def compare_response():
+    """Provide response comparison function"""
+    return _compare_response

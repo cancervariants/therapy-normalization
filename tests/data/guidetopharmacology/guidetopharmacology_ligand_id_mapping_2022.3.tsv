@@ -5,3 +5,4 @@ Ligand id,Name,Species,Type,PubChem SID,PubChem CID,ChEMBl ID,Chebi ID,UniProt i
 5343,cisplatin,,Inorganic,178102005,441203,CHEMBL11359,CHEBI:27899,,,,cisplatin,15663-27-1,DB00515,
 3303,L745870,,Synthetic organic,178100340,5311200,CHEMBL267014,,,,"3-[[4-(4-chlorophenyl)piperazin-1-yl]methyl]-1H-pyrrolo[2,3-b]pyridine",,158985-00-3,,
 2804,phenobarbital,,Synthetic organic,135650817,4763,CHEMBL40,CHEBI:8069,,,"5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione",phenobarbital,50-06-6,DB01174,2134
+5260,rolipram,,Synthetic organic,178101944,5092,CHEMBL63,CHEBI:104872,,,4-[3-(cyclopentyloxy)-4-methoxyphenyl]pyrrolidin-2-one,rolipram,61413-54-5,DB04149|DB03606,
