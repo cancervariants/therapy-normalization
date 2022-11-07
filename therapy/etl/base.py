@@ -329,3 +329,11 @@ class DiseaseIndicationBase(Base):
         else:
             logger.warning(f"Failed to normalize disease term: {query}")
             return None
+
+
+class SourceFormatException(Exception):
+    """Raise when source data formatting is incompatible with the source transformation
+    methods: for example, if columns in a CSV file have changed.
+    """
+
+    pass

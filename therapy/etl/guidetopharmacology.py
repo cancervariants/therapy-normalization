@@ -9,7 +9,7 @@ import requests
 
 from therapy import logger
 from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, ApprovalRating
-from therapy.etl.base import Base
+from therapy.etl.base import Base, SourceFormatException
 
 
 class GuideToPHARMACOLOGY(Base):
@@ -109,14 +109,18 @@ class GuideToPHARMACOLOGY(Base):
 
             # check that file structure is the same
             next(rows)
-            assert next(rows) == [
+            if next(rows) != [
                 "Ligand ID", "Name", "Species", "Type", "Approved", "Withdrawn",
                 "Labelled", "Radioactive", "PubChem SID", "PubChem CID", "UniProt ID",
                 "Ensembl ID", "Ligand Subunit IDs", "Ligand Subunit Name",
                 "Ligand Subunit UniProt IDs", "Ligand Subunit Ensembl IDs",
                 "IUPAC name", "INN", "Synonyms", "SMILES", "InChIKey", "InChI",
                 "GtoImmuPdb", "GtoMPdb", "Antibacterial"
-            ]
+            ]:
+                raise SourceFormatException(
+                    "GtoP ligands file contains missing or unrecognized columns. See "
+                    "FAQ in README for suggested resolution."
+                )
 
             for row in rows:
                 params: Dict[str, Union[List[str], str]] = {
@@ -186,11 +190,16 @@ class GuideToPHARMACOLOGY(Base):
         with open(self._mapping_file.absolute(), "r") as f:
             rows = csv.reader(f, delimiter="\t")
             next(rows)
-            assert next(rows) == [
+            if next(rows) != [
                 "Ligand id", "Name", "Species", "Type", "PubChem SID", "PubChem CID",
                 "ChEMBl ID", "Chebi ID", "UniProt id", "Ensembl ID", "IUPAC name",
                 "INN", "CAS", "DrugBank ID", "Drug Central ID"
-            ]
+            ]:
+                raise SourceFormatException(
+                    "GtoP ligand mapping file contains missing or unrecognized "
+                    "columns. See FAQ in README for suggested resolution."
+                )
+
             for row in rows:
                 concept_id = f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}"
 
