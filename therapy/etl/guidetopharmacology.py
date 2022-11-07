@@ -108,7 +108,7 @@ class GuideToPHARMACOLOGY(Base):
             rows = csv.reader(f, delimiter="\t")
 
             # check that file structure is the same
-            assert next(rows) == ["# GtoPdb Version: 2022.3 - published: 2022-10-13"]
+            next(rows)
             assert next(rows) == [
                 "Ligand ID", "Name", "Species", "Type", "Approved", "Withdrawn",
                 "Labelled", "Radioactive", "PubChem SID", "PubChem CID", "UniProt ID",
@@ -185,7 +185,7 @@ class GuideToPHARMACOLOGY(Base):
         """
         with open(self._mapping_file.absolute(), "r") as f:
             rows = csv.reader(f, delimiter="\t")
-            assert next(rows) == ["# GtoPdb Version: 2022.3 - published: 2022-10-13"]
+            next(rows)
             assert next(rows) == [
                 "Ligand id", "Name", "Species", "Type", "PubChem SID", "PubChem CID",
                 "ChEMBl ID", "Chebi ID", "UniProt id", "Ensembl ID", "IUPAC name",
