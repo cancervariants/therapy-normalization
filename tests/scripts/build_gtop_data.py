@@ -19,6 +19,7 @@ ligand_ids = {
     "2804",
     "240",
     "3303",
+    "5260"
 }
 with open(gtop._ligands_file, "r") as f:
     reader = csv.reader(f, delimiter="\t")
