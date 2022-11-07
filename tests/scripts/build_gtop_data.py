@@ -9,8 +9,8 @@ from therapy.database import Database
 gtop = GuideToPHARMACOLOGY(Database())
 gtop._extract_data()
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data"
-ligands_file_path = TEST_DATA_DIR / gtop._ligands_file.name
-mapping_file_path = TEST_DATA_DIR / gtop._mapping_file.name
+ligands_file_path = TEST_DATA_DIR / "guidetopharmacology" / gtop._ligands_file.name
+mapping_file_path = TEST_DATA_DIR / "guidetopharmacology" / gtop._mapping_file.name
 
 ligands_rows = []
 ligand_ids = {
