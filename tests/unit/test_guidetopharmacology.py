@@ -168,6 +168,9 @@ def test_alias_match(guidetopharmacology, compare_response, cisplatin,
     resp = guidetopharmacology.search("Prepulsid")
     compare_response(resp, MatchType.ALIAS, cisapride)
 
+    resp = guidetopharmacology.search("(R,S)-rolipram")
+    compare_response(resp, MatchType.ALIAS, rolipram)
+
 
 def test_xref_match(guidetopharmacology, compare_response, cisplatin,
                     arginine_vasotocin, phenobarbital, cisapride):
@@ -183,6 +186,9 @@ def test_xref_match(guidetopharmacology, compare_response, cisplatin,
 
     resp = guidetopharmacology.search("drugbank:DB00604")
     compare_response(resp, MatchType.XREF, cisapride)
+
+    resp = guidetopharmacology.search("drugbank:DB03606")
+    compare_response(resp, MatchType.XREF, rolipram)
 
 
 def test_associated_with_match(guidetopharmacology, compare_response, cisplatin,
@@ -217,6 +223,9 @@ def test_associated_with_match(guidetopharmacology, compare_response, cisplatin,
 
     resp = guidetopharmacology.search("inchikey:DCSUBABJRXZOMT-UHFFFAOYSA-N")
     compare_response(resp, MatchType.ASSOCIATED_WITH, cisapride)
+
+    resp = guidetopharmacology.search("pubchem.substance:178101944")
+    compare_response(resp, MatchType.ASSOCIATED_WITH, rolipram)
 
 
 def test_no_match(guidetopharmacology):
