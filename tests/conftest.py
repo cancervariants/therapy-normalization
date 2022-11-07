@@ -55,6 +55,7 @@ def test_source(
             test_class = EtlClass(db, test_data)  # type: ignore
             test_class._normalize_disease = disease_normalizer  # type: ignore
             test_class.perform_etl(use_existing=True)
+            test_class.database.flush_batch()
 
         class QueryGetter:
 
@@ -231,6 +232,7 @@ def _compare_records(actual: Drug, fixt: Drug):
             assert actual_inds[i] == fixture_inds[i]
 
 
+@pytest.fixture(scope="session")
 def compare_records():
     """Provide record comparison function"""
     return _compare_records
@@ -262,7 +264,7 @@ def _compare_response(
     assert response.match_type == match_type
     if fixture:
         assert len(response.records) == 1
-        compare_records(response.records[0], fixture)
+        _compare_records(response.records[0], fixture)
     elif fixture_list:
         if not num_records:
             assert len(response.records) == len(fixture_list)
@@ -271,12 +273,13 @@ def _compare_response(
         for fixt in fixture_list:
             for record in response.records:
                 if fixt.concept_id == record.concept_id:
-                    compare_records(record, fixt)
+                    _compare_records(record, fixt)
                     break
             else:
                 assert False  # test fixture not found in response
 
 
+@pytest.fixture(scope="session")
 def compare_response():
     """Provide response comparison function"""
     return _compare_response

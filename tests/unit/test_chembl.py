@@ -4,7 +4,6 @@ from pathlib import Path
 
 import pytest
 
-from tests.conftest import compare_records
 from therapy.etl import ChEMBL
 from therapy.schemas import Drug, MatchType
 
@@ -46,7 +45,7 @@ def rosiglitazone(fixture_data):
     return Drug(**fixture_data["rosiglitazone"])
 
 
-def test_concept_id_cisplatin(cisplatin, chembl):
+def test_concept_id_cisplatin(cisplatin, chembl, compare_records):
     """Test that cisplatin drug normalizes to correct drug concept
     as a CONCEPT_ID match.
     """
@@ -78,7 +77,7 @@ def test_concept_id_cisplatin(cisplatin, chembl):
     compare_records(response.records[0], cisplatin)
 
 
-def test_cisplatin_label(cisplatin, chembl):
+def test_cisplatin_label(cisplatin, chembl, compare_records):
     """Test that cisplatin drug normalizes to correct drug concept
     as a LABEL match.
     """
@@ -101,7 +100,7 @@ def test_cisplatin_label(cisplatin, chembl):
     compare_records(response.records[ind], cisplatin)
 
 
-def test_cisplatin_alias(cisplatin, chembl):
+def test_cisplatin_alias(cisplatin, chembl, compare_records):
     """Test that alias term normalizes to correct drug concept as an
     ALIAS match.
     """
@@ -132,7 +131,7 @@ def test_no_match(chembl):
     assert len(response.records) == 0
 
 
-def test_l745870_concept_id(l745870, chembl):
+def test_l745870_concept_id(l745870, chembl, compare_records):
     """Test that L-745870 drug normalizes to correct drug concept
     as a CONCEPT_ID match.
     """
@@ -162,7 +161,7 @@ def test_l745870_concept_id(l745870, chembl):
     compare_records(response.records[0], l745870)
 
 
-def test_l745870_label(l745870, chembl):
+def test_l745870_label(l745870, chembl, compare_records):
     """Test that L-745870 drug normalizes to correct drug concept
     as a LABEL match.
     """
@@ -177,7 +176,7 @@ def test_l745870_label(l745870, chembl):
     compare_records(response.records[0], l745870)
 
 
-def test_aspirin_concept_id(aspirin, chembl):
+def test_aspirin_concept_id(aspirin, chembl, compare_records):
     """Test that L-745870 drug normalizes to correct drug concept
     as a CONCEPT_ID match.
     """
@@ -207,7 +206,7 @@ def test_aspirin_concept_id(aspirin, chembl):
     compare_records(response.records[0], aspirin)
 
 
-def test_aspirin_label(aspirin, chembl):
+def test_aspirin_label(aspirin, chembl, compare_records):
     """Test that L-745870 drug normalizes to correct drug concept
     as a LABEL match.
     """
@@ -223,7 +222,7 @@ def test_aspirin_label(aspirin, chembl):
     compare_records(response.records[0], aspirin)
 
 
-def test_rosiglitazone(rosiglitazone, chembl):
+def test_rosiglitazone(rosiglitazone, chembl, compare_records):
     """Test rosiglitazone -- checks for presence of chembl_withdrawn rating."""
     response = chembl.search("chembl:CHEMBL843")
     assert response.match_type == MatchType.CONCEPT_ID
