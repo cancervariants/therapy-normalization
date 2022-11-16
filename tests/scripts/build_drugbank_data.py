@@ -7,7 +7,7 @@ from therapy.etl import DrugBank
 
 db = DrugBank(Database())
 db._extract_data()
-TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data"
+TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "drugbank"
 outfile_path = TEST_DATA_DIR / db._src_file.name
 
 with open(db._src_file, "r") as f:

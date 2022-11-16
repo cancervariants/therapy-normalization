@@ -44,11 +44,11 @@ class Base(ABC):
         :param Database database: application database object
         :param Path data_path: path to app data directory
         """
-        name = self.__class__.__name__
+        self._name = self.__class__.__name__
         self.database = database
-        self._src_dir: Path = Path(data_path / name.lower())
+        self._src_dir: Path = Path(data_path / self._name.lower())
         self._added_ids: List[str] = []
-        self._rules = Rules(SourceName(name))
+        self._rules = Rules(SourceName(self._name))
 
     def perform_etl(self, use_existing: bool = False) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
@@ -167,6 +167,12 @@ class Base(ABC):
         else:
             return matches.groups()[0]
 
+    def _get_existing_files(self) -> List[Path]:
+        """Get existing source files from data directory.
+        :return: sorted list of file objects
+        """
+        return list(sorted(self._src_dir.glob(f"{self._name.lower()}_*.*")))
+
     def _extract_data(self, use_existing: bool = False) -> None:
         """Get source file from data directory.
 
@@ -183,7 +189,7 @@ class Base(ABC):
         self._src_dir.mkdir(exist_ok=True, parents=True)
         src_name = type(self).__name__.lower()
         if use_existing:
-            files = list(sorted(self._src_dir.glob(f"{src_name}_*.*")))
+            files = self._get_existing_files()
             if len(files) < 1:
                 raise FileNotFoundError(f"No source data found for {src_name}")
             self._src_file: Path = files[-1]
@@ -326,3 +332,11 @@ class DiseaseIndicationBase(Base):
         else:
             logger.warning(f"Failed to normalize disease term: {query}")
             return None
+
+
+class SourceFormatException(Exception):
+    """Raise when source data formatting is incompatible with the source transformation
+    methods: for example, if columns in a CSV file have changed.
+    """
+
+    pass

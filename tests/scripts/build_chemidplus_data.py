@@ -8,7 +8,7 @@ from therapy.database import Database
 
 ch = ChemIDplus(Database())
 ch._extract_data()
-TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data"
+TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "chemidplus"
 outfile_path = TEST_DATA_DIR / ch._src_file.name
 
 root = ET.Element("file")

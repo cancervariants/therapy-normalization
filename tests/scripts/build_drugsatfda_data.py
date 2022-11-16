@@ -8,7 +8,7 @@ from therapy.database import Database
 
 dfa = DrugsAtFDA(Database())
 dfa._extract_data()
-TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data"
+TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "drugsatfda"
 outfile_path = TEST_DATA_DIR / dfa._src_file.name
 
 with open(dfa._src_file, "r") as f:
@@ -30,6 +30,8 @@ concept_ids = [
     "NDA091141",
     "NDA022007",
     "NDA050682",
+    "NDA017604",
+    "ANDA214475"
 ]
 
 out_data = {"meta": data["meta"], "results": []}

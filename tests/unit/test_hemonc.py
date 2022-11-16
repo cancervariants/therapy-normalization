@@ -80,6 +80,7 @@ def bendamustine():
         "xrefs": ["rxcui:134547"],
         "associated_with": [],
         "trade_names": [
+            "Belrapzo",
             "Bendamax",
             "Bendawel",
             "Bendeka",
@@ -222,7 +223,7 @@ def test_xref_match(hemonc, compare_response, cisplatin, bendamustine, degarelix
 
 def test_metadata(hemonc):
     """Test that source metadata returns correctly."""
-    response = hemonc.fetch_meta()
+    response = hemonc.query_handler._fetch_meta("HemOnc")
     assert response.data_license == "CC BY 4.0"
     assert response.data_license_url == "https://creativecommons.org/licenses/by/4.0/legalcode"  # noqa: E501
     assert isodate.parse_date(response.version)

@@ -8,9 +8,9 @@ from therapy.database import Database
 
 gtop = GuideToPHARMACOLOGY(Database())
 gtop._extract_data()
-TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data"
-ligands_file_path = TEST_DATA_DIR / "guidetopharmacology" / gtop._ligands_file.name
-mapping_file_path = TEST_DATA_DIR / "guidetopharmacology" / gtop._mapping_file.name
+TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "guidetopharmacology"
+ligands_file_path = TEST_DATA_DIR / gtop._ligands_file.name
+mapping_file_path = TEST_DATA_DIR / gtop._mapping_file.name
 
 ligands_rows = []
 ligand_ids = {
@@ -31,7 +31,7 @@ with open(gtop._ligands_file, "r") as f:
             ligands_rows.append(row)
 
 with open(ligands_file_path, "w") as f:
-    writer = csv.writer(f)
+    writer = csv.writer(f, delimiter="\t", quoting=csv.QUOTE_ALL)
     writer.writerows(ligands_rows)
 
 map_rows = []
@@ -45,5 +45,5 @@ with open(gtop._mapping_file, "r") as f:
             map_rows.append(row)
 
 with open(mapping_file_path, "w") as f:
-    writer = csv.writer(f)
+    writer = csv.writer(f, delimiter="\t", quoting=csv.QUOTE_ALL)
     writer.writerows(map_rows)
