@@ -41,6 +41,8 @@ TRADE_NAMES = ["BD", "BN", "SBD"]
 RXNORM_XREFS = ["ATC", "CVX", "DRUGBANK", "MMSL", "MSH", "MTHCMSFRF", "MTHSPL",
                 "RXNORM", "USP", "VANDF"]
 
+THERAPY_FIELDS = set(ITEM_TYPES.keys()) | {"concept_id", "approval_ratings"}
+
 
 class RxNorm(Base):
     """Class for RxNorm ETL methods."""
@@ -179,11 +181,11 @@ class RxNorm(Base):
                         assert Drug(**params)
                         self._load_therapy(params)
 
-    def _get_brands(self, row: List, ingredient_brands: Dict) -> None:
+    def _get_brands(self, row: List, ingredient_to_brands: Dict) -> None:
         """Add ingredient and brand to ingredient_brands.
 
         :param List row: A row in the RxNorm data file.
-        :param Dict ingredient_brands: Store brands for each ingredient
+        :param Dict ingredient_to_brand: Store brands for each ingredient
         """
         # SBDC: Ingredient(s) + Strength + [Brand Name]
         term = row[14]
@@ -201,16 +203,16 @@ class RxNorm(Base):
             self._add_term(ingredient_brands, brand,
                            ingredients.strip())
 
-    def _get_trade_names(self, value: Dict, precise_ingredient: Dict,
+    def _get_trade_names(self, record: Dict, precise_ingredient: Dict,
                          ingredient_brands: Dict, sbdfs: Dict) -> None:
         """Get trade names for a given ingredient.
 
-        :param Dict value: Therapy attributes
+        :param Dict record: Therapy attributes
         :param Dict precise_ingredient: Brand names for precise ingredient
         :param Dict ingredient_brands: Brand names for ingredient
         :param Dict sbdfs: Brand names for ingredient from SBDF row
         """
-        record_label = value["label"].lower()
+        record_label = record["label"].lower()
         labels = [record_label]
 
         if "PIN" in value and value["PIN"] \

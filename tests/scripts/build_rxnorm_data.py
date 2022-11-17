@@ -14,8 +14,22 @@ rxnorm_outfile_path = TEST_DATA_DIR / rx._src_file.name
 drug_forms_outfile_path = TEST_DATA_DIR / rx._drug_forms_file.name
 
 rxnorm_ids = {
-    "100213", "2555", "142424", "644", "10600", "1011", "1911", "44", "61", "595",
-    "10582", "4493", "227224"
+    # main concepts
+    "100213", "2555", "142424", "644", "10600", "1011", "1191", "44", "61", "595",
+    "10582", "4493", "227224", "1041527", "218330",
+    # ingredient-associated names
+    "2003328",  # add evivo
+    "202856",  # ?
+    "2618903",
+    # "218330",
+    # "1546354",
+    # "1041527",
+    # "151722",
+    # "202856",
+
+
+    # WORKING
+    # pin: D000070236
 }
 
 rows_to_add = []
