@@ -11,7 +11,7 @@ import shutil
 import zipfile
 import re
 from os import environ, remove
-from typing import List, Dict, Any
+from typing import List, Dict
 from pathlib import Path
 
 import yaml
@@ -20,7 +20,8 @@ from boto3.dynamodb.table import BatchWriter
 import requests
 
 from therapy import DownloadException, XREF_SOURCES, ASSOC_WITH_SOURCES, ITEM_TYPES
-from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, ApprovalRating
+from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
+    ApprovalRating, RecordParams
 from therapy.etl.base import Base
 
 logger = logging.getLogger("therapy")
@@ -39,8 +40,6 @@ TRADE_NAMES = ["BD", "BN", "SBD"]
 # Allowed rxnorm xrefs that have Source Level Restriction 0 or 1
 RXNORM_XREFS = ["ATC", "CVX", "DRUGBANK", "MMSL", "MSH", "MTHCMSFRF", "MTHSPL",
                 "RXNORM", "USP", "VANDF"]
-
-THERAPY_FIELDS = set(ITEM_TYPES.keys()) | {"concept_id", "approval_ratings"}
 
 
 class RxNorm(Base):
@@ -134,124 +133,124 @@ class RxNorm(Base):
         with open(self._drug_forms_file, "r") as file:
             drug_forms = yaml.safe_load(file)
 
-        # Transformed therapy records
-        records: Dict[str, Dict] = dict()
-        # Link ingredient (IN) to brand name (BN)
-        ingredient_to_brands: Dict[str, str] = dict()
-        # Link precise ingredient (PIN) to brand name
-        precise_ingredient_to_brand: Dict[str, str] = dict()
-        # TODO is this named correctly?
-        # Link ingredient to Semantic Banded Drug Form
-        ingredient_to_sbdf: Dict[str, str] = dict()
-        # Get RXNORM|BN to concept_id
-        brand_to_concept_id: Dict[str, str] = dict()
-
         with open(self._src_file) as f:
             rff_data = csv.reader(f, delimiter="|")
+            # Link ingredient to brand
+            ingredient_brands: Dict[str, str] = dict()
+            # Link precise ingredient to get brand
+            precise_ingredient: Dict[str, str] = dict()
+            # Transformed therapy records
+            data: Dict[str, Dict] = dict()
+            # Link ingredient to brand
+            sbdfs: Dict[str, str] = dict()
+            # Get RXNORM|BN to concept_id
+            brands: Dict[str, str] = dict()
             for row in rff_data:
                 if row[11] in RXNORM_XREFS:
                     concept_id = f"{NamespacePrefix.RXNORM.value}:{row[0]}"
                     if row[12] == "BN" and row[11] == "RXNORM":
-                        brand_to_concept_id[row[14]] = concept_id
+                        brands[row[14]] = concept_id
                     if row[12] == "SBDC" and row[11] == "RXNORM":
                         # Semantic Branded Drug Component
-                        self._get_brands(row, ingredient_to_brands)
+                        self._get_brands(row, ingredient_brands)
                     else:
-                        if concept_id not in records.keys():
-                            record: Dict[str, Any] = {"concept_id": concept_id}
-                            # TODO i think these can be removed
-                            # self._add_str_field(record, row, precise_ingredient,
-                            #                     drug_forms, sbdfs)
-                            # self._add_xref_assoc(record, row)
-                            records[concept_id] = record
+                        if concept_id not in data.keys():
+                            params: RecordParams = {}
+                            params["concept_id"] = concept_id
+                            self._add_str_field(params, row, precise_ingredient,
+                                                drug_forms, sbdfs)
+                            self._add_xref_assoc(params, row)
+                            data[concept_id] = params
                         else:
                             # Concept already created
-                            record = records[concept_id]
-                        self._add_str_field(record, row, precise_ingredient_to_brand,
-                                            drug_forms, ingredient_to_sbdf)
-                        self._add_xref_assoc(record, row)
+                            params = data[concept_id]
+                            self._add_str_field(params, row, precise_ingredient,
+                                                drug_forms, sbdfs)
+                            self._add_xref_assoc(params, row)
 
             with self.database.therapies.batch_writer() as batch:
-                for record in records.values():
-                    if "label" in record:
-                        self._get_trade_names(record, precise_ingredient_to_brand,
-                                              ingredient_to_brands, ingredient_to_sbdf)
-                        self._load_brand_concepts(record, brand_to_concept_id, batch)
+                for value in data.values():
+                    if "label" in value:
+                        self._get_trade_names(value, precise_ingredient,
+                                              ingredient_brands, sbdfs)
+                        self._load_brand_concepts(value, brands, batch)
 
-                        # record_final = {"concept_id": record["concept_id"]}
-                        #
-                        # for field in THERAPY_FIELDS:
-                        #     record_final[field] = record.get(field)
-                        if "PIN" in record:  # TODO any others?
-                            del record["PIN"]
+                        params = {"concept_id": value["concept_id"]}
 
-                        if record["concept_id"] == "rxcui:100213":
-                            breakpoint()  # TODO
+                        for field in list(ITEM_TYPES.keys()) + ["approval_ratings"]:
+                            field_value = value.get(field)
+                            if field_value:
+                                params[field] = field_value
+                        assert Drug(**params)
+                        self._load_therapy(params)
 
-                        self._load_therapy(record)
-
-    def _get_brands(self, row: List, ingredient_to_brands: Dict) -> None:
+    def _get_brands(self, row: List, ingredient_brands: Dict) -> None:
         """Add ingredient and brand to ingredient_brands.
 
         :param List row: A row in the RxNorm data file.
-        :param Dict ingredient_to_brand: Store brands for each ingredient
+        :param Dict ingredient_brands: Store brands for each ingredient
         """
         # SBDC: Ingredient(s) + Strength + [Brand Name]
         term = row[14]
-        ingredients_brand = re.sub(
-            r"(\d*)(\d*\.)?\d+ (MG|UNT|ML)?(/(ML|HR|MG))?", "", term
-        )
+        ingredients_brand = \
+            re.sub(r"(\d*)(\d*\.)?\d+ (MG|UNT|ML)?(/(ML|HR|MG))?",
+                   "", term)
         brand = term.split("[")[-1].split("]")[0]
         ingredients = ingredients_brand.replace(f"[{brand}]", "")
         if "/" in ingredients:
             ingredients = ingredients.split("/")
             for ingredient in ingredients:
-                self._add_term_to_field(ingredient_to_brands, brand, ingredient.strip())
+                self._add_term(ingredient_brands, brand,
+                               ingredient.strip())
         else:
-            self._add_term_to_field(ingredient_to_brands, brand, ingredients.strip())
+            self._add_term(ingredient_brands, brand,
+                           ingredients.strip())
 
-    def _get_trade_names(self, record: Dict, precise_ingredient: Dict,
+    def _get_trade_names(self, value: Dict, precise_ingredient: Dict,
                          ingredient_brands: Dict, sbdfs: Dict) -> None:
         """Get trade names for a given ingredient.
 
-        :param Dict record: Therapy attributes
+        :param Dict value: Therapy attributes
         :param Dict precise_ingredient: Brand names for precise ingredient
         :param Dict ingredient_brands: Brand names for ingredient
         :param Dict sbdfs: Brand names for ingredient from SBDF row
         """
-        record_label = record["label"].lower()
+        record_label = value["label"].lower()
         labels = [record_label]
 
-        if "PIN" in record and record["PIN"] in precise_ingredient:
-            for pin in precise_ingredient[record["PIN"]]:
+        if "PIN" in value and value["PIN"] \
+                in precise_ingredient:
+            for pin in precise_ingredient[value["PIN"]]:
                 labels.append(pin.lower())
 
         for label in labels:
-            trade_names: List[str] = [
-                val for key, val in ingredient_brands.items() if label == key.lower()
-            ]
-            trade_names_uq = {val for sublist in trade_names for val in sublist}
+            trade_names: List[str] = \
+                [val for key, val in ingredient_brands.items()
+                 if label == key.lower()]
+            trade_names_uq = {val for sublist in trade_names
+                              for val in sublist}
             for tn in trade_names_uq:
-                self._add_term_to_field(record, "trade_names", tn)
+                self._add_term(value, tn, "trade_names")
 
         if record_label in sbdfs:
             for tn in sbdfs[record_label]:
-                self._add_term_to_field(record, "trade_names", tn)
+                self._add_term(value, tn, "trade_names")
 
     @staticmethod
-    def _load_brand_concepts(record: Dict, brands: Dict, batch: BatchWriter) -> None:
+    def _load_brand_concepts(value: Dict, brands: Dict, batch: BatchWriter) -> None:
         """Connect brand names to a concept and load into the database.
 
-        :params dict record: A transformed therapy record
+        :params dict value: A transformed therapy record
         :params dict brands: Connects brand names to concept records
         :param BatchWriter batch: Object to write data to DynamoDB.
         """
-        if "trade_names" in record:
-            for tn in record["trade_names"]:
+        if "trade_names" in value:
+            for tn in value["trade_names"]:
                 if brands.get(tn):
                     batch.put_item(Item={
-                        "label_and_type": f"{brands.get(tn)}##rx_brand",
-                        "concept_id": record["concept_id"],
+                        "label_and_type":
+                            f"{brands.get(tn)}##rx_brand",
+                        "concept_id": value["concept_id"],
                         "src_name": SourceName.RXNORM.value,
                         "item_type": "rx_brand"
                     })
@@ -275,9 +274,9 @@ class RxNorm(Base):
             if row[17] == "4096":
                 params["approval_ratings"] = [ApprovalRating.RXNORM_PRESCRIBABLE.value]
         elif term_type in ALIASES:
-            self._add_term_to_field(params, "aliases", term)
+            self._add_term(params, term, "aliases")
         elif term_type in TRADE_NAMES:
-            self._add_term_to_field(params, "trade_names", term)
+            self._add_term(params, term, "trade_names")
 
         if source == "RXNORM":
             if term_type == "SBDF":
@@ -285,29 +284,31 @@ class RxNorm(Base):
                 ingredient_strength = term.replace(f"[{brand}]", "")
                 for df in drug_forms:
                     if df in ingredient_strength:
-                        ingredient = ingredient_strength.replace(df, "").strip()
-                        self._add_term_to_field(sbdfs, ingredient.lower(), brand)
+                        ingredient = \
+                            ingredient_strength.replace(df, "").strip()
+                        self._add_term(sbdfs, brand, ingredient.lower())
                         break
-        elif source == "MSH":
+
+        if source == "MSH":
             if term_type == "MH":
                 # Get ID for accessing precise ingredient
                 params["PIN"] = row[13]
             elif term_type == "PEP":
-                self._add_term_to_field(precise_ingredient, row[13], term)
+                self._add_term(precise_ingredient, term, row[13])
 
     @staticmethod
-    def _add_term_to_field(data_dict: Dict, field: str, term: str) -> None:
-        """Add a single value to a listlike field.
+    def _add_term(params: Dict, term: str, label_type: str) -> None:
+        """Add a single term to a therapy record in an associated field.
 
-        :param Dict data_dict: either in-progress record or RxNorm ref lookup
-        :param str field: Record property name
-        :param str term: The term to be added
+        :param Dict params: A transformed therapy record.
+        :param Str term: The term to be added
+        :param Str label_type: The type of term
         """
-        if field in data_dict and data_dict[field]:
-            if term not in data_dict[field]:
-                data_dict[field].append(term)
+        if label_type in params and params[label_type]:
+            if term not in params[label_type]:
+                params[label_type].append(term)
         else:
-            data_dict[field] = [term]
+            params[label_type] = [term]
 
     def _add_xref_assoc(self, params: Dict, row: List) -> None:
         """Add xref or associated_with to therapy.
@@ -324,13 +325,14 @@ class RxNorm(Base):
                 xref_assoc = row[11].upper()
 
             if xref_assoc in XREF_SOURCES:
-                source_id = f"{NamespacePrefix[xref_assoc].value}:{lui}"
+                source_id =\
+                    f"{NamespacePrefix[xref_assoc].value}:{lui}"
                 if source_id != params["concept_id"]:
                     # Sometimes concept_id is included in the source field
-                    self._add_term_to_field(params, "xrefs", source_id)
+                    self._add_term(params, source_id, "xrefs")
             elif xref_assoc in ASSOC_WITH_SOURCES:
                 source_id = f"{NamespacePrefix[xref_assoc].value}:{lui}"
-                self._add_term_to_field(params, "associated_with", source_id)
+                self._add_term(params, source_id, "associated_with")
             else:
                 logger.info(f"{xref_assoc} not in NameSpacePrefix.")
 
