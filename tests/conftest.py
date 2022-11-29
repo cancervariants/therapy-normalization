@@ -25,7 +25,14 @@ def test_data():
 @pytest.fixture(scope="session", autouse=True)
 def db():
     """Provide a database instance to be used by tests."""
-    return Database()
+    database = Database()
+    if os.environ.get("THERAPY_TEST") == "TRUE":
+        database.dynamodb_client.delete_table(TableName="therapy_concepts")
+        database.dynamodb_client.delete_table(TableName="therapy_metadata")
+        existing_tables = database.dynamodb_client.list_tables()["TableNames"]
+        database.create_therapies_table(existing_tables)
+        database.create_meta_data_table(existing_tables)
+    return database
 
 
 @pytest.fixture(scope="session")
@@ -42,8 +49,7 @@ def disease_normalizer():
 
 @pytest.fixture(scope="session")
 def test_source(
-        db: Database, test_data: Path,
-        disease_normalizer: Callable
+        db: Database, test_data: Path, disease_normalizer: Callable
 ):
     """Provide query endpoint for testing sources. If THERAPY_TEST is set, will try to
     load DB from test data.

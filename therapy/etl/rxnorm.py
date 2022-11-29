@@ -20,8 +20,8 @@ from boto3.dynamodb.table import BatchWriter
 import requests
 
 from therapy import DownloadException, XREF_SOURCES, ASSOC_WITH_SOURCES, ITEM_TYPES
-from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
-    ApprovalRating, RecordParams
+from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, ApprovalRating, \
+    RecordParams
 from therapy.etl.base import Base
 
 logger = logging.getLogger("therapy")
@@ -176,7 +176,6 @@ class RxNorm(Base):
                             field_value = value.get(field)
                             if field_value:
                                 params[field] = field_value
-                        assert Drug(**params)
                         self._load_therapy(params)
 
     def _get_brands(self, row: List, ingredient_to_brands: Dict) -> None:

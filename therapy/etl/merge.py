@@ -41,15 +41,7 @@ class Merge:
         :param Set[str] record_ids: concept identifiers from which groups should be
             generated.
         """
-        logger.info("Generating record ID sets...")
-        start = timer()
-        for record_id in record_ids:
-            new_group = self._create_record_id_set(record_id)
-            if new_group:
-                for concept_id in new_group:
-                    self._groups[concept_id] = new_group
-        end = timer()
-        logger.debug(f"Built record ID sets in {end - start} seconds")
+        self._create_record_id_sets(record_ids)
 
         # don't create separate records for single-member groups
         self._groups = {k: v for k, v in self._groups.items() if len(v) > 1}
@@ -86,8 +78,7 @@ class Merge:
         :param str record_id: RxNorm concept ID to check
         :return: concept ID for RxNorm record if successful, None otherwise
         """
-        brand_lookup = self.database.get_records_by_type(record_id,
-                                                         "rx_brand")
+        brand_lookup = self.database.get_records_by_type(record_id, "rx_brand")
         n = len(brand_lookup)
         if n == 1:
             lookup_id = brand_lookup[0]["concept_id"]
@@ -190,6 +181,21 @@ class Merge:
         for local_record_id in local_id_set - observed_id_set:
             merged_id_set |= self._create_record_id_set(local_record_id, merged_id_set)
         return merged_id_set
+
+    def _create_record_id_sets(self, record_ids: Set[str]) -> None:
+        """Update self._groups with normalized concept groups.
+        :param Set[str] record_ids: concept identifiers from which groups should be
+            generated.
+        """
+        logger.info("Generating record ID sets...")
+        start = timer()
+        for record_id in record_ids:
+            new_group = self._create_record_id_set(record_id)
+            if new_group:
+                for concept_id in new_group:
+                    self._groups[concept_id] = new_group
+        end = timer()
+        logger.debug(f"Built record ID sets in {end - start} seconds")
 
     def _generate_merged_record(self, record_id_set: Set[str]) -> Dict:
         """Generate merged record from provided concept ID group.
