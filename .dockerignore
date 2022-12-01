@@ -1,3 +1,5 @@
-# Have Docker CLI exclude /therapy/data before sending context to Docker
+# Have Docker CLI exclude the following before sending context to Docker
 # daemon for building image.
 therapy/data
+Pipfile.lock
+.env
