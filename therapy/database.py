@@ -74,6 +74,7 @@ class Database:
             if aws_env == AwsEnvName.DEVELOPMENT:
                 therapy_concepts_table = "therapy_concepts_nonprod"
                 therapy_metadata_table = "therapy_metadata_nonprod"
+            self.endpoint_url = ""
         else:
             if db_url:
                 self.endpoint_url = db_url
