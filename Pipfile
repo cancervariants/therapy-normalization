@@ -9,7 +9,7 @@ fastapi = ">=0.72.0"
 click = "*"
 uvicorn = "*"
 boto3 = "*"
-"ga4gh.vrsatile.pydantic" = "==0.0.11"
+"ga4gh.vrsatile.pydantic" = "~=0.0.11"
 
 [dev-packages]
 thera-py = {editable = true, path = "."}
@@ -23,7 +23,7 @@ ipykernel = "*"
 pytest = "*"
 pytest-cov = "*"
 pre-commit = "*"
-flake8 = "*"
+flake8 = "~=5.0.4"
 flake8-docstrings = "*"
 flake8-quotes = "*"
 flake8-import-order = "*"
