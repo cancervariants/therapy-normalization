@@ -1,7 +1,7 @@
 -i https://pypi.org/simple
 anyio==3.6.2; python_full_version >= '3.6.2'
-boto3==1.26.40
-botocore==1.29.40; python_version >= '3.7'
+boto3==1.26.44
+botocore==1.29.44; python_version >= '3.7'
 click==8.1.3
 fastapi==0.88.0
 ga4gh.vrsatile.pydantic==0.0.11

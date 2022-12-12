@@ -79,6 +79,7 @@ class CLI:
             environ[AWS_ENV_VAR_NAME] = aws_env_name
             confirm_aws_db_use(aws_env_name.upper())
             environ[SKIP_AWS_DB_ENV_NAME] = "true"  # this is already checked above
+            endpoint_url = ""
         else:
             if db_url:
                 endpoint_url = db_url
@@ -86,7 +87,7 @@ class CLI:
                 endpoint_url = environ["THERAPY_NORM_DB_URL"]
             else:
                 endpoint_url = "http://localhost:8000"
-            db = Database(db_url=endpoint_url)
+        db = Database(db_url=endpoint_url)
 
         if update_all:
             normalizers = list(src for src in SOURCES)

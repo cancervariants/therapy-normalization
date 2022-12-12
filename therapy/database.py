@@ -81,6 +81,7 @@ class Database:
             if aws_env == AwsEnvName.DEVELOPMENT:
                 therapy_concepts_table = "therapy_concepts_nonprod"
                 therapy_metadata_table = "therapy_metadata_nonprod"
+            self.endpoint_url = ""
         else:
             if db_url:
                 self.endpoint_url = db_url
@@ -88,8 +89,7 @@ class Database:
                 self.endpoint_url = environ["THERAPY_NORM_DB_URL"]
             else:
                 self.endpoint_url = "http://localhost:8000"
-            click.echo(f"***Using Therapy Database Endpoint: "
-                       f"{self.endpoint_url}***")
+            click.echo(f"***Using Therapy Database Endpoint: {self.endpoint_url}***")
             environ["DISEASE_NORM_DB_URL"] = self.endpoint_url
 
             boto_params = {
