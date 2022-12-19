@@ -192,10 +192,9 @@ class RxNorm(Base):
         brand = term.split("[")[-1].split("]")[0]
         ingredients = ingredients_brand.replace(f"[{brand}]", "")
         if "/" in ingredients:
-            ingredients = ingredients.split("/")
-            for ingredient in ingredients:
-                self._add_term(ingredient_brands, brand,
-                               ingredient.strip())
+            ingredients_list = ingredients.split("/")
+            for ingredient in ingredients_list:
+                self._add_term(ingredient_brands, brand, ingredient.strip())
         else:
             self._add_term(ingredient_brands, brand,
                            ingredients.strip())
