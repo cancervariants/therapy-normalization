@@ -14,7 +14,7 @@ test_concepts = {
     "http://www.wikidata.org/entity/Q26272",
     "http://www.wikidata.org/entity/Q418702",
     "http://www.wikidata.org/entity/Q407241",
-    "http://www.wikidata.org/entity/Q47521576",
+    "http://www.wikidata.org/entity/Q251698",
     "http://www.wikidata.org/entity/Q27287118",
     "http://www.wikidata.org/entity/Q422265",
 }

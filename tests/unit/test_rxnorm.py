@@ -480,6 +480,50 @@ def fluoxetine_hydrochloride():
     return Drug(**params)
 
 
+@pytest.fixture(scope="module")
+def phenobarbital():
+    """Create phenobarbital fixture."""
+    return Drug(** {
+        "concept_id": "rxcui:8134",
+        "label": "phenobarbital",
+        "aliases": [
+            "Phenobarbituric Acid",
+            "Phenylethylbarbiturate",
+            "Acid, Phenylethylbarbituric",
+            "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
+            "5-Phenyl-5-ethylbarbituric acid",
+            "Phenylethylbarbituric Acid",
+            "5-Ethyl-5-phenylbarbituric acid",
+            "Phenobarbitone",
+            "Phenobarbitol",
+            "Phenylbarbital",
+            "Phenemal",
+            "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+            "PHENobarbital",
+            "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
+            "Phenylethylmalonylurea"
+        ],
+        "xrefs": [
+            "drugbank:DB01174"
+        ],
+        "associated_with": [
+            "mmsl:d00340",
+            "usp:m63400",
+            "mmsl:2390",
+            "mmsl:5272",
+            "vandf:4017422",
+            "unii:YQE403BP4D",
+            "mesh:D010634",
+            "atc:N03AA02"
+        ],
+        "approval_ratings": [
+            "rxnorm_prescribable"
+        ],
+        "approval_year": [],
+        "has_indication": []
+    })
+
+
 def test_bifidobacterium_infantis(bifidobacterium_infantis, rxnorm, compare_records):
     """Test that bifidobacterium_ nfantis drug normalizes to
     correct drug concept.
@@ -911,6 +955,27 @@ def test_xref_lookup(
     assert response.match_type == MatchType.ASSOCIATED_WITH
     assert len(response.records) == 1
     compare_records(response.records[0], amiloride)
+
+
+def test_phenobarbital(phenobarbital, rxnorm, compare_records):
+    """Test phenobarbital search."""
+    # Concept ID Match
+    response = rxnorm.search("rxcui:8134")
+    assert response.match_type == MatchType.CONCEPT_ID
+    assert len(response.records) == 1
+    compare_records(response.records[0], phenobarbital)
+
+    # Label Match
+    response = rxnorm.search(" phenobarbital")
+    assert response.match_type == MatchType.LABEL
+    assert len(response.records) == 1
+    compare_records(response.records[0], phenobarbital)
+
+    # Xref Match
+    response = rxnorm.search("drugbank:DB01174")
+    assert response.match_type == MatchType.XREF
+    assert len(response.records) == 1
+    compare_records(response.records[0], phenobarbital)
 
 
 def test_meta_info(rxnorm):

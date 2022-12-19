@@ -1,4 +1,14 @@
 concept_code_1,concept_code_2,vocabulary_id_1,vocabulary_id_2,relationship_id
+26,4126,HemOnc,RxNorm,Maps to
+26,3100,HemOnc,HemOnc,Has brand name
+26,3101,HemOnc,HemOnc,Has brand name
+26,645,HemOnc,HemOnc,Has FDA indication
+26,44957,HemOnc,HemOnc,Has route
+26,45069,HemOnc,HemOnc,Is a
+26,755,HemOnc,HemOnc,Was FDA approved yr
+26,J0207,HemOnc,HCPCS,Maps to
+26,45069,HemOnc,HemOnc,Has major class
+26,76310-017,HemOnc,NDC,Maps to
 65,134547,HemOnc,RxNorm,Maps to
 65,51576,HemOnc,HemOnc,Has brand name
 65,5159,HemOnc,HemOnc,Has brand name

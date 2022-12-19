@@ -15,6 +15,7 @@ with open(dfa._src_file, "r") as f:
     data = json.load(f)
 
 concept_ids = [
+    "NDA020221",
     "NDA022334",
     "NDA050682",
     "ANDA074656",

@@ -52,6 +52,14 @@ We also provide [Tox](https://tox.wiki/en/latest/index.html) settings to test in
 tox
 ```
 
+By default, tests will employ an existing DynamoDB database. For test environments where this is unavailable (e.g. in CI), the `THERAPY_TEST` environment variable can be used to initialize a local DynamoDB instance with miniature versions of input data files.
+
+```commandline
+export THERAPY_TEST=true
+```
+
+In the event that test data is updated, the `tests/scripts/` subdirectory includes data generation scripts to build these miniature data files.
+
 ### Updating the database
 
 Before you use the CLI to update the database, run the following in a separate terminal to start DynamoDB on `port 8000`:
