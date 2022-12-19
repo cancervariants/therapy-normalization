@@ -144,8 +144,9 @@ class Merge:
             xrefs |= drugsatfda_refs
         return xrefs
 
-    def _create_record_id_set(self, record_id: str,
-                              observed_id_set: Set = None) -> Set[str]:
+    def _create_record_id_set(
+        self, record_id: str, observed_id_set: Optional[Set] = None
+    ) -> Set[str]:
         """Create concept ID group for an individual record ID.
 
         :param str record_id: concept ID for record to build group from
