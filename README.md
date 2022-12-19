@@ -40,25 +40,19 @@ pre-commit install
 
 ### Running tests
 
-Unit tests are run with pytest.
+Unit tests are provided via pytest.
 
 ```commandline
 pipenv run pytest
 ```
 
-We also provide [Tox](https://tox.wiki/en/latest/index.html) settings to test in multiple environments and check for proper type annotations and code style. If interpreters for Python 3.8 and Python 3.9 are present, the following will run all tests for all environments:
-
-```commandline
-tox
-```
-
-By default, tests will employ an existing DynamoDB database. For test environments where this is unavailable (e.g. in CI), the `THERAPY_TEST` environment variable can be used to initialize a local DynamoDB instance with miniature versions of input data files.
+By default, tests will employ an existing DynamoDB database. For test environments where this is unavailable (e.g. in CI), the `THERAPY_TEST` environment variable can be set to initialize a local DynamoDB instance with miniature versions of input data files before tests are executed.
 
 ```commandline
 export THERAPY_TEST=true
 ```
 
-In the event that test data is updated, the `tests/scripts/` subdirectory includes data generation scripts to build these miniature data files.
+Sometimes, sources will update their data, and our test fixtures and data will become incorrect. The `tests/scripts/` subdirectory includes scripts to rebuild data files, although fixtures will need to be updated manually.
 
 ### Updating the database
 
