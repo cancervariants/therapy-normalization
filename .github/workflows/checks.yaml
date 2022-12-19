@@ -9,7 +9,7 @@ jobs:
             AWS_SECRET_ACCESS_KEY: ${{ secrets.DUMMY_AWS_SECRET_ACCESS_KEY }}
             AWS_DEFAULT_REGION: us-east-2
             AWS_DEFAULT_OUTPUT: text
-            THERAPY_NORM_DB_URL: http://localhost:8001
+            THERAPY_NORM_DB_URL: http://localhost:8002
             TEST: THERAPY_TEST
         strategy:
             matrix:
@@ -24,7 +24,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  python3 -m pip install tox
+                  python3 -m pip install ".[test]"
 
             - name: Build local DynamoDB
               run: |
@@ -32,7 +32,7 @@ jobs:
                   ./tests/scripts/dynamodb_build.bash
 
             - name: Run tests
-              run: python3 -m tox -e githubactions
+              run: python3 -m pytest
     lint:
         name: lint py${{ matrix.python-version.full }}
         runs-on: ubuntu-latest
