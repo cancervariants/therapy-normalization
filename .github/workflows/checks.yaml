@@ -43,7 +43,7 @@ jobs:
             AWS_DEFAULT_OUTPUT: text
         strategy:
             matrix:
-              python-version: [{full: '3.8', tox: '38'}, {full: '3.9', tox: '39'}, {full: '3.10', tox: '310'}]
+              python-version: ['3.8', '3.9', '3.10']
         steps:
             - uses: actions/checkout@v3
 
@@ -53,13 +53,12 @@ jobs:
                   python-version: ${{ matrix.python-version.full }}
 
             - name: Install dependencies
-              run: |
-                  python3 -m pip install tox
+              run: python3 -m pip install ".[dev,test]"
 
             - name: Check style
-              run: python3 -m tox -e py${{ matrix.python-version.tox }}-lint
+              run: python3 -m flake8 therapy/ tests/ setup.py
 
             - name: Check type correctness
               if: ${{ always() }}
-              run: python3 -m tox -e py${{ matrix.python-version.tox }}-mypy
+              run: python3 -m mypy --ignore-missing-imports therapy/
 
