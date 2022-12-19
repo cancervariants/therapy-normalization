@@ -19,7 +19,7 @@ with open(ho._src_files[2], "r") as f:
 
 concept_ids = set()
 for row in concepts:
-    if row["concept_code"] in {"65", "105", "151"}:
+    if row["concept_code"] in {"65", "105", "151", "26"}:
         concept_ids.add(row["concept_code"])
 
 test_rels_rows = []

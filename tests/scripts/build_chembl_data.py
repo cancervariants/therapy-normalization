@@ -44,7 +44,8 @@ test_chembl_ids = [
     "'CHEMBL25'",
     "'CHEMBL843'",
     "'CHEMBL40'",
-    "'CHEMBL121'"
+    "'CHEMBL121'",
+    "'CHEMBL1006'",
 ]
 
 md_query = f"""

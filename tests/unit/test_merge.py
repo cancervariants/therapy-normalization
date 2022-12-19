@@ -1,44 +1,23 @@
 """Test merged record generation."""
 import os
-from typing import Dict, Set
+from pathlib import Path
+from typing import Any, Dict, Set
 import random
 import json
 
 import pytest
 
-from therapy.etl.merge import Merge
 from therapy.database import Database
-
-
-# @pytest.fixture(scope="module")
-# def merge_handler(mock_database):
-#     """Provide Merge instance to test cases.
-#     Implements interfaces for basic merge functions, injects mock DB and
-#     enables some additional backend checks for correctness.
-#     """
-#     class MergeHandler:
-#         def __init__(self):
-#             self.merge = Merge(mock_database())
-#
-#         def get_merge(self):
-#             return self.merge
-#
-#         def create_merged_concepts(self, record_ids):
-#             return self.merge.create_merged_concepts(record_ids)
-#
-#         def get_added_records(self):
-#             return self.merge.database.added_records  # type: ignore
-#
-#         def get_updates(self):
-#             return self.merge.database.updates  # type: ignore
-#
-#         def create_record_id_set(self, record_id):
-#             return self.merge._create_record_id_set(record_id)
-#
-#         def generate_merged_record(self, record_id_set):
-#             return self.merge._generate_merged_record(record_id_set)
-#
-#     return MergeHandler()
+from therapy.etl.chembl import ChEMBL
+from therapy.etl.chemidplus import ChemIDplus
+from therapy.etl.drugbank import DrugBank
+from therapy.etl.drugsatfda import DrugsAtFDA
+from therapy.etl.guidetopharmacology import GuideToPHARMACOLOGY
+from therapy.etl.hemonc import HemOnc
+from therapy.etl.merge import Merge
+from therapy.etl.ncit import NCIt
+from therapy.etl.rxnorm import RxNorm
+from therapy.etl.wikidata import Wikidata
 
 
 def compare_merged_records(actual: Dict, fixture: Dict):
@@ -54,14 +33,12 @@ def compare_merged_records(actual: Dict, fixture: Dict):
     assert ("aliases" in actual) == ("aliases" in fixture)
     if "aliases" in actual or "aliases" in fixture:
         assert set(actual["aliases"]) == set(fixture["aliases"])
-
     assert ("xrefs" in actual) == ("xrefs" in fixture)
     if "xrefs" in actual or "xrefs" in fixture:
         assert set(actual["xrefs"]) == set(fixture["xrefs"])
     assert ("associated_with" in actual) == ("associated_with" in fixture)
     if "associated_with" in actual or "associated_with" in fixture:
         assert set(actual["associated_with"]) == set(fixture["associated_with"])
-
     assert ("approval_ratings" in actual) == ("approval_ratings" in fixture)
     if "approval_ratings" in actual or "approval_ratings" in fixture:
         assert set(actual["approval_ratings"]) == set(fixture["approval_ratings"])
@@ -73,58 +50,79 @@ def compare_merged_records(actual: Dict, fixture: Dict):
         actual_inds = actual["has_indication"].copy()
         fixture_inds = fixture["has_indication"].copy()
         assert len(actual_inds) == len(fixture_inds)
-        actual_inds.sort(key=lambda x: x[0])
-        fixture_inds.sort(key=lambda x: x[0])
+        actual_inds.sort()
+        fixture_inds.sort()
         for i in range(len(actual_inds)):
             assert actual_inds[i] == fixture_inds[i]
 
 
-# @pytest.fixture(scope="module")
-# def fixture_data(test_data: Path):
-#     """Fetch fixture data"""
-#     return json.load(open(test_data / "test_merge_data.json", "r"))
+@pytest.fixture(scope="module")
+def fixture_data(test_data: Path):
+    """Fetch fixture data"""
+    return json.load(open(test_data / "fixtures" / "merged_fixtures.json", "r"))
 
-
-# @pytest.fixture(scope="module")
-# def phenobarbital_merged(fixture_data):
-#     """Create phenobarbital fixture."""
-#     return fixture_data["phenobarbital"]
-
-
-# @pytest.fixture(scope="module")
-# def cisplatin_merged(fixture_data):
-#     """Create cisplatin fixture."""
-#     return fixture_data["cisplatin"]
-
-
-# @pytest.fixture(scope="module")
-# def spiramycin_merged(fixture_data):
-#     """Create fixture for spiramycin. The RxNorm entry should be inaccessible
-#     to this group.
-#     """
-#     return fixture_data["spiramycin"]
 
 @pytest.fixture(scope="module")
-def merge_instance(database: Database, test_data):
-    """TODO"""
-    if os.environ.get("THERAPY_TEST") is not None:
-        # delete stuff
+def phenobarbital_merged(fixture_data) -> Dict:
+    """Create phenobarbital fixture."""
+    return fixture_data["phenobarbital"]
 
-        therapies_file = test_data / "therapies.json"
-        with open(therapies_file, "r") as f:
-            therapies = json.load(f)
-            for item in therapies["items"]:
-                database.dynamodb_client.put_item(
-                    TableName="therapy_concepts", Item=item
-                )
-        metadata_file = test_data / "metadata.json"
-        with open(metadata_file, "r") as f:
-            metadata = json.load(f)
-            for item in metadata["items"]:
-                database.dynamodb_client.put_item(
-                    TableName="therapy_metadata", Item=item
-                )
-    m = Merge(database)
+
+@pytest.fixture(scope="module")
+def cisplatin_merged(fixture_data) -> Dict:
+    """Create cisplatin fixture."""
+    return fixture_data["cisplatin"]
+
+
+@pytest.fixture(scope="module")
+def spiramycin_merged(fixture_data) -> Dict:
+    """Create fixture for spiramycin. The RxNorm entry should be inaccessible
+    to this group.
+    """
+    return fixture_data["spiramycin"]
+
+
+@pytest.fixture(scope="module")
+def amifostine_merged(fixture_data) -> Dict:
+    """Create fixture for amifostine."""
+    return fixture_data["amifostine"]
+
+
+@pytest.fixture(scope="module")
+def merge_instance(test_source):
+    """Provide fixture for ETL merge class"""
+    update_db = os.environ.get("THERAPY_TEST", "").lower() == "true"
+    print(update_db)
+
+    class TrackingDatabase(Database):
+        """Provide injection for DB instance to track added/updated records"""
+
+        def __init__(self, **kwargs):
+            self.additions = {}
+            self.updates = {}
+            super().__init__(**kwargs)
+
+        def add_record(self, record: Dict, record_type: str):
+            if update_db:
+                super().add_record(record, record_type)
+            self.additions[record["concept_id"]] = record
+
+        def update_record(
+            self, concept_id: str, field: str, new_value: Any,  # noqa: ANN401
+            item_type: str = "identity"
+        ):
+            if update_db:
+                super().update_record(concept_id, field, new_value, item_type)
+            self.updates[concept_id] = {field: new_value}
+
+    if update_db:
+        for SourceClass in (
+            ChEMBL, ChemIDplus, DrugBank, DrugsAtFDA, GuideToPHARMACOLOGY, HemOnc, NCIt,
+            RxNorm, Wikidata
+        ):
+            test_source(SourceClass)
+
+    m = Merge(TrackingDatabase())
     return m
 
 
@@ -132,6 +130,7 @@ def merge_instance(database: Database, test_data):
 def record_id_groups():
     """Create fixture for testing concept group creation."""
     groups = [
+        # phenobarbital
         {
             "rxcui:8134",
             "ncit:C739",
@@ -141,6 +140,7 @@ def record_id_groups():
             "chembl:CHEMBL40",
             "iuphar.ligand:2804"
         },
+        # spiramycin
         {
             "rxcui:9991",
             "ncit:C839",
@@ -170,9 +170,17 @@ def record_id_groups():
         # tests lookup of wikidata reference to rxnorm brand record, and
         # drugbank reference to dead chemidplus record
         {
+            "rxcui:1545987",
             "rxcui:4126",
-            "wikidata:Q47521576",
-            "drugbank:DB01143"
+            "ncit:C488",
+            "ncit:C66724",
+            "hemonc:26",
+            "drugbank:DB01143",
+            "drugsatfda.nda:020221",
+            "chembl:CHEMBL1006",
+            "chemidplus:112901-68-5",
+            "chemidplus:20537-88-6",
+            "wikidata:Q251698"
         },
         # Therapeutic Procedure
         {
@@ -190,8 +198,9 @@ def record_id_groups():
     return groups_keyed
 
 
-def test_create_record_id_set(
-        merge_instance: Merge, record_id_groups: Dict[str, Set[str]]
+def test_id_sets(
+    merge_instance: Merge,
+    record_id_groups: Dict[str, Set[str]]
 ):
     """Test creation of record ID sets. Queries DB and matches against
     record_id_groups fixture.
@@ -214,54 +223,60 @@ def test_create_record_id_set(
 
     # test dead reference
     has_dead_ref = "ncit:C107245"
-    dead_group = merge_instance.create_record_id_set(has_dead_ref)
+    dead_group = merge_instance._create_record_id_set(has_dead_ref)
     assert dead_group == {has_dead_ref}
 
 
-def test_generate_merged_record(merge_handler, record_id_groups,
-                                phenobarbital_merged, cisplatin_merged,
-                                spiramycin_merged):
+def test_generate_merged_record(
+    merge_instance: Merge, record_id_groups: Dict[str, Set[str]],
+        phenobarbital_merged: Dict, cisplatin_merged: Dict, spiramycin_merged: Dict):
     """Test generation of merged record method."""
     phenobarbital_ids = record_id_groups["rxcui:8134"]
-    merge_response = merge_handler.generate_merged_record(phenobarbital_ids)
+    merge_response = merge_instance._generate_merged_record(phenobarbital_ids)
     compare_merged_records(merge_response, phenobarbital_merged)
 
     cisplatin_ids = record_id_groups["rxcui:2555"]
-    merge_response = merge_handler.generate_merged_record(cisplatin_ids)
+    merge_response = merge_instance._generate_merged_record(cisplatin_ids)
     compare_merged_records(merge_response, cisplatin_merged)
 
     spiramycin_ids = record_id_groups["ncit:C839"]
-    merge_response = merge_handler.generate_merged_record(spiramycin_ids)
+    merge_response = merge_instance._generate_merged_record(spiramycin_ids)
     compare_merged_records(merge_response, spiramycin_merged)
 
 
-def test_create_merged_concepts(merge_handler, record_id_groups,
-                                phenobarbital_merged, cisplatin_merged,
-                                spiramycin_merged):
+def test_create_merged_concepts(
+    merge_instance: Merge, record_id_groups: Dict[str, Set[str]],
+    phenobarbital_merged: Dict, cisplatin_merged: Dict, spiramycin_merged: Dict,
+    amifostine_merged: Dict
+):
     """Test end-to-end creation and upload of merged concepts."""
     record_ids = record_id_groups.keys()
-    merge_handler.create_merged_concepts(record_ids)
+    merge_instance.create_merged_concepts(record_ids)  # type: ignore
+    merge_instance.database.flush_batch()
 
     # check merged record generation and storage
-    added_records = merge_handler.get_added_records()
+    # should only create new records for groups with n > 1 members
+    added_records = merge_instance.database.additions  # type: ignore
     assert len(added_records) == 4
 
-    phenobarb_merged_id = phenobarbital_merged["concept_id"]
-    assert phenobarb_merged_id in added_records.keys()
-    compare_merged_records(added_records[phenobarb_merged_id],
-                           phenobarbital_merged)
+    phenobarbital_merged_id = phenobarbital_merged["concept_id"]
+    assert phenobarbital_merged_id in added_records.keys()
+    compare_merged_records(added_records[phenobarbital_merged_id], phenobarbital_merged)
 
-    cispl_merged_id = cisplatin_merged["concept_id"]
-    assert cispl_merged_id in added_records.keys()
-    compare_merged_records(added_records[cispl_merged_id], cisplatin_merged)
+    cisplatin_merged_id = cisplatin_merged["concept_id"]
+    assert cisplatin_merged_id in added_records.keys()
+    compare_merged_records(added_records[cisplatin_merged_id], cisplatin_merged)
 
-    spira_merged_id = spiramycin_merged["concept_id"]
-    assert spira_merged_id in added_records.keys()
-    compare_merged_records(added_records[spira_merged_id],
-                           spiramycin_merged)
+    spiramycin_merged_id = spiramycin_merged["concept_id"]
+    assert spiramycin_merged_id in added_records.keys()
+    compare_merged_records(added_records[spiramycin_merged_id], spiramycin_merged)
+
+    amifostine_merged_id = amifostine_merged["concept_id"]
+    assert amifostine_merged_id in added_records.keys()
+    compare_merged_records(added_records[amifostine_merged_id], amifostine_merged)
 
     # check merged record reference updating
-    updates = merge_handler.get_updates()
+    updates = merge_instance.database.updates  # type: ignore
     for concept_id in record_id_groups["rxcui:8134"]:
         assert updates[concept_id] == {
             "merge_ref": phenobarbital_merged["concept_id"].lower()

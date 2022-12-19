@@ -17,7 +17,7 @@ def chembl(test_source):
 @pytest.fixture(scope="module")
 def fixture_data(test_data: Path):
     """Fetch fixture data"""
-    return json.load(open(test_data / "test_chembl_data.json", "r"))
+    return json.load(open(test_data / "fixtures" / "chembl_fixtures.json", "r"))
 
 
 @pytest.fixture(scope="module")

@@ -110,6 +110,8 @@ test_classes = {
     onto.C739,
     onto.C839,
     onto.C107245,
+    onto.C488,
+    onto.C66724
 }
 
 parent_concepts = set()
