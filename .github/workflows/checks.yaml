@@ -10,7 +10,7 @@ jobs:
             AWS_DEFAULT_REGION: us-east-2
             AWS_DEFAULT_OUTPUT: text
             THERAPY_NORM_DB_URL: http://localhost:8002
-            TEST: THERAPY_TEST
+            THERAPY_TEST: true
         strategy:
             matrix:
               python-version: ['3.8', '3.9', '3.10']
