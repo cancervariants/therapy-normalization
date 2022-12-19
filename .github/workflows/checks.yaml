@@ -34,7 +34,7 @@ jobs:
             - name: Run tests
               run: python3 -m pytest
     lint:
-        name: lint py${{ matrix.python-version.full }}
+        name: lint py${{ matrix.python-version }}
         runs-on: ubuntu-latest
         env:
             AWS_ACCESS_KEY_ID: ${{ secrets.DUMMY_AWS_ACCESS_KEY_ID }}
@@ -50,7 +50,7 @@ jobs:
             - name: Setup Python
               uses: actions/setup-python@v4
               with:
-                  python-version: ${{ matrix.python-version.full }}
+                  python-version: ${{ matrix.python-version }}
 
             - name: Install dependencies
               run: python3 -m pip install ".[dev,test]"
