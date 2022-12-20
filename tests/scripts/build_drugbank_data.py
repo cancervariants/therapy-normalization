@@ -5,15 +5,7 @@ from pathlib import Path
 from therapy.database import Database
 from therapy.etl import DrugBank
 
-db = DrugBank(Database())
-db._extract_data()
-TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data"
-outfile_path = TEST_DATA_DIR / db._src_file.name
-
-with open(db._src_file, "r") as f:
-    rows = list(csv.DictReader(f))
-
-concept_ids = [
+TEST_IDS = [
     "DB06145",
     "DB01143",
     "DB01174",
@@ -23,9 +15,17 @@ concept_ids = [
     "DB14257",
 ]
 
+db = DrugBank(Database())
+db._extract_data()
+TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "drugbank"
+outfile_path = TEST_DATA_DIR / db._src_file.name
+
+with open(db._src_file, "r") as f:
+    rows = list(csv.DictReader(f))
+
 write_rows = []
 for row in rows:
-    if row["DrugBank ID"] in concept_ids:
+    if row["DrugBank ID"] in TEST_IDS:
         write_rows.append(row)
 
 with open(outfile_path, "w") as f:

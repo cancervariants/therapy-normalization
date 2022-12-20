@@ -6,6 +6,18 @@ import xml.etree.ElementTree as ET
 from therapy.etl import ChemIDplus
 from therapy.database import Database
 
+TEST_IDS = [
+    "87-08-1",
+    "152459-95-5",
+    "220127-57-1",
+    "15663-27-1",
+    "50-06-6",
+    "51186-83-5",
+    "8025-81-8",
+    "112901-68-5",
+    "20537-88-6",
+]
+
 ch = ChemIDplus(Database())
 ch._extract_data()
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data"
@@ -30,25 +42,13 @@ def parse_xml(path: Path) -> Generator:
             root.clear()
 
 
-concept_id_list = [
-    "87-08-1",
-    "152459-95-5",
-    "220127-57-1",
-    "15663-27-1",
-    "50-06-6",
-    "51186-83-5",
-    "8025-81-8",
-    "112901-68-5",
-    "20537-88-6",
-]
-
 parser = parse_xml(ch._src_file)
 for chemical in parser:
     regno = chemical.find("NumberList").find("CASRegistryNumber")
     if not regno:
         continue
 
-    if regno.text in concept_id_list:
+    if regno.text in TEST_IDS:
         root.append(chemical)
 
 with open(outfile_path, "w") as f:

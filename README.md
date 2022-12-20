@@ -52,7 +52,7 @@ By default, tests will employ an existing DynamoDB database. For test environmen
 export THERAPY_TEST=true
 ```
 
-Sometimes, sources will update their data, and our test fixtures and data will become incorrect. The `tests/scripts/` subdirectory includes scripts to rebuild data files, although fixtures will need to be updated manually.
+Sometimes, sources will update their data, and our test fixtures and data will become incorrect. The `tests/scripts/` subdirectory includes scripts to rebuild data files, although most fixtures will need to be updated manually.
 
 ### Updating the database
 
