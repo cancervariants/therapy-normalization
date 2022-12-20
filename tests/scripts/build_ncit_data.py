@@ -9,6 +9,8 @@ import xmlformatter
 from therapy.etl import NCIt
 from therapy.database import Database
 
+# define captured ids in `test_classes` variable
+
 NCIT_PREFIX = "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl"
 OWL_PREFIX = "{http://www.w3.org/2002/07/owl#}"
 RDFS_PREFIX = "{http://www.w3.org/2000/01/rdf-schema#}"

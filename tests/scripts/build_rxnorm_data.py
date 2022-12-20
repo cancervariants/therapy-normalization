@@ -12,8 +12,7 @@ rx = RxNorm(db)
 rx._extract_data()
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "rxnorm"
 
-rxnorm_ids = {
-    # unsorted -- return to later
+TEST_IDS = {
     "100213",
     "2555",
     "142424",
@@ -131,7 +130,7 @@ with open(rx._src_file, "r") as f:
     reader = csv.reader(f, delimiter="|")
 
     for row in reader:
-        if row[0] in rxnorm_ids:
+        if row[0] in TEST_IDS:
             rows_to_add.append(row)
 
 with open(TEST_DATA_DIR / rx._src_file.name, "w") as f:

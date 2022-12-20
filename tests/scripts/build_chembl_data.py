@@ -5,6 +5,18 @@ import sqlite3
 from therapy.database import Database
 from therapy.etl import ChEMBL
 
+TEST_IDS = [
+    "'CHEMBL11359'",
+    "'CHEMBL2068237'",
+    "'CHEMBL1628046'",
+    "'CHEMBL267014'",
+    "'CHEMBL25'",
+    "'CHEMBL843'",
+    "'CHEMBL40'",
+    "'CHEMBL121'",
+    "'CHEMBL1006'",
+]
+
 ch = ChEMBL(Database())
 ch._extract_data()
 
@@ -36,24 +48,12 @@ schema = [r[0] for r in c.execute(schema_query).fetchall()]
 for table_schema in schema:
     c.execute(table_schema)
 
-test_chembl_ids = [
-    "'CHEMBL11359'",
-    "'CHEMBL2068237'",
-    "'CHEMBL1628046'",
-    "'CHEMBL267014'",
-    "'CHEMBL25'",
-    "'CHEMBL843'",
-    "'CHEMBL40'",
-    "'CHEMBL121'",
-    "'CHEMBL1006'",
-]
-
 md_query = f"""
 INSERT INTO molecule_dictionary
 SELECT *
 FROM chembl.molecule_dictionary
 WHERE chembl.molecule_dictionary.chembl_id IN (
-    {",".join(test_chembl_ids)}
+    {",".join(TEST_IDS)}
 )
 """
 c.execute(md_query)

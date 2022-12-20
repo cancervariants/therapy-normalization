@@ -6,6 +6,8 @@ from therapy.etl import HemOnc
 from therapy.database import Database
 
 
+TEST_IDS = ["65", "105", "151", "26"]
+
 ho = HemOnc(Database())  # don't need to write any data
 ho._extract_data()
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "hemonc"
@@ -19,7 +21,7 @@ with open(ho._src_files[2], "r") as f:
 
 concept_ids = set()
 for row in concepts:
-    if row["concept_code"] in {"65", "105", "151", "26"}:
+    if row["concept_code"] in TEST_IDS:
         concept_ids.add(row["concept_code"])
 
 test_rels_rows = []
