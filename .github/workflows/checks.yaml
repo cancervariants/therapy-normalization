@@ -28,8 +28,8 @@ jobs:
 
             - name: Build local DynamoDB
               run: |
-                  chmod +x ./tests/scripts/dynamodb_build.bash
-                  ./tests/scripts/dynamodb_build.bash
+                  chmod +x ./tests/scripts/dynamodb_run.sh
+                  ./tests/scripts/dynamodb_run.sh
 
             - name: Run tests
               run: python3 -m pytest
