@@ -8,3 +8,7 @@ Most of them use a `TEST_IDS` constant to define data points to include (NCIt is
 ### Fixture data generation
 
 ChEMBL and HemOnc require a disease normalization database connection to process drug indication data. CI tests employ a static lookup dictionary loaded from a JSON file. `python3 tests/scripts/build_disease_normalizer_data.py` will update all mappings employed by the test HemOnc and ChEMBL data. This means that those data files should be updated first before running this script.
+
+### DynamoDB fixture runner
+
+`dynamodb_run.sh` acquires and initiates a SQLite server with a DynamoDB-compliant frontend for testing all database-related functions locally. This script is used in GitHub Actions as a temporary instance for running tests.
