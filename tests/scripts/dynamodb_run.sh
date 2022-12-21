@@ -1,5 +1,5 @@
 #! /bin/bash
-# check if dynamodb process already on port 8001
+# check if dynamodb process already on port 8002
 IN_USE=$(ps aux | grep -E 'DynamoDBLocal.jar.*-port 8002' | wc -l)
 if [ $IN_USE -lt 2 ]; then
     if [ ! -d tests/scripts/dynamodb_local ]; then
