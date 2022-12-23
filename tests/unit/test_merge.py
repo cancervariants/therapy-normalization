@@ -7,7 +7,7 @@ import json
 
 import pytest
 
-from therapy.database import Database
+from therapy.database import AWS_ENV_VAR_NAME, Database
 from therapy.etl.chembl import ChEMBL
 from therapy.etl.chemidplus import ChemIDplus
 from therapy.etl.drugbank import DrugBank
@@ -92,7 +92,11 @@ def amifostine_merged(fixture_data) -> Dict:
 def merge_instance(test_source):
     """Provide fixture for ETL merge class"""
     update_db = os.environ.get("THERAPY_TEST", "").lower() == "true"
-    print(update_db)
+    if update_db and os.environ.get(AWS_ENV_VAR_NAME):
+        assert False, (
+            f"Running the full therapy ETL pipeline test on an AWS environment is "
+            f"forbidden -- either unset {AWS_ENV_VAR_NAME} or unset THERAPY_TEST"
+        )
 
     class TrackingDatabase(Database):
         """Provide injection for DB instance to track added/updated records"""
