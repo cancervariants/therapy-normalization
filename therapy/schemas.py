@@ -4,8 +4,7 @@ from enum import Enum, IntEnum
 from datetime import datetime
 
 from ga4gh.vrsatile.pydantic.core_models import CURIE
-from ga4gh.vrsatile.pydantic.vrsatile_models import DiseaseDescriptor, \
-    TherapeuticDescriptor
+from ga4gh.vrsatile.pydantic.vrsatile_models import TherapeuticDescriptor
 from pydantic import BaseModel, StrictBool
 
 from therapy.version import __version__
@@ -402,16 +401,6 @@ class MatchesListed(BaseModel):
                     }
                 },
             }
-
-
-class ApprovalRatingValue(BaseModel):
-    """VOD Extension class for regulatory approval rating/indication
-    value attributes.
-    """
-
-    approval_ratings: Optional[List[ApprovalRating]]
-    approval_year: Optional[List[str]]
-    has_indication: Optional[List[DiseaseDescriptor]]
 
 
 class ServiceMeta(BaseModel):
