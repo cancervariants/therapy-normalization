@@ -17,7 +17,6 @@ from pathlib import Path
 import yaml
 import bioversions
 from boto3.dynamodb.table import BatchWriter
-import requests
 
 from therapy import DownloadException, XREF_SOURCES, ASSOC_WITH_SOURCES, ITEM_TYPES
 from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
@@ -90,22 +89,11 @@ class RxNorm(Base):
         if not url:
             raise DownloadException("Could not resolve RxNorm homepage")
 
-        tgt_data = {"apikey": api_key}
-        headers = {"Content-Type": "application/x-www-form-urlencoded"}
-        api_url = "https://utslogin.nlm.nih.gov/cas/v1/api-key"
-        tgt_r = requests.post(api_url,
-                              data=tgt_data, headers=headers)
-        tgt_matches = re.findall(r'https://.+(TGT.+)" m', tgt_r.text)
-        if not tgt_matches:
-            raise DownloadException("Unable to retrieve TGT")
-        tgt_value = tgt_matches[0]
-
-        st_data = {"service": url}
-        st_url = f"https://utslogin.nlm.nih.gov/cas/v1/tickets/{tgt_value}"
-        st_r = requests.post(st_url, data=st_data, headers=headers)
-
-        self._http_download(f"{url}?ticket={st_r.text}", self._src_dir,
-                            handler=self._zip_handler)
+        self._http_download(
+            f"https://uts-ws.nlm.nih.gov/download?url={url}&apiKey={api_key}",
+            self._src_dir,
+            handler=self._zip_handler
+        )
 
     def _extract_data(self, use_existing: bool = False) -> None:
         """Get source files from RxNorm data directory.
