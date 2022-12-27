@@ -1,5 +1,6 @@
 """Construct test data for NCIt source."""
 from pathlib import Path
+from typing import Generator
 import xml.etree.ElementTree as XET
 
 import owlready2 as owl
@@ -31,8 +32,8 @@ TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "ncit"
 outfile_path = TEST_DATA_DIR / ncit._src_file.name
 
 
-def ncit_parser():
-    """TODO"""
+def ncit_parser() -> Generator:
+    """Get unique XML elements."""
     context = iter(
         ET.iterparse(ncit._src_file, events=("start", "end"), huge_tree=True)
     )
