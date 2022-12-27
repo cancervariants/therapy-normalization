@@ -143,7 +143,7 @@ def _compare_records(actual: Drug, fixt: Drug):
     if (actual.has_indication is not None) and (fixt.has_indication is not None):
         actual_inds = actual.has_indication.copy()
         fixture_inds = fixt.has_indication.copy()
-        # assert len(actual_inds) == len(fixture_inds)
+        assert len(actual_inds) == len(fixture_inds)
         actual_inds.sort(key=lambda x: x.disease_id)
         fixture_inds.sort(key=lambda x: x.disease_id)
         for i in range(len(actual_inds)):
