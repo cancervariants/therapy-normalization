@@ -130,7 +130,7 @@ requests-ftp==0.3.1
 requests-oauthlib==1.3.1 ; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 s3transfer==0.6.0 ; python_version >= '3.7'
 send2trash==1.8.0
-setuptools==65.5.0 ; python_version >= '3.7'
+setuptools==65.5.1 ; python_version >= '3.7'
 six==1.16.0 ; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2'
 sniffio==1.3.0 ; python_version >= '3.7'
 snowballstemmer==2.2.0
