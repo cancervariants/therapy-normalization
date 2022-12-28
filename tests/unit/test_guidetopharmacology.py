@@ -67,7 +67,7 @@ def arginine_vasotocin():
         "aliases": [
             "L-cysteinyl-L-tyrosyl-(3S)-DL-isoleucyl-L-glutaminyl-L-asparagyl-L-cysteinyl-DL-prolyl-L-arginyl-glycinamide (1->6)-disulfide",  # noqa: E501
             "argiprestocin",
-            "[Arg<sup>8</sup>]vasotocin",
+            "[Arg8]vasotocin",
             "AVT"
         ]
     }

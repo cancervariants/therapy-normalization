@@ -12,6 +12,10 @@ from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, ApprovalRat
 from therapy.etl.base import Base, SourceFormatException
 
 
+TAG_PATTERN = re.compile("</?[a-zA-Z]+>")
+PMID_PATTERN = re.compile(r"\[PMID:[ ]?\d+\]")
+
+
 class GuideToPHARMACOLOGY(Base):
     """Class for Guide to PHARMACOLOGY ETL methods."""
 
@@ -100,6 +104,15 @@ class GuideToPHARMACOLOGY(Base):
         for param in data.values():
             self._load_therapy(param)
 
+    @staticmethod
+    def _process_name(name: str) -> str:
+        """Remove tags from GtoP name object.
+        :param name: raw drug referent
+        :return: cleaned name (may be unchanged)
+        """
+        name = re.sub(TAG_PATTERN, "", name)
+        return name
+
     def _transform_ligands(self, data: Dict) -> None:
         """Transform ligands data file and add this data to `data`.
 
@@ -127,7 +140,7 @@ class GuideToPHARMACOLOGY(Base):
                 params: Dict[str, Union[List[str], str]] = {
                     "concept_id":
                         f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}",
-                    "label": row[1],
+                    "label": self._process_name(row[1]),
                     "src_name": SourceName.GUIDETOPHARMACOLOGY.value
                 }
 
@@ -144,10 +157,10 @@ class GuideToPHARMACOLOGY(Base):
                 if row[10]:
                     associated_with.append(f"{NamespacePrefix.UNIPROT.value}:{row[10]}")
                 if row[16]:
-                    aliases.append(row[16])  # IUPAC
+                    aliases.append(self._process_name(row[16]))  # IUPAC
                 if row[17]:
                     # International Non-proprietary Name assigned by the WHO
-                    aliases.append(row[17])
+                    aliases.append(self._process_name(row[17]))
                 if row[18]:
                     # synonyms
                     synonyms = row[18].split("|")
@@ -158,7 +171,7 @@ class GuideToPHARMACOLOGY(Base):
                                 # Remove trademark symbols to allow for search
                                 s = s.replace(name_code, "")
                             s = html.unescape(s)
-                        aliases.append(s)
+                        aliases.append(self._process_name(s))
                 if row[20]:
                     associated_with.append(f"{NamespacePrefix.INCHIKEY.value}:{row[20]}")  # noqa: E501
 
