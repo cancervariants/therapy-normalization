@@ -4,7 +4,7 @@ import csv
 import shutil
 
 from therapy.database import Database
-from therapy.etl.rxnorm import RxNorm
+from therapy.etl.rxnorm import RxNorm, RXNORM_XREFS
 
 
 db = Database()
@@ -130,7 +130,7 @@ with open(rx._src_file, "r") as f:
     reader = csv.reader(f, delimiter="|")
 
     for row in reader:
-        if row[0] in TEST_IDS:
+        if row[0] in TEST_IDS and row[11] in RXNORM_XREFS:
             rows_to_add.append(row)
 
 with open(TEST_DATA_DIR / rx._src_file.name, "w") as f:
