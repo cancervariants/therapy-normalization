@@ -37,6 +37,12 @@ class AwsEnvName(str, Enum):
 VALID_AWS_ENV_NAMES = {v.value for v in AwsEnvName.__members__.values()}
 
 
+class DatabaseException(Exception):
+    """Create custom class for handling database exceptions"""
+
+    pass
+
+
 def confirm_aws_db_use(env_name: str) -> None:
     """Check to ensure that AWS instance should actually be used."""
     if click.confirm(f"Are you sure you want to use the AWS {env_name} database?",
@@ -61,7 +67,8 @@ class Database:
 
         if AWS_ENV_VAR_NAME in environ:
             aws_env = environ[AWS_ENV_VAR_NAME]
-            assert aws_env in VALID_AWS_ENV_NAMES, f"{AWS_ENV_VAR_NAME} must be one of {VALID_AWS_ENV_NAMES}"  # noqa: E501
+            if aws_env not in VALID_AWS_ENV_NAMES:
+                raise DatabaseException(f"{AWS_ENV_VAR_NAME} must be one of {VALID_AWS_ENV_NAMES}")  # noqa: E501
 
             skip_confirmation = environ.get(SKIP_AWS_DB_ENV_NAME)
             if (not skip_confirmation) or (skip_confirmation and skip_confirmation != "true"):  # noqa: E501
