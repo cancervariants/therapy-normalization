@@ -5,27 +5,14 @@ import re
 
 import pytest
 
-from tests.conftest import compare_response
-from therapy.query import QueryHandler
+from therapy.etl.drugbank import DrugBank
 from therapy.schemas import Drug, MatchType
 
 
 @pytest.fixture(scope="module")
-def drugbank():
-    """Build DrugBank normalizer test fixture."""
-    class QueryGetter:
-
-        def __init__(self):
-            self.query_handler = QueryHandler()
-
-        def search(self, query_str):
-            resp = self.query_handler.search(query_str, keyed=True, incl="drugbank")
-            return resp.source_matches["DrugBank"]
-
-        def fetch_meta(self):
-            return self.query_handler._fetch_meta("DrugBank")
-
-    return QueryGetter()
+def drugbank(test_source):
+    """Provide test DrugBank query endpoint"""
+    return test_source(DrugBank)
 
 
 @pytest.fixture(scope="module")
@@ -94,7 +81,8 @@ def aloe_ferox_leaf():
     return Drug(**params)
 
 
-def test_concept_id_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
+def test_concept_id_match(drugbank, compare_response, cisplatin, bentiromide,
+                          aloe_ferox_leaf):
     """Test that concept ID query resolves to correct record."""
     response = drugbank.search("drugbank:DB00515")
     compare_response(response, MatchType.CONCEPT_ID, cisplatin)
@@ -130,7 +118,8 @@ def test_concept_id_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
     compare_response(response, MatchType.CONCEPT_ID, aloe_ferox_leaf)
 
 
-def test_label_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
+def test_label_match(drugbank, compare_response, cisplatin, bentiromide,
+                     aloe_ferox_leaf):
     """Test that label query resolves to correct record."""
     response = drugbank.search("cisplatin")
     compare_response(response, MatchType.LABEL, cisplatin)
@@ -148,7 +137,7 @@ def test_label_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
     compare_response(response, MatchType.LABEL, aloe_ferox_leaf)
 
 
-def test_alias_match(drugbank, cisplatin, bentiromide):
+def test_alias_match(drugbank, compare_response, cisplatin, bentiromide):
     """Test that alias query resolves to correct record."""
     response = drugbank.search("CISPLATINO")
     compare_response(response, MatchType.ALIAS, cisplatin)
@@ -170,7 +159,7 @@ def test_alias_match(drugbank, cisplatin, bentiromide):
     assert response.match_type == MatchType.NO_MATCH
 
 
-def test_xref_match(drugbank, cisplatin, bentiromide):
+def test_xref_match(drugbank, compare_response, cisplatin, bentiromide):
     """Test that xref query resolves to correct record."""
     response = drugbank.search("chemidplus:15663-27-1")
     compare_response(response, MatchType.XREF, cisplatin)
@@ -179,7 +168,8 @@ def test_xref_match(drugbank, cisplatin, bentiromide):
     compare_response(response, MatchType.XREF, bentiromide)
 
 
-def test_assoc_with_match(drugbank, cisplatin, bentiromide, aloe_ferox_leaf):
+def test_assoc_with_match(drugbank, compare_response, cisplatin, bentiromide,
+                          aloe_ferox_leaf):
     """Test that associated_with query resolves to correct record."""
     response = drugbank.search("inchikey:lxzzyrpgzafole-uhfffaoysa-l")
     compare_response(response, MatchType.ASSOCIATED_WITH, cisplatin)
@@ -209,7 +199,7 @@ def test_no_match(drugbank):
 
 def test_meta_info(drugbank):
     """Test that the meta field is correct."""
-    response = drugbank.fetch_meta()
+    response = drugbank.query_handler._fetch_meta("DrugBank")
     assert response.data_license == "CC0 1.0"
     assert response.data_license_url == "https://creativecommons.org/publicdomain/zero/1.0/"  # noqa: E501
     assert re.match(r"[0-9]+\.[0-9]+\.[0-9]", response.version)
