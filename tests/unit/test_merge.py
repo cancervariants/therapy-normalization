@@ -1,43 +1,23 @@
 """Test merged record generation."""
-from typing import Dict
+import os
+from pathlib import Path
+from typing import Any, Dict, Set
 import random
 import json
-from pathlib import Path
 
 import pytest
 
+from therapy.database import AWS_ENV_VAR_NAME, Database
+from therapy.etl.chembl import ChEMBL
+from therapy.etl.chemidplus import ChemIDplus
+from therapy.etl.drugbank import DrugBank
+from therapy.etl.drugsatfda import DrugsAtFDA
+from therapy.etl.guidetopharmacology import GuideToPHARMACOLOGY
+from therapy.etl.hemonc import HemOnc
 from therapy.etl.merge import Merge
-
-
-@pytest.fixture(scope="module")
-def merge_handler(mock_database):
-    """Provide Merge instance to test cases.
-    Implements interfaces for basic merge functions, injects mock DB and
-    enables some additional backend checks for correctness.
-    """
-    class MergeHandler:
-        def __init__(self):
-            self.merge = Merge(mock_database())
-
-        def get_merge(self):
-            return self.merge
-
-        def create_merged_concepts(self, record_ids):
-            return self.merge.create_merged_concepts(record_ids)
-
-        def get_added_records(self):
-            return self.merge.database.added_records  # type: ignore
-
-        def get_updates(self):
-            return self.merge.database.updates  # type: ignore
-
-        def create_record_id_set(self, record_id):
-            return self.merge._create_record_id_set(record_id)
-
-        def generate_merged_record(self, record_id_set):
-            return self.merge._generate_merged_record(record_id_set)
-
-    return MergeHandler()
+from therapy.etl.ncit import NCIt
+from therapy.etl.rxnorm import RxNorm
+from therapy.etl.wikidata import Wikidata
 
 
 def compare_merged_records(actual: Dict, fixture: Dict):
@@ -53,14 +33,12 @@ def compare_merged_records(actual: Dict, fixture: Dict):
     assert ("aliases" in actual) == ("aliases" in fixture)
     if "aliases" in actual or "aliases" in fixture:
         assert set(actual["aliases"]) == set(fixture["aliases"])
-
     assert ("xrefs" in actual) == ("xrefs" in fixture)
     if "xrefs" in actual or "xrefs" in fixture:
         assert set(actual["xrefs"]) == set(fixture["xrefs"])
     assert ("associated_with" in actual) == ("associated_with" in fixture)
     if "associated_with" in actual or "associated_with" in fixture:
         assert set(actual["associated_with"]) == set(fixture["associated_with"])
-
     assert ("approval_ratings" in actual) == ("approval_ratings" in fixture)
     if "approval_ratings" in actual or "approval_ratings" in fixture:
         assert set(actual["approval_ratings"]) == set(fixture["approval_ratings"])
@@ -72,8 +50,8 @@ def compare_merged_records(actual: Dict, fixture: Dict):
         actual_inds = actual["has_indication"].copy()
         fixture_inds = fixture["has_indication"].copy()
         assert len(actual_inds) == len(fixture_inds)
-        actual_inds.sort(key=lambda x: x[0])
-        fixture_inds.sort(key=lambda x: x[0])
+        actual_inds.sort()
+        fixture_inds.sort()
         for i in range(len(actual_inds)):
             assert actual_inds[i] == fixture_inds[i]
 
@@ -81,23 +59,23 @@ def compare_merged_records(actual: Dict, fixture: Dict):
 @pytest.fixture(scope="module")
 def fixture_data(test_data: Path):
     """Fetch fixture data"""
-    return json.load(open(test_data / "test_merge_data.json", "r"))
+    return json.load(open(test_data / "fixtures" / "merged_fixtures.json", "r"))
 
 
 @pytest.fixture(scope="module")
-def phenobarbital_merged(fixture_data):
+def phenobarbital_merged(fixture_data) -> Dict:
     """Create phenobarbital fixture."""
     return fixture_data["phenobarbital"]
 
 
 @pytest.fixture(scope="module")
-def cisplatin_merged(fixture_data):
+def cisplatin_merged(fixture_data) -> Dict:
     """Create cisplatin fixture."""
     return fixture_data["cisplatin"]
 
 
 @pytest.fixture(scope="module")
-def spiramycin_merged(fixture_data):
+def spiramycin_merged(fixture_data) -> Dict:
     """Create fixture for spiramycin. The RxNorm entry should be inaccessible
     to this group.
     """
@@ -105,10 +83,59 @@ def spiramycin_merged(fixture_data):
 
 
 @pytest.fixture(scope="module")
+def amifostine_merged(fixture_data) -> Dict:
+    """Create fixture for amifostine."""
+    return fixture_data["amifostine"]
+
+
+@pytest.fixture(scope="module")
+def merge_instance(test_source):
+    """Provide fixture for ETL merge class"""
+    update_db = os.environ.get("THERAPY_TEST", "").lower() == "true"
+    if update_db and os.environ.get(AWS_ENV_VAR_NAME):
+        assert False, (
+            f"Running the full therapy ETL pipeline test on an AWS environment is "
+            f"forbidden -- either unset {AWS_ENV_VAR_NAME} or unset THERAPY_TEST"
+        )
+
+    class TrackingDatabase(Database):
+        """Provide injection for DB instance to track added/updated records"""
+
+        def __init__(self, **kwargs):
+            self.additions = {}
+            self.updates = {}
+            super().__init__(**kwargs)
+
+        def add_record(self, record: Dict, record_type: str):
+            if update_db:
+                super().add_record(record, record_type)
+            self.additions[record["concept_id"]] = record
+
+        def update_record(
+            self, concept_id: str, field: str, new_value: Any,  # noqa: ANN401
+            item_type: str = "identity"
+        ):
+            if update_db:
+                super().update_record(concept_id, field, new_value, item_type)
+            self.updates[concept_id] = {field: new_value}
+
+    if update_db:
+        for SourceClass in (
+            ChEMBL, ChemIDplus, DrugBank, DrugsAtFDA, GuideToPHARMACOLOGY, HemOnc, NCIt,
+            RxNorm, Wikidata
+        ):
+            test_source(SourceClass)
+
+    m = Merge(TrackingDatabase())
+    return m
+
+
+@pytest.fixture(scope="module")
 def record_id_groups():
-    """Create fixture for concept group sets."""
-    return {
-        "rxcui:8134": {  # Phenobarbital
+    """Create fixture for testing concept group creation."""
+    groups = [
+        # phenobarbital
+        {
             "rxcui:8134",
             "ncit:C739",
             "chemidplus:50-06-6",
@@ -117,113 +144,16 @@ def record_id_groups():
             "chembl:CHEMBL40",
             "iuphar.ligand:2804"
         },
-        "ncit:C739": {  # Phenobarbital
-            "rxcui:8134",
-            "ncit:C739",
-            "chemidplus:50-06-6",
-            "wikidata:Q407241",
-            "drugbank:DB01174",
-            "chembl:CHEMBL40",
-            "iuphar.ligand:2804"
-        },
-        "chemidplus:50-06-6": {  # Phenobarbital
-            "rxcui:8134",
-            "ncit:C739",
-            "chemidplus:50-06-6",
-            "wikidata:Q407241",
-            "drugbank:DB01174",
-            "chembl:CHEMBL40",
-            "iuphar.ligand:2804"
-        },
-        "wikidata:Q407241": {  # Phenobarbital
-            "rxcui:8134",
-            "ncit:C739",
-            "chemidplus:50-06-6",
-            "wikidata:Q407241",
-            "drugbank:DB01174",
-            "chembl:CHEMBL40",
-            "iuphar.ligand:2804"
-        },
-        "drugbank:DB01174": {  # Phenobarbital
-            "rxcui:8134",
-            "ncit:C739",
-            "chemidplus:50-06-6",
-            "wikidata:Q407241",
-            "drugbank:DB01174",
-            "chembl:CHEMBL40",
-            "iuphar.ligand:2804"
-        },
-        "chembl:CHEMBL40": {  # Phenobarbital
-            "rxcui:8134",
-            "ncit:C739",
-            "chemidplus:50-06-6",
-            "wikidata:Q407241",
-            "drugbank:DB01174",
-            "chembl:CHEMBL40",
-            "iuphar.ligand:2804"
-        },
-        "iuphar.ligand:2804": {  # Phenobarbital
-            "rxcui:8134",
-            "ncit:C739",
-            "chemidplus:50-06-6",
-            "wikidata:Q407241",
-            "drugbank:DB01174",
-            "chembl:CHEMBL40",
-            "iuphar.ligand:2804"
-        },
-        "rxcui:9991": {  # Spiramycin
+        # spiramycin
+        {
             "rxcui:9991",
             "ncit:C839",
             "chemidplus:8025-81-8",
             "drugbank:DB06145",
             "wikidata:Q422265"
         },
-        "ncit:C839": {  # Spiramycin
-            "rxcui:9991",
-            "ncit:C839",
-            "chemidplus:8025-81-8",
-            "drugbank:DB06145",
-            "wikidata:Q422265"
-        },
-        "chemidplus:8025-81-8": {  # Spiramycin
-            "rxcui:9991",
-            "ncit:C839",
-            "chemidplus:8025-81-8",
-            "drugbank:DB06145",
-            "wikidata:Q422265"
-        },
-        "drugbank:DB06145": {  # Spiramycin
-            "rxcui:9991",
-            "ncit:C839",
-            "chemidplus:8025-81-8",
-            "drugbank:DB06145",
-            "wikidata:Q422265"
-        },
-        "wikidata:Q422265": {  # Spiramycin
-            "rxcui:9991",
-            "ncit:C839",
-            "chemidplus:8025-81-8",
-            "drugbank:DB06145",
-            "wikidata:Q422265"
-        },
-        "rxcui:2555": {  # Cisplatin
-            "rxcui:2555",
-            "ncit:C376",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415",
-            "drugbank:DB00515",
-            "drugbank:DB12117",
-            "hemonc:105",
-            "chembl:CHEMBL11359",
-            "drugsatfda.anda:074656",
-            "drugsatfda.anda:074735",
-            "drugsatfda.anda:206774",
-            "drugsatfda.anda:207323",
-            "drugsatfda.anda:075036",
-            "drugsatfda.nda:018057",
-            "iuphar.ligand:5343"
-        },
-        "ncit:C376": {  # Cisplatin
+        # cisplatin
+        {
             "rxcui:2555",
             "ncit:C376",
             "chemidplus:15663-27-1",
@@ -240,255 +170,42 @@ def record_id_groups():
             "iuphar.ligand:5343",
             "drugsatfda.nda:018057"
         },
-        "chemidplus:15663-27-1": {  # Cisplatin
-            "rxcui:2555",
-            "ncit:C376",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415",
-            "drugbank:DB00515",
-            "drugbank:DB12117",
-            "hemonc:105",
-            "chembl:CHEMBL11359",
-            "drugsatfda.anda:074656",
-            "drugsatfda.anda:074735",
-            "drugsatfda.anda:206774",
-            "drugsatfda.anda:207323",
-            "drugsatfda.anda:075036",
-            "iuphar.ligand:5343",
-            "drugsatfda.nda:018057"
-        },
-        "wikidata:Q412415": {  # Cisplatin
-            "rxcui:2555",
-            "ncit:C376",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415",
-            "drugbank:DB00515",
-            "drugbank:DB12117",
-            "hemonc:105",
-            "chembl:CHEMBL11359",
-            "drugsatfda.anda:074656",
-            "drugsatfda.anda:074735",
-            "drugsatfda.anda:206774",
-            "drugsatfda.anda:207323",
-            "drugsatfda.anda:075036",
-            "iuphar.ligand:5343",
-            "drugsatfda.nda:018057"
-        },
-        "drugbank:DB00515": {  # Cisplatin
-            "rxcui:2555",
-            "ncit:C376",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415",
-            "drugbank:DB00515",
-            "drugbank:DB12117",
-            "hemonc:105",
-            "chembl:CHEMBL11359",
-            "drugsatfda.anda:074656",
-            "drugsatfda.anda:074735",
-            "drugsatfda.anda:206774",
-            "drugsatfda.anda:207323",
-            "drugsatfda.anda:075036",
-            "iuphar.ligand:5343",
-            "drugsatfda.nda:018057"
-        },
-        "hemonc:105": {  # Cisplatin
-            "rxcui:2555",
-            "ncit:C376",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415",
-            "drugbank:DB00515",
-            "drugbank:DB12117",
-            "hemonc:105",
-            "chembl:CHEMBL11359",
-            "drugsatfda.anda:074656",
-            "drugsatfda.anda:074735",
-            "drugsatfda.anda:206774",
-            "drugsatfda.anda:207323",
-            "drugsatfda.anda:075036",
-            "iuphar.ligand:5343",
-            "drugsatfda.nda:018057"
-        },
-        "chembl:CHEMBL11359": {  # Cisplatin
-            "rxcui:2555",
-            "ncit:C376",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415",
-            "drugbank:DB00515",
-            "drugbank:DB12117",
-            "hemonc:105",
-            "chembl:CHEMBL11359",
-            "drugsatfda.anda:074656",
-            "drugsatfda.anda:074735",
-            "drugsatfda.anda:206774",
-            "drugsatfda.anda:207323",
-            "drugsatfda.anda:075036",
-            "iuphar.ligand:5343",
-            "drugsatfda.nda:018057"
-        },
-        "drugsatfda.anda:074656": {  # Cisplatin
-            "rxcui:2555",
-            "ncit:C376",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415",
-            "drugbank:DB00515",
-            "drugbank:DB12117",
-            "hemonc:105",
-            "chembl:CHEMBL11359",
-            "drugsatfda.anda:074656",
-            "drugsatfda.anda:074735",
-            "drugsatfda.anda:206774",
-            "drugsatfda.anda:207323",
-            "drugsatfda.anda:075036",
-            "iuphar.ligand:5343",
-            "drugsatfda.nda:018057"
-        },
-        "drugsatfda.anda:074735": {  # Cisplatin
-            "rxcui:2555",
-            "ncit:C376",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415",
-            "drugbank:DB00515",
-            "drugbank:DB12117",
-            "hemonc:105",
-            "chembl:CHEMBL11359",
-            "drugsatfda.anda:074656",
-            "drugsatfda.anda:074735",
-            "drugsatfda.anda:206774",
-            "drugsatfda.anda:207323",
-            "drugsatfda.anda:075036",
-            "iuphar.ligand:5343",
-            "drugsatfda.nda:018057"
-        },
-        "drugsatfda.anda:206774": {  # Cisplatin
-            "rxcui:2555",
-            "ncit:C376",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415",
-            "drugbank:DB00515",
-            "drugbank:DB12117",
-            "hemonc:105",
-            "chembl:CHEMBL11359",
-            "drugsatfda.anda:074656",
-            "drugsatfda.anda:074735",
-            "drugsatfda.anda:206774",
-            "drugsatfda.anda:207323",
-            "drugsatfda.anda:075036",
-            "iuphar.ligand:5343",
-            "drugsatfda.nda:018057"
-        },
-        "drugsatfda.anda:207323": {  # Cisplatin
-            "rxcui:2555",
-            "ncit:C376",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415",
-            "drugbank:DB00515",
-            "drugbank:DB12117",
-            "hemonc:105",
-            "chembl:CHEMBL11359",
-            "drugsatfda.anda:074656",
-            "drugsatfda.anda:074735",
-            "drugsatfda.anda:206774",
-            "drugsatfda.anda:207323",
-            "drugsatfda.anda:075036",
-            "iuphar.ligand:5343",
-            "drugsatfda.nda:018057"
-        },
-        "drugsatfda.anda:075036": {  # Cisplatin
-            "rxcui:2555",
-            "ncit:C376",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415",
-            "drugbank:DB00515",
-            "drugbank:DB12117",
-            "hemonc:105",
-            "chembl:CHEMBL11359",
-            "drugsatfda.anda:074656",
-            "drugsatfda.anda:074735",
-            "drugsatfda.anda:206774",
-            "drugsatfda.anda:207323",
-            "drugsatfda.anda:075036",
-            "iuphar.ligand:5343",
-            "drugsatfda.nda:018057"
-        },
-        "drugbank:DB12117": {  # Cisplatin
-            "rxcui:2555",
-            "ncit:C376",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415",
-            "drugbank:DB00515",
-            "drugbank:DB12117",
-            "hemonc:105",
-            "chembl:CHEMBL11359",
-            "drugsatfda.anda:074656",
-            "drugsatfda.anda:074735",
-            "drugsatfda.anda:206774",
-            "drugsatfda.anda:207323",
-            "drugsatfda.anda:075036",
-            "iuphar.ligand:5343",
-            "drugsatfda.nda:018057"
-        },
-        "drugsatfda.nda:018057": {  # Cisplatin
-            "rxcui:2555",
-            "ncit:C376",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415",
-            "drugbank:DB00515",
-            "drugbank:DB12117",
-            "hemonc:105",
-            "chembl:CHEMBL11359",
-            "drugsatfda.anda:074656",
-            "drugsatfda.anda:074735",
-            "drugsatfda.anda:206774",
-            "drugsatfda.anda:207323",
-            "drugsatfda.anda:075036",
-            "iuphar.ligand:5343",
-            "drugsatfda.nda:018057"
-        },
-        "iuphar.ligand:5343": {  # Cisplatin
-            "rxcui:2555",
-            "ncit:C376",
-            "chemidplus:15663-27-1",
-            "wikidata:Q412415",
-            "drugbank:DB00515",
-            "drugbank:DB12117",
-            "hemonc:105",
-            "chembl:CHEMBL11359",
-            "drugsatfda.anda:074656",
-            "drugsatfda.anda:074735",
-            "drugsatfda.anda:206774",
-            "drugsatfda.anda:207323",
-            "drugsatfda.anda:075036",
-            "iuphar.ligand:5343",
-            "drugsatfda.nda:018057"
-        },
+        # Amifostine
         # tests lookup of wikidata reference to rxnorm brand record, and
         # drugbank reference to dead chemidplus record
-        "rxcui:4126": {  # Amifostine
+        {
+            "rxcui:1545987",
             "rxcui:4126",
-            "wikidata:Q47521576",
-            "drugbank:DB01143"
+            "ncit:C488",
+            "ncit:C66724",
+            "hemonc:26",
+            "drugbank:DB01143",
+            "drugsatfda.nda:020221",
+            "chembl:CHEMBL1006",
+            "chemidplus:112901-68-5",
+            "chemidplus:20537-88-6",
+            "wikidata:Q251698"
         },
-        "wikidata:Q47521576": {  # Amifostine
-            "rxcui:4126",
-            "wikidata:Q47521576",
-            "drugbank:DB01143"
-        },
-        "drugbank:DB01143": {  # Amifostine
-            "rxcui:4126",
-            "wikidata:Q47521576",
-            "drugbank:DB01143"
-        },
-        "ncit:C49236": {  # Therapeutic Procedure
+        # Therapeutic Procedure
+        {
             "ncit:C49236"
         },
         # test exclusion of drugs@fda records with multiple UNIIs
-        "drugsatfda.nda:210595": {
+        {
             "drugsatfda.nda:210595"
         }
-    }
+    ]
+    groups_keyed = {}
+    for group in groups:
+        for concept_id in group:
+            groups_keyed[concept_id] = group
+    return groups_keyed
 
 
-def test_create_record_id_set(merge_handler, record_id_groups):
+def test_id_sets(
+    merge_instance: Merge,
+    record_id_groups: Dict[str, Set[str]]
+):
     """Test creation of record ID sets. Queries DB and matches against
     record_id_groups fixture.
     """
@@ -500,14 +217,8 @@ def test_create_record_id_set(merge_handler, record_id_groups):
     orders = [random.sample(order0, key_len) for _ in range(5)]
     for order in [order0] + orders:
         ordered_keys = [keys[i] for i in order]
-        merge_handler.merge._groups = {}
-
-        for record_id in ordered_keys:
-            new_group = merge_handler.create_record_id_set(record_id)
-            if new_group:
-                for concept_id in new_group:
-                    merge_handler.merge._groups[concept_id] = new_group
-        groups = merge_handler.merge._groups
+        merge_instance._create_record_id_sets(ordered_keys)  # type: ignore
+        groups = merge_instance._groups
 
         # perform checks
         for concept_id in groups.keys():
@@ -516,54 +227,60 @@ def test_create_record_id_set(merge_handler, record_id_groups):
 
     # test dead reference
     has_dead_ref = "ncit:C107245"
-    dead_group = merge_handler.create_record_id_set(has_dead_ref)
+    dead_group = merge_instance._create_record_id_set(has_dead_ref)
     assert dead_group == {has_dead_ref}
 
 
-def test_generate_merged_record(merge_handler, record_id_groups,
-                                phenobarbital_merged, cisplatin_merged,
-                                spiramycin_merged):
+def test_generate_merged_record(
+    merge_instance: Merge, record_id_groups: Dict[str, Set[str]],
+        phenobarbital_merged: Dict, cisplatin_merged: Dict, spiramycin_merged: Dict):
     """Test generation of merged record method."""
     phenobarbital_ids = record_id_groups["rxcui:8134"]
-    merge_response = merge_handler.generate_merged_record(phenobarbital_ids)
+    merge_response = merge_instance._generate_merged_record(phenobarbital_ids)
     compare_merged_records(merge_response, phenobarbital_merged)
 
     cisplatin_ids = record_id_groups["rxcui:2555"]
-    merge_response = merge_handler.generate_merged_record(cisplatin_ids)
+    merge_response = merge_instance._generate_merged_record(cisplatin_ids)
     compare_merged_records(merge_response, cisplatin_merged)
 
     spiramycin_ids = record_id_groups["ncit:C839"]
-    merge_response = merge_handler.generate_merged_record(spiramycin_ids)
+    merge_response = merge_instance._generate_merged_record(spiramycin_ids)
     compare_merged_records(merge_response, spiramycin_merged)
 
 
-def test_create_merged_concepts(merge_handler, record_id_groups,
-                                phenobarbital_merged, cisplatin_merged,
-                                spiramycin_merged):
+def test_create_merged_concepts(
+    merge_instance: Merge, record_id_groups: Dict[str, Set[str]],
+    phenobarbital_merged: Dict, cisplatin_merged: Dict, spiramycin_merged: Dict,
+    amifostine_merged: Dict
+):
     """Test end-to-end creation and upload of merged concepts."""
     record_ids = record_id_groups.keys()
-    merge_handler.create_merged_concepts(record_ids)
+    merge_instance.create_merged_concepts(record_ids)  # type: ignore
+    merge_instance.database.flush_batch()
 
     # check merged record generation and storage
-    added_records = merge_handler.get_added_records()
+    # should only create new records for groups with n > 1 members
+    added_records = merge_instance.database.additions  # type: ignore
     assert len(added_records) == 4
 
-    phenobarb_merged_id = phenobarbital_merged["concept_id"]
-    assert phenobarb_merged_id in added_records.keys()
-    compare_merged_records(added_records[phenobarb_merged_id],
-                           phenobarbital_merged)
+    phenobarbital_merged_id = phenobarbital_merged["concept_id"]
+    assert phenobarbital_merged_id in added_records.keys()
+    compare_merged_records(added_records[phenobarbital_merged_id], phenobarbital_merged)
 
-    cispl_merged_id = cisplatin_merged["concept_id"]
-    assert cispl_merged_id in added_records.keys()
-    compare_merged_records(added_records[cispl_merged_id], cisplatin_merged)
+    cisplatin_merged_id = cisplatin_merged["concept_id"]
+    assert cisplatin_merged_id in added_records.keys()
+    compare_merged_records(added_records[cisplatin_merged_id], cisplatin_merged)
 
-    spira_merged_id = spiramycin_merged["concept_id"]
-    assert spira_merged_id in added_records.keys()
-    compare_merged_records(added_records[spira_merged_id],
-                           spiramycin_merged)
+    spiramycin_merged_id = spiramycin_merged["concept_id"]
+    assert spiramycin_merged_id in added_records.keys()
+    compare_merged_records(added_records[spiramycin_merged_id], spiramycin_merged)
+
+    amifostine_merged_id = amifostine_merged["concept_id"]
+    assert amifostine_merged_id in added_records.keys()
+    compare_merged_records(added_records[amifostine_merged_id], amifostine_merged)
 
     # check merged record reference updating
-    updates = merge_handler.get_updates()
+    updates = merge_instance.database.updates  # type: ignore
     for concept_id in record_id_groups["rxcui:8134"]:
         assert updates[concept_id] == {
             "merge_ref": phenobarbital_merged["concept_id"].lower()

@@ -1,24 +1,15 @@
 """Test ChemIDplus ETL methods."""
-import pytest
 import isodate
+import pytest
 
-from therapy.query import QueryHandler
+from therapy.etl.chemidplus import ChemIDplus
 from therapy.schemas import Drug, MatchType
-from tests.conftest import compare_records
 
 
 @pytest.fixture(scope="module")
-def chemidplus():
-    """Build ETL test fixture."""
-    class QueryGetter:
-
-        def __init__(self):
-            self.normalizer = QueryHandler()
-
-        def search(self, query_str):
-            resp = self.normalizer.search(query_str, keyed=True, incl="chemidplus")
-            return resp.source_matches["ChemIDplus"]
-    return QueryGetter()
+def chemidplus(test_source):
+    """Provide test ChemIDplus query endpoint"""
+    return test_source(ChemIDplus)
 
 
 @pytest.fixture(scope="module")
@@ -105,7 +96,7 @@ def glycopyrronium_bromide():
     })
 
 
-def test_penicillin(chemidplus, penicillin_v):
+def test_penicillin(chemidplus, compare_records, penicillin_v):
     """Test record retrieval for Penicillin V."""
     response = chemidplus.search("chemidplus:87-08-1")
     assert response.match_type == MatchType.CONCEPT_ID
@@ -144,7 +135,7 @@ def test_penicillin(chemidplus, penicillin_v):
     assert response.match_type == MatchType.NO_MATCH
 
 
-def test_imatinib(chemidplus, imatinib, other_imatinib):
+def test_imatinib(chemidplus, compare_records, imatinib, other_imatinib):
     """Test record retrieval for imatinib."""
     response = chemidplus.search("Imatinib")
     assert response.match_type == MatchType.LABEL
@@ -173,7 +164,7 @@ def test_imatinib(chemidplus, imatinib, other_imatinib):
     compare_records(response.records[0], imatinib)
 
 
-def test_cisplatin(chemidplus, cisplatin):
+def test_cisplatin(chemidplus, compare_records, cisplatin):
     """Test record retrieval for cisplatin."""
     response = chemidplus.search("chemidplus:15663-27-1")
     assert response.match_type == MatchType.CONCEPT_ID
@@ -199,7 +190,7 @@ def test_cisplatin(chemidplus, cisplatin):
     assert response.match_type == MatchType.NO_MATCH
 
 
-def test_glycopyrronium_bromide(chemidplus, glycopyrronium_bromide):
+def test_glycopyrronium_bromide(chemidplus, compare_records, glycopyrronium_bromide):
     """This drug was processed with incorrect xref formatting -- this test is provided
     to check on input QC.
     """

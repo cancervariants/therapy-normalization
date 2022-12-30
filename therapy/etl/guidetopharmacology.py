@@ -1,5 +1,5 @@
 """Module for Guide to PHARMACOLOGY ETL methods."""
-from typing import Optional, Dict, Any, List, Union, Tuple
+from typing import Optional, Dict, Any, List, Union
 import csv
 import html
 from pathlib import Path
@@ -57,7 +57,6 @@ class GuideToPHARMACOLOGY(Base):
             if len(ligands_files) < 1:
                 raise FileNotFoundError("No GtoPdb ligands files found")
 
-            mapping_file: Optional[Tuple] = None
             for ligands_file in ligands_files[::-1]:
                 try:
                     version = self._parse_version(
@@ -73,11 +72,11 @@ class GuideToPHARMACOLOGY(Base):
                     )
                 check_mapping_file = self._src_dir / f"{prefix}_ligand_id_mapping_{version}.tsv"  # noqa: E501
                 if check_mapping_file.exists():
-                    self.version = version
+                    self._version = version
                     self._ligands_file = ligands_file
                     self._mapping_file = check_mapping_file
                     break
-            if mapping_file is None:
+            if self._mapping_file is None:
                 raise FileNotFoundError(
                     "Unable to find complete GtoPdb data set with matching version "
                     "values. Check filenames against schema defined in README: "

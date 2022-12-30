@@ -1,8 +1,6 @@
 """Test DynamoDB"""
 from boto3.dynamodb.conditions import Key
 
-from tests.conftest import db  # noqa: F401
-
 
 def test_tables_created(db):  # noqa: F811
     """Check that therapy_concepts and therapy_metadata are created."""
