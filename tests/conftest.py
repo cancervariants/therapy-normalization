@@ -51,8 +51,7 @@ def db():
     if os.environ.get("THERAPY_TEST", "").lower() == "true":
         if os.environ.get(AWS_ENV_VAR_NAME):
             assert False, (
-                f"Running the full therapy ETL pipeline test on an AWS environment is "
-                f"forbidden -- either unset {AWS_ENV_VAR_NAME} or unset THERAPY_TEST"
+                f"Cannot have both GENE_TEST and {AWS_ENV_VAR_NAME} set."
             )
         existing_tables = database.dynamodb_client.list_tables()["TableNames"]
         if "therapy_concepts" in existing_tables:
