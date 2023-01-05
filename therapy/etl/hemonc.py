@@ -110,7 +110,7 @@ class HemOnc(DiseaseIndicationBase):
                     self._src_dir / f"hemonc_synonyms_{version}.csv"
                 )
                 if other_files[0].exists() and other_files[1].exists():
-                    self.version = version
+                    self._version = version
                     src_files = (
                         concepts_file,
                         other_files[0],

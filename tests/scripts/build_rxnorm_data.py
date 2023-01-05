@@ -1,6 +1,7 @@
 """Build RxNorm test data."""
 from pathlib import Path
 import csv
+import shutil
 
 from therapy.database import Database
 from therapy.etl.rxnorm import RxNorm, RXNORM_XREFS
@@ -8,10 +9,8 @@ from therapy.etl.rxnorm import RxNorm, RXNORM_XREFS
 
 db = Database()
 rx = RxNorm(db)
-rx._get_rrf(False)
+rx._extract_data()
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "rxnorm"
-rxnorm_outfile_path = TEST_DATA_DIR / rx._src_file.name
-drug_forms_outfile_path = TEST_DATA_DIR / rx._drug_forms_file.name
 
 TEST_IDS = {
     "100213",
@@ -126,13 +125,16 @@ TEST_IDS = {
 }
 
 rows_to_add = []
+pins = []
 with open(rx._src_file, "r") as f:
-    reader = csv.reader(f)
+    reader = csv.reader(f, delimiter="|")
 
     for row in reader:
         if row[0] in TEST_IDS and row[11] in RXNORM_XREFS:
             rows_to_add.append(row)
 
-with open(rxnorm_outfile_path, "w") as f:
-    writer = csv.writer(f)
+with open(TEST_DATA_DIR / rx._src_file.name, "w") as f:
+    writer = csv.writer(f, delimiter="|")
     writer.writerows(rows_to_add)
+
+shutil.copyfile(rx._drug_forms_file, TEST_DATA_DIR / rx._drug_forms_file.name)

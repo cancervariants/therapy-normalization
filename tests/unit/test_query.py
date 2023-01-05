@@ -6,7 +6,7 @@ from pathlib import Path
 import pytest
 
 from therapy.query import QueryHandler, InvalidParameterException
-from therapy.schemas import MatchType, SourceName, Drug
+from therapy.schemas import MatchType, SourceName, TherapyDescriptor, Drug
 
 
 @pytest.fixture(scope="module")

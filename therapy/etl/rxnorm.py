@@ -47,6 +47,7 @@ class RxNorm(Base):
 
     def _create_drug_form_yaml(self) -> None:
         """Create a YAML file containing RxNorm drug form values."""
+        self._drug_forms_file = self._src_dir / f"rxnorm_drug_forms_{self._version}.yaml"  # noqa: E501
         dfs = []
         with open(self._src_file) as f:  # type: ignore
             data = csv.reader(f, delimiter="|")
@@ -106,9 +107,11 @@ class RxNorm(Base):
         self._http_download(f"{url}?ticket={st_r.text}", self._src_dir,
                             handler=self._zip_handler)
 
-    def _get_rrf(self, use_existing: bool) -> None:
-        """TODO"""
-        super()._extract_data(use_existing)
+    def _get_existing_files(self) -> List[Path]:
+        """Get existing source RRF files from data directory.
+        :return: sorted list of file objects
+        """
+        return list(sorted(self._src_dir.glob("rxnorm_*.RRF")))
 
     def _extract_data(self, use_existing: bool = False) -> None:
         """Get source files from RxNorm data directory.
@@ -118,10 +121,12 @@ class RxNorm(Base):
 
         :param bool use_existing: if True, don't try to fetch latest source data
         """
-        self._get_rrf(use_existing)
-        self._drug_forms_file = self._src_dir / f"rxnorm_drug_forms_{self._version}.yaml"  # noqa: E501
-        if not self._drug_forms_file.exists():
+        super()._extract_data(use_existing)
+        drug_forms_path = self._src_dir / f"rxnorm_drug_forms_{self._version}.yaml"
+        if not drug_forms_path.exists():
             self._create_drug_form_yaml()
+        else:
+            self._drug_forms_file = drug_forms_path
 
     def _transform_data(self) -> None:
         """Transform the RxNorm source."""
@@ -178,7 +183,7 @@ class RxNorm(Base):
                                 params[field] = field_value
                         self._load_therapy(params)
 
-    def _get_brands(self, row: List, ingredient_to_brands: Dict) -> None:
+    def _get_brands(self, row: List, ingredient_brands: Dict) -> None:
         """Add ingredient and brand to ingredient_brands.
 
         :param List row: A row in the RxNorm data file.

@@ -1,7 +1,7 @@
 {
   "normalize_cisplatin": {
     "id": "normalize.therapy:rxcui%3A2555",
-    "type": "TherapeuticDescriptor",
+    "type": "TherapyDescriptor",
     "label": "cisplatin",
     "description": null,
     "xrefs": [
@@ -77,7 +77,7 @@
               "id": "hemonc:671",
               "type": "DiseaseDescriptor",
               "label": "Testicular cancer",
-              "disease": "ncit:C7251",
+              "disease_id": "ncit:C7251",
               "extensions": [
                 {
                   "type": "Extension",
@@ -90,7 +90,7 @@
               "id": "hemonc:645",
               "type": "DiseaseDescriptor",
               "label": "Ovarian cancer",
-              "disease": "ncit:C7431",
+              "disease_id": "ncit:C7431",
               "extensions": [
                 {
                   "type": "Extension",
@@ -103,7 +103,7 @@
               "id": "hemonc:569",
               "type": "DiseaseDescriptor",
               "label": "Bladder cancer",
-              "disease": "ncit:C9334",
+              "disease_id": "ncit:C9334",
               "extensions": [
                 {
                   "type": "Extension",
@@ -116,7 +116,7 @@
               "id": "mesh:D001005",
               "type": "DiseaseDescriptor",
               "label": "Anus Neoplasms",
-              "disease": "ncit:C2877",
+              "disease_id": "ncit:C2877",
               "extensions": [
                 {
                   "type": "Extension",
@@ -129,7 +129,7 @@
               "id": "mesh:D046152",
               "type": "DiseaseDescriptor",
               "label": "Gastrointestinal Stromal Tumors",
-              "disease": "ncit:C3868",
+              "disease_id": "ncit:C3868",
               "extensions": [
                 {
                   "type": "Extension",
@@ -142,7 +142,7 @@
               "id": "mesh:D004806",
               "type": "DiseaseDescriptor",
               "label": "Ependymoma",
-              "disease": "ncit:C3017",
+              "disease_id": "ncit:C3017",
               "extensions": [
                 {
                   "type": "Extension",
@@ -155,7 +155,7 @@
               "id": "mesh:D015266",
               "type": "DiseaseDescriptor",
               "label": "Carcinoma, Merkel Cell",
-              "disease": "ncit:C9231",
+              "disease_id": "ncit:C9231",
               "extensions": [
                 {
                   "type": "Extension",
@@ -168,7 +168,7 @@
               "id": "mesh:D004938",
               "type": "DiseaseDescriptor",
               "label": "Esophageal Neoplasms",
-              "disease": "ncit:C7478",
+              "disease_id": "ncit:C7478",
               "extensions": [
                 {
                   "type": "Extension",
@@ -181,7 +181,7 @@
               "id": "mesh:D008223",
               "type": "DiseaseDescriptor",
               "label": "Lymphoma",
-              "disease": "ncit:C3208",
+              "disease_id": "ncit:C3208",
               "extensions": [
                 {
                   "type": "Extension",
@@ -194,7 +194,7 @@
               "id": "mesh:D018236",
               "type": "DiseaseDescriptor",
               "label": "Carcinoma, Embryonal",
-              "disease": "ncit:C3752",
+              "disease_id": "ncit:C3752",
               "extensions": [
                 {
                   "type": "Extension",
@@ -207,7 +207,7 @@
               "id": "mesh:D009373",
               "type": "DiseaseDescriptor",
               "label": "Neoplasms, Germ Cell and Embryonal",
-              "disease": "ncit:C3708",
+              "disease_id": "ncit:C3708",
               "extensions": [
                 {
                   "type": "Extension",
@@ -220,7 +220,7 @@
               "id": "mesh:D001932",
               "type": "DiseaseDescriptor",
               "label": "Brain Neoplasms",
-              "disease": "ncit:C3568",
+              "disease_id": "ncit:C3568",
               "extensions": [
                 {
                   "type": "Extension",
@@ -233,7 +233,7 @@
               "id": "mesh:D005833",
               "type": "DiseaseDescriptor",
               "label": "Genital Neoplasms, Female",
-              "disease": "ncit:C3053",
+              "disease_id": "ncit:C3053",
               "extensions": [
                 {
                   "type": "Extension",
@@ -246,7 +246,7 @@
               "id": "mesh:D058922",
               "type": "DiseaseDescriptor",
               "label": "Inflammatory Breast Neoplasms",
-              "disease": "ncit:C4001",
+              "disease_id": "ncit:C4001",
               "extensions": [
                 {
                   "type": "Extension",
@@ -259,7 +259,7 @@
               "id": "mesh:D014565",
               "type": "DiseaseDescriptor",
               "label": "Urogenital Neoplasms",
-              "disease": null,
+              "disease_id": null,
               "extensions": [
                 {
                   "type": "Extension",
@@ -272,7 +272,7 @@
               "id": "mesh:D007119",
               "type": "DiseaseDescriptor",
               "label": "Immunoblastic Lymphadenopathy",
-              "disease": "ncit:C7528",
+              "disease_id": "ncit:C7528",
               "extensions": [
                 {
                   "type": "Extension",
@@ -285,7 +285,7 @@
               "id": "mesh:D010051",
               "type": "DiseaseDescriptor",
               "label": "Ovarian Neoplasms",
-              "disease": "ncit:C7431",
+              "disease_id": "ncit:C7431",
               "extensions": [
                 {
                   "type": "Extension",
@@ -298,7 +298,7 @@
               "id": "mesh:D018285",
               "type": "DiseaseDescriptor",
               "label": "Klatskin Tumor",
-              "disease": "ncit:C36077",
+              "disease_id": "ncit:C36077",
               "extensions": [
                 {
                   "type": "Extension",
@@ -311,7 +311,7 @@
               "id": "mesh:D005185",
               "type": "DiseaseDescriptor",
               "label": "Fallopian Tube Neoplasms",
-              "disease": "ncit:C3032",
+              "disease_id": "ncit:C3032",
               "extensions": [
                 {
                   "type": "Extension",
@@ -324,7 +324,7 @@
               "id": "mesh:D021441",
               "type": "DiseaseDescriptor",
               "label": "Carcinoma, Pancreatic Ductal",
-              "disease": "ncit:C9120",
+              "disease_id": "ncit:C9120",
               "extensions": [
                 {
                   "type": "Extension",
@@ -337,7 +337,7 @@
               "id": "mesh:D007680",
               "type": "DiseaseDescriptor",
               "label": "Kidney Neoplasms",
-              "disease": "ncit:C7548",
+              "disease_id": "ncit:C7548",
               "extensions": [
                 {
                   "type": "Extension",
@@ -350,7 +350,7 @@
               "id": "mesh:D012509",
               "type": "DiseaseDescriptor",
               "label": "Sarcoma",
-              "disease": "ncit:C9118",
+              "disease_id": "ncit:C9118",
               "extensions": [
                 {
                   "type": "Extension",
@@ -363,7 +363,7 @@
               "id": "mesh:D012878",
               "type": "DiseaseDescriptor",
               "label": "Skin Neoplasms",
-              "disease": "ncit:C3372",
+              "disease_id": "ncit:C3372",
               "extensions": [
                 {
                   "type": "Extension",
@@ -376,7 +376,7 @@
               "id": "mesh:D016411",
               "type": "DiseaseDescriptor",
               "label": "Lymphoma, T-Cell, Peripheral",
-              "disease": "ncit:C3468",
+              "disease_id": "ncit:C3468",
               "extensions": [
                 {
                   "type": "Extension",
@@ -389,7 +389,7 @@
               "id": "mesh:D002822",
               "type": "DiseaseDescriptor",
               "label": "Choriocarcinoma",
-              "disease": "ncit:C2948",
+              "disease_id": "ncit:C2948",
               "extensions": [
                 {
                   "type": "Extension",
@@ -402,7 +402,7 @@
               "id": "mesh:D012175",
               "type": "DiseaseDescriptor",
               "label": "Retinoblastoma",
-              "disease": "ncit:C7541",
+              "disease_id": "ncit:C7541",
               "extensions": [
                 {
                   "type": "Extension",
@@ -415,7 +415,7 @@
               "id": "EFO:0003868",
               "type": "DiseaseDescriptor",
               "label": "mouth neoplasm",
-              "disease": "ncit:C7606",
+              "disease_id": "ncit:C7606",
               "extensions": [
                 {
                   "type": "Extension",
@@ -428,7 +428,7 @@
               "id": "mesh:D000740",
               "type": "DiseaseDescriptor",
               "label": "Anemia",
-              "disease": "ncit:C2869",
+              "disease_id": "ncit:C2869",
               "extensions": [
                 {
                   "type": "Extension",
@@ -441,7 +441,7 @@
               "id": "mesh:D000306",
               "type": "DiseaseDescriptor",
               "label": "Adrenal Cortex Neoplasms",
-              "disease": "ncit:C2858",
+              "disease_id": "ncit:C2858",
               "extensions": [
                 {
                   "type": "Extension",
@@ -454,7 +454,7 @@
               "id": "mesh:D004067",
               "type": "DiseaseDescriptor",
               "label": "Digestive System Neoplasms",
-              "disease": "ncit:C4890",
+              "disease_id": "ncit:C4890",
               "extensions": [
                 {
                   "type": "Extension",
@@ -467,7 +467,7 @@
               "id": "mesh:D012468",
               "type": "DiseaseDescriptor",
               "label": "Salivary Gland Neoplasms",
-              "disease": "ncit:C3811",
+              "disease_id": "ncit:C3811",
               "extensions": [
                 {
                   "type": "Extension",
@@ -480,7 +480,7 @@
               "id": "mesh:D031901",
               "type": "DiseaseDescriptor",
               "label": "Gestational Trophoblastic Disease",
-              "disease": "mondo:0016784",
+              "disease_id": "mondo:0016784",
               "extensions": [
                 {
                   "type": "Extension",
@@ -493,7 +493,7 @@
               "id": "mesh:D013724",
               "type": "DiseaseDescriptor",
               "label": "Teratoma",
-              "disease": "ncit:C3403",
+              "disease_id": "ncit:C3403",
               "extensions": [
                 {
                   "type": "Extension",
@@ -506,7 +506,7 @@
               "id": "mesh:D017728",
               "type": "DiseaseDescriptor",
               "label": "Lymphoma, Large-Cell, Anaplastic",
-              "disease": "ncit:C3720",
+              "disease_id": "ncit:C3720",
               "extensions": [
                 {
                   "type": "Extension",
@@ -519,7 +519,7 @@
               "id": "mesh:D008175",
               "type": "DiseaseDescriptor",
               "label": "Lung Neoplasms",
-              "disease": "ncit:C3200",
+              "disease_id": "ncit:C3200",
               "extensions": [
                 {
                   "type": "Extension",
@@ -532,7 +532,7 @@
               "id": "mesh:D018273",
               "type": "DiseaseDescriptor",
               "label": "Carcinoma, Islet Cell",
-              "disease": "ncit:C3770",
+              "disease_id": "ncit:C3770",
               "extensions": [
                 {
                   "type": "Extension",
@@ -545,7 +545,7 @@
               "id": "mesh:D016483",
               "type": "DiseaseDescriptor",
               "label": "Lymphoma, AIDS-Related",
-              "disease": "ncit:C3471",
+              "disease_id": "ncit:C3471",
               "extensions": [
                 {
                   "type": "Extension",
@@ -558,7 +558,7 @@
               "id": "mesh:D000230",
               "type": "DiseaseDescriptor",
               "label": "Adenocarcinoma",
-              "disease": "ncit:C2852",
+              "disease_id": "ncit:C2852",
               "extensions": [
                 {
                   "type": "Extension",
@@ -571,7 +571,7 @@
               "id": "mesh:D002294",
               "type": "DiseaseDescriptor",
               "label": "Carcinoma, Squamous Cell",
-              "disease": "ncit:C2929",
+              "disease_id": "ncit:C2929",
               "extensions": [
                 {
                   "type": "Extension",
@@ -584,7 +584,7 @@
               "id": "mesh:D005706",
               "type": "DiseaseDescriptor",
               "label": "Gallbladder Neoplasms",
-              "disease": "ncit:C3048",
+              "disease_id": "ncit:C3048",
               "extensions": [
                 {
                   "type": "Extension",
@@ -597,7 +597,7 @@
               "id": "mesh:D016543",
               "type": "DiseaseDescriptor",
               "label": "Central Nervous System Neoplasms",
-              "disease": "ncit:C4627",
+              "disease_id": "ncit:C4627",
               "extensions": [
                 {
                   "type": "Extension",
@@ -610,7 +610,7 @@
               "id": "mesh:D064726",
               "type": "DiseaseDescriptor",
               "label": "Triple Negative Breast Neoplasms",
-              "disease": "ncit:C71732",
+              "disease_id": "ncit:C71732",
               "extensions": [
                 {
                   "type": "Extension",
@@ -623,7 +623,7 @@
               "id": "mesh:D010255",
               "type": "DiseaseDescriptor",
               "label": "Paranasal Sinus Neoplasms",
-              "disease": "ncit:C6014",
+              "disease_id": "ncit:C6014",
               "extensions": [
                 {
                   "type": "Extension",
@@ -636,7 +636,7 @@
               "id": "mesh:D013945",
               "type": "DiseaseDescriptor",
               "label": "Thymoma",
-              "disease": "ncit:C3411",
+              "disease_id": "ncit:C3411",
               "extensions": [
                 {
                   "type": "Extension",
@@ -649,7 +649,7 @@
               "id": "mesh:D010412",
               "type": "DiseaseDescriptor",
               "label": "Penile Neoplasms",
-              "disease": "ncit:C3317",
+              "disease_id": "ncit:C3317",
               "extensions": [
                 {
                   "type": "Extension",
@@ -662,7 +662,7 @@
               "id": "mesh:D013274",
               "type": "DiseaseDescriptor",
               "label": "Stomach Neoplasms",
-              "disease": "ncit:C3387",
+              "disease_id": "ncit:C3387",
               "extensions": [
                 {
                   "type": "Extension",
@@ -675,7 +675,7 @@
               "id": "mesh:D002280",
               "type": "DiseaseDescriptor",
               "label": "Carcinoma, Basal Cell",
-              "disease": "ncit:C156767",
+              "disease_id": "ncit:C156767",
               "extensions": [
                 {
                   "type": "Extension",
@@ -688,7 +688,7 @@
               "id": "mesh:D014523",
               "type": "DiseaseDescriptor",
               "label": "Urethral Neoplasms",
-              "disease": "ncit:C3619",
+              "disease_id": "ncit:C3619",
               "extensions": [
                 {
                   "type": "Extension",
@@ -701,7 +701,7 @@
               "id": "mesh:D016889",
               "type": "DiseaseDescriptor",
               "label": "Endometrial Neoplasms",
-              "disease": "ncit:C3012",
+              "disease_id": "ncit:C3012",
               "extensions": [
                 {
                   "type": "Extension",
@@ -714,7 +714,7 @@
               "id": "mesh:D008228",
               "type": "DiseaseDescriptor",
               "label": "Lymphoma, Non-Hodgkin",
-              "disease": "ncit:C3211",
+              "disease_id": "ncit:C3211",
               "extensions": [
                 {
                   "type": "Extension",
@@ -727,7 +727,7 @@
               "id": "mesh:D020250",
               "type": "DiseaseDescriptor",
               "label": "Postoperative Nausea and Vomiting",
-              "disease": null,
+              "disease_id": null,
               "extensions": [
                 {
                   "type": "Extension",
@@ -740,7 +740,7 @@
               "id": "mesh:D009303",
               "type": "DiseaseDescriptor",
               "label": "Nasopharyngeal Neoplasms",
-              "disease": "ncit:C3257",
+              "disease_id": "ncit:C3257",
               "extensions": [
                 {
                   "type": "Extension",
@@ -753,7 +753,7 @@
               "id": "mesh:D007674",
               "type": "DiseaseDescriptor",
               "label": "Kidney Diseases",
-              "disease": "ncit:C3149",
+              "disease_id": "ncit:C3149",
               "extensions": [
                 {
                   "type": "Extension",
@@ -766,7 +766,7 @@
               "id": "mesh:D016545",
               "type": "DiseaseDescriptor",
               "label": "Choroid Plexus Neoplasms",
-              "disease": "ncit:C4533",
+              "disease_id": "ncit:C4533",
               "extensions": [
                 {
                   "type": "Extension",
@@ -779,7 +779,7 @@
               "id": "mesh:D006258",
               "type": "DiseaseDescriptor",
               "label": "Head and Neck Neoplasms",
-              "disease": "ncit:C4013",
+              "disease_id": "ncit:C4013",
               "extensions": [
                 {
                   "type": "Extension",
@@ -792,7 +792,7 @@
               "id": "mesh:D008288",
               "type": "DiseaseDescriptor",
               "label": "Malaria",
-              "disease": "ncit:C34797",
+              "disease_id": "ncit:C34797",
               "extensions": [
                 {
                   "type": "Extension",
@@ -805,7 +805,7 @@
               "id": "mesh:D008113",
               "type": "DiseaseDescriptor",
               "label": "Liver Neoplasms",
-              "disease": "ncit:C34803",
+              "disease_id": "ncit:C34803",
               "extensions": [
                 {
                   "type": "Extension",
@@ -818,7 +818,7 @@
               "id": "mesh:D018278",
               "type": "DiseaseDescriptor",
               "label": "Carcinoma, Neuroendocrine",
-              "disease": "ncit:C3773",
+              "disease_id": "ncit:C3773",
               "extensions": [
                 {
                   "type": "Extension",
@@ -831,7 +831,7 @@
               "id": "mesh:D018240",
               "type": "DiseaseDescriptor",
               "label": "Endodermal Sinus Tumor",
-              "disease": "ncit:C3011",
+              "disease_id": "ncit:C3011",
               "extensions": [
                 {
                   "type": "Extension",
@@ -844,7 +844,7 @@
               "id": "mesh:D008479",
               "type": "DiseaseDescriptor",
               "label": "Mediastinal Neoplasms",
-              "disease": "ncit:C3549",
+              "disease_id": "ncit:C3549",
               "extensions": [
                 {
                   "type": "Extension",
@@ -857,7 +857,7 @@
               "id": "mesh:D018305",
               "type": "DiseaseDescriptor",
               "label": "Ganglioneuroblastoma",
-              "disease": "ncit:C3790",
+              "disease_id": "ncit:C3790",
               "extensions": [
                 {
                   "type": "Extension",
@@ -870,7 +870,7 @@
               "id": "mesh:D010610",
               "type": "DiseaseDescriptor",
               "label": "Pharyngeal Neoplasms",
-              "disease": "ncit:C7545",
+              "disease_id": "ncit:C7545",
               "extensions": [
                 {
                   "type": "Extension",
@@ -883,7 +883,7 @@
               "id": "mesh:D018242",
               "type": "DiseaseDescriptor",
               "label": "Neuroectodermal Tumors, Primitive",
-              "disease": "ncit:C3222",
+              "disease_id": "ncit:C3222",
               "extensions": [
                 {
                   "type": "Extension",
@@ -896,7 +896,7 @@
               "id": "EFO:0005570",
               "type": "DiseaseDescriptor",
               "label": "oral cavity cancer",
-              "disease": "ncit:C9314",
+              "disease_id": "ncit:C9314",
               "extensions": [
                 {
                   "type": "Extension",
@@ -909,7 +909,7 @@
               "id": "mesh:D002583",
               "type": "DiseaseDescriptor",
               "label": "Uterine Cervical Neoplasms",
-              "disease": "ncit:C9311",
+              "disease_id": "ncit:C9311",
               "extensions": [
                 {
                   "type": "Extension",
@@ -922,7 +922,7 @@
               "id": "mesh:D014062",
               "type": "DiseaseDescriptor",
               "label": "Tongue Neoplasms",
-              "disease": "ncit:C9345",
+              "disease_id": "ncit:C9345",
               "extensions": [
                 {
                   "type": "Extension",
@@ -935,7 +935,7 @@
               "id": "mesh:D010534",
               "type": "DiseaseDescriptor",
               "label": "Peritoneal Neoplasms",
-              "disease": "ncit:C3322",
+              "disease_id": "ncit:C3322",
               "extensions": [
                 {
                   "type": "Extension",
@@ -948,7 +948,7 @@
               "id": "EFO:1000043",
               "type": "DiseaseDescriptor",
               "label": "ovarian serous cystadenocarcinoma",
-              "disease": "ncit:C7978",
+              "disease_id": "ncit:C7978",
               "extensions": [
                 {
                   "type": "Extension",
@@ -961,7 +961,7 @@
               "id": "mesh:D008545",
               "type": "DiseaseDescriptor",
               "label": "Melanoma",
-              "disease": "ncit:C3224",
+              "disease_id": "ncit:C3224",
               "extensions": [
                 {
                   "type": "Extension",
@@ -974,7 +974,7 @@
               "id": "mesh:D005910",
               "type": "DiseaseDescriptor",
               "label": "Glioma",
-              "disease": "ncit:C3059",
+              "disease_id": "ncit:C3059",
               "extensions": [
                 {
                   "type": "Extension",
@@ -987,7 +987,7 @@
               "id": "mesh:D001749",
               "type": "DiseaseDescriptor",
               "label": "Urinary Bladder Neoplasms",
-              "disease": "ncit:C9334",
+              "disease_id": "ncit:C9334",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1000,7 +1000,7 @@
               "id": "mesh:D002277",
               "type": "DiseaseDescriptor",
               "label": "Carcinoma",
-              "disease": "ncit:C2916",
+              "disease_id": "ncit:C2916",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1013,7 +1013,7 @@
               "id": "mesh:D009190",
               "type": "DiseaseDescriptor",
               "label": "Myelodysplastic Syndromes",
-              "disease": "ncit:C3247",
+              "disease_id": "ncit:C3247",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1026,7 +1026,7 @@
               "id": "mesh:D002292",
               "type": "DiseaseDescriptor",
               "label": "Carcinoma, Renal Cell",
-              "disease": "mondo:0005086",
+              "disease_id": "mondo:0005086",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1039,7 +1039,7 @@
               "id": "mesh:D009325",
               "type": "DiseaseDescriptor",
               "label": "Nausea",
-              "disease": null,
+              "disease_id": null,
               "extensions": [
                 {
                   "type": "Extension",
@@ -1052,7 +1052,7 @@
               "id": "mesh:D008107",
               "type": "DiseaseDescriptor",
               "label": "Liver Diseases",
-              "disease": "ncit:C3196",
+              "disease_id": "ncit:C3196",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1065,7 +1065,7 @@
               "id": "mesh:D009369",
               "type": "DiseaseDescriptor",
               "label": "Neoplasms",
-              "disease": "ncit:C3262",
+              "disease_id": "ncit:C3262",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1078,7 +1078,7 @@
               "id": "mesh:D064129",
               "type": "DiseaseDescriptor",
               "label": "Prostatic Neoplasms, Castration-Resistant",
-              "disease": "DOID:0080909",
+              "disease_id": "DOID:0080909",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1091,7 +1091,7 @@
               "id": "mesh:D055752",
               "type": "DiseaseDescriptor",
               "label": "Small Cell Lung Carcinoma",
-              "disease": "ncit:C4917",
+              "disease_id": "ncit:C4917",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1104,7 +1104,7 @@
               "id": "mesh:D008654",
               "type": "DiseaseDescriptor",
               "label": "Mesothelioma",
-              "disease": "ncit:C3234",
+              "disease_id": "ncit:C3234",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1117,7 +1117,7 @@
               "id": "mesh:D004066",
               "type": "DiseaseDescriptor",
               "label": "Digestive System Diseases",
-              "disease": "ncit:C3959",
+              "disease_id": "ncit:C3959",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1130,7 +1130,7 @@
               "id": "mesh:D014846",
               "type": "DiseaseDescriptor",
               "label": "Vulvar Neoplasms",
-              "disease": "ncit:C7502",
+              "disease_id": "ncit:C7502",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1143,7 +1143,7 @@
               "id": "mesh:D008527",
               "type": "DiseaseDescriptor",
               "label": "Medulloblastoma",
-              "disease": "ncit:C3222",
+              "disease_id": "ncit:C3222",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1156,7 +1156,7 @@
               "id": "mesh:D013953",
               "type": "DiseaseDescriptor",
               "label": "Thymus Neoplasms",
-              "disease": "ncit:C4962",
+              "disease_id": "ncit:C4962",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1169,7 +1169,7 @@
               "id": "mesh:D018239",
               "type": "DiseaseDescriptor",
               "label": "Seminoma",
-              "disease": "ncit:C9309",
+              "disease_id": "ncit:C9309",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1182,7 +1182,7 @@
               "id": "mesh:D007822",
               "type": "DiseaseDescriptor",
               "label": "Laryngeal Neoplasms",
-              "disease": "ncit:C3156",
+              "disease_id": "ncit:C3156",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1195,7 +1195,7 @@
               "id": "mesh:D018312",
               "type": "DiseaseDescriptor",
               "label": "Sex Cord-Gonadal Stromal Tumors",
-              "disease": "ncit:C3794",
+              "disease_id": "ncit:C3794",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1208,7 +1208,7 @@
               "id": "mesh:D001661",
               "type": "DiseaseDescriptor",
               "label": "Biliary Tract Neoplasms",
-              "disease": "mondo:0003060",
+              "disease_id": "mondo:0003060",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1221,7 +1221,7 @@
               "id": "mesh:D006103",
               "type": "DiseaseDescriptor",
               "label": "Granuloma, Lethal Midline",
-              "disease": "mondo:0006828",
+              "disease_id": "mondo:0006828",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1234,7 +1234,7 @@
               "id": "mesh:D007938",
               "type": "DiseaseDescriptor",
               "label": "Leukemia",
-              "disease": "ncit:C3161",
+              "disease_id": "ncit:C3161",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1247,7 +1247,7 @@
               "id": "mesh:D015179",
               "type": "DiseaseDescriptor",
               "label": "Colorectal Neoplasms",
-              "disease": "ncit:C2956",
+              "disease_id": "ncit:C2956",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1260,7 +1260,7 @@
               "id": "mesh:D013964",
               "type": "DiseaseDescriptor",
               "label": "Thyroid Neoplasms",
-              "disease": "ncit:C7510",
+              "disease_id": "ncit:C7510",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1273,7 +1273,7 @@
               "id": "mesh:D010190",
               "type": "DiseaseDescriptor",
               "label": "Pancreatic Neoplasms",
-              "disease": "ncit:C3305",
+              "disease_id": "ncit:C3305",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1286,7 +1286,7 @@
               "id": "mesh:D009362",
               "type": "DiseaseDescriptor",
               "label": "Neoplasm Metastasis",
-              "disease": null,
+              "disease_id": null,
               "extensions": [
                 {
                   "type": "Extension",
@@ -1299,7 +1299,7 @@
               "id": "mesh:D016403",
               "type": "DiseaseDescriptor",
               "label": "Lymphoma, Large B-Cell, Diffuse",
-              "disease": "ncit:C8851",
+              "disease_id": "ncit:C8851",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1312,7 +1312,7 @@
               "id": "mesh:D007012",
               "type": "DiseaseDescriptor",
               "label": "Hypopharyngeal Neoplasms",
-              "disease": "ncit:C7190",
+              "disease_id": "ncit:C7190",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1325,7 +1325,7 @@
               "id": "mesh:D014594",
               "type": "DiseaseDescriptor",
               "label": "Uterine Neoplasms",
-              "disease": "ncit:C3552",
+              "disease_id": "ncit:C3552",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1338,7 +1338,7 @@
               "id": "mesh:D006689",
               "type": "DiseaseDescriptor",
               "label": "Hodgkin Disease",
-              "disease": "ncit:C9357",
+              "disease_id": "ncit:C9357",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1351,7 +1351,7 @@
               "id": "mesh:D008224",
               "type": "DiseaseDescriptor",
               "label": "Lymphoma, Follicular",
-              "disease": "ncit:C3209",
+              "disease_id": "ncit:C3209",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1364,7 +1364,7 @@
               "id": "mesh:D052016",
               "type": "DiseaseDescriptor",
               "label": "Mucositis",
-              "disease": "ncit:C3853",
+              "disease_id": "ncit:C3853",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1377,7 +1377,7 @@
               "id": "mesh:D002276",
               "type": "DiseaseDescriptor",
               "label": "Carcinoid Tumor",
-              "disease": "ncit:C2915",
+              "disease_id": "ncit:C2915",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1390,7 +1390,7 @@
               "id": "mesh:D006528",
               "type": "DiseaseDescriptor",
               "label": "Carcinoma, Hepatocellular",
-              "disease": "ncit:C3099",
+              "disease_id": "ncit:C3099",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1403,7 +1403,7 @@
               "id": "mesh:D002289",
               "type": "DiseaseDescriptor",
               "label": "Carcinoma, Non-Small-Cell Lung",
-              "disease": "ncit:C2926",
+              "disease_id": "ncit:C2926",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1416,7 +1416,7 @@
               "id": "mesh:D009447",
               "type": "DiseaseDescriptor",
               "label": "Neuroblastoma",
-              "disease": "ncit:C3270",
+              "disease_id": "ncit:C3270",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1429,7 +1429,7 @@
               "id": "mesh:D010996",
               "type": "DiseaseDescriptor",
               "label": "Pleural Effusion",
-              "disease": null,
+              "disease_id": null,
               "extensions": [
                 {
                   "type": "Extension",
@@ -1442,7 +1442,7 @@
               "id": "mesh:D013736",
               "type": "DiseaseDescriptor",
               "label": "Testicular Neoplasms",
-              "disease": "ncit:C7251",
+              "disease_id": "ncit:C7251",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1455,7 +1455,7 @@
               "id": "mesh:D018197",
               "type": "DiseaseDescriptor",
               "label": "Hepatoblastoma",
-              "disease": "ncit:C3728",
+              "disease_id": "ncit:C3728",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1468,7 +1468,7 @@
               "id": "mesh:D013280",
               "type": "DiseaseDescriptor",
               "label": "Stomatitis",
-              "disease": "ncit:C26887",
+              "disease_id": "ncit:C26887",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1481,7 +1481,7 @@
               "id": "mesh:D014987",
               "type": "DiseaseDescriptor",
               "label": "Xerostomia",
-              "disease": null,
+              "disease_id": null,
               "extensions": [
                 {
                   "type": "Extension",
@@ -1494,7 +1494,7 @@
               "id": "mesh:D000077195",
               "type": "DiseaseDescriptor",
               "label": "Squamous Cell Carcinoma of Head and Neck",
-              "disease": "ncit:C4044",
+              "disease_id": "ncit:C4044",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1507,7 +1507,7 @@
               "id": "mesh:D015459",
               "type": "DiseaseDescriptor",
               "label": "Leukemia-Lymphoma, Adult T-Cell",
-              "disease": "ncit:C3184",
+              "disease_id": "ncit:C3184",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1520,7 +1520,7 @@
               "id": "mesh:D020522",
               "type": "DiseaseDescriptor",
               "label": "Lymphoma, Mantle-Cell",
-              "disease": "ncit:C4337",
+              "disease_id": "ncit:C4337",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1533,7 +1533,7 @@
               "id": "mesh:D000077192",
               "type": "DiseaseDescriptor",
               "label": "Adenocarcinoma of Lung",
-              "disease": "ncit:C3512",
+              "disease_id": "ncit:C3512",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1546,7 +1546,7 @@
               "id": "mesh:D012208",
               "type": "DiseaseDescriptor",
               "label": "Rhabdomyosarcoma",
-              "disease": "ncit:C3359",
+              "disease_id": "ncit:C3359",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1559,7 +1559,7 @@
               "id": "mesh:D009101",
               "type": "DiseaseDescriptor",
               "label": "Multiple Myeloma",
-              "disease": "ncit:C3242",
+              "disease_id": "ncit:C3242",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1572,7 +1572,7 @@
               "id": "mesh:D012516",
               "type": "DiseaseDescriptor",
               "label": "Osteosarcoma",
-              "disease": "ncit:C53707",
+              "disease_id": "ncit:C53707",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1585,7 +1585,7 @@
               "id": "mesh:D018281",
               "type": "DiseaseDescriptor",
               "label": "Cholangiocarcinoma",
-              "disease": "ncit:C4436",
+              "disease_id": "ncit:C4436",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1598,7 +1598,7 @@
               "id": "mesh:D001943",
               "type": "DiseaseDescriptor",
               "label": "Breast Neoplasms",
-              "disease": "ncit:C2910",
+              "disease_id": "ncit:C2910",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1611,7 +1611,7 @@
               "id": "mesh:D009959",
               "type": "DiseaseDescriptor",
               "label": "Oropharyngeal Neoplasms",
-              "disease": "ncit:C7398",
+              "disease_id": "ncit:C7398",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1624,7 +1624,7 @@
               "id": "mesh:D018269",
               "type": "DiseaseDescriptor",
               "label": "Carcinoma, Endometrioid",
-              "disease": "ncit:C7558",
+              "disease_id": "ncit:C7558",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1693,11 +1693,11 @@
         ]
       }
     ],
-    "therapeutic": "rxcui:2555"
+    "therapy_id": "rxcui:2555"
   },
   "normalize_phenobarbital": {
     "id": "normalize.therapy:Phenobarbital",
-    "type": "TherapeuticDescriptor",
+    "type": "TherapyDescriptor",
     "label": "phenobarbital",
     "description": null,
     "xrefs": [
@@ -1764,7 +1764,7 @@
               "id": "mesh:D009357",
               "type": "DiseaseDescriptor",
               "label": "Neonatal Abstinence Syndrome",
-              "disease": "ncit:C87101",
+              "disease_id": "ncit:C87101",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1777,7 +1777,7 @@
               "id": "mesh:D012559",
               "type": "DiseaseDescriptor",
               "label": "Schizophrenia",
-              "disease": "mondo:0005090",
+              "disease_id": "mondo:0005090",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1790,7 +1790,7 @@
               "id": "mesh:D001007",
               "type": "DiseaseDescriptor",
               "label": "Anxiety",
-              "disease": "mondo:0011918",
+              "disease_id": "mondo:0011918",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1803,7 +1803,7 @@
               "id": "mesh:D012640",
               "type": "DiseaseDescriptor",
               "label": "Seizures",
-              "disease": "ncit:C3980",
+              "disease_id": "ncit:C3980",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1816,7 +1816,7 @@
               "id": "mesh:D009503",
               "type": "DiseaseDescriptor",
               "label": "Neutropenia",
-              "disease": "mondo:0001475",
+              "disease_id": "mondo:0001475",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1829,7 +1829,7 @@
               "id": "mesh:D008223",
               "type": "DiseaseDescriptor",
               "label": "Lymphoma",
-              "disease": "ncit:C3208",
+              "disease_id": "ncit:C3208",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1842,7 +1842,7 @@
               "id": "mesh:D013226",
               "type": "DiseaseDescriptor",
               "label": "Status Epilepticus",
-              "disease": "ncit:C85079",
+              "disease_id": "ncit:C85079",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1855,7 +1855,7 @@
               "id": "mesh:D003704",
               "type": "DiseaseDescriptor",
               "label": "Dementia",
-              "disease": "mondo:0001627",
+              "disease_id": "mondo:0001627",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1868,7 +1868,7 @@
               "id": "mesh:D004827",
               "type": "DiseaseDescriptor",
               "label": "Epilepsy",
-              "disease": "ncit:C3020",
+              "disease_id": "ncit:C3020",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1881,7 +1881,7 @@
               "id": "mesh:D003866",
               "type": "DiseaseDescriptor",
               "label": "Depressive Disorder",
-              "disease": "mondo:0002050",
+              "disease_id": "mondo:0002050",
               "extensions": [
                 {
                   "type": "Extension",
@@ -1926,11 +1926,11 @@
         ]
       }
     ],
-    "therapeutic": "rxcui:8134"
+    "therapy_id": "rxcui:8134"
   },
   "normalize_spiramycin": {
     "id": "normalize.therapy:Spiramycin",
-    "type": "TherapeuticDescriptor",
+    "type": "TherapyDescriptor",
     "label": "spiramycin",
     "description": null,
     "xrefs": [
@@ -1972,11 +1972,11 @@
         ]
       }
     ],
-    "therapeutic": "rxcui:9991"
+    "therapy_id": "rxcui:9991"
   },
   "normalize_therapeutic_procedure": {
     "id": "normalize.therapy:ncit%3AC49236",
-    "type": "TherapeuticDescriptor",
+    "type": "TherapyDescriptor",
     "label": "Therapeutic Procedure",
     "description": null,
     "xrefs": [],
@@ -2002,7 +2002,7 @@
         "value": ["umls:C0087111"]
       }
     ],
-    "therapeutic": "ncit:C49236"
+    "therapy_id": "ncit:C49236"
   },
   "unmerged_normalize_therapeutic_procedure": {
     "normalized_concept_id": "ncit:C49236",

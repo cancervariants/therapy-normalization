@@ -17,18 +17,26 @@ def rxnorm(test_source):
 def bifidobacterium_infantis():
     """Create bifidobacterium infantis drug fixture."""
     params = {
-        "label": "Bifidobacterium Infantis",
+        "label": "Bifidobacterium infantis",
         "concept_id": "rxcui:100213",
         "aliases": [
+            "Bifidobacterium infantis whole",
+            "Bifidobacterium lactentis whole",
+            "Bifidobacterium liberorum whole",
+            "Bifidobacterium longum subsp. infantis",
+            "Bifidobacterium longum subsp. infantis whole",
+            "Bifidobacterium longum infantis whole",
+            "Bifidobacterium longum ssp. infantis",
             "bifidobacterium infantis",
-            "Bifidobacterium infantis"
+            "Bifidobacterium longum bv. infantis whole"
         ],
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": [
             "drugbank:DB14222"
         ],
         "associated_with": [
-            "mmsl:d07347"
+            "mmsl:d07347",
+            "mesh:D000070236"
         ],
         "trade_names": [
             "Align",
@@ -456,6 +464,7 @@ def fluoxetine_hydrochloride():
         "associated_with": [
             "usp:m33780",
             "unii:I9W7N6B1KJ",
+            "mmsl:28237",
             "mmsl:4746",
             "vandf:4019389",
             "mmsl:41730",
@@ -915,13 +924,13 @@ def test_no_match(rxnorm):
 
 def test_brand_name_to_concept(rxnorm):
     """Test that brand names are correctly linked to identity concept."""
-    r = rxnorm.db.therapies.query(
+    r = rxnorm.query_handler.db.therapies.query(
         KeyConditionExpression=Key("label_and_type").eq("rxcui:1041527##rx_brand")
     )
     assert r["Items"][0]["concept_id"] == "rxcui:161"
     assert r["Items"][0]["concept_id"] != "rxcui:1041527"
 
-    r = rxnorm.db.therapies.query(
+    r = rxnorm.query_handler.db.therapies.query(
         KeyConditionExpression=Key("label_and_type").eq("rxcui:218330##rx_brand")
     )
     assert r["Items"][0]["concept_id"] == "rxcui:44"
@@ -971,7 +980,7 @@ def test_phenobarbital(phenobarbital, rxnorm, compare_records):
 
 def test_meta_info(rxnorm):
     """Test that the meta field is correct."""
-    response = rxnorm.fetch_meta()
+    response = rxnorm.query_handler._fetch_meta("RxNorm")
     assert response.data_license == "UMLS Metathesaurus"
     assert response.data_license_url == \
            "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html"
