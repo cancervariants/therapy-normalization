@@ -393,16 +393,6 @@ class MatchesListed(BaseModel):
             }
 
 
-class ApprovalRatingValue(BaseModel):
-    """VOD Extension class for regulatory approval rating/indication
-    value attributes.
-    """
-
-    approval_ratings: Optional[List[ApprovalRating]]
-    approval_year: Optional[List[str]]
-    has_indication: Optional[List[ValueObjectDescriptor]]
-
-
 class TherapyDescriptor(ValueObjectDescriptor):
     """Create therapy descriptor model"""
 
