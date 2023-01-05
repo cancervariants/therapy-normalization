@@ -4,23 +4,14 @@ from typing import List
 import pytest
 import isodate
 
-from tests.conftest import compare_records
-from therapy.query import QueryHandler
+from therapy.etl.drugsatfda import DrugsAtFDA
 from therapy.schemas import MatchType, Drug
 
 
 @pytest.fixture(scope="module")
-def drugsatfda():
-    """Build Drugs@FDA test fixture."""
-    class QueryGetter:
-
-        def __init__(self):
-            self.normalizer = QueryHandler()
-
-        def search(self, query_str):
-            resp = self.normalizer.search(query_str, keyed=True, incl="drugsatfda")
-            return resp.source_matches["DrugsAtFDA"]
-    return QueryGetter()
+def drugsatfda(test_source):
+    """Provide test Drugs@FDA query endpoint"""
+    return test_source(DrugsAtFDA)
 
 
 @pytest.fixture(scope="module")
@@ -54,7 +45,7 @@ def everolimus() -> Drug:
             "ndc:0078-0626",
             "ndc:0078-0627",
             "ndc:0078-0628",
-            "spl:e42ff4e2-3984-443d-be20-17b96e63da53",
+            "spl:beee7e52-cea5-4c55-91cc-813ea94001bb",
             "unii:9HW64Q8G6G",
         ],
         "approval_ratings": ["fda_prescription"],
@@ -95,7 +86,7 @@ def cisplatin() -> List[Drug]:
             "associated_with": [
                 "ndc:0703-5747",
                 "ndc:0703-5748",
-                "spl:54b3415c-c095-4c82-b216-e0e6e6bb8d03",
+                "spl:adf5773e-9095-4cb4-a90f-72cbf82f4493",
                 "unii:Q20Q21Q62J",
             ],
             "approval_ratings": ["fda_prescription"],
@@ -206,20 +197,29 @@ def fenortho() -> List[Drug]:
                 "ndc:42195-100",
                 "ndc:42195-308",
                 "ndc:42195-600",
-                "ndc:69336-113",
-                "spl:bedf1661-b811-3d85-e053-2995a90acd59",
+                "spl:d8a6c130-bc1d-01a4-e053-2995a90afd52",
                 "spl:c1721025-8af3-5451-e053-2a95a90a7dc0",
                 "spl:c1829550-d270-e13d-e053-2995a90a4aa5",
                 "spl:c187dfec-eec5-4227-e053-2995a90ab55c",
-                "spl:d33ad32a-f205-5df2-e053-2995a90ab978",
                 "unii:0X2CW1QABJ",
             ],
-            "trade_names": ["NALFON", "FENORTHO"]
+            "trade_names": ["NALFON"]
         }),
+        Drug(**{
+            "concept_id": "drugsatfda.anda:214475",
+            "label": "FENOPROFEN CALCIUM",
+            "xrefs": ["rxcui:858116"],
+            "associated_with": [
+                "spl:c00e4b3b-cec3-46ab-952f-c6c3856e8b98",
+                "unii:0X2CW1QABJ",
+                "ndc:16571-688"
+            ],
+            "approval_ratings": ["fda_prescription"]
+        })
     ]
 
 
-def test_everolimus(drugsatfda, everolimus):
+def test_everolimus(drugsatfda, compare_records, everolimus):
     """Test everolimus/afinitor"""
     concept_id = "drugsatfda.nda:022334"
 
@@ -272,7 +272,7 @@ def test_everolimus(drugsatfda, everolimus):
     compare_records(records[0], everolimus)
 
 
-def test_dactinomycin(drugsatfda, dactinomycin):
+def test_dactinomycin(drugsatfda, compare_records, dactinomycin):
     """Test dactinomycin"""
     concept_id = "drugsatfda.nda:050682"
 
@@ -312,7 +312,7 @@ def test_dactinomycin(drugsatfda, dactinomycin):
     compare_records(records[0], dactinomycin)
 
 
-def test_cisplatin(drugsatfda, cisplatin):
+def test_cisplatin(drugsatfda, compare_records, cisplatin):
     """Test cisplatin"""
     # test concept IDs
     concept_id = "drugsatfda.anda:074656"
@@ -376,7 +376,7 @@ def test_cisplatin(drugsatfda, cisplatin):
         compare_records(r, fixture)
 
 
-def test_fenortho(fenortho, drugsatfda):
+def test_fenortho(fenortho, compare_records, drugsatfda):
     """Test fenortho."""
     response = drugsatfda.search("drugsatfda.anda:072267")
     assert response.match_type == MatchType.CONCEPT_ID
@@ -390,7 +390,7 @@ def test_fenortho(fenortho, drugsatfda):
 
     response = drugsatfda.search("fenoprofen calcium")
     assert response.match_type == MatchType.LABEL
-    assert len(response.records) == 2
+    assert len(response.records) == 3
     for r in response.records:
         fixture = [f for f in fenortho if r.concept_id == f.concept_id][0]
         compare_records(r, fixture)
@@ -402,7 +402,7 @@ def test_fenortho(fenortho, drugsatfda):
 
     response = drugsatfda.search("unii:0X2CW1QABJ")
     assert response.match_type == MatchType.ASSOCIATED_WITH
-    assert len(response.records) == 2
+    assert len(response.records) == 3
     for r in response.records:
         fixture = [f for f in fenortho if r.concept_id == f.concept_id][0]
         compare_records(r, fixture)

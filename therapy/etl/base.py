@@ -37,16 +37,15 @@ class Base(ABC):
     needed.
     """
 
-    def __init__(self, database: Database,
-                 data_path: Path = DEFAULT_DATA_PATH) -> None:
+    def __init__(self, database: Database, data_path: Path = DEFAULT_DATA_PATH) -> None:
         """Extract from sources.
 
         :param Database database: application database object
         :param Path data_path: path to app data directory
         """
-        name = self.__class__.__name__.lower()
+        self._name = self.__class__.__name__
         self.database = database
-        self._src_dir: Path = Path(data_path / name)
+        self._src_dir: Path = Path(data_path / self._name.lower())
         self._added_ids: List[str] = []
 
     def perform_etl(self, use_existing: bool = False) -> List[str]:
@@ -87,8 +86,9 @@ class Base(ABC):
         """
         with zipfile.ZipFile(dl_path, "r") as zip_ref:
             if len(zip_ref.filelist) > 1:
-                files = sorted(zip_ref.filelist, key=lambda z: z.file_size,
-                               reverse=True)
+                files = sorted(
+                    zip_ref.filelist, key=lambda z: z.file_size, reverse=True
+                )
                 target = files[0]
             else:
                 target = zip_ref.filelist[0]
@@ -97,8 +97,12 @@ class Base(ABC):
         os.remove(dl_path)
 
     @staticmethod
-    def _http_download(url: str, outfile_path: Path, headers: Optional[Dict] = None,
-                       handler: Optional[Callable[[Path, Path], None]] = None) -> None:
+    def _http_download(
+        url: str,
+        outfile_path: Path,
+        headers: Optional[Dict] = None,
+        handler: Optional[Callable[[Path, Path], None]] = None,
+    ) -> None:
         """Perform HTTP download of remote data file.
         :param str url: URL to retrieve file from
         :param Path outfile_path: path to where file should be saved. Must be an actual
@@ -143,8 +147,9 @@ class Base(ABC):
             logger.error(f"FTP download failed: {e}")
             raise Exception(e)
 
-    def _parse_version(self, file_path: Path, pattern: Optional[re.Pattern] = None
-                       ) -> str:
+    def _parse_version(
+        self, file_path: Path, pattern: Optional[re.Pattern] = None
+    ) -> str:
         """Get version number from provided file path.
 
         :param Path file_path: path to located source data file
@@ -159,6 +164,12 @@ class Base(ABC):
             raise FileNotFoundError
         else:
             return matches.groups()[0]
+
+    def _get_existing_files(self) -> List[Path]:
+        """Get existing source files from data directory.
+        :return: sorted list of file objects
+        """
+        return list(sorted(self._src_dir.glob(f"{self._name.lower()}_*.*")))
 
     def _extract_data(self, use_existing: bool = False) -> None:
         """Get source file from data directory.
@@ -176,7 +187,7 @@ class Base(ABC):
         self._src_dir.mkdir(exist_ok=True, parents=True)
         src_name = type(self).__name__.lower()
         if use_existing:
-            files = list(sorted(self._src_dir.glob(f"{src_name}_*.*")))
+            files = self._get_existing_files()
             if len(files) < 1:
                 raise FileNotFoundError(f"No source data found for {src_name}")
             self._src_file: Path = files[-1]
@@ -238,8 +249,7 @@ class Base(ABC):
                 if attr_type == "label":
                     value = value.strip()
                     therapy["label"] = value
-                    self.database.add_ref_record(value.lower(),
-                                                 concept_id, item_type)
+                    self.database.add_ref_record(value.lower(), concept_id, item_type)
                     continue
 
                 value_set = {v.strip() for v in value}
@@ -269,15 +279,19 @@ class Base(ABC):
         # compress has_indication
         indications = therapy.get("has_indication")
         if indications:
-            therapy["has_indication"] = list({
-                json.dumps([
-                    ind["disease_id"],
-                    ind["disease_label"],
-                    ind.get("normalized_disease_id"),
-                    ind.get("supplemental_info")
-                ])
-                for ind in indications
-            })
+            therapy["has_indication"] = list(
+                {
+                    json.dumps(
+                        [
+                            ind["disease_id"],
+                            ind["disease_label"],
+                            ind.get("normalized_disease_id"),
+                            ind.get("supplemental_info"),
+                        ]
+                    )
+                    for ind in indications
+                }
+            )
         elif "has_indication" in therapy:
             del therapy["has_indication"]
 
@@ -294,8 +308,7 @@ class Base(ABC):
 class DiseaseIndicationBase(Base):
     """Base class for sources that require disease normalization capabilities."""
 
-    def __init__(self, database: Database,
-                 data_path: Path = DEFAULT_DATA_PATH):
+    def __init__(self, database: Database, data_path: Path = DEFAULT_DATA_PATH):
         """Initialize source ETL instance.
 
         :param therapy.database.Database database: application database
@@ -312,7 +325,7 @@ class DiseaseIndicationBase(Base):
         """
         response = self.disease_normalizer.normalize(query)
         if response.match_type > 0:
-            return response.disease_descriptor.disease_id
+            return response.disease_descriptor.disease
         else:
             logger.warning(f"Failed to normalize disease term: {query}")
             return None

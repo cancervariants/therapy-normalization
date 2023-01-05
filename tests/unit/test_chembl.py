@@ -1,33 +1,23 @@
 """Test that the therapy normalizer works as intended for the ChEMBL source."""
-import re
 import json
 from pathlib import Path
 
 import pytest
 
+from therapy.etl import ChEMBL
 from therapy.schemas import Drug, MatchType
-from therapy.query import QueryHandler
-from tests.conftest import compare_records
 
 
 @pytest.fixture(scope="module")
-def chembl():
-    """Build ChEMBL normalizer test fixture."""
-    class QueryGetter:
-
-        def __init__(self):
-            self.query_handler = QueryHandler()
-
-        def search(self, query_str):
-            resp = self.query_handler.search(query_str, keyed=True, incl="chembl")
-            return resp.source_matches["ChEMBL"]
-    return QueryGetter()
+def chembl(test_source):
+    """Provide test chembl query endpoint"""
+    return test_source(ChEMBL)
 
 
 @pytest.fixture(scope="module")
 def fixture_data(test_data: Path):
     """Fetch fixture data"""
-    return json.load(open(test_data / "test_chembl_data.json", "r"))
+    return json.load(open(test_data / "fixtures" / "chembl_fixtures.json", "r"))
 
 
 @pytest.fixture(scope="module")
@@ -55,7 +45,7 @@ def rosiglitazone(fixture_data):
     return Drug(**fixture_data["rosiglitazone"])
 
 
-def test_concept_id_cisplatin(cisplatin, chembl):
+def test_concept_id_cisplatin(cisplatin, chembl, compare_records):
     """Test that cisplatin drug normalizes to correct drug concept
     as a CONCEPT_ID match.
     """
@@ -87,7 +77,7 @@ def test_concept_id_cisplatin(cisplatin, chembl):
     compare_records(response.records[0], cisplatin)
 
 
-def test_cisplatin_label(cisplatin, chembl):
+def test_cisplatin_label(cisplatin, chembl, compare_records):
     """Test that cisplatin drug normalizes to correct drug concept
     as a LABEL match.
     """
@@ -110,7 +100,7 @@ def test_cisplatin_label(cisplatin, chembl):
     compare_records(response.records[ind], cisplatin)
 
 
-def test_cisplatin_alias(cisplatin, chembl):
+def test_cisplatin_alias(cisplatin, chembl, compare_records):
     """Test that alias term normalizes to correct drug concept as an
     ALIAS match.
     """
@@ -141,7 +131,7 @@ def test_no_match(chembl):
     assert len(response.records) == 0
 
 
-def test_l745870_concept_id(l745870, chembl):
+def test_l745870_concept_id(l745870, chembl, compare_records):
     """Test that L-745870 drug normalizes to correct drug concept
     as a CONCEPT_ID match.
     """
@@ -171,7 +161,7 @@ def test_l745870_concept_id(l745870, chembl):
     compare_records(response.records[0], l745870)
 
 
-def test_l745870_label(l745870, chembl):
+def test_l745870_label(l745870, chembl, compare_records):
     """Test that L-745870 drug normalizes to correct drug concept
     as a LABEL match.
     """
@@ -186,7 +176,7 @@ def test_l745870_label(l745870, chembl):
     compare_records(response.records[0], l745870)
 
 
-def test_aspirin_concept_id(aspirin, chembl):
+def test_aspirin_concept_id(aspirin, chembl, compare_records):
     """Test that L-745870 drug normalizes to correct drug concept
     as a CONCEPT_ID match.
     """
@@ -216,7 +206,7 @@ def test_aspirin_concept_id(aspirin, chembl):
     compare_records(response.records[0], aspirin)
 
 
-def test_aspirin_label(aspirin, chembl):
+def test_aspirin_label(aspirin, chembl, compare_records):
     """Test that L-745870 drug normalizes to correct drug concept
     as a LABEL match.
     """
@@ -232,7 +222,7 @@ def test_aspirin_label(aspirin, chembl):
     compare_records(response.records[0], aspirin)
 
 
-def test_rosiglitazone(rosiglitazone, chembl):
+def test_rosiglitazone(rosiglitazone, chembl, compare_records):
     """Test rosiglitazone -- checks for presence of chembl_withdrawn rating."""
     response = chembl.search("chembl:CHEMBL843")
     assert response.match_type == MatchType.CONCEPT_ID
@@ -246,7 +236,7 @@ def test_meta_info(chembl):
     assert response.source_meta_.data_license == "CC BY-SA 3.0"
     assert response.source_meta_.data_license_url == \
            "https://creativecommons.org/licenses/by-sa/3.0/"
-    assert re.match(r"[0-3][0-9]", response.source_meta_.version)
+    assert response.source_meta_.version == "31"
     assert response.source_meta_.data_url.startswith("ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb")  # noqa: E501
     assert response.source_meta_.rdp_url == "http://reusabledata.org/chembl.html"
     assert response.source_meta_.data_license_attributes == {
