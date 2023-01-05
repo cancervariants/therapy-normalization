@@ -144,9 +144,6 @@ class NCIt(Base):
             if node.P319:
                 associated_with.append(f"{NamespacePrefix.UNII.value}:"
                                        f"{node.P319.first()}")
-            if node.P320:
-                associated_with.append(f"{NamespacePrefix.ISO.value}:"
-                                       f"{node.P320.first()}")
             if node.P368:
                 iri = node.P368.first()
                 if ":" in iri:
