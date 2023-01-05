@@ -44,11 +44,11 @@ class Base(ABC):
         :param Database database: application database object
         :param Path data_path: path to app data directory
         """
-        name = self.__class__.__name__
+        self._name = self.__class__.__name__
         self.database = database
-        self._src_dir: Path = Path(data_path / name.lower())
+        self._src_dir: Path = Path(data_path / self._name.lower())
         self._added_ids: List[str] = []
-        self._rules = Rules(SourceName(name))
+        self._rules = Rules(SourceName(self._name))
 
     def perform_etl(self, use_existing: bool = False) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
