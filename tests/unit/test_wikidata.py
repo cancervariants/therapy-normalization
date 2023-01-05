@@ -143,7 +143,7 @@ def basiliximab():
     )
 
 
-def test_cisplatin(cisplatin, wikidata):
+def test_cisplatin(cisplatin, wikidata, compare_records):
     """Test that cisplatin drug normalizes to correct drug concept."""
     response = wikidata.search("wikidata:Q412415")
     assert response.match_type == MatchType.CONCEPT_ID
@@ -315,7 +315,7 @@ def test_d_methamphetamine(d_methamphetamine, wikidata, compare_records):
     compare_records(response.records[0], d_methamphetamine)
 
 
-def test_basiliximab(basiliximab, wikidata):
+def test_basiliximab(basiliximab, wikidata, compare_records):
     """Test that basiliximab terms resolve correctly"""
     response = wikidata.search("wikidata:Q418702")
     assert response.match_type == MatchType.CONCEPT_ID
