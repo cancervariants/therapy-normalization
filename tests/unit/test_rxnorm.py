@@ -1,55 +1,42 @@
 """Test that the therapy normalizer works as intended for the RxNorm source."""
-import os
-
 import pytest
 from boto3.dynamodb.conditions import Key
 import isodate
 
-from tests.conftest import compare_records
+from therapy.etl import RxNorm
 from therapy.schemas import Drug, MatchType
-from therapy.query import QueryHandler
-from therapy.database import Database
 
 
 @pytest.fixture(scope="module")
-def rxnorm():
-    """Build RxNorm normalizer test fixture."""
-    class QueryGetter:
-
-        def __init__(self):
-            self.normalizer = QueryHandler()
-            if "THERAPY_NORM_DB_URL" in os.environ:
-                db_url = os.environ["THERAPY_NORM_DB_URL"]
-            else:
-                db_url = "http://localhost:8000"
-            self.db = Database(db_url=db_url)
-
-        def search(self, query_str):
-            resp = self.normalizer.search(query_str, keyed=True, incl="rxnorm")
-            return resp.source_matches["RxNorm"]
-
-        def fetch_meta(self):
-            return self.normalizer._fetch_meta("RxNorm")
-
-    return QueryGetter()
+def rxnorm(test_source):
+    """Provide test chembl query endpoint"""
+    return test_source(RxNorm)
 
 
 @pytest.fixture(scope="module")
 def bifidobacterium_infantis():
     """Create bifidobacterium infantis drug fixture."""
     params = {
-        "label": "Bifidobacterium Infantis",
+        "label": "Bifidobacterium infantis",
         "concept_id": "rxcui:100213",
         "aliases": [
+            "Bifidobacterium infantis whole",
+            "Bifidobacterium lactentis whole",
+            "Bifidobacterium liberorum whole",
+            "Bifidobacterium longum subsp. infantis",
+            "Bifidobacterium longum subsp. infantis whole",
+            "Bifidobacterium longum infantis whole",
+            "Bifidobacterium longum ssp. infantis",
             "bifidobacterium infantis",
-            "Bifidobacterium infantis"
+            "Bifidobacterium longum bv. infantis whole"
         ],
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": [
             "drugbank:DB14222"
         ],
         "associated_with": [
-            "mmsl:d07347"
+            "mmsl:d07347",
+            "mesh:D000070236"
         ],
         "trade_names": [
             "Align",
@@ -477,6 +464,7 @@ def fluoxetine_hydrochloride():
         "associated_with": [
             "usp:m33780",
             "unii:I9W7N6B1KJ",
+            "mmsl:28237",
             "mmsl:4746",
             "vandf:4019389",
             "mmsl:41730",
@@ -492,7 +480,51 @@ def fluoxetine_hydrochloride():
     return Drug(**params)
 
 
-def test_bifidobacterium_infantis(bifidobacterium_infantis, rxnorm):
+@pytest.fixture(scope="module")
+def phenobarbital():
+    """Create phenobarbital fixture."""
+    return Drug(** {
+        "concept_id": "rxcui:8134",
+        "label": "phenobarbital",
+        "aliases": [
+            "Phenobarbituric Acid",
+            "Phenylethylbarbiturate",
+            "Acid, Phenylethylbarbituric",
+            "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
+            "5-Phenyl-5-ethylbarbituric acid",
+            "Phenylethylbarbituric Acid",
+            "5-Ethyl-5-phenylbarbituric acid",
+            "Phenobarbitone",
+            "Phenobarbitol",
+            "Phenylbarbital",
+            "Phenemal",
+            "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+            "PHENobarbital",
+            "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
+            "Phenylethylmalonylurea"
+        ],
+        "xrefs": [
+            "drugbank:DB01174"
+        ],
+        "associated_with": [
+            "mmsl:d00340",
+            "usp:m63400",
+            "mmsl:2390",
+            "mmsl:5272",
+            "vandf:4017422",
+            "unii:YQE403BP4D",
+            "mesh:D010634",
+            "atc:N03AA02"
+        ],
+        "approval_ratings": [
+            "rxnorm_prescribable"
+        ],
+        "approval_year": [],
+        "has_indication": []
+    })
+
+
+def test_bifidobacterium_infantis(bifidobacterium_infantis, rxnorm, compare_records):
     """Test that bifidobacterium_ nfantis drug normalizes to
     correct drug concept.
     """
@@ -531,7 +563,7 @@ def test_bifidobacterium_infantis(bifidobacterium_infantis, rxnorm):
     compare_records(response.records[0], bifidobacterium_infantis)
 
 
-def test_cisplatin(cisplatin, rxnorm):
+def test_cisplatin(cisplatin, rxnorm, compare_records):
     """Test that cisplatin drug normalizes to correct drug concept."""
     # Concept ID Match
     response = rxnorm.search("RxCUI:2555")
@@ -574,7 +606,7 @@ def test_cisplatin(cisplatin, rxnorm):
     compare_records(response.records[0], cisplatin)
 
 
-def test_amiloride_hydrochloride(amiloride_hydrochloride, rxnorm):
+def test_amiloride_hydrochloride(amiloride_hydrochloride, rxnorm, compare_records):
     """Test that amiloride_hydrochloride hydrochloride, anhydrous drug
     normalizes to correct drug concept.
     """
@@ -596,7 +628,7 @@ def test_amiloride_hydrochloride(amiloride_hydrochloride, rxnorm):
     assert len(response.records) == 2
 
 
-def test_amiloride(amiloride, rxnorm):
+def test_amiloride(amiloride, rxnorm, compare_records):
     """Test that amiloride hydrochloride, anhydrous drug normalizes to
     correct drug concept.
     """
@@ -630,7 +662,7 @@ def test_amiloride(amiloride, rxnorm):
     assert len(response.records) == 2
 
 
-def test_timolol(timolol, rxnorm):
+def test_timolol(timolol, rxnorm, compare_records):
     """Test that timolol drug normalizes to correct drug concept."""
     # Concept ID Match
     response = rxnorm.search("RxcUI:10600")
@@ -659,7 +691,7 @@ def test_timolol(timolol, rxnorm):
     compare_records(response.records[0], timolol)
 
 
-def test_lymphocyte(lymphocyte, rxnorm):
+def test_lymphocyte(lymphocyte, rxnorm, compare_records):
     """Test that lymphocyte drug normalizes to correct drug concept."""
     # Concept ID Match
     response = rxnorm.search("RxCUI:1011")
@@ -699,7 +731,7 @@ def test_lymphocyte(lymphocyte, rxnorm):
     compare_records(response.records[0], lymphocyte)
 
 
-def test_aspirin(aspirin, rxnorm):
+def test_aspirin(aspirin, rxnorm, compare_records):
     """Test that aspirin drug normalizes to correct drug concept."""
     # Concept ID Match
     response = rxnorm.search("RxcUI:1191")
@@ -713,7 +745,7 @@ def test_aspirin(aspirin, rxnorm):
     assert len(response.records) == 0
 
 
-def test_mesnan(mesna, rxnorm):
+def test_mesnan(mesna, rxnorm, compare_records):
     """Test that mesna drug normalizes to correct drug concept."""
     # Concept ID Match
     response = rxnorm.search("RxCUI:44")
@@ -746,7 +778,7 @@ def test_mesnan(mesna, rxnorm):
     compare_records(response.records[0], mesna)
 
 
-def test_beta_alanine(beta_alanine, rxnorm):
+def test_beta_alanine(beta_alanine, rxnorm, compare_records):
     """Test that beta_alanine drug normalizes to correct drug concept."""
     # Concept ID Match
     response = rxnorm.search("RxCUI:61")
@@ -767,7 +799,7 @@ def test_beta_alanine(beta_alanine, rxnorm):
     compare_records(response.records[0], beta_alanine)
 
 
-def test_algestone(algestone, rxnorm):
+def test_algestone(algestone, rxnorm, compare_records):
     """Test that algestone drug normalizes to correct drug concept."""
     # Concept ID Match
     response = rxnorm.search("RxCUI:595")
@@ -789,7 +821,7 @@ def test_algestone(algestone, rxnorm):
     compare_records(response.records[0], algestone)
 
 
-def test_levothyroxine(levothyroxine, rxnorm):
+def test_levothyroxine(levothyroxine, rxnorm, compare_records):
     """Test that levothyroxine drug normalizes to correct drug concept."""
     # Concept ID Match
     response = rxnorm.search("RxCUI:10582")
@@ -828,7 +860,7 @@ def test_levothyroxine(levothyroxine, rxnorm):
     compare_records(response.records[0], levothyroxine)
 
 
-def test_fluoxetine(fluoxetine, rxnorm):
+def test_fluoxetine(fluoxetine, rxnorm, compare_records):
     """Test that fluoxetine drug normalizes to correct drug concept."""
     # Concept ID Match
     response = rxnorm.search("RxCUI:4493")
@@ -843,7 +875,7 @@ def test_fluoxetine(fluoxetine, rxnorm):
     compare_records(response.records[0], fluoxetine)
 
 
-def test_fluoxetine_hydrochloride(fluoxetine_hydrochloride, rxnorm):
+def test_fluoxetine_hydrochloride(fluoxetine_hydrochloride, rxnorm, compare_records):
     """Test that fluoxetine_hydrochloride drug normalizes to correct drug
     concept.
     """
@@ -892,20 +924,22 @@ def test_no_match(rxnorm):
 
 def test_brand_name_to_concept(rxnorm):
     """Test that brand names are correctly linked to identity concept."""
-    r = rxnorm.db.therapies.query(
+    r = rxnorm.query_handler.db.therapies.query(
         KeyConditionExpression=Key("label_and_type").eq("rxcui:1041527##rx_brand")
     )
     assert r["Items"][0]["concept_id"] == "rxcui:161"
     assert r["Items"][0]["concept_id"] != "rxcui:1041527"
 
-    r = rxnorm.db.therapies.query(
+    r = rxnorm.query_handler.db.therapies.query(
         KeyConditionExpression=Key("label_and_type").eq("rxcui:218330##rx_brand")
     )
     assert r["Items"][0]["concept_id"] == "rxcui:44"
     assert r["Items"][0]["concept_id"] != "rxcui:218330"
 
 
-def test_xref_lookup(rxnorm, bifidobacterium_infantis, cisplatin, amiloride):
+def test_xref_lookup(
+        rxnorm, bifidobacterium_infantis, cisplatin, amiloride, compare_records
+):
     """Test that xref lookup resolves to correct concept."""
     response = rxnorm.search("mmsl:d07347")
     assert response.match_type == MatchType.ASSOCIATED_WITH
@@ -923,9 +957,30 @@ def test_xref_lookup(rxnorm, bifidobacterium_infantis, cisplatin, amiloride):
     compare_records(response.records[0], amiloride)
 
 
+def test_phenobarbital(phenobarbital, rxnorm, compare_records):
+    """Test phenobarbital search."""
+    # Concept ID Match
+    response = rxnorm.search("rxcui:8134")
+    assert response.match_type == MatchType.CONCEPT_ID
+    assert len(response.records) == 1
+    compare_records(response.records[0], phenobarbital)
+
+    # Label Match
+    response = rxnorm.search(" phenobarbital")
+    assert response.match_type == MatchType.LABEL
+    assert len(response.records) == 1
+    compare_records(response.records[0], phenobarbital)
+
+    # Xref Match
+    response = rxnorm.search("drugbank:DB01174")
+    assert response.match_type == MatchType.XREF
+    assert len(response.records) == 1
+    compare_records(response.records[0], phenobarbital)
+
+
 def test_meta_info(rxnorm):
     """Test that the meta field is correct."""
-    response = rxnorm.fetch_meta()
+    response = rxnorm.query_handler._fetch_meta("RxNorm")
     assert response.data_license == "UMLS Metathesaurus"
     assert response.data_license_url == \
            "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html"

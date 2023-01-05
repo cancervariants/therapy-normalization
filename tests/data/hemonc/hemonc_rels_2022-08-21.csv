@@ -1,0 +1,159 @@
+concept_code_1,concept_code_2,vocabulary_id_1,vocabulary_id_2,relationship_id
+26,4126,HemOnc,RxNorm,Maps to
+26,3100,HemOnc,HemOnc,Has brand name
+26,3101,HemOnc,HemOnc,Has brand name
+26,645,HemOnc,HemOnc,Has FDA indication
+26,44957,HemOnc,HemOnc,Has route
+26,45069,HemOnc,HemOnc,Is a
+26,755,HemOnc,HemOnc,Was FDA approved yr
+26,J0207,HemOnc,HCPCS,Maps to
+26,45069,HemOnc,HemOnc,Has major class
+26,76310-017,HemOnc,NDC,Maps to
+65,134547,HemOnc,RxNorm,Maps to
+65,51576,HemOnc,HemOnc,Has brand name
+65,5159,HemOnc,HemOnc,Has brand name
+65,5160,HemOnc,HemOnc,Has brand name
+65,5161,HemOnc,HemOnc,Has brand name
+65,5162,HemOnc,HemOnc,Has brand name
+65,5163,HemOnc,HemOnc,Has brand name
+65,5164,HemOnc,HemOnc,Has brand name
+65,5165,HemOnc,HemOnc,Has brand name
+65,5166,HemOnc,HemOnc,Has brand name
+65,5167,HemOnc,HemOnc,Has brand name
+65,5168,HemOnc,HemOnc,Has brand name
+65,5169,HemOnc,HemOnc,Has brand name
+65,5170,HemOnc,HemOnc,Has brand name
+65,5171,HemOnc,HemOnc,Has brand name
+65,5172,HemOnc,HemOnc,Has brand name
+65,581,HemOnc,HemOnc,Has FDA indication
+65,46094,HemOnc,HemOnc,Has FDA indication
+65,44957,HemOnc,HemOnc,Has route
+65,45092,HemOnc,HemOnc,Is a
+65,45230,HemOnc,HemOnc,Is a
+65,45058,HemOnc,HemOnc,Is a
+65,45303,HemOnc,HemOnc,Is a
+65,44988,HemOnc,HemOnc,Is a
+65,45050,HemOnc,HemOnc,Is a
+65,768,HemOnc,HemOnc,Was FDA approved yr
+65,775,HemOnc,HemOnc,Was FDA approved yr
+65,C9243,HemOnc,HCPCS,Maps to
+65,J9033,HemOnc,HCPCS,Maps to
+65,J9034,HemOnc,HCPCS,Maps to
+65,J9036,HemOnc,HCPCS,Maps to
+65,45058,HemOnc,HemOnc,Has major class
+65,45230,HemOnc,HemOnc,Has minor class
+65,42367-521,HemOnc,NDC,Maps to
+65,63459-348,HemOnc,NDC,Maps to
+65,63459-390,HemOnc,NDC,Maps to
+65,63459-391,HemOnc,NDC,Maps to
+105,2555,HemOnc,RxNorm,Maps to
+105,13471,HemOnc,HemOnc,Has brand name
+105,13472,HemOnc,HemOnc,Has brand name
+105,13473,HemOnc,HemOnc,Has brand name
+105,13474,HemOnc,HemOnc,Has brand name
+105,13475,HemOnc,HemOnc,Has brand name
+105,13476,HemOnc,HemOnc,Has brand name
+105,13477,HemOnc,HemOnc,Has brand name
+105,13478,HemOnc,HemOnc,Has brand name
+105,13479,HemOnc,HemOnc,Has brand name
+105,13480,HemOnc,HemOnc,Has brand name
+105,13481,HemOnc,HemOnc,Has brand name
+105,13482,HemOnc,HemOnc,Has brand name
+105,13483,HemOnc,HemOnc,Has brand name
+105,13484,HemOnc,HemOnc,Has brand name
+105,13485,HemOnc,HemOnc,Has brand name
+105,13486,HemOnc,HemOnc,Has brand name
+105,13487,HemOnc,HemOnc,Has brand name
+105,13488,HemOnc,HemOnc,Has brand name
+105,13489,HemOnc,HemOnc,Has brand name
+105,13490,HemOnc,HemOnc,Has brand name
+105,13491,HemOnc,HemOnc,Has brand name
+105,13492,HemOnc,HemOnc,Has brand name
+105,13493,HemOnc,HemOnc,Has brand name
+105,45480,HemOnc,HemOnc,Has brand name
+105,76972,HemOnc,HemOnc,Has brand name
+105,13494,HemOnc,HemOnc,Has brand name
+105,13495,HemOnc,HemOnc,Has brand name
+105,13496,HemOnc,HemOnc,Has brand name
+105,13497,HemOnc,HemOnc,Has brand name
+105,13498,HemOnc,HemOnc,Has brand name
+105,13499,HemOnc,HemOnc,Has brand name
+105,13500,HemOnc,HemOnc,Has brand name
+105,13501,HemOnc,HemOnc,Has brand name
+105,13502,HemOnc,HemOnc,Has brand name
+105,13503,HemOnc,HemOnc,Has brand name
+105,13504,HemOnc,HemOnc,Has brand name
+105,13505,HemOnc,HemOnc,Has brand name
+105,93467,HemOnc,HemOnc,Has brand name
+105,93468,HemOnc,HemOnc,Has brand name
+105,13506,HemOnc,HemOnc,Has brand name
+105,93732,HemOnc,HemOnc,Has brand name
+105,13507,HemOnc,HemOnc,Has brand name
+105,13508,HemOnc,HemOnc,Has brand name
+105,13509,HemOnc,HemOnc,Has brand name
+105,13510,HemOnc,HemOnc,Has brand name
+105,13511,HemOnc,HemOnc,Has brand name
+105,13512,HemOnc,HemOnc,Has brand name
+105,13513,HemOnc,HemOnc,Has brand name
+105,13514,HemOnc,HemOnc,Has brand name
+105,13515,HemOnc,HemOnc,Has brand name
+105,93735,HemOnc,HemOnc,Has brand name
+105,13516,HemOnc,HemOnc,Has brand name
+105,13517,HemOnc,HemOnc,Has brand name
+105,13518,HemOnc,HemOnc,Has brand name
+105,13519,HemOnc,HemOnc,Has brand name
+105,13520,HemOnc,HemOnc,Has brand name
+105,13521,HemOnc,HemOnc,Has brand name
+105,13522,HemOnc,HemOnc,Has brand name
+105,13523,HemOnc,HemOnc,Has brand name
+105,13524,HemOnc,HemOnc,Has brand name
+105,13525,HemOnc,HemOnc,Has brand name
+105,13526,HemOnc,HemOnc,Has brand name
+105,13527,HemOnc,HemOnc,Has brand name
+105,13528,HemOnc,HemOnc,Has brand name
+105,13529,HemOnc,HemOnc,Has brand name
+105,13530,HemOnc,HemOnc,Has brand name
+105,13531,HemOnc,HemOnc,Has brand name
+105,13532,HemOnc,HemOnc,Has brand name
+105,13533,HemOnc,HemOnc,Has brand name
+105,671,HemOnc,HemOnc,Has FDA indication
+105,645,HemOnc,HemOnc,Has FDA indication
+105,569,HemOnc,HemOnc,Has FDA indication
+105,44957,HemOnc,HemOnc,May have route
+105,45273,HemOnc,HemOnc,May have route
+105,45092,HemOnc,HemOnc,Is a
+105,44997,HemOnc,HemOnc,Is a
+105,45388,HemOnc,HemOnc,Is a
+105,45058,HemOnc,HemOnc,Is a
+105,45050,HemOnc,HemOnc,Is a
+105,738,HemOnc,HemOnc,Was FDA approved yr
+105,C9418,HemOnc,HCPCS,Maps to
+105,J9060,HemOnc,HCPCS,Maps to
+105,J9062,HemOnc,HCPCS,Maps to
+105,45058,HemOnc,HemOnc,Has major class
+105,45388,HemOnc,HemOnc,Has minor class
+105,0143-9504,HemOnc,NDC,Maps to
+105,0143-9505,HemOnc,NDC,Maps to
+105,0703-5747,HemOnc,NDC,Maps to
+105,0703-5748,HemOnc,NDC,Maps to
+105,16729-288,HemOnc,NDC,Maps to
+105,44567-509,HemOnc,NDC,Maps to
+105,44567-510,HemOnc,NDC,Maps to
+105,44567-511,HemOnc,NDC,Maps to
+105,44567-530,HemOnc,NDC,Maps to
+105,63323-103,HemOnc,NDC,Maps to
+105,68001-283,HemOnc,NDC,Maps to
+105,68083-162,HemOnc,NDC,Maps to
+105,68083-163,HemOnc,NDC,Maps to
+105,70860-206,HemOnc,NDC,Maps to
+151,475230,HemOnc,RxNorm,Maps to
+151,15844,HemOnc,HemOnc,Has brand name
+151,658,HemOnc,HemOnc,Has FDA indication
+151,45153,HemOnc,HemOnc,Has route
+151,45632,HemOnc,HemOnc,Is a
+151,768,HemOnc,HemOnc,Was FDA approved yr
+151,J9155,HemOnc,HCPCS,Maps to
+151,46196,HemOnc,HemOnc,Has major class
+151,45632,HemOnc,HemOnc,Has minor class
+151,55566-8303,HemOnc,NDC,Maps to
+151,55566-8403,HemOnc,NDC,Maps to

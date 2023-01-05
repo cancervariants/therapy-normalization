@@ -19,8 +19,8 @@ import bioversions
 from boto3.dynamodb.table import BatchWriter
 
 from therapy import DownloadException, XREF_SOURCES, ASSOC_WITH_SOURCES, ITEM_TYPES
-from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, Drug, \
-    ApprovalRating, RecordParams
+from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, ApprovalRating, \
+    RecordParams
 from therapy.etl.base import Base
 
 logger = logging.getLogger("therapy")
@@ -95,6 +95,12 @@ class RxNorm(Base):
             handler=self._zip_handler
         )
 
+    def _get_existing_files(self) -> List[Path]:
+        """Get existing source RRF files from data directory.
+        :return: sorted list of file objects
+        """
+        return list(sorted(self._src_dir.glob("rxnorm_*.RRF")))
+
     def _extract_data(self, use_existing: bool = False) -> None:
         """Get source files from RxNorm data directory.
         This class expects a file named `rxnorm_<version>.RRF` and a file named
@@ -163,7 +169,6 @@ class RxNorm(Base):
                             field_value = value.get(field)
                             if field_value:
                                 params[field] = field_value
-                        assert Drug(**params)
                         self._load_therapy(params)
 
     def _get_brands(self, row: List, ingredient_brands: Dict) -> None:
@@ -180,10 +185,9 @@ class RxNorm(Base):
         brand = term.split("[")[-1].split("]")[0]
         ingredients = ingredients_brand.replace(f"[{brand}]", "")
         if "/" in ingredients:
-            ingredients = ingredients.split("/")
-            for ingredient in ingredients:
-                self._add_term(ingredient_brands, brand,
-                               ingredient.strip())
+            ingredients_list = ingredients.split("/")
+            for ingredient in ingredients_list:
+                self._add_term(ingredient_brands, brand, ingredient.strip())
         else:
             self._add_term(ingredient_brands, brand,
                            ingredients.strip())

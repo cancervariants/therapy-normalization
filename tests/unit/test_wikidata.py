@@ -1,27 +1,17 @@
 """Test that the therapy normalizer works as intended for the
 Wikidata source.
 """
-import pytest
 import isodate
+import pytest
 
+from therapy.etl.wikidata import Wikidata
 from therapy.schemas import Drug, MatchType
-from therapy.query import QueryHandler
-from tests.conftest import compare_records
 
 
 @pytest.fixture(scope="module")
-def wikidata():
-    """Build Wikidata normalizer test fixture."""
-
-    class QueryGetter:
-        def __init__(self):
-            self.query_handler = QueryHandler()
-
-        def search(self, query_str):
-            resp = self.query_handler.search(query_str, keyed=True, incl="wikidata")
-            return resp.source_matches["Wikidata"]
-
-    return QueryGetter()
+def wikidata(test_source):
+    """Provide test Wikidata query endpoint"""
+    return test_source(Wikidata)
 
 
 @pytest.fixture(scope="module")
@@ -55,7 +45,7 @@ def cisplatin():
 def interferon_alfacon_1():
     """Create an Interferon alfacon-1 drug fixture."""
     params = {
-        "label": "Interferon alfacon-1",
+        "label": "interferon alfacon-1",
         "concept_id": "wikidata:Q15353101",
         "aliases": [
             "CIFN",
@@ -141,7 +131,7 @@ def atropine():
 def basiliximab():
     """Create basiliximab test fixture to demonstrate rule-based filtering."""
     return Drug(
-        label="Basiliximab",
+        label="basiliximab",
         concept_id="wikidata:Q418702",
         aliases=["SDZ-CHI-621", "CHI-621", "CHI621", "chimeric mouse-human antiCD25"],
         xrefs=[
@@ -153,7 +143,7 @@ def basiliximab():
     )
 
 
-def test_cisplatin(cisplatin, wikidata):
+def test_cisplatin(cisplatin, wikidata, compare_records):
     """Test that cisplatin drug normalizes to correct drug concept."""
     response = wikidata.search("wikidata:Q412415")
     assert response.match_type == MatchType.CONCEPT_ID
@@ -216,7 +206,7 @@ def test_cisplatin(cisplatin, wikidata):
     compare_records(response.records[0], cisplatin)
 
 
-def test_atropine(atropine, wikidata):
+def test_atropine(atropine, wikidata, compare_records):
     """Test that atropine drug normalizes to correct drug concept."""
     response = wikidata.search("wikidata:Q26272")
     assert response.match_type == MatchType.CONCEPT_ID
@@ -264,7 +254,7 @@ def test_atropine(atropine, wikidata):
     compare_records(response.records[0], atropine)
 
 
-def test_interferon_alfacon_1(interferon_alfacon_1, wikidata):
+def test_interferon_alfacon_1(interferon_alfacon_1, wikidata, compare_records):
     """Test that interferon alfacon-1 drug normalizes to correct concept"""
     response = wikidata.search("wikidata:Q15353101")
     assert response.match_type == MatchType.CONCEPT_ID
@@ -292,7 +282,7 @@ def test_interferon_alfacon_1(interferon_alfacon_1, wikidata):
     compare_records(response.records[0], interferon_alfacon_1)
 
 
-def test_d_methamphetamine(d_methamphetamine, wikidata):
+def test_d_methamphetamine(d_methamphetamine, wikidata, compare_records):
     """Test that d_methamphetamine drug normalizes to correct concept."""
     response = wikidata.search("wikidata:Q191924")
     assert response.match_type == MatchType.CONCEPT_ID
@@ -325,7 +315,7 @@ def test_d_methamphetamine(d_methamphetamine, wikidata):
     compare_records(response.records[0], d_methamphetamine)
 
 
-def test_basiliximab(basiliximab, wikidata):
+def test_basiliximab(basiliximab, wikidata, compare_records):
     """Test that basiliximab terms resolve correctly"""
     response = wikidata.search("wikidata:Q418702")
     assert response.match_type == MatchType.CONCEPT_ID
