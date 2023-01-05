@@ -16,7 +16,7 @@ TEST_IDS = {
 }
 
 gtop = GuideToPHARMACOLOGY(Database())
-gtop._extract_data()
+gtop._extract_data(use_existing=True)
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "guidetopharmacology"
 ligands_file_path = TEST_DATA_DIR / gtop._ligands_file.name
 mapping_file_path = TEST_DATA_DIR / gtop._mapping_file.name

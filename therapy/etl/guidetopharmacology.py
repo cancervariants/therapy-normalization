@@ -1,5 +1,5 @@
 """Module for Guide to PHARMACOLOGY ETL methods."""
-from typing import Optional, Dict, Any, List, Union, Tuple
+from typing import Optional, Dict, Any, List, Union
 import csv
 import html
 from pathlib import Path
@@ -9,7 +9,7 @@ import requests
 
 from therapy import logger
 from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, ApprovalRating
-from therapy.etl.base import Base, SourceFormatException
+from therapy.etl.base import Base
 
 
 class GuideToPHARMACOLOGY(Base):
@@ -57,7 +57,6 @@ class GuideToPHARMACOLOGY(Base):
             if len(ligands_files) < 1:
                 raise FileNotFoundError("No GtoPdb ligands files found")
 
-            mapping_file: Optional[Tuple] = None
             for ligands_file in ligands_files[::-1]:
                 try:
                     version = self._parse_version(
@@ -73,11 +72,11 @@ class GuideToPHARMACOLOGY(Base):
                     )
                 check_mapping_file = self._src_dir / f"{prefix}_ligand_id_mapping_{version}.tsv"  # noqa: E501
                 if check_mapping_file.exists():
-                    self.version = version
+                    self._version = version
                     self._ligands_file = ligands_file
                     self._mapping_file = check_mapping_file
                     break
-            if mapping_file is None:
+            if self._mapping_file is None:
                 raise FileNotFoundError(
                     "Unable to find complete GtoPdb data set with matching version "
                     "values. Check filenames against schema defined in README: "
@@ -107,21 +106,7 @@ class GuideToPHARMACOLOGY(Base):
         """
         with open(self._ligands_file, "r") as f:
             rows = csv.reader(f, delimiter="\t")
-
-            # check that file structure is the same
             next(rows)
-            if next(rows) != [
-                "Ligand ID", "Name", "Species", "Type", "Approved", "Withdrawn",
-                "Labelled", "Radioactive", "PubChem SID", "PubChem CID", "UniProt ID",
-                "Ensembl ID", "Ligand Subunit IDs", "Ligand Subunit Name",
-                "Ligand Subunit UniProt IDs", "Ligand Subunit Ensembl IDs",
-                "IUPAC name", "INN", "Synonyms", "SMILES", "InChIKey", "InChI",
-                "GtoImmuPdb", "GtoMPdb", "Antibacterial"
-            ]:
-                raise SourceFormatException(
-                    "GtoP ligands file contains missing or unrecognized columns. See "
-                    "FAQ in README for suggested resolution."
-                )
 
             for row in rows:
                 params: Dict[str, Union[List[str], str]] = {
@@ -143,14 +128,15 @@ class GuideToPHARMACOLOGY(Base):
                     associated_with.append(f"{NamespacePrefix.PUBCHEMCOMPOUND.value}:{row[9]}")  # noqa: E501
                 if row[10]:
                     associated_with.append(f"{NamespacePrefix.UNIPROT.value}:{row[10]}")
-                if row[16]:
-                    aliases.append(row[16])  # IUPAC
-                if row[17]:
+                if row[11]:
+                    # IUPAC
+                    aliases.append(row[11])
+                if row[12]:
                     # International Non-proprietary Name assigned by the WHO
-                    aliases.append(row[17])
-                if row[18]:
+                    aliases.append(row[12])
+                if row[13]:
                     # synonyms
-                    synonyms = row[18].split("|")
+                    synonyms = row[13].split("|")
                     for s in synonyms:
                         if "&" in s and ";" in s:
                             name_code = s[s.index("&"):s.index(";") + 1]
@@ -159,8 +145,8 @@ class GuideToPHARMACOLOGY(Base):
                                 s = s.replace(name_code, "")
                             s = html.unescape(s)
                         aliases.append(s)
-                if row[20]:
-                    associated_with.append(f"{NamespacePrefix.INCHIKEY.value}:{row[20]}")  # noqa: E501
+                if row[15]:
+                    associated_with.append(f"{NamespacePrefix.INCHIKEY.value}:{row[15]}")  # noqa: E501
 
                 if associated_with:
                     params["associated_with"] = associated_with
@@ -168,19 +154,6 @@ class GuideToPHARMACOLOGY(Base):
                     params["aliases"] = aliases
 
                 data[params["concept_id"]] = params
-
-    @staticmethod
-    def _get_xrefs(ref: str, namespace: str) -> List[str]:
-        """Construct xrefs from raw string.
-        :param ref: raw ref value (may need to be separated)
-        :param namspace: namespace prefix to use
-        :return: List (usually with just one member) of xref IDs
-        """
-        xrefs = []
-        for split_ref in ref.split("|"):
-            xref = f"{namespace}:{split_ref}"
-            xrefs.append(xref)
-        return xrefs
 
     def _transform_ligand_id_mappings(self, data: Dict) -> None:
         """Transform ligand_id_mappings and add this data to `data`
@@ -190,17 +163,6 @@ class GuideToPHARMACOLOGY(Base):
         """
         with open(self._mapping_file.absolute(), "r") as f:
             rows = csv.reader(f, delimiter="\t")
-            next(rows)
-            if next(rows) != [
-                "Ligand id", "Name", "Species", "Type", "PubChem SID", "PubChem CID",
-                "ChEMBl ID", "Chebi ID", "UniProt id", "Ensembl ID", "IUPAC name",
-                "INN", "CAS", "DrugBank ID", "Drug Central ID"
-            ]:
-                raise SourceFormatException(
-                    "GtoP ligand mapping file contains missing or unrecognized "
-                    "columns. See FAQ in README for suggested resolution."
-                )
-
             for row in rows:
                 concept_id = f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}"
 
@@ -211,22 +173,17 @@ class GuideToPHARMACOLOGY(Base):
                 xrefs = list()
                 associated_with = params.get("associated_with", [])
                 if row[6]:
-                    xrefs += self._get_xrefs(row[6], NamespacePrefix.CHEMBL.value)
+                    xrefs.append(f"{NamespacePrefix.CHEMBL.value}:{row[6]}")
                 if row[7]:
-                    # CHEBI IDs are already namespaced
+                    # CHEBI
                     associated_with.append(row[7])
-                if row[8]:
-                    associated_with += self._get_xrefs(
-                        row[8], NamespacePrefix.UNIPROT.value
-                    )
+                if row[11]:
+                    xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:{row[11]}")
                 if row[12]:
-                    xrefs += self._get_xrefs(row[12], NamespacePrefix.CASREGISTRY.value)
+                    xrefs.append(f"{NamespacePrefix.DRUGBANK.value}:{row[12]}")
                 if row[13]:
-                    xrefs += self._get_xrefs(row[13], NamespacePrefix.DRUGBANK.value)
-                if row[14]:
-                    associated_with += self._get_xrefs(
-                        row[14], NamespacePrefix.DRUGCENTRAL.value
-                    )
+                    associated_with.append(f"{NamespacePrefix.DRUGCENTRAL.value}:{row[13]}")  # noqa: E501
+
                 if xrefs:
                     params["xrefs"] = xrefs
                 if associated_with:
