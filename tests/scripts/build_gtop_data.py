@@ -25,6 +25,7 @@ ligands_rows = []
 with open(gtop._ligands_file, "r") as f:
     reader = csv.reader(f, delimiter="\t")
     ligands_rows.append(next(reader))
+    ligands_rows.append(next(reader))
 
     for row in reader:
         if row[0] in TEST_IDS:
@@ -37,6 +38,7 @@ with open(ligands_file_path, "w") as f:
 map_rows = []
 with open(gtop._mapping_file, "r") as f:
     reader = csv.reader(f, delimiter="\t")
+    map_rows.append(next(reader))
     map_rows.append(next(reader))
 
     for row in reader:
