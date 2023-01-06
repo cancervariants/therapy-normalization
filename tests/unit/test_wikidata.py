@@ -131,7 +131,7 @@ def atropine():
 def basiliximab():
     """Create basiliximab test fixture to demonstrate rule-based filtering."""
     return Drug(
-        label="Basiliximab",
+        label="basiliximab",
         concept_id="wikidata:Q418702",
         aliases=["SDZ-CHI-621", "CHI-621", "CHI621", "chimeric mouse-human antiCD25"],
         xrefs=[
