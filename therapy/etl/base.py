@@ -17,8 +17,9 @@ import bioversions
 from disease.query import QueryHandler as DiseaseNormalizer
 
 from therapy import APP_ROOT, ITEM_TYPES, DownloadException
-from therapy.schemas import Drug
+from therapy.schemas import Drug, SourceName
 from therapy.database import Database
+from therapy.etl.rules import Rules
 
 
 logger = logging.getLogger("therapy")
@@ -47,6 +48,7 @@ class Base(ABC):
         self.database = database
         self._src_dir: Path = Path(data_path / self._name.lower())
         self._added_ids: List[str] = []
+        self._rules = Rules(SourceName(self._name))
 
     def perform_etl(self, use_existing: bool = False) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
@@ -231,6 +233,7 @@ class Base(ABC):
 
         :param Dict therapy: valid therapy object.
         """
+        therapy = self._rules.apply_rules_to_therapy(therapy)
         try:
             Drug(**therapy)
         except ValidationError as e:
