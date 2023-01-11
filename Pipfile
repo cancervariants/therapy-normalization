@@ -13,7 +13,7 @@ boto3 = "*"
 
 [dev-packages]
 thera-py = {editable = true, path = "."}
-disease-normalizer = ">=0.3.0"
+disease-normalizer = ">=0.3.1"
 owlready2 = "*"
 rdflib = "*"
 wikibaseintegrator = ">=0.12.0"
