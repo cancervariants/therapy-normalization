@@ -30,6 +30,7 @@ def pytest_collection_modifyitems(items):
         "test_database",
         "test_query",
         "test_emit_warnings",
+        "test_disease_indication"
     ]
     items.sort(key=lambda i: MODULE_ORDER.index(i.module.__name__))
 
