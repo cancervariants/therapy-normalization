@@ -43,7 +43,7 @@ class SaveQueryHandler(DiseaseQueryHandler):
         """Normalize query term"""
         response = super().normalize(query)
         if response.disease_descriptor:
-            result = response.disease_descriptor.disease
+            result = response.disease_descriptor.disease_id
         else:
             result = None
         disease_normalizer_table[query.lower()] = result
@@ -61,5 +61,5 @@ h.disease_normalizer = disease_query_handler
 h.perform_etl(use_existing=True)
 
 
-with open(TEST_DATA_DIRECTORY / "disease_normalization_testTODO.json", "w") as f:
+with open(TEST_DATA_DIRECTORY / "disease_normalization.json", "w") as f:
     json.dump(disease_normalizer_table, f)

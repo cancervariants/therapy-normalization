@@ -9,6 +9,7 @@ jobs:
             AWS_SECRET_ACCESS_KEY: ${{ secrets.DUMMY_AWS_SECRET_ACCESS_KEY }}
             AWS_DEFAULT_REGION: us-east-2
             AWS_DEFAULT_OUTPUT: text
+            DISEASE_NORM_DB_URL: http://localhost:8002
             THERAPY_NORM_DB_URL: http://localhost:8002
             THERAPY_TEST: true
         strategy:
