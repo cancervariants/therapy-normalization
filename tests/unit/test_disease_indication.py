@@ -23,30 +23,31 @@ class TestDiseaseIndication(DiseaseIndicationBase):
             self.load_disease_test_data()
 
     def load_disease_test_data(self):
-        """Load dummy disease data"""
+        """Load disease data"""
         disease = {
-            "label_and_type": "ncit:c1##identity",
+            "label_and_type": "mondo:0700110##identity",
             "item_type": "identity",
-            "src_name": "NCIt",
-            "merge_ref": "ncit:C1",
-            "concept_id": "ncit:C1",
-            "label": "test disease identity",
+            "src_name": "Mondo",
+            "concept_id": "mondo:0700110",
+            "label": "pneumonia, non-human animal",
+            "merge_ref": "mondo:07001110##merger"
         }
         self.disease_normalizer.db.diseases.put_item(Item=disease)
 
-        disease_merger = {
-            "label_and_type": "ncit:c1##merger",
-            "concept_id": "ncit:C1",
+        merge = {
+            "label_and_type": "mondo:0700110##merger",
             "item_type": "merger",
-            "label": "dummy disease merger",
+            "src_name": "Mondo",
+            "concept_id": "mondo:0700110",
+            "label": "pneumonia, non-human animal",
         }
-        self.disease_normalizer.db.diseases.put_item(Item=disease_merger)
+        self.disease_normalizer.db.diseases.put_item(Item=merge)
 
         source = {
-            "src_name": "NCIt",
+            "src_name": "Mondo",
             "data_license": "CC BY 4.0",
             "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
-            "version": "1.0.0",
+            "version": "2022-10-11",
             "data_license_attributes": {
                 "non_commercial": False,
                 "share_alike": False,
@@ -74,7 +75,6 @@ class TestDiseaseIndication(DiseaseIndicationBase):
 
 def test_normalize_disease():
     """Test that DiseaseIndicationBase works correctly when normalizing diseases"""
-    if RUN_TEST:
-        dib = TestDiseaseIndication()
-        norm_disease = dib._normalize_disease("ncit:C1")
-        assert norm_disease == "ncit:C1"
+    dib = TestDiseaseIndication()
+    norm_disease = dib._normalize_disease("mondo:0700110")
+    assert norm_disease == "mondo:0700110"
