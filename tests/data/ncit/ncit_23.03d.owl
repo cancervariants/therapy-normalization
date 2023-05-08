@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <rdf:RDF xmlns="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:owl="http://www.w3.org/2002/07/owl#" xmlns:oboInOwl="http://www.geneontology.org/formats/oboInOwl#" xmlns:Thesaurus="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#" xmlns:protege="http://protege.stanford.edu/plugins/owl/protege#" xmlns:xsd="http://www.w3.org/2001/XMLSchema#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xml:base="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl"><owl:Ontology rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl">
-        <owl:versionInfo>22.11d</owl:versionInfo>
-        <dc:date>November 28, 2022</dc:date>
+        <owl:versionInfo>23.03d</owl:versionInfo>
         <protege:defaultLanguage>en</protege:defaultLanguage>
+        <dc:date>March 27, 2023</dc:date>
         <rdfs:comment>NCI Thesaurus, a controlled vocabulary in support of NCI administrative and scientific activities. Produced by the Enterprise Vocabulary System (EVS), a project by the NCI Center for Biomedical Informatics and Information Technology. National Cancer Institute, National Institutes of Health, Bethesda, MD 20892, U.S.A.</rdfs:comment>
     </owl:Ontology>
     
@@ -463,23 +463,23 @@
     <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A24">
         <NHC0>A24</NHC0>
         <P106>Conceptual Entity</P106>
-        <P108>Is_PCDC_AML_Permissible_Value_For_Variable</P108>
-        <P90>Is_PCDC_AML_Permissible_Value_For_Variable</P90>
-        <P97>An association that indicates a PCDC AML concept is a Permissible Value for a PCDC AML Variable concept.</P97>
-        <rdfs:label>Is_PCDC_AML_Permissible_Value_For_Variable</rdfs:label>
+        <P108>Is_PCDC_AML_Authorized_Value_For_Variable</P108>
+        <P90>Is_PCDC_AML_Authorized_Value_For_Variable</P90>
+        <P97>An association that indicates a PCDC AML concept is a Authorized Value for a PCDC AML Variable concept.</P97>
+        <rdfs:label>Is_PCDC_AML_Authorized_Value_For_Variable</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
     </owl:AnnotationProperty>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A24"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
-        <owl:annotatedTarget>Is_PCDC_AML_Permissible_Value_For_Variable</owl:annotatedTarget>
+        <owl:annotatedTarget>Is_PCDC_AML_Authorized_Value_For_Variable</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
     </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A24"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
-        <owl:annotatedTarget>An association that indicates a PCDC AML concept is a Permissible Value for a PCDC AML Variable concept.</owl:annotatedTarget>
+        <owl:annotatedTarget>An association that indicates a PCDC AML concept is a Authorized Value for a PCDC AML Variable concept.</owl:annotatedTarget>
         <P378>NCI</P378>
     </owl:Axiom>
     
@@ -513,22 +513,22 @@
     <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A26">
         <NHC0>A26</NHC0>
         <P106>Conceptual Entity</P106>
-        <P108>Has_PCDC_AML_Permissible_Value</P108>
-        <P90>Has_PCDC_AML_Permissible_Value</P90>
-        <P97>An association that indicates a concept contains a dedicated permissible value concept.</P97>
-        <rdfs:label>Has_PCDC_AML_Permissible_Value</rdfs:label>
+        <P108>Has_PCDC_AML_Authorized_Value</P108>
+        <P90>Has_PCDC_AML_Authorized_Value</P90>
+        <P97>An association that shows which PCDC AML Authorized Values are possible for a specific Variable.</P97>
+        <rdfs:label>Has_PCDC_AML_Authorized_Value</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
     </owl:AnnotationProperty>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A26"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
-        <owl:annotatedTarget>Has_PCDC_AML_Permissible_Value</owl:annotatedTarget>
+        <owl:annotatedTarget>Has_PCDC_AML_Authorized_Value</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
     </owl:Axiom><owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A26"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
-        <owl:annotatedTarget>An association that indicates a concept contains a dedicated permissible value concept.</owl:annotatedTarget>
+        <owl:annotatedTarget>An association that shows which PCDC AML Authorized Values are possible for a specific Variable.</owl:annotatedTarget>
         <P378>NCI</P378>
     </owl:Axiom>
     
@@ -539,7 +539,7 @@
         <P106>Conceptual Entity</P106>
         <P108>Has_CTDC_Value</P108>
         <P90>Has_CTDC_Value</P90>
-        <P97>An association connecting a CTDC Property concept to its dedicated permissible value concept(s).</P97>
+        <P97>An association connecting a CTDC Property concept to its dedicated value concept(s).</P97>
         <rdfs:label>Has_CTDC_Value</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
     </owl:AnnotationProperty>
@@ -553,7 +553,7 @@
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A27"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
-        <owl:annotatedTarget>An association connecting a CTDC Property concept to its dedicated permissible value concept(s).</owl:annotatedTarget>
+        <owl:annotatedTarget>An association connecting a CTDC Property concept to its dedicated value concept(s).</owl:annotatedTarget>
         <P378>NCI</P378>
     </owl:Axiom>
     
@@ -562,23 +562,23 @@
     <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A28">
         <NHC0>A28</NHC0>
         <P106>Conceptual Entity</P106>
-        <P108>Is_PCDC_EWS_Permissible_Value_For_Variable</P108>
-        <P90>Is_PCDC_EWS_Permissible_Value_For_Variable</P90>
-        <P97>An association that indicates a PCDC EWS concept is a Permissible Value for a specific PCDC EWS Variable concept.</P97>
-        <rdfs:label>Is_PCDC_EWS_Permissible_Value_For_Variable</rdfs:label>
+        <P108>Is_PCDC_EWS_Authorized_Value_For_Variable</P108>
+        <P90>Is_PCDC_EWS_Authorized_Value_For_Variable</P90>
+        <P97>An association that indicates a PCDC EWS concept is a Authorized Value for a specific PCDC EWS Variable concept.</P97>
+        <rdfs:label>Is_PCDC_EWS_Authorized_Value_For_Variable</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
     </owl:AnnotationProperty>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A28"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
-        <owl:annotatedTarget>Is_PCDC_EWS_Permissible_Value_For_Variable</owl:annotatedTarget>
+        <owl:annotatedTarget>Is_PCDC_EWS_Authorized_Value_For_Variable</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
     </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A28"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
-        <owl:annotatedTarget>An association that indicates a PCDC EWS concept is a Permissible Value for a specific PCDC EWS Variable concept.</owl:annotatedTarget>
+        <owl:annotatedTarget>An association that indicates a PCDC EWS concept is a Authorized Value for a specific PCDC EWS Variable concept.</owl:annotatedTarget>
         <P378>NCI</P378>
     </owl:Axiom>
     
@@ -587,23 +587,23 @@
     <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A29">
         <NHC0>A29</NHC0>
         <P106>Conceptual Entity</P106>
-        <P108>Has_PCDC_EWS_Permissible_Value</P108>
-        <P90>Has_PCDC_EWS_Permissible_Value</P90>
-        <P97>An association that shows which Permissible Values are possible for a specific PCDC EWS Variable concept.</P97>
-        <rdfs:label>Has_PCDC_EWS_Permissible_Value</rdfs:label>
+        <P108>Has_PCDC_EWS_Authorized_Value</P108>
+        <P90>Has_PCDC_EWS_Authorized_Value</P90>
+        <P97>An association that shows which Authorized Values are possible for a specific PCDC EWS Variable concept.</P97>
+        <rdfs:label>Has_PCDC_EWS_Authorized_Value</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
     </owl:AnnotationProperty>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A29"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
-        <owl:annotatedTarget>Has_PCDC_EWS_Permissible_Value</owl:annotatedTarget>
+        <owl:annotatedTarget>Has_PCDC_EWS_Authorized_Value</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
     </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A29"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
-        <owl:annotatedTarget>An association that shows which Permissible Values are possible for a specific PCDC EWS Variable concept.</owl:annotatedTarget>
+        <owl:annotatedTarget>An association that shows which Authorized Values are possible for a specific PCDC EWS Variable concept.</owl:annotatedTarget>
         <P378>NCI</P378>
     </owl:Axiom>
     
@@ -640,7 +640,7 @@
         <P106>Conceptual Entity</P106>
         <P108>Has_ICDC_Value</P108>
         <P90>Has_ICDC_Value</P90>
-        <P97>An association connecting an ICDC Property concept to its dedicated permissible value concept(s).</P97>
+        <P97>An association connecting an ICDC Property concept to its dedicated value concept(s).</P97>
         <rdfs:label>Has_ICDC_Value</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
     </owl:AnnotationProperty>
@@ -654,7 +654,7 @@
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A30"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
-        <owl:annotatedTarget>An association connecting an ICDC Property concept to its dedicated permissible value concept(s).</owl:annotatedTarget>
+        <owl:annotatedTarget>An association connecting an ICDC Property concept to its dedicated value concept(s).</owl:annotatedTarget>
         <P378>NCI</P378>
     </owl:Axiom>
     
@@ -665,7 +665,7 @@
         <P106>Conceptual Entity</P106>
         <P108>Has_GDC_Value</P108>
         <P90>Has_GDC_Value</P90>
-        <P97>An association that connects a concept representing a GDC property to its dedicated permissible value concept(s).</P97>
+        <P97>An association that connects a concept representing a GDC property to its dedicated value concept(s).</P97>
         <rdfs:label>Has_GDC_Value</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
     </owl:AnnotationProperty>
@@ -679,7 +679,7 @@
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A31"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
-        <owl:annotatedTarget>An association that connects a concept representing a GDC property to its dedicated permissible value concept(s).</owl:annotatedTarget>
+        <owl:annotatedTarget>An association that connects a concept representing a GDC property to its dedicated value concept(s).</owl:annotatedTarget>
         <P378>NCI</P378>
     </owl:Axiom>
     
@@ -713,23 +713,23 @@
     <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A33">
         <NHC0>A33</NHC0>
         <P106>Conceptual Entity</P106>
-        <P108>Is_PCDC_GCT_Permissible_Value_For_Variable</P108>
-        <P90>Is_PCDC_GCT_Permissible_Value_For_Variable</P90>
-        <P97>An association that indicates a concept is a dedicated Permissible Value concept for a specific PCDC GCT Variable.</P97>
-        <rdfs:label>Is_PCDC_GCT_Permissible_Value_For_Variable</rdfs:label>
+        <P108>Is_PCDC_GCT_Authorized_Value_For_Variable</P108>
+        <P90>Is_PCDC_GCT_Authorized_Value_For_Variable</P90>
+        <P97>An association that indicates a concept is a dedicated Authorized Value concept for a specific PCDC GCT Variable.</P97>
+        <rdfs:label>Is_PCDC_GCT_Authorized_Value_For_Variable</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
     </owl:AnnotationProperty>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A33"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
-        <owl:annotatedTarget>Is_PCDC_GCT_Permissible_Value_For_Variable</owl:annotatedTarget>
+        <owl:annotatedTarget>Is_PCDC_GCT_Authorized_Value_For_Variable</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
     </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A33"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
-        <owl:annotatedTarget>An association that indicates a concept is a dedicated Permissible Value concept for a specific PCDC GCT Variable.</owl:annotatedTarget>
+        <owl:annotatedTarget>An association that indicates a concept is a dedicated Authorized Value concept for a specific PCDC GCT Variable.</owl:annotatedTarget>
         <P378>NCI</P378>
     </owl:Axiom>
     
@@ -738,23 +738,23 @@
     <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A34">
         <NHC0>A34</NHC0>
         <P106>Conceptual Entity</P106>
-        <P108>Has_PCDC_GCT_Permissible_Value</P108>
-        <P90>Has_PCDC_GCT_Permissible_Value</P90>
-        <P97>An association that shows which Permissible Values are possible for a specific PCDC GCT Variable.</P97>
-        <rdfs:label>Has_PCDC_GCT_Permissible_Value</rdfs:label>
+        <P108>Has_PCDC_GCT_Authorized_Value</P108>
+        <P90>Has_PCDC_GCT_Authorized_Value</P90>
+        <P97>An association that shows which Authorized Values are possible for a specific PCDC GCT Variable.</P97>
+        <rdfs:label>Has_PCDC_GCT_Authorized_Value</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
     </owl:AnnotationProperty>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A34"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
-        <owl:annotatedTarget>Has_PCDC_GCT_Permissible_Value</owl:annotatedTarget>
+        <owl:annotatedTarget>Has_PCDC_GCT_Authorized_Value</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
     </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A34"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
-        <owl:annotatedTarget>An association that shows which Permissible Values are possible for a specific PCDC GCT Variable.</owl:annotatedTarget>
+        <owl:annotatedTarget>An association that shows which Authorized Values are possible for a specific PCDC GCT Variable.</owl:annotatedTarget>
         <P378>NCI</P378>
     </owl:Axiom>
     
@@ -763,23 +763,23 @@
     <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A35">
         <NHC0>A35</NHC0>
         <P106>Conceptual Entity</P106>
-        <P108>Is_PCDC_ALL_Permissible_Value_For_Variable</P108>
-        <P90>Is_PCDC_ALL_Permissible_Value_For_Variable</P90>
-        <P97>An association that indicates a concept contains dedicated permissible value concept for a specific PCDC ALL Variable.</P97>
-        <rdfs:label>Is_PCDC_ALL_Permissible_Value_For_Variable</rdfs:label>
+        <P108>Is_PCDC_ALL_Authorized_Value_For_Variable</P108>
+        <P90>Is_PCDC_ALL_Authorized_Value_For_Variable</P90>
+        <P97>An association that indicates a PCDC ALL concept is a Authorized Value for a PCDC ALL Variable concept.</P97>
+        <rdfs:label>Is_PCDC_ALL_Authorized_Value_For_Variable</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
     </owl:AnnotationProperty>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A35"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
-        <owl:annotatedTarget>Is_PCDC_ALL_Permissible_Value_For_Variable</owl:annotatedTarget>
+        <owl:annotatedTarget>Is_PCDC_ALL_Authorized_Value_For_Variable</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
     </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A35"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
-        <owl:annotatedTarget>An association that indicates a concept contains dedicated permissible value concept for a specific PCDC ALL Variable.</owl:annotatedTarget>
+        <owl:annotatedTarget>An association that indicates a PCDC ALL concept is a Authorized Value for a PCDC ALL Variable concept.</owl:annotatedTarget>
         <P378>NCI</P378>
     </owl:Axiom>
     
@@ -788,23 +788,23 @@
     <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A36">
         <NHC0>A36</NHC0>
         <P106>Conceptual Entity</P106>
-        <P108>Has_PCDC_ALL_Permissible_Value</P108>
-        <P90>Has_PCDC_ALL_Permissible_Value</P90>
-        <P97>An association that shows which PCDC ALL Permissible Values are possible for a specific Variable.</P97>
-        <rdfs:label>Has_PCDC_ALL_Permissible_Value</rdfs:label>
+        <P108>Has_PCDC_ALL_Authorized_Value</P108>
+        <P90>Has_PCDC_ALL_Authorized_Value</P90>
+        <P97>An association that shows which PCDC ALL Authorized Values are possible for a specific Variable.</P97>
+        <rdfs:label>Has_PCDC_ALL_Authorized_Value</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
     </owl:AnnotationProperty>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A36"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
-        <owl:annotatedTarget>Has_PCDC_ALL_Permissible_Value</owl:annotatedTarget>
+        <owl:annotatedTarget>Has_PCDC_ALL_Authorized_Value</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
     </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A36"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
-        <owl:annotatedTarget>An association that shows which PCDC ALL Permissible Values are possible for a specific Variable.</owl:annotatedTarget>
+        <owl:annotatedTarget>An association that shows which PCDC ALL Authorized Values are possible for a specific Variable.</owl:annotatedTarget>
         <P378>NCI</P378>
     </owl:Axiom>
     
@@ -813,23 +813,23 @@
     <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A37">
         <NHC0>A37</NHC0>
         <P106>Conceptual Entity</P106>
-        <P108>Has_SeroNet_Permissible_Value</P108>
-        <P90>Has_SeroNet_Permissible_Value</P90>
-        <P97>An association that shows which Permissible Values are possible for a specific SeroNet Variable.</P97>
-        <rdfs:label>Has_SeroNet_Permissible_Value</rdfs:label>
+        <P108>Has_SeroNet_Authorized_Value</P108>
+        <P90>Has_SeroNet_Authorized_Value</P90>
+        <P97>An association that shows which Authorized Values are possible for a specific SeroNet Variable.</P97>
+        <rdfs:label>Has_SeroNet_Authorized_Value</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
     </owl:AnnotationProperty>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A37"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
-        <owl:annotatedTarget>Has_SeroNet_Permissible_Value</owl:annotatedTarget>
+        <owl:annotatedTarget>Has_SeroNet_Authorized_Value</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
     </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A37"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
-        <owl:annotatedTarget>An association that shows which Permissible Values are possible for a specific SeroNet Variable.</owl:annotatedTarget>
+        <owl:annotatedTarget>An association that shows which Authorized Values are possible for a specific SeroNet Variable.</owl:annotatedTarget>
         <P378>NCI</P378>
     </owl:Axiom>
     
@@ -838,23 +838,23 @@
     <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A38">
         <NHC0>A38</NHC0>
         <P106>Conceptual Entity</P106>
-        <P108>Has_PCDC_OS_Permissible_Value</P108>
-        <P90>Has_PCDC_OS_Permissible_Value</P90>
-        <P97>An association that shows which Permissible Values are possible for a specific PCDC OS Variable.</P97>
-        <rdfs:label>Has_PCDC_OS_Permissible_Value</rdfs:label>
+        <P108>Has_PCDC_OS_Authorized_Value</P108>
+        <P90>Has_PCDC_OS_Authorized_Value</P90>
+        <P97>An association that shows which Authorized Values are possible for a specific PCDC OS Variable.</P97>
+        <rdfs:label>Has_PCDC_OS_Authorized_Value</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
     </owl:AnnotationProperty>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A38"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
-        <owl:annotatedTarget>Has_PCDC_OS_Permissible_Value</owl:annotatedTarget>
+        <owl:annotatedTarget>Has_PCDC_OS_Authorized_Value</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
     </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A38"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
-        <owl:annotatedTarget>An association that shows which Permissible Values are possible for a specific PCDC OS Variable.</owl:annotatedTarget>
+        <owl:annotatedTarget>An association that shows which Authorized Values are possible for a specific PCDC OS Variable.</owl:annotatedTarget>
         <P378>NCI</P378>
     </owl:Axiom>
     
@@ -863,23 +863,23 @@
     <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A39">
         <NHC0>A39</NHC0>
         <P106>Conceptual Entity</P106>
-        <P108>Has_PCDC_HL_Permissible_Value</P108>
-        <P90>Has_PCDC_HL_Permissible_Value</P90>
-        <P97>An association that shows which Permissible Values are possible for a specific PCDC HL Variable.</P97>
-        <rdfs:label>Has_PCDC_HL_Permissible_Value</rdfs:label>
+        <P108>Has_PCDC_HL_Authorized_Value</P108>
+        <P90>Has_PCDC_HL_Authorized_Value</P90>
+        <P97>An association that shows which Authorized Values are possible for a specific PCDC HL Variable.</P97>
+        <rdfs:label>Has_PCDC_HL_Authorized_Value</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
     </owl:AnnotationProperty>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A39"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
-        <owl:annotatedTarget>Has_PCDC_HL_Permissible_Value</owl:annotatedTarget>
+        <owl:annotatedTarget>Has_PCDC_HL_Authorized_Value</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
     </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A39"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
-        <owl:annotatedTarget>An association that shows which Permissible Values are possible for a specific PCDC HL Variable.</owl:annotatedTarget>
+        <owl:annotatedTarget>An association that shows which Authorized Values are possible for a specific PCDC HL Variable.</owl:annotatedTarget>
         <P378>NCI</P378>
     </owl:Axiom>
     
@@ -914,23 +914,23 @@
     <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A40">
         <NHC0>A40</NHC0>
         <P106>Conceptual Entity</P106>
-        <P108>Has_DIPG_DMG_Permissible_Value</P108>
-        <P90>Has_DIPG_DMG_Permissible_Value</P90>
-        <P97>An association that shows which Permissible Values are possible for a specific DIPG/DMG Variable.</P97>
-        <rdfs:label>Has_DIPG_DMG_Permissible_Value</rdfs:label>
+        <P108>Has_DIPG_DMG_Authorized_Value</P108>
+        <P90>Has_DIPG_DMG_Authorized_Value</P90>
+        <P97>An association that shows which Authorized Values are possible for a specific DIPG/DMG Variable.</P97>
+        <rdfs:label>Has_DIPG_DMG_Authorized_Value</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
     </owl:AnnotationProperty>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A40"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
-        <owl:annotatedTarget>Has_DIPG_DMG_Permissible_Value</owl:annotatedTarget>
+        <owl:annotatedTarget>Has_DIPG_DMG_Authorized_Value</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
     </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A40"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
-        <owl:annotatedTarget>An association that shows which Permissible Values are possible for a specific DIPG/DMG Variable.</owl:annotatedTarget>
+        <owl:annotatedTarget>An association that shows which Authorized Values are possible for a specific DIPG/DMG Variable.</owl:annotatedTarget>
         <P378>NCI</P378>
     </owl:Axiom>
     
@@ -1082,6 +1082,31 @@
     
 
 
+    <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A48">
+        <NHC0>A48</NHC0>
+        <P106>Conceptual Entity</P106>
+        <P108>Has_ACC-AHA_SARS2_Authorized_Value</P108>
+        <P90>Has_ACC-AHA_SARS2_Authorized_Value</P90>
+        <P97>An association that shows which Authorized Values are possible for a specific ACC/AHA SARS2 Variable.</P97>
+        <rdfs:label>Has_ACC-AHA_SARS2_Authorized_Value</rdfs:label>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+    </owl:AnnotationProperty>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A48"/>
+        <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
+        <owl:annotatedTarget>Has_ACC-AHA_SARS2_Authorized_Value</owl:annotatedTarget>
+        <P383>PT</P383>
+        <P384>NCI</P384>
+    </owl:Axiom>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A48"/>
+        <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
+        <owl:annotatedTarget>An association that shows which Authorized Values are possible for a specific ACC/AHA SARS2 Variable.</owl:annotatedTarget>
+        <P378>NCI</P378>
+    </owl:Axiom>
+    
+
+
     <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A5">
         <NHC0>A5</NHC0>
         <P106>Conceptual Entity</P106>
@@ -1092,8 +1117,7 @@
         <P98>USAGE NOTE: A salt form of a drug consists of 2 parts, one acidic and one basic group that are readily disassociated in liquid phase. Salt forms are either salts of strong acids and basic drugs (e.g. Atropine Sulfate, Cetirizine Hydrochloride) or salts of strong bases and acidic drugs (Allopurinol Sodium). This association is usually used in conjunction with Has_Free_Acid_Or_Base_Form.</P98>
         <rdfs:label>Has_Salt_Form</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
-    </owl:AnnotationProperty>
-    <owl:Axiom>
+    </owl:AnnotationProperty><owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A5"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
         <owl:annotatedTarget>Has_Salt_Form</owl:annotatedTarget>
@@ -1105,7 +1129,11 @@
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
         <owl:annotatedTarget>An association that connects the salt form of a drug with its free acid or free base.</owl:annotatedTarget>
         <P378>NCI</P378>
-    </owl:Axiom><owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A6">
+    </owl:Axiom>
+    
+
+
+    <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#A6">
         <NHC0>A6</NHC0>
         <P106>Conceptual Entity</P106>
         <P107>Has Free Acid Or Base Form</P107>
@@ -1658,8 +1686,7 @@
         <P97>A property representing the concept unique identifier (CUI) assigned by the National Library of Medicine (NLM). If a concept in any NCI-maintained knowledgebase exists in the NLM Unified Medical Language System (UMLS), NCI includes the NLM CUI among the information we provide about the concept.</P97>
         <rdfs:label>UMLS_CUI</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:AnnotationProperty>
-    <owl:Axiom>
+    </owl:AnnotationProperty><owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P207"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
         <owl:annotatedTarget>UMLS_CUI</owl:annotatedTarget>
@@ -2195,8 +2222,7 @@
         <P97>A property representing a term that had been used in a coding system and then subsumed by the given NCIt concept.</P97>
         <rdfs:label>Use_For</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:AnnotationProperty>
-    <owl:Axiom>
+    </owl:AnnotationProperty><owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P333"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
         <owl:annotatedTarget>Use_For</owl:annotatedTarget>
@@ -2221,7 +2247,8 @@
         <P97>A property representing the matching ICD-O-3 code for the NCI Thesaurus concept.</P97>
         <rdfs:label>ICD-O-3_Code</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
-    </owl:AnnotationProperty><owl:Axiom>
+    </owl:AnnotationProperty>
+    <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P334"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
         <owl:annotatedTarget>ICD-O-3_Code</owl:annotatedTarget>
@@ -2782,11 +2809,7 @@
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
         <owl:annotatedTarget>A property representing a retired unique concept identifier created and stored as Concept Name by legacy EVS software. Use of these values was long discouraged, but continued as late as 2009 when creation of new values ceased and Concept Name was retired. Legacy values are intended solely to help resolve and update earlier coding.</owl:annotatedTarget>
         <P378>NCI</P378>
-    </owl:Axiom>
-    
-
-
-    <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P367">
+    </owl:Axiom><owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P367">
         <NHC0>P367</NHC0>
         <P106>Conceptual Entity</P106>
         <P108>PID_ID</P108>
@@ -2801,7 +2824,8 @@
         <owl:annotatedTarget>PID_ID</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
-    </owl:Axiom><owl:Axiom>
+    </owl:Axiom>
+    <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P367"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
         <owl:annotatedTarget>A property representing the NCI/Nature Pathway Interaction Database (PID) code for a pathway. It can be used by the NCIt Browser to link a pathway concept to the source pathway information.</owl:annotatedTarget>
@@ -3245,11 +3269,19 @@
         <NHC0>P393</NHC0>
         <P106>Conceptual Entity</P106>
         <P108>Relationship_to_Target</P108>
+        <P90>Relationship_to_Target</P90>
         <P97>A property representing the relationship of the NCI Thesaurus (NCIt) concept to the term from the outside source. There are four possibilities: 1) Has Synonym: the two terms are synonymous; 2) Broader Than: the NCIt concept is broader than the mapped (target) term; 3) Narrower Than: the NCIt concept is narrower than the mapped (target) term; 4) Related To: the NCIt concept is somehow related to the mapped (target) term.</P97>
         <required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</required>
         <rdfs:label>Relationship_to_Target</rdfs:label>
         <rdfs:range rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#Relationshipt_to_Target-enum"/>
     </owl:AnnotationProperty>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P393"/>
+        <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
+        <owl:annotatedTarget>Relationship_to_Target</owl:annotatedTarget>
+        <P383>PT</P383>
+        <P384>NCI</P384>
+    </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P393"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
@@ -3263,11 +3295,19 @@
         <NHC0>P394</NHC0>
         <P106>Conceptual Entity</P106>
         <P108>Target_Term_Type</P108>
+        <P90>Target_Term_Type</P90>
         <P97>A property representing the term type designation in the mapped (target) database.</P97>
         <required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</required>
         <rdfs:label>Target_Term_Type</rdfs:label>
         <rdfs:range rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#Target_Term_Type-enum"/>
     </owl:AnnotationProperty>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P394"/>
+        <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
+        <owl:annotatedTarget>Target_Term_Type</owl:annotatedTarget>
+        <P383>PT</P383>
+        <P384>NCI</P384>
+    </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P394"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
@@ -3282,11 +3322,19 @@
         <P106>Conceptual Entity</P106>
         <P108>Target_Code</P108>
         <P378>NCI</P378>
+        <P90>Target_Code</P90>
         <P97>A property representing the code assigned to the target term in the mapped (target) database. Some databases may not have codes.</P97>
         <required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</required>
         <rdfs:label>Target_Code</rdfs:label>
         <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
     </owl:AnnotationProperty>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P395"/>
+        <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
+        <owl:annotatedTarget>Target_Code</owl:annotatedTarget>
+        <P383>PT</P383>
+        <P384>NCI</P384>
+    </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P395"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
@@ -3300,6 +3348,7 @@
         <NHC0>P396</NHC0>
         <P106>Conceptual Entity</P106>
         <P108>Target_Terminology</P108>
+        <P90>Target_Terminology</P90>
         <P97>A property representing the name of the terminology to which the NCI Thesaurus term is being mapped.</P97>
         <required rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean">true</required>
         <rdfs:label>Target_Terminology</rdfs:label>
@@ -3307,14 +3356,17 @@
     </owl:AnnotationProperty>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P396"/>
+        <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
+        <owl:annotatedTarget>Target_Terminology</owl:annotatedTarget>
+        <P383>PT</P383>
+        <P384>NCI</P384>
+    </owl:Axiom>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P396"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
         <owl:annotatedTarget>A property representing the name of the terminology to which the NCI Thesaurus term is being mapped.</owl:annotatedTarget>
         <P378>NCI</P378>
-    </owl:Axiom>
-    
-
-
-    <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P397">
+    </owl:Axiom><owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P397">
         <NHC0>P397</NHC0>
         <P106>Conceptual Entity</P106>
         <P108>Target_Terminology_Version</P108>
@@ -3361,7 +3413,11 @@
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
         <owl:annotatedTarget>A property that indicates whether or not a value set is part of a paired set of codelists for publication processing purposes.</owl:annotatedTarget>
         <P378>NCI</P378>
-    </owl:Axiom><owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P399">
+    </owl:Axiom>
+    
+
+
+    <owl:AnnotationProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P399">
         <NHC0>P399</NHC0>
         <P106>Conceptual Entity</P106>
         <P108>NCI_Drug_Dictionary_ID</P108>
@@ -3855,7 +3911,13 @@
                                                                                                                                                                                                                                                                                                                                             <rdf:Description>
                                                                                                                                                                                                                                                                                                                                                 <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
                                                                                                                                                                                                                                                                                                                                                 <rdf:first>WHO</rdf:first>
-                                                                                                                                                                                                                                                                                                                                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                                                                                                                                                                                                                                                                                                                <rdf:rest>
+                                                                                                                                                                                                                                                                                                                                                    <rdf:Description>
+                                                                                                                                                                                                                                                                                                                                                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                                                                                                                                                                                                                                                                                                                        <rdf:first>mCode</rdf:first>
+                                                                                                                                                                                                                                                                                                                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                                                                                                                                                                                                                                                                                                                    </rdf:Description>
+                                                                                                                                                                                                                                                                                                                                                </rdf:rest>
                                                                                                                                                                                                                                                                                                                                             </rdf:Description>
                                                                                                                                                                                                                                                                                                                                         </rdf:rest>
                                                                                                                                                                                                                                                                                                                                     </rdf:Description>
@@ -4218,11 +4280,7 @@
                 </owl:oneOf>
             </rdfs:Datatype>
         </owl:equivalentClass>
-    </rdfs:Datatype>
-    
-
-
-    <rdfs:Datatype rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#Publish_Value_Set-enum">
+    </rdfs:Datatype><rdfs:Datatype rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#Publish_Value_Set-enum">
         <owl:equivalentClass>
             <rdfs:Datatype>
                 <owl:oneOf>
@@ -5704,20 +5762,26 @@
                                                                                                                                                                                                                                                                                                                 <rdf:rest>
                                                                                                                                                                                                                                                                                                                     <rdf:Description>
                                                                                                                                                                                                                                                                                                                         <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
-                                                                                                                                                                                                                                                                                                                        <rdf:first>PCDC</rdf:first>
+                                                                                                                                                                                                                                                                                                                        <rdf:first>OORO</rdf:first>
                                                                                                                                                                                                                                                                                                                         <rdf:rest>
                                                                                                                                                                                                                                                                                                                             <rdf:Description>
                                                                                                                                                                                                                                                                                                                                 <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
-                                                                                                                                                                                                                                                                                                                                <rdf:first>PQCMC</rdf:first>
+                                                                                                                                                                                                                                                                                                                                <rdf:first>PCDC</rdf:first>
                                                                                                                                                                                                                                                                                                                                 <rdf:rest>
                                                                                                                                                                                                                                                                                                                                     <rdf:Description>
                                                                                                                                                                                                                                                                                                                                         <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
-                                                                                                                                                                                                                                                                                                                                        <rdf:first>SPL</rdf:first>
+                                                                                                                                                                                                                                                                                                                                        <rdf:first>PQCMC</rdf:first>
                                                                                                                                                                                                                                                                                                                                         <rdf:rest>
                                                                                                                                                                                                                                                                                                                                             <rdf:Description>
                                                                                                                                                                                                                                                                                                                                                 <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
-                                                                                                                                                                                                                                                                                                                                                <rdf:first>WHO</rdf:first>
-                                                                                                                                                                                                                                                                                                                                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                                                                                                                                                                                                                                                                                                                <rdf:first>SPL</rdf:first>
+                                                                                                                                                                                                                                                                                                                                                <rdf:rest>
+                                                                                                                                                                                                                                                                                                                                                    <rdf:Description>
+                                                                                                                                                                                                                                                                                                                                                        <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                                                                                                                                                                                                                                                                                                                        <rdf:first>WHO</rdf:first>
+                                                                                                                                                                                                                                                                                                                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                                                                                                                                                                                                                                                                                                                    </rdf:Description>
+                                                                                                                                                                                                                                                                                                                                                </rdf:rest>
                                                                                                                                                                                                                                                                                                                                             </rdf:Description>
                                                                                                                                                                                                                                                                                                                                         </rdf:rest>
                                                                                                                                                                                                                                                                                                                                     </rdf:Description>
@@ -6171,7 +6235,13 @@
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <rdf:Description>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <rdf:first>caDSR</rdf:first>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <rdf:rest>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <rdf:Description>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#List"/>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <rdf:first>mCode</rdf:first>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <rdf:rest rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"/>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </rdf:Description>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </rdf:rest>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </rdf:Description>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 </rdf:rest>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                             </rdf:Description>
@@ -6474,8 +6544,7 @@
         <owl:annotatedTarget>Disease_Has_Abnormal_Cell</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
-    </owl:Axiom>
-    <owl:Axiom>
+    </owl:Axiom><owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#R105"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
         <owl:annotatedTarget>A role used to relate a disease to the type of neoplastic cell present in and characteristic of the disease. The domain and the range for this role are 'Disease, Disorder or Finding' and 'Abnormal Cell', respectively.</owl:annotatedTarget>
@@ -6928,8 +6997,7 @@
         <P97>A role used to assert a relationship between a gene product and a biochemical pathway in which it participates. This relationship is used only when a gene product has been implicated in a pathway by the curated source (Biocarta, KEGG or PID). The domain and range for this role are 'Gene Product' and 'Biochemical Pathway', respectively.</P97>
         <P98>In NCI Thesaurus, pathways are derived from BioCarta and KEGG and are associated with genes and proteins that comprise these pathways.</P98>
         <rdfs:label>Gene_Product_Is_Element_In_Pathway</rdfs:label>
-    </owl:ObjectProperty>
-    <owl:Axiom>
+    </owl:ObjectProperty><owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#R131"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
         <owl:annotatedTarget>Gene_Product_Is_Element_In_Pathway</owl:annotatedTarget>
@@ -7070,7 +7138,8 @@
         <owl:annotatedTarget>Disease_Excludes_Normal_Tissue_Origin</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
-    </owl:Axiom><owl:Axiom>
+    </owl:Axiom>
+    <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#R137"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
         <owl:annotatedTarget>A specializing role which may be used to override Disease_Has_Normal_Tissue_Origin. The domain and the range for this role are 'Disease, Disorder or Finding' and 'Anatomic Structure, System, or Substance', respectively.</owl:annotatedTarget>
@@ -7370,11 +7439,7 @@
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
         <owl:annotatedTarget>A role used for an allele whose location has changed from the wild-type gene chromosomal location. This role is used to negate an inherited role relationship that is asserted between the parent gene class and a chromosomal location when an allele has moved (e.g., translocation, inversion, etc.). The domain and range for this role are 'Gene' and 'Anatomic Structure, System, or Substance', respectively.</owl:annotatedTarget>
         <P378>NCI</P378>
-    </owl:Axiom>
-    
-
-
-    <owl:ObjectProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#R158">
+    </owl:Axiom><owl:ObjectProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#R158">
         <rdfs:subPropertyOf rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#R37"/>
         <NHC0>R158</NHC0>
         <P106>Conceptual Entity</P106>
@@ -7516,7 +7581,8 @@
         <P90>Procedure_May_Have_Excised_Anatomy</P90>
         <P97>A role used to assert a relationship between a surgical procedure and its target anatomy, specifically that a particular procedure sometimes results in excision of some or all of the specified anatomy. This role is applicable to procedures or techniques that involve excision of solid tissues or organs. It should be used when a more specific role cannot be asserted. The domain and range for this role are 'Clinical or Research Activity' and 'Anatomic Structure, System, or Substance', respectively.</P97>
         <rdfs:label>Procedure_May_Have_Excised_Anatomy</rdfs:label>
-    </owl:ObjectProperty><owl:Axiom>
+    </owl:ObjectProperty>
+    <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#R166"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
         <owl:annotatedTarget>Procedure_May_Have_Excised_Anatomy</owl:annotatedTarget>
@@ -7913,7 +7979,8 @@
         <owl:annotatedTarget>Procedure_Uses_Manufactured_Object</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
-    </owl:Axiom><owl:Axiom>
+    </owl:Axiom>
+    <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#R181"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
         <owl:annotatedTarget>A role used to assert that a procedure or technical method requires use of specific artifacts or pieces of equipment. The domain and range for this role are 'Activity' and 'Manufactured Object', respectively.</owl:annotatedTarget>
@@ -8358,15 +8425,28 @@
         <rdfs:range rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C7057"/>
         <NHC0>R39</NHC0>
         <P106>Conceptual Entity</P106>
+        <P108>Gene_Is_Biomarker_Of</P108>
+        <P90>Gene_Is_Biomarker_Of</P90>
         <P97>A role used to assert that expression or alteration of a gene is correlated with a particular disease or disease state or is predictive of the disease or disease state. The domain and range for this role are 'Gene' and Findings_and_Disorder_Kind, respectively.</P97>
         <rdfs:label>Gene_Is_Biomarker_Of</rdfs:label>
     </owl:ObjectProperty>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#R39"/>
+        <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
+        <owl:annotatedTarget>Gene_Is_Biomarker_Of</owl:annotatedTarget>
+        <P383>NCI</P383>
+        <P383>PT</P383>
+    </owl:Axiom>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#R39"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
         <owl:annotatedTarget>A role used to assert that expression or alteration of a gene is correlated with a particular disease or disease state or is predictive of the disease or disease state. The domain and range for this role are 'Gene' and Findings_and_Disorder_Kind, respectively.</owl:annotatedTarget>
         <P378>NCI</P378>
-    </owl:Axiom><owl:ObjectProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#R40">
+    </owl:Axiom>
+    
+
+
+    <owl:ObjectProperty rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#R40">
         <rdfs:domain rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C16612"/>
         <rdfs:range rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C12219"/>
         <NHC0>R40</NHC0>
@@ -8678,8 +8758,7 @@
         <P90>Gene_Product_Has_Biochemical_Function</P90>
         <P97>A role used to denote the biochemical activity of a gene product. Both the domain and range for this role are 'Gene Product'.</P97>
         <rdfs:label>Gene_Product_Has_Biochemical_Function</rdfs:label>
-    </owl:ObjectProperty>
-    <owl:Axiom>
+    </owl:ObjectProperty><owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#R52"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
         <owl:annotatedTarget>Gene_Product_Has_Biochemical_Function</owl:annotatedTarget>
@@ -8824,7 +8903,8 @@
         <owl:annotatedTarget>Anatomic_Structure_Has_Location</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
-    </owl:Axiom><owl:Axiom>
+    </owl:Axiom>
+    <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#R81"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P97"/>
         <owl:annotatedTarget>A role used to indicate the physical location of an anatomic structure in the body. Both the domain and range for this role are 'Anatomic Structure, System, or Substance'.</owl:annotatedTarget>
@@ -15389,6 +15469,24 @@
         <A31 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C93196"/>
         <A31 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C93340"/>
         <A31 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C95484"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C15189"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C15275"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C15288"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C15307"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C15343"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C17649"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C192440"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C192567"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C192609"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C192610"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C192623"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C38065"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C52008"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C62742"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C93088"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C94461"/>
+        <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C116977"/>
+        <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C118169"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C132298"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C132310"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C157711"/>
@@ -15399,17 +15497,20 @@
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C177536"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C188693"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C188698"/>
+        <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C192234"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C61410"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C67497"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C90259"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C99147"/>
         <NHC0>C25218</NHC0>
         <P106>Health Care Activity</P106>
+        <P107>Intervention or Procedure</P107>
         <P108>Intervention or Procedure</P108>
         <P207>C0184661</P207>
         <P322>BRIDG</P322>
         <P322>CDISC</P322>
         <P322>CDISC-GLOSS</P322>
+        <P322>CTRP</P322>
         <P322>GDC</P322>
         <P322>ICDC</P322>
         <P322>NICHD</P322>
@@ -15417,11 +15518,13 @@
         <P325>In medicine, a treatment or action taken to prevent or treat disease, or improve health in other ways.</P325>
         <P325>The drug, device, therapy, or process under investigation in a clinical study that is believed to have an effect on outcomes of interest in a study (e.g., health-related quality of life, efficacy, safety, pharmacoeconomics). [After https://grants.nih.gov/grants/policy/faq_clinical_trial_definition.htm#5224]</P325>
         <P325>The drug, device, therapy, or process under investigation in a clinical study that is believed to have an effect on outcomes of interest in a study (e.g., health-related quality of life, efficacy, safety, pharmacoeconomics). [After https://grants.nih.gov/grants/policy/faq_clinical_trial_definition.htm#5224] See also test articles, devices, drug product, medicinal product, combination product, general observation class, finding, event, treatment, diagnosis.</P325>
+        <P325>The type of interventional procedure performed.</P325>
         <P366>Procedure</P366>
         <P90>Intervention</P90>
         <P90>Intervention Strategies</P90>
         <P90>Intervention or Procedure</P90>
         <P90>Interventional</P90>
+        <P90>Interventional Procedure Type</P90>
         <P90>Procedure</P90>
         <P90>intervention</P90>
         <P90>interventionDescription</P90>
@@ -15451,6 +15554,13 @@
     </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C25218"/>
+        <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P325"/>
+        <owl:annotatedTarget>The type of interventional procedure performed.</owl:annotatedTarget>
+        <P378>OORO</P378>
+        <P381>PC</P381>
+    </owl:Axiom>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C25218"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
         <owl:annotatedTarget>Intervention</owl:annotatedTarget>
         <P383>PT</P383>
@@ -15474,6 +15584,13 @@
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C25218"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
         <owl:annotatedTarget>Intervention or Procedure</owl:annotatedTarget>
+        <P383>DN</P383>
+        <P384>CTRP</P384>
+    </owl:Axiom>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C25218"/>
+        <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
+        <owl:annotatedTarget>Intervention or Procedure</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
     </owl:Axiom>
@@ -15490,6 +15607,14 @@
         <owl:annotatedTarget>Interventional</owl:annotatedTarget>
         <P383>AD</P383>
         <P384>NCI</P384>
+    </owl:Axiom>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C25218"/>
+        <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
+        <owl:annotatedTarget>Interventional Procedure Type</owl:annotatedTarget>
+        <P383>PT</P383>
+        <P384>OORO</P384>
+        <P386>PC</P386>
     </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C25218"/>
@@ -16156,6 +16281,15 @@
         <A39 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C875"/>
         <A39 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C930"/>
         <A39 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C933"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C1282"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C1526"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C17649"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C422"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C555"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C62050"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C647"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C66937"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C770"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C173234"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C174018"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C177384"/>
@@ -16164,6 +16298,7 @@
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C186328"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C186342"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C186764"/>
+        <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C192234"/>
         <NHC0>C274</NHC0>
         <P106>Chemical Viewed Functionally</P106>
         <P108>Antineoplastic Agent</P108>
@@ -16171,6 +16306,7 @@
         <P322>OORO</P322>
         <P322>PCDC</P322>
         <P325>A drug used to treat cancer.</P325>
+        <P325>Antineoplastic agent used as part of a cycle of chemotherapy</P325>
         <P366>Antineoplastic_Agent</P366>
         <P368>CHEBI:35610</P368>
         <P90>ANTINEOPLASTIC_AGENT</P90>
@@ -16178,6 +16314,7 @@
         <P90>Anti-Tumor Agents</P90>
         <P90>Anti-Tumor Drugs</P90>
         <P90>Antineoplastic Agent</P90>
+        <P90>Antineoplastic Drug</P90>
         <P90>Antineoplastic Drugs</P90>
         <P90>Antineoplastics</P90>
         <P90>Antiproliferative Agents</P90>
@@ -16195,6 +16332,13 @@
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P325"/>
         <owl:annotatedTarget>A drug used to treat cancer.</owl:annotatedTarget>
         <P378>NCI-GLOSS</P378>
+    </owl:Axiom>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C274"/>
+        <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P325"/>
+        <owl:annotatedTarget>Antineoplastic agent used as part of a cycle of chemotherapy</owl:annotatedTarget>
+        <P378>OORO</P378>
+        <P381>PC</P381>
     </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C274"/>
@@ -16255,6 +16399,14 @@
         <owl:annotatedTarget>Antineoplastic Agent</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
+    </owl:Axiom>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C274"/>
+        <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
+        <owl:annotatedTarget>Antineoplastic Drug</owl:annotatedTarget>
+        <P383>PT</P383>
+        <P384>OORO</P384>
+        <P386>PC</P386>
     </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C274"/>
@@ -16806,8 +16958,12 @@
 
     <owl:Class rdf:about="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C308">
         <rdfs:subClassOf rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C1909"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C106432"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C17649"/>
+        <A42 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C1985"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C116977"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C116978"/>
+        <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C192234"/>
         <NHC0>C308</NHC0>
         <P106>Chemical Viewed Functionally</P106>
         <P107>Immunotherapeutic Agent</P107>
@@ -16815,6 +16971,7 @@
         <P207>C0005525</P207>
         <P322>CTRP</P322>
         <P322>OORO</P322>
+        <P325>Name of chemical agents utilizing the immune response of the body as an anti-neoplastic therapy</P325>
         <P366>Biological_Response_Modifier</P366>
         <P368>CHEBI:50846</P368>
         <P90>BRM</P90>
@@ -16828,11 +16985,19 @@
         <P90>Immunomodulatory Agent</P90>
         <P90>Immunopotentiators</P90>
         <P90>Immunotherapeutic Agent</P90>
+        <P90>Immunotherapeutic Drug</P90>
         <P90>Immunotherapy</P90>
         <P90>Immunotherapy Agent</P90>
         <P97>Any substance that induces, enhances, restores or suppresses the host's immune system, or an agent that utilizes or is derived from a component of the immune system.</P97>
         <rdfs:label>Immunotherapeutic Agent</rdfs:label>
     </owl:Class>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C308"/>
+        <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P325"/>
+        <owl:annotatedTarget>Name of chemical agents utilizing the immune response of the body as an anti-neoplastic therapy</owl:annotatedTarget>
+        <P378>OORO</P378>
+        <P381>PC</P381>
+    </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C308"/>
         <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
@@ -16909,6 +17074,14 @@
         <owl:annotatedTarget>Immunotherapeutic Agent</owl:annotatedTarget>
         <P383>PT</P383>
         <P384>NCI</P384>
+    </owl:Axiom>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C308"/>
+        <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
+        <owl:annotatedTarget>Immunotherapeutic Drug</owl:annotatedTarget>
+        <P383>PT</P383>
+        <P384>OORO</P384>
+        <P386>PC</P386>
     </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C308"/>
@@ -17798,6 +17971,7 @@
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C166372"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C166373"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C177536"/>
+        <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C192234"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C61410"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C67497"/>
         <A8 rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C89506"/>
@@ -17818,6 +17992,7 @@
         <P366>Therapeutic_Procedure</P366>
         <P90>TREAT</P90>
         <P90>TX</P90>
+        <P90>Therapeutic</P90>
         <P90>Therapeutic Interventions</P90>
         <P90>Therapeutic Method</P90>
         <P90>Therapeutic Procedure</P90>
@@ -17858,6 +18033,14 @@
         <owl:annotatedTarget>TX</owl:annotatedTarget>
         <P383>AB</P383>
         <P384>NCI</P384>
+    </owl:Axiom>
+    <owl:Axiom>
+        <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C49236"/>
+        <owl:annotatedProperty rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#P90"/>
+        <owl:annotatedTarget>Therapeutic</owl:annotatedTarget>
+        <P383>PT</P383>
+        <P384>OORO</P384>
+        <P386>PC</P386>
     </owl:Axiom>
     <owl:Axiom>
         <owl:annotatedSource rdf:resource="http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#C49236"/>

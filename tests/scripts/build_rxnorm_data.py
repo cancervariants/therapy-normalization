@@ -3,11 +3,11 @@ from pathlib import Path
 import csv
 import shutil
 
-from therapy.database import Database
+from therapy.database import create_db
 from therapy.etl.rxnorm import RxNorm, RXNORM_XREFS
 
 
-db = Database()
+db = create_db()
 rx = RxNorm(db)
 rx._extract_data()
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "rxnorm"

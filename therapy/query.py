@@ -3,17 +3,15 @@ import re
 from typing import Callable, List, Dict, Set, Tuple, TypeVar, Union, Any, Optional
 from urllib.parse import quote
 from datetime import datetime
-import json
 
 from uvicorn.config import logger
 from botocore.exceptions import ClientError
 
-from therapy import SOURCES, PREFIX_LOOKUP, ITEM_TYPES, NAMESPACE_LUIS
-from therapy.database import Database
-from therapy.schemas import BaseNormalizationService, Drug, SourceMeta, MatchType, \
-    ServiceMeta, HasIndication, SourcePriority, SearchService, NormalizationService, \
-    NamespacePrefix, SourceName, TherapyDescriptor, UnmergedNormalizationService, \
-    MatchesNormalized
+from therapy import PREFIX_LOOKUP, NAMESPACE_LUIS, SOURCES
+from therapy.database import AbstractDatabase
+from therapy.schemas import BaseNormalizationService, Drug, MatchType, RefType, \
+    ServiceMeta, SourcePriority, SearchService, NormalizationService, NamespacePrefix, \
+    SourceName, TherapyDescriptor, UnmergedNormalizationService, MatchesNormalized
 
 
 NormService = TypeVar("NormService", bound=BaseNormalizationService)
@@ -22,26 +20,18 @@ NormService = TypeVar("NormService", bound=BaseNormalizationService)
 class InvalidParameterException(Exception):
     """Exception for invalid parameter args provided by the user."""
 
-    def __init__(self, message: str) -> None:
-        """Create new instance
-
-        :param str message: string describing the nature of the error
-        """
-        super().__init__(message)
-
 
 class QueryHandler:
     """Class for normalizer management. Stores reference to database instance and
     normalizes query input.
     """
 
-    def __init__(self, db_url: str = "", db_region: str = "us-east-2"):
+    def __init__(self, database: AbstractDatabase):
         """Initialize Normalizer instance.
 
-        :param str db_url: URL to database source.
-        :param str db_region: AWS default region.
+        :param database: storage backend to query against
         """
-        self.db = Database(db_url=db_url, region_name=db_region)
+        self.db = database
 
     def _emit_char_warnings(self, query_str: str) -> List[Dict]:
         """Emit warnings if query contains non breaking space characters.
@@ -61,49 +51,11 @@ class QueryHandler:
             )
         return warnings
 
-    def _fetch_meta(self, src_name: str) -> SourceMeta:
-        """Fetch metadata for src_name.
-
-        :param str src_name: name of source to get metadata for
-        :return: SourceMeta object containing source metadata
-        """
-        if src_name in self.db.cached_sources.keys():
-            return self.db.cached_sources[src_name]
-        else:
-            try:
-                db_response = self.db.metadata.get_item(Key={"src_name": src_name})
-            except ClientError as e:
-                msg = e.response["Error"]["Message"]
-                logger.error(msg)
-                raise Exception(msg)
-            try:
-                response = SourceMeta(**db_response["Item"])
-            except KeyError:
-                msg = f"Metadata lookup failed for source {src_name}"
-                logger.error(msg)
-                raise Exception(msg)
-            self.db.cached_sources[src_name] = response
-            return response
-
-    @staticmethod
-    def _get_indication(indication_string: str) -> HasIndication:
-        """Load indication data.
-        :param str indication_string: dumped JSON string from db
-        :return: complete HasIndication object
-        """
-        indication_values = json.loads(indication_string)
-        return HasIndication(
-            disease_id=indication_values[0],
-            disease_label=indication_values[1],
-            normalized_disease_id=indication_values[2],
-            supplemental_info=indication_values[3]
-        )
-
     def _add_record(self,
                     response: Dict[str, Dict],
                     item: Dict,
                     match_type: str) -> Tuple[Dict, str]:
-        """Add individual record (i.e. Item in DynamoDB) to response object
+        """Add individual record to response object
 
         :param Dict[str, Dict] response: in-progress response object
         :param Dict item: Item retrieved from DynamoDB
@@ -111,10 +63,6 @@ class QueryHandler:
         :return: Tuple containing updated response object, and string containing name of
             the source of the match
         """
-        inds = item.get("has_indication")
-        if inds:
-            item["has_indication"] = [self._get_indication(i) for i in inds]
-
         drug = Drug(**item)
         src_name = item["src_name"]
 
@@ -125,7 +73,7 @@ class QueryHandler:
             matches[src_name] = {
                 "match_type": MatchType[match_type.upper()],
                 "records": [drug],
-                "source_meta_": self._fetch_meta(src_name)
+                "source_meta_": self.db.get_source_metadata(src_name)
             }
         elif matches[src_name]["match_type"] == MatchType[match_type.upper()]:
             if drug.concept_id not in [r.concept_id for r
@@ -173,7 +121,7 @@ class QueryHandler:
                 resp["source_matches"][src_name] = {
                     "match_type": MatchType.NO_MATCH,
                     "records": [],
-                    "source_meta_": self._fetch_meta(src_name)
+                    "source_meta_": self.db.get_source_metadata(src_name)
                 }
         return resp
 
@@ -240,7 +188,7 @@ class QueryHandler:
         return resp, sources
 
     def _check_match_type(self, query: str, resp: Dict, sources: Set[str],
-                          match_type: str) -> Tuple[Dict, Set]:
+                          match_type: RefType) -> Tuple[Dict, Set]:
         """Check query for selected match type.
         :param str query: search string
         :param Dict resp: in-progress response object to return to client
@@ -250,10 +198,9 @@ class QueryHandler:
         :return: Tuple with updated resp object and updated set of unmatched
             sources
         """
-        matches = self.db.get_records_by_type(query, match_type)
-        if matches:
-            concept_ids = {i["concept_id"] for i in matches}
-            (resp, matched_srcs) = self._fetch_records(resp, concept_ids, match_type)
+        concept_ids = self.db.get_refs_by_type(query, match_type)
+        if concept_ids:
+            resp, matched_srcs = self._fetch_records(resp, set(concept_ids), match_type)
             sources = sources - matched_srcs
         return resp, sources
 
@@ -285,7 +232,7 @@ class QueryHandler:
             return response
 
         query = query.lower()
-        for match_type in ITEM_TYPES.values():
+        for match_type in RefType:
             response, sources = self._check_match_type(query, response, sources,
                                                        match_type)
             if len(sources) == 0:
@@ -335,7 +282,7 @@ class QueryHandler:
         """
         sources = dict()
         for k, v in SOURCES.items():
-            if self.db.metadata.get_item(Key={"src_name": v}).get("Item"):
+            if self.db.get_source_metadata(v):
                 sources[k] = v
         if not incl and not excl:
             query_sources = set(sources.values())
@@ -394,7 +341,7 @@ class QueryHandler:
             prefix = concept_id.split(":")[0]
             src_name = PREFIX_LOOKUP[prefix.lower()]
             if src_name not in sources_meta:
-                sources_meta[src_name] = self._fetch_meta(src_name)
+                sources_meta[src_name] = self.db.get_source_metadata(src_name)
         response.source_meta_ = sources_meta  # type: ignore
         return response
 
@@ -530,15 +477,15 @@ class QueryHandler:
             "service_meta_": ServiceMeta(response_datetime=datetime.now())
         }
 
-    def _get_matches_by_type(self, query: str, match_type: str) -> List[Dict]:
+    def _get_matches_by_type(self, query: str, match_type: RefType) -> List[Dict]:
         """Get matches list for match tier.
-        :param str query: user-provided query
-        :param str match_type: keyword of match type to check
+
+        :param query: user-provided query
+        :param match_type: keyword of match type to check
         :return: List of records matching the query and match level
         """
-        matching_refs = self.db.get_records_by_type(query, match_type)
-        matching_records = [self.db.get_record_by_id(m["concept_id"], False)
-                            for m in matching_refs]
+        matching_refs = self.db.get_refs_by_type(query, match_type)
+        matching_records = [self.db.get_record_by_id(m, False) for m in matching_refs]
         return sorted(matching_records, key=self._record_order)  # type: ignore
 
     def normalize(self, query: str, infer: bool = True) -> NormalizationService:
@@ -582,7 +529,7 @@ class QueryHandler:
             record_source = SourceName[normalized_record["src_name"].upper()]
             response.source_matches[record_source] = MatchesNormalized(
                 records=[self._construct_drug_match(normalized_record)],
-                source_meta_=self._fetch_meta(record_source.value)
+                source_meta_=self.db.get_source_metadata(record_source)  # type: ignore
             )
         else:
             concept_ids = [normalized_record["concept_id"]] + \
@@ -598,7 +545,7 @@ class QueryHandler:
                 else:
                     response.source_matches[record_source] = MatchesNormalized(
                         records=[drug],
-                        source_meta_=self._fetch_meta(record_source.value)
+                        source_meta_=self.db.get_source_metadata(record_source)
                     )
         return response
 
@@ -639,7 +586,7 @@ class QueryHandler:
                                            response_builder)
 
         # check other match types
-        for match_type in ITEM_TYPES.values():
+        for match_type in RefType:
             matching_records = self._get_matches_by_type(query_str, match_type)
 
             # attempt merge ref resolution until successful

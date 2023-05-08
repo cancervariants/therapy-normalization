@@ -22,16 +22,24 @@ class ApprovalRating(str, Enum):
     US vs EU/other regulatory arenas, old or conflicting data, or other reasons). Value
     descriptions are provided below from each listed source.
 
-    ChEMBL:
-     - CHEMBL_PHASE_0: "Research: The compound has not yet reached clinical trials
-    (preclinical/research compound)"
-     - CHEMBL_PHASE_1: "The compound has reached Phase I clinical trials (safety
-    studies, usually with healthy volunteers)"
-     - CHEMBL_PHASE_2: "The compound has reached Phase II clinical trials (preliminary
-    studies of effectiveness)"
-     - CHEMBL_PHASE_3: "The compound has reached Phase III clinical trials (larger
-    studies of safety and effectiveness)"
-     - CHEMBL_PHASE_4: The compound has been approved in at least one country or area."
+    ChEMBL: [http://chembl.blogspot.com/2023/03/what-is-max-phase-in-chembl.html]
+     - CHEMBL_NULL: "preclinical compounds with bioactivity data"
+     - CHEMBL_0_5: "A clinical candidate drug in Early Phase 1 Clinical Trials e.g.
+    CITRULLINE MALATE (CHEMBL4297667) is under clinical investigation for coronary
+     - CHEMBL_1: "A clinical candidate drug in Phase 1 Clinical Trials e.g.
+    SALCAPROZATE SODIUM (CHEMBL2107027) is under clinical investigation for treatment
+    of diabetes mellitus. Note that this category also includes a small number of
+    trials that are defined by ClinicalTrials.gov as "Phase 1/Phase 2"."
+    artery disease at Early Phase 1."
+     - CHEMBL_2: "A clinical candidate drug in Phase 2 Clinical Trials e.g.
+    NEVANIMIBE HYDROCHLORIDE (CHEMBL542103) is under clinical investigation for
+    treatment of Cushing syndrome at Phase 2. Note that this category also includes a
+    small number of trials that are defined by ClinicalTrials.gov as "Phase 2/Phase 3"."
+     - CHEMBL_3: "A clinical candidate drug in Phase 3 Clinical Trials e.g.
+    TEGOPRAZAN (CHEMBL4297583) is under clinical investigation for treatment of peptic
+    ulcer at Phase 3, and also liver disease at Phase 1. "
+     - CHEMBL_4: "A marketed drug e.g. AMINOPHYLLINE (CHEMBL1370561) is an FDA
+    approved drug for treatment of asthma. "
      - CHEMBL_WITHDRAWN: "A withdrawn drug is an approved drug contained in a medicinal
     product that subsequently had been removed from the market. The reasons for
     withdrawal may include toxicity, lack of efficacy, or other reasons such as an
@@ -81,7 +89,8 @@ class ApprovalRating(str, Enum):
     https://www.nlm.nih.gov/research/umls/rxnorm/docs/prescribe.html
     """
 
-    CHEMBL_0 = "chembl_phase_0"
+    CHEMBL_NULL = "chembl_phase_null"
+    CHEMBL_0_5 = "chembl_phase_0.5"
     CHEMBL_1 = "chembl_phase_1"
     CHEMBL_2 = "chembl_phase_2"
     CHEMBL_3 = "chembl_phase_3"
@@ -266,7 +275,7 @@ class DataLicenseAttributes(BaseModel):
     attribution: StrictBool
 
 
-class ItemTypes(str, Enum):
+class RefType(str, Enum):
     """Item types used in DynamoDB."""
 
     # Must be in descending MatchType order.
@@ -275,6 +284,10 @@ class ItemTypes(str, Enum):
     ALIASES = "alias"
     XREFS = "xref"
     ASSOCIATED_WITH = "associated_with"
+
+
+# not incorporated as a RefType because it shouldn't be publicly searchable
+RX_BRAND_ITEM_TYPE = "rx_brand"
 
 
 class SourceMeta(BaseModel):

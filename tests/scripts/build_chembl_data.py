@@ -2,8 +2,9 @@
 from pathlib import Path
 import sqlite3
 
-from therapy.database import Database
+from therapy.database.database import create_db
 from therapy.etl import ChEMBL
+
 
 TEST_IDS = [
     "'CHEMBL11359'",
@@ -17,7 +18,7 @@ TEST_IDS = [
     "'CHEMBL1006'",
 ]
 
-ch = ChEMBL(Database())
+ch = ChEMBL(create_db())
 ch._extract_data()
 
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "chembl"

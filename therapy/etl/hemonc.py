@@ -11,13 +11,11 @@ import requests
 import isodate
 
 from therapy import DownloadException
-from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, RecordParams, \
-    ApprovalRating
+from therapy.schemas import NamespacePrefix, SourceMeta, RecordParams, ApprovalRating
 from therapy.etl.base import DiseaseIndicationBase
 
 
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
+_logger = logging.getLogger(__name__)
 
 
 class HemOnc(DiseaseIndicationBase):
@@ -31,7 +29,7 @@ class HemOnc(DiseaseIndicationBase):
         try:
             response.raise_for_status()
         except requests.HTTPError as e:
-            logger.error("Unable to retrieve HemOnc version from Harvard Dataverse")
+            _logger.error("Unable to retrieve HemOnc version from Harvard Dataverse")
             raise e
         iso_datetime = isodate.parse_datetime(
             response.json()["datasetVersion"]["releaseTime"]
@@ -140,21 +138,19 @@ class HemOnc(DiseaseIndicationBase):
 
     def _load_meta(self) -> None:
         """Add HemOnc metadata."""
-        meta = {
-            "data_license": "CC BY 4.0",
-            "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
-            "version": self._version,
-            "data_url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6",  # noqa: E501
-            "rdp_url": None,
-            "data_license_attributes": {
+        meta = SourceMeta(
+            data_license="CC BY 4.0",
+            data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",
+            version=self._version,
+            data_url="https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6",  # noqa: E501
+            rdp_url=None,
+            data_license_attributes={
                 "non_commercial": False,
                 "share_alike": False,
                 "attribution": True,
             },
-        }
-        assert SourceMeta(**meta)
-        meta["src_name"] = SourceName.HEMONC.value
-        self.database.metadata.put_item(Item=meta)
+        )
+        self._database.add_source_metadata(self._src_name, meta)
 
     def _get_concepts(self) -> Tuple[Dict, Dict, Dict]:
         """Get therapy, brand name, and disease concepts from concepts file.
@@ -237,7 +233,7 @@ class HemOnc(DiseaseIndicationBase):
                 elif src_raw == "RxNorm Extension":
                     continue  # skip
                 else:
-                    logger.warning(f"Unrecognized `Maps To` source: {src_raw}")
+                    _logger.warning(f"Unrecognized `Maps To` source: {src_raw}")
 
             elif rel_type == "Has brand name":
                 record["trade_names"].append(brand_names[row[1]])
@@ -246,12 +242,11 @@ class HemOnc(DiseaseIndicationBase):
                 try:
                     year = self._id_to_yr(row[1])
                 except TypeError:
-                    logger.error(f"Failed parse of FDA approval year ID "
-                                 f"{row[1]} for HemOnc ID {row[0]}")
+                    _logger.error(f"Failed parse of FDA approval year ID "
+                                  f"{row[1]} for HemOnc ID {row[0]}")
                     continue
                 if year == "9999":
-                    logger.warning(f"HemOnc ID {row[0]} has FDA approval year"
-                                   f" 9999")
+                    _logger.warning(f"HemOnc ID {row[0]} has FDA approval year 9999")
                 record["approval_ratings"] = [ApprovalRating.HEMONC_APPROVED.value]
                 if "approval_year" in record:
                     record["approval_year"].append(year)

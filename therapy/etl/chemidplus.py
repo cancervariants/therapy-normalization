@@ -12,12 +12,10 @@ import xml.etree.ElementTree as ET
 import re
 
 from therapy.etl.base import Base
-from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, \
-    DataLicenseAttributes, RecordParams
+from therapy.schemas import NamespacePrefix, SourceMeta, RecordParams
 
 
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
+_logger = logging.getLogger(__name__)
 
 
 TAGS_REGEX = r" \[.*\]"
@@ -28,7 +26,7 @@ class ChemIDplus(Base):
 
     def _download_data(self) -> None:
         """Download source data from default location."""
-        logger.info("Retrieving source data for ChemIDplus")
+        _logger.info("Retrieving source data for ChemIDplus")
         file = "currentchemid.zip"
         self._ftp_download("ftp.nlm.nih.gov", "nlmdata/.chemidlease", file)
         zip_path = (self._src_dir / file).absolute()
@@ -42,7 +40,7 @@ class ChemIDplus(Base):
                 break
         remove(zip_path)
         assert outfile.exists()
-        logger.info("Successfully retrieved source data for ChemIDplus")
+        _logger.info("Successfully retrieved source data for ChemIDplus")
 
     @staticmethod
     def parse_xml(path: Path, tag: str) -> Generator:
@@ -114,12 +112,10 @@ class ChemIDplus(Base):
             version=self._version,
             data_url="ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
             rdp_url=None,
-            data_license_attributes=DataLicenseAttributes(
-                non_commercial=False,
-                share_alike=False,
-                attribution=True
-            )
+            data_license_attributes={
+                "non_commercial": False,
+                "share_alike": False,
+                "attribution": True
+            }
         )
-        item = dict(meta)
-        item["src_name"] = SourceName.CHEMIDPLUS.value
-        self.database.metadata.put_item(Item=item)
+        self._database.add_source_metadata(self._src_name, meta)

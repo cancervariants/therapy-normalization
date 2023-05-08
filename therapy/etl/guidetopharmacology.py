@@ -1,4 +1,5 @@
 """Module for Guide to PHARMACOLOGY ETL methods."""
+import logging
 from typing import Optional, Dict, Any, List, Union
 import csv
 import html
@@ -7,9 +8,11 @@ import re
 
 import requests
 
-from therapy import logger
 from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, ApprovalRating
 from therapy.etl.base import Base, SourceFormatException
+
+
+_logger = logging.getLogger(__name__)
 
 
 TAG_PATTERN = re.compile("</?[a-zA-Z]+>")
@@ -21,7 +24,7 @@ class GuideToPHARMACOLOGY(Base):
 
     def _download_data(self) -> None:
         """Download the latest version of Guide to PHARMACOLOGY."""
-        logger.info("Retrieving source data for Guide to PHARMACOLOGY")
+        _logger.info("Retrieving source data for Guide to PHARMACOLOGY")
         if not self._ligands_file.exists():
             self._http_download("https://www.guidetopharmacology.org/DATA/ligands.tsv",
                                 self._ligands_file)
@@ -30,7 +33,7 @@ class GuideToPHARMACOLOGY(Base):
             self._http_download("https://www.guidetopharmacology.org/DATA/ligand_id_mapping.tsv",  # noqa: E501
                                 self._mapping_file)
             assert self._mapping_file.exists()
-        logger.info("Successfully retrieved source data for Guide to PHARMACOLOGY")
+        _logger.info("Successfully retrieved source data for Guide to PHARMACOLOGY")
 
     def _download_file(self, file_url: str, fn: str) -> None:
         """Download individual data file.
@@ -217,7 +220,7 @@ class GuideToPHARMACOLOGY(Base):
                 concept_id = f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}"
 
                 if concept_id not in data:
-                    logger.debug(f"{concept_id} not in ligands")
+                    _logger.debug(f"{concept_id} not in ligands")
                     continue
                 params = data[concept_id]
                 xrefs = list()
@@ -276,6 +279,4 @@ class GuideToPHARMACOLOGY(Base):
                 "attribution": True,
             }
         )
-        params = dict(meta)
-        params["src_name"] = SourceName.GUIDETOPHARMACOLOGY.value
-        self.database.metadata.put_item(Item=params)
+        self._database.add_source_metadata(self._src_name, meta)

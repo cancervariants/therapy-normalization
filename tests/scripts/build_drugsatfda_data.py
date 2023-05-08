@@ -3,13 +3,14 @@ import json
 from pathlib import Path
 
 from therapy.etl import DrugsAtFDA
-from therapy.database import Database
+from therapy.database import create_db
 
 
 TEST_IDS = [
     "NDA020221",
     "NDA022334",
     "NDA050682",
+    "ANDA214475",
     "ANDA074656",
     "ANDA075036",
     "ANDA074735",
@@ -25,7 +26,7 @@ TEST_IDS = [
     "NDA050682",
 ]
 
-daf = DrugsAtFDA(Database())
+daf = DrugsAtFDA(create_db())
 daf._extract_data()
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "drugsatfda"
 outfile_path = TEST_DATA_DIR / daf._src_file.name

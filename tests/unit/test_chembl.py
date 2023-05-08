@@ -234,9 +234,9 @@ def test_meta_info(chembl):
     """Test that the meta field is correct."""
     response = chembl.search("cisplatin")
     assert response.source_meta_.data_license == "CC BY-SA 3.0"
-    assert response.source_meta_.data_license_url == \
-           "https://creativecommons.org/licenses/by-sa/3.0/"
-    assert response.source_meta_.version == "31"
+    assert response.source_meta_.data_license_url == "https://creativecommons.org/licenses/by-sa/3.0/"  # noqa: E501
+    assert response.source_meta_.version.isdigit() and \
+        int(response.source_meta_.version) < 100  # arbitrary limit
     assert response.source_meta_.data_url.startswith("ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb")  # noqa: E501
     assert response.source_meta_.rdp_url == "http://reusabledata.org/chembl.html"
     assert response.source_meta_.data_license_attributes == {

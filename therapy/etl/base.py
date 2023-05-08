@@ -5,6 +5,7 @@ from pathlib import Path
 import logging
 from typing import List, Dict, Optional, Callable
 import os
+from urllib.parse import urlparse, urlunparse
 import zipfile
 import tempfile
 import re
@@ -15,16 +16,20 @@ from pydantic import ValidationError
 import requests
 import bioversions
 from disease.query import QueryHandler as DiseaseNormalizer
+from disease.database import create_db as create_disease_db, \
+    AbstractDatabase as DiseaseDatabase, \
+    DatabaseInitializationException as DiseaseDbInitializationException
 
 from therapy import APP_ROOT, ITEM_TYPES, DownloadException
+from therapy.database.database import DatabaseInitializationException
+from therapy.database.dynamodb import DynamoDbDatabase
+from therapy.database.postgresql import PostgresDatabase
 from therapy.schemas import Drug, SourceName
-from therapy.database import Database
+from therapy.database import AbstractDatabase
 from therapy.etl.rules import Rules
 
 
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
-
+_logger = logging.getLogger(__name__)
 DEFAULT_DATA_PATH: Path = APP_ROOT / "data"
 
 
@@ -38,17 +43,19 @@ class Base(ABC):
     needed.
     """
 
-    def __init__(self, database: Database, data_path: Path = DEFAULT_DATA_PATH) -> None:
+    def __init__(
+        self, database: AbstractDatabase, data_path: Path = DEFAULT_DATA_PATH
+    ) -> None:
         """Extract from sources.
 
-        :param Database database: application database object
-        :param Path data_path: path to app data directory
+        :param database: application database object
+        :param data_path: path to app data directory
         """
-        self._name = self.__class__.__name__
-        self.database = database
-        self._src_dir: Path = Path(data_path / self._name.lower())
+        self._src_name = SourceName(self.__class__.__name__)
+        self._database = database
+        self._src_dir: Path = Path(data_path / self._src_name.lower())
         self._added_ids: List[str] = []
-        self._rules = Rules(SourceName(self._name))
+        self._rules = Rules(SourceName(self._src_name))
 
     def perform_etl(self, use_existing: bool = False) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
@@ -62,6 +69,7 @@ class Base(ABC):
         self._extract_data(use_existing)
         self._load_meta()
         self._transform_data()
+        self._database.complete_write_transaction()
         return self._added_ids
 
     def get_latest_version(self) -> str:
@@ -69,7 +77,7 @@ class Base(ABC):
         sources not added to Bioversions yet, or other special-case sources.
         :return: most recent version, as a str
         """
-        return bioversions.get_version(self.__class__.__name__)
+        return bioversions.get_version(self._src_name.value)
 
     @abstractmethod
     def _download_data(self) -> None:
@@ -141,12 +149,12 @@ class Base(ABC):
         try:
             with ftplib.FTP(host) as ftp:
                 ftp.login()
-                logger.debug(f"FTP login to {host} was successful")
+                _logger.debug(f"FTP login to {host} was successful")
                 ftp.cwd(host_dir)
                 with open(self._src_dir / host_fn, "wb") as fp:
                     ftp.retrbinary(f"RETR {host_fn}", fp.write)
         except ftplib.all_errors as e:
-            logger.error(f"FTP download failed: {e}")
+            _logger.error(f"FTP download failed: {e}")
             raise Exception(e)
 
     def _parse_version(
@@ -171,7 +179,7 @@ class Base(ABC):
         """Get existing source files from data directory.
         :return: sorted list of file objects
         """
-        return list(sorted(self._src_dir.glob(f"{self._name.lower()}_*.*")))
+        return list(sorted(self._src_dir.glob(f"{self._src_name.value.lower()}_*.*")))
 
     def _extract_data(self, use_existing: bool = False) -> None:
         """Get source file from data directory.
@@ -187,24 +195,25 @@ class Base(ABC):
         :param bool use_existing: if True, don't try to fetch latest source data
         """
         self._src_dir.mkdir(exist_ok=True, parents=True)
-        src_name = type(self).__name__.lower()
         if use_existing:
             files = self._get_existing_files()
             if len(files) < 1:
-                raise FileNotFoundError(f"No source data found for {src_name}")
+                raise FileNotFoundError(
+                    f"No source data found for {self._src_name.value}"
+                )
             self._src_file: Path = files[-1]
             try:
                 self._version = self._parse_version(self._src_file)
             except FileNotFoundError:
                 raise FileNotFoundError(
-                    f"Unable to parse version value from {src_name} source data file "
-                    f"located at {self._src_file.absolute().as_uri()} -- "
+                    f"Unable to parse version value from {self._src_name.value} source "
+                    f"data file located at {self._src_file.absolute().as_uri()} -- "
                     "check filename against schema defined in README: "
                     "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
                 )
         else:
             self._version = self.get_latest_version()
-            fglob = f"{src_name}_{self._version}.*"
+            fglob = f"{self._src_name.value.lower()}_{self._version}.*"
             latest = list(self._src_dir.glob(fglob))
             if not latest:
                 self._download_data()
@@ -237,33 +246,32 @@ class Base(ABC):
         try:
             Drug(**therapy)
         except ValidationError as e:
-            logger.error(f"Attempted to load invalid therapy: {therapy}")
+            _logger.error(f"Attempted to load invalid therapy: {therapy}")
             raise e
 
         concept_id = therapy["concept_id"]
 
-        for attr_type, item_type in ITEM_TYPES.items():
-            if attr_type in therapy:
-                value = therapy[attr_type]
+        for field_name in ITEM_TYPES:
+            if field_name in therapy:
+                value = therapy[field_name]
                 if value is None or value == []:
-                    del therapy[attr_type]
+                    del therapy[field_name]
                     continue
 
-                if attr_type == "label":
+                if field_name == "label":
                     value = value.strip()
                     therapy["label"] = value
-                    self.database.add_ref_record(value.lower(), concept_id, item_type)
                     continue
 
                 value_set = {v.strip() for v in value}
 
                 # clean up listlike symbol fields
-                if attr_type == "aliases" and "trade_names" in therapy:
+                if field_name == "aliases" and "trade_names" in therapy:
                     value = list(value_set - set(therapy["trade_names"]))
                 else:
                     value = list(value_set)
 
-                if attr_type in ("aliases", "trade_names"):
+                if field_name in ("aliases", "trade_names"):
                     if "label" in therapy:
                         try:
                             value.remove(therapy["label"])
@@ -271,18 +279,16 @@ class Base(ABC):
                             pass
 
                 if len(value) > 20:
-                    logger.debug(f"{concept_id} has > 20 {attr_type}.")
-                    del therapy[attr_type]
+                    _logger.debug(f"{concept_id} has > 20 {field_name}.")
+                    del therapy[field_name]
                     continue
 
-                for item in {item.lower() for item in value}:
-                    self.database.add_ref_record(item, concept_id, item_type)
-                therapy[attr_type] = value
+                therapy[field_name] = value
 
         # compress has_indication
         indications = therapy.get("has_indication")
         if indications:
-            therapy["has_indication"] = list(
+            tmp_inds = list(
                 {
                     json.dumps(
                         [
@@ -295,6 +301,7 @@ class Base(ABC):
                     for ind in indications
                 }
             )
+            therapy["has_indication"] = [json.loads(s) for s in tmp_inds]
         elif "has_indication" in therapy:
             del therapy["has_indication"]
 
@@ -304,21 +311,71 @@ class Base(ABC):
             if approval_attrs in therapy and therapy[field] is None:
                 del therapy[field]
 
-        self.database.add_record(therapy)
+        self._database.add_record(therapy, self._src_name)
         self._added_ids.append(concept_id)
+
+
+def create_indications_db(therapy_database: AbstractDatabase) -> DiseaseDatabase:
+    """Try to construct disease normalizer database from available params.
+    First, create from DISEASE_NORM_DB_URL env variable if set. If not, attempt to
+    reuse therapy normalizer DB connection params. For PostgreSQL, this is somewhat
+    limited -- assumes a DB named 'disease_normalizer', and that a libpq URI is
+    available.
+
+    :param therapy_database: therapy normalizer database instance
+    :return: disease database instance
+    :raise DiseaseDbInitializationException: if DB creation fails
+    """
+    if "DISEASE_NORM_DB_URL" in os.environ:
+        return create_disease_db()
+    elif isinstance(therapy_database, DynamoDbDatabase):
+        return create_disease_db(
+            therapy_database.boto_params.get("endpoint_url"),
+            **therapy_database.boto_params
+        )
+    elif isinstance(therapy_database, PostgresDatabase):
+        if "THERAPY_NORM_DB_URL" in os.environ:
+            therapy_url = os.environ["THERAPY_NORM_DB_URL"]
+            parsed = urlparse(therapy_url)
+            db_name = "/disease_normalizer"  # default
+            new_url_parts = (
+                parsed.scheme, parsed.netloc, db_name, parsed.params, parsed.query,
+                parsed.fragment
+            )
+            new_url = urlunparse(new_url_parts)
+            return create_disease_db(new_url)
+        else:
+            raise DiseaseDbInitializationException(
+                "Unable to initialize PostgreSQL Disease Normalizer given "
+                "available params. Set `DISEASE_NORM_DB_URL` env variable to "
+                "desired endpoint."
+            )
+    else:
+        raise DiseaseDbInitializationException(
+            "Unrecognized therapy database class provided: "
+            f"{type(therapy_database)}"
+        )
 
 
 class DiseaseIndicationBase(Base):
     """Base class for sources that require disease normalization capabilities."""
 
-    def __init__(self, database: Database, data_path: Path = DEFAULT_DATA_PATH):
+    def __init__(self, database: AbstractDatabase, data_path: Path = DEFAULT_DATA_PATH):
         """Initialize source ETL instance.
 
-        :param therapy.database.Database database: application database
-        :param Path data_path: path to normalizer data directory
+        :param database: therapy database
+        :param data_path: path to normalizer data directory
+        :raise DatabaseInitializationException: if unable to construct disease
+        normalizer database handler
         """
+        try:
+            disease_db = create_indications_db(database)
+        except DiseaseDbInitializationException as e:
+            msg = f"Unable to initialize disease normalizer: {e}"
+            _logger.error(msg)
+            raise DatabaseInitializationException(msg)
+        self.disease_normalizer = DiseaseNormalizer(disease_db)
         super().__init__(database, data_path)
-        self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
 
     @lru_cache(maxsize=64)
     def _normalize_disease(self, query: str) -> Optional[str]:
@@ -330,7 +387,7 @@ class DiseaseIndicationBase(Base):
         if response.match_type > 0:
             return response.disease_descriptor.disease_id
         else:
-            logger.warning(f"Failed to normalize disease term: {query}")
+            _logger.warning(f"Failed to normalize disease term: {query}")
             return None
 
 
@@ -338,5 +395,3 @@ class SourceFormatException(Exception):
     """Raise when source data formatting is incompatible with the source transformation
     methods: for example, if columns in a CSV file have changed.
     """
-
-    pass

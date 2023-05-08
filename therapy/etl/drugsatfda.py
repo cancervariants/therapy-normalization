@@ -1,13 +1,16 @@
 """ETL methods for the Drugs@FDA source."""
+import logging
 from typing import List, Optional
 import json
 
 import requests
 
-from therapy import DownloadException, logger
-from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, ApprovalRating, \
-    RecordParams
+from therapy import DownloadException
+from therapy.schemas import SourceMeta, NamespacePrefix, ApprovalRating, RecordParams
 from therapy.etl.base import Base
+
+
+_logger = logging.getLogger(__name__)
 
 
 class DrugsAtFDA(Base):
@@ -15,11 +18,11 @@ class DrugsAtFDA(Base):
 
     def _download_data(self) -> None:
         """Download source data from instance-provided source URL."""
-        logger.info("Retrieving source data for Drugs@FDA")
+        _logger.info("Retrieving source data for Drugs@FDA")
         url = "https://download.open.fda.gov/drug/drugsfda/drug-drugsfda-0001-of-0001.json.zip"  # noqa: E501
         outfile_path = self._src_dir / f"drugsatfda_{self._version}.json"
         self._http_download(url, outfile_path, handler=self._zip_handler)
-        logger.info("Successfully retrieved source data for Drugs@FDA")
+        _logger.info("Successfully retrieved source data for Drugs@FDA")
 
     def get_latest_version(self) -> str:
         """Retrieve latest version of source data.
@@ -32,7 +35,7 @@ class DrugsAtFDA(Base):
                 date = r_json["results"]["drug"]["drugsfda"]["export_date"]
             except KeyError:
                 msg = "Unable to parse OpenFDA version API - check for breaking changes"
-                logger.error(msg)
+                _logger.error(msg)
                 raise DownloadException(msg)
             return date
         else:
@@ -40,21 +43,19 @@ class DrugsAtFDA(Base):
 
     def _load_meta(self) -> None:
         """Add Drugs@FDA metadata."""
-        meta = {
-            "data_license": "CC0",
-            "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode",  # noqa: E501
-            "version": self._version,
-            "data_url": "https://open.fda.gov/apis/drug/drugsfda/download/",
-            "rdp_url": None,
-            "data_license_attributes": {
+        meta = SourceMeta(
+            data_license="CC0",
+            data_license_url="https://creativecommons.org/publicdomain/zero/1.0/legalcode",  # noqa: E501
+            version=self._version,
+            data_url="https://open.fda.gov/apis/drug/drugsfda/download/",
+            rdp_url=None,
+            data_license_attributes={
                 "non_commercial": False,
                 "share_alike": False,
                 "attribution": False,
             }
-        }
-        assert SourceMeta(**meta)
-        meta["src_name"] = SourceName.DRUGSATFDA
-        self.database.metadata.put_item(Item=meta)
+        )
+        self._database.add_source_metadata(self._src_name, meta)
 
     def _get_marketing_status_rating(self, products: List, concept_id: str)\
             -> Optional[str]:
@@ -74,7 +75,7 @@ class DrugsAtFDA(Base):
         if not all([s == statuses[0] for s in statuses]):
             msg = (f"Application {concept_id} has inconsistent marketing "
                    f"statuses: {statuses}")
-            logger.info(msg)
+            _logger.info(msg)
             return None
         else:
             return statuses_map.get(statuses[0])
@@ -119,7 +120,7 @@ class DrugsAtFDA(Base):
                     # if ambiguous, store all as aliases
                     msg = (f"Application {concept_id} has {n_substances} "
                            f"substance names: {substances}")
-                    logger.debug(msg)
+                    _logger.debug(msg)
                     aliases += substances
                 elif n_substances == 1:
                     therapy["label"] = substances[0]

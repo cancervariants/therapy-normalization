@@ -74,6 +74,7 @@ def therapeutic_procedure():
         "aliases": [
             "any therapy",
             "any_therapy",
+            "Therapeutic",
             "Therapeutic Interventions",
             "Therapeutic Method",
             "Therapeutic Technique",
@@ -242,15 +243,15 @@ def test_no_match(ncit):
 
 def test_meta_info(ncit):
     """Test that the meta field is correct."""
-    response = ncit.query_handler._fetch_meta("NCIt")
-    assert response.data_license == "CC BY 4.0"
-    assert response.data_license_url == \
+    response = ncit.search("cisplatin")
+    assert response.source_meta_.data_license == "CC BY 4.0"
+    assert response.source_meta_.data_license_url == \
         "https://creativecommons.org/licenses/by/4.0/legalcode"
-    assert re.match(r"[0-9][0-9]\.[0-9][0-9][a-z]", response.version)
-    assert response.data_url.startswith(
+    assert re.match(r"[0-9][0-9]\.[0-9][0-9][a-z]", response.source_meta_.version)
+    assert response.source_meta_.data_url.startswith(
         "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/")
-    assert response.rdp_url == "http://reusabledata.org/ncit.html"
-    assert response.data_license_attributes == {
+    assert response.source_meta_.rdp_url == "http://reusabledata.org/ncit.html"
+    assert response.source_meta_.data_license_attributes == {
         "non_commercial": False,
         "share_alike": False,
         "attribution": True

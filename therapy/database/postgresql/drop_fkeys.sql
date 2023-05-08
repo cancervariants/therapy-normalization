@@ -1,0 +1,6 @@
+ALTER TABLE therapy_aliases DROP CONSTRAINT therapy_aliases_concept_id_fkey;
+ALTER TABLE therapy_associations DROP CONSTRAINT therapy_associations_concept_id_fkey;
+ALTER TABLE therapy_labels DROP CONSTRAINT therapy_labels_concept_id_fkey;
+ALTER TABLE therapy_trade_names DROP CONSTRAINT therapy_trade_names_concept_id_fkey;
+ALTER TABLE therapy_xrefs DROP CONSTRAINT therapy_xrefs_concept_id_fkey;
+ALTER TABLE therapy_rx_brand_ids DROP CONSTRAINT therapy_rx_brand_ids_concept_id_fkey;

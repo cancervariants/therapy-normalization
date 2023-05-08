@@ -3,18 +3,16 @@ import logging
 import os
 import shutil
 import sqlite3
-from typing import Optional, List, Dict
+from typing import Any, Optional, List, Dict
 
 import chembl_downloader
 import bioversions
 
 from therapy.etl.base import DiseaseIndicationBase
-from therapy.schemas import SourceName, NamespacePrefix, ApprovalRating, \
-    SourceMeta
+from therapy.schemas import NamespacePrefix, ApprovalRating, SourceMeta
 
 
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
+_logger = logging.getLogger(__name__)
 
 
 class ChEMBL(DiseaseIndicationBase):
@@ -22,12 +20,12 @@ class ChEMBL(DiseaseIndicationBase):
 
     def _download_data(self) -> None:
         """Download latest ChEMBL database file from EBI."""
-        logger.info("Retrieving source data for ChEMBL")
+        _logger.info("Retrieving source data for ChEMBL")
         os.environ["PYSTOW_HOME"] = str(self._src_dir.parent.absolute())
         tmp_path = chembl_downloader.download_extract_sqlite()
         shutil.move(tmp_path, self._src_dir)
         shutil.rmtree(tmp_path.parent.parent.parent)
-        logger.info("Successfully retrieved source data for ChEMBL")
+        _logger.info("Successfully retrieved source data for ChEMBL")
 
     def _extract_data(self, use_existing: bool = False) -> None:
         """Extract data from the ChEMBL source.
@@ -52,14 +50,20 @@ class ChEMBL(DiseaseIndicationBase):
             return []
 
     @staticmethod
-    def _get_approval_rating(value: int) -> ApprovalRating:
+    def _get_approval_rating(value: Optional[float]) -> Optional[ApprovalRating]:
         """Standardize approval rating value
-        :param int value: value retrieved from ChEMBL database
+        :param value: value retrieved from ChEMBL database
         :return: instantiated ApprovalRating
         :raise: ValueError if invalid value is provided
         """
-        if value == 0:
-            return ApprovalRating.CHEMBL_0
+        if value is None or value == 0:
+            # theoretically, 0 should be deprecated, but it's still showing up in
+            # some places...
+            return ApprovalRating.CHEMBL_NULL
+        elif value == -1:
+            return None
+        elif value == 0.5:
+            return ApprovalRating.CHEMBL_0_5
         elif value == 1:
             return ApprovalRating.CHEMBL_1
         elif value == 2:
@@ -81,26 +85,32 @@ class ChEMBL(DiseaseIndicationBase):
             indication_groups = value.split("|||")
             for group in set(indication_groups):
                 ind_group = group.split("||")
-                phase = self._get_approval_rating(int(ind_group[4]))
+                phase = self._get_approval_rating(float(ind_group[4]))
                 indication = {}
                 for i, term in enumerate(ind_group[:4]):
                     normalized_disease_id = self._normalize_disease(term)
                     if normalized_disease_id is not None:
                         label = ind_group[2] if i % 2 == 0 else ind_group[3]
                         disease_id = ind_group[0] if i % 2 == 0 else ind_group[1]
-                        indication = {
+                        indication: Dict[str, Any] = {
                             "disease_id": disease_id,
                             "disease_label": label,
                             "normalized_disease_id": normalized_disease_id,
-                            "supplemental_info": {"chembl_max_phase_for_ind": phase}
                         }
+                        if phase is not None:
+                            indication["supplemental_info"] = {
+                                "chembl_max_phase_for_ind": phase
+                            }
                         break
                 if not indication:
                     indication = {
                         "disease_id": ind_group[0],
                         "disease_label": ind_group[2],
-                        "supplemental_info": {"chembl_max_phase_for_ind": phase}
                     }
+                    if phase is not None:
+                        indication["supplemental_info"] = {
+                            "chembl_max_phase_for_ind": phase
+                        }
                 indications.append(indication)
             return indications
         else:
@@ -200,6 +210,4 @@ class ChEMBL(DiseaseIndicationBase):
                                   "share_alike": True,
                                   "attribution": True
                               })
-        params = dict(metadata)
-        params["src_name"] = SourceName.CHEMBL.value
-        self.database.metadata.put_item(Item=params)
+        self._database.add_source_metadata(self._src_name, metadata)

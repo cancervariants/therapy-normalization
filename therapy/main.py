@@ -6,12 +6,14 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.openapi.utils import get_openapi
 
 from therapy import __version__
+from therapy.database.database import create_db
 from therapy.query import QueryHandler, InvalidParameterException
 from therapy.schemas import SearchService, NormalizationService, \
     UnmergedNormalizationService
 
 
-query_handler = QueryHandler()
+db = create_db()
+query_handler = QueryHandler(db)
 app = FastAPI(
     docs_url="/therapy",
     openapi_url="/therapy/openapi.json",

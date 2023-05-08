@@ -10,8 +10,7 @@ from therapy import XREF_SOURCES, DownloadException
 from therapy.schemas import SourceName, NamespacePrefix, RecordParams, SourceMeta
 from therapy.etl.base import Base
 
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
+_logger = logging.getLogger(__name__)
 
 # Translate Wikidata keys to standardized namespaces
 NAMESPACES = {
@@ -72,7 +71,7 @@ class Wikidata(Base):
 
     def _download_data(self) -> None:
         """Download latest Wikidata source dump."""
-        logger.info("Retrieving source data for Wikidata")
+        _logger.info("Retrieving source data for Wikidata")
         query_results = execute_sparql_query(SPARQL_QUERY)
         if query_results is None:
             raise DownloadException("Wikidata SPARQL query returned no results")
@@ -87,7 +86,7 @@ class Wikidata(Base):
             transformed_data.append(params)
         with open(f"{self._src_dir}/wikidata_{self._version}.json", "w+") as f:
             json.dump(transformed_data, f)
-        logger.info("Successfully retrieved source data for Wikidata")
+        _logger.info("Successfully retrieved source data for Wikidata")
 
     def get_latest_version(self) -> str:
         """Wikidata is constantly, immediately updated, so source data has no strict
@@ -98,7 +97,6 @@ class Wikidata(Base):
     def _load_meta(self) -> None:
         """Add Wikidata metadata."""
         metadata = SourceMeta(
-            src_name=SourceName.WIKIDATA.value,
             data_license="CC0 1.0",
             data_license_url="https://creativecommons.org/publicdomain/zero/1.0/",
             version=self._version,
@@ -110,9 +108,7 @@ class Wikidata(Base):
                 "attribution": False
             }
         )
-        params = dict(metadata)
-        params["src_name"] = SourceName.WIKIDATA.value
-        self.database.metadata.put_item(Item=params)
+        self._database.add_source_metadata(self._src_name, metadata)
 
     def _transform_data(self) -> None:
         """Transform the Wikidata source data."""

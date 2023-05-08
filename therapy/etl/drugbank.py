@@ -3,11 +3,10 @@ from typing import Dict, Any
 import logging
 import csv
 
-from therapy.schemas import SourceName, SourceMeta, NamespacePrefix
+from therapy.schemas import SourceMeta, NamespacePrefix
 from therapy.etl.base import Base
 
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
+_logger = logging.getLogger(__name__)
 
 
 class DrugBank(Base):
@@ -15,29 +14,27 @@ class DrugBank(Base):
 
     def _download_data(self) -> None:
         """Download DrugBank source data."""
-        logger.info("Retrieving source data for DrugBank")
+        _logger.info("Retrieving source data for DrugBank")
         url = f"https://go.drugbank.com/releases/{self._version.replace('.', '-')}/downloads/all-drugbank-vocabulary"  # noqa: E501
         csv_file = self._src_dir / f"drugbank_{self._version}.csv"
         self._http_download(url, csv_file, handler=self._zip_handler)
-        logger.info("Successfully retrieved source data for DrugBank")
+        _logger.info("Successfully retrieved source data for DrugBank")
 
     def _load_meta(self) -> None:
         """Add DrugBank metadata."""
-        meta = {
-            "data_license": "CC0 1.0",
-            "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
-            "version": self._version,
-            "data_url": "https://go.drugbank.com/releases/latest#open-data",
-            "rdp_url": "http://reusabledata.org/drugbank.html",
-            "data_license_attributes": {
+        meta = SourceMeta(
+            data_license="CC0 1.0",
+            data_license_url="https://creativecommons.org/publicdomain/zero/1.0/",
+            version=self._version,
+            data_url="https://go.drugbank.com/releases/latest#open-data",
+            rdp_url="http://reusabledata.org/drugbank.html",
+            data_license_attributes={
                 "non_commercial": False,
                 "share_alike": False,
                 "attribution": False,
             },
-        }
-        assert SourceMeta(**meta)
-        meta["src_name"] = SourceName.DRUGBANK.value
-        self.database.metadata.put_item(Item=meta)
+        )
+        self._database.add_source_metadata(self._src_name, meta)
 
     def _transform_data(self) -> None:
         """Transform the DrugBank source."""

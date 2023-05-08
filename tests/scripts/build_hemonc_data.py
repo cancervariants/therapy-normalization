@@ -3,12 +3,12 @@ from pathlib import Path
 import csv
 
 from therapy.etl import HemOnc
-from therapy.database import Database
+from therapy.database import create_db
 
 
 TEST_IDS = ["65", "105", "151", "26"]
 
-ho = HemOnc(Database())  # don't need to write any data
+ho = HemOnc(create_db())  # don't need to write any data
 ho._extract_data()
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "hemonc"
 

@@ -9,8 +9,7 @@ APP_ROOT: Path = Path(__file__).resolve().parents[0]
 logging.basicConfig(
     filename="therapy.log",
     format="[%(asctime)s] - %(name)s - %(levelname)s : %(message)s")
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
+_logger = logging.getLogger(__name__)
 
 
 class DownloadException(Exception):
@@ -21,13 +20,13 @@ class DownloadException(Exception):
         super().__init__(*args, **kwargs)
 
 
-from therapy.schemas import SourceName, NamespacePrefix, ItemTypes  # noqa: E402, E501, I100, I202
+from therapy.schemas import SourceName, NamespacePrefix, RefType  # noqa: E402, E501, I100, I202
 
 # map plural to singular form
 # eg {"label": "label", "trade_names": "trade_name"}
 # key is the field name in the record object, value is the item_type value
 # in reference objects
-ITEM_TYPES = {k.lower(): v.value for k, v in ItemTypes.__members__.items()}
+ITEM_TYPES = {k.lower(): v.value for k, v in RefType.__members__.items()}
 
 # Sources we import directly
 SOURCES = {source.value.lower(): source.value

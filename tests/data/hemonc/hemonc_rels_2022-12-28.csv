@@ -116,9 +116,6 @@ concept_code_1,concept_code_2,vocabulary_id_1,vocabulary_id_2,relationship_id
 105,13531,HemOnc,HemOnc,Has brand name
 105,13532,HemOnc,HemOnc,Has brand name
 105,13533,HemOnc,HemOnc,Has brand name
-105,671,HemOnc,HemOnc,Has FDA indication
-105,645,HemOnc,HemOnc,Has FDA indication
-105,569,HemOnc,HemOnc,Has FDA indication
 105,44957,HemOnc,HemOnc,May have route
 105,45273,HemOnc,HemOnc,May have route
 105,45092,HemOnc,HemOnc,Is a

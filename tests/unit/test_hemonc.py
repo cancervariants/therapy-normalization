@@ -34,32 +34,6 @@ def cisplatin():
         "associated_with": [],
         "approval_ratings": ["hemonc_approved"],
         "approval_year": ["1978"],
-        "has_indication": [
-            {
-                "disease_id": "hemonc:569",
-                "disease_label": "Bladder cancer",
-                "normalized_disease_id": "ncit:C9334",
-                "supplemental_info": {
-                    "regulatory_body": "FDA"
-                }
-            },
-            {
-                "disease_id": "hemonc:645",
-                "disease_label": "Ovarian cancer",
-                "normalized_disease_id": "ncit:C7431",
-                "supplemental_info": {
-                    "regulatory_body": "FDA"
-                }
-            },
-            {
-                "disease_id": "hemonc:671",
-                "disease_label": "Testicular cancer",
-                "normalized_disease_id": "ncit:C7251",
-                "supplemental_info": {
-                    "regulatory_body": "FDA"
-                }
-            }
-        ]
     })
 
 
@@ -223,13 +197,13 @@ def test_xref_match(hemonc, compare_response, cisplatin, bendamustine, degarelix
 
 def test_metadata(hemonc):
     """Test that source metadata returns correctly."""
-    response = hemonc.query_handler._fetch_meta("HemOnc")
-    assert response.data_license == "CC BY 4.0"
-    assert response.data_license_url == "https://creativecommons.org/licenses/by/4.0/legalcode"  # noqa: E501
-    assert isodate.parse_date(response.version)
-    assert response.data_url == "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6"  # noqa: E501
-    assert response.rdp_url is None
-    assert response.data_license_attributes == {
+    response = hemonc.search("cisplatin")
+    assert response.source_meta_.data_license == "CC BY 4.0"
+    assert response.source_meta_.data_license_url == "https://creativecommons.org/licenses/by/4.0/legalcode"  # noqa: E501
+    assert isodate.parse_date(response.source_meta_.version)
+    assert response.source_meta_.data_url == "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6"  # noqa: E501
+    assert response.source_meta_.rdp_url is None
+    assert response.source_meta_.data_license_attributes == {
         "non_commercial": False,
         "attribution": True,
         "share_alike": False,

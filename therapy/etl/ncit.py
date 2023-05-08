@@ -7,11 +7,10 @@ import owlready2 as owl
 from owlready2.entity import ThingClass
 
 from therapy import DownloadException
-from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, RecordParams
+from therapy.schemas import NamespacePrefix, SourceMeta, RecordParams
 from therapy.etl.base import Base
 
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
+_logger = logging.getLogger(__name__)
 
 
 class NCIt(Base):
@@ -30,7 +29,7 @@ class NCIt(Base):
         root (where the current version is typically posted) as well as the year-by-year
         archives if that fails.
         """
-        logger.info("Retrieving source data for NCIt")
+        _logger.info("Retrieving source data for NCIt")
         base_url = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus"
         # ping base NCIt directory
         release_fname = f"Thesaurus_{self._version}.OWL.zip"
@@ -48,7 +47,7 @@ class NCIt(Base):
                         f"NCIt download failed: tried {src_url}, {archive_url}, and "
                         f"{old_archive_url}"
                     )
-                    logger.error(msg)
+                    _logger.error(msg)
                     raise DownloadException(msg)
                 else:
                     src_url = old_archive_url
@@ -57,7 +56,7 @@ class NCIt(Base):
 
         self._http_download(src_url, self._src_dir / f"ncit_{self._version}.owl",
                             handler=self._zip_handler)
-        logger.info("Successfully retrieved source data for NCIt")
+        _logger.info("Successfully retrieved source data for NCIt")
 
     def _get_desc_nodes(self, node: ThingClass,
                         uq_nodes: Set[ThingClass]) -> Set[ThingClass]:
@@ -172,6 +171,4 @@ class NCIt(Base):
                 "attribution": True
             }
         )
-        params = dict(metadata)
-        params["src_name"] = SourceName.NCIT.value
-        self.database.metadata.put_item(Item=params)
+        self._database.add_source_metadata(self._src_name, metadata)

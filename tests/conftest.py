@@ -1,4 +1,5 @@
 """Pytest test config tools."""
+import logging
 import os
 from typing import Optional, List, Callable
 import json
@@ -6,10 +7,14 @@ from pathlib import Path
 
 import pytest
 
+from therapy.database.database import AbstractDatabase, create_db
 from therapy.etl.base import Base
 from therapy.query import QueryHandler
 from therapy.schemas import Drug, MatchType, MatchesKeyed
-from therapy.database import AWS_ENV_VAR_NAME, Database
+from therapy.database import AWS_ENV_VAR_NAME
+
+
+_logger = logging.getLogger(__name__)
 
 
 def pytest_collection_modifyitems(items):
@@ -32,11 +37,32 @@ def pytest_collection_modifyitems(items):
         "test_emit_warnings",
         "test_disease_indication"
     ]
+    assert len(MODULE_ORDER) == len(list(Path(__file__).parent.rglob("test_*.py")))
     items.sort(key=lambda i: MODULE_ORDER.index(i.module.__name__))
 
 
 TEST_ROOT = Path(__file__).resolve().parents[1]
 TEST_DATA_DIRECTORY = TEST_ROOT / "tests" / "data"
+IS_TEST_ENV = os.environ.get("THERAPY_TEST", "").lower() == "true"
+
+
+def pytest_sessionstart():
+    """Wipe DB before testing if in test environment."""
+    if IS_TEST_ENV:
+        if os.environ.get(AWS_ENV_VAR_NAME):
+            assert False, f"Cannot have both DISEASE_TEST and {AWS_ENV_VAR_NAME} set."
+        db = create_db()
+        db.drop_db()
+        db.initialize_db()
+
+
+@pytest.fixture(scope="session")
+def is_test_env():
+    """If true, currently in test environment (i.e. okay to overwrite DB). Downstream
+    users should also make sure to check if in a production environment.
+    Provided here to be accessible directly within test modules.
+    """
+    return IS_TEST_ENV
 
 
 @pytest.fixture(scope="session")
@@ -45,24 +71,12 @@ def test_data():
     return TEST_DATA_DIRECTORY
 
 
-@pytest.fixture(scope="session", autouse=True)
-def db():
+@pytest.fixture(scope="module")
+def database():
     """Provide a database instance to be used by tests."""
-    database = Database()
-    if os.environ.get("THERAPY_TEST", "").lower() == "true":
-        if os.environ.get(AWS_ENV_VAR_NAME):
-            assert False, (
-                f"Cannot have both THERAPY_TEST and {AWS_ENV_VAR_NAME} set."
-            )
-        existing_tables = database.dynamodb_client.list_tables()["TableNames"]
-        if "therapy_concepts" in existing_tables:
-            database.dynamodb_client.delete_table(TableName="therapy_concepts")
-        if "therapy_metadata" in existing_tables:
-            database.dynamodb_client.delete_table(TableName="therapy_metadata")
-        existing_tables = database.dynamodb_client.list_tables()["TableNames"]
-        database.create_therapies_table(existing_tables)
-        database.create_meta_data_table(existing_tables)
-    return database
+    db = create_db()
+    yield db
+    db.close_connection()
 
 
 @pytest.fixture(scope="session")
@@ -77,26 +91,31 @@ def disease_normalizer():
     return _normalize_disease
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="module")
 def test_source(
-        db: Database, test_data: Path, disease_normalizer: Callable
+    database: AbstractDatabase, test_data: Path, disease_normalizer: Callable
 ):
     """Provide query endpoint for testing sources. If THERAPY_TEST is set, will try to
     load DB from test data.
+
+    :param database: test database instance
+    :param is_test_env: if true, load from test data
+    :param disease_normalizer: mock disease normalizer instance
     :return: factory function that takes an ETL class instance and returns a query
     endpoint.
     """
     def test_source_factory(EtlClass: Base):
-        if os.environ.get("THERAPY_TEST", "").lower() == "true":
-            test_class = EtlClass(db, test_data)  # type: ignore
+        if IS_TEST_ENV:
+            _logger.debug(f"Reloading DB with data from {TEST_DATA_DIRECTORY}")
+            test_class = EtlClass(database, test_data)  # type: ignore
             test_class._normalize_disease = disease_normalizer  # type: ignore
             test_class.perform_etl(use_existing=True)
-            test_class.database.flush_batch()
+            test_class._database.complete_write_transaction()
 
         class QueryGetter:
 
             def __init__(self):
-                self.query_handler = QueryHandler()
+                self.query_handler = QueryHandler(database)
                 self._src_name = EtlClass.__name__  # type: ignore
 
             def search(self, query_str: str):

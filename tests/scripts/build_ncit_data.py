@@ -8,7 +8,7 @@ import lxml.etree as ET
 import xmlformatter
 
 from therapy.etl import NCIt
-from therapy.database import Database
+from therapy.database import create_db
 
 # define captured ids in `test_classes` variable
 
@@ -26,10 +26,10 @@ OBJECT_PROPERTY_TAG = f"{OWL_PREFIX}ObjectProperty"
 CLASS_TAG = f"{OWL_PREFIX}Class"
 
 
-ncit = NCIt(Database())
+ncit = NCIt(create_db())
 ncit._extract_data()
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data"
-outfile_path = TEST_DATA_DIR / ncit._src_file.name
+outfile_path = TEST_DATA_DIR / "ncit" / ncit._src_file.name
 
 
 def ncit_parser() -> Generator:

@@ -4,7 +4,7 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 from therapy.etl import ChemIDplus
-from therapy.database import Database
+from therapy.database import create_db
 
 TEST_IDS = [
     "87-08-1",
@@ -18,9 +18,9 @@ TEST_IDS = [
     "20537-88-6",
 ]
 
-ch = ChemIDplus(Database())
+ch = ChemIDplus(create_db())
 ch._extract_data()
-TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data"
+TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "chemidplus"
 outfile_path = TEST_DATA_DIR / ch._src_file.name
 
 root = ET.Element("file")
