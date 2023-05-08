@@ -2,37 +2,34 @@
 Assumes complete and functioning disease normalizer endpoint is available.
 """
 import json
-from typing import Dict, Any
+from typing import Dict
 from pathlib import Path
 
 from disease.query import QueryHandler as DiseaseQueryHandler
+from disease.database import create_db as create_disease_db
 from disease.schemas import NormalizationService as DiseaseNormalizationService
 
 from therapy.etl import ChEMBL, HemOnc
-from therapy.database import Database
+from therapy.database import create_db
+from therapy.schemas import SourceMeta, SourceName
 
 TEST_ROOT = Path(__file__).resolve().parents[1]
 TEST_DATA_DIRECTORY = TEST_ROOT / "data"
 
 
-class ReadOnlyDatabase(Database):
-    """Provide read-only instance of database for security's sake"""
-
-    def add_record(self, record: Dict, record_type: str = "identity") -> None:
-        """Add new record to database"""
-        pass
-
-    def add_ref_record(self, term: str, concept_id: str, ref_type: str) -> None:
-        """Add ref record to database"""
-        pass
-
-    def update_record(self, concept_id: str, field: str, new_value: Any,  # noqa
-                      item_type: str = "identity") -> None:
-        """Update an individual record"""
-        pass
+def add_record(record: Dict, src_name: SourceName) -> None:
+    """Mock method. Provided here to ensure therapy DB is read-only"""
 
 
-db = ReadOnlyDatabase()
+def add_source_metadata(src_name: SourceName, data: SourceMeta) -> None:
+    """Mock method. Provided here to ensure therapy DB is read-only"""
+
+
+therapy_db = create_db()
+therapy_db.add_record = add_record  # type: ignore
+therapy_db.add_source_metadata = add_source_metadata  # type: ignore
+
+
 disease_normalizer_table = {}
 
 
@@ -50,13 +47,13 @@ class SaveQueryHandler(DiseaseQueryHandler):
         return response
 
 
-disease_query_handler = SaveQueryHandler()
+disease_query_handler = SaveQueryHandler(create_disease_db())
 
-ch = ChEMBL(database=db, data_path=TEST_DATA_DIRECTORY)
+ch = ChEMBL(database=therapy_db, data_path=TEST_DATA_DIRECTORY)
 ch.disease_normalizer = disease_query_handler
 ch.perform_etl(use_existing=True)
 
-h = HemOnc(database=db, data_path=TEST_DATA_DIRECTORY)
+h = HemOnc(database=therapy_db, data_path=TEST_DATA_DIRECTORY)
 h.disease_normalizer = disease_query_handler
 h.perform_etl(use_existing=True)
 
