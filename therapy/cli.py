@@ -12,7 +12,8 @@ from disease.cli import _update_normalizers as update_disease_db
 from therapy import SOURCES
 from therapy.database.database import AWS_ENV_VAR_NAME, AbstractDatabase, \
     DatabaseException, DatabaseReadException, DatabaseWriteException, create_db
-from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm, HemOnc, GuideToPHARMACOLOGY, DrugsAtFDA  # noqa: F401, E501
+from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm, HemOnc, \
+    GuideToPHARMACOLOGY, DrugsAtFDA  # noqa: F401
 from therapy.etl.base import create_indications_db
 from therapy.etl.merge import Merge
 from therapy.schemas import SourceName
