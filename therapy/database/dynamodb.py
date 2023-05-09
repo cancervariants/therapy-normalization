@@ -1,6 +1,5 @@
 """Provide DynamoDB client."""
 import atexit
-import json
 import logging
 from os import environ
 from pathlib import Path
@@ -273,6 +272,7 @@ class DynamoDbDatabase(AbstractDatabase):
                          case_sensitive: bool = True,
                          merge: bool = False) -> Optional[Dict]:
         """Fetch record corresponding to provided concept ID
+
         :param str concept_id: concept ID for therapy record
         :param bool case_sensitive: if true, performs exact lookup, which is more
         efficient. Otherwise, performs filter operation, which doesn't require correct
@@ -298,8 +298,8 @@ class DynamoDbDatabase(AbstractDatabase):
                 record = response["Items"][0]
                 del record["label_and_type"]
                 if record.get("has_indication"):
-                    inds = record["has_indication"]
-                    deserialized = [json.loads(i) for i in inds]
+                    # inds = record["has_indication"]
+                    # deserialized = [json.loads(i) for i in inds]
                     complete = [
                         HasIndication(
                             disease_id=i[0],
@@ -307,7 +307,8 @@ class DynamoDbDatabase(AbstractDatabase):
                             normalized_disease_id=i[2],
                             supplemental_info=i[3]
                         )
-                        for i in deserialized
+                        # for i in deserialized
+                        for i in record["has_indication"]
                     ]
                     record["has_indication"] = complete
 

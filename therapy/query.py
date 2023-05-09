@@ -133,6 +133,7 @@ class QueryHandler:
         or None if unsuccessful
         """
         inferred_records = []
+        namespace = ""
         for pattern, source in NAMESPACE_LUIS:
             match = re.match(pattern, query)
             if match:
@@ -146,7 +147,7 @@ class QueryHandler:
                 record = self.db.get_record_by_id(inferred_id, case_sensitive=False)
                 if record:
                     inferred_records.append((record, namespace, inferred_id))
-        if inferred_records:
+        if inferred_records and namespace:
             inferred_records.sort(key=lambda r: self._record_order(r[0]))
             return (
                 inferred_records[0][0],

@@ -369,6 +369,7 @@ class PostgresDatabase(AbstractDatabase):
     def get_record_by_id(self, concept_id: str, case_sensitive: bool = True,
                          merge: bool = False) -> Optional[Dict]:
         """Fetch record corresponding to provided concept ID
+
         :param str concept_id: concept ID for therapy record
         :param bool case_sensitive: not used by Postgresql implementation
         :param bool merge: if true, look for merged record; look for identity record

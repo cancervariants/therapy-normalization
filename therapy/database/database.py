@@ -165,6 +165,7 @@ class AbstractDatabase(abc.ABC):
         :param data: known source attributes
         :raise DatabaseWriteException: if write fails
         """
+
     @abc.abstractmethod
     def add_rxnorm_brand(self, brand_id: str, record_id: str) -> None:
         """Add RxNorm brand association to an existing RxNorm concept.

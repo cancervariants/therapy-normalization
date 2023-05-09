@@ -1,4 +1,5 @@
 """This module defines the ChEMBL ETL methods."""
+import ftplib
 import logging
 import os
 import shutil
@@ -200,10 +201,17 @@ class ChEMBL(DiseaseIndicationBase):
 
     def _load_meta(self) -> None:
         """Add ChEMBL metadata."""
+        try:
+            data_url = bioversions.resolve("chembl").homepage
+        except ftplib.error_temp:
+            _logger.info(
+                "Unable to retrieve ChEMBL homepage directly -- using predicted URL"
+            )
+            data_url = f"ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_{self._version}"  # noqa: E501
         metadata = SourceMeta(data_license="CC BY-SA 3.0",
                               data_license_url="https://creativecommons.org/licenses/by-sa/3.0/",  # noqa: E501
                               version=self._version,
-                              data_url=bioversions.resolve("chembl").homepage,
+                              data_url=data_url,
                               rdp_url="http://reusabledata.org/chembl.html",
                               data_license_attributes={
                                   "non_commercial": False,
