@@ -431,7 +431,7 @@ class PostgresDatabase(AbstractDatabase):
     SELECT concept_id FROM (
         SELECT concept_id, (SELECT unnest(array_agg(associated_with))) as unii
         FROM therapy_associations ta
-        WHERE associated_with ILIKE 'unii:%' AND concept_id ILIKE 'drugsatfda.%'
+        WHERE associated_with ILIKE 'unii:%%' AND concept_id ILIKE 'drugsatfda.%%'
         GROUP BY concept_id
         HAVING count(associated_with) = 1
     ) valid_dafda_uniis
@@ -545,7 +545,11 @@ class PostgresDatabase(AbstractDatabase):
 
     @staticmethod
     def _jsonify_indications(indication: Optional[List]) -> Optional[List]:
-        """TODO"""
+        """Serialize dict-like objects to JSON using Psycopg3 JSON dumper.
+
+        :param indication: list of drug indication objects
+        :return: list of serialized indication objects, if any given
+        """
         if indication is None:
             return None
         return [Jsonb(s) for s in indication]
@@ -595,6 +599,9 @@ class PostgresDatabase(AbstractDatabase):
 
         :param record: merged record to add
         """
+        indications_entry = self._jsonify_indications(
+            [i.dict() for i in record.get("has_indication", [])]
+        )
         with self.conn.cursor() as cur:
             cur.execute(self._add_merged_record_query, [
                 record["concept_id"],
@@ -605,7 +612,7 @@ class PostgresDatabase(AbstractDatabase):
                 record.get("xrefs"),
                 record.get("approval_ratings"),
                 record.get("approval_year"),
-                record.get("has_indication")
+                indications_entry
             ])
             self.conn.commit()
 

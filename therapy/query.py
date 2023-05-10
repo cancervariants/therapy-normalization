@@ -397,22 +397,21 @@ class QueryHandler:
 
             inds = record.get("has_indication", [])
             inds_list = []
-            for ind_db in inds:
-                indication = self._get_indication(ind_db)
+            for indication in inds:
                 ind_value_obj: Dict[str, Optional[Union[str, List]]] = {
-                    "id": indication.disease_id,
+                    "id": indication["disease_id"],
                     "type": "DiseaseDescriptor",
-                    "label": indication.disease_label,
-                    "disease_id": indication.normalized_disease_id,
+                    "label": indication["disease_label"],
+                    "disease_id": indication["normalized_disease_id"],
                 }
-                if indication.supplemental_info:
+                if indication["supplemental_info"]:
                     ind_value_obj["extensions"] = [
                         {
                             "type": "Extension",
                             "name": k,
                             "value": v
                         }
-                        for k, v in indication.supplemental_info.items()
+                        for k, v in indication["supplemental_info"].items()
                     ]
                 inds_list.append(ind_value_obj)
             if inds_list:
@@ -502,16 +501,16 @@ class QueryHandler:
         add_vod_curry = lambda res, rec, mat: self._add_vod(res, rec, query, mat)  # noqa: E501 E731
         return self._perform_normalized_lookup(response, query, infer, add_vod_curry)
 
-    def _construct_drug_match(self, record: Dict) -> Drug:
-        """Create individual Drug match for unmerged normalization endpoint.
-
-        :param Dict record: record to add
-        :return: completed Drug object
-        """
-        inds = record.get("has_indication")
-        if inds:
-            record["has_indication"] = [self._get_indication(i) for i in inds]
-        return Drug(**record)
+    # def _construct_drug_match(self, record: Dict) -> Drug:
+    #     """Create individual Drug match for unmerged normalization endpoint.
+    #
+    #     :param Dict record: record to add
+    #     :return: completed Drug object
+    #     """
+    #     inds = record.get("has_indication")
+    #     if inds:
+    #         record["has_indication"] = [self._get_indication(i) for i in inds]
+    #     return Drug(**record)
 
     def _add_normalized_records(self, response: UnmergedNormalizationService,
                                 normalized_record: Dict,
@@ -529,7 +528,8 @@ class QueryHandler:
         if normalized_record["item_type"] == "identity":
             record_source = SourceName[normalized_record["src_name"].upper()]
             response.source_matches[record_source] = MatchesNormalized(
-                records=[self._construct_drug_match(normalized_record)],
+                # records=[self._construct_drug_match(normalized_record)],
+                records=[Drug(**normalized_record)],
                 source_meta_=self.db.get_source_metadata(record_source)  # type: ignore
             )
         else:
@@ -540,7 +540,8 @@ class QueryHandler:
                 if not record:
                     continue  # cover a few chemidplus edge cases
                 record_source = SourceName[record["src_name"].upper()]
-                drug = self._construct_drug_match(record)
+                # drug = self._construct_drug_match(record)
+                drug = Drug(**record)
                 if record_source in response.source_matches:
                     response.source_matches[record_source].records.append(drug)
                 else:

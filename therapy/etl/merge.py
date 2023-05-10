@@ -114,7 +114,9 @@ class Merge:
             return None
 
     def _get_xrefs(self, record: Dict[str, Any]) -> Set[str]:
-        """Extract references to entries in other sources from a record.
+        """Extract references to entries in other sources from a record. In addition to
+        the `xref` field, this method tries to identify Drugs@FDA records that can be
+        associated with this record by way of identifying UNII values.
 
         :param Dict record: record to process
         :return: Set of xref values
@@ -123,19 +125,10 @@ class Merge:
         unii_xrefs = [a for a in record.get("associated_with", [])
                       if a.startswith("unii:")]
         for unii in unii_xrefs:
-            # get Drugs@FDA records that are associated_with this UNII
             drugsatfda_ids = self._unii_to_drugsatfda.get(unii)
             if drugsatfda_ids is not None:
                 xrefs |= drugsatfda_ids
                 continue
-            # unii_assoc = self._database.get_refs_by_type(unii.lower(),
-            #                                              RefType.ASSOCIATED_WITH)
-            # drugsatfda_refs = set()
-            # for ref in unii_assoc:
-            #     if ref["src_name"] == "DrugsAtFDA":
-            #         drugsatfda_ref = self._get_drugsatfda_from_unii(ref)
-            #         if drugsatfda_ref:
-            #             drugsatfda_refs.add(drugsatfda_ref)
             drugsatfda_refs = self._database.get_drugsatfda_from_unii(unii)
             self._unii_to_drugsatfda[unii] = drugsatfda_refs
             xrefs |= drugsatfda_refs
