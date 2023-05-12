@@ -14,7 +14,7 @@ jobs:
         strategy:
             matrix:
               python-version: ['3.8', '3.9', '3.10']
-              db_url: ['http://localhost:8002', 'postgresql://postgres@localhost:5432/therapy_normalizer_test']
+              db_url: ['http://localhost:8002', 'postgresql://postgres:postgres@localhost:5432/therapy_normalizer_test']
 
         services:
             postgres:
@@ -22,7 +22,7 @@ jobs:
                 env:
                     POSTGRES_USER: 'postgres'
                     POSTGRES_DB: 'therapy_normalizer_test'
-                    # POSTGRES_PASSWORD: 'postgres'
+                    POSTGRES_PASSWORD: 'postgres'
                 ports:
                   - 5432:5432
         steps:
@@ -44,7 +44,7 @@ jobs:
               run: python3 -m pip install ".[etl,test]"
 
             - name: Install PG dependencies
-              if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres@localhost:5432/therapy_normalizer_test' }}
+              if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres:postgres@localhost:5432/therapy_normalizer_test' }}
               run: python3 -m pip install ".[pg,etl,test]"
 
             # - name: Create Disease Normalizer DB
@@ -56,9 +56,9 @@ jobs:
               run: python3 -m pytest
 
             - name: Run PG tests
-              if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres@localhost:5432/therapy_normalizer_test' }}
+              if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres:postgres@localhost:5432/therapy_normalizer_test' }}
               env:
-                DISEASE_NORM_DB_URL: postgresql://postgres@localhost:5432/therapy_normalizer_test
+                DISEASE_NORM_DB_URL: postgresql://postgres:postgres@localhost:5432/therapy_normalizer_test
               run: python3 -m pytest
 
     lint:
