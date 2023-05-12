@@ -49,14 +49,14 @@ jobs:
               if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres@localhost:5432/disease_normalizer_test' }}
               run: python3 -m pip install ".[pg,etl,test]"
 
-            # - name: Create Disease Normalizer DB
-            #   # if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres:postgres@localhost:5432/disease_normalizer_test' }}
-            #   if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres@localhost:5432/disease_normalizer_test' }}
-            #   run: createdb -U=postgres -h localhost disease_normalizer_test
+            - name: Create Disease Normalizer DB
+              # if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres:postgres@localhost:5432/disease_normalizer_test' }}
+              if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres@localhost:5432/disease_normalizer_test' }}
+              run: createdb -U=postgres -h localhost disease_normalizer_test
 
             - name: Run tests
               run: |
-                psql -v ON_ERROR_STOP=1 --username postgres 'CREATE DATABASE "disease_normalizer_test";'
+                # psql -v ON_ERROR_STOP=1 --username postgres 'CREATE DATABASE "disease_normalizer_test";'
                 python3 -m pytest
 
     lint:
