@@ -85,7 +85,7 @@ class Wikidata(Base):
                 params[attr] = item[attr]["value"]
             transformed_data.append(params)
         with open(f"{self._src_dir}/wikidata_{self._version}.json", "w+") as f:
-            json.dump(transformed_data, f)
+            json.dump(transformed_data, f, indent=2)
         _logger.info("Successfully retrieved source data for Wikidata")
 
     def get_latest_version(self) -> str:

@@ -665,8 +665,7 @@ class PostgresDatabase(AbstractDatabase):
         """
         with self.conn.cursor() as cur:
             cur.execute((SCRIPTS_DIR / "delete_normalized_concepts.sql").read_bytes())
-            self.conn.commit()
-        self._create_tables()
+        self.conn.commit()
 
     _drop_aliases_query = b"""
     DELETE FROM therapy_aliases WHERE id IN (

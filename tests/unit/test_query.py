@@ -623,7 +623,7 @@ RUN_TEST = os.environ.get("THERAPY_TEST", "").lower() == "true" and AWS_ENV_VAR_
 IS_DDB = os.environ.get("THERAPY_NORM_DB_URL", "").startswith("http://localhost:")
 
 
-@pytest.mark.skipif(not RUN_TEST and IS_DDB, reason="only run in CI with DDB")
+@pytest.mark.skipif(not RUN_TEST or not IS_DDB, reason="only run in CI with DDB")
 def test_broken_db_handling(query_handler):
     """Test that query fails gracefully if mission-critical DB references are
     broken.

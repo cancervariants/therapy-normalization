@@ -63,7 +63,7 @@ class Merge:
                     logger.error(f"Updating nonexistent record: {concept_id} "
                                  f"for {merged_record['label_and_type']}")
                 else:
-                    merge_ref = merged_record["concept_id"].lower()
+                    merge_ref = merged_record["concept_id"]
                     self._database.update_merge_ref(concept_id, merge_ref)
             uploaded_ids |= group
         logger.info("Merged concept generation successful.")

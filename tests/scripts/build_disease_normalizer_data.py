@@ -59,4 +59,4 @@ h.perform_etl(use_existing=True)
 
 
 with open(TEST_DATA_DIRECTORY / "disease_normalization.json", "w") as f:
-    json.dump(disease_normalizer_table, f)
+    json.dump(disease_normalizer_table, f, indent=2)

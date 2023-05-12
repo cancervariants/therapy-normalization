@@ -535,7 +535,7 @@ class DynamoDbDatabase(AbstractDatabase):
             "concept_id": concept_id
         }
         update_expression = "set merge_ref=:r"
-        update_values = {":r": merge_ref.lower()}
+        update_values = {":r": merge_ref}
         condition_expression = "attribute_exists(label_and_type)"
         try:
             self.therapies.update_item(Key=key,
