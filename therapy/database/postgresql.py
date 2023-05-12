@@ -211,13 +211,16 @@ class PostgresDatabase(AbstractDatabase):
     def _create_views(self) -> None:
         """Create materialized views."""
         create_view_query = (SCRIPTS_DIR / "create_record_lookup_view.sql").read_bytes()
-        create_unii_query = (SCRIPTS_DIR / "create_unii_query.sql").read_bytes()
+        create_unii_query = (SCRIPTS_DIR / "create_unii_lookup_view.sql").read_bytes()
         with self.conn.cursor() as cur:
             cur.execute(create_view_query)
             cur.execute(create_unii_query)
             self.conn.commit()
 
-    _refresh_views_query = b"REFRESH MATERIALIZED VIEW record_lookup_view, unii_lookup_view;"  # noqa: E501
+    _refresh_views_query = b"""
+    REFRESH MATERIALIZED VIEW record_lookup_view;
+    REFRESH MATERIALIZED VIEW unii_lookup_view;
+    """
 
     def _refresh_views(self) -> None:
         """Update materialized views.
