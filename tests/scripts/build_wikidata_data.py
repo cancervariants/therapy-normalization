@@ -5,7 +5,7 @@ import datetime
 
 from wikibaseintegrator.wbi_helpers import execute_sparql_query
 
-from therapy.etl.wikidata import SPARQL_QUERY
+from therapy.etl.wikidata import MEDICINE_QUERY, ANTINEOPLASTIC_QUERY
 
 TEST_IDS = {
     "http://www.wikidata.org/entity/Q412415",
@@ -19,10 +19,11 @@ TEST_IDS = {
     "http://www.wikidata.org/entity/Q422265",
 }
 
-result = execute_sparql_query(SPARQL_QUERY)
+result = execute_sparql_query(MEDICINE_QUERY)["results"]["bindings"]
+result += execute_sparql_query(ANTINEOPLASTIC_QUERY)["results"]["bindings"]
 
 test_data = []
-for item in result["results"]["bindings"]:
+for item in result:
     if item["item"]["value"] in TEST_IDS:
         params = {}
         for attr in item:
@@ -33,4 +34,4 @@ TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "wikidata"
 date = datetime.datetime.today().strftime("%Y-%m-%d")
 outfile_path = TEST_DATA_DIR / f"wikidata_{date}.json"
 with open(outfile_path, "w+") as f:
-    json.dump(test_data, f)
+    json.dump(test_data, f, indent=2)

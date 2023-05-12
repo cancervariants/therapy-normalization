@@ -33,10 +33,17 @@ ID_PREFIXES = {
     "ncit": "C",
 }
 
-SPARQL_QUERY = """
-    SELECT ?item ?itemLabel ?casRegistry ?pubchemCompound
-           ?pubchemSubstance ?chembl
-           ?rxnorm ?drugbank ?alias WHERE {
+MEDICINE_QUERY = """
+    SELECT
+    ?item ?itemLabel
+    (GROUP_CONCAT(DISTINCT ?casRegistry; SEPARATOR=", ") AS ?casRegistry_ids)
+    (GROUP_CONCAT(DISTINCT ?pubchemCompound; SEPARATOR=", ") AS ?pubchemCompound_ids)
+    (GROUP_CONCAT(DISTINCT ?pubchemSubstance; SEPARATOR=", ") AS ?pubchemSubstance_ids)
+    (GROUP_CONCAT(DISTINCT ?chembl; SEPARATOR=", ") AS ?chembl_ids)
+    (GROUP_CONCAT(DISTINCT ?rxnorm; SEPARATOR=", ") AS ?rxnorm_ids)
+    (GROUP_CONCAT(DISTINCT ?drugbank; SEPARATOR=", ") AS ?drugbank_ids)
+    (GROUP_CONCAT(DISTINCT ?alias; SEPARATOR=", ") AS ?aliases)
+    WHERE {
       ?item (wdt:P31/(wdt:P279*)) wd:Q12140.
       OPTIONAL {
         ?item skos:altLabel ?alias.
@@ -64,6 +71,48 @@ SPARQL_QUERY = """
         bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\".
       }
     }
+    GROUP BY ?item ?itemLabel
+"""
+
+ANTINEOPLASTIC_QUERY = """
+    SELECT
+    ?item ?itemLabel
+    (GROUP_CONCAT(DISTINCT ?casRegistry; SEPARATOR=", ") AS ?casRegistry_ids)
+    (GROUP_CONCAT(DISTINCT ?pubchemCompound; SEPARATOR=", ") AS ?pubchemCompound_ids)
+    (GROUP_CONCAT(DISTINCT ?pubchemSubstance; SEPARATOR=", ") AS ?pubchemSubstance_ids)
+    (GROUP_CONCAT(DISTINCT ?chembl; SEPARATOR=", ") AS ?chembl_ids)
+    (GROUP_CONCAT(DISTINCT ?rxnorm; SEPARATOR=", ") AS ?rxnorm_ids)
+    (GROUP_CONCAT(DISTINCT ?drugbank; SEPARATOR=", ") AS ?drugbank_ids)
+    (GROUP_CONCAT(DISTINCT ?alias; SEPARATOR=", ") AS ?aliases)
+    WHERE {
+      ?item (wdt:P2868/(wdt:P279*)) wd:Q2853144.
+      OPTIONAL {
+        ?item skos:altLabel ?alias.
+        FILTER((LANG(?alias)) = \"en\")
+      }
+      OPTIONAL { ?item p:P231 ?wds1.
+                 ?wds1 ps:P231 ?casRegistry.
+               }
+      OPTIONAL { ?item p:P662 ?wds2.
+                 ?wds2 ps:P662 ?pubchemCompound.
+               }
+      OPTIONAL { ?item p:P2153 ?wds3.
+                 ?wds3 ps:P2153 ?pubchemSubstance.
+               }
+      OPTIONAL { ?item p:P592 ?wds4.
+                 ?wds4 ps:P592 ?chembl
+               }
+      OPTIONAL { ?item p:P3345 ?wds5.
+                 ?wds5 ps:P3345 ?rxnorm.
+               }
+      OPTIONAL { ?item p:P715 ?wds6.
+                 ?wds6 ps:P715 ?drugbank
+               }
+      SERVICE wikibase:label {
+        bd:serviceParam wikibase:language \"[AUTO_LANGUAGE],en\".
+      }
+    }
+    GROUP BY ?item ?itemLabel
 """
 
 
@@ -73,14 +122,20 @@ class Wikidata(Base):
     def _download_data(self) -> None:
         """Download latest Wikidata source dump."""
         logger.info("Retrieving source data for Wikidata")
-        query_results = execute_sparql_query(SPARQL_QUERY)
-        if query_results is None:
-            raise DownloadException("Wikidata SPARQL query returned no results")
-        else:
-            data = query_results["results"]["bindings"]
+        results = []
+
+        medicine_query_results = execute_sparql_query(MEDICINE_QUERY)
+        if medicine_query_results is None:
+            raise DownloadException("Wikidata medicine SPARQL query failed")
+        results += medicine_query_results["results"]["bindings"]
+
+        antineoplastic_query_results = execute_sparql_query(ANTINEOPLASTIC_QUERY)
+        if antineoplastic_query_results is None:
+            raise DownloadException("Wikidata anti-neoplastic SPARQL query failed")
+        results += antineoplastic_query_results["results"]["bindings"]
 
         transformed_data = []
-        for item in data:
+        for item in results:
             params: RecordParams = {}
             for attr in item:
                 params[attr] = item[attr]["value"]
