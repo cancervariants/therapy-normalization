@@ -22,7 +22,7 @@ jobs:
                 env:
                     POSTGRES_USER: 'postgres'
                     POSTGRES_DB: 'therapy_normalizer_test'
-                    POSTGRES_PASSWORD: 'postgres'
+                    # POSTGRES_PASSWORD: 'postgres'
                 ports:
                   - 5432:5432
         steps:
@@ -44,11 +44,13 @@ jobs:
               run: python3 -m pip install ".[etl,test]"
 
             - name: Install PG dependencies
-              if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres:postgres@localhost:5432/disease_normalizer_test' }}
+              # if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres:postgres@localhost:5432/disease_normalizer_test' }}
+              if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres@localhost:5432/disease_normalizer_test' }}
               run: python3 -m pip install ".[pg,etl,test]"
 
             - name: Create Disease Normalizer DB
-              if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres:postgres@localhost:5432/disease_normalizer_test' }}
+              # if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres:postgres@localhost:5432/disease_normalizer_test' }}
+              if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres@localhost:5432/disease_normalizer_test' }}
               run: createdb -U=postgres -w -h localhost disease_normalizer_test
 
             - name: Run tests
