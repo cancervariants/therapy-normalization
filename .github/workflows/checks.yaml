@@ -14,8 +14,7 @@ jobs:
         strategy:
             matrix:
               python-version: ['3.8', '3.9', '3.10']
-              # db_url: ['http://localhost:8002', 'postgresql://postgres:postgres@localhost:5432/disease_normalizer_test']
-              db_url: ['http://localhost:8002', 'postgresql://postgres@localhost:5432/disease_normalizer_test']
+              db_url: ['http://localhost:8002', 'postgresql://postgres@localhost:5432/therapy_normalizer_test']
 
         services:
             postgres:
@@ -45,19 +44,22 @@ jobs:
               run: python3 -m pip install ".[etl,test]"
 
             - name: Install PG dependencies
-              # if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres:postgres@localhost:5432/disease_normalizer_test' }}
-              if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres@localhost:5432/disease_normalizer_test' }}
+              if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres@localhost:5432/therapy_normalizer_test' }}
               run: python3 -m pip install ".[pg,etl,test]"
 
-            - name: Create Disease Normalizer DB
-              # if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres:postgres@localhost:5432/disease_normalizer_test' }}
-              if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres@localhost:5432/disease_normalizer_test' }}
-              run: createdb -U=postgres -h localhost disease_normalizer_test
+            # - name: Create Disease Normalizer DB
+            #   if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres@localhost:5432/therapy_normalizer_test' }}
+            #   run: createdb -U=postgres -h localhost disease_normalizer_test
 
             - name: Run tests
-              run: |
-                # psql -v ON_ERROR_STOP=1 --username postgres 'CREATE DATABASE "disease_normalizer_test";'
-                python3 -m pytest
+              if: ${{ env.THERAPY_NORM_DB_URL == 'http://localhost:8002' }}
+              run: python3 -m pytest
+
+            - name: Run PG tests
+              if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres@localhost:5432/therapy_normalizer_test' }}
+              env:
+                DISEASE_NORM_DB_URL: postgresql://postgres@localhost:5432/therapy_normalizer_test
+              run: python3 -m pytest
 
     lint:
         name: lint py${{ matrix.python-version }}
