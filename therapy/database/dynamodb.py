@@ -15,8 +15,8 @@ from therapy import ITEM_TYPES, PREFIX_LOOKUP
 from therapy.database.database import AWS_ENV_VAR_NAME, SKIP_AWS_DB_ENV_NAME, \
     VALID_AWS_ENV_NAMES, AbstractDatabase, AwsEnvName, DatabaseException, \
     DatabaseReadException, DatabaseWriteException, confirm_aws_db_use
-from therapy.schemas import RX_BRAND_ITEM_TYPE, HasIndication, RefType, SourceMeta, \
-    SourceName
+from therapy.schemas import RX_BRAND_ITEM_TYPE, DatabaseType, HasIndication, RefType, \
+    SourceMeta, SourceName
 
 _logger = logging.getLogger(__name__)
 
@@ -31,6 +31,8 @@ class DynamoDbDatabase(AbstractDatabase):
         :Keyword Arguments:
             * region_name: AWS region (defaults to "us-east-2")
         """
+        self.db_type = DatabaseType.DYNAMODB
+
         therapy_concepts_table = "therapy_concepts"  # default
         therapy_metadata_table = "therapy_metadata"  # default
 

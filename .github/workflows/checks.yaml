@@ -51,7 +51,7 @@ jobs:
             #   if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres@localhost:5432/therapy_normalizer_test' }}
             #   run: createdb -U=postgres -h localhost disease_normalizer_test
 
-            - name: Run tests
+            - name: Run DDB tests
               if: ${{ env.THERAPY_NORM_DB_URL == 'http://localhost:8002' }}
               run: python3 -m pytest
 

@@ -895,3 +895,10 @@ class SearchService(BaseModel):
                     "url": "https://github.com/cancervariants/therapy-normalization"
                 }
             }
+
+
+class DatabaseType(str, Enum):
+    """Define known database implementations."""
+
+    DYNAMODB = "dynamodb"
+    POSTGRESQL = "postgresql"

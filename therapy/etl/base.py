@@ -22,9 +22,9 @@ from disease.database import create_db as create_disease_db, \
 
 from therapy import APP_ROOT, ITEM_TYPES, DownloadException
 from therapy.database.database import DatabaseInitializationException
-from therapy.database.dynamodb import DynamoDbDatabase
-from therapy.database.postgresql import PostgresDatabase
-from therapy.schemas import Drug, SourceName
+# from therapy.database.dynamodb import DynamoDbDatabase
+# from therapy.database.postgresql import PostgresDatabase
+from therapy.schemas import DatabaseType, Drug, SourceName
 from therapy.database import AbstractDatabase
 from therapy.etl.rules import Rules
 
@@ -328,12 +328,12 @@ def create_indications_db(therapy_database: AbstractDatabase) -> DiseaseDatabase
     """
     if "DISEASE_NORM_DB_URL" in os.environ:
         return create_disease_db()
-    elif isinstance(therapy_database, DynamoDbDatabase):
+    elif therapy_database.db_type == DatabaseType.DYNAMODB:
         return create_disease_db(
             therapy_database.boto_params.get("endpoint_url"),
             **therapy_database.boto_params
         )
-    elif isinstance(therapy_database, PostgresDatabase):
+    elif therapy_database.db_type == DatabaseType.POSTGRESQL:
         if "THERAPY_NORM_DB_URL" in os.environ:
             therapy_url = os.environ["THERAPY_NORM_DB_URL"]
             parsed = urlparse(therapy_url)

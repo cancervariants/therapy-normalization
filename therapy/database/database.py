@@ -8,7 +8,7 @@ import sys
 
 import click
 
-from therapy.schemas import RefType, SourceMeta, SourceName
+from therapy.schemas import DatabaseType, RefType, SourceMeta, SourceName
 
 
 class DatabaseException(Exception):
@@ -29,6 +29,8 @@ class DatabaseWriteException(DatabaseException):
 
 class AbstractDatabase(abc.ABC):
     """Define a database interface."""
+
+    db_type: DatabaseType
 
     @abc.abstractmethod
     def __init__(self, db_url: Optional[str] = None, **db_args):

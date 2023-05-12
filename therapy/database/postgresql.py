@@ -15,7 +15,7 @@ from psycopg.errors import DuplicateObject, DuplicateTable, UndefinedTable, \
 import requests
 
 from therapy.database import AbstractDatabase, DatabaseException, DatabaseWriteException
-from therapy.schemas import RefType, SourceMeta, SourceName, HasIndication
+from therapy.schemas import DatabaseType, RefType, SourceMeta, SourceName, HasIndication
 
 
 logger = logging.getLogger(__name__)
@@ -40,6 +40,8 @@ class PostgresDatabase(AbstractDatabase):
 
         :raise DatabaseInitializationException: if initial setup fails
         """
+        self.db_type = DatabaseType.POSTGRESQL
+
         if db_url:
             conninfo = db_url
         elif "THERAPY_NORM_DB_URL" in os.environ:
