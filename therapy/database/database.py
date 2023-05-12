@@ -313,7 +313,7 @@ def create_db(
         # prefer DynamoDB unless connection explicitly reads like a libpq URI
         if endpoint_url.startswith("postgres"):
             from therapy.database.postgresql import PostgresDatabase
-            db = PostgresDatabase(endpoint_url)
+            db = PostgresDatabase(endpoint_url)  # type: ignore
         else:
             from therapy.database.dynamodb import DynamoDbDatabase
             db = DynamoDbDatabase(endpoint_url)

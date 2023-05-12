@@ -148,7 +148,7 @@ def _update_normalizers(
         records
     :param from_local: if true, use locally available data only
     """
-    processed_ids = list()
+    processed_ids: List[str] = list()
     for n in normalizers:
         delete_time = _delete_source(n, db)
         _load_source(n, db, delete_time, processed_ids, from_local)

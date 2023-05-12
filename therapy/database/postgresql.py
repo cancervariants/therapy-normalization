@@ -55,7 +55,7 @@ class PostgresDatabase(AbstractDatabase):
 
         self.conn = psycopg.connect(conninfo)
         self.initialize_db()
-        self._cached_sources = {}
+        self._cached_sources: Dict[str, Dict] = {}
 
         atexit.register(self.close_connection)
 
@@ -75,7 +75,7 @@ class PostgresDatabase(AbstractDatabase):
         return [t[0] for t in tables]
 
     _drop_query = b"""
-    DROP MATERIALIZED VIEW IF EXISTS record_lookup_view;
+    DROP MATERIALIZED VIEW IF EXISTS record_lookup_view, unii_lookup_view;
     DROP TABLE IF EXISTS
         therapy_aliases,
         therapy_associations,
@@ -143,6 +143,15 @@ class PostgresDatabase(AbstractDatabase):
             return False
         try:
             with self.conn.cursor() as cur:
+                cur.execute((SCRIPTS_DIR / "create_unii_lookup_view.sql").read_bytes())
+        except DuplicateTable:
+            self.conn.rollback()
+        else:
+            logger.info("Therapy UNII lookup view failed.")
+            self.conn.rollback()
+            return False
+        try:
+            with self.conn.cursor() as cur:
                 cur.execute((SCRIPTS_DIR / "add_indexes.sql").read_bytes())
         except DuplicateTable:
             self.conn.rollback()
@@ -200,11 +209,13 @@ class PostgresDatabase(AbstractDatabase):
     def _create_views(self) -> None:
         """Create materialized views."""
         create_view_query = (SCRIPTS_DIR / "create_record_lookup_view.sql").read_bytes()
+        create_unii_query = (SCRIPTS_DIR / "create_unii_query.sql").read_bytes()
         with self.conn.cursor() as cur:
             cur.execute(create_view_query)
+            cur.execute(create_unii_query)
             self.conn.commit()
 
-    _refresh_views_query = b"REFRESH MATERIALIZED VIEW record_lookup_view;"
+    _refresh_views_query = b"REFRESH MATERIALIZED VIEW record_lookup_view, unii_lookup_view;"  # noqa: E501
 
     def _refresh_views(self) -> None:
         """Update materialized views.
@@ -313,9 +324,9 @@ class PostgresDatabase(AbstractDatabase):
             "associated_with": result[3],
             "trade_names": result[4],
             "xrefs": result[5],
-            "has_indication": result[6],  # TODO ???
-            "approval_ratings": result[7],  # TODO ???
-            "approval_year": result[8],  # TODO ???
+            "has_indication": result[6],
+            "approval_ratings": result[7],
+            "approval_year": result[8],
             "src_name": result[9],
             "merge_ref": result[10],
             "item_type": "identity",
@@ -352,6 +363,7 @@ class PostgresDatabase(AbstractDatabase):
         if not result:
             return None
 
+        indications = result[8]
         merged_record = {
             "concept_id": result[0],
             "label": result[1],
@@ -359,11 +371,14 @@ class PostgresDatabase(AbstractDatabase):
             "associated_with": result[3],
             "trade_names": result[4],
             "xrefs": result[5],
-            "approval_ratings": result[6],  # TODO ??
-            "approval_year": result[7],  # TODO ???
-            "has_indication": result[8],  # TODO ???
+            "approval_ratings": result[6],
+            "approval_year": result[7],
             "item_type": "merger",
         }
+        if indications:
+            merged_record["has_indication"] = [
+                HasIndication(**ind) for ind in indications
+            ]
         return {k: v for k, v in merged_record.items() if v}
 
     def get_record_by_id(self, concept_id: str, case_sensitive: bool = True,
@@ -397,7 +412,6 @@ class PostgresDatabase(AbstractDatabase):
         :param ref_type: type of match to look for.
         :return: list of associated concept IDs. Empty if lookup fails.
         """
-        # TODO handle rx brand here?
         query = self._ref_types_query.get(ref_type)
         if not query:
             raise ValueError("invalid reference type")
@@ -427,16 +441,17 @@ class PostgresDatabase(AbstractDatabase):
             return None
 
     # TODO: rewrite as materialized view
-    _get_dafda_unii_query = b"""
-    SELECT concept_id FROM (
-        SELECT concept_id, (SELECT unnest(array_agg(associated_with))) as unii
-        FROM therapy_associations ta
-        WHERE associated_with ILIKE 'unii:%%' AND concept_id ILIKE 'drugsatfda.%%'
-        GROUP BY concept_id
-        HAVING count(associated_with) = 1
-    ) valid_dafda_uniis
-    WHERE unii = %s;
-    """
+    _get_dafda_unii_query = b"SELECT concept_id FROM unii_lookup_view WHERE unii = %s;"
+    # _get_dafda_unii_query = b"""
+    # SELECT concept_id FROM (
+    #     SELECT concept_id, (SELECT unnest(array_agg(associated_with))) as unii
+    #     FROM therapy_associations ta
+    #     WHERE associated_with ILIKE 'unii:%%' AND concept_id ILIKE 'drugsatfda.%%'
+    #     GROUP BY concept_id
+    #     HAVING count(associated_with) = 1
+    # ) valid_dafda_uniis
+    # WHERE unii = %s;
+    # """
 
     def get_drugsatfda_from_unii(self, unii: str) -> Set[str]:
         """Get Drugs@FDA IDs associated with a single UNII, given that UNII. Used
@@ -449,20 +464,6 @@ class PostgresDatabase(AbstractDatabase):
             cur.execute(self._get_dafda_unii_query, (unii, ))
             results = cur.fetchall()
         return {d[0] for d in results}
-        # dafda_concepts = set()
-        # associated_concepts = self.get_refs_by_type(unii, RefType.ASSOCIATED_WITH)
-        # for concept_id in associated_concepts:
-        #     if concept_id.startswith("drugsatfda"):
-        #         record = self.get_record_by_id(concept_id)
-        #         if not record:
-        #             continue
-        #         uniis = [
-        #             a for a in record.get("associated_with", [])
-        #             if a.startswith("unii")
-        #         ]
-        #         if len(uniis) == 1:
-        #             dafda_concepts.add(concept_id)
-        # return dafda_concepts
 
     _get_source_concept_ids_query = b"""
         SELECT concept_id FROM therapy_concepts tc
@@ -569,7 +570,7 @@ class PostgresDatabase(AbstractDatabase):
                     src_name.value,
                     record.get("approval_ratings"),
                     record.get("approval_year"),
-                    indications_entry  # TODO wip
+                    indications_entry
                 ])
                 if record.get("label"):
                     cur.execute(self._insert_label_query, [record["label"], concept_id])
@@ -751,7 +752,7 @@ class PostgresDatabase(AbstractDatabase):
             self.conn.commit()
             self.conn.close()
 
-    def load_from_remote(self, url: Optional[str]) -> None:
+    def load_from_remote(self, url: Optional[str] = None) -> None:
         """Load DB from remote dump. Warning: Deletes all existing data. If not
         passed as an argument, will try to grab latest release from VICC S3 bucket.
 

@@ -78,7 +78,6 @@ def compare_merged_records(actual: Dict, fixture: Dict):
     if "has_indication" in actual or "has_indication" in fixture:
         actual_inds = actual["has_indication"].copy()
         fixture_inds = fixture["has_indication"].copy()
-        print([i.dict() for i in actual_inds])
         assert len(actual_inds) == len(fixture_inds)
         actual_inds_serialized = [i.json() for i in actual_inds]
         actual_inds_serialized.sort()
@@ -208,7 +207,7 @@ def test_id_sets(
 
         # perform checks
         for concept_id in groups.keys():
-            assert groups[concept_id] == groups_keyed[concept_id], f"{concept_id}"
+            assert groups[concept_id] == groups_keyed[concept_id], concept_id
         assert len(groups) == len(groups_keyed)  # check if any are missing
 
     # test dead reference

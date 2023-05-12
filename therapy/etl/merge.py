@@ -86,7 +86,6 @@ class Merge:
                 return db_record["concept_id"]
         return None
 
-    # TODO what to do about this
     def _get_drugsatfda_from_unii(self, ref: Dict) -> Optional[str]:
         """Given an `associated_with` item keying a UNII code to a Drugs@FDA record,
         verify that the record can be safely added to a concept group.

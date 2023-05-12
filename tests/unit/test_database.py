@@ -47,7 +47,7 @@ def test_item_type(database):  # noqa: F811
     assert "item_type" in item
     assert item["item_type"] == "associated_with"
 
-    filter_exp = Key("label_and_type").eq("drugbank:database00515##xref")
+    filter_exp = Key("label_and_type").eq("drugbank:db00515##xref")
     item = database.therapies.query(KeyConditionExpression=filter_exp)["Items"][0]
     assert "item_type" in item
     assert item["item_type"] == "xref"

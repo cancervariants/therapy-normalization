@@ -399,19 +399,19 @@ class QueryHandler:
             inds_list = []
             for indication in inds:
                 ind_value_obj: Dict[str, Optional[Union[str, List]]] = {
-                    "id": indication["disease_id"],
+                    "id": indication.disease_id,
                     "type": "DiseaseDescriptor",
-                    "label": indication["disease_label"],
-                    "disease_id": indication["normalized_disease_id"],
+                    "label": indication.disease_label,
+                    "disease_id": indication.normalized_disease_id,
                 }
-                if indication["supplemental_info"]:
+                if indication.supplemental_info:
                     ind_value_obj["extensions"] = [
                         {
                             "type": "Extension",
                             "name": k,
                             "value": v
                         }
-                        for k, v in indication["supplemental_info"].items()
+                        for k, v in indication.supplemental_info.items()
                     ]
                 inds_list.append(ind_value_obj)
             if inds_list:
@@ -452,7 +452,6 @@ class QueryHandler:
         """
         merge_ref = record.get("merge_ref")
         if merge_ref:
-            # follow merge_ref
             merge = self.db.get_record_by_id(merge_ref, False, True)
             if merge is None:
                 logger.error(f"Merge ref lookup failed for ref {record['merge_ref']} "
@@ -460,8 +459,7 @@ class QueryHandler:
                 return response
             else:
                 return callback(response, merge, match_type)
-        else:
-            # record is sole member of concept group
+        else:  # record is sole member of concept group
             return callback(response, record, match_type)
 
     def _prepare_normalized_response(self, query: str) -> Dict[str, Any]:

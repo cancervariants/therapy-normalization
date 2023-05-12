@@ -80,7 +80,7 @@ class DynamoDbDatabase(AbstractDatabase):
         self.therapies = self.dynamodb.Table(therapy_concepts_table)
         self.metadata = self.dynamodb.Table(therapy_metadata_table)
         self.batch = self.therapies.batch_writer()
-        self._cached_sources = {}
+        self._cached_sources: Dict[str, Dict] = {}
         atexit.register(self.close_connection)
 
     def list_tables(self) -> List[str]:
@@ -287,32 +287,30 @@ class DynamoDbDatabase(AbstractDatabase):
             else:
                 pk = f"{concept_id.lower()}##identity"
             if case_sensitive:
-                match = self.therapies.get_item(Key={
+                response = self.therapies.get_item(Key={
                     "label_and_type": pk,
                     "concept_id": concept_id
                 })
-                return match["Item"]
+                record = response.get("Item")
+                if not record:
+                    return None
             else:
                 exp = Key("label_and_type").eq(pk)
                 response = self.therapies.query(KeyConditionExpression=exp)
                 record = response["Items"][0]
-                del record["label_and_type"]
-                if record.get("has_indication"):
-                    # inds = record["has_indication"]
-                    # deserialized = [json.loads(i) for i in inds]
-                    complete = [
-                        HasIndication(
-                            disease_id=i[0],
-                            disease_label=i[1],
-                            normalized_disease_id=i[2],
-                            supplemental_info=i[3]
-                        )
-                        # for i in deserialized
-                        for i in record["has_indication"]
-                    ]
-                    record["has_indication"] = complete
+            del record["label_and_type"]
+            if record.get("has_indication"):
+                record["has_indication"] = [
+                    HasIndication(
+                        disease_id=i[0],
+                        disease_label=i[1],
+                        normalized_disease_id=i[2],
+                        supplemental_info=i[3]
+                    )
+                    for i in record["has_indication"]
+                ]
+            return record
 
-                return record
         except ClientError as e:
             _logger.error(f"boto3 client error on get_records_by_id for "
                           f"search term {concept_id}: "
@@ -329,7 +327,7 @@ class DynamoDbDatabase(AbstractDatabase):
         :param ref_type: type of match to look for.
         :return: list of associated concept IDs. Empty if lookup fails.
         """
-        pk = f"{search_term}##{ref_type.value.lower()}"
+        pk = f"{search_term}##{ref_type.value}".lower()
         filter_exp = Key("label_and_type").eq(pk)
         try:
             matches = self.therapies.query(KeyConditionExpression=filter_exp)
@@ -465,7 +463,7 @@ class DynamoDbDatabase(AbstractDatabase):
                 if not value:
                     continue
                 if isinstance(value, str):
-                    items = [value.lower()]
+                    items = {value.lower()}
                 else:
                     items = {item.lower() for item in value}
                 for item in items:
@@ -484,6 +482,16 @@ class DynamoDbDatabase(AbstractDatabase):
         label_and_type = f"{concept_id.lower()}##merger"
         record["label_and_type"] = label_and_type
         record["item_type"] = "merger"
+        if record.get("has_indication"):
+            record["has_indication"] = [
+                [
+                    hi.disease_id,
+                    hi.disease_label,
+                    hi.normalized_disease_id,
+                    hi.supplemental_info
+                ] for hi in record["has_indication"]
+            ]
+
         try:
             self.batch.put_item(Item=record)
         except ClientError as e:

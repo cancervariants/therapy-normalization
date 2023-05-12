@@ -360,20 +360,27 @@ def create_indications_db(therapy_database: AbstractDatabase) -> DiseaseDatabase
 class DiseaseIndicationBase(Base):
     """Base class for sources that require disease normalization capabilities."""
 
-    def __init__(self, database: AbstractDatabase, data_path: Path = DEFAULT_DATA_PATH):
+    def __init__(
+        self, database: AbstractDatabase, data_path: Path = DEFAULT_DATA_PATH,
+        disease_db: Optional[DiseaseDatabase] = None
+    ):
         """Initialize source ETL instance.
 
         :param database: therapy database
         :param data_path: path to normalizer data directory
+        :param disease_db: optionally, directly inject disease DB. Otherwise,
+        this class tries to infer a URI for the available disease DB based on the
+        existing therapy DB instance.
         :raise DatabaseInitializationException: if unable to construct disease
         normalizer database handler
         """
-        try:
-            disease_db = create_indications_db(database)
-        except DiseaseDbInitializationException as e:
-            msg = f"Unable to initialize disease normalizer: {e}"
-            _logger.error(msg)
-            raise DatabaseInitializationException(msg)
+        if not disease_db:
+            try:
+                disease_db = create_indications_db(database)
+            except DiseaseDbInitializationException as e:
+                msg = f"Unable to initialize disease normalizer: {e}"
+                _logger.error(msg)
+                raise DatabaseInitializationException(msg)
         self.disease_normalizer = DiseaseNormalizer(disease_db)
         super().__init__(database, data_path)
 
