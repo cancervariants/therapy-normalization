@@ -1,5 +1,5 @@
 DROP INDEX IF EXISTS idx_t_concept_id_low;
-DROP INDEX IF EXISTS idx_tm_concept_id_low;
+DROP INDEX IF EXISTS idx_tm_concept_id_low; -- see also: delete_normalized_concepts.sql
 DROP INDEX IF EXISTS idx_tl_label_low;
 DROP INDEX IF EXISTS idx_tx_xref_low;
 DROP INDEX IF EXISTS idx_ta_alias_low;

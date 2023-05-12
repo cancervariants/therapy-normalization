@@ -9,6 +9,7 @@ CREATE TABLE therapy_sources (
     data_license_attr BOOLEAN NOT NULL,
     data_license_sa BOOLEAN NOT NULL
 );
+-- see also: delete_normalized_concepts.sql
 CREATE TABLE therapy_merged (
     concept_id VARCHAR(127) PRIMARY KEY,
     label TEXT,

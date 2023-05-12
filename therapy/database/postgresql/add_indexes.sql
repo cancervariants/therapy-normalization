@@ -1,4 +1,5 @@
 CREATE INDEX idx_t_concept_id_low ON therapy_concepts (lower(concept_id));
+-- see also: delete_normalized_concepts.sql
 CREATE INDEX idx_tm_concept_id_low ON therapy_merged (lower(concept_id));
 CREATE INDEX idx_tl_label_low ON therapy_labels (lower(label));
 CREATE INDEX idx_ta_alias_low ON therapy_aliases (lower(alias));
