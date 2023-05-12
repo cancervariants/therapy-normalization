@@ -44,8 +44,12 @@ jobs:
               run: python3 -m pip install ".[etl,test]"
 
             - name: Install PG dependencies
-              if: ${{ env.THERAPY_NORM_DB_URL != 'http://localhost:8002' }}
+              if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres:postgres@localhost:5432/disease_normalizer_test' }}
               run: python3 -m pip install ".[pg,etl,test]"
+
+            - name: Create Disease Normalizer DB
+              if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres:postgres@localhost:5432/disease_normalizer_test' }}
+              run: createdb -U=postgres -w -h localhost disease_normalizer_test
 
             - name: Run tests
               run: python3 -m pytest
