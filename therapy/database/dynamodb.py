@@ -27,7 +27,7 @@ class DynamoDbDatabase(AbstractDatabase):
     def __init__(self, db_url: Optional[str] = None, **db_args):
         """Initialize Database class.
 
-        :param str db_url: URL endpoint for DynamoDB source
+        :param db_url: URL endpoint for DynamoDB source
         :Keyword Arguments:
             * region_name: AWS region (defaults to "us-east-2")
         """
@@ -273,11 +273,10 @@ class DynamoDbDatabase(AbstractDatabase):
                          merge: bool = False) -> Optional[Dict]:
         """Fetch record corresponding to provided concept ID
 
-        :param str concept_id: concept ID for therapy record
-        :param bool case_sensitive: if true, performs exact lookup, which is more
-        efficient. Otherwise, performs filter operation, which doesn't require correct
-        casing.
-        :param bool merge: if true, look for merged record; look for identity record
+        :param concept_id: concept ID for therapy record
+        :param case_sensitive: if true, performs exact lookup, which is more efficient.
+        Otherwise, performs filter operation, which doesn't require correct casing.
+        :param merge: if true, look for merged record; look for identity record
         otherwise.
         :return: complete record, if match is found; None otherwise
         """
@@ -444,8 +443,8 @@ class DynamoDbDatabase(AbstractDatabase):
     def add_record(self, record: Dict, src_name: SourceName) -> None:
         """Add new record to database.
 
-        :param Dict record: record to upload
-        :param SourceName src_name: name of source for record
+        :param record: record to upload
+        :param src_name: name of source for record
         """
         concept_id = record["concept_id"]
         record["src_name"] = src_name.value
@@ -502,10 +501,9 @@ class DynamoDbDatabase(AbstractDatabase):
                         src_name: SourceName) -> None:
         """Add auxiliary/reference record to database.
 
-        :param str term: referent term
-        :param str concept_id: concept ID to refer to
-        :param str ref_type: one of {'alias', 'label', 'xref',
-            'associated_with'}
+        :param term: referent term
+        :param concept_id: concept ID to refer to
+        :param ref_type: one of {'alias', 'label', 'xref', 'associated_with'}
         :param src_name: name of source for record
         """
         label_and_type = f"{term.lower()}##{ref_type}"

@@ -441,6 +441,7 @@ class PostgresDatabase(AbstractDatabase):
             return None
 
     # TODO: rewrite as materialized view
+    # hopefully i delete this before kori reviews the pr
     _get_dafda_unii_query = b"SELECT concept_id FROM unii_lookup_view WHERE unii = %s;"
     # _get_dafda_unii_query = b"""
     # SELECT concept_id FROM (

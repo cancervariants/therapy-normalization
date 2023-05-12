@@ -1,10 +1,12 @@
 """Test the therapy querying method."""
+import os
 from datetime import datetime
 import json
 from pathlib import Path
 
 import pytest
 
+from therapy.database.database import AWS_ENV_VAR_NAME
 from therapy.query import QueryHandler, InvalidParameterException
 from therapy.schemas import MatchType, SourceName, TherapyDescriptor, Drug
 
@@ -617,14 +619,24 @@ def test_service_meta(query_handler):
     assert service_meta.url == "https://github.com/cancervariants/therapy-normalization"  # noqa: E501
 
 
-# TODO is this still a thing? maybe manually add?
+RUN_TEST = os.environ.get("THERAPY_TEST", "").lower() == "true" and AWS_ENV_VAR_NAME not in os.environ  # noqa: E501
+IS_DDB = os.environ.get("THERAPY_NORM_DB_URL", "").startswith("http://localhost:")
+
+
+@pytest.mark.skipif(not RUN_TEST and IS_DDB, reason="only run in CI with DDB")
 def test_broken_db_handling(query_handler):
     """Test that query fails gracefully if mission-critical DB references are
     broken.
 
-    The test database includes an identity record (fake:00001) with a
-    purposely-broken merge_ref field. This lookup should not raise an
-    exception.
+    The test database includes an identity record (fake:00001) with a purposely-broken
+    merge_ref field. This lookup should not raise an exception.
+
+    In Postgres, that field is foreign-key constrained, so we can't easily spoof it.
     """
-    query = "fake:00001"
-    assert query_handler.normalize(query)
+    query_handler.db.therapies.put_item({
+        "label_and_type": "fake:00001##identity",
+        "concept_id": "fake:00001",
+        "item_type": "identity",
+        "merge_ref": "garage possums"
+    })
+    assert query_handler.normalize("fake:00001")
