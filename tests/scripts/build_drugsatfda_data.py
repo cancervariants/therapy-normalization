@@ -41,4 +41,4 @@ for record in data["results"]:
         out_data["results"].append(record)
 
 with open(outfile_path, "w") as f:
-    json.dump(out_data, f)
+    json.dump(out_data, f, indent=2)

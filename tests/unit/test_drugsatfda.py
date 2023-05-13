@@ -20,22 +20,6 @@ def everolimus() -> Drug:
     return Drug(**{
         "label": "EVEROLIMUS",
         "concept_id": "drugsatfda.nda:022334",
-        "xrefs": [
-            "rxcui:1119400",
-            "rxcui:1119402",
-            "rxcui:1308428",
-            "rxcui:1308430",
-            "rxcui:1308432",
-            "rxcui:1310138",
-            "rxcui:1310144",
-            "rxcui:1310147",
-            "rxcui:845507",
-            "rxcui:845512",
-            "rxcui:845515",
-            "rxcui:845518",
-            "rxcui:998189",
-            "rxcui:998191",
-        ],
         "associated_with": [
             "ndc:0078-0566",
             "ndc:0078-0566",
@@ -45,7 +29,7 @@ def everolimus() -> Drug:
             "ndc:0078-0626",
             "ndc:0078-0627",
             "ndc:0078-0628",
-            "spl:73c94ba1-e426-488a-88f9-8e47f0142972",
+            "spl:bdb8f3d8-f584-4ebd-87e8-b4a4bc43f482",
             "unii:9HW64Q8G6G",
         ],
         "approval_ratings": ["fda_prescription"],
@@ -241,27 +225,6 @@ def test_everolimus(drugsatfda, compare_records, everolimus):
     # test trade name
     response = drugsatfda.search("afinitor")
     assert response.match_type == MatchType.TRADE_NAME
-    records = [r for r in response.records if r.concept_id == concept_id]
-    compare_records(records[0], everolimus)
-
-    # test xref
-    response = drugsatfda.search("rxcui:998191")
-    assert response.match_type == MatchType.XREF
-    records = [r for r in response.records if r.concept_id == concept_id]
-    compare_records(records[0], everolimus)
-
-    response = drugsatfda.search("rxcui:845507")
-    assert response.match_type == MatchType.XREF
-    records = [r for r in response.records if r.concept_id == concept_id]
-    compare_records(records[0], everolimus)
-
-    response = drugsatfda.search("rxcui:998189")
-    assert response.match_type == MatchType.XREF
-    records = [r for r in response.records if r.concept_id == concept_id]
-    compare_records(records[0], everolimus)
-
-    response = drugsatfda.search("rxcui:1308432")
-    assert response.match_type == MatchType.XREF
     records = [r for r in response.records if r.concept_id == concept_id]
     compare_records(records[0], everolimus)
 
