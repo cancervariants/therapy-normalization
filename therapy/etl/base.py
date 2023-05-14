@@ -330,8 +330,8 @@ def create_indications_db(therapy_database: AbstractDatabase) -> DiseaseDatabase
         return create_disease_db()
     elif therapy_database.db_type == DatabaseType.DYNAMODB:
         return create_disease_db(
-            therapy_database.boto_params.get("endpoint_url"),
-            **therapy_database.boto_params
+            therapy_database.boto_params.get("endpoint_url"),  # type: ignore
+            **therapy_database.boto_params  # type: ignore
         )
     elif therapy_database.db_type == DatabaseType.POSTGRESQL:
         if "THERAPY_NORM_DB_URL" in os.environ:
