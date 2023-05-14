@@ -2,7 +2,6 @@
 import pytest
 import isodate
 
-from therapy.database.postgresql import PostgresDatabase
 from therapy.etl import RxNorm
 from therapy.schemas import Drug, MatchType
 
@@ -922,7 +921,7 @@ def test_no_match(rxnorm):
     assert len(response.records) == 0
 
 
-def test_brand_cui_lookup(database: PostgresDatabase):
+def test_brand_cui_lookup(database):
     """Test that brand names are correctly linked to identity concept."""
     result = database.get_rxnorm_id_by_brand("rxcui:1041527")
     assert result == "rxcui:161"
