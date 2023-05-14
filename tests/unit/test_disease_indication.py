@@ -25,7 +25,9 @@ def disease_database(database):
         disease_db = create_disease_db(os.environ.get("THERAPY_NORM_DB_URL"))
     elif isinstance(database, PostgresDatabase):
         therapy_uri = os.environ.get("THERAPY_NORM_DB_URL")
-        disease_uri = f"{'/'.join(therapy_uri.rsplit('/', 1)[:-1])}/disease_normalizer_test"  # noqa: E501
+        disease_uri = os.environ.get("DISEASE_NORM_DB_URL")
+        if not disease_uri:
+            disease_uri = f"{'/'.join(therapy_uri.rsplit('/', 1)[:-1])}/disease_normalizer_test"  # noqa: E501
         disease_db = create_disease_db(disease_uri)
     else:
         raise ValueError("unrecognized DB instance")
