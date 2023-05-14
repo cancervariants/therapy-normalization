@@ -8,9 +8,8 @@ from disease.database import AWS_ENV_VAR_NAME, create_db as create_disease_db
 from disease.schemas import SourceName as DiseaseSourceName, \
     SourceMeta as DiseaseSourceMeta
 
-from therapy.database.dynamodb import DynamoDbDatabase
-from therapy.database.postgresql import PostgresDatabase
 from therapy.etl.chembl import ChEMBL
+from therapy.schemas import DatabaseType
 
 
 @pytest.fixture(scope="module")
@@ -21,9 +20,9 @@ def disease_database(database):
     assumptions about how the therapy DB is being defined (ie via env var), so we'll
     similarly cheat a bit to stand up corresponding disease DB instances.
     """
-    if isinstance(database, DynamoDbDatabase):
+    if database.db_type == DatabaseType.DYNAMODB:
         disease_db = create_disease_db(os.environ.get("THERAPY_NORM_DB_URL"))
-    elif isinstance(database, PostgresDatabase):
+    elif database.db_type == DatabaseType.POSTGRESQL:
         therapy_uri = os.environ.get("THERAPY_NORM_DB_URL")
         disease_uri = os.environ.get("DISEASE_NORM_DB_URL")
         if not disease_uri:
