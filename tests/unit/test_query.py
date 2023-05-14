@@ -452,10 +452,10 @@ def test_query_normalize(query_handler, normalized_phenobarbital,
     compare_vod(response, normalized_cisplatin, query, MatchType.ALIAS,
                 "normalize.therapy:cis%20Diamminedichloroplatinum")
 
-    query = "Rovamycine"
+    query = "spiramycin I"
     response = query_handler.normalize(query)
     compare_vod(response, normalized_spiramycin, query, MatchType.ALIAS,
-                "normalize.therapy:Rovamycine")
+                "normalize.therapy:spiramycin%20I")
 
     # test normalized group with single member
     query = "any therapy"
@@ -577,7 +577,7 @@ def test_unmerged_normalize(query_handler, compare_records,
     compare_unmerged_response(response, query, [], MatchType.ASSOCIATED_WITH,
                               unmerged_normalized_spiramycin, compare_records)
 
-    query = "rovamycin"
+    query = "spiramycin I"
     response = query_handler.normalize_unmerged(query)
     compare_unmerged_response(response, query, [], MatchType.ALIAS,
                               unmerged_normalized_spiramycin, compare_records)
