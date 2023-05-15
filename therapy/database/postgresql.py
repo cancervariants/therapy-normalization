@@ -106,7 +106,7 @@ class PostgresDatabase(AbstractDatabase):
 
         with self.conn.cursor() as cur:
             cur.execute(self._drop_query)
-            self.conn.commit()
+        self.conn.commit()
         logger.info("Dropped all existing therapy normalizer tables.")
 
     def check_schema_initialized(self) -> bool:

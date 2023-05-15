@@ -50,7 +50,7 @@ def pytest_sessionstart():
     """Wipe DB before testing if in test environment."""
     if IS_TEST_ENV:
         if os.environ.get(AWS_ENV_VAR_NAME):
-            assert False, f"Cannot have both DISEASE_TEST and {AWS_ENV_VAR_NAME} set."
+            assert False, f"Cannot have both THERAPY_TEST and {AWS_ENV_VAR_NAME} set."
         db = create_db()
         db.drop_db()
         db.initialize_db()
@@ -85,8 +85,8 @@ def disease_normalizer():
     with open(TEST_DATA_DIRECTORY / "disease_normalization.json", "r") as f:
         disease_data = json.load(f)
 
-        def _normalize_disease(query: str):
-            return disease_data.get(query.lower())
+    def _normalize_disease(query: str):
+        return disease_data.get(query.lower())
 
     return _normalize_disease
 
