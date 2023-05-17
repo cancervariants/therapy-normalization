@@ -10,7 +10,7 @@ from botocore.exceptions import ClientError
 
 from therapy import SOURCES, PREFIX_LOOKUP, ITEM_TYPES, NAMESPACE_LUIS
 from therapy.database import Database
-from therapy.schemas import BaseNormalizationService, Drug, SourceMeta, MatchType, \
+from therapy.schemas import BaseNormalizationService, Therapy, SourceMeta, MatchType, \
     ServiceMeta, HasIndication, SourcePriority, SearchService, NormalizationService, \
     NamespacePrefix, SourceName, TherapyDescriptor, UnmergedNormalizationService, \
     MatchesNormalized
@@ -115,7 +115,7 @@ class QueryHandler:
         if inds:
             item["has_indication"] = [self._get_indication(i) for i in inds]
 
-        drug = Drug(**item)
+        drug = Therapy(**item)
         src_name = item["src_name"]
 
         matches = response["source_matches"]
@@ -554,7 +554,7 @@ class QueryHandler:
         add_vod_curry = lambda res, rec, mat: self._add_vod(res, rec, query, mat)  # noqa: E501 E731
         return self._perform_normalized_lookup(response, query, infer, add_vod_curry)
 
-    def _construct_drug_match(self, record: Dict) -> Drug:
+    def _construct_drug_match(self, record: Dict) -> Therapy:
         """Create individual Drug match for unmerged normalization endpoint.
 
         :param Dict record: record to add
@@ -563,7 +563,7 @@ class QueryHandler:
         inds = record.get("has_indication")
         if inds:
             record["has_indication"] = [self._get_indication(i) for i in inds]
-        return Drug(**record)
+        return Therapy(**record)
 
     def _add_normalized_records(self, response: UnmergedNormalizationService,
                                 normalized_record: Dict,
