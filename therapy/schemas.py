@@ -149,7 +149,7 @@ class Therapy(BaseModel):
     has_indication: Optional[List[HasIndication]] = []
 
     class Config:
-        """Configure Drug class"""
+        """Configure Therapy class"""
 
         @staticmethod
         def schema_extra(schema: Dict[str, Any], model: Type["Therapy"]) -> None:

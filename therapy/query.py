@@ -115,7 +115,7 @@ class QueryHandler:
         if inds:
             item["has_indication"] = [self._get_indication(i) for i in inds]
 
-        drug = Therapy(**item)
+        therapy = Therapy(**item)
         src_name = item["src_name"]
 
         matches = response["source_matches"]
@@ -124,13 +124,13 @@ class QueryHandler:
         elif matches[src_name] is None:
             matches[src_name] = {
                 "match_type": MatchType[match_type.upper()],
-                "records": [drug],
+                "records": [therapy],
                 "source_meta_": self._fetch_meta(src_name)
             }
         elif matches[src_name]["match_type"] == MatchType[match_type.upper()]:
-            if drug.concept_id not in [r.concept_id for r
-                                       in matches[src_name]["records"]]:
-                matches[src_name]["records"].append(drug)
+            if therapy.concept_id not in [r.concept_id for r
+                                          in matches[src_name]["records"]]:
+                matches[src_name]["records"].append(therapy)
 
         return response, src_name
 
@@ -138,8 +138,8 @@ class QueryHandler:
                        response: Dict[str, Dict],
                        concept_ids: Set[str],
                        match_type: str) -> Tuple[Dict, Set]:
-        """Return matched Drug records as a structured response for a given collection
-        of concept IDs.
+        """Return matched Therapy records as a structured response for a given
+        collection of concept IDs.
 
         :param Dict[str, Dict] response: in-progress response object
         :param List[str] concept_ids: List of concept IDs to build from.  Should be all
@@ -554,11 +554,11 @@ class QueryHandler:
         add_vod_curry = lambda res, rec, mat: self._add_vod(res, rec, query, mat)  # noqa: E501 E731
         return self._perform_normalized_lookup(response, query, infer, add_vod_curry)
 
-    def _construct_drug_match(self, record: Dict) -> Therapy:
-        """Create individual Drug match for unmerged normalization endpoint.
+    def _construct_therapy_match(self, record: Dict) -> Therapy:
+        """Create individual therapy match for unmerged normalization endpoint.
 
         :param Dict record: record to add
-        :return: completed Drug object
+        :return: completed therapy object
         """
         inds = record.get("has_indication")
         if inds:
@@ -581,7 +581,7 @@ class QueryHandler:
         if normalized_record["item_type"] == "identity":
             record_source = SourceName[normalized_record["src_name"].upper()]
             response.source_matches[record_source] = MatchesNormalized(
-                records=[self._construct_drug_match(normalized_record)],
+                records=[self._construct_therapy_match(normalized_record)],
                 source_meta_=self._fetch_meta(record_source.value)
             )
         else:
@@ -592,12 +592,12 @@ class QueryHandler:
                 if not record:
                     continue  # cover a few chemidplus edge cases
                 record_source = SourceName[record["src_name"].upper()]
-                drug = self._construct_drug_match(record)
+                therapy = self._construct_therapy_match(record)
                 if record_source in response.source_matches:
-                    response.source_matches[record_source].records.append(drug)
+                    response.source_matches[record_source].records.append(therapy)
                 else:
                     response.source_matches[record_source] = MatchesNormalized(
-                        records=[drug],
+                        records=[therapy],
                         source_meta_=self._fetch_meta(record_source.value)
                     )
         return response

@@ -165,10 +165,11 @@ def _compare_response(
 
     :param Dict response: response object returned by QueryHandler
     :param MatchType match_type: expected match type
-    :param Drug fixture: single Drug object to match response against
-    :param List[Drug] fixture_list: multiple Drug objects to match response against
+    :param Therapy fixture: single therapy object to match response against
+    :param List[Therapy] fixture_list: multiple therapy objects to match response
+        against
     :param int num_records: expected number of records in response. If not given, tests
-        for number of fixture Drugs given (ie, 1 for single fixture and length of
+        for number of fixture therapies given (ie, 1 for single fixture and length of
         fixture_list otherwise)
     """
     if fixture and fixture_list:
