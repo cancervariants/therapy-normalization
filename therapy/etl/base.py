@@ -17,7 +17,7 @@ import bioversions
 from disease.query import QueryHandler as DiseaseNormalizer
 
 from therapy import APP_ROOT, ITEM_TYPES, DownloadException
-from therapy.schemas import Drug, SourceName
+from therapy.schemas import Therapy, SourceName
 from therapy.database import Database
 from therapy.etl.rules import Rules
 
@@ -235,7 +235,7 @@ class Base(ABC):
         """
         therapy = self._rules.apply_rules_to_therapy(therapy)
         try:
-            Drug(**therapy)
+            Therapy(**therapy)
         except ValidationError as e:
             logger.error(f"Attempted to load invalid therapy: {therapy}")
             raise e

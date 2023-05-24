@@ -5,7 +5,7 @@ import isodate
 import pytest
 
 from therapy.etl.wikidata import Wikidata
-from therapy.schemas import Drug, MatchType
+from therapy.schemas import Therapy, MatchType
 
 
 @pytest.fixture(scope="module")
@@ -38,7 +38,7 @@ def cisplatin():
         "associated_with": ["pubchem.compound:5702198"],
         "trade_names": [],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -68,7 +68,7 @@ def interferon_alfacon_1():
         "associated_with": [],
         "trade_names": [],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 # Test drug that has > 20 aliases
@@ -91,7 +91,7 @@ def d_methamphetamine():
         ],
         "trade_names": [],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 # Test removing duplicate (case sensitive) aliases
@@ -124,13 +124,13 @@ def atropine():
         ],
         "trade_names": [],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
 def basiliximab():
     """Create basiliximab test fixture to demonstrate rule-based filtering."""
-    return Drug(
+    return Therapy(
         label="basiliximab",
         concept_id="wikidata:Q418702",
         aliases=["SDZ-CHI-621", "CHI-621", "CHI621", "chimeric mouse-human antiCD25"],

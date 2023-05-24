@@ -28,8 +28,8 @@ class CLI:
     @staticmethod
     @click.command()
     @click.option(
-        "--normalizer",
-        help="The normalizer(s) you wish to update separated by spaces."
+        "--sources",
+        help="The source(s) you wish to update separated by spaces."
     )
     @click.option(
         "--aws_instance",
@@ -57,12 +57,12 @@ class CLI:
         default=False,
         help="Use most recent existing source data instead of fetching latest version"
     )
-    def update_normalizer_db(normalizer: str, aws_instance: str, db_url: str,
+    def update_normalizer_db(sources: str, aws_instance: str, db_url: str,
                              update_all: bool, update_merged: bool,
                              use_existing: bool) -> None:
         """Update selected normalizer source(s) in the therapy database.
         \f  # noqa: D301
-        :param str normalizer: comma-separated string listing source names
+        :param str sources: comma-separated string listing source names
         :param str aws_instance: The AWS environment name.
             Must be one of: `Dev`, `Staging`, or `Prod`
         :param str db_url: DynamoDB endpoint URL (usually only needed locally)
@@ -90,27 +90,27 @@ class CLI:
         db = Database(db_url=endpoint_url)
 
         if update_all:
-            normalizers = list(src for src in SOURCES)
-            CLI()._check_disease_normalizer(normalizers, endpoint_url)
-            CLI()._update_normalizers(normalizers, db, update_merged, use_existing)
-        elif not normalizer:
+            sources_split = list(src for src in SOURCES)
+            CLI()._check_disease_normalizer(sources_split, endpoint_url)
+            CLI()._update_normalizer(sources_split, db, update_merged, use_existing)
+        elif not sources:
             if update_merged:
                 CLI()._update_merged(db, [])
             else:
                 CLI()._help_msg()
         else:
-            normalizers = str(normalizer).lower().split()
+            sources_split = str(sources).lower().split()
 
-            if len(normalizers) == 0:
+            if len(sources_split) == 0:
                 CLI()._help_msg()
 
-            non_sources = set(normalizers) - {src for src in SOURCES}
+            non_sources = set(sources_split) - {src for src in SOURCES}
 
             if len(non_sources) != 0:
                 raise Exception(f"Not valid source(s): {non_sources}")
 
-            CLI()._check_disease_normalizer(normalizers, endpoint_url)
-            CLI()._update_normalizers(normalizers, db, update_merged, use_existing)
+            CLI()._check_disease_normalizer(sources_split, endpoint_url)
+            CLI()._update_normalizer(sources_split, db, update_merged, use_existing)
 
     def _check_disease_normalizer(self, normalizers: List[str],
                                   endpoint_url: Optional[str]) -> None:
@@ -157,8 +157,8 @@ class CLI:
         ctx.exit()
 
     @staticmethod
-    def _update_normalizers(normalizers: List[str], db: Database,
-                            update_merged: bool, use_existing: bool) -> None:
+    def _update_normalizer(sources: List[str], db: Database,
+                           update_merged: bool, use_existing: bool) -> None:
         """Update selected normalizer sources.
         :param List[str] normalizers: list of source names to update
         :param Database db: database instance to use
@@ -173,7 +173,7 @@ class CLI:
         SOURCES_CLASS = \
             {s.value.lower(): eval(s.value) for s in SourceName.__members__.values()}
 
-        for n in normalizers:
+        for n in sources:
             msg = f"Deleting {n}..."
             click.echo(f"\n{msg}")
             logger.info(msg)
