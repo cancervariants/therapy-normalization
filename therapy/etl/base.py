@@ -15,6 +15,7 @@ from pydantic import ValidationError
 import requests
 import bioversions
 from disease.query import QueryHandler as DiseaseNormalizer
+from tqdm import tqdm
 
 from therapy import APP_ROOT, ITEM_TYPES, DownloadException
 from therapy.schemas import Therapy, SourceName
@@ -125,10 +126,16 @@ class Base(ABC):
                 raise DownloadException(
                     f"Failed to download {outfile_path.name} from {url}."
                 )
+            total_size = int(r.headers.get("content-length", 0))
             with open(dl_path, "wb") as h:
-                for chunk in r.iter_content(chunk_size=8192):
-                    if chunk:
-                        h.write(chunk)
+                with tqdm(
+                    total=total_size, unit="B", unit_scale=True, desc="Downloading",
+                    ncols=80
+                ) as progress_bar:
+                    for chunk in r.iter_content(chunk_size=8192):
+                        if chunk:
+                            h.write(chunk)
+                            progress_bar.update(len(chunk))
         if handler:
             handler(dl_path, outfile_path)
 
@@ -144,7 +151,15 @@ class Base(ABC):
                 logger.debug(f"FTP login to {host} was successful")
                 ftp.cwd(host_dir)
                 with open(self._src_dir / host_fn, "wb") as fp:
-                    ftp.retrbinary(f"RETR {host_fn}", fp.write)
+                    total_size = ftp.size(host_fn)
+                    with tqdm(
+                        total=total_size, unit="B", unit_scale=True, desc="Downloading",
+                        ncols=80
+                    ) as pbar:
+                        def callback(data: bytes) -> None:
+                            fp.write(data)
+                            pbar.update(len(data))
+                        ftp.retrbinary(f"RETR {host_fn}", callback)
         except ftplib.all_errors as e:
             logger.error(f"FTP download failed: {e}")
             raise Exception(e)
