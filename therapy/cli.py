@@ -245,8 +245,8 @@ def _load_merge(db: AbstractDatabase, processed_ids: Set[str]) -> None:
 
 @click.command()
 @click.option(
-    "--normalizer",
-    help="The normalizer(s) you wish to update separated by spaces."
+    "--sources",
+    help="The source(s) you wish to update, separated by spaces."
 )
 @click.option(
     "--aws_instance",
@@ -274,13 +274,13 @@ def _load_merge(db: AbstractDatabase, processed_ids: Set[str]) -> None:
     help="Use most recent local source data instead of fetching latest versions."
 )
 def update_normalizer_db(
-    normalizer: str, aws_instance: bool, db_url: str, update_all: bool,
+    sources: str, aws_instance: bool, db_url: str, update_all: bool,
     update_merged: bool, from_local: bool
 ) -> None:
     """Update selected normalizer source(s) in the therapy database.
 
     \f
-    :param normalizer: names of sources to update, comma-separated
+    :param sources: names of sources to update, comma-separated
     :param aws_instance: if true, use cloud instance
     :param db_url: URI pointing to database
     :param update_all: if true, update all sources (ignore `normalizer` parameter)
@@ -290,10 +290,10 @@ def update_normalizer_db(
     db = create_db(db_url, aws_instance)
 
     if update_all:
-        sources = list(SourceName)
-        _check_disease_normalizer(sources, db, from_local)
-        _update_normalizers(list(SourceName), db, update_merged, from_local)
-    elif not normalizer:
+        sources_to_update = list(SourceName)
+        _check_disease_normalizer(sources_to_update, db, from_local)
+        _update_normalizers(sources_to_update, db, update_merged, from_local)
+    elif not sources:
         if update_merged:
             _load_merge(db, set())
         else:
@@ -304,17 +304,17 @@ def update_normalizer_db(
             click.echo(ctx.get_help())
             ctx.exit()
     else:
-        normalizers = normalizer.lower().split()
+        sources_split = sources.lower().split()
 
-        if len(normalizers) == 0:
+        if len(sources_split) == 0:
             raise Exception("Must enter a normalizer")
 
-        non_sources = set(normalizers) - set(SOURCES)
+        non_sources = set(sources_split) - set(SOURCES)
 
         if len(non_sources) != 0:
             raise Exception(f"Not valid source(s): {non_sources}")
 
-        sources_to_update = {SourceName(SOURCES[s]) for s in normalizers}
+        sources_to_update = {SourceName(SOURCES[s]) for s in sources_split}
         _check_disease_normalizer(sources_to_update, db, from_local)
         _update_normalizers(sources_to_update, db, update_merged, from_local)
 

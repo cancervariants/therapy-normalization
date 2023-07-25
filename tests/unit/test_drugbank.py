@@ -6,7 +6,7 @@ import re
 import pytest
 
 from therapy.etl.drugbank import DrugBank
-from therapy.schemas import Drug, MatchType
+from therapy.schemas import Therapy, MatchType
 
 
 @pytest.fixture(scope="module")
@@ -37,7 +37,7 @@ def cisplatin():
             "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"
         ],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -62,7 +62,7 @@ def bentiromide():
             "inchikey:SPPTWHFVYKCNNK-FQEVSTJZSA-N"
         ],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -78,7 +78,7 @@ def aloe_ferox_leaf():
         "trade_names": [],
         "associated_with": ["unii:0D145J8EME"]
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 def test_concept_id_match(drugbank, compare_response, cisplatin, bentiromide,

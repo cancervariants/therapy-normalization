@@ -10,7 +10,7 @@ import pytest
 from therapy.database.database import AbstractDatabase, create_db
 from therapy.etl.base import Base
 from therapy.query import QueryHandler
-from therapy.schemas import Drug, MatchType, MatchesKeyed
+from therapy.schemas import Therapy, MatchType, MatchesKeyed
 from therapy.database import AWS_ENV_VAR_NAME
 
 
@@ -129,7 +129,7 @@ def test_source(
     return test_source_factory
 
 
-def _compare_records(actual: Drug, fixt: Drug):
+def _compare_records(actual: Therapy, fixt: Therapy):
     """Check that identity records are identical."""
     assert actual.concept_id == fixt.concept_id
     assert actual.label == fixt.label
@@ -176,18 +176,19 @@ def compare_records():
 
 
 def _compare_response(
-    response: MatchesKeyed, match_type: MatchType, fixture: Optional[Drug] = None,
-    fixture_list: Optional[List[Drug]] = None, num_records: int = 0
+    response: MatchesKeyed, match_type: MatchType, fixture: Optional[Therapy] = None,
+    fixture_list: Optional[List[Therapy]] = None, num_records: int = 0
 ):
     """Check that test response is correct. Only 1 of {fixture, fixture_list}
     should be passed as arguments. num_records should only be passed with fixture_list.
 
     :param Dict response: response object returned by QueryHandler
     :param MatchType match_type: expected match type
-    :param Drug fixture: single Drug object to match response against
-    :param List[Drug] fixture_list: multiple Drug objects to match response against
+    :param Therapy fixture: single therapy object to match response against
+    :param List[Therapy] fixture_list: multiple therapy objects to match response
+        against
     :param int num_records: expected number of records in response. If not given, tests
-        for number of fixture Drugs given (ie, 1 for single fixture and length of
+        for number of fixture therapies given (ie, 1 for single fixture and length of
         fixture_list otherwise)
     """
     if fixture and fixture_list:

@@ -81,10 +81,11 @@ class Wikidata(Base):
     def _download_data(self) -> None:
         """Download latest Wikidata source dump."""
         _logger.info("Retrieving source data for Wikidata")
-        query_results = execute_sparql_query(SPARQL_QUERY)
-        if query_results is None:
-            raise DownloadException("Wikidata SPARQL query returned no results")
-        results = query_results["results"]["bindings"]
+
+        medicine_query_results = execute_sparql_query(SPARQL_QUERY)
+        if medicine_query_results is None:
+            raise DownloadException("Wikidata medicine SPARQL query failed")
+        results = medicine_query_results["results"]["bindings"]
 
         transformed_data = []
         for item in results:

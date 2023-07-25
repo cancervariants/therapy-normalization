@@ -1,0 +1,1036 @@
+[
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "(+)-(S)-N-alpha-dimethylphenethylamine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "(alphaS)-N,alpha-dimethylbenzeneethanamine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "(S)-N,alpha-dimethylbenzeneethanamine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "dextromethamphetamine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "methyl-beta-phenylisopropylamine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "base",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "crank",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "speed",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "glass",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "chalk",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "pure",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "crystal",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "ice",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "fast",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "crypto",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "whiz",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "(+)-(S)-P-\u03b1-dimethylphenethylamine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "(S)-N,\u03b1-dimethylbenzeneethanamine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "(\u03b1S)-N,\u03b1-dimethylbenzeneethanamine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "crystal meth",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "d-1-phenyl-2-methylaminopropane",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "d-deoxyephedrine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "d-desoxyephedrine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "d-meth",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "d-N-methylamphetamine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "d-phenylisopropylmethylamine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "desoxyephedrine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "metamfetamine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "meth",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "methamphetamine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "methyl-\u03b2-phenylisopropylamine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "methylamphetamine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "N-methylamphetamine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "S-methamphetamine",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "tweak",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "drugbank": "01577",
+    "rxnorm": "6816",
+    "chembl": "CHEMBL1201201",
+    "pubchemCompound": "10836",
+    "casRegistry": "537-46-2",
+    "alias": "wax",
+    "itemLabel": "D-methamphetamine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "drugbank": "01143",
+    "rxnorm": "1545987",
+    "chembl": "CHEMBL1006",
+    "pubchemCompound": "2141",
+    "casRegistry": "20537-88-6",
+    "alias": "WR-1065",
+    "itemLabel": "amifostine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "drugbank": "01143",
+    "rxnorm": "1545987",
+    "chembl": "CHEMBL1006",
+    "pubchemCompound": "2141",
+    "casRegistry": "20537-88-6",
+    "alias": "Amifostine",
+    "itemLabel": "amifostine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "drugbank": "01143",
+    "rxnorm": "1545987",
+    "chembl": "CHEMBL1006",
+    "pubchemCompound": "2141",
+    "casRegistry": "20537-88-6",
+    "alias": "Amifostina",
+    "itemLabel": "amifostine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "drugbank": "01143",
+    "rxnorm": "1545987",
+    "chembl": "CHEMBL1006",
+    "pubchemCompound": "2141",
+    "casRegistry": "20537-88-6",
+    "alias": "amifostine anhydrous",
+    "itemLabel": "amifostine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "drugbank": "01143",
+    "rxnorm": "1545987",
+    "chembl": "CHEMBL1006",
+    "pubchemCompound": "2141",
+    "casRegistry": "20537-88-6",
+    "alias": "Amifostine anhydrous",
+    "itemLabel": "amifostine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "drugbank": "01143",
+    "rxnorm": "1545987",
+    "chembl": "CHEMBL1006",
+    "pubchemCompound": "2141",
+    "casRegistry": "20537-88-6",
+    "alias": "Amifostine Ethiofos",
+    "itemLabel": "amifostine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "drugbank": "01143",
+    "rxnorm": "1545987",
+    "chembl": "CHEMBL1006",
+    "pubchemCompound": "2141",
+    "casRegistry": "20537-88-6",
+    "alias": "Amifostinum",
+    "itemLabel": "amifostine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "drugbank": "01143",
+    "rxnorm": "1545987",
+    "chembl": "CHEMBL1006",
+    "pubchemCompound": "2141",
+    "casRegistry": "20537-88-6",
+    "alias": "Aminopropylaminoethyl thiophosphate",
+    "itemLabel": "amifostine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "drugbank": "01143",
+    "rxnorm": "1545987",
+    "chembl": "CHEMBL1006",
+    "pubchemCompound": "2141",
+    "casRegistry": "20537-88-6",
+    "alias": "Aminopropylaminoethyl Thiophosphate",
+    "itemLabel": "amifostine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "drugbank": "01143",
+    "rxnorm": "1545987",
+    "chembl": "CHEMBL1006",
+    "pubchemCompound": "2141",
+    "casRegistry": "20537-88-6",
+    "alias": "Apaetp",
+    "itemLabel": "amifostine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "drugbank": "01143",
+    "rxnorm": "1545987",
+    "chembl": "CHEMBL1006",
+    "pubchemCompound": "2141",
+    "casRegistry": "20537-88-6",
+    "alias": "Ethiofos",
+    "itemLabel": "amifostine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "drugbank": "01143",
+    "rxnorm": "1545987",
+    "chembl": "CHEMBL1006",
+    "pubchemCompound": "2141",
+    "casRegistry": "20537-88-6",
+    "alias": "Ethyol",
+    "itemLabel": "amifostine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "drugbank": "01143",
+    "rxnorm": "1545987",
+    "chembl": "CHEMBL1006",
+    "pubchemCompound": "2141",
+    "casRegistry": "20537-88-6",
+    "alias": "Gammaphos",
+    "itemLabel": "amifostine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "drugbank": "01143",
+    "rxnorm": "1545987",
+    "chembl": "CHEMBL1006",
+    "pubchemCompound": "2141",
+    "casRegistry": "20537-88-6",
+    "alias": "SAPEP",
+    "itemLabel": "amifostine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "drugbank": "01143",
+    "rxnorm": "1545987",
+    "chembl": "CHEMBL1006",
+    "pubchemCompound": "2141",
+    "casRegistry": "20537-88-6",
+    "alias": "WR-2721",
+    "itemLabel": "amifostine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "Phenobarbital",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "5-Ethyl-5-phenylbarbituric acid",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "5-Phenyl-5-ethylbarbituric acid",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "fenobarbital",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "Luminal\u00ae",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "phenobarbital sodium",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "Phenobarbitol",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "Phenobarbitone",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "Phenobarbituric Acid",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "Phenylaethylbarbitursaeure",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "phenylethylbarbiturate",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "Phenylethylbarbiturate",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "Phenylethylbarbituric Acid",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "Phenylethylbarbitursaeure",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "Phenylethylmalonylurea",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "drugbank": "01174",
+    "rxnorm": "8134",
+    "chembl": "CHEMBL40",
+    "pubchemCompound": "4763",
+    "casRegistry": "50-06-6",
+    "alias": "PHENYLETHYLMALONYLUREA",
+    "itemLabel": "phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q412415",
+    "drugbank": "00515",
+    "rxnorm": "2555",
+    "chembl": "CHEMBL11359",
+    "casRegistry": "15663-27-1",
+    "alias": "CDDP",
+    "itemLabel": "cisplatin",
+    "pubchemCompound": "5702198"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q412415",
+    "drugbank": "00515",
+    "rxnorm": "2555",
+    "chembl": "CHEMBL11359",
+    "casRegistry": "15663-27-1",
+    "alias": "Cis-DDP",
+    "itemLabel": "cisplatin",
+    "pubchemCompound": "5702198"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q412415",
+    "drugbank": "00515",
+    "rxnorm": "2555",
+    "chembl": "CHEMBL11359",
+    "casRegistry": "15663-27-1",
+    "alias": "CIS-DDP",
+    "itemLabel": "cisplatin",
+    "pubchemCompound": "5702198"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q412415",
+    "drugbank": "00515",
+    "rxnorm": "2555",
+    "chembl": "CHEMBL11359",
+    "casRegistry": "15663-27-1",
+    "alias": "cis-diamminedichloroplatinum(II)",
+    "itemLabel": "cisplatin",
+    "pubchemCompound": "5702198"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q412415",
+    "drugbank": "00515",
+    "rxnorm": "2555",
+    "chembl": "CHEMBL11359",
+    "casRegistry": "15663-27-1",
+    "alias": "Platinol",
+    "itemLabel": "cisplatin",
+    "pubchemCompound": "5702198"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q412415",
+    "drugbank": "00515",
+    "rxnorm": "2555",
+    "chembl": "CHEMBL11359",
+    "casRegistry": "15663-27-1",
+    "alias": "Platinol-AQ",
+    "itemLabel": "cisplatin",
+    "pubchemCompound": "5702198"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q418702",
+    "drugbank": "00074",
+    "rxnorm": "196102",
+    "chembl": "CHEMBL1201439",
+    "casRegistry": "179045-86-4",
+    "alias": "Ig gamma-1 chain C region",
+    "itemLabel": "basiliximab"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q418702",
+    "drugbank": "00074",
+    "rxnorm": "196102",
+    "chembl": "CHEMBL1201439",
+    "casRegistry": "179045-86-4",
+    "alias": "CHI-621",
+    "itemLabel": "basiliximab"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q418702",
+    "drugbank": "00074",
+    "rxnorm": "196102",
+    "chembl": "CHEMBL1201439",
+    "casRegistry": "179045-86-4",
+    "alias": "CHI621",
+    "itemLabel": "basiliximab"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q418702",
+    "drugbank": "00074",
+    "rxnorm": "196102",
+    "chembl": "CHEMBL1201439",
+    "casRegistry": "179045-86-4",
+    "alias": "chimeric mouse-human antiCD25",
+    "itemLabel": "basiliximab"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q418702",
+    "drugbank": "00074",
+    "rxnorm": "196102",
+    "chembl": "CHEMBL1201439",
+    "casRegistry": "179045-86-4",
+    "alias": "SDZ-CHI-621",
+    "itemLabel": "basiliximab"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q15353101",
+    "drugbank": "00069",
+    "rxnorm": "59744",
+    "chembl": "CHEMBL1201557",
+    "casRegistry": "118390-30-0",
+    "alias": "CIFN",
+    "itemLabel": "interferon alfacon-1"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q15353101",
+    "drugbank": "00069",
+    "rxnorm": "59744",
+    "chembl": "CHEMBL1201557",
+    "casRegistry": "118390-30-0",
+    "alias": "consensus interferon",
+    "itemLabel": "interferon alfacon-1"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q15353101",
+    "drugbank": "00069",
+    "rxnorm": "59744",
+    "chembl": "CHEMBL1201557",
+    "casRegistry": "118390-30-0",
+    "alias": "IFN Alfacon-1",
+    "itemLabel": "interferon alfacon-1"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q15353101",
+    "drugbank": "00069",
+    "rxnorm": "59744",
+    "chembl": "CHEMBL1201557",
+    "casRegistry": "118390-30-0",
+    "alias": "Interferon Consensus, Methionyl",
+    "itemLabel": "interferon alfacon-1"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q15353101",
+    "drugbank": "00069",
+    "rxnorm": "59744",
+    "chembl": "CHEMBL1201557",
+    "casRegistry": "118390-30-0",
+    "alias": "methionyl interferon consensus",
+    "itemLabel": "interferon alfacon-1"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q15353101",
+    "drugbank": "00069",
+    "rxnorm": "59744",
+    "chembl": "CHEMBL1201557",
+    "casRegistry": "118390-30-0",
+    "alias": "methionyl-interferon-consensus",
+    "itemLabel": "interferon alfacon-1"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q15353101",
+    "drugbank": "00069",
+    "rxnorm": "59744",
+    "chembl": "CHEMBL1201557",
+    "casRegistry": "118390-30-0",
+    "alias": "rCon-IFN",
+    "itemLabel": "interferon alfacon-1"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q15353101",
+    "drugbank": "00069",
+    "rxnorm": "59744",
+    "chembl": "CHEMBL1201557",
+    "casRegistry": "118390-30-0",
+    "alias": "Recombinant Consensus Interferon",
+    "itemLabel": "interferon alfacon-1"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q15353101",
+    "drugbank": "00069",
+    "rxnorm": "59744",
+    "chembl": "CHEMBL1201557",
+    "casRegistry": "118390-30-0",
+    "alias": "Recombinant methionyl human consensus interferon",
+    "itemLabel": "interferon alfacon-1"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q27287118",
+    "drugbank": "14793",
+    "chembl": "CHEMBL2386346",
+    "pubchemCompound": "57406853",
+    "casRegistry": "939981-39-2",
+    "alias": "RG7112",
+    "itemLabel": "ro-5045337"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q27287118",
+    "drugbank": "14793",
+    "chembl": "CHEMBL2386346",
+    "pubchemCompound": "57406853",
+    "casRegistry": "939981-39-2",
+    "alias": "RO 5045337",
+    "itemLabel": "ro-5045337"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q26272",
+    "drugbank": "00572",
+    "rxnorm": "1223",
+    "chembl": "CHEMBL517712",
+    "pubchemCompound": "174174",
+    "casRegistry": "51-55-8",
+    "alias": "(+-)-Atropine",
+    "itemLabel": "atropine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q26272",
+    "drugbank": "00572",
+    "rxnorm": "1223",
+    "chembl": "CHEMBL517712",
+    "pubchemCompound": "174174",
+    "casRegistry": "51-55-8",
+    "alias": "(+-)-Hyoscyamine",
+    "itemLabel": "atropine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q26272",
+    "drugbank": "00572",
+    "rxnorm": "1223",
+    "chembl": "CHEMBL517712",
+    "pubchemCompound": "174174",
+    "casRegistry": "51-55-8",
+    "alias": "(+,-)-Tropyl tropate",
+    "itemLabel": "atropine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q26272",
+    "drugbank": "00572",
+    "rxnorm": "1223",
+    "chembl": "CHEMBL517712",
+    "pubchemCompound": "174174",
+    "casRegistry": "51-55-8",
+    "alias": "(3-Endo)-8-methyl-8-azabicyclo[3.2.1]oct-3-yl tropate",
+    "itemLabel": "atropine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q26272",
+    "drugbank": "00572",
+    "rxnorm": "1223",
+    "chembl": "CHEMBL517712",
+    "pubchemCompound": "174174",
+    "casRegistry": "51-55-8",
+    "alias": "[(1S,5R)-8-Methyl-8-azabicyclo[3.2.1]oct-3-yl] 3-hydroxy-2-phenyl-propanoate",
+    "itemLabel": "atropine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q26272",
+    "drugbank": "00572",
+    "rxnorm": "1223",
+    "chembl": "CHEMBL517712",
+    "pubchemCompound": "174174",
+    "casRegistry": "51-55-8",
+    "alias": "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl 3-hydroxy-2-phenylpropanoate",
+    "itemLabel": "atropine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q26272",
+    "drugbank": "00572",
+    "rxnorm": "1223",
+    "chembl": "CHEMBL517712",
+    "pubchemCompound": "174174",
+    "casRegistry": "51-55-8",
+    "alias": "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate",
+    "itemLabel": "atropine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q26272",
+    "drugbank": "00572",
+    "rxnorm": "1223",
+    "chembl": "CHEMBL517712",
+    "pubchemCompound": "174174",
+    "casRegistry": "51-55-8",
+    "alias": "dl-Hyoscyamine",
+    "itemLabel": "atropine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q26272",
+    "drugbank": "00572",
+    "rxnorm": "1223",
+    "chembl": "CHEMBL517712",
+    "pubchemCompound": "174174",
+    "casRegistry": "51-55-8",
+    "alias": "dl-tropyltropate",
+    "itemLabel": "atropine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q26272",
+    "drugbank": "00572",
+    "rxnorm": "1223",
+    "chembl": "CHEMBL517712",
+    "pubchemCompound": "174174",
+    "casRegistry": "51-55-8",
+    "alias": "Mydriasine",
+    "itemLabel": "atropine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q26272",
+    "drugbank": "00572",
+    "rxnorm": "1223",
+    "chembl": "CHEMBL517712",
+    "pubchemCompound": "174174",
+    "casRegistry": "51-55-8",
+    "alias": "Tropine tropate",
+    "itemLabel": "atropine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q26272",
+    "drugbank": "00572",
+    "rxnorm": "1223",
+    "chembl": "CHEMBL517712",
+    "pubchemCompound": "174174",
+    "casRegistry": "51-55-8",
+    "alias": "(\u00b1)-atropine",
+    "itemLabel": "atropine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q26272",
+    "drugbank": "00572",
+    "rxnorm": "1223",
+    "chembl": "CHEMBL517712",
+    "pubchemCompound": "174174",
+    "casRegistry": "51-55-8",
+    "alias": "(\u00b1)-hyoscyamine",
+    "itemLabel": "atropine"
+  }
+]

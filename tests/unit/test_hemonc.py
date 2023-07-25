@@ -5,7 +5,7 @@ import isodate
 import pytest
 
 from therapy.etl.hemonc import HemOnc
-from therapy.schemas import Drug, MatchType
+from therapy.schemas import Therapy, MatchType
 
 
 @pytest.fixture(scope="module")
@@ -17,7 +17,7 @@ def hemonc(test_source):
 @pytest.fixture(scope="module")
 def cisplatin():
     """Construct cisplatin fixture."""
-    return Drug(**{
+    return Therapy(**{
         "concept_id": "hemonc:105",
         "label": "Cisplatin",
         "aliases": [
@@ -40,7 +40,7 @@ def cisplatin():
 @pytest.fixture(scope="module")
 def bendamustine():
     """Construct bendamustine fixture."""
-    return Drug(**{
+    return Therapy(**{
         "concept_id": "hemonc:65",
         "label": "Bendamustine",
         "aliases": [
@@ -96,7 +96,7 @@ def bendamustine():
 @pytest.fixture(scope="module")
 def degarelix():
     """Create fixture for degarelix drug."""
-    return Drug(**{
+    return Therapy(**{
         "label": "Degarelix",
         "concept_id": "hemonc:151",
         "aliases": [

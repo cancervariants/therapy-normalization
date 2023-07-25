@@ -21,11 +21,8 @@ from disease.database import create_db as create_disease_db, \
     DatabaseInitializationException as DiseaseDbInitializationException
 
 from therapy import APP_ROOT, ITEM_TYPES, DownloadException
-from therapy.database.database import DatabaseInitializationException
-# from therapy.database.dynamodb import DynamoDbDatabase
-# from therapy.database.postgresql import PostgresDatabase
-from therapy.schemas import DatabaseType, Drug, SourceName
-from therapy.database import AbstractDatabase
+from therapy.database import AbstractDatabase, DatabaseInitializationException
+from therapy.schemas import SourceName, Therapy, DatabaseType
 from therapy.etl.rules import Rules
 
 
@@ -244,7 +241,7 @@ class Base(ABC):
         """
         therapy = self._rules.apply_rules_to_therapy(therapy)
         try:
-            Drug(**therapy)
+            Therapy(**therapy)
         except ValidationError as e:
             _logger.error(f"Attempted to load invalid therapy: {therapy}")
             raise e

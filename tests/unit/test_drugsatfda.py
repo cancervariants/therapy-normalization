@@ -5,7 +5,7 @@ import pytest
 import isodate
 
 from therapy.etl.drugsatfda import DrugsAtFDA
-from therapy.schemas import MatchType, Drug
+from therapy.schemas import MatchType, Therapy
 
 
 @pytest.fixture(scope="module")
@@ -15,9 +15,9 @@ def drugsatfda(test_source):
 
 
 @pytest.fixture(scope="module")
-def everolimus() -> Drug:
+def everolimus() -> Therapy:
     """Build afinitor test fixture."""
-    return Drug(**{
+    return Therapy(**{
         "label": "EVEROLIMUS",
         "concept_id": "drugsatfda.nda:022334",
         "associated_with": [
@@ -38,9 +38,9 @@ def everolimus() -> Drug:
 
 
 @pytest.fixture(scope="module")
-def dactinomycin() -> Drug:
+def dactinomycin() -> Therapy:
     """Build cosmegen test fixture."""
-    return Drug(**{
+    return Therapy(**{
         "label": "DACTINOMYCIN",
         "concept_id": "drugsatfda.nda:050682",
         "xrefs": [
@@ -60,10 +60,10 @@ def dactinomycin() -> Drug:
 
 
 @pytest.fixture(scope="module")
-def cisplatin() -> List[Drug]:
+def cisplatin() -> List[Therapy]:
     """Build cisplatin test fixtures"""
     return [
-        Drug(**{
+        Therapy(**{
             "label": "CISPLATIN",
             "concept_id": "drugsatfda.anda:074656",
             "xrefs": ["rxcui:309311"],
@@ -75,7 +75,7 @@ def cisplatin() -> List[Drug]:
             ],
             "approval_ratings": ["fda_prescription"],
         }),
-        Drug(**{
+        Therapy(**{
             "label": "CISPLATIN",
             "concept_id": "drugsatfda.anda:075036",
             "xrefs": ["rxcui:309311"],
@@ -87,7 +87,7 @@ def cisplatin() -> List[Drug]:
             ],
             "approval_ratings": ["fda_prescription"],
         }),
-        Drug(**{
+        Therapy(**{
             "label": "CISPLATIN",
             "concept_id": "drugsatfda.anda:074735",
             "xrefs": ["rxcui:309311"],
@@ -98,7 +98,7 @@ def cisplatin() -> List[Drug]:
             ],
             "approval_ratings": ["fda_prescription"],
         }),
-        Drug(**{
+        Therapy(**{
             "label": "CISPLATIN",
             "concept_id": "drugsatfda.anda:206774",
             "xrefs": ["rxcui:309311"],
@@ -111,7 +111,7 @@ def cisplatin() -> List[Drug]:
             ],
             "approval_ratings": ["fda_prescription"],
         }),
-        Drug(**{
+        Therapy(**{
             "label": "CISPLATIN",
             "concept_id": "drugsatfda.anda:207323",
             "xrefs": ["rxcui:309311"],
@@ -125,7 +125,7 @@ def cisplatin() -> List[Drug]:
             ],
             "approval_ratings": ["fda_prescription"],
         }),
-        Drug(**{
+        Therapy(**{
             "label": "CISPLATIN",
             "concept_id": "drugsatfda.nda:018057",
             "xrefs": ["rxcui:1736854", "rxcui:309311"],
@@ -144,12 +144,12 @@ def cisplatin() -> List[Drug]:
 
 
 @pytest.fixture(scope="module")
-def fenortho() -> List[Drug]:
+def fenortho() -> List[Therapy]:
     """Provide fenortho fixture. Tests for correct handling of conflicting
     approval_ratings values.
     """
     return [
-        Drug(**{
+        Therapy(**{
             "label": "FENOPROFEN CALCIUM",
             "concept_id": "drugsatfda.anda:072267",
             "xrefs": ["rxcui:310291", "rxcui:351398"],
@@ -163,7 +163,7 @@ def fenortho() -> List[Drug]:
             "approval_ratings": ["fda_prescription"],
             "trade_names": ["NALFON"]
         }),
-        Drug(**{
+        Therapy(**{
             "label": "FENOPROFEN CALCIUM",
             "concept_id": "drugsatfda.nda:017604",
             "xrefs": [
@@ -189,7 +189,7 @@ def fenortho() -> List[Drug]:
             ],
             "trade_names": ["NALFON"]
         }),
-        Drug(**{
+        Therapy(**{
             "concept_id": "drugsatfda.anda:214475",
             "label": "FENOPROFEN CALCIUM",
             "xrefs": ["rxcui:858116"],

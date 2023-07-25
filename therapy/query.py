@@ -9,7 +9,7 @@ from botocore.exceptions import ClientError
 
 from therapy import PREFIX_LOOKUP, NAMESPACE_LUIS, SOURCES
 from therapy.database import AbstractDatabase
-from therapy.schemas import BaseNormalizationService, Drug, MatchType, RefType, \
+from therapy.schemas import BaseNormalizationService, Therapy, MatchType, RefType, \
     ServiceMeta, SourcePriority, SearchService, NormalizationService, NamespacePrefix, \
     SourceName, TherapyDescriptor, UnmergedNormalizationService, MatchesNormalized
 
@@ -63,7 +63,7 @@ class QueryHandler:
         :return: Tuple containing updated response object, and string containing name of
             the source of the match
         """
-        drug = Drug(**item)
+        therapy = Therapy(**item)
         src_name = item["src_name"]
 
         matches = response["source_matches"]
@@ -72,13 +72,13 @@ class QueryHandler:
         elif matches[src_name] is None:
             matches[src_name] = {
                 "match_type": MatchType[match_type.upper()],
-                "records": [drug],
+                "records": [therapy],
                 "source_meta_": self.db.get_source_metadata(src_name)
             }
         elif matches[src_name]["match_type"] == MatchType[match_type.upper()]:
-            if drug.concept_id not in [r.concept_id for r
-                                       in matches[src_name]["records"]]:
-                matches[src_name]["records"].append(drug)
+            if therapy.concept_id not in [r.concept_id for r
+                                          in matches[src_name]["records"]]:
+                matches[src_name]["records"].append(therapy)
 
         return response, src_name
 
@@ -86,8 +86,8 @@ class QueryHandler:
                        response: Dict[str, Dict],
                        concept_ids: Set[str],
                        match_type: str) -> Tuple[Dict, Set]:
-        """Return matched Drug records as a structured response for a given collection
-        of concept IDs.
+        """Return matched Therapy records as a structured response for a given
+        collection of concept IDs.
 
         :param Dict[str, Dict] response: in-progress response object
         :param List[str] concept_ids: List of concept IDs to build from.  Should be all
@@ -515,7 +515,7 @@ class QueryHandler:
         if normalized_record["item_type"] == "identity":
             record_source = SourceName[normalized_record["src_name"].upper()]
             response.source_matches[record_source] = MatchesNormalized(
-                records=[Drug(**normalized_record)],
+                records=[Therapy(**normalized_record)],
                 source_meta_=self.db.get_source_metadata(record_source)  # type: ignore
             )
         else:
@@ -526,12 +526,12 @@ class QueryHandler:
                 if not record:
                     continue  # cover a few chemidplus edge cases
                 record_source = SourceName[record["src_name"].upper()]
-                drug = Drug(**record)
+                therapy = Therapy(**record)
                 if record_source in response.source_matches:
-                    response.source_matches[record_source].records.append(drug)
+                    response.source_matches[record_source].records.append(therapy)
                 else:
                     response.source_matches[record_source] = MatchesNormalized(
-                        records=[drug],
+                        records=[therapy],
                         source_meta_=self.db.get_source_metadata(record_source)
                     )
         return response

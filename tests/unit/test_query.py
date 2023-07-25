@@ -8,7 +8,7 @@ import pytest
 
 from therapy.database.database import AWS_ENV_VAR_NAME
 from therapy.query import QueryHandler, InvalidParameterException
-from therapy.schemas import MatchType, SourceName, TherapyDescriptor, Drug
+from therapy.schemas import MatchType, SourceName, TherapyDescriptor, Therapy
 
 
 @pytest.fixture(scope="module")
@@ -197,7 +197,7 @@ def compare_unmerged_response(
             # get corresponding fixture record
             for drug in fixture["source_matches"][source.value]["records"]:
                 if drug["concept_id"] == concept_id:
-                    fixture_drug = Drug(**drug)
+                    fixture_drug = Therapy(**drug)
                     break
             assert fixture_drug, f"Unable to find fixture for {concept_id}"
             compare_records(record, fixture_drug)

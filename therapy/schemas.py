@@ -144,8 +144,8 @@ class HasIndication(BaseModel):
             ]
 
 
-class Drug(BaseModel):
-    """A pharmacologic substance used to treat a medical condition."""
+class Therapy(BaseModel):
+    """A substance used to treat a medical condition."""
 
     concept_id: str
     label: Optional[str] = None
@@ -158,10 +158,10 @@ class Drug(BaseModel):
     has_indication: Optional[List[HasIndication]] = []
 
     class Config:
-        """Configure Drug class"""
+        """Configure Therapy class"""
 
         @staticmethod
-        def schema_extra(schema: Dict[str, Any], model: Type["Drug"]) -> None:
+        def schema_extra(schema: Dict[str, Any], model: Type["Therapy"]) -> None:
             """Configure OpenAPI schema"""
             if "title" in schema.keys():
                 schema.pop("title", None)
@@ -332,7 +332,7 @@ class MatchesKeyed(BaseModel):
     """
 
     match_type: MatchType
-    records: List[Drug]
+    records: List[Therapy]
     source_meta_: SourceMeta
 
     class Config:
@@ -372,7 +372,7 @@ class MatchesListed(BaseModel):
 
     source: SourceName
     match_type: MatchType
-    records: List[Drug]
+    records: List[Therapy]
     source_meta_: SourceMeta
 
     class Config:
@@ -444,7 +444,7 @@ class ServiceMeta(BaseModel):
 class MatchesNormalized(BaseModel):
     """Matches associated with normalized concept from a single source."""
 
-    records: List[Drug]
+    records: List[Therapy]
     source_meta_: SourceMeta
 
     class Config:
