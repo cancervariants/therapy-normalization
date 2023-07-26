@@ -34,6 +34,26 @@ def cisplatin():
         "associated_with": [],
         "approval_ratings": ["hemonc_approved"],
         "approval_year": ["1978"],
+        "has_indication": [
+            {
+                "disease_id": "hemonc:671",
+                "disease_label": "Testicular cancer",
+                "normalized_disease_id": "ncit:C7251",
+                "supplemental_info": {"regulatory_body": "FDA"}
+            },
+            {
+                "disease_id": "hemonc:645",
+                "disease_label": "Ovarian cancer",
+                "normalized_disease_id": "ncit:C7431",
+                "supplemental_info": {"regulatory_body": "FDA"}
+            },
+            {
+                "disease_id": "hemonc:569",
+                "disease_label": "Bladder cancer",
+                "normalized_disease_id": "ncit:C9334",
+                "supplemental_info": {"regulatory_body": "FDA"}
+            }
+        ]
     })
 
 

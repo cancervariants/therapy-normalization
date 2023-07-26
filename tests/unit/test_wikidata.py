@@ -118,7 +118,12 @@ def atropine():
             "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate",
         ],
         "approval_ratings": [],
-        "xrefs": ["drugbank:DB00572", "chemidplus:51-55-8", "rxcui:1223"],
+        "xrefs": [
+            "drugbank:DB00572",
+            "chemidplus:51-55-8",
+            "rxcui:1223",
+            "chembl:CHEMBL517712"
+        ],
         "associated_with": [
             "pubchem.compound:174174",
         ],
