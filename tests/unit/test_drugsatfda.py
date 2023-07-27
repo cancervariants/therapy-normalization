@@ -45,7 +45,7 @@ def everolimus() -> Therapy:
             "ndc:0078-0626",
             "ndc:0078-0627",
             "ndc:0078-0628",
-            "spl:beee7e52-cea5-4c55-91cc-813ea94001bb",
+            "spl:bdb8f3d8-f584-4ebd-87e8-b4a4bc43f482",
             "unii:9HW64Q8G6G",
         ],
         "approval_ratings": ["fda_prescription"],
@@ -66,8 +66,8 @@ def dactinomycin() -> Therapy:
         "associated_with": [
             "ndc:55292-811",
             "ndc:66993-489",
-            "spl:137c07d7-e2bf-4f59-8b8f-4ebe119e576d",
-            "spl:b92f5536-179c-6234-e053-2995a90a0f25",
+            "spl:c76d44e7-3869-4e8b-93cf-b031f6f62c0a",
+            "spl:2afdf978-8e90-40e9-872f-9f8775dcd41c",
             "unii:1CC1JFE158",
         ],
         "approval_ratings": ["fda_prescription"],
@@ -138,6 +138,8 @@ def cisplatin() -> List[Therapy]:
                 "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
                 "spl:5a24d5bd-c44a-43f7-a04c-76caf3475012",
                 "unii:Q20Q21Q62J",
+                "ndc:25021-253",
+                "spl:64bcce1a-6e31-4e73-8da5-11aa9e890da2"
             ],
             "approval_ratings": ["fda_prescription"],
         }),
@@ -172,8 +174,8 @@ def fenortho() -> List[Therapy]:
             "associated_with": [
                 "ndc:42195-471",
                 "ndc:42195-688",
-                "spl:c1bfb82a-814b-23f3-e053-2995a90ae9cf",
-                "spl:c1bfb82a-8192-23f3-e053-2995a90ae9cf",
+                "spl:f0305a11-4495-e237-e053-2995a90ad12e",
+                "spl:f0306b64-e6f6-476c-e053-2a95a90a2576",
                 "unii:0X2CW1QABJ",
             ],
             "approval_ratings": ["fda_prescription"],
@@ -198,9 +200,9 @@ def fenortho() -> List[Therapy]:
                 "ndc:42195-308",
                 "ndc:42195-600",
                 "spl:d8a6c130-bc1d-01a4-e053-2995a90afd52",
-                "spl:c1721025-8af3-5451-e053-2a95a90a7dc0",
-                "spl:c1829550-d270-e13d-e053-2995a90a4aa5",
-                "spl:c187dfec-eec5-4227-e053-2995a90ab55c",
+                "spl:f0305a11-4494-e237-e053-2995a90ad12e",
+                "spl:f0306480-f778-5c6b-e053-2a95a90ad461",
+                "spl:f03034a3-a06c-4446-e053-2995a90a58fe",
                 "unii:0X2CW1QABJ",
             ],
             "trade_names": ["NALFON"]
@@ -390,7 +392,7 @@ def test_fenortho(fenortho, compare_records, drugsatfda):
 
     response = drugsatfda.search("fenoprofen calcium")
     assert response.match_type == MatchType.LABEL
-    assert len(response.records) == 3
+    assert len(response.records) == 2
     for r in response.records:
         fixture = [f for f in fenortho if r.concept_id == f.concept_id][0]
         compare_records(r, fixture)
@@ -402,7 +404,7 @@ def test_fenortho(fenortho, compare_records, drugsatfda):
 
     response = drugsatfda.search("unii:0X2CW1QABJ")
     assert response.match_type == MatchType.ASSOCIATED_WITH
-    assert len(response.records) == 3
+    assert len(response.records) == 2
     for r in response.records:
         fixture = [f for f in fenortho if r.concept_id == f.concept_id][0]
         compare_records(r, fixture)
