@@ -88,13 +88,13 @@ class ChEMBL(DiseaseIndicationBase):
             for group in set(indication_groups):
                 ind_group = group.split("||")
                 phase = self._get_approval_rating(float(ind_group[4]))
-                indication = {}
+                indication: Dict[str, Union[str, Dict]] = {}
                 for i, term in enumerate(ind_group[:4]):
                     normalized_disease_id = self._normalize_disease(term)
                     if normalized_disease_id is not None:
                         label = ind_group[2] if i % 2 == 0 else ind_group[3]
                         disease_id = ind_group[0] if i % 2 == 0 else ind_group[1]
-                        indication: Dict[str, Union[str, Dict]] = {
+                        indication = {
                             "disease_id": disease_id,
                             "disease_label": label,
                             "normalized_disease_id": normalized_disease_id,
