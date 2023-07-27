@@ -23,6 +23,7 @@ NAMESPACES = {
     "rxnorm": NamespacePrefix.RXNORM.value,
     "drugbank": NamespacePrefix.DRUGBANK.value,
     "wikidata": NamespacePrefix.WIKIDATA.value,
+    "guideToPharmacology": NamespacePrefix.GUIDETOPHARMACOLOGY.value,
 }
 
 # Provide standard concept ID prefixes
@@ -36,13 +37,16 @@ ID_PREFIXES = {
 SPARQL_QUERY = """
 SELECT
   ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl ?rxnorm
-  ?drugbank ?alias
+  ?drugbank ?guideToPharmacology
+  (GROUP_CONCAT(DISTINCT ?alias; separator=", ") AS ?aliases)
 WHERE {
   { ?item (wdt:P31/(wdt:P279*)) wd:Q12140. }
   UNION
   { ?item (wdt:P366/(wdt:P279*)) wd:Q12140. }
   UNION
   { ?item (wdt:P31/(wdt:P279*)) wd:Q35456. }
+  UNION
+  { ?item wdt:P2868 wd:Q12187. }
   OPTIONAL {
     ?item skos:altLabel ?alias.
     FILTER((LANG(?alias)) = "en")
@@ -71,8 +75,14 @@ WHERE {
     ?item p:P715 ?wds6.
     ?wds6 ps:P715 ?drugbank.
   }
+    OPTIONAL {
+        ?item p:P595 ?wds7.
+        ?wds7 ps:P595 ?guideToPharmacology
+    }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
 }
+GROUP BY ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
+  ?rxnorm ?drugbank ?guideToPharmacology
 """
 
 
@@ -153,19 +163,18 @@ class Wikidata(Base):
                                     fmted_xref = f"{NAMESPACES[key]}:{ref}"
                                 xrefs.append(fmted_xref)
                             else:
-                                fmted_assoc = f"{NAMESPACES[key]}:" \
-                                              f"{ref}"
+                                fmted_assoc = f"{NAMESPACES[key]}:{ref}"
                                 associated_with.append(fmted_assoc)
                     item["xrefs"] = xrefs
                     item["associated_with"] = associated_with
                     if "itemLabel" in record.keys():
                         item["label"] = record["itemLabel"]
                     items[concept_id] = item
-                if "alias" in record.keys():
+                if "aliases" in record.keys():
                     if "aliases" in items[concept_id].keys():
-                        items[concept_id]["aliases"].append(record["alias"])
+                        items[concept_id]["aliases"] += record["aliases"].split(", ")
                     else:
-                        items[concept_id]["aliases"] = [record["alias"]]
+                        items[concept_id]["aliases"] = record["aliases"].split(", ")
 
         for item in items.values():
             self._load_therapy(item)
