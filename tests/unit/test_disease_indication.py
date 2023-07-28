@@ -57,7 +57,8 @@ def disease_database(database):
     disease_db.complete_write_transaction()
     disease_db.update_merge_ref("mondo:0700110", "mondo:0700110")
     disease_db.complete_write_transaction()
-    return disease_db
+    yield disease_db
+    disease_db.close_connection()
 
 
 RUN_TEST = os.environ.get("THERAPY_TEST", "").lower() == "true" and AWS_ENV_VAR_NAME not in os.environ  # noqa: E501
