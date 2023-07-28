@@ -373,7 +373,7 @@ def test_fenortho(fenortho, compare_records, drugsatfda):
 
     response = drugsatfda.search("fenoprofen calcium")
     assert response.match_type == MatchType.LABEL
-    assert len(response.records) == 2
+    assert len(response.records) == 3
     for r in response.records:
         fixture = [f for f in fenortho if r.concept_id == f.concept_id][0]
         compare_records(r, fixture)
@@ -385,7 +385,7 @@ def test_fenortho(fenortho, compare_records, drugsatfda):
 
     response = drugsatfda.search("unii:0X2CW1QABJ")
     assert response.match_type == MatchType.ASSOCIATED_WITH
-    assert len(response.records) == 2
+    assert len(response.records) == 3
     for r in response.records:
         fixture = [f for f in fenortho if r.concept_id == f.concept_id][0]
         compare_records(r, fixture)
