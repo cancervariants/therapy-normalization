@@ -140,6 +140,8 @@ def cisplatin() -> List[Therapy]:
                 "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
                 "spl:5a24d5bd-c44a-43f7-a04c-76caf3475012",
                 "unii:Q20Q21Q62J",
+                "ndc:25021-253",
+                "spl:64bcce1a-6e31-4e73-8da5-11aa9e890da2"
             ],
             "approval_ratings": ["fda_prescription"],
         }),
@@ -174,8 +176,8 @@ def fenortho() -> List[Therapy]:
             "associated_with": [
                 "ndc:42195-471",
                 "ndc:42195-688",
-                "spl:f0306b64-e6f6-476c-e053-2a95a90a2576",
                 "spl:f0305a11-4495-e237-e053-2995a90ad12e",
+                "spl:f0306b64-e6f6-476c-e053-2a95a90a2576",
                 "unii:0X2CW1QABJ",
             ],
             "approval_ratings": ["fda_prescription"],
@@ -200,9 +202,9 @@ def fenortho() -> List[Therapy]:
                 "ndc:42195-308",
                 "ndc:42195-600",
                 "spl:d8a6c130-bc1d-01a4-e053-2995a90afd52",
-                "spl:f03034a3-a06c-4446-e053-2995a90a58fe",
                 "spl:f0305a11-4494-e237-e053-2995a90ad12e",
                 "spl:f0306480-f778-5c6b-e053-2a95a90ad461",
+                "spl:f03034a3-a06c-4446-e053-2995a90a58fe",
                 "unii:0X2CW1QABJ",
             ],
             "trade_names": ["NALFON"]
@@ -371,7 +373,7 @@ def test_fenortho(fenortho, compare_records, drugsatfda):
 
     response = drugsatfda.search("fenoprofen calcium")
     assert response.match_type == MatchType.LABEL
-    assert len(response.records) == 3
+    assert len(response.records) == 2
     for r in response.records:
         fixture = [f for f in fenortho if r.concept_id == f.concept_id][0]
         compare_records(r, fixture)
@@ -383,7 +385,7 @@ def test_fenortho(fenortho, compare_records, drugsatfda):
 
     response = drugsatfda.search("unii:0X2CW1QABJ")
     assert response.match_type == MatchType.ASSOCIATED_WITH
-    assert len(response.records) == 3
+    assert len(response.records) == 2
     for r in response.records:
         fixture = [f for f in fenortho if r.concept_id == f.concept_id][0]
         compare_records(r, fixture)

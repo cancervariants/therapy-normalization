@@ -28,8 +28,8 @@ CLASS_TAG = f"{OWL_PREFIX}Class"
 
 ncit = NCIt(create_db())
 ncit._extract_data()
-TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data"
-outfile_path = TEST_DATA_DIR / "ncit" / ncit._src_file.name
+TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "ncit"
+outfile_path = TEST_DATA_DIR / ncit._src_file.name
 
 
 def ncit_parser() -> Generator:
