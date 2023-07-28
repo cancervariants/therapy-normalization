@@ -633,7 +633,7 @@ def test_broken_db_handling(query_handler):
 
     In Postgres, that field is foreign-key constrained, so we can't easily spoof it.
     """
-    query_handler.db.therapies.put_item({
+    query_handler.db.therapies.put_item(Item={
         "label_and_type": "fake:00001##identity",
         "concept_id": "fake:00001",
         "item_type": "identity",
