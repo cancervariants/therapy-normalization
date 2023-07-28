@@ -5,8 +5,8 @@ import os
 
 import pytest
 from disease.database import AWS_ENV_VAR_NAME, create_db as create_disease_db
-from disease.schemas import SourceName as DiseaseSourceName, \
-    SourceMeta as DiseaseSourceMeta
+# from disease.schemas import SourceName as DiseaseSourceName, \
+#     SourceMeta as DiseaseSourceMeta
 
 from therapy.etl.chembl import ChEMBL
 from therapy.schemas import DatabaseType
@@ -28,37 +28,37 @@ def disease_database(database):
         raise ValueError("unrecognized DB instance")
     disease_db.drop_db()
     disease_db.initialize_db()
-    disease_db.add_source_metadata(
-        DiseaseSourceName.MONDO,
-        DiseaseSourceMeta(
-            data_license="CC BY 4.0",
-            data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",
-            data_url="https://mondo.monarchinitiative.org/pages/download",
-            rdp_url="http://reusabledata.org/monarch.html",
-            version="2022-10-11",
-            data_license_attributes={
-                "non_commercial": False,
-                "share_alike": False,
-                "attribution": True
-            }
-        )
-    )
-    disease_db.add_record(
-        record={
-            "concept_id": "mondo:0700110",
-            "label": "pneumonia, non-human animal",
-        },
-        src_name=DiseaseSourceName.MONDO
-    )
-    disease_db.add_merged_record({
-        "concept_id": "mondo:0700110",
-        "label": "pneumonia, non-human animal",
-    })
-    disease_db.complete_write_transaction()
-    disease_db.update_merge_ref("mondo:0700110", "mondo:0700110")
-    disease_db.complete_write_transaction()
-    yield disease_db
-    disease_db.close_connection()
+    # disease_db.add_source_metadata(
+    #     DiseaseSourceName.MONDO,
+    #     DiseaseSourceMeta(
+    #         data_license="CC BY 4.0",
+    #         data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",
+    #         data_url="https://mondo.monarchinitiative.org/pages/download",
+    #         rdp_url="http://reusabledata.org/monarch.html",
+    #         version="2022-10-11",
+    #         data_license_attributes={
+    #             "non_commercial": False,
+    #             "share_alike": False,
+    #             "attribution": True
+    #         }
+    #     )
+    # )
+    # disease_db.add_record(
+    #     record={
+    #         "concept_id": "mondo:0700110",
+    #         "label": "pneumonia, non-human animal",
+    #     },
+    #     src_name=DiseaseSourceName.MONDO
+    # )
+    # disease_db.add_merged_record({
+    #     "concept_id": "mondo:0700110",
+    #     "label": "pneumonia, non-human animal",
+    # })
+    # disease_db.complete_write_transaction()
+    # disease_db.update_merge_ref("mondo:0700110", "mondo:0700110")
+    # disease_db.complete_write_transaction()
+    # yield disease_db
+    # disease_db.close_connection()
 
 
 RUN_TEST = os.environ.get("THERAPY_TEST", "").lower() == "true" and AWS_ENV_VAR_NAME not in os.environ  # noqa: E501
