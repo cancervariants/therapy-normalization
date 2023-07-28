@@ -32,16 +32,6 @@
     "aliases": "SDZ-CHI-621, chimeric mouse-human antiCD25, CHI621, CHI-621, Ig gamma-1 chain C region"
   },
   {
-    "item": "http://www.wikidata.org/entity/Q27287118",
-    "itemLabel": "ro-5045337",
-    "casRegistry": "939981-39-2",
-    "pubchemCompound": "57406853",
-    "chembl": "CHEMBL2386346",
-    "drugbank": "14793",
-    "guideToPharmacology": "9599",
-    "aliases": "RO 5045337, RG7112"
-  },
-  {
     "item": "http://www.wikidata.org/entity/Q26272",
     "itemLabel": "atropine",
     "casRegistry": "51-55-8",
@@ -53,6 +43,16 @@
     "aliases": "Tropine tropate, Mydriasine, dl-tropyltropate, dl-Hyoscyamine, 8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate, 8-Methyl-8-azabicyclo[3.2.1]oct-3-yl 3-hydroxy-2-phenylpropanoate, [(1S,5R)-8-Methyl-8-azabicyclo[3.2.1]oct-3-yl] 3-hydroxy-2-phenyl-propanoate, (3-Endo)-8-methyl-8-azabicyclo[3.2.1]oct-3-yl tropate, (+,-)-Tropyl tropate, (+-)-Hyoscyamine, (+-)-Atropine, (\u00b1)-hyoscyamine, (\u00b1)-atropine"
   },
   {
+    "item": "http://www.wikidata.org/entity/Q27287118",
+    "itemLabel": "ro-5045337",
+    "casRegistry": "939981-39-2",
+    "pubchemCompound": "57406853",
+    "chembl": "CHEMBL2386346",
+    "drugbank": "14793",
+    "guideToPharmacology": "9599",
+    "aliases": "RO 5045337, RG7112"
+  },
+  {
     "item": "http://www.wikidata.org/entity/Q191924",
     "itemLabel": "D-methamphetamine",
     "casRegistry": "537-46-2",
@@ -60,7 +60,7 @@
     "chembl": "CHEMBL1201201",
     "rxnorm": "6816",
     "drugbank": "01577",
-    "aliases": "fast, ice, crystal, pure, chalk, glass, speed, crank, base, wax, tweak, S-methamphetamine, N-methylamphetamine, methylamphetamine, methyl-\u03b2-phenylisopropylamine, methamphetamine, meth, metamfetamine, desoxyephedrine, d-phenylisopropylmethylamine, d-N-methylamphetamine, d-meth, d-desoxyephedrine, d-deoxyephedrine, d-1-phenyl-2-methylaminopropane, crystal meth, (\u03b1S)-N,\u03b1-dimethylbenzeneethanamine, (S)-N,\u03b1-dimethylbenzeneethanamine, (+)-(S)-P-\u03b1-dimethylphenethylamine, whiz, crypto, methyl-beta-phenylisopropylamine, dextromethamphetamine, (S)-N,alpha-dimethylbenzeneethanamine, (alphaS)-N,alpha-dimethylbenzeneethanamine, (+)-(S)-N-alpha-dimethylphenethylamine"
+    "aliases": "fast, ice, crystal, pure, chalk, glass, speed, crank, base, methyl-beta-phenylisopropylamine, dextromethamphetamine, (S)-N,alpha-dimethylbenzeneethanamine, (alphaS)-N,alpha-dimethylbenzeneethanamine, (+)-(S)-N-alpha-dimethylphenethylamine, wax, tweak, S-methamphetamine, N-methylamphetamine, methylamphetamine, methyl-\u03b2-phenylisopropylamine, methamphetamine, meth, metamfetamine, desoxyephedrine, d-phenylisopropylmethylamine, d-N-methylamphetamine, d-meth, d-desoxyephedrine, d-deoxyephedrine, d-1-phenyl-2-methylaminopropane, crystal meth, (\u03b1S)-N,\u03b1-dimethylbenzeneethanamine, (S)-N,\u03b1-dimethylbenzeneethanamine, (+)-(S)-P-\u03b1-dimethylphenethylamine, whiz, crypto"
   },
   {
     "item": "http://www.wikidata.org/entity/Q251698",
