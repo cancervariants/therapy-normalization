@@ -125,6 +125,7 @@
       "NSC 119875",
       "APRD00359",
       "CDDP",
+      "(sp-4-2)-diamminedichloroplatinum",
       "DDP",
       "Dichlorodiammineplatinum",
       "cis-Platinum",
@@ -158,6 +159,8 @@
       "spl:a66eda32-1164-439a-ac8e-73138365ec06",
       "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
       "CHEBI:27899",
+      "ndc:25021-253",
+      "spl:64bcce1a-6e31-4e73-8da5-11aa9e890da2",
       "ndc:44567-511",
       "ndc:0703-5747",
       "ndc:68083-162",
@@ -186,6 +189,11 @@
       "ndc:0143-9504"
     ],
     "has_indication": [
+      "[\"mesh:D018288\", \"Carcinoma, Small Cell\", null, {\"chembl_max_phase_for_ind\": \"chembl_phase_2\"}]",
+      "[\"mesh:D055728\", \"Primary Myelofibrosis\", null, {\"chembl_max_phase_for_ind\": \"chembl_phase_1\"}]",
+      "[\"mesh:D012208\", \"Rhabdomyosarcoma\", \"ncit:C3359\", {\"chembl_max_phase_for_ind\": \"chembl_phase_0.5\"}]",
+      "[\"mesh:D018287\", \"Carcinoma, Large Cell\", null, {\"chembl_max_phase_for_ind\": \"chembl_phase_2\"}]",
+
       "[\"hemonc:671\", \"Testicular cancer\", \"ncit:C7251\", {\"regulatory_body\": \"FDA\"}]",
       "[\"hemonc:645\", \"Ovarian cancer\", \"ncit:C7431\", {\"regulatory_body\": \"FDA\"}]",
       "[\"hemonc:569\", \"Bladder cancer\", \"ncit:C9334\", {\"regulatory_body\": \"FDA\"}]",
@@ -299,7 +307,6 @@
       "[\"mesh:D015459\", \"Leukemia-Lymphoma, Adult T-Cell\", \"ncit:C3184\", {\"chembl_max_phase_for_ind\": \"chembl_phase_2\"}]",
       "[\"mesh:D020522\", \"Lymphoma, Mantle-Cell\", \"ncit:C4337\", {\"chembl_max_phase_for_ind\": \"chembl_phase_3\"}]",
       "[\"mesh:D000077192\", \"Adenocarcinoma of Lung\", \"ncit:C3512\", {\"chembl_max_phase_for_ind\": \"chembl_phase_3\"}]",
-      "[\"mesh:D012208\", \"Rhabdomyosarcoma\", \"ncit:C3359\", {\"chembl_max_phase_for_ind\": \"chembl_phase_0\"}]",
       "[\"mesh:D009101\", \"Multiple Myeloma\", \"ncit:C3242\", {\"chembl_max_phase_for_ind\": \"chembl_phase_3\"}]",
       "[\"mesh:D012516\", \"Osteosarcoma\", \"ncit:C53707\", {\"chembl_max_phase_for_ind\": \"chembl_phase_3\"}]",
       "[\"mesh:D018281\", \"Cholangiocarcinoma\", \"ncit:C4436\", {\"chembl_max_phase_for_ind\": \"chembl_phase_3\"}]",
@@ -418,6 +425,8 @@
     "concept_id": "rxcui:1545987",
     "label_and_type": "rxcui:1545987##merger",
     "has_indication": [
+      "[\"mesh:D001932\", \"Brain Neoplasms\", \"ncit:C3568\", {\"chembl_max_phase_for_ind\": \"chembl_phase_2\"}]",
+
       "[\"hemonc:645\", \"Ovarian cancer\", \"ncit:C7431\", {\"regulatory_body\": \"FDA\"}]",
       "[\"mesh:D007680\", \"Kidney Neoplasms\", \"ncit:C7548\", {\"chembl_max_phase_for_ind\": \"chembl_phase_1\"}]",
       "[\"mesh:D009190\", \"Myelodysplastic Syndromes\", \"ncit:C3247\", {\"chembl_max_phase_for_ind\": \"chembl_phase_2\"}]",
@@ -432,7 +441,6 @@
       "[\"mesh:D008228\", \"Lymphoma, Non-Hodgkin\", \"ncit:C3211\", {\"chembl_max_phase_for_ind\": \"chembl_phase_2\"}]",
       "[\"mesh:D009196\", \"Myeloproliferative Disorders\", \"ncit:C35370\", {\"chembl_max_phase_for_ind\": \"chembl_phase_1\"}]",
       "[\"mesh:D011471\", \"Prostatic Neoplasms\", \"ncit:C7378\", {\"chembl_max_phase_for_ind\": \"chembl_phase_2\"}]",
-      "[\"mesh:D009303\", \"Nasopharyngeal Neoplasms\", \"ncit:C3257\", {\"chembl_max_phase_for_ind\": \"chembl_phase_3\"}]",
       "[\"mesh:D006258\", \"Head and Neck Neoplasms\", \"ncit:C4013\", {\"chembl_max_phase_for_ind\": \"chembl_phase_4\"}]",
       "[\"mesh:D010523\", \"Peripheral Nervous System Diseases\", \"ncit:C27580\", {\"chembl_max_phase_for_ind\": \"chembl_phase_3\"}]",
       "[\"mesh:D018197\", \"Hepatoblastoma\", \"ncit:C3728\", {\"chembl_max_phase_for_ind\": \"chembl_phase_3\"}]",

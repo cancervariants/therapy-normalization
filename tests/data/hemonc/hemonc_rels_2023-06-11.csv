@@ -36,6 +36,7 @@ concept_code_1,concept_code_2,vocabulary_id_1,vocabulary_id_2,relationship_id
 65,45050,HemOnc,HemOnc,Is a
 65,768,HemOnc,HemOnc,Was FDA approved yr
 65,775,HemOnc,HemOnc,Was FDA approved yr
+65,C9042,HemOnc,HCPCS,Maps to
 65,C9243,HemOnc,HCPCS,Maps to
 65,J9033,HemOnc,HCPCS,Maps to
 65,J9034,HemOnc,HCPCS,Maps to

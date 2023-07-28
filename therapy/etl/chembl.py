@@ -3,7 +3,7 @@ import logging
 import os
 import shutil
 import sqlite3
-from typing import Optional, List, Dict
+from typing import Optional, List, Dict, Union
 
 import chembl_downloader
 import bioversions
@@ -52,14 +52,20 @@ class ChEMBL(DiseaseIndicationBase):
             return []
 
     @staticmethod
-    def _get_approval_rating(value: int) -> ApprovalRating:
+    def _get_approval_rating(value: Optional[float]) -> Optional[ApprovalRating]:
         """Standardize approval rating value
-        :param int value: value retrieved from ChEMBL database
+        :param value: value retrieved from ChEMBL database
         :return: instantiated ApprovalRating
         :raise: ValueError if invalid value is provided
         """
-        if value == 0:
-            return ApprovalRating.CHEMBL_0
+        if value is None or value == 0:
+            # theoretically, 0 should be deprecated, but it's still showing up in
+            # some places...
+            return ApprovalRating.CHEMBL_NULL
+        elif value == -1:
+            return None
+        elif value == 0.5:
+            return ApprovalRating.CHEMBL_0_5
         elif value == 1:
             return ApprovalRating.CHEMBL_1
         elif value == 2:
@@ -81,8 +87,8 @@ class ChEMBL(DiseaseIndicationBase):
             indication_groups = value.split("|||")
             for group in set(indication_groups):
                 ind_group = group.split("||")
-                phase = self._get_approval_rating(int(ind_group[4]))
-                indication = {}
+                phase = self._get_approval_rating(float(ind_group[4]))
+                indication: Dict[str, Union[str, Dict]] = {}
                 for i, term in enumerate(ind_group[:4]):
                     normalized_disease_id = self._normalize_disease(term)
                     if normalized_disease_id is not None:
@@ -92,8 +98,11 @@ class ChEMBL(DiseaseIndicationBase):
                             "disease_id": disease_id,
                             "disease_label": label,
                             "normalized_disease_id": normalized_disease_id,
-                            "supplemental_info": {"chembl_max_phase_for_ind": phase}
                         }
+                        if phase is not None:
+                            indication["supplemental_info"] = {
+                                "chembl_max_phase_for_ind": phase
+                            }
                         break
                 if not indication:
                     indication = {
@@ -101,6 +110,10 @@ class ChEMBL(DiseaseIndicationBase):
                         "disease_label": ind_group[2],
                         "supplemental_info": {"chembl_max_phase_for_ind": phase}
                     }
+                    if phase is not None:
+                        indication["supplemental_info"] = {
+                            "chembl_max_phase_for_ind": phase
+                        }
                 indications.append(indication)
             return indications
         else:

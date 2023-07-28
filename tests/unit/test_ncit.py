@@ -74,6 +74,7 @@ def therapeutic_procedure():
         "aliases": [
             "any therapy",
             "any_therapy",
+            "Therapeutic",
             "Therapeutic Interventions",
             "Therapeutic Method",
             "Therapeutic Technique",
