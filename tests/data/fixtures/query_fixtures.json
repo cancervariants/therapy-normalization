@@ -3599,6 +3599,7 @@
             "trade_names": [],
             "xrefs": [
               "chembl:CHEMBL11359",
+              "iuphar.ligand:5343",
               "rxcui:2555",
               "drugbank:DB00515",
               "chemidplus:15663-27-1"

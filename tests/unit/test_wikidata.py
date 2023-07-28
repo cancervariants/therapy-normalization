@@ -34,6 +34,7 @@ def cisplatin():
             "drugbank:DB00515",
             "rxcui:2555",
             "chemidplus:15663-27-1",
+            "iuphar.ligand:5343",
         ],
         "associated_with": ["pubchem.compound:5702198"],
         "trade_names": [],
@@ -51,7 +52,8 @@ def interferon_alfacon_1():
             "CIFN",
             "consensus interferon",
             "IFN Alfacon-1",
-            "Interferon Consensus, Methionyl",
+            "Interferon Consensus",
+            "Methionyl",
             "methionyl interferon consensus",
             "methionyl-interferon-consensus",
             "rCon-IFN",
@@ -119,10 +121,8 @@ def atropine():
         ],
         "approval_ratings": [],
         "xrefs": [
-            "drugbank:DB00572",
-            "chemidplus:51-55-8",
-            "rxcui:1223",
-            "chembl:CHEMBL517712"
+            "drugbank:DB00572", "chemidplus:51-55-8", "rxcui:1223",
+            "chembl:CHEMBL517712", "iuphar.ligand:320",
         ],
         "associated_with": [
             "pubchem.compound:174174",
@@ -144,6 +144,7 @@ def basiliximab():
             "rxcui:196102",
             "chembl:CHEMBL1201439",
             "chemidplus:179045-86-4",
+            "iuphar.ligand:6879",
         ],
     )
 
