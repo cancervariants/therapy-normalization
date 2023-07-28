@@ -290,7 +290,7 @@ def update_normalizer_db(
     db = create_db(db_url, aws_instance)
 
     if update_all:
-        sources_to_update = list(SourceName)
+        sources_to_update: Collection[SourceName] = list(SourceName)
         _check_disease_normalizer(sources_to_update, db, from_local)
         _update_normalizers(sources_to_update, db, update_merged, from_local)
     elif not sources:

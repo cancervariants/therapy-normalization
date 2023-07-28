@@ -41,9 +41,16 @@ def pytest_collection_modifyitems(items):
     items.sort(key=lambda i: MODULE_ORDER.index(i.module.__name__))
 
 
-TEST_ROOT = Path(__file__).resolve().parents[1]
-TEST_DATA_DIRECTORY = TEST_ROOT / "tests" / "data"
-IS_TEST_ENV = os.environ.get("THERAPY_TEST", "").lower() == "true"
+IS_TEST_ENV = os.environ.get("THERAPY_TEST", "").lower() == "true" and AWS_ENV_VAR_NAME not in os.environ  # noqa: E501
+
+
+@pytest.fixture(scope="session")
+def is_test_env():
+    """If true, currently in test environment (i.e. okay to overwrite DB). Downstream
+    users should also make sure to check if in a production environment.
+    Provided here to be accessible directly within test modules.
+    """
+    return IS_TEST_ENV
 
 
 def pytest_sessionstart():
@@ -56,13 +63,7 @@ def pytest_sessionstart():
         db.initialize_db()
 
 
-@pytest.fixture(scope="session")
-def is_test_env():
-    """If true, currently in test environment (i.e. okay to overwrite DB). Downstream
-    users should also make sure to check if in a production environment.
-    Provided here to be accessible directly within test modules.
-    """
-    return IS_TEST_ENV
+TEST_DATA_DIRECTORY = Path(__file__).resolve().parents[1] / "tests" / "data"
 
 
 @pytest.fixture(scope="session")

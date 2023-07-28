@@ -23,11 +23,7 @@ def disease_database(database):
     if database.db_type == DatabaseType.DYNAMODB:
         disease_db = create_disease_db(os.environ.get("THERAPY_NORM_DB_URL"))
     elif database.db_type == DatabaseType.POSTGRESQL:
-        therapy_uri = os.environ.get("THERAPY_NORM_DB_URL")
-        disease_uri = os.environ.get("DISEASE_NORM_DB_URL")
-        if not disease_uri:
-            disease_uri = f"{'/'.join(therapy_uri.rsplit('/', 1)[:-1])}/disease_normalizer_test"  # noqa: E501
-        disease_db = create_disease_db(disease_uri)
+        disease_db = create_disease_db(os.environ.get("DISEASE_NORM_DB_URL"))
     else:
         raise ValueError("unrecognized DB instance")
     disease_db.drop_db()
