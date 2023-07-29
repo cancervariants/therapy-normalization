@@ -47,6 +47,10 @@ def pytest_collection_modifyitems(items):
 IS_TEST_ENV = os.environ.get("THERAPY_TEST", "").lower() == "true" and AWS_ENV_VAR_NAME not in os.environ  # noqa: E501
 
 
+if IS_TEST_ENV:
+    raise Exception
+
+
 @pytest.fixture(scope="session")
 def is_test_env():
     """If true, currently in test environment (i.e. okay to overwrite DB). Downstream
@@ -114,7 +118,7 @@ def test_source(
             test_class = EtlClass(database, TEST_DATA_DIRECTORY)  # type: ignore
             test_class._normalize_disease = disease_normalizer  # type: ignore
             test_class.perform_etl(use_existing=True)
-            # test_class._database.complete_write_transaction()
+            test_class._database.complete_write_transaction()
 
         class QueryGetter:
 
