@@ -111,10 +111,10 @@ def test_source(
     def test_source_factory(EtlClass: Base):
         if IS_TEST_ENV:
             _logger.debug(f"Reloading DB with data from {TEST_DATA_DIRECTORY}")
-            test_class = EtlClass(database, test_data)  # type: ignore
+            test_class = EtlClass(database, TEST_DATA_DIRECTORY)  # type: ignore
             test_class._normalize_disease = disease_normalizer  # type: ignore
             test_class.perform_etl(use_existing=True)
-            test_class._database.complete_write_transaction()
+            # test_class._database.complete_write_transaction()
 
         class QueryGetter:
 

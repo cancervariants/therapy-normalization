@@ -19,7 +19,7 @@ def test_tables_created(database):
             "therapy_sources",
             "therapy_trade_names",
         }
-        assert not expected - set(existing_tables)
+        assert not (expected - set(existing_tables))
     else:
         assert "therapy_concepts" in existing_tables
         assert "therapy_metadata" in existing_tables

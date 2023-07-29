@@ -33,7 +33,7 @@ def merge_instance(test_source: Callable, is_test_env: bool):
         if os.environ.get(AWS_ENV_VAR_NAME):
             assert False, (
                 f"Running the full disease ETL pipeline test on an AWS environment is "
-                f"forbidden -- either unset {AWS_ENV_VAR_NAME} or unset DISEASE_TEST"
+                f"forbidden -- either unset {AWS_ENV_VAR_NAME} or unset THERAPY_TEST"
             )
         else:
             for SourceClass in (
