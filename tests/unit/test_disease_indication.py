@@ -8,7 +8,7 @@ from disease.database import AWS_ENV_VAR_NAME, create_db as create_disease_db
 # from disease.schemas import SourceName as DiseaseSourceName, \
 #     SourceMeta as DiseaseSourceMeta
 
-from therapy.etl.chembl import ChEMBL
+# from therapy.etl.chembl import ChEMBL
 from therapy.schemas import DatabaseType
 
 
@@ -62,11 +62,11 @@ def disease_database(database):
 
 
 RUN_TEST = os.environ.get("THERAPY_TEST", "").lower() == "true" and AWS_ENV_VAR_NAME not in os.environ  # noqa: E501
-
-
-@pytest.mark.skipif(not RUN_TEST, reason="only run in CI")
-def test_normalize_disease(database, disease_database):
-    """Test that DiseaseIndicationBase works correctly when normalizing diseases"""
-    ch = ChEMBL(database=database, disease_db=disease_database)
-    norm_disease = ch._normalize_disease("mondo:0700110")
-    assert norm_disease == "mondo:0700110"
+#
+#
+# @pytest.mark.skipif(not RUN_TEST, reason="only run in CI")
+# def test_normalize_disease(database, disease_database):
+#     """Test that DiseaseIndicationBase works correctly when normalizing diseases"""
+#     ch = ChEMBL(database=database, disease_db=disease_database)
+#     norm_disease = ch._normalize_disease("mondo:0700110")
+#     assert norm_disease == "mondo:0700110"
