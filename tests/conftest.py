@@ -47,10 +47,6 @@ def pytest_collection_modifyitems(items):
 IS_TEST_ENV = os.environ.get("THERAPY_TEST", "").lower() == "true" and AWS_ENV_VAR_NAME not in os.environ  # noqa: E501
 
 
-if IS_TEST_ENV:
-    raise Exception
-
-
 @pytest.fixture(scope="session")
 def is_test_env():
     """If true, currently in test environment (i.e. okay to overwrite DB). Downstream
@@ -101,13 +97,12 @@ def disease_normalizer():
 
 @pytest.fixture(scope="module")
 def test_source(
-    database: AbstractDatabase, test_data: Path, disease_normalizer: Callable
+    database: AbstractDatabase, disease_normalizer: Callable
 ):
     """Provide query endpoint for testing sources. If THERAPY_TEST is set, will try to
     load DB from test data.
 
     :param database: test database instance
-    :param is_test_env: if true, load from test data
     :param disease_normalizer: mock disease normalizer instance
     :return: factory function that takes an ETL class instance and returns a query
     endpoint.

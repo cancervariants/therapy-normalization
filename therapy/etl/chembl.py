@@ -38,6 +38,7 @@ class ChEMBL(DiseaseIndicationBase):
         conn.row_factory = sqlite3.Row
         self._conn = conn
         self._cursor = conn.cursor()
+        raise Exception
 
     @staticmethod
     def _unwrap_group_concat(value: Optional[str]) -> List[str]:
