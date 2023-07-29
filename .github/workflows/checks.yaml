@@ -14,7 +14,8 @@ jobs:
         strategy:
             matrix:
               python-version: ['3.8', '3.9', '3.10']
-              db_url: ['http://localhost:8002', 'postgresql://postgres:postgres@localhost:5432/therapy_normalizer_test']
+              # db_url: ['http://localhost:8002', 'postgresql://postgres:postgres@localhost:5432/therapy_normalizer_test']
+              db_url: ['postgresql://postgres:postgres@localhost:5432/therapy_normalizer_test']
 
         services:
             postgres:

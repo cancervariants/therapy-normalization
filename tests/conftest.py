@@ -15,6 +15,9 @@ from therapy.database import AWS_ENV_VAR_NAME
 
 
 _logger = logging.getLogger(__name__)
+logging.getLogger("botocore").setLevel(logging.ERROR)
+logging.getLogger("boto3").setLevel(logging.ERROR)
+logging.getLogger("urllib").setLevel(logging.ERROR)
 
 
 def pytest_collection_modifyitems(items):
