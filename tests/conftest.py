@@ -1,22 +1,22 @@
 """Pytest test config tools."""
-import os
-from typing import Optional, List, Callable
 import json
+import os
 from pathlib import Path
+from typing import Callable, List, Optional
 
 import pytest
 
+from therapy.database import AWS_ENV_VAR_NAME, Database
 from therapy.etl.base import Base
 from therapy.query import QueryHandler
-from therapy.schemas import Therapy, MatchType, MatchesKeyed
-from therapy.database import AWS_ENV_VAR_NAME, Database
+from therapy.schemas import MatchesKeyed, MatchType, Therapy
 
 
 def pytest_collection_modifyitems(items):
     """Modify test items in place to ensure test modules run in a given order.
     When creating new test modules, be sure to add them here.
     """
-    MODULE_ORDER = [
+    module_order = [
         "test_chembl",
         "test_chemidplus",
         "test_drugbank",
@@ -30,9 +30,9 @@ def pytest_collection_modifyitems(items):
         "test_database",
         "test_query",
         "test_emit_warnings",
-        "test_disease_indication"
+        "test_disease_indication",
     ]
-    items.sort(key=lambda i: MODULE_ORDER.index(i.module.__name__))
+    items.sort(key=lambda i: module_order.index(i.module.__name__))
 
 
 TEST_ROOT = Path(__file__).resolve().parents[1]
@@ -51,9 +51,7 @@ def db():
     database = Database()
     if os.environ.get("THERAPY_TEST", "").lower() == "true":
         if os.environ.get(AWS_ENV_VAR_NAME):
-            assert False, (
-                f"Cannot have both THERAPY_TEST and {AWS_ENV_VAR_NAME} set."
-            )
+            assert False, f"Cannot have both THERAPY_TEST and {AWS_ENV_VAR_NAME} set."
         existing_tables = database.dynamodb_client.list_tables()["TableNames"]
         if "therapy_concepts" in existing_tables:
             database.dynamodb_client.delete_table(TableName="therapy_concepts")
@@ -78,15 +76,14 @@ def disease_normalizer():
 
 
 @pytest.fixture(scope="session")
-def test_source(
-        db: Database, test_data: Path, disease_normalizer: Callable
-):
+def test_source(db: Database, test_data: Path, disease_normalizer: Callable):
     """Provide query endpoint for testing sources. If THERAPY_TEST is set, will try to
     load DB from test data.
     :return: factory function that takes an ETL class instance and returns a query
     endpoint.
     """
-    def test_source_factory(EtlClass: Base):
+
+    def test_source_factory(EtlClass: Base):  # noqa: N803
         if os.environ.get("THERAPY_TEST", "").lower() == "true":
             test_class = EtlClass(db, test_data)  # type: ignore
             test_class._normalize_disease = disease_normalizer  # type: ignore
@@ -94,7 +91,6 @@ def test_source(
             test_class.database.flush_batch()
 
         class QueryGetter:
-
             def __init__(self):
                 self.query_handler = QueryHandler()
                 self._src_name = EtlClass.__name__  # type: ignore
@@ -157,8 +153,11 @@ def compare_records():
 
 
 def _compare_response(
-    response: MatchesKeyed, match_type: MatchType, fixture: Optional[Therapy] = None,
-    fixture_list: Optional[List[Therapy]] = None, num_records: int = 0
+    response: MatchesKeyed,
+    match_type: MatchType,
+    fixture: Optional[Therapy] = None,
+    fixture_list: Optional[List[Therapy]] = None,
+    num_records: int = 0,
 ):
     """Check that test response is correct. Only 1 of {fixture, fixture_list}
     should be passed as arguments. num_records should only be passed with fixture_list.
@@ -177,8 +176,7 @@ def _compare_response(
     elif not fixture and not fixture_list:
         raise Exception("Must pass 1 of {fixture, fixture_list}")
     if fixture and num_records:
-        raise Exception("`num_records` should only be given with "
-                        "`fixture_list`.")
+        raise Exception("`num_records` should only be given with " "`fixture_list`.")
 
     assert response.match_type == match_type
     if fixture:

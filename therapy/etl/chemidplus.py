@@ -3,18 +3,22 @@
 Courtesy of the U.S. National Library of Medicine.
 """
 import logging
+import re
+import xml.etree.ElementTree as ET  # noqa: N817
 import zipfile
 from os import remove
+from pathlib import Path
 from shutil import move
 from typing import Generator
-from pathlib import Path
-import xml.etree.ElementTree as ET
-import re
 
 from therapy.etl.base import Base
-from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, \
-    DataLicenseAttributes, RecordParams
-
+from therapy.schemas import (
+    DataLicenseAttributes,
+    NamespacePrefix,
+    RecordParams,
+    SourceMeta,
+    SourceName,
+)
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -96,12 +100,16 @@ class ChemIDplus(Base):
             if locator_list:
                 for loc in locator_list.findall("InternetLocator"):
                     if loc.text == "DrugBank":
-                        db = f"{NamespacePrefix.DRUGBANK.value}:" \
-                             f"{loc.attrib['url'].split('/')[-1]}"
+                        db = (
+                            f"{NamespacePrefix.DRUGBANK.value}:"
+                            f"{loc.attrib['url'].split('/')[-1]}"
+                        )
                         params["xrefs"].append(db)  # type: ignore
                     elif loc.text == "FDA SRS":
-                        unii = f"{NamespacePrefix.UNII.value}:" \
-                               f"{loc.attrib['url'].split('/')[-1]}"
+                        unii = (
+                            f"{NamespacePrefix.UNII.value}:"
+                            f"{loc.attrib['url'].split('/')[-1]}"
+                        )
                         params["associated_with"].append(unii)  # type: ignore
 
             self._load_therapy(params)
@@ -115,10 +123,8 @@ class ChemIDplus(Base):
             data_url="ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
             rdp_url=None,
             data_license_attributes=DataLicenseAttributes(
-                non_commercial=False,
-                share_alike=False,
-                attribution=True
-            )
+                non_commercial=False, share_alike=False, attribution=True
+            ),
         )
         item = dict(meta)
         item["src_name"] = SourceName.CHEMIDPLUS.value

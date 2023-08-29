@@ -1,16 +1,15 @@
 """Module for Guide to PHARMACOLOGY ETL methods."""
-from typing import Optional, Dict, Any, List, Union
 import csv
 import html
-from pathlib import Path
 import re
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Union
 
 import requests
 
 from therapy import logger
-from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, ApprovalRating
 from therapy.etl.base import Base, SourceFormatException
-
+from therapy.schemas import ApprovalRating, NamespacePrefix, SourceMeta, SourceName
 
 TAG_PATTERN = re.compile("</?[a-zA-Z]+>")
 PMID_PATTERN = re.compile(r"\[PMID:[ ]?\d+\]")
@@ -23,12 +22,16 @@ class GuideToPHARMACOLOGY(Base):
         """Download the latest version of Guide to PHARMACOLOGY."""
         logger.info("Retrieving source data for Guide to PHARMACOLOGY")
         if not self._ligands_file.exists():
-            self._http_download("https://www.guidetopharmacology.org/DATA/ligands.tsv",
-                                self._ligands_file)
+            self._http_download(
+                "https://www.guidetopharmacology.org/DATA/ligands.tsv",
+                self._ligands_file,
+            )
             assert self._ligands_file.exists()
         if not self._mapping_file.exists():
-            self._http_download("https://www.guidetopharmacology.org/DATA/ligand_id_mapping.tsv",  # noqa: E501
-                                self._mapping_file)
+            self._http_download(
+                "https://www.guidetopharmacology.org/DATA/ligand_id_mapping.tsv",  # noqa: E501
+                self._mapping_file,
+            )
             assert self._mapping_file.exists()
         logger.info("Successfully retrieved source data for Guide to PHARMACOLOGY")
 
@@ -64,8 +67,7 @@ class GuideToPHARMACOLOGY(Base):
             for ligands_file in ligands_files[::-1]:
                 try:
                     version = self._parse_version(
-                        ligands_file,
-                        re.compile(prefix + r"_ligands_(.+)\.tsv")
+                        ligands_file, re.compile(prefix + r"_ligands_(.+)\.tsv")
                     )
                 except FileNotFoundError:
                     raise FileNotFoundError(
@@ -74,7 +76,9 @@ class GuideToPHARMACOLOGY(Base):
                         "filename against schema defined in README: "
                         "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
                     )
-                check_mapping_file = self._src_dir / f"{prefix}_ligand_id_mapping_{version}.tsv"  # noqa: E501
+                check_mapping_file = (
+                    self._src_dir / f"{prefix}_ligand_id_mapping_{version}.tsv"
+                )  # noqa: E501
                 if check_mapping_file.exists():
                     self._version = version
                     self._ligands_file = ligands_file
@@ -89,7 +93,9 @@ class GuideToPHARMACOLOGY(Base):
         else:
             self._version = self.get_latest_version()
             self._ligands_file = self._src_dir / f"{prefix}_ligands_{self._version}.tsv"
-            self._mapping_file = self._src_dir / f"{prefix}_ligand_id_mapping_{self._version}.tsv"  # noqa: E501
+            self._mapping_file = (
+                self._src_dir / f"{prefix}_ligand_id_mapping_{self._version}.tsv"
+            )  # noqa: E501
             if not (self._ligands_file.exists() and self._mapping_file.exists()):
                 self._download_data()
                 assert self._ligands_file.exists()
@@ -123,12 +129,31 @@ class GuideToPHARMACOLOGY(Base):
             # check that file structure is the same
             next(rows)
             if next(rows) != [
-                "Ligand ID", "Name", "Species", "Type", "Approved", "Withdrawn",
-                "Labelled", "Radioactive", "PubChem SID", "PubChem CID", "UniProt ID",
-                "Ensembl ID", "Ligand Subunit IDs", "Ligand Subunit Name",
-                "Ligand Subunit UniProt IDs", "Ligand Subunit Ensembl IDs",
-                "IUPAC name", "INN", "Synonyms", "SMILES", "InChIKey", "InChI",
-                "GtoImmuPdb", "GtoMPdb", "Antibacterial"
+                "Ligand ID",
+                "Name",
+                "Species",
+                "Type",
+                "Approved",
+                "Withdrawn",
+                "Labelled",
+                "Radioactive",
+                "PubChem SID",
+                "PubChem CID",
+                "UniProt ID",
+                "Ensembl ID",
+                "Ligand Subunit IDs",
+                "Ligand Subunit Name",
+                "Ligand Subunit UniProt IDs",
+                "Ligand Subunit Ensembl IDs",
+                "IUPAC name",
+                "INN",
+                "Synonyms",
+                "SMILES",
+                "InChIKey",
+                "InChI",
+                "GtoImmuPdb",
+                "GtoMPdb",
+                "Antibacterial",
             ]:
                 raise SourceFormatException(
                     "GtoP ligands file contains missing or unrecognized columns. See "
@@ -137,10 +162,9 @@ class GuideToPHARMACOLOGY(Base):
 
             for row in rows:
                 params: Dict[str, Union[List[str], str]] = {
-                    "concept_id":
-                        f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}",
+                    "concept_id": f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}",
                     "label": self._process_name(row[1]),
-                    "src_name": SourceName.GUIDETOPHARMACOLOGY.value
+                    "src_name": SourceName.GUIDETOPHARMACOLOGY.value,
                 }
 
                 approval_rating = self._set_approval_rating(row[4], row[5])
@@ -150,9 +174,13 @@ class GuideToPHARMACOLOGY(Base):
                 associated_with = list()
                 aliases = list()
                 if row[8]:
-                    associated_with.append(f"{NamespacePrefix.PUBCHEMSUBSTANCE.value}:{row[8]}")  # noqa: E501
+                    associated_with.append(
+                        f"{NamespacePrefix.PUBCHEMSUBSTANCE.value}:{row[8]}"
+                    )  # noqa: E501
                 if row[9]:
-                    associated_with.append(f"{NamespacePrefix.PUBCHEMCOMPOUND.value}:{row[9]}")  # noqa: E501
+                    associated_with.append(
+                        f"{NamespacePrefix.PUBCHEMCOMPOUND.value}:{row[9]}"
+                    )  # noqa: E501
                 if row[10]:
                     associated_with.append(f"{NamespacePrefix.UNIPROT.value}:{row[10]}")
                 if row[16]:
@@ -165,14 +193,16 @@ class GuideToPHARMACOLOGY(Base):
                     synonyms = row[18].split("|")
                     for s in synonyms:
                         if "&" in s and ";" in s:
-                            name_code = s[s.index("&"):s.index(";") + 1]
+                            name_code = s[s.index("&") : s.index(";") + 1]
                             if name_code.lower() in ["&reg;", "&trade;"]:
                                 # Remove trademark symbols to allow for search
                                 s = s.replace(name_code, "")
                             s = html.unescape(s)
                         aliases.append(self._process_name(s))
                 if row[20]:
-                    associated_with.append(f"{NamespacePrefix.INCHIKEY.value}:{row[20]}")  # noqa: E501
+                    associated_with.append(
+                        f"{NamespacePrefix.INCHIKEY.value}:{row[20]}"
+                    )  # noqa: E501
 
                 if associated_with:
                     params["associated_with"] = associated_with
@@ -204,9 +234,21 @@ class GuideToPHARMACOLOGY(Base):
             rows = csv.reader(f, delimiter="\t")
             next(rows)
             if next(rows) != [
-                "Ligand id", "Name", "Species", "Type", "PubChem SID", "PubChem CID",
-                "ChEMBl ID", "Chebi ID", "UniProt id", "Ensembl ID", "IUPAC name",
-                "INN", "CAS", "DrugBank ID", "Drug Central ID"
+                "Ligand id",
+                "Name",
+                "Species",
+                "Type",
+                "PubChem SID",
+                "PubChem CID",
+                "ChEMBl ID",
+                "Chebi ID",
+                "UniProt id",
+                "Ensembl ID",
+                "IUPAC name",
+                "INN",
+                "CAS",
+                "DrugBank ID",
+                "Drug Central ID",
             ]:
                 raise SourceFormatException(
                     "GtoP ligand mapping file contains missing or unrecognized "
@@ -244,8 +286,7 @@ class GuideToPHARMACOLOGY(Base):
                 if associated_with:
                     params["associated_with"] = associated_with
 
-    def _set_approval_rating(self, approved: str,
-                             withdrawn: str) -> Optional[str]:
+    def _set_approval_rating(self, approved: str, withdrawn: str) -> Optional[str]:
         """Set approval rating value.
 
         :param str approved: The drug is or has in the past been approved for human
@@ -274,7 +315,7 @@ class GuideToPHARMACOLOGY(Base):
                 "non_commercial": False,
                 "share_alike": True,
                 "attribution": True,
-            }
+            },
         )
         params = dict(meta)
         params["src_name"] = SourceName.GUIDETOPHARMACOLOGY.value

@@ -1,13 +1,13 @@
-"""This module creates the database."""
-from os import environ
-from typing import Optional, Dict, List, Any
-from enum import Enum
+"""Provide classes and values for database initialization and access."""
+import atexit
 import logging
 import sys
-import atexit
+from enum import Enum
+from os import environ
+from typing import Any, Dict, List, Optional
 
-import click
 import boto3
+import click
 from boto3.dynamodb.conditions import Key
 from botocore.exceptions import ClientError
 
@@ -37,16 +37,15 @@ class AwsEnvName(str, Enum):
 VALID_AWS_ENV_NAMES = {v.value for v in AwsEnvName.__members__.values()}
 
 
-class DatabaseException(Exception):
+class DatabaseException(Exception):  # noqa: N818
     """Create custom class for handling database exceptions"""
-
-    pass
 
 
 def confirm_aws_db_use(env_name: str) -> None:
     """Check to ensure that AWS instance should actually be used."""
-    if click.confirm(f"Are you sure you want to use the AWS {env_name} database?",
-                     default=False):
+    if click.confirm(
+        f"Are you sure you want to use the AWS {env_name} database?", default=False
+    ):
         click.echo(f"***THERAPY AWS {env_name.upper()} DATABASE IN USE***")
     else:
         click.echo("Exiting.")
@@ -56,7 +55,7 @@ def confirm_aws_db_use(env_name: str) -> None:
 class Database:
     """The database class."""
 
-    def __init__(self, db_url: str = "", region_name: str = "us-east-2"):
+    def __init__(self, db_url: str = "", region_name: str = "us-east-2") -> None:
         """Initialize Database class instance.
 
         :param str db_url: database endpoint URL to connect to
@@ -68,15 +67,17 @@ class Database:
         if AWS_ENV_VAR_NAME in environ:
             aws_env = environ[AWS_ENV_VAR_NAME]
             if aws_env not in VALID_AWS_ENV_NAMES:
-                raise DatabaseException(f"{AWS_ENV_VAR_NAME} must be one of {VALID_AWS_ENV_NAMES}")  # noqa: E501
+                raise DatabaseException(
+                    f"{AWS_ENV_VAR_NAME} must be one of {VALID_AWS_ENV_NAMES}"
+                )  # noqa: E501
 
             skip_confirmation = environ.get(SKIP_AWS_DB_ENV_NAME)
-            if (not skip_confirmation) or (skip_confirmation and skip_confirmation != "true"):  # noqa: E501
+            if (not skip_confirmation) or (
+                skip_confirmation and skip_confirmation != "true"
+            ):  # noqa: E501
                 confirm_aws_db_use(environ[AWS_ENV_VAR_NAME])
 
-            boto_params = {
-                "region_name": region_name
-            }
+            boto_params = {"region_name": region_name}
 
             if aws_env == AwsEnvName.DEVELOPMENT:
                 therapy_concepts_table = "therapy_concepts_nonprod"
@@ -94,7 +95,7 @@ class Database:
 
             boto_params = {
                 "region_name": region_name,
-                "endpoint_url": self.endpoint_url
+                "endpoint_url": self.endpoint_url,
             }
 
         self.dynamodb = boto3.resource("dynamodb", **boto_params)
@@ -124,69 +125,42 @@ class Database:
                 KeySchema=[
                     {
                         "AttributeName": "label_and_type",
-                        "KeyType": "HASH"  # Partition key
+                        "KeyType": "HASH",  # Partition key
                     },
-                    {
-                        "AttributeName": "concept_id",
-                        "KeyType": "RANGE"  # Sort key
-                    }
+                    {"AttributeName": "concept_id", "KeyType": "RANGE"},  # Sort key
                 ],
                 AttributeDefinitions=[
-                    {
-                        "AttributeName": "label_and_type",
-                        "AttributeType": "S"
-                    },
-                    {
-                        "AttributeName": "concept_id",
-                        "AttributeType": "S"
-                    },
-                    {
-                        "AttributeName": "src_name",
-                        "AttributeType": "S"
-                    },
-                    {
-                        "AttributeName": "item_type",
-                        "AttributeType": "S"
-                    }
+                    {"AttributeName": "label_and_type", "AttributeType": "S"},
+                    {"AttributeName": "concept_id", "AttributeType": "S"},
+                    {"AttributeName": "src_name", "AttributeType": "S"},
+                    {"AttributeName": "item_type", "AttributeType": "S"},
                 ],
                 GlobalSecondaryIndexes=[
                     {
                         "IndexName": "src_index",
-                        "KeySchema": [
-                            {
-                                "AttributeName": "src_name",
-                                "KeyType": "HASH"
-                            }
-                        ],
-                        "Projection": {
-                            "ProjectionType": "KEYS_ONLY"
-                        },
+                        "KeySchema": [{"AttributeName": "src_name", "KeyType": "HASH"}],
+                        "Projection": {"ProjectionType": "KEYS_ONLY"},
                         "ProvisionedThroughput": {
                             "ReadCapacityUnits": 10,
-                            "WriteCapacityUnits": 10
-                        }
+                            "WriteCapacityUnits": 10,
+                        },
                     },
                     {
                         "IndexName": "item_type_index",
                         "KeySchema": [
-                            {
-                                "AttributeName": "item_type",
-                                "KeyType": "HASH"
-                            }
+                            {"AttributeName": "item_type", "KeyType": "HASH"}
                         ],
-                        "Projection": {
-                            "ProjectionType": "KEYS_ONLY"
-                        },
+                        "Projection": {"ProjectionType": "KEYS_ONLY"},
                         "ProvisionedThroughput": {
                             "ReadCapacityUnits": 10,
-                            "WriteCapacityUnits": 10
-                        }
-                    }
+                            "WriteCapacityUnits": 10,
+                        },
+                    },
                 ],
                 ProvisionedThroughput={
                     "ReadCapacityUnits": 10,
-                    "WriteCapacityUnits": 10
-                }
+                    "WriteCapacityUnits": 10,
+                },
             )
 
     def create_meta_data_table(self, existing_tables: List[str]) -> None:
@@ -199,25 +173,20 @@ class Database:
             self.dynamodb.create_table(
                 TableName=table_name,
                 KeySchema=[
-                    {
-                        "AttributeName": "src_name",
-                        "KeyType": "HASH"  # Partition key
-                    }
+                    {"AttributeName": "src_name", "KeyType": "HASH"}  # Partition key
                 ],
                 AttributeDefinitions=[
-                    {
-                        "AttributeName": "src_name",
-                        "AttributeType": "S"
-                    },
+                    {"AttributeName": "src_name", "AttributeType": "S"},
                 ],
                 ProvisionedThroughput={
                     "ReadCapacityUnits": 10,
-                    "WriteCapacityUnits": 10
-                }
+                    "WriteCapacityUnits": 10,
+                },
             )
 
-    def get_record_by_id(self, concept_id: str, case_sensitive: bool = True,
-                         merge: bool = False) -> Optional[Dict]:
+    def get_record_by_id(
+        self, concept_id: str, case_sensitive: bool = True, merge: bool = False
+    ) -> Optional[Dict]:
         """Fetch record corresponding to provided concept ID
 
         :param str concept_id: concept ID for therapy record
@@ -233,25 +202,25 @@ class Database:
             else:
                 pk = f"{concept_id.lower()}##identity"
             if case_sensitive:
-                match = self.therapies.get_item(Key={
-                    "label_and_type": pk,
-                    "concept_id": concept_id
-                })
+                match = self.therapies.get_item(
+                    Key={"label_and_type": pk, "concept_id": concept_id}
+                )
                 return match["Item"]
             else:
                 exp = Key("label_and_type").eq(pk)
                 response = self.therapies.query(KeyConditionExpression=exp)
                 return response["Items"][0]
         except ClientError as e:
-            logger.error(f"boto3 client error on get_records_by_id for "
-                         f"search term {concept_id}: "
-                         f"{e.response['Error']['Message']}")
+            logger.error(
+                f"boto3 client error on get_records_by_id for "
+                f"search term {concept_id}: "
+                f"{e.response['Error']['Message']}"
+            )
             return None
         except (KeyError, IndexError):  # record doesn"t exist
             return None
 
-    def get_records_by_type(self, query: str,
-                            match_type: str) -> List[Dict]:
+    def get_records_by_type(self, query: str, match_type: str) -> List[Dict]:
         """Retrieve records for given query and match type.
 
         :param query: string to match against (should already be lower-case)
@@ -266,9 +235,11 @@ class Database:
             matches = self.therapies.query(KeyConditionExpression=filter_exp)
             return matches.get("Items", None)
         except ClientError as e:
-            logger.error(f"boto3 client error on get_records_by_type for "
-                         f"search term {query}: "
-                         f"{e.response['Error']['Message']}")
+            logger.error(
+                f"boto3 client error on get_records_by_type for "
+                f"search term {query}: "
+                f"{e.response['Error']['Message']}"
+            )
             return []
 
     def get_ids_for_merge(self) -> List[str]:
@@ -312,17 +283,22 @@ class Database:
         try:
             self.batch.put_item(Item=record)
         except ClientError as e:
-            if (len((record["label_and_type"]).encode("utf-8")) >= 2048) or \
-                    (len((record["concept_id"]).encode("utf-8")) >= 1024):
-                logger.info(f"{record['concept_id']}: An error occurred "
-                            "(ValidationException) when calling the BatchWriteItem "
-                            "operation: Hash primary key values must be under 2048 "
-                            "bytes, and range primary key values must be under 1024 "
-                            "bytes.")
+            if (len((record["label_and_type"]).encode("utf-8")) >= 2048) or (
+                len((record["concept_id"]).encode("utf-8")) >= 1024
+            ):
+                logger.info(
+                    f"{record['concept_id']}: An error occurred "
+                    "(ValidationException) when calling the BatchWriteItem "
+                    "operation: Hash primary key values must be under 2048 "
+                    "bytes, and range primary key values must be under 1024 "
+                    "bytes."
+                )
             else:
-                logger.error("boto3 client error on add_record for "
-                             f"{record['concept_id']}: "
-                             f"{e.response['Error']['Message']}")
+                logger.error(
+                    "boto3 client error on add_record for "
+                    f"{record['concept_id']}: "
+                    f"{e.response['Error']['Message']}"
+                )
 
     def add_ref_record(self, term: str, concept_id: str, ref_type: str) -> None:
         """Add auxiliary/reference record to database.
@@ -343,21 +319,31 @@ class Database:
         try:
             self.batch.put_item(Item=record)
         except ClientError as e:
-            if (len((record["label_and_type"]).encode("utf-8")) >= 2048) or \
-                    (len((record["concept_id"]).encode("utf-8")) >= 1024):
-                logger.info(f"{record['concept_id']}: An error occurred "
-                            "(ValidationException) when calling the "
-                            "BatchWriteItem operation: Hash primary key "
-                            "values must be under 2048 bytes, and range "
-                            "primary key values must be under 1024 "
-                            "bytes.")
+            if (len((record["label_and_type"]).encode("utf-8")) >= 2048) or (
+                len((record["concept_id"]).encode("utf-8")) >= 1024
+            ):
+                logger.info(
+                    f"{record['concept_id']}: An error occurred "
+                    "(ValidationException) when calling the "
+                    "BatchWriteItem operation: Hash primary key "
+                    "values must be under 2048 bytes, and range "
+                    "primary key values must be under 1024 "
+                    "bytes."
+                )
             else:
-                logger.error(f"boto3 client error adding reference {term} for "
-                             f"{concept_id} with match type {ref_type}: "
-                             f"{e.response['Error']['Message']}")
+                logger.error(
+                    f"boto3 client error adding reference {term} for "
+                    f"{concept_id} with match type {ref_type}: "
+                    f"{e.response['Error']['Message']}"
+                )
 
-    def update_record(self, concept_id: str, field: str, new_value: Any,  # noqa: ANN401
-                      item_type: str = "identity") -> None:
+    def update_record(
+        self,
+        concept_id: str,
+        field: str,
+        new_value: Any,  # noqa: ANN401
+        item_type: str = "identity",
+    ) -> None:
         """Update the field of an individual record to a new value.
 
         :param str concept_id: record to update
@@ -367,17 +353,21 @@ class Database:
         """
         key = {
             "label_and_type": f"{concept_id.lower()}##{item_type}",
-            "concept_id": concept_id
+            "concept_id": concept_id,
         }
         update_expression = f"set {field}=:r"
         update_values = {":r": new_value}
         try:
-            self.therapies.update_item(Key=key,
-                                       UpdateExpression=update_expression,
-                                       ExpressionAttributeValues=update_values)
+            self.therapies.update_item(
+                Key=key,
+                UpdateExpression=update_expression,
+                ExpressionAttributeValues=update_values,
+            )
         except ClientError as e:
-            logger.error(f"boto3 client error in `database.update_record()`: "
-                         f"{e.response['Error']['Message']}")
+            logger.error(
+                f"boto3 client error in `database.update_record()`: "
+                f"{e.response['Error']['Message']}"
+            )
 
     def flush_batch(self) -> None:
         """Flush internal batch_writer."""

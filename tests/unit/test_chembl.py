@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 from therapy.etl import ChEMBL
-from therapy.schemas import Therapy, MatchType
+from therapy.schemas import MatchType, Therapy
 
 
 @pytest.fixture(scope="module")
@@ -65,14 +65,12 @@ def test_concept_id_cisplatin(cisplatin, chembl, compare_records):
     compare_records(response.records[0], cisplatin)
 
     response = chembl.search("cHEmbl:chembl11359")
-    assert response.match_type == \
-           MatchType.CONCEPT_ID
+    assert response.match_type == MatchType.CONCEPT_ID
     assert len(response.records) == 1
     compare_records(response.records[0], cisplatin)
 
     response = chembl.search("cHEmbl:CHEMBL11359")
-    assert response.match_type == \
-           MatchType.CONCEPT_ID
+    assert response.match_type == MatchType.CONCEPT_ID
     assert len(response.records) == 1
     compare_records(response.records[0], cisplatin)
 
@@ -216,8 +214,7 @@ def test_aspirin_label(aspirin, chembl, compare_records):
     compare_records(response.records[0], aspirin)
 
     response = chembl.search("aspirin")
-    assert response.match_type ==\
-           MatchType.LABEL
+    assert response.match_type == MatchType.LABEL
     assert len(response.records) == 1
     compare_records(response.records[0], aspirin)
 
@@ -234,13 +231,17 @@ def test_meta_info(chembl):
     """Test that the meta field is correct."""
     response = chembl.search("cisplatin")
     assert response.source_meta_.data_license == "CC BY-SA 3.0"
-    assert response.source_meta_.data_license_url == \
-           "https://creativecommons.org/licenses/by-sa/3.0/"
+    assert (
+        response.source_meta_.data_license_url
+        == "https://creativecommons.org/licenses/by-sa/3.0/"
+    )
     assert response.source_meta_.version == "33"
-    assert response.source_meta_.data_url.startswith("ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb")  # noqa: E501
+    assert response.source_meta_.data_url.startswith(
+        "ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb"
+    )  # noqa: E501
     assert response.source_meta_.rdp_url == "http://reusabledata.org/chembl.html"
     assert response.source_meta_.data_license_attributes == {
         "non_commercial": False,
         "share_alike": True,
-        "attribution": True
+        "attribution": True,
     }

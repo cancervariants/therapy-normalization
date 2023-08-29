@@ -21,16 +21,17 @@ We use Amazon DynamoDB for data storage. To deploy locally, follow [these instru
 
 ### Initialize development environment
 
-Code style is managed by [flake8](https://github.com/PyCQA/flake8) and checked prior to commit.
+Code style is managed by [Ruff](https://github.com/astral-sh/ruff) and [Black](https://github.com/psf/black) and checked prior to commit.
 
-We use [pre-commit](https://pre-commit.com/#usage) to run conformance tests.
+We use pre-commit to run conformance tests.
 
-This ensures:
+This performs checks for:
 
-* Style correctness
-* No large files
-* AWS credentials are present
-* Private key is present
+    Code style
+    File endings
+    Added large files
+    AWS credentials
+    Private keys
 
 Pre-commit *must* be installed before your first commit. Use the following command:
 

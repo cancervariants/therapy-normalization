@@ -1,11 +1,10 @@
 """Build RxNorm test data."""
-from pathlib import Path
 import csv
 import shutil
+from pathlib import Path
 
 from therapy.database import Database
-from therapy.etl.rxnorm import RxNorm, RXNORM_XREFS
-
+from therapy.etl.rxnorm import RXNORM_XREFS, RxNorm
 
 db = Database()
 rx = RxNorm(db)
@@ -121,7 +120,7 @@ TEST_IDS = {
     "1728762",
     "1144714",
     "1046848",
-    "1048289"
+    "1048289",
 }
 
 rows_to_add = []

@@ -1,6 +1,6 @@
 """Apply manual data restrictions and annotations to extracted records."""
 import csv
-from typing import Dict, Union, List, Tuple
+from typing import Dict, List, Tuple, Union
 
 from therapy import APP_ROOT
 from therapy.schemas import SourceName
