@@ -104,8 +104,8 @@ unmerged_normalize_description = (
 def search(
     q: str = Query(..., description=q_descr),
     keyed: Optional[bool] = Query(False, description=keyed_descr),
-    incl: Optional[str] = Query(None, description=incl_descr),
-    excl: Optional[str] = Query(None, description=excl_descr),
+    incl: str = Query("", description=incl_descr),
+    excl: str = Query("", description=excl_descr),
     infer_namespace: bool = Query(True, description=infer_descr),
 ) -> SearchService:
     """For each source, return strongest-match concepts for query string
@@ -126,7 +126,7 @@ def search(
             html.unescape(q),
             keyed=keyed,  # type: ignore
             incl=incl,
-            excl=excl,  # type: ignore
+            excl=excl,
             infer=infer_namespace,
         )  # type: ignore
     except InvalidParameterException as e:
