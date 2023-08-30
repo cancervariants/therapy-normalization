@@ -41,7 +41,7 @@ class NCIt(Base):
             archive_url = f"{base_url}/archive/{self._version}_Release/{release_fname}"
             archive_try = requests.get(archive_url)
             if archive_try.status_code != 200:
-                old_archive_url = f"{base_url}/archive/20{self._version[0:2]}/{self._version}_Release/{release_fname}"  # noqa: E501
+                old_archive_url = f"{base_url}/archive/20{self._version[0:2]}/{self._version}_Release/{release_fname}"
                 old_archive_try = requests.get(old_archive_url)
                 if old_archive_try.status_code != 200:
                     msg = (

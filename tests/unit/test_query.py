@@ -285,7 +285,7 @@ def test_search_sources(search_handler):
     assert set(resp.source_matches.keys()) == {"ChEMBL", "NCIt"}
 
     # test full inclusion
-    sources = "chembl,ncit,drugbank,wikidata,rxnorm,chemidplus,hemonc,guidetopharmacology,drugsatfda"  # noqa: E501
+    sources = "chembl,ncit,drugbank,wikidata,rxnorm,chemidplus,hemonc,guidetopharmacology,drugsatfda"
     resp = search_handler.search("cisplatin", keyed=True, incl=sources, excl="")
     assert set(resp.source_matches.keys()) == {
         "Wikidata",
@@ -313,7 +313,7 @@ def test_search_sources(search_handler):
     }
 
     # test full exclusion
-    sources = "chembl,wikidata,drugbank,ncit,rxnorm,chemidplus,hemonc,guidetopharmacology,drugsatfda"  # noqa: E501
+    sources = "chembl,wikidata,drugbank,ncit,rxnorm,chemidplus,hemonc,guidetopharmacology,drugsatfda"
     resp = search_handler.search("cisplatin", keyed=True, excl=sources)
     assert set(resp.source_matches.keys()) == set()
 
@@ -827,18 +827,14 @@ def test_service_meta(search_handler, normalize_handler):
     assert service_meta.name == "thera-py"
     assert service_meta.version >= "0.2.13"
     assert isinstance(service_meta.response_datetime, datetime)
-    assert (
-        service_meta.url == "https://github.com/cancervariants/therapy-normalization"
-    )  # noqa: E501
+    assert service_meta.url == "https://github.com/cancervariants/therapy-normalization"
 
     response = normalize_handler.normalize(query)
     service_meta = response.service_meta_
     assert service_meta.name == "thera-py"
     assert service_meta.version >= "0.2.13"
     assert isinstance(service_meta.response_datetime, datetime)
-    assert (
-        service_meta.url == "https://github.com/cancervariants/therapy-normalization"
-    )  # noqa: E501
+    assert service_meta.url == "https://github.com/cancervariants/therapy-normalization"
 
 
 def test_broken_db_handling(normalize_handler):

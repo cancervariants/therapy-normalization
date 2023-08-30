@@ -63,7 +63,7 @@ class RxNorm(Base):
         """Create a YAML file containing RxNorm drug form values."""
         self._drug_forms_file = (
             self._src_dir / f"rxnorm_drug_forms_{self._version}.yaml"
-        )  # noqa: E501
+        )
         dfs = []
         with open(self._src_file) as f:  # type: ignore
             data = csv.reader(f, delimiter="|")
@@ -353,7 +353,7 @@ class RxNorm(Base):
         """Add RxNorm metadata."""
         meta = SourceMeta(
             data_license="UMLS Metathesaurus",
-            data_license_url="https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",  # noqa: E501
+            data_license_url="https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",
             version=self._version,
             data_url=bioversions.resolve("rxnorm").homepage,
             rdp_url=None,

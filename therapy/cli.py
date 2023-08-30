@@ -19,7 +19,7 @@ from therapy.database import (
     Database,
     confirm_aws_db_use,
 )
-from therapy.etl import (  # noqa: F401, E501
+from therapy.etl import (  # noqa: F401
     ChEMBL,
     ChemIDplus,
     DrugBank,
@@ -85,7 +85,9 @@ class CLI:
         """  # noqa: D301
         # If SKIP_AWS_CONFIRMATION is accidentally set, we should verify that the
         # aws instance should actually be used
-        invalid_aws_msg = f"{AWS_ENV_VAR_NAME} must be set to one of {VALID_AWS_ENV_NAMES}"  # noqa: E501
+        invalid_aws_msg = (
+            f"{AWS_ENV_VAR_NAME} must be set to one of {VALID_AWS_ENV_NAMES}"
+        )
         aws_env_name = environ.get(AWS_ENV_VAR_NAME) or aws_instance
         if aws_env_name:
             assert aws_env_name in VALID_AWS_ENV_NAMES, invalid_aws_msg

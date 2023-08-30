@@ -27,11 +27,11 @@ We use pre-commit to run conformance tests.
 
 This performs checks for:
 
-    Code style
-    File endings
-    Added large files
-    AWS credentials
-    Private keys
+* Code style
+* File endings
+* Added large files
+* AWS credentials
+* Private keys
 
 Pre-commit *must* be installed before your first commit. Use the following command:
 

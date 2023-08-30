@@ -203,7 +203,7 @@ class ChEMBL(DiseaseIndicationBase):
         """Add ChEMBL metadata."""
         metadata = SourceMeta(
             data_license="CC BY-SA 3.0",
-            data_license_url="https://creativecommons.org/licenses/by-sa/3.0/",  # noqa: E501
+            data_license_url="https://creativecommons.org/licenses/by-sa/3.0/",
             version=self._version,
             data_url=bioversions.resolve("chembl").homepage,
             rdp_url="http://reusabledata.org/chembl.html",
