@@ -8,8 +8,10 @@ from disease.query import QueryHandler as DiseaseQueryHandler
 
 from therapy.etl.base import DiseaseIndicationBase
 
-
-RUN_TEST = os.environ.get("THERAPY_TEST", "").lower() == "true" and AWS_ENV_VAR_NAME not in os.environ  # noqa: E501
+RUN_TEST = (
+    os.environ.get("THERAPY_TEST", "").lower() == "true"
+    and AWS_ENV_VAR_NAME not in os.environ
+)
 
 
 class TestDiseaseIndication(DiseaseIndicationBase):
@@ -30,7 +32,7 @@ class TestDiseaseIndication(DiseaseIndicationBase):
             "src_name": "Mondo",
             "concept_id": "mondo:0700110",
             "label": "pneumonia, non-human animal",
-            "merge_ref": "mondo:07001110##merger"
+            "merge_ref": "mondo:07001110##merger",
         }
         self.disease_normalizer.db.diseases.put_item(Item=disease)
 
@@ -51,8 +53,8 @@ class TestDiseaseIndication(DiseaseIndicationBase):
             "data_license_attributes": {
                 "non_commercial": False,
                 "share_alike": False,
-                "attribution": True
-            }
+                "attribution": True,
+            },
         }
         self.disease_normalizer.db.metadata.put_item(Item=source)
 

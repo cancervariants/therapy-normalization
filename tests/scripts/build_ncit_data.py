@@ -1,14 +1,14 @@
 """Construct test data for NCIt source."""
+import xml.etree.ElementTree as XET  # noqa: N814
 from pathlib import Path
 from typing import Generator
-import xml.etree.ElementTree as XET
 
+import lxml.etree as ET  # noqa: N812
 import owlready2 as owl
-import lxml.etree as ET
 import xmlformatter
 
-from therapy.etl import NCIt
 from therapy.database import Database
+from therapy.etl import NCIt
 
 # define captured ids in `test_classes` variable
 
@@ -114,7 +114,7 @@ test_classes = {
     onto.C839,
     onto.C107245,
     onto.C488,
-    onto.C66724
+    onto.C66724,
 }
 
 parent_concepts = set()

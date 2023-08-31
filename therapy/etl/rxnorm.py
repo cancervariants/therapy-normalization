@@ -1,4 +1,4 @@
-"""This module defines the RxNorm ETL methods.
+"""Provide methods for extracting and loading RxNorm data.
 
 "This product uses publicly available data courtesy of the U.S. National
 Library of Medicine (NLM), National Institutes of Health, Department of Health
@@ -7,21 +7,26 @@ Library of Medicine (NLM), National Institutes of Health, Department of Health
 """
 import csv
 import logging
+import re
 import shutil
 import zipfile
-import re
 from os import environ, remove
-from typing import List, Dict
 from pathlib import Path
+from typing import Dict, List
 
-import yaml
 import bioversions
+import yaml
 from boto3.dynamodb.table import BatchWriter
 
-from therapy import DownloadException, XREF_SOURCES, ASSOC_WITH_SOURCES, ITEM_TYPES
-from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, ApprovalRating, \
-    RecordParams
+from therapy import ASSOC_WITH_SOURCES, ITEM_TYPES, XREF_SOURCES, DownloadException
 from therapy.etl.base import Base
+from therapy.schemas import (
+    ApprovalRating,
+    NamespacePrefix,
+    RecordParams,
+    SourceMeta,
+    SourceName,
+)
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -37,8 +42,18 @@ ALIASES = ["SYN", "SY", "TMSY", "PM", "GN", "PT", "PEP", "CD", "ET", "RXN_PT"]
 TRADE_NAMES = ["BD", "BN", "SBD"]
 
 # Allowed rxnorm xrefs that have Source Level Restriction 0 or 1
-RXNORM_XREFS = ["ATC", "CVX", "DRUGBANK", "MMSL", "MSH", "MTHCMSFRF", "MTHSPL",
-                "RXNORM", "USP", "VANDF"]
+RXNORM_XREFS = [
+    "ATC",
+    "CVX",
+    "DRUGBANK",
+    "MMSL",
+    "MSH",
+    "MTHCMSFRF",
+    "MTHSPL",
+    "RXNORM",
+    "USP",
+    "VANDF",
+]
 
 
 class RxNorm(Base):
@@ -46,7 +61,9 @@ class RxNorm(Base):
 
     def _create_drug_form_yaml(self) -> None:
         """Create a YAML file containing RxNorm drug form values."""
-        self._drug_forms_file = self._src_dir / f"rxnorm_drug_forms_{self._version}.yaml"  # noqa: E501
+        self._drug_forms_file = (
+            self._src_dir / f"rxnorm_drug_forms_{self._version}.yaml"
+        )
         dfs = []
         with open(self._src_file) as f:  # type: ignore
             data = csv.reader(f, delimiter="|")
@@ -92,7 +109,7 @@ class RxNorm(Base):
         self._http_download(
             f"https://uts-ws.nlm.nih.gov/download?url={url}&apiKey={api_key}",
             self._src_dir,
-            handler=self._zip_handler
+            handler=self._zip_handler,
         )
 
     def _get_existing_files(self) -> List[Path]:
@@ -145,22 +162,25 @@ class RxNorm(Base):
                         if concept_id not in data.keys():
                             params: RecordParams = {}
                             params["concept_id"] = concept_id
-                            self._add_str_field(params, row, precise_ingredient,
-                                                drug_forms, sbdfs)
+                            self._add_str_field(
+                                params, row, precise_ingredient, drug_forms, sbdfs
+                            )
                             self._add_xref_assoc(params, row)
                             data[concept_id] = params
                         else:
                             # Concept already created
                             params = data[concept_id]
-                            self._add_str_field(params, row, precise_ingredient,
-                                                drug_forms, sbdfs)
+                            self._add_str_field(
+                                params, row, precise_ingredient, drug_forms, sbdfs
+                            )
                             self._add_xref_assoc(params, row)
 
             with self.database.therapies.batch_writer() as batch:
                 for value in data.values():
                     if "label" in value:
-                        self._get_trade_names(value, precise_ingredient,
-                                              ingredient_brands, sbdfs)
+                        self._get_trade_names(
+                            value, precise_ingredient, ingredient_brands, sbdfs
+                        )
                         self._load_brand_concepts(value, brands, batch)
 
                         params = {"concept_id": value["concept_id"]}
@@ -179,9 +199,9 @@ class RxNorm(Base):
         """
         # SBDC: Ingredient(s) + Strength + [Brand Name]
         term = row[14]
-        ingredients_brand = \
-            re.sub(r"(\d*)(\d*\.)?\d+ (MG|UNT|ML)?(/(ML|HR|MG))?",
-                   "", term)
+        ingredients_brand = re.sub(
+            r"(\d*)(\d*\.)?\d+ (MG|UNT|ML)?(/(ML|HR|MG))?", "", term
+        )
         brand = term.split("[")[-1].split("]")[0]
         ingredients = ingredients_brand.replace(f"[{brand}]", "")
         if "/" in ingredients:
@@ -189,11 +209,15 @@ class RxNorm(Base):
             for ingredient in ingredients_list:
                 self._add_term(ingredient_brands, brand, ingredient.strip())
         else:
-            self._add_term(ingredient_brands, brand,
-                           ingredients.strip())
+            self._add_term(ingredient_brands, brand, ingredients.strip())
 
-    def _get_trade_names(self, value: Dict, precise_ingredient: Dict,
-                         ingredient_brands: Dict, sbdfs: Dict) -> None:
+    def _get_trade_names(
+        self,
+        value: Dict,
+        precise_ingredient: Dict,
+        ingredient_brands: Dict,
+        sbdfs: Dict,
+    ) -> None:
         """Get trade names for a given ingredient.
 
         :param Dict value: Therapy attributes
@@ -204,17 +228,15 @@ class RxNorm(Base):
         record_label = value["label"].lower()
         labels = [record_label]
 
-        if "PIN" in value and value["PIN"] \
-                in precise_ingredient:
+        if "PIN" in value and value["PIN"] in precise_ingredient:
             for pin in precise_ingredient[value["PIN"]]:
                 labels.append(pin.lower())
 
         for label in labels:
-            trade_names: List[str] = \
-                [val for key, val in ingredient_brands.items()
-                 if label == key.lower()]
-            trade_names_uq = {val for sublist in trade_names
-                              for val in sublist}
+            trade_names: List[str] = [
+                val for key, val in ingredient_brands.items() if label == key.lower()
+            ]
+            trade_names_uq = {val for sublist in trade_names for val in sublist}
             for tn in trade_names_uq:
                 self._add_term(value, tn, "trade_names")
 
@@ -233,16 +255,23 @@ class RxNorm(Base):
         if "trade_names" in value:
             for tn in value["trade_names"]:
                 if brands.get(tn):
-                    batch.put_item(Item={
-                        "label_and_type":
-                            f"{brands.get(tn)}##rx_brand",
-                        "concept_id": value["concept_id"],
-                        "src_name": SourceName.RXNORM.value,
-                        "item_type": "rx_brand"
-                    })
+                    batch.put_item(
+                        Item={
+                            "label_and_type": f"{brands.get(tn)}##rx_brand",
+                            "concept_id": value["concept_id"],
+                            "src_name": SourceName.RXNORM.value,
+                            "item_type": "rx_brand",
+                        }
+                    )
 
-    def _add_str_field(self, params: Dict, row: List, precise_ingredient: Dict,
-                       drug_forms: List, sbdfs: Dict) -> None:
+    def _add_str_field(
+        self,
+        params: Dict,
+        row: List,
+        precise_ingredient: Dict,
+        drug_forms: List,
+        sbdfs: Dict,
+    ) -> None:
         """Differentiate STR field.
 
         :param Dict params: A transformed therapy record.
@@ -270,8 +299,7 @@ class RxNorm(Base):
                 ingredient_strength = term.replace(f"[{brand}]", "")
                 for df in drug_forms:
                     if df in ingredient_strength:
-                        ingredient = \
-                            ingredient_strength.replace(df, "").strip()
+                        ingredient = ingredient_strength.replace(df, "").strip()
                         self._add_term(sbdfs, brand, ingredient.lower())
                         break
 
@@ -311,8 +339,7 @@ class RxNorm(Base):
                 xref_assoc = row[11].upper()
 
             if xref_assoc in XREF_SOURCES:
-                source_id =\
-                    f"{NamespacePrefix[xref_assoc].value}:{lui}"
+                source_id = f"{NamespacePrefix[xref_assoc].value}:{lui}"
                 if source_id != params["concept_id"]:
                     # Sometimes concept_id is included in the source field
                     self._add_term(params, source_id, "xrefs")
@@ -326,15 +353,15 @@ class RxNorm(Base):
         """Add RxNorm metadata."""
         meta = SourceMeta(
             data_license="UMLS Metathesaurus",
-            data_license_url="https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",  # noqa: E501
+            data_license_url="https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",
             version=self._version,
             data_url=bioversions.resolve("rxnorm").homepage,
             rdp_url=None,
             data_license_attributes={
                 "non_commercial": False,
                 "share_alike": False,
-                "attribution": True
-            }
+                "attribution": True,
+            },
         )
         params = dict(meta)
         params["src_name"] = SourceName.RXNORM.value

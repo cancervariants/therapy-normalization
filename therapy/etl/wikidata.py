@@ -1,14 +1,14 @@
-"""This module defines the Wikidata ETL methods."""
+"""Handle Wikidata data extraction and loading."""
+import datetime
 import json
 import logging
-import datetime
-from typing import Dict, Any
+from typing import Any, Dict
 
 from wikibaseintegrator.wbi_helpers import execute_sparql_query
 
 from therapy import XREF_SOURCES, DownloadException
-from therapy.schemas import SourceName, NamespacePrefix, RecordParams, SourceMeta
 from therapy.etl.base import Base
+from therapy.schemas import NamespacePrefix, RecordParams, SourceMeta, SourceName
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -126,8 +126,8 @@ class Wikidata(Base):
             data_license_attributes={
                 "non_commercial": False,
                 "share_alike": False,
-                "attribution": False
-            }
+                "attribution": False,
+            },
         )
         params = dict(metadata)
         params["src_name"] = SourceName.WIKIDATA.value

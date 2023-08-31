@@ -1,22 +1,37 @@
-"""This module provides a CLI util to make updates to normalizer database."""
-from os import environ
+"""Provides a CLI util to make updates to normalizer database."""
 import logging
+from os import environ
 from timeit import default_timer as timer
 from typing import List, Optional
 
 import click
-from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
+from botocore.exceptions import ClientError
+from disease.cli import CLI as DiseaseCLI  # noqa: N811
 from disease.database import Database as DiseaseDatabase
-from disease.cli import CLI as DiseaseCLI
 from disease.schemas import SourceName as DiseaseSources
 
 from therapy import SOURCES
-from therapy.schemas import SourceName
-from therapy.database import Database, confirm_aws_db_use, SKIP_AWS_DB_ENV_NAME, \
-    VALID_AWS_ENV_NAMES, AWS_ENV_VAR_NAME
-from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm, HemOnc, GuideToPHARMACOLOGY, DrugsAtFDA  # noqa: F401, E501
+from therapy.database import (
+    AWS_ENV_VAR_NAME,
+    SKIP_AWS_DB_ENV_NAME,
+    VALID_AWS_ENV_NAMES,
+    Database,
+    confirm_aws_db_use,
+)
+from therapy.etl import (  # noqa: F401
+    ChEMBL,
+    ChemIDplus,
+    DrugBank,
+    DrugsAtFDA,
+    GuideToPHARMACOLOGY,
+    HemOnc,
+    NCIt,
+    RxNorm,
+    Wikidata,
+)
 from therapy.etl.merge import Merge
+from therapy.schemas import SourceName
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -28,40 +43,38 @@ class CLI:
     @staticmethod
     @click.command()
     @click.option(
-        "--sources",
-        help="The source(s) you wish to update separated by spaces."
+        "--sources", help="The source(s) you wish to update separated by spaces."
     )
     @click.option(
         "--aws_instance",
         is_flag=True,
         help=" Must be `Dev`, `Staging`, or `Prod`. This determines the AWS instance to"
-             " use. `Dev` uses nonprod. `Staging` and `Prod` uses prod."
+        " use. `Dev` uses nonprod. `Staging` and `Prod` uses prod.",
     )
-    @click.option(
-        "--db_url",
-        help="URL endpoint for the application database."
-    )
-    @click.option(
-        "--update_all",
-        is_flag=True,
-        help="Update all normalizer sources."
-    )
+    @click.option("--db_url", help="URL endpoint for the application database.")
+    @click.option("--update_all", is_flag=True, help="Update all normalizer sources.")
     @click.option(
         "--update_merged",
         is_flag=True,
-        help="Update concepts for normalize endpoint from accepted sources."
+        help="Update concepts for normalize endpoint from accepted sources.",
     )
     @click.option(
         "--use_existing",
         is_flag=True,
         default=False,
-        help="Use most recent existing source data instead of fetching latest version"
+        help="Use most recent existing source data instead of fetching latest version",
     )
-    def update_normalizer_db(sources: str, aws_instance: str, db_url: str,
-                             update_all: bool, update_merged: bool,
-                             use_existing: bool) -> None:
+    def update_normalizer_db(
+        sources: str,
+        aws_instance: str,
+        db_url: str,
+        update_all: bool,
+        update_merged: bool,
+        use_existing: bool,
+    ) -> None:
         """Update selected normalizer source(s) in the therapy database.
-        \f  # noqa: D301
+
+        \f
         :param str sources: comma-separated string listing source names
         :param str aws_instance: The AWS environment name.
             Must be one of: `Dev`, `Staging`, or `Prod`
@@ -69,10 +82,12 @@ class CLI:
         :param bool update_all: if true, update all sources
         :param bool update_merged: if true, update normalized group results
         :param bool use_existing: if true, don't try to fetch latest source data
-        """
+        """  # noqa: D301
         # If SKIP_AWS_CONFIRMATION is accidentally set, we should verify that the
         # aws instance should actually be used
-        invalid_aws_msg = f"{AWS_ENV_VAR_NAME} must be set to one of {VALID_AWS_ENV_NAMES}"  # noqa: E501
+        invalid_aws_msg = (
+            f"{AWS_ENV_VAR_NAME} must be set to one of {VALID_AWS_ENV_NAMES}"
+        )
         aws_env_name = environ.get(AWS_ENV_VAR_NAME) or aws_instance
         if aws_env_name:
             assert aws_env_name in VALID_AWS_ENV_NAMES, invalid_aws_msg
@@ -112,8 +127,9 @@ class CLI:
             CLI()._check_disease_normalizer(sources_split, endpoint_url)
             CLI()._update_normalizer(sources_split, db, update_merged, use_existing)
 
-    def _check_disease_normalizer(self, normalizers: List[str],
-                                  endpoint_url: Optional[str]) -> None:
+    def _check_disease_normalizer(
+        self, normalizers: List[str], endpoint_url: Optional[str]
+    ) -> None:
         """When loading HemOnc source, perform rudimentary check of Disease Normalizer
         tables, and reload them if necessary. This reload method should never be used
         (and is restricted from use) in a production setting.
@@ -125,11 +141,12 @@ class CLI:
         if "hemonc" in normalizers and "THERAPY_NORM_PROD" not in environ:
             db = DiseaseDatabase(db_url=endpoint_url)  # type: ignore
             current_tables = {table.name for table in db.dynamodb.tables.all()}
-            if ("disease_concepts" not in current_tables) or \
-                    ("disease_metadata" not in current_tables) or \
-                    (db.diseases.scan()["Count"] == 0) or \
-                    (db.metadata.scan()["Count"] < len(DiseaseSources)):
-
+            if (
+                ("disease_concepts" not in current_tables)
+                or ("disease_metadata" not in current_tables)
+                or (db.diseases.scan()["Count"] == 0)
+                or (db.metadata.scan()["Count"] < len(DiseaseSources))
+            ):
                 msg = "Disease Normalizer not loaded. Loading now..."
                 logger.debug(msg)
                 click.echo(msg)
@@ -152,13 +169,15 @@ class CLI:
         """Display help message."""
         ctx = click.get_current_context()
         click.echo(
-            "Must either enter 1 or more sources, or use `--update_all` parameter")
+            "Must either enter 1 or more sources, or use `--update_all` parameter"
+        )
         click.echo(ctx.get_help())
         ctx.exit()
 
     @staticmethod
-    def _update_normalizer(sources: List[str], db: Database,
-                           update_merged: bool, use_existing: bool) -> None:
+    def _update_normalizer(
+        sources: List[str], db: Database, update_merged: bool, use_existing: bool
+    ) -> None:
         """Update selected normalizer sources.
         :param List[str] normalizers: list of source names to update
         :param Database db: database instance to use
@@ -170,8 +189,9 @@ class CLI:
         processed_ids = list()
 
         # used to get source class name from string
-        SOURCES_CLASS = \
-            {s.value.lower(): eval(s.value) for s in SourceName.__members__.values()}
+        SOURCES_CLASS = {  # noqa: N806
+            s.value.lower(): eval(s.value) for s in SourceName.__members__.values()
+        }
 
         for n in sources:
             msg = f"Deleting {n}..."
@@ -212,8 +232,7 @@ class CLI:
             click.echo(msg)
             logger.info(msg)
 
-            msg = f"Total time for {n}: " \
-                  f"{(delete_time + load_time):.5f} seconds."
+            msg = f"Total time for {n}: " f"{(delete_time + load_time):.5f} seconds."
             click.echo(msg)
             logger.info(msg)
 
@@ -234,8 +253,10 @@ class CLI:
         click.echo("Constructing normalized records...")
         merge.create_merged_concepts(set(processed_ids))
         end_merge = timer()
-        click.echo(f"Merged concept generation completed in"
-                   f" {(end_merge - start_merge):.5f} seconds.")
+        click.echo(
+            f"Merged concept generation completed in"
+            f" {(end_merge - start_merge):.5f} seconds."
+        )
 
     @staticmethod
     def _delete_normalized_data(database: Database) -> None:
@@ -244,8 +265,8 @@ class CLI:
         try:
             while True:
                 with database.therapies.batch_writer(
-                        overwrite_by_pkeys=["label_and_type", "concept_id"]) \
-                        as batch:
+                    overwrite_by_pkeys=["label_and_type", "concept_id"]
+                ) as batch:
                     response = database.therapies.query(
                         IndexName="item_type_index",
                         KeyConditionExpression=Key("item_type").eq("merger"),
@@ -254,10 +275,12 @@ class CLI:
                     if not records:
                         break
                     for record in records:
-                        batch.delete_item(Key={
-                            "label_and_type": record["label_and_type"],
-                            "concept_id": record["concept_id"]
-                        })
+                        batch.delete_item(
+                            Key={
+                                "label_and_type": record["label_and_type"],
+                                "concept_id": record["concept_id"],
+                            }
+                        )
         except ClientError as e:
             click.echo(e.response["Error"]["Message"])
         end_delete = timer()
@@ -274,15 +297,13 @@ class CLI:
         # Delete source"s metadata first
         try:
             metadata = database.metadata.query(
-                KeyConditionExpression=Key(
-                    "src_name").eq(source_name)
+                KeyConditionExpression=Key("src_name").eq(source_name)
             )
             if metadata["Items"]:
                 database.metadata.delete_item(
                     Key={"src_name": metadata["Items"][0]["src_name"]},
                     ConditionExpression="src_name = :src",
-                    ExpressionAttributeValues={
-                        ":src": source_name}
+                    ExpressionAttributeValues={":src": source_name},
                 )
         except ClientError as e:
             click.echo(e.response["Error"]["Message"])
@@ -291,8 +312,7 @@ class CLI:
             while True:
                 response = database.therapies.query(
                     IndexName="src_index",
-                    KeyConditionExpression=Key("src_name").eq(
-                        source_name),
+                    KeyConditionExpression=Key("src_name").eq(source_name),
                 )
 
                 records = response["Items"]
@@ -300,13 +320,13 @@ class CLI:
                     break
 
                 with database.therapies.batch_writer(
-                        overwrite_by_pkeys=["label_and_type", "concept_id"]) as batch:
-
+                    overwrite_by_pkeys=["label_and_type", "concept_id"]
+                ) as batch:
                     for record in records:
                         batch.delete_item(
                             Key={
                                 "label_and_type": record["label_and_type"],
-                                "concept_id": record["concept_id"]
+                                "concept_id": record["concept_id"],
                             }
                         )
         except ClientError as e:

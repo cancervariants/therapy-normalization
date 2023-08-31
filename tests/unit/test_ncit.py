@@ -4,7 +4,7 @@ import re
 import pytest
 
 from therapy.etl.ncit import NCIt
-from therapy.schemas import Therapy, MatchType
+from therapy.schemas import MatchType, Therapy
 
 
 @pytest.fixture(scope="module")
@@ -19,13 +19,18 @@ def voglibose():
     params = {
         "label": "Voglibose",
         "concept_id": "ncit:C95221",
-        "aliases": ["3,4-Dideoxy-4-((2-Hydroxy-1-(Hydroxymethyl)Ethyl)Amino)-2-C-(Hydroxymethyl)-D-Epi-Inositol",  # noqa F401
-                    "A-71100", "AO-128", "Basen",
-                    "N-(1,3-Dihydroxy-2-Propyl)Valiolamine", "VOGLIBOSE"],
+        "aliases": [
+            "3,4-Dideoxy-4-((2-Hydroxy-1-(Hydroxymethyl)Ethyl)Amino)-2-C-(Hydroxymethyl)-D-Epi-Inositol",  # noqa F401
+            "A-71100",
+            "AO-128",
+            "Basen",
+            "N-(1,3-Dihydroxy-2-Propyl)Valiolamine",
+            "VOGLIBOSE",
+        ],
         "xrefs": ["chemidplus:83480-29-9"],
         "associated_with": ["unii:S77P977AG8", "umls:C0532578"],
         "approval_ratings": None,
-        "trade_names": []
+        "trade_names": [],
     }
     return Therapy(**params)
 
@@ -37,13 +42,17 @@ def apricoxib():
         "label": "Apricoxib",
         "concept_id": "ncit:C74021",
         "aliases": [
-            "APRICOXIB", "COX-2 Inhibitor TG01", "CS-706", "R-109339",
-            "TG01", "TP2001"
+            "APRICOXIB",
+            "COX-2 Inhibitor TG01",
+            "CS-706",
+            "R-109339",
+            "TG01",
+            "TP2001",
         ],
         "xrefs": ["chemidplus:197904-84-0"],
         "associated_with": ["unii:5X5HB3VZ3Z", "umls:C1737955"],
         "approval_ratings": None,
-        "trade_names": []
+        "trade_names": [],
     }
     return Therapy(**params)
 
@@ -59,7 +68,7 @@ def trastuzumab():
         "xrefs": ["chemidplus:180288-69-1"],
         "associated_with": ["umls:C0728747", "unii:P188ANX8CK"],
         "approval_ratings": None,
-        "trade_names": []
+        "trade_names": [],
     }
     return Therapy(**params)
 
@@ -89,7 +98,7 @@ def therapeutic_procedure():
         ],
         "trade_names": [],
         "xrefs": [],
-        "associated_with": ["umls:C0087111"]
+        "associated_with": ["umls:C0087111"],
     }
     return Therapy(**params)
 
@@ -107,23 +116,24 @@ def ivermectin():
         "aliases": [
             "Stromectol",
             "IVERMECTIN",
-            "Avermectin A1a, 5-O-demethyl-25-de(1-methylpropyl)-22,23-dihydro-25-(1-methylethyl)-",  # noqa: E501
-            "Sklice"
+            "Avermectin A1a, 5-O-demethyl-25-de(1-methylpropyl)-22,23-dihydro-25-(1-methylethyl)-",
+            "Sklice",
         ],
-        "xrefs": [
-            "chemidplus:70288-86-7"
-        ],
-        "associated_with": [
-            "umls:C0022322",
-            "unii:8883YP2R6D",
-            "CHEBI:6078"
-        ]
+        "xrefs": ["chemidplus:70288-86-7"],
+        "associated_with": ["umls:C0022322", "unii:8883YP2R6D", "CHEBI:6078"],
     }
     return Therapy(**params)
 
 
-def test_concept_id_match(ncit, compare_response, voglibose, apricoxib, trastuzumab,
-                          therapeutic_procedure, ivermectin):
+def test_concept_id_match(
+    ncit,
+    compare_response,
+    voglibose,
+    apricoxib,
+    trastuzumab,
+    therapeutic_procedure,
+    ivermectin,
+):
     """Test that concept ID query resolves to correct record."""
     response = ncit.search("ncit:C95221")
     compare_response(response, MatchType.CONCEPT_ID, voglibose)
@@ -245,14 +255,15 @@ def test_meta_info(ncit):
     """Test that the meta field is correct."""
     response = ncit.query_handler._fetch_meta("NCIt")
     assert response.data_license == "CC BY 4.0"
-    assert response.data_license_url == \
-        "https://creativecommons.org/licenses/by/4.0/legalcode"
+    assert (
+        response.data_license_url
+        == "https://creativecommons.org/licenses/by/4.0/legalcode"
+    )
     assert re.match(r"[0-9][0-9]\.[0-9][0-9][a-z]", response.version)
-    assert response.data_url.startswith(
-        "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/")
+    assert response.data_url.startswith("https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/")
     assert response.rdp_url == "http://reusabledata.org/ncit.html"
     assert response.data_license_attributes == {
         "non_commercial": False,
         "share_alike": False,
-        "attribution": True
+        "attribution": True,
     }

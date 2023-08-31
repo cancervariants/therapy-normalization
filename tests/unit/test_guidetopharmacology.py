@@ -4,7 +4,7 @@ import re
 import pytest
 
 from therapy.etl.guidetopharmacology import GuideToPHARMACOLOGY
-from therapy.schemas import Therapy, MatchType
+from therapy.schemas import MatchType, Therapy
 
 
 @pytest.fixture(scope="module")
@@ -20,19 +20,13 @@ def cisplatin():
         "concept_id": "iuphar.ligand:5343",
         "label": "cisplatin",
         "approval_ratings": ["gtopdb_approved"],
-        "xrefs": [
-            "chembl:CHEMBL11359",
-            "chemidplus:15663-27-1",
-            "drugbank:DB00515"
-        ],
+        "xrefs": ["chembl:CHEMBL11359", "chemidplus:15663-27-1", "drugbank:DB00515"],
         "associated_with": [
             "pubchem.substance:178102005",
             "pubchem.compound:441203",
-            "CHEBI:27899"
+            "CHEBI:27899",
         ],
-        "aliases": [
-            "Platinol"
-        ]
+        "aliases": ["Platinol"],
     }
     return Therapy(**params)
 
@@ -43,20 +37,18 @@ def arginine_vasotocin():
     params = {
         "concept_id": "iuphar.ligand:2169",
         "label": "arginine vasotocin",
-        "xrefs": [
-            "chemidplus:113-80-4"
-        ],
+        "xrefs": ["chemidplus:113-80-4"],
         "associated_with": [
             "pubchem.substance:135652004",
             "pubchem.compound:68649",
-            "inchikey:OXDZADMCOWPSOC-ICBIOJHSSA-N"
+            "inchikey:OXDZADMCOWPSOC-ICBIOJHSSA-N",
         ],
         "aliases": [
-            "L-cysteinyl-L-tyrosyl-(3S)-DL-isoleucyl-L-glutaminyl-L-asparagyl-L-cysteinyl-DL-prolyl-L-arginyl-glycinamide (1->6)-disulfide",  # noqa: E501
+            "L-cysteinyl-L-tyrosyl-(3S)-DL-isoleucyl-L-glutaminyl-L-asparagyl-L-cysteinyl-DL-prolyl-L-arginyl-glycinamide (1->6)-disulfide",
             "argiprestocin",
             "[Arg8]vasotocin",
-            "AVT"
-        ]
+            "AVT",
+        ],
     }
     return Therapy(**params)
 
@@ -68,17 +60,13 @@ def phenobarbital():
         "concept_id": "iuphar.ligand:2804",
         "label": "phenobarbital",
         "approval_ratings": ["gtopdb_approved"],
-        "xrefs": [
-            "chembl:CHEMBL40",
-            "chemidplus:50-06-6",
-            "drugbank:DB01174"
-        ],
+        "xrefs": ["chembl:CHEMBL40", "chemidplus:50-06-6", "drugbank:DB01174"],
         "associated_with": [
             "pubchem.substance:135650817",
             "pubchem.compound:4763",
             "CHEBI:8069",
             "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N",
-            "drugcentral:2134"
+            "drugcentral:2134",
         ],
         "aliases": [
             "5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione",
@@ -87,8 +75,8 @@ def phenobarbital():
             "phenobarb",
             "phenobarbital sodium",
             "phenobarbitone",
-            "phenylethylbarbiturate"
-        ]
+            "phenylethylbarbiturate",
+        ],
     }
     return Therapy(**params)
 
@@ -100,23 +88,19 @@ def cisapride():
         "concept_id": "iuphar.ligand:240",
         "label": "cisapride",
         "approval_ratings": ["gtopdb_withdrawn"],
-        "xrefs": [
-            "chembl:CHEMBL1729",
-            "chemidplus:81098-60-4",
-            "drugbank:DB00604"
-        ],
+        "xrefs": ["chembl:CHEMBL1729", "chemidplus:81098-60-4", "drugbank:DB00604"],
         "associated_with": [
             "pubchem.substance:135650104",
             "pubchem.compound:2769",
             "CHEBI:151790",
             "inchikey:DCSUBABJRXZOMT-UHFFFAOYSA-N",
-            "drugcentral:660"
+            "drugcentral:660",
         ],
         "aliases": [
-            "4-amino-5-chloro-N-[1-[3-(4-fluorophenoxy)propyl]-3-methoxypiperidin-4-yl]-2-methoxybenzamide",  # noqa: E501
+            "4-amino-5-chloro-N-[1-[3-(4-fluorophenoxy)propyl]-3-methoxypiperidin-4-yl]-2-methoxybenzamide",
             "Prepulsid",
-            "Propulsid"
-        ]
+            "Propulsid",
+        ],
     }
     return Therapy(**params)
 
@@ -126,31 +110,40 @@ def rolipram():
     """Create rolipram test fixture.
     Checks for correct handling of multiple references under same namespace.
     """
-    return Therapy(**{
-        "concept_id": "iuphar.ligand:5260",
-        "label": "rolipram",
-        "xrefs": [
-            "chembl:CHEMBL63",
-            "chemidplus:61413-54-5",
-            "drugbank:DB04149",
-            "drugbank:DB03606"
-        ],
-        "aliases": [
-            "4-[3-(cyclopentyloxy)-4-methoxyphenyl]pyrrolidin-2-one",
-            "(R,S)-rolipram",
-            "(±)-rolipram"
-        ],
-        "associated_with": [
-            "CHEBI:104872",
-            "pubchem.substance:178101944",
-            "pubchem.compound:5092",
-            "inchikey:HJORMJIFDVBMOB-UHFFFAOYSA-N"
-        ]
-    })
+    return Therapy(
+        **{
+            "concept_id": "iuphar.ligand:5260",
+            "label": "rolipram",
+            "xrefs": [
+                "chembl:CHEMBL63",
+                "chemidplus:61413-54-5",
+                "drugbank:DB04149",
+                "drugbank:DB03606",
+            ],
+            "aliases": [
+                "4-[3-(cyclopentyloxy)-4-methoxyphenyl]pyrrolidin-2-one",
+                "(R,S)-rolipram",
+                "(±)-rolipram",
+            ],
+            "associated_with": [
+                "CHEBI:104872",
+                "pubchem.substance:178101944",
+                "pubchem.compound:5092",
+                "inchikey:HJORMJIFDVBMOB-UHFFFAOYSA-N",
+            ],
+        }
+    )
 
 
-def test_concept_id_match(guidetopharmacology, compare_response, cisplatin,
-                          arginine_vasotocin, phenobarbital, cisapride, rolipram):
+def test_concept_id_match(
+    guidetopharmacology,
+    compare_response,
+    cisplatin,
+    arginine_vasotocin,
+    phenobarbital,
+    cisapride,
+    rolipram,
+):
     """Test that concept ID queries work correctly."""
     resp = guidetopharmacology.search("iuphar.ligand:5343")
     compare_response(resp, MatchType.CONCEPT_ID, cisplatin)
@@ -168,8 +161,15 @@ def test_concept_id_match(guidetopharmacology, compare_response, cisplatin,
     compare_response(resp, MatchType.CONCEPT_ID, rolipram)
 
 
-def test_label_match(guidetopharmacology, compare_response, cisplatin,
-                     arginine_vasotocin, phenobarbital, cisapride, rolipram):
+def test_label_match(
+    guidetopharmacology,
+    compare_response,
+    cisplatin,
+    arginine_vasotocin,
+    phenobarbital,
+    cisapride,
+    rolipram,
+):
     """Test that label queries work correctly."""
     resp = guidetopharmacology.search("cisplatin")
     compare_response(resp, MatchType.LABEL, cisplatin)
@@ -187,8 +187,15 @@ def test_label_match(guidetopharmacology, compare_response, cisplatin,
     compare_response(resp, MatchType.LABEL, rolipram)
 
 
-def test_alias_match(guidetopharmacology, compare_response, cisplatin,
-                     arginine_vasotocin, phenobarbital, cisapride, rolipram):
+def test_alias_match(
+    guidetopharmacology,
+    compare_response,
+    cisplatin,
+    arginine_vasotocin,
+    phenobarbital,
+    cisapride,
+    rolipram,
+):
     """Test that alias queries work correctly."""
     resp = guidetopharmacology.search("platinol")
     compare_response(resp, MatchType.ALIAS, cisplatin)
@@ -206,8 +213,15 @@ def test_alias_match(guidetopharmacology, compare_response, cisplatin,
     compare_response(resp, MatchType.ALIAS, rolipram)
 
 
-def test_xref_match(guidetopharmacology, compare_response, cisplatin,
-                    arginine_vasotocin, phenobarbital, cisapride, rolipram):
+def test_xref_match(
+    guidetopharmacology,
+    compare_response,
+    cisplatin,
+    arginine_vasotocin,
+    phenobarbital,
+    cisapride,
+    rolipram,
+):
     """Test that xref queries work correctly."""
     resp = guidetopharmacology.search("chemidplus:15663-27-1")
     compare_response(resp, MatchType.XREF, cisplatin)
@@ -225,8 +239,15 @@ def test_xref_match(guidetopharmacology, compare_response, cisplatin,
     compare_response(resp, MatchType.XREF, rolipram)
 
 
-def test_associated_with_match(guidetopharmacology, compare_response, cisplatin,
-                               arginine_vasotocin, phenobarbital, cisapride, rolipram):
+def test_associated_with_match(
+    guidetopharmacology,
+    compare_response,
+    cisplatin,
+    arginine_vasotocin,
+    phenobarbital,
+    cisapride,
+    rolipram,
+):
     """Test that associated_with queries work correctly."""
     resp = guidetopharmacology.search("pubchem.substance:178102005")
     compare_response(resp, MatchType.ASSOCIATED_WITH, cisplatin)
@@ -288,5 +309,5 @@ def test_meta_info(guidetopharmacology):
     assert resp.data_license_attributes == {
         "non_commercial": False,
         "attribution": True,
-        "share_alike": True
+        "share_alike": True,
     }

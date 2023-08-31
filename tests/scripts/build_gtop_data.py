@@ -2,18 +2,10 @@
 import csv
 from pathlib import Path
 
-from therapy.etl import GuideToPHARMACOLOGY
 from therapy.database import Database
+from therapy.etl import GuideToPHARMACOLOGY
 
-
-TEST_IDS = {
-    "5343",
-    "2169",
-    "2804",
-    "240",
-    "3303",
-    "5260"
-}
+TEST_IDS = {"5343", "2169", "2804", "240", "3303", "5260"}
 
 gtop = GuideToPHARMACOLOGY(Database())
 gtop._extract_data()

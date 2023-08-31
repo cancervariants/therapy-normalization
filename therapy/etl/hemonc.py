@@ -1,20 +1,24 @@
 """Provide ETL methods for HemOnc.org data."""
-import logging
-from pathlib import Path
-from typing import Dict, Tuple, Optional
 import csv
+import logging
 import os
-import zipfile
 import re
+import zipfile
+from pathlib import Path
+from typing import Dict, Optional, Tuple
 
-import requests
 import isodate
+import requests
 
 from therapy import DownloadException
-from therapy.schemas import NamespacePrefix, SourceMeta, SourceName, RecordParams, \
-    ApprovalRating
 from therapy.etl.base import DiseaseIndicationBase
-
+from therapy.schemas import (
+    ApprovalRating,
+    NamespacePrefix,
+    RecordParams,
+    SourceMeta,
+    SourceName,
+)
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -27,7 +31,9 @@ class HemOnc(DiseaseIndicationBase):
         """Retrieve latest version of source data.
         :raise: Exception if retrieval is unsuccessful
         """
-        response = requests.get("https://dataverse.harvard.edu/api/datasets/export?persistentId=doi:10.7910/DVN/9CY9C6&exporter=dataverse_json")  # noqa: E501
+        response = requests.get(
+            "https://dataverse.harvard.edu/api/datasets/export?persistentId=doi:10.7910/DVN/9CY9C6&exporter=dataverse_json"
+        )
         try:
             response.raise_for_status()
         except requests.HTTPError as e:
@@ -68,7 +74,7 @@ class HemOnc(DiseaseIndicationBase):
                 "DATAVERSE_API_KEY. See "
                 "https://guides.dataverse.org/en/latest/user/account.html"
             )
-        url = "https://dataverse.harvard.edu//api/access/dataset/:persistentId/?persistentId=doi:10.7910/DVN/9CY9C6"  # noqa: E501
+        url = "https://dataverse.harvard.edu//api/access/dataset/:persistentId/?persistentId=doi:10.7910/DVN/9CY9C6"
         headers = {"X-Dataverse-key": api_key}
         self._http_download(url, self._src_dir, headers, self._zip_handler)
 
@@ -95,33 +101,28 @@ class HemOnc(DiseaseIndicationBase):
             for concepts_file in concepts[::-1]:
                 try:
                     version = self._parse_version(
-                        concepts_file,
-                        re.compile(r"hemonc_concepts_(.+)\.csv")
+                        concepts_file, re.compile(r"hemonc_concepts_(.+)\.csv")
                     )
                 except FileNotFoundError:
                     raise FileNotFoundError(
                         f"Unable to parse HemOnc version value from concepts file "
                         f"located at {concepts_file.absolute().as_uri()} -- check "
                         "filename against schema defined in README: "
-                        "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
+                        "https://github.com/cancervariants/therapy-normalization#update-sources"
                     )
                 other_files = (
                     self._src_dir / f"hemonc_rels_{version}.csv",
-                    self._src_dir / f"hemonc_synonyms_{version}.csv"
+                    self._src_dir / f"hemonc_synonyms_{version}.csv",
                 )
                 if other_files[0].exists() and other_files[1].exists():
                     self._version = version
-                    src_files = (
-                        concepts_file,
-                        other_files[0],
-                        other_files[1]
-                    )
+                    src_files = (concepts_file, other_files[0], other_files[1])
                     break
             if src_files is None:
                 raise FileNotFoundError(
                     "Unable to find complete HemOnc data set with matching version "
                     "values. Check filenames against schema defined in README: "
-                    "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
+                    "https://github.com/cancervariants/therapy-normalization#update-sources"
                 )
             else:
                 self._src_files = src_files
@@ -130,7 +131,7 @@ class HemOnc(DiseaseIndicationBase):
             data_filenames = (
                 self._src_dir / f"hemonc_concepts_{self._version}.csv",
                 self._src_dir / f"hemonc_rels_{self._version}.csv",
-                self._src_dir / f"hemonc_synonyms_{self._version}.csv"
+                self._src_dir / f"hemonc_synonyms_{self._version}.csv",
             )
             if not all((f.exists() for f in data_filenames)):
                 self._download_data()
@@ -144,7 +145,7 @@ class HemOnc(DiseaseIndicationBase):
             "data_license": "CC BY 4.0",
             "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
             "version": self._version,
-            "data_url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6",  # noqa: E501
+            "data_url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6",
             "rdp_url": None,
             "data_license_attributes": {
                 "non_commercial": False,
@@ -207,8 +208,7 @@ class HemOnc(DiseaseIndicationBase):
         else:
             return str(id_int + 1240)
 
-    def _get_rels(self, therapies: Dict, brand_names: Dict,
-                  conditions: Dict) -> Dict:
+    def _get_rels(self, therapies: Dict, brand_names: Dict, conditions: Dict) -> Dict:
         """Gather relations to provide associations between therapies, brand names,
         and conditions.
 
@@ -246,12 +246,13 @@ class HemOnc(DiseaseIndicationBase):
                 try:
                     year = self._id_to_yr(row[1])
                 except TypeError:
-                    logger.error(f"Failed parse of FDA approval year ID "
-                                 f"{row[1]} for HemOnc ID {row[0]}")
+                    logger.error(
+                        f"Failed parse of FDA approval year ID "
+                        f"{row[1]} for HemOnc ID {row[0]}"
+                    )
                     continue
                 if year == "9999":
-                    logger.warning(f"HemOnc ID {row[0]} has FDA approval year"
-                                   f" 9999")
+                    logger.warning(f"HemOnc ID {row[0]} has FDA approval year" f" 9999")
                 record["approval_ratings"] = [ApprovalRating.HEMONC_APPROVED.value]
                 if "approval_year" in record:
                     record["approval_year"].append(year)
@@ -266,7 +267,7 @@ class HemOnc(DiseaseIndicationBase):
                     "disease_id": hemonc_concept_id,
                     "disease_label": label,
                     "normalized_disease_id": norm_id,
-                    "supplemental_info": {"regulatory_body": "FDA"}
+                    "supplemental_info": {"regulatory_body": "FDA"},
                 }
                 if "has_indication" in record:
                     record["has_indication"].append(indication)

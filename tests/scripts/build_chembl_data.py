@@ -1,6 +1,6 @@
 """Construct test data for ChEMBL source."""
-from pathlib import Path
 import sqlite3
+from pathlib import Path
 
 from therapy.database import Database
 from therapy.etl import ChEMBL

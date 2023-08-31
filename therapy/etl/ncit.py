@@ -2,13 +2,13 @@
 import logging
 from typing import Set
 
-import requests
 import owlready2 as owl
+import requests
 from owlready2.entity import ThingClass
 
 from therapy import DownloadException
-from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, RecordParams
 from therapy.etl.base import Base
+from therapy.schemas import NamespacePrefix, RecordParams, SourceMeta, SourceName
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -41,7 +41,7 @@ class NCIt(Base):
             archive_url = f"{base_url}/archive/{self._version}_Release/{release_fname}"
             archive_try = requests.get(archive_url)
             if archive_try.status_code != 200:
-                old_archive_url = f"{base_url}/archive/20{self._version[0:2]}/{self._version}_Release/{release_fname}"  # noqa: E501
+                old_archive_url = f"{base_url}/archive/20{self._version[0:2]}/{self._version}_Release/{release_fname}"
                 old_archive_try = requests.get(old_archive_url)
                 if old_archive_try.status_code != 200:
                     msg = (
@@ -55,12 +55,16 @@ class NCIt(Base):
             else:
                 src_url = archive_url
 
-        self._http_download(src_url, self._src_dir / f"ncit_{self._version}.owl",
-                            handler=self._zip_handler)
+        self._http_download(
+            src_url,
+            self._src_dir / f"ncit_{self._version}.owl",
+            handler=self._zip_handler,
+        )
         logger.info("Successfully retrieved source data for NCIt")
 
-    def _get_desc_nodes(self, node: ThingClass,
-                        uq_nodes: Set[ThingClass]) -> Set[ThingClass]:
+    def _get_desc_nodes(
+        self, node: ThingClass, uq_nodes: Set[ThingClass]
+    ) -> Set[ThingClass]:
         """Create set of unique subclasses of node parameter.
         Should be originally called on ncit:C1909: Pharmacologic Substance.
 
@@ -80,8 +84,9 @@ class NCIt(Base):
                     self._get_desc_nodes(child_node, uq_nodes)
         return uq_nodes
 
-    def _get_typed_nodes(self, uq_nodes: Set[ThingClass],
-                         ncit: owl.namespace.Ontology) -> Set[ThingClass]:
+    def _get_typed_nodes(
+        self, uq_nodes: Set[ThingClass], ncit: owl.namespace.Ontology
+    ) -> Set[ThingClass]:
         """Get all nodes with semantic_type Pharmacologic Substance
 
         :param Set[owlready2.entity.ThingClass] uq_nodes: set of unique class nodes
@@ -107,8 +112,7 @@ class NCIt(Base):
         """
         retired_results = set(graph.query(retired_query_str))
 
-        typed_results = {r for r in (typed_results - retired_results)
-                         if r is not None}
+        typed_results = {r for r in (typed_results - retired_results) if r is not None}
 
         for result in typed_results:
             # parse result as URI and get ThingClass object back from NCIt
@@ -136,14 +140,17 @@ class NCIt(Base):
             xrefs = []
             associated_with = []
             if node.P207:
-                associated_with.append(f"{NamespacePrefix.UMLS.value}:"
-                                       f"{node.P207.first()}")
+                associated_with.append(
+                    f"{NamespacePrefix.UMLS.value}:" f"{node.P207.first()}"
+                )
             if node.P210:
-                xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:"
-                             f"{node.P210.first()}")
+                xrefs.append(
+                    f"{NamespacePrefix.CASREGISTRY.value}:" f"{node.P210.first()}"
+                )
             if node.P319:
-                associated_with.append(f"{NamespacePrefix.UNII.value}:"
-                                       f"{node.P319.first()}")
+                associated_with.append(
+                    f"{NamespacePrefix.UNII.value}:" f"{node.P319.first()}"
+                )
             if node.P368:
                 iri = node.P368.first()
                 if ":" in iri:
@@ -154,7 +161,7 @@ class NCIt(Base):
                 "label": label,
                 "aliases": aliases,
                 "xrefs": xrefs,
-                "associated_with": associated_with
+                "associated_with": associated_with,
             }
             self._load_therapy(params)
 
@@ -169,8 +176,8 @@ class NCIt(Base):
             data_license_attributes={
                 "non_commercial": False,
                 "share_alike": False,
-                "attribution": True
-            }
+                "attribution": True,
+            },
         )
         params = dict(metadata)
         params["src_name"] = SourceName.NCIT.value

@@ -2,14 +2,14 @@
 Assumes complete and functioning disease normalizer endpoint is available.
 """
 import json
-from typing import Dict, Any
 from pathlib import Path
+from typing import Any, Dict
 
 from disease.query import QueryHandler as DiseaseQueryHandler
 from disease.schemas import NormalizationService as DiseaseNormalizationService
 
-from therapy.etl import ChEMBL, HemOnc
 from therapy.database import Database
+from therapy.etl import ChEMBL, HemOnc
 
 TEST_ROOT = Path(__file__).resolve().parents[1]
 TEST_DATA_DIRECTORY = TEST_ROOT / "data"
@@ -26,8 +26,13 @@ class ReadOnlyDatabase(Database):
         """Add ref record to database"""
         pass
 
-    def update_record(self, concept_id: str, field: str, new_value: Any,  # noqa
-                      item_type: str = "identity") -> None:
+    def update_record(
+        self,
+        concept_id: str,
+        field: str,
+        new_value: Any,  # noqa
+        item_type: str = "identity",
+    ) -> None:
         """Update an individual record"""
         pass
 

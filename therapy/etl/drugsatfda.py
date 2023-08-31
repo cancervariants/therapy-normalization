@@ -1,13 +1,18 @@
 """ETL methods for the Drugs@FDA source."""
-from typing import List, Optional
 import json
+from typing import List, Optional
 
 import requests
 
 from therapy import DownloadException, logger
-from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, ApprovalRating, \
-    RecordParams
 from therapy.etl.base import Base
+from therapy.schemas import (
+    ApprovalRating,
+    NamespacePrefix,
+    RecordParams,
+    SourceMeta,
+    SourceName,
+)
 
 
 class DrugsAtFDA(Base):
@@ -16,7 +21,7 @@ class DrugsAtFDA(Base):
     def _download_data(self) -> None:
         """Download source data from instance-provided source URL."""
         logger.info("Retrieving source data for Drugs@FDA")
-        url = "https://download.open.fda.gov/drug/drugsfda/drug-drugsfda-0001-of-0001.json.zip"  # noqa: E501
+        url = "https://download.open.fda.gov/drug/drugsfda/drug-drugsfda-0001-of-0001.json.zip"
         outfile_path = self._src_dir / f"drugsatfda_{self._version}.json"
         self._http_download(url, outfile_path, handler=self._zip_handler)
         logger.info("Successfully retrieved source data for Drugs@FDA")
@@ -42,7 +47,7 @@ class DrugsAtFDA(Base):
         """Add Drugs@FDA metadata."""
         meta = {
             "data_license": "CC0",
-            "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode",  # noqa: E501
+            "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode",
             "version": self._version,
             "data_url": "https://open.fda.gov/apis/drug/drugsfda/download/",
             "rdp_url": None,
@@ -50,14 +55,15 @@ class DrugsAtFDA(Base):
                 "non_commercial": False,
                 "share_alike": False,
                 "attribution": False,
-            }
+            },
         }
         assert SourceMeta(**meta)
         meta["src_name"] = SourceName.DRUGSATFDA
         self.database.metadata.put_item(Item=meta)
 
-    def _get_marketing_status_rating(self, products: List, concept_id: str)\
-            -> Optional[str]:
+    def _get_marketing_status_rating(
+        self, products: List, concept_id: str
+    ) -> Optional[str]:
         """Get approval status rating from products list.
         :param List products: list of individual FDA product objects
         :param str concept_id: FDA application concept ID, used in reporting error
@@ -72,8 +78,10 @@ class DrugsAtFDA(Base):
         }
         statuses = [p["marketing_status"] for p in products]
         if not all([s == statuses[0] for s in statuses]):
-            msg = (f"Application {concept_id} has inconsistent marketing "
-                   f"statuses: {statuses}")
+            msg = (
+                f"Application {concept_id} has inconsistent marketing "
+                f"statuses: {statuses}"
+            )
             logger.info(msg)
             return None
         else:
@@ -117,8 +125,10 @@ class DrugsAtFDA(Base):
                 n_substances = len(set(substances))
                 if n_substances > 1:
                     # if ambiguous, store all as aliases
-                    msg = (f"Application {concept_id} has {n_substances} "
-                           f"substance names: {substances}")
+                    msg = (
+                        f"Application {concept_id} has {n_substances} "
+                        f"substance names: {substances}"
+                    )
                     logger.debug(msg)
                     aliases += substances
                 elif n_substances == 1:
@@ -151,8 +161,9 @@ class DrugsAtFDA(Base):
 
                 rxcui = openfda.get("rxcui")
                 if rxcui:
-                    therapy["xrefs"] = [f"{NamespacePrefix.RXNORM.value}:{r}"
-                                        for r in rxcui]
+                    therapy["xrefs"] = [
+                        f"{NamespacePrefix.RXNORM.value}:{r}" for r in rxcui
+                    ]
 
             therapy["trade_names"] = brand_names
             therapy["aliases"] = aliases

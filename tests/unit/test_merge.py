@@ -1,9 +1,9 @@
 """Test merged record generation."""
+import json
 import os
+import random
 from pathlib import Path
 from typing import Any, Dict, Set
-import random
-import json
 
 import pytest
 
@@ -112,17 +112,27 @@ def merge_instance(test_source):
             self.additions[record["concept_id"]] = record
 
         def update_record(
-            self, concept_id: str, field: str, new_value: Any,  # noqa: ANN401
-            item_type: str = "identity"
+            self,
+            concept_id: str,
+            field: str,
+            new_value: Any,  # noqa: ANN401
+            item_type: str = "identity",
         ):
             if update_db:
                 super().update_record(concept_id, field, new_value, item_type)
             self.updates[concept_id] = {field: new_value}
 
     if update_db:
-        for SourceClass in (
-            ChEMBL, ChemIDplus, DrugBank, DrugsAtFDA, GuideToPHARMACOLOGY, HemOnc, NCIt,
-            RxNorm, Wikidata
+        for SourceClass in (  # noqa: N806
+            ChEMBL,
+            ChemIDplus,
+            DrugBank,
+            DrugsAtFDA,
+            GuideToPHARMACOLOGY,
+            HemOnc,
+            NCIt,
+            RxNorm,
+            Wikidata,
         ):
             test_source(SourceClass)
 
@@ -142,7 +152,7 @@ def record_id_groups():
             "wikidata:Q407241",
             "drugbank:DB01174",
             "chembl:CHEMBL40",
-            "iuphar.ligand:2804"
+            "iuphar.ligand:2804",
         },
         # spiramycin
         {
@@ -150,7 +160,7 @@ def record_id_groups():
             "ncit:C839",
             "chemidplus:8025-81-8",
             "drugbank:DB06145",
-            "wikidata:Q422265"
+            "wikidata:Q422265",
         },
         # cisplatin
         {
@@ -168,7 +178,7 @@ def record_id_groups():
             "drugsatfda.anda:207323",
             "drugsatfda.anda:075036",
             "iuphar.ligand:5343",
-            "drugsatfda.nda:018057"
+            "drugsatfda.nda:018057",
         },
         # Amifostine
         # tests lookup of wikidata reference to rxnorm brand record, and
@@ -184,16 +194,12 @@ def record_id_groups():
             "chembl:CHEMBL1006",
             "chemidplus:112901-68-5",
             "chemidplus:20537-88-6",
-            "wikidata:Q251698"
+            "wikidata:Q251698",
         },
         # Therapeutic Procedure
-        {
-            "ncit:C49236"
-        },
+        {"ncit:C49236"},
         # test exclusion of drugs@fda records with multiple UNIIs
-        {
-            "drugsatfda.nda:210595"
-        }
+        {"drugsatfda.nda:210595"},
     ]
     groups_keyed = {}
     for group in groups:
@@ -202,10 +208,7 @@ def record_id_groups():
     return groups_keyed
 
 
-def test_id_sets(
-    merge_instance: Merge,
-    record_id_groups: Dict[str, Set[str]]
-):
+def test_id_sets(merge_instance: Merge, record_id_groups: Dict[str, Set[str]]):
     """Test creation of record ID sets. Queries DB and matches against
     record_id_groups fixture.
     """
@@ -232,8 +235,12 @@ def test_id_sets(
 
 
 def test_generate_merged_record(
-    merge_instance: Merge, record_id_groups: Dict[str, Set[str]],
-        phenobarbital_merged: Dict, cisplatin_merged: Dict, spiramycin_merged: Dict):
+    merge_instance: Merge,
+    record_id_groups: Dict[str, Set[str]],
+    phenobarbital_merged: Dict,
+    cisplatin_merged: Dict,
+    spiramycin_merged: Dict,
+):
     """Test generation of merged record method."""
     phenobarbital_ids = record_id_groups["rxcui:8134"]
     merge_response = merge_instance._generate_merged_record(phenobarbital_ids)
@@ -249,9 +256,12 @@ def test_generate_merged_record(
 
 
 def test_create_merged_concepts(
-    merge_instance: Merge, record_id_groups: Dict[str, Set[str]],
-    phenobarbital_merged: Dict, cisplatin_merged: Dict, spiramycin_merged: Dict,
-    amifostine_merged: Dict
+    merge_instance: Merge,
+    record_id_groups: Dict[str, Set[str]],
+    phenobarbital_merged: Dict,
+    cisplatin_merged: Dict,
+    spiramycin_merged: Dict,
+    amifostine_merged: Dict,
 ):
     """Test end-to-end creation and upload of merged concepts."""
     record_ids = record_id_groups.keys()
