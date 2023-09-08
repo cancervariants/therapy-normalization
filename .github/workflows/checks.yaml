@@ -1,89 +1,94 @@
 name: checks
 on: [push, pull_request]
 jobs:
-    test:
-        name: test py${{ matrix.python-version }} ${{ matrix.db_url }}
-        runs-on: ubuntu-latest
+  test:
+    name: test py${{ matrix.python-version }} ${{ matrix.db_url }}
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.DUMMY_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.DUMMY_AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: us-east-2
+      AWS_DEFAULT_OUTPUT: text
+      THERAPY_NORM_DB_URL: ${{ matrix.db_url }}
+      THERAPY_TEST: true
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10"]
+        # db_url: ['http://localhost:8002', 'postgresql://postgres:postgres@localhost:5432/therapy_normalizer_test']
+        db_url:
+          [
+            "postgresql://postgres:postgres@localhost:5432/therapy_normalizer_test",
+          ]
+
+    services:
+      postgres:
+        image: postgres:14
         env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.DUMMY_AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.DUMMY_AWS_SECRET_ACCESS_KEY }}
-            AWS_DEFAULT_REGION: us-east-2
-            AWS_DEFAULT_OUTPUT: text
-            THERAPY_NORM_DB_URL: ${{ matrix.db_url }}
-            THERAPY_TEST: true
-        strategy:
-            matrix:
-              python-version: ['3.8', '3.9', '3.10']
-              # db_url: ['http://localhost:8002', 'postgresql://postgres:postgres@localhost:5432/therapy_normalizer_test']
-              db_url: ['postgresql://postgres:postgres@localhost:5432/therapy_normalizer_test']
+          POSTGRES_USER: "postgres"
+          POSTGRES_DB: "therapy_normalizer_test"
+          POSTGRES_PASSWORD: "postgres"
+        ports:
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v3
 
-        services:
-            postgres:
-                image: postgres:14
-                env:
-                    POSTGRES_USER: 'postgres'
-                    POSTGRES_DB: 'therapy_normalizer_test'
-                    POSTGRES_PASSWORD: 'postgres'
-                ports:
-                  - 5432:5432
-        steps:
-            - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
 
-            - name: Set up Python
-              uses: actions/setup-python@v4
-              with:
-                  python-version: ${{ matrix.python-version }}
+      - name: Build local DynamoDB
+        if: ${{ env.THERAPY_NORM_DB_URL == 'http://localhost:8002' }}
+        run: |
+          chmod +x ./tests/scripts/dynamodb_run.sh
+          ./tests/scripts/dynamodb_run.sh
 
-            - name: Build local DynamoDB
-              if: ${{ env.THERAPY_NORM_DB_URL == 'http://localhost:8002' }}
-              run: |
-                chmod +x ./tests/scripts/dynamodb_run.sh
-                ./tests/scripts/dynamodb_run.sh
+      - name: Install DynamoDB dependencies
+        if: ${{ env.THERAPY_NORM_DB_URL == 'http://localhost:8002' }}
+        run: python3 -m pip install ".[etl,test]"
 
-            - name: Install DynamoDB dependencies
-              if: ${{ env.THERAPY_NORM_DB_URL == 'http://localhost:8002' }}
-              run: python3 -m pip install ".[etl,test]"
+      - name: Run DDB tests
+        if: ${{ env.THERAPY_NORM_DB_URL == 'http://localhost:8002' }}
+        run: python3 -m pytest
 
-            - name: Run DDB tests
-              if: ${{ env.THERAPY_NORM_DB_URL == 'http://localhost:8002' }}
-              run: python3 -m pytest
+      - name: Install PG dependencies
+        if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres:postgres@localhost:5432/therapy_normalizer_test' }}
+        run: python3 -m pip install ".[pg,etl,test]"
 
-            - name: Install PG dependencies
-              if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres:postgres@localhost:5432/therapy_normalizer_test' }}
-              run: python3 -m pip install ".[pg,etl,test]"
-
-
-            - name: Run PG tests
-              if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres:postgres@localhost:5432/therapy_normalizer_test' }}
-              env:
-                DISEASE_NORM_DB_URL: postgresql://postgres:postgres@localhost:5432/therapy_normalizer_test
-              run: python3 -m pytest
-
-    lint:
-        name: lint py${{ matrix.python-version }}
-        runs-on: ubuntu-latest
+      - name: Run PG tests
+        if: ${{ env.THERAPY_NORM_DB_URL == 'postgresql://postgres:postgres@localhost:5432/therapy_normalizer_test' }}
         env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.DUMMY_AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.DUMMY_AWS_SECRET_ACCESS_KEY }}
-            AWS_DEFAULT_REGION: us-east-2
-            AWS_DEFAULT_OUTPUT: text
-        strategy:
-            matrix:
-              python-version: ['3.8', '3.9', '3.10']
-        steps:
-            - uses: actions/checkout@v3
+          DISEASE_NORM_DB_URL: postgresql://postgres:postgres@localhost:5432/therapy_normalizer_test
+        run: python3 -m pytest
 
-            - name: Setup Python
-              uses: actions/setup-python@v4
-              with:
-                  python-version: ${{ matrix.python-version }}
+  lint:
+    name: lint py${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: black
+        uses: psf/black@stable
+      - name: ruff
+        uses: chartboost/ruff-action@v1
+  type_checks:
+    name: type check py${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.DUMMY_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.DUMMY_AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: us-east-2
+      AWS_DEFAULT_OUTPUT: text
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: python3 -m pip install ".[dev]"
 
-            - name: Install dependencies
-              run: python3 -m pip install ".[dev]"
-
-            - name: Check style
-              run: python3 -m flake8 therapy/ tests/ setup.py
-
-            - name: Check type correctness
-              if: ${{ always() }}
-              run: python3 -m mypy --ignore-missing-imports therapy/
+      - name: Check type correctness
+        run: python3 -m mypy --ignore-missing-imports therapy/

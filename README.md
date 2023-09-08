@@ -23,7 +23,7 @@ We use Amazon DynamoDB for data storage. To deploy locally, follow [these instru
 
 Code style is managed by [Ruff](https://github.com/astral-sh/ruff) and [Black](https://github.com/psf/black) and checked prior to commit.
 
-We use [pre-commit](https://pre-commit.com/#usage) to run conformance tests.
+We use pre-commit to run conformance tests.
 
 This performs checks for:
 

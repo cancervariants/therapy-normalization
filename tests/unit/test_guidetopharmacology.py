@@ -44,7 +44,7 @@ def arginine_vasotocin():
             "inchikey:OXDZADMCOWPSOC-ICBIOJHSSA-N",
         ],
         "aliases": [
-            "L-cysteinyl-L-tyrosyl-(3S)-DL-isoleucyl-L-glutaminyl-L-asparagyl-L-cysteinyl-DL-prolyl-L-arginyl-glycinamide (1->6)-disulfide",  # noqa: E501
+            "L-cysteinyl-L-tyrosyl-(3S)-DL-isoleucyl-L-glutaminyl-L-asparagyl-L-cysteinyl-DL-prolyl-L-arginyl-glycinamide (1->6)-disulfide",
             "argiprestocin",
             "[Arg8]vasotocin",
             "AVT",
@@ -97,7 +97,7 @@ def cisapride():
             "drugcentral:660",
         ],
         "aliases": [
-            "4-amino-5-chloro-N-[1-[3-(4-fluorophenoxy)propyl]-3-methoxypiperidin-4-yl]-2-methoxybenzamide",  # noqa: E501
+            "4-amino-5-chloro-N-[1-[3-(4-fluorophenoxy)propyl]-3-methoxypiperidin-4-yl]-2-methoxybenzamide",
             "Prepulsid",
             "Propulsid",
         ],
