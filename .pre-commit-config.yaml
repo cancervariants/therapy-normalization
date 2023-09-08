@@ -1,20 +1,18 @@
-# See https://pre-commit.com for more information
-# See https://pre-commit.com/hooks.html for more hooks
 repos:
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v1.4.0
-  hooks:
-  - id: check-added-large-files
-  - id: detect-private-key
-  - id: trailing-whitespace
-  - id: end-of-file-fixer
-- repo: https://github.com/psf/black
-  rev: 23.7.0
-  hooks:
-    - id: black
-      language_version: python3.11
-- repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.0.286
-  hooks:
-    - id: ruff
-      args: [ --fix, --exit-non-zero-on-fix ]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v1.4.0
+    hooks:
+      - id: check-added-large-files
+      - id: detect-private-key
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+  - repo: https://github.com/psf/black
+    rev: 23.7.0
+    hooks:
+      - id: black
+        language_version: python3.11
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.0.286
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
