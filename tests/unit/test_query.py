@@ -1,14 +1,14 @@
 """Test the therapy querying method."""
+import json
 import os
 from datetime import datetime
-import json
 from pathlib import Path
 
 import pytest
 
 from therapy.database.database import AWS_ENV_VAR_NAME
-from therapy.query import QueryHandler, InvalidParameterException
-from therapy.schemas import MatchType, SourceName, TherapyDescriptor, Therapy
+from therapy.query import InvalidParameterException, QueryHandler
+from therapy.schemas import MatchType, SourceName, Therapy, TherapyDescriptor
 
 
 @pytest.fixture(scope="module")
@@ -136,19 +136,24 @@ def compare_vod(response, fixture, query, match_type, response_id, warnings=None
 
         approv_actual = get_extension(ext_actual, "regulatory_approval")
         approv_fixture = get_extension(ext_fixture, "regulatory_approval")
-        assert (approv_actual is None) == \
-            (approv_fixture is None), "regulatory_approval"
+        assert (approv_actual is None) == (
+            approv_fixture is None
+        ), "regulatory_approval"
         if approv_actual and approv_fixture:
             ratings_actual = approv_actual.value.get("approval_ratings")
             ratings_fixture = approv_fixture.value.get("approval_ratings")
             if ratings_actual or ratings_fixture:
                 assert set(ratings_actual) == set(ratings_fixture)
-            assert set(approv_actual.value.get("approval_year", [])) == \
-                set(approv_fixture.value.get("approval_year", []))
-            approv_inds = [json.dumps(ind) for ind
-                           in approv_actual.value.get("has_indication", [])]
-            fixture_inds = [json.dumps(ind) for ind
-                            in approv_fixture.value.get("has_indication", [])]
+            assert set(approv_actual.value.get("approval_year", [])) == set(
+                approv_fixture.value.get("approval_year", [])
+            )
+            approv_inds = [
+                json.dumps(ind) for ind in approv_actual.value.get("has_indication", [])
+            ]
+            fixture_inds = [
+                json.dumps(ind)
+                for ind in approv_fixture.value.get("has_indication", [])
+            ]
             assert set(approv_inds) == set(fixture_inds)
 
         assoc_actual = get_extension(ext_actual, "associated_with")
@@ -172,16 +177,19 @@ def compare_vod(response, fixture, query, match_type, response_id, warnings=None
         assert (fda_actual is None) == (fda_fixture is None)
         if fda_fixture:
             assert fda_actual
-            assert fda_actual.value.get("approval_status") == \
-                fda_fixture.value.get("approval_status")
-            assert set(fda_actual.value.get("approval_year", [])) == \
-                set(fda_fixture.value.get("approval_year", []))
-            assert set(fda_actual.value.get("has_indication", [])) == \
-                set(fda_fixture.value.get("has_indication", []))
+            assert fda_actual.value.get("approval_status") == fda_fixture.value.get(
+                "approval_status"
+            )
+            assert set(fda_actual.value.get("approval_year", [])) == set(
+                fda_fixture.value.get("approval_year", [])
+            )
+            assert set(fda_actual.value.get("has_indication", [])) == set(
+                fda_fixture.value.get("has_indication", [])
+            )
 
 
 def compare_unmerged_response(
-        actual, query, warnings, match_type, fixture, compare_records
+    actual, query, warnings, match_type, fixture, compare_records
 ):
     """Compare response from normalize unmerged endpoint to fixture."""
     assert actual.query == query
@@ -236,8 +244,15 @@ def test_search_sources(query_handler):
     # test blank params
     resp = query_handler.search("cisplatin", keyed=True)
     assert set(resp.source_matches.keys()) == {
-        "Wikidata", "ChEMBL", "NCIt", "DrugBank", "ChemIDplus", "RxNorm", "HemOnc",
-        "GuideToPHARMACOLOGY", "DrugsAtFDA"
+        "Wikidata",
+        "ChEMBL",
+        "NCIt",
+        "DrugBank",
+        "ChemIDplus",
+        "RxNorm",
+        "HemOnc",
+        "GuideToPHARMACOLOGY",
+        "DrugsAtFDA",
     }
 
     # test partial inclusion
@@ -248,15 +263,28 @@ def test_search_sources(query_handler):
     sources = "chembl,ncit,drugbank,wikidata,rxnorm,chemidplus,hemonc,guidetopharmacology,drugsatfda"  # noqa: E501
     resp = query_handler.search("cisplatin", keyed=True, incl=sources, excl="")
     assert set(resp.source_matches.keys()) == {
-        "Wikidata", "ChEMBL", "NCIt", "DrugBank", "ChemIDplus", "RxNorm", "HemOnc",
-        "GuideToPHARMACOLOGY", "DrugsAtFDA"
+        "Wikidata",
+        "ChEMBL",
+        "NCIt",
+        "DrugBank",
+        "ChemIDplus",
+        "RxNorm",
+        "HemOnc",
+        "GuideToPHARMACOLOGY",
+        "DrugsAtFDA",
     }
 
     # test partial exclusion
     resp = query_handler.search("cisplatin", keyed=True, excl="chemidplus")
     assert set(resp.source_matches.keys()) == {
-        "Wikidata", "ChEMBL", "NCIt", "DrugBank", "RxNorm", "HemOnc",
-        "GuideToPHARMACOLOGY", "DrugsAtFDA"
+        "Wikidata",
+        "ChEMBL",
+        "NCIt",
+        "DrugBank",
+        "RxNorm",
+        "HemOnc",
+        "GuideToPHARMACOLOGY",
+        "DrugsAtFDA",
     }
 
     # test full exclusion
@@ -267,8 +295,14 @@ def test_search_sources(query_handler):
     # test case insensitive
     resp = query_handler.search("cisplatin", keyed=True, excl="ChEmBl")
     assert set(resp.source_matches.keys()) == {
-        "Wikidata", "NCIt", "DrugBank", "ChemIDplus", "RxNorm", "HemOnc",
-        "GuideToPHARMACOLOGY", "DrugsAtFDA"
+        "Wikidata",
+        "NCIt",
+        "DrugBank",
+        "ChemIDplus",
+        "RxNorm",
+        "HemOnc",
+        "GuideToPHARMACOLOGY",
+        "DrugsAtFDA",
     }
 
     resp = query_handler.search("cisplatin", keyed=True, incl="wIkIdAtA,cHeMbL")
@@ -289,15 +323,18 @@ def test_infer_option(query_handler):
     """Test infer_namespace boolean option"""
     # drugbank
     query = "DB01174"
-    expected_warnings = [{
-        "inferred_namespace": "drugbank",
-        "adjusted_query": "drugbank:" + query,
-        "alternate_inferred_matches": []
-    }]
+    expected_warnings = [
+        {
+            "inferred_namespace": "drugbank",
+            "adjusted_query": "drugbank:" + query,
+            "alternate_inferred_matches": [],
+        }
+    ]
 
     response = query_handler.search(query, keyed=True)
-    assert response.source_matches[SourceName.DRUGBANK].match_type == \
-        MatchType.CONCEPT_ID
+    assert (
+        response.source_matches[SourceName.DRUGBANK].match_type == MatchType.CONCEPT_ID
+    )
     assert response.warnings == expected_warnings
 
     response = query_handler.normalize(query)
@@ -306,11 +343,13 @@ def test_infer_option(query_handler):
 
     # ncit
     query = "c739"
-    expected_warnings = [{
-        "inferred_namespace": "ncit",
-        "adjusted_query": "ncit:" + query,
-        "alternate_inferred_matches": []
-    }]
+    expected_warnings = [
+        {
+            "inferred_namespace": "ncit",
+            "adjusted_query": "ncit:" + query,
+            "alternate_inferred_matches": [],
+        }
+    ]
 
     response = query_handler.search(query, keyed=True)
     assert response.source_matches["NCIt"].match_type == MatchType.CONCEPT_ID
@@ -322,15 +361,16 @@ def test_infer_option(query_handler):
 
     # chemidplus
     query = "15663-27-1"
-    expected_warnings = [{
-        "inferred_namespace": "chemidplus",
-        "adjusted_query": "chemidplus:" + query,
-        "alternate_inferred_matches": [],
-    }]
+    expected_warnings = [
+        {
+            "inferred_namespace": "chemidplus",
+            "adjusted_query": "chemidplus:" + query,
+            "alternate_inferred_matches": [],
+        }
+    ]
 
     response = query_handler.search(query, keyed=True)
-    assert response.source_matches["ChemIDplus"].match_type == \
-        MatchType.CONCEPT_ID
+    assert response.source_matches["ChemIDplus"].match_type == MatchType.CONCEPT_ID
     assert response.warnings == expected_warnings
 
     response = query_handler.normalize(query)
@@ -339,15 +379,16 @@ def test_infer_option(query_handler):
 
     # chembl
     query = "chembl11359"
-    expected_warnings = [{
-        "inferred_namespace": "chembl",
-        "adjusted_query": "chembl:" + query,
-        "alternate_inferred_matches": [],
-    }]
+    expected_warnings = [
+        {
+            "inferred_namespace": "chembl",
+            "adjusted_query": "chembl:" + query,
+            "alternate_inferred_matches": [],
+        }
+    ]
 
     response = query_handler.search(query, keyed=True)
-    assert response.source_matches["ChEMBL"].match_type == \
-        MatchType.CONCEPT_ID
+    assert response.source_matches["ChEMBL"].match_type == MatchType.CONCEPT_ID
     assert response.warnings == expected_warnings
 
     response = query_handler.normalize(query)
@@ -356,15 +397,16 @@ def test_infer_option(query_handler):
 
     # wikidata
     query = "q412415"
-    expected_warnings = [{
-        "inferred_namespace": "wikidata",
-        "adjusted_query": "wikidata:" + query,
-        "alternate_inferred_matches": [],
-    }]
+    expected_warnings = [
+        {
+            "inferred_namespace": "wikidata",
+            "adjusted_query": "wikidata:" + query,
+            "alternate_inferred_matches": [],
+        }
+    ]
 
     response = query_handler.search(query, keyed=True)
-    assert response.source_matches["Wikidata"].match_type == \
-        MatchType.CONCEPT_ID
+    assert response.source_matches["Wikidata"].match_type == MatchType.CONCEPT_ID
     assert response.warnings == expected_warnings
 
     response = query_handler.normalize(query)
@@ -373,15 +415,16 @@ def test_infer_option(query_handler):
 
     # drugs@fda
     query = "ANDA075036"
-    expected_warnings = [{
-        "inferred_namespace": "drugsatfda.anda",
-        "adjusted_query": "drugsatfda.anda:075036",
-        "alternate_inferred_matches": [],
-    }]
+    expected_warnings = [
+        {
+            "inferred_namespace": "drugsatfda.anda",
+            "adjusted_query": "drugsatfda.anda:075036",
+            "alternate_inferred_matches": [],
+        }
+    ]
 
     response = query_handler.search(query, keyed=True)
-    assert response.source_matches["DrugsAtFDA"].match_type == \
-        MatchType.CONCEPT_ID
+    assert response.source_matches["DrugsAtFDA"].match_type == MatchType.CONCEPT_ID
     assert response.warnings == expected_warnings
 
     response = query_handler.normalize(query)
@@ -389,15 +432,16 @@ def test_infer_option(query_handler):
     assert response.warnings == expected_warnings
 
     query = "nda018057"
-    expected_warnings = [{
-        "inferred_namespace": "drugsatfda.nda",
-        "adjusted_query": "drugsatfda.nda:018057",
-        "alternate_inferred_matches": [],
-    }]
+    expected_warnings = [
+        {
+            "inferred_namespace": "drugsatfda.nda",
+            "adjusted_query": "drugsatfda.nda:018057",
+            "alternate_inferred_matches": [],
+        }
+    ]
 
     response = query_handler.search(query, keyed=True)
-    assert response.source_matches["DrugsAtFDA"].match_type == \
-        MatchType.CONCEPT_ID
+    assert response.source_matches["DrugsAtFDA"].match_type == MatchType.CONCEPT_ID
     assert response.warnings == expected_warnings
 
     response = query_handler.normalize(query)
@@ -413,68 +457,122 @@ def test_infer_option(query_handler):
     assert response.match_type == MatchType.NO_MATCH
 
 
-def test_query_normalize(query_handler, normalized_phenobarbital,
-                         normalized_cisplatin, normalized_spiramycin,
-                         normalized_therapeutic_procedure):
+def test_query_normalize(
+    query_handler,
+    normalized_phenobarbital,
+    normalized_cisplatin,
+    normalized_spiramycin,
+    normalized_therapeutic_procedure,
+):
     """Test that the normalized concept endpoint handles queries correctly."""
     # test merged id match
     query = "rxcui:2555"
     response = query_handler.normalize(query)
-    compare_vod(response, normalized_cisplatin, query, MatchType.CONCEPT_ID,
-                "normalize.therapy:rxcui%3A2555")
+    compare_vod(
+        response,
+        normalized_cisplatin,
+        query,
+        MatchType.CONCEPT_ID,
+        "normalize.therapy:rxcui%3A2555",
+    )
 
     # test concept id match
     query = "chemidplus:50-06-6"
     response = query_handler.normalize(query)
-    compare_vod(response, normalized_phenobarbital, query, MatchType.CONCEPT_ID,
-                "normalize.therapy:chemidplus%3A50-06-6")
+    compare_vod(
+        response,
+        normalized_phenobarbital,
+        query,
+        MatchType.CONCEPT_ID,
+        "normalize.therapy:chemidplus%3A50-06-6",
+    )
 
     query = "hemonc:105"
     response = query_handler.normalize(query)
-    compare_vod(response, normalized_cisplatin, query, MatchType.CONCEPT_ID,
-                "normalize.therapy:hemonc%3A105")
+    compare_vod(
+        response,
+        normalized_cisplatin,
+        query,
+        MatchType.CONCEPT_ID,
+        "normalize.therapy:hemonc%3A105",
+    )
 
     # test label match
     query = "Phenobarbital"
     response = query_handler.normalize(query)
-    compare_vod(response, normalized_phenobarbital, query, MatchType.LABEL,
-                "normalize.therapy:Phenobarbital")
+    compare_vod(
+        response,
+        normalized_phenobarbital,
+        query,
+        MatchType.LABEL,
+        "normalize.therapy:Phenobarbital",
+    )
 
     # test trade name match
     query = "Platinol"
     response = query_handler.normalize(query)
-    compare_vod(response, normalized_cisplatin, query, MatchType.TRADE_NAME,
-                "normalize.therapy:Platinol")
+    compare_vod(
+        response,
+        normalized_cisplatin,
+        query,
+        MatchType.TRADE_NAME,
+        "normalize.therapy:Platinol",
+    )
 
     # test alias match
     query = "cis Diamminedichloroplatinum"
     response = query_handler.normalize(query)
-    compare_vod(response, normalized_cisplatin, query, MatchType.ALIAS,
-                "normalize.therapy:cis%20Diamminedichloroplatinum")
+    compare_vod(
+        response,
+        normalized_cisplatin,
+        query,
+        MatchType.ALIAS,
+        "normalize.therapy:cis%20Diamminedichloroplatinum",
+    )
 
     query = "spiramycin I"
     response = query_handler.normalize(query)
-    compare_vod(response, normalized_spiramycin, query, MatchType.ALIAS,
-                "normalize.therapy:spiramycin%20I")
+    compare_vod(
+        response,
+        normalized_spiramycin,
+        query,
+        MatchType.ALIAS,
+        "normalize.therapy:spiramycin%20I",
+    )
 
     # test normalized group with single member
     query = "any therapy"
     response = query_handler.normalize(query)
-    compare_vod(response, normalized_therapeutic_procedure, query, MatchType.ALIAS,
-                "normalize.therapy:any%20therapy")
+    compare_vod(
+        response,
+        normalized_therapeutic_procedure,
+        query,
+        MatchType.ALIAS,
+        "normalize.therapy:any%20therapy",
+    )
 
     # test that term with multiple possible resolutions resolves at highest
     # match
     query = "Cisplatin"
     response = query_handler.normalize(query)
-    compare_vod(response, normalized_cisplatin, query, MatchType.TRADE_NAME,
-                "normalize.therapy:Cisplatin")
+    compare_vod(
+        response,
+        normalized_cisplatin,
+        query,
+        MatchType.TRADE_NAME,
+        "normalize.therapy:Cisplatin",
+    )
 
     # test whitespace stripping
     query = "   Cisplatin "
     response = query_handler.normalize(query)
-    compare_vod(response, normalized_cisplatin, query, MatchType.TRADE_NAME,
-                "normalize.therapy:Cisplatin")
+    compare_vod(
+        response,
+        normalized_cisplatin,
+        query,
+        MatchType.TRADE_NAME,
+        "normalize.therapy:Cisplatin",
+    )
 
     # test no match
     query = "zzzz fake therapy zzzz"
@@ -485,36 +583,68 @@ def test_query_normalize(query_handler, normalized_phenobarbital,
     assert response.match_type == MatchType.NO_MATCH
 
 
-def test_unmerged_normalize(query_handler, compare_records,
-                            unmerged_normalized_spiramycin,
-                            unmerged_normalized_cisplatin,
-                            unmerged_normalized_therapeutic_procedure):
+def test_unmerged_normalize(
+    query_handler,
+    compare_records,
+    unmerged_normalized_spiramycin,
+    unmerged_normalized_cisplatin,
+    unmerged_normalized_therapeutic_procedure,
+):
     """Test correctness of unmerged normalize endpoint."""
     # concept ID match
     query = "rxcui:2555"
     response = query_handler.normalize_unmerged(query)
-    compare_unmerged_response(response, query, [], MatchType.CONCEPT_ID,
-                              unmerged_normalized_cisplatin, compare_records)
+    compare_unmerged_response(
+        response,
+        query,
+        [],
+        MatchType.CONCEPT_ID,
+        unmerged_normalized_cisplatin,
+        compare_records,
+    )
 
     query = "chembl:CHEMBL11359"
     response = query_handler.normalize_unmerged(query)
-    compare_unmerged_response(response, query, [], MatchType.CONCEPT_ID,
-                              unmerged_normalized_cisplatin, compare_records)
+    compare_unmerged_response(
+        response,
+        query,
+        [],
+        MatchType.CONCEPT_ID,
+        unmerged_normalized_cisplatin,
+        compare_records,
+    )
     query = "ncit:C49236"
     response = query_handler.normalize_unmerged(query)
-    compare_unmerged_response(response, query, [], MatchType.CONCEPT_ID,
-                              unmerged_normalized_therapeutic_procedure,
-                              compare_records)
+    compare_unmerged_response(
+        response,
+        query,
+        [],
+        MatchType.CONCEPT_ID,
+        unmerged_normalized_therapeutic_procedure,
+        compare_records,
+    )
 
     query = "rxcui:9991"
     response = query_handler.normalize_unmerged(query)
-    compare_unmerged_response(response, query, [], MatchType.CONCEPT_ID,
-                              unmerged_normalized_spiramycin, compare_records)
+    compare_unmerged_response(
+        response,
+        query,
+        [],
+        MatchType.CONCEPT_ID,
+        unmerged_normalized_spiramycin,
+        compare_records,
+    )
 
     query = "ncit:c839"
     response = query_handler.normalize_unmerged(query)
-    compare_unmerged_response(response, query, [], MatchType.CONCEPT_ID,
-                              unmerged_normalized_spiramycin, compare_records)
+    compare_unmerged_response(
+        response,
+        query,
+        [],
+        MatchType.CONCEPT_ID,
+        unmerged_normalized_spiramycin,
+        compare_records,
+    )
 
     # namespace infer
     query = "CHEMBL11359"
@@ -522,65 +652,128 @@ def test_unmerged_normalize(query_handler, compare_records,
     warning = {
         "inferred_namespace": "chembl",
         "adjusted_query": "chembl:CHEMBL11359",
-        "alternate_inferred_matches": []
+        "alternate_inferred_matches": [],
     }
-    compare_unmerged_response(response, query, [warning], MatchType.CONCEPT_ID,
-                              unmerged_normalized_cisplatin, compare_records)
+    compare_unmerged_response(
+        response,
+        query,
+        [warning],
+        MatchType.CONCEPT_ID,
+        unmerged_normalized_cisplatin,
+        compare_records,
+    )
 
     # label match
     query = "cisplatin"
     response = query_handler.normalize_unmerged(query)
-    compare_unmerged_response(response, query, [], MatchType.LABEL,
-                              unmerged_normalized_cisplatin, compare_records)
+    compare_unmerged_response(
+        response,
+        query,
+        [],
+        MatchType.LABEL,
+        unmerged_normalized_cisplatin,
+        compare_records,
+    )
 
     query = "therapeutic procedure"
     response = query_handler.normalize_unmerged(query)
-    compare_unmerged_response(response, query, [], MatchType.LABEL,
-                              unmerged_normalized_therapeutic_procedure,
-                              compare_records)
+    compare_unmerged_response(
+        response,
+        query,
+        [],
+        MatchType.LABEL,
+        unmerged_normalized_therapeutic_procedure,
+        compare_records,
+    )
 
     query = "spiramycin"
     response = query_handler.normalize_unmerged(query)
-    compare_unmerged_response(response, query, [], MatchType.LABEL,
-                              unmerged_normalized_spiramycin, compare_records)
+    compare_unmerged_response(
+        response,
+        query,
+        [],
+        MatchType.LABEL,
+        unmerged_normalized_spiramycin,
+        compare_records,
+    )
 
     # alias/xref/trade name/associated with
     query = "Platinol-aq"
     response = query_handler.normalize_unmerged(query)
-    compare_unmerged_response(response, query, [], MatchType.TRADE_NAME,
-                              unmerged_normalized_cisplatin, compare_records)
+    compare_unmerged_response(
+        response,
+        query,
+        [],
+        MatchType.TRADE_NAME,
+        unmerged_normalized_cisplatin,
+        compare_records,
+    )
 
     query = "ndc:0143-9504"
     response = query_handler.normalize_unmerged(query)
-    compare_unmerged_response(response, query, [], MatchType.ASSOCIATED_WITH,
-                              unmerged_normalized_cisplatin, compare_records)
+    compare_unmerged_response(
+        response,
+        query,
+        [],
+        MatchType.ASSOCIATED_WITH,
+        unmerged_normalized_cisplatin,
+        compare_records,
+    )
 
     query = "Dichlorodiammineplatinum"
     response = query_handler.normalize_unmerged(query)
-    compare_unmerged_response(response, query, [], MatchType.ALIAS,
-                              unmerged_normalized_cisplatin, compare_records)
+    compare_unmerged_response(
+        response,
+        query,
+        [],
+        MatchType.ALIAS,
+        unmerged_normalized_cisplatin,
+        compare_records,
+    )
 
     query = "TREAT"
     response = query_handler.normalize_unmerged(query)
-    compare_unmerged_response(response, query, [], MatchType.ALIAS,
-                              unmerged_normalized_therapeutic_procedure,
-                              compare_records)
+    compare_unmerged_response(
+        response,
+        query,
+        [],
+        MatchType.ALIAS,
+        unmerged_normalized_therapeutic_procedure,
+        compare_records,
+    )
 
     query = "umls:C0087111"
     response = query_handler.normalize_unmerged(query)
-    compare_unmerged_response(response, query, [], MatchType.ASSOCIATED_WITH,
-                              unmerged_normalized_therapeutic_procedure,
-                              compare_records)
+    compare_unmerged_response(
+        response,
+        query,
+        [],
+        MatchType.ASSOCIATED_WITH,
+        unmerged_normalized_therapeutic_procedure,
+        compare_records,
+    )
 
     query = "mesh:D015572"
     response = query_handler.normalize_unmerged(query)
-    compare_unmerged_response(response, query, [], MatchType.ASSOCIATED_WITH,
-                              unmerged_normalized_spiramycin, compare_records)
+    compare_unmerged_response(
+        response,
+        query,
+        [],
+        MatchType.ASSOCIATED_WITH,
+        unmerged_normalized_spiramycin,
+        compare_records,
+    )
 
     query = "spiramycin I"
     response = query_handler.normalize_unmerged(query)
-    compare_unmerged_response(response, query, [], MatchType.ALIAS,
-                              unmerged_normalized_spiramycin, compare_records)
+    compare_unmerged_response(
+        response,
+        query,
+        [],
+        MatchType.ALIAS,
+        unmerged_normalized_spiramycin,
+        compare_records,
+    )
 
 
 def test_merged_meta(query_handler):
@@ -609,17 +802,24 @@ def test_service_meta(query_handler):
     assert service_meta.name == "thera-py"
     assert service_meta.version >= "0.2.13"
     assert isinstance(service_meta.response_datetime, datetime)
-    assert service_meta.url == "https://github.com/cancervariants/therapy-normalization"  # noqa: E501
+    assert (
+        service_meta.url == "https://github.com/cancervariants/therapy-normalization"
+    )  # noqa: E501
 
     response = query_handler.normalize(query)
     service_meta = response.service_meta_
     assert service_meta.name == "thera-py"
     assert service_meta.version >= "0.2.13"
     assert isinstance(service_meta.response_datetime, datetime)
-    assert service_meta.url == "https://github.com/cancervariants/therapy-normalization"  # noqa: E501
+    assert (
+        service_meta.url == "https://github.com/cancervariants/therapy-normalization"
+    )  # noqa: E501
 
 
-RUN_TEST = os.environ.get("THERAPY_TEST", "").lower() == "true" and AWS_ENV_VAR_NAME not in os.environ  # noqa: E501
+RUN_TEST = (
+    os.environ.get("THERAPY_TEST", "").lower() == "true"
+    and AWS_ENV_VAR_NAME not in os.environ
+)  # noqa: E501
 IS_DDB = os.environ.get("THERAPY_NORM_DB_URL", "").startswith("http://localhost:")
 
 
@@ -633,10 +833,12 @@ def test_broken_db_handling(query_handler):
 
     In Postgres, that field is foreign-key constrained, so we can't easily spoof it.
     """
-    query_handler.db.therapies.put_item(Item={
-        "label_and_type": "fake:00001##identity",
-        "concept_id": "fake:00001",
-        "item_type": "identity",
-        "merge_ref": "garage possums"
-    })
+    query_handler.db.therapies.put_item(
+        Item={
+            "label_and_type": "fake:00001##identity",
+            "concept_id": "fake:00001",
+            "item_type": "identity",
+            "merge_ref": "garage possums",
+        }
+    )
     assert query_handler.normalize("fake:00001")

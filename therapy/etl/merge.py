@@ -1,11 +1,10 @@
 """Create concept groups and merged records."""
-from typing import Collection, Set, Dict, Optional, Any, Tuple
 import logging
 from timeit import default_timer as timer
+from typing import Any, Collection, Dict, Optional, Set, Tuple
 
-from therapy.schemas import SourcePriority
 from therapy.database import AbstractDatabase
-
+from therapy.schemas import SourcePriority
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -60,8 +59,10 @@ class Merge:
             # add updated references
             for concept_id in group:
                 if not self._database.get_record_by_id(concept_id, False):
-                    logger.error(f"Updating nonexistent record: {concept_id} "
-                                 f"for {merged_record['label_and_type']}")
+                    logger.error(
+                        f"Updating nonexistent record: {concept_id} "
+                        f"for {merged_record['label_and_type']}"
+                    )
                 else:
                     merge_ref = merged_record["concept_id"]
                     self._database.update_merge_ref(concept_id, merge_ref)
@@ -101,9 +102,9 @@ class Merge:
         concept_id = ref["concept_id"]
         fetched = self._database.get_record_by_id(concept_id, False)
         if fetched:
-            uniis = [a for a
-                     in fetched.get("associated_with", [])
-                     if a.startswith("unii")]
+            uniis = [
+                a for a in fetched.get("associated_with", []) if a.startswith("unii")
+            ]
         else:
             logger.error(f"Couldn't retrieve record for {concept_id} from {ref}")
             return None
@@ -121,8 +122,9 @@ class Merge:
         :return: Set of xref values
         """
         xrefs = set(record.get("xrefs", []))
-        unii_xrefs = [a for a in record.get("associated_with", [])
-                      if a.startswith("unii:")]
+        unii_xrefs = [
+            a for a in record.get("associated_with", []) if a.startswith("unii:")
+        ]
         for unii in unii_xrefs:
             drugsatfda_ids = self._unii_to_drugsatfda.get(unii)
             if drugsatfda_ids is not None:
@@ -158,8 +160,10 @@ class Merge:
                 brand_lookup = self._rxnorm_brand_lookup(record_id)
                 if brand_lookup:
                     return self._create_record_id_set(brand_lookup, observed_id_set)
-            logger.warning(f"Unable to resolve lookup for {record_id} in "
-                           f"ID set: {observed_id_set}")
+            logger.warning(
+                f"Unable to resolve lookup for {record_id} in "
+                f"ID set: {observed_id_set}"
+            )
             self._failed_lookups.add(record_id)
             return observed_id_set - {record_id}
 
@@ -204,8 +208,10 @@ class Merge:
             if record:
                 records.append(record)
             else:
-                logger.error(f"Merge record generator could not retrieve "
-                             f"record for {record_id} in {record_id_set}")
+                logger.error(
+                    f"Merge record generator could not retrieve "
+                    f"record for {record_id} in {record_id_set}"
+                )
 
         def record_order(record: Dict) -> Tuple[int, str]:
             """Provide priority values of concepts for sort function."""
@@ -215,9 +221,11 @@ class Merge:
             if src in SourcePriority.__members__:
                 source_rank = SourcePriority[src].value
             else:
-                raise Exception(f"Prohibited source: {src} in concept_id "
-                                f"{record['concept_id']}")
+                raise Exception(
+                    f"Prohibited source: {src} in concept_id " f"{record['concept_id']}"
+                )
             return source_rank, record["concept_id"]
+
         records.sort(key=record_order)
 
         # initialize merged record

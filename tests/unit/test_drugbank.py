@@ -6,7 +6,7 @@ import re
 import pytest
 
 from therapy.etl.drugbank import DrugBank
-from therapy.schemas import Therapy, MatchType
+from therapy.schemas import MatchType, Therapy
 
 
 @pytest.fixture(scope="module")
@@ -32,10 +32,7 @@ def cisplatin():
             "chemidplus:15663-27-1",
         ],
         "trade_names": [],
-        "associated_with": [
-            "unii:Q20Q21Q62J",
-            "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"
-        ],
+        "associated_with": ["unii:Q20Q21Q62J", "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"],
     }
     return Therapy(**params)
 
@@ -57,10 +54,7 @@ def bentiromide():
             "chemidplus:37106-97-1",
         ],
         "trade_names": [],
-        "associated_with": [
-            "unii:239IF5W61J",
-            "inchikey:SPPTWHFVYKCNNK-FQEVSTJZSA-N"
-        ],
+        "associated_with": ["unii:239IF5W61J", "inchikey:SPPTWHFVYKCNNK-FQEVSTJZSA-N"],
     }
     return Therapy(**params)
 
@@ -76,13 +70,14 @@ def aloe_ferox_leaf():
         "aliases": [],
         "xrefs": [],
         "trade_names": [],
-        "associated_with": ["unii:0D145J8EME"]
+        "associated_with": ["unii:0D145J8EME"],
     }
     return Therapy(**params)
 
 
-def test_concept_id_match(drugbank, compare_response, cisplatin, bentiromide,
-                          aloe_ferox_leaf):
+def test_concept_id_match(
+    drugbank, compare_response, cisplatin, bentiromide, aloe_ferox_leaf
+):
     """Test that concept ID query resolves to correct record."""
     response = drugbank.search("drugbank:DB00515")
     compare_response(response, MatchType.CONCEPT_ID, cisplatin)
@@ -118,8 +113,9 @@ def test_concept_id_match(drugbank, compare_response, cisplatin, bentiromide,
     compare_response(response, MatchType.CONCEPT_ID, aloe_ferox_leaf)
 
 
-def test_label_match(drugbank, compare_response, cisplatin, bentiromide,
-                     aloe_ferox_leaf):
+def test_label_match(
+    drugbank, compare_response, cisplatin, bentiromide, aloe_ferox_leaf
+):
     """Test that label query resolves to correct record."""
     response = drugbank.search("cisplatin")
     compare_response(response, MatchType.LABEL, cisplatin)
@@ -168,8 +164,9 @@ def test_xref_match(drugbank, compare_response, cisplatin, bentiromide):
     compare_response(response, MatchType.XREF, bentiromide)
 
 
-def test_assoc_with_match(drugbank, compare_response, cisplatin, bentiromide,
-                          aloe_ferox_leaf):
+def test_assoc_with_match(
+    drugbank, compare_response, cisplatin, bentiromide, aloe_ferox_leaf
+):
     """Test that associated_with query resolves to correct record."""
     response = drugbank.search("inchikey:lxzzyrpgzafole-uhfffaoysa-l")
     compare_response(response, MatchType.ASSOCIATED_WITH, cisplatin)
@@ -201,12 +198,18 @@ def test_meta_info(drugbank):
     """Test that the meta field is correct."""
     response = drugbank.search("cisplatin")
     assert response.source_meta_.data_license == "CC0 1.0"
-    assert response.source_meta_.data_license_url == "https://creativecommons.org/publicdomain/zero/1.0/"  # noqa: E501
+    assert (
+        response.source_meta_.data_license_url
+        == "https://creativecommons.org/publicdomain/zero/1.0/"
+    )  # noqa: E501
     assert re.match(r"[0-9]+\.[0-9]+\.[0-9]", response.source_meta_.version)
-    assert response.source_meta_.data_url == "https://go.drugbank.com/releases/latest#open-data"  # noqa: E501
+    assert (
+        response.source_meta_.data_url
+        == "https://go.drugbank.com/releases/latest#open-data"
+    )  # noqa: E501
     assert response.source_meta_.rdp_url == "http://reusabledata.org/drugbank.html"
     assert response.source_meta_.data_license_attributes == {
         "non_commercial": False,
         "share_alike": False,
-        "attribution": False
+        "attribution": False,
     }

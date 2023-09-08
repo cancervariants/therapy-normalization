@@ -1,29 +1,29 @@
 """Provide core database classes and parameters."""
 import abc
+import sys
 from enum import Enum
 from os import environ
 from pathlib import Path
 from typing import Dict, List, Optional, Set, Union
-import sys
 
 import click
 
 from therapy.schemas import DatabaseType, RefType, SourceMeta, SourceName
 
 
-class DatabaseException(Exception):
+class DatabaseError(Exception):
     """Create custom class for handling database exceptions"""
 
 
-class DatabaseInitializationException(DatabaseException):
-    """Create custom exception for errors during DB connection initialization."""
+class DatabaseInitializationError(DatabaseError):
+    """Create custom Error for errors during DB connection initialization."""
 
 
-class DatabaseReadException(DatabaseException):
-    """Create custom exception for lookup/read errors"""
+class DatabaseReadError(DatabaseError):
+    """Create custom Error for lookup/read errors"""
 
 
-class DatabaseWriteException(DatabaseException):
+class DatabaseWriteError(DatabaseError):
     """Create custom exception for write errors"""
 
 
@@ -33,7 +33,7 @@ class AbstractDatabase(abc.ABC):
     db_type: DatabaseType
 
     @abc.abstractmethod
-    def __init__(self, db_url: Optional[str] = None, **db_args):
+    def __init__(self, db_url: Optional[str] = None, **db_args) -> None:
         """Initialize database instance.
 
         Generally, implementing classes should be able to construct a connection by
@@ -62,7 +62,7 @@ class AbstractDatabase(abc.ABC):
         """
         if environ.get(AWS_ENV_VAR_NAME, "") == AwsEnvName.PRODUCTION:
             if environ.get(SKIP_AWS_DB_ENV_NAME, "") == "true":
-                raise DatabaseWriteException(
+                raise DatabaseWriteError(
                     f"Must unset {SKIP_AWS_DB_ENV_NAME} env variable to enable drop_db()"  # noqa: E501
                 )
             return click.confirm("Are you sure you want to delete existing data?")
@@ -113,8 +113,9 @@ class AbstractDatabase(abc.ABC):
         """
 
     @abc.abstractmethod
-    def get_record_by_id(self, concept_id: str, case_sensitive: bool = True,
-                         merge: bool = False) -> Optional[Dict]:
+    def get_record_by_id(
+        self, concept_id: str, case_sensitive: bool = True, merge: bool = False
+    ) -> Optional[Dict]:
         """Fetch record corresponding to provided concept ID
 
         :param concept_id: concept ID for record
@@ -142,6 +143,7 @@ class AbstractDatabase(abc.ABC):
         :param brand_id: rxcui brand identifier to dereference
         :return: RxNorm therapy concept ID if successful, None otherwise
         """
+
     @abc.abstractmethod
     def get_drugsatfda_from_unii(self, unii: str) -> Set[str]:
         """Get Drugs@FDA IDs associated with a single UNII, given that UNII. Used
@@ -267,8 +269,9 @@ VALID_AWS_ENV_NAMES = {v.value for v in AwsEnvName.__members__.values()}
 
 def confirm_aws_db_use(env_name: str) -> None:
     """Check to ensure that AWS instance should actually be used."""
-    if click.confirm(f"Are you sure you want to use the AWS {env_name} database?",
-                     default=False):
+    if click.confirm(
+        f"Are you sure you want to use the AWS {env_name} database?", default=False
+    ):
         click.echo(f"***THERAPY AWS {env_name.upper()} DATABASE IN USE***")
     else:
         click.echo("Exiting.")
@@ -303,6 +306,7 @@ def create_db(
         environ[SKIP_AWS_DB_ENV_NAME] = "true"  # this is already checked above
 
         from therapy.database.dynamodb import DynamoDbDatabase
+
         db = DynamoDbDatabase()
     else:
         if db_url:
@@ -315,8 +319,10 @@ def create_db(
         # prefer DynamoDB unless connection explicitly reads like a libpq URI
         if endpoint_url.startswith("postgres"):
             from therapy.database.postgresql import PostgresDatabase
+
             db = PostgresDatabase(endpoint_url)  # type: ignore
         else:
             from therapy.database.dynamodb import DynamoDbDatabase
+
             db = DynamoDbDatabase(endpoint_url)
     return db

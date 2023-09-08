@@ -1,10 +1,9 @@
 """Construct test data for ChEMBL source."""
-from pathlib import Path
 import sqlite3
+from pathlib import Path
 
 from therapy.database.database import create_db
 from therapy.etl import ChEMBL
-
 
 TEST_IDS = [
     "'CHEMBL11359'",

@@ -1,10 +1,9 @@
 """Construct hemonc test data."""
-from pathlib import Path
 import csv
+from pathlib import Path
 
-from therapy.etl import HemOnc
 from therapy.database import create_db
-
+from therapy.etl import HemOnc
 
 TEST_IDS = ["65", "105", "151", "26"]
 

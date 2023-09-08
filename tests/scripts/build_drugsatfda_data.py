@@ -2,9 +2,8 @@
 import json
 from pathlib import Path
 
-from therapy.etl import DrugsAtFDA
 from therapy.database import create_db
-
+from therapy.etl import DrugsAtFDA
 
 TEST_IDS = [
     "NDA020221",

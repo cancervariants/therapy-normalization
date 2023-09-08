@@ -1,30 +1,36 @@
 """A base class for extraction, transformation, and loading of data."""
-from abc import ABC, abstractmethod
 import ftplib
-from pathlib import Path
-import logging
-from typing import List, Dict, Optional, Callable
-import os
-from urllib.parse import urlparse, urlunparse
-import zipfile
-import tempfile
-import re
 import json
+import logging
+import os
+import re
+import tempfile
+import zipfile
+from abc import ABC, abstractmethod
 from functools import lru_cache
+from pathlib import Path
+from typing import Callable, Dict, List, Optional
+from urllib.parse import urlparse, urlunparse
 
-from pydantic import ValidationError
-import requests
 import bioversions
+import requests
+from disease.database import (
+    AbstractDatabase as DiseaseDatabase,
+)
+from disease.database import (
+    DatabaseInitializationException as DiseaseDbInitializationError,
+)
+from disease.database import (
+    create_db as create_disease_db,
+)
 from disease.query import QueryHandler as DiseaseNormalizer
-from disease.database import create_db as create_disease_db, \
-    AbstractDatabase as DiseaseDatabase, \
-    DatabaseInitializationException as DiseaseDbInitializationException
+from pydantic import ValidationError
 
-from therapy import APP_ROOT, ITEM_TYPES, DownloadException
-from therapy.database import AbstractDatabase, DatabaseInitializationException
-from therapy.schemas import SourceName, Therapy, DatabaseType
+from therapy import APP_ROOT, ITEM_TYPES
+from therapy.database import AbstractDatabase, DatabaseInitializationError
+from therapy.etl.exceptions import DownloadError
 from therapy.etl.rules import Rules
-
+from therapy.schemas import DatabaseType, SourceName, Therapy
 
 _logger = logging.getLogger(__name__)
 DEFAULT_DATA_PATH: Path = APP_ROOT / "data"
@@ -82,6 +88,8 @@ class Base(ABC):
         naming conventions (generally, `<source>_<version>.<filetype>`, or
         `<source>_<subset>_<version>.<filetype>` if sources require multiple
         files). Shouldn't set any instance attributes.
+
+        :raise DownloadError: if download fails
         """
         raise NotImplementedError
 
@@ -117,6 +125,7 @@ class Base(ABC):
         :param Optional[Dict] headers: Any needed HTTP headers to include in request
         :param Optional[Callable[[Path, Path], None]] handler: provide if downloaded
             file requires additional action, e.g. it's a zip file.
+        :raise DownloadError: if HTTP request is unsuccessful
         """
         if handler:
             dl_path = Path(tempfile.gettempdir()) / "therapy_dl_tmp"
@@ -127,7 +136,7 @@ class Base(ABC):
             try:
                 r.raise_for_status()
             except requests.HTTPError:
-                raise DownloadException(
+                raise DownloadError(
                     f"Failed to download {outfile_path.name} from {url}."
                 )
             with open(dl_path, "wb") as h:
@@ -321,7 +330,7 @@ def create_indications_db(therapy_database: AbstractDatabase) -> DiseaseDatabase
 
     :param therapy_database: therapy normalizer database instance
     :return: disease database instance
-    :raise DiseaseDbInitializationException: if DB creation fails
+    :raise DiseaseDbInitializationError: if DB creation fails
     """
     if "DISEASE_NORM_DB_URL" in os.environ:
         return create_disease_db()
@@ -335,21 +344,24 @@ def create_indications_db(therapy_database: AbstractDatabase) -> DiseaseDatabase
             parsed = urlparse(therapy_url)
             db_name = "/disease_normalizer"  # default
             new_url_parts = (
-                parsed.scheme, parsed.netloc, db_name, parsed.params, parsed.query,
-                parsed.fragment
+                parsed.scheme,
+                parsed.netloc,
+                db_name,
+                parsed.params,
+                parsed.query,
+                parsed.fragment,
             )
             new_url = urlunparse(new_url_parts)
             return create_disease_db(new_url)
         else:
-            raise DiseaseDbInitializationException(
+            raise DiseaseDbInitializationError(
                 "Unable to initialize PostgreSQL Disease Normalizer given "
                 "available params. Set `DISEASE_NORM_DB_URL` env variable to "
                 "desired endpoint."
             )
     else:
-        raise DiseaseDbInitializationException(
-            "Unrecognized therapy database class provided: "
-            f"{type(therapy_database)}"
+        raise DiseaseDbInitializationError(
+            "Unrecognized therapy database class provided: " f"{type(therapy_database)}"
         )
 
 
@@ -357,9 +369,11 @@ class DiseaseIndicationBase(Base):
     """Base class for sources that require disease normalization capabilities."""
 
     def __init__(
-        self, database: AbstractDatabase, data_path: Path = DEFAULT_DATA_PATH,
-        disease_db: Optional[DiseaseDatabase] = None
-    ):
+        self,
+        database: AbstractDatabase,
+        data_path: Path = DEFAULT_DATA_PATH,
+        disease_db: Optional[DiseaseDatabase] = None,
+    ) -> None:
         """Initialize source ETL instance.
 
         :param database: therapy database
@@ -367,16 +381,16 @@ class DiseaseIndicationBase(Base):
         :param disease_db: optionally, directly inject disease DB. Otherwise,
         this class tries to infer a URI for the available disease DB based on the
         existing therapy DB instance.
-        :raise DatabaseInitializationException: if unable to construct disease
+        :raise DatabaseInitializationError: if unable to construct disease
         normalizer database handler
         """
         if not disease_db:
             try:
                 disease_db = create_indications_db(database)
-            except DiseaseDbInitializationException as e:
+            except DiseaseDbInitializationError as e:
                 msg = f"Unable to initialize disease normalizer: {e}"
                 _logger.error(msg)
-                raise DatabaseInitializationException(msg)
+                raise DatabaseInitializationError(msg)
         self.disease_normalizer = DiseaseNormalizer(disease_db)
         super().__init__(database, data_path)
 
@@ -392,9 +406,3 @@ class DiseaseIndicationBase(Base):
         else:
             _logger.warning(f"Failed to normalize disease term: {query}")
             return None
-
-
-class SourceFormatException(Exception):
-    """Raise when source data formatting is incompatible with the source transformation
-    methods: for example, if columns in a CSV file have changed.
-    """

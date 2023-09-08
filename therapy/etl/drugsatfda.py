@@ -1,14 +1,13 @@
 """ETL methods for the Drugs@FDA source."""
+import json
 import logging
 from typing import List, Optional
-import json
 
 import requests
 
 from therapy import DownloadException
-from therapy.schemas import SourceMeta, NamespacePrefix, ApprovalRating, RecordParams
 from therapy.etl.base import Base
-
+from therapy.schemas import ApprovalRating, NamespacePrefix, RecordParams, SourceMeta
 
 _logger = logging.getLogger(__name__)
 
@@ -53,12 +52,13 @@ class DrugsAtFDA(Base):
                 "non_commercial": False,
                 "share_alike": False,
                 "attribution": False,
-            }
+            },
         )
         self._database.add_source_metadata(self._src_name, meta)
 
-    def _get_marketing_status_rating(self, products: List, concept_id: str)\
-            -> Optional[str]:
+    def _get_marketing_status_rating(
+        self, products: List, concept_id: str
+    ) -> Optional[str]:
         """Get approval status rating from products list.
         :param List products: list of individual FDA product objects
         :param str concept_id: FDA application concept ID, used in reporting error
@@ -73,8 +73,10 @@ class DrugsAtFDA(Base):
         }
         statuses = [p["marketing_status"] for p in products]
         if not all([s == statuses[0] for s in statuses]):
-            msg = (f"Application {concept_id} has inconsistent marketing "
-                   f"statuses: {statuses}")
+            msg = (
+                f"Application {concept_id} has inconsistent marketing "
+                f"statuses: {statuses}"
+            )
             _logger.info(msg)
             return None
         else:
@@ -118,8 +120,10 @@ class DrugsAtFDA(Base):
                 n_substances = len(set(substances))
                 if n_substances > 1:
                     # if ambiguous, store all as aliases
-                    msg = (f"Application {concept_id} has {n_substances} "
-                           f"substance names: {substances}")
+                    msg = (
+                        f"Application {concept_id} has {n_substances} "
+                        f"substance names: {substances}"
+                    )
                     _logger.debug(msg)
                     aliases += substances
                 elif n_substances == 1:
@@ -152,8 +156,9 @@ class DrugsAtFDA(Base):
 
                 rxcui = openfda.get("rxcui")
                 if rxcui:
-                    therapy["xrefs"] = [f"{NamespacePrefix.RXNORM.value}:{r}"
-                                        for r in rxcui]
+                    therapy["xrefs"] = [
+                        f"{NamespacePrefix.RXNORM.value}:{r}" for r in rxcui
+                    ]
 
             therapy["trade_names"] = brand_names
             therapy["aliases"] = aliases

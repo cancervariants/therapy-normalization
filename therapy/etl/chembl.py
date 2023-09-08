@@ -1,17 +1,16 @@
-"""This module defines the ChEMBL ETL methods."""
+"""Provide methods for extracting and loading ChEMBL data."""
 import ftplib
 import logging
 import os
 import shutil
 import sqlite3
-from typing import Optional, List, Dict, Union
+from typing import Dict, List, Optional, Union
 
-import chembl_downloader
 import bioversions
+import chembl_downloader
 
 from therapy.etl.base import DiseaseIndicationBase
-from therapy.schemas import NamespacePrefix, ApprovalRating, SourceMeta
-
+from therapy.schemas import ApprovalRating, NamespacePrefix, SourceMeta
 
 _logger = logging.getLogger(__name__)
 
@@ -195,7 +194,7 @@ class ChEMBL(DiseaseIndicationBase):
                 "approval_ratings": appr_ratings,
                 "aliases": self._unwrap_group_concat(row["aliases"]),
                 "trade_names": self._unwrap_group_concat(row["trade_names"]),
-                "has_indication": has_indication
+                "has_indication": has_indication,
             }
             self._load_therapy(params)
         self._conn.close()
@@ -209,14 +208,16 @@ class ChEMBL(DiseaseIndicationBase):
                 "Unable to retrieve ChEMBL homepage directly -- using predicted URL"
             )
             data_url = f"ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_{self._version}"  # noqa: E501
-        metadata = SourceMeta(data_license="CC BY-SA 3.0",
-                              data_license_url="https://creativecommons.org/licenses/by-sa/3.0/",  # noqa: E501
-                              version=self._version,
-                              data_url=data_url,
-                              rdp_url="http://reusabledata.org/chembl.html",
-                              data_license_attributes={
-                                  "non_commercial": False,
-                                  "share_alike": True,
-                                  "attribution": True
-                              })
+        metadata = SourceMeta(
+            data_license="CC BY-SA 3.0",
+            data_license_url="https://creativecommons.org/licenses/by-sa/3.0/",  # noqa: E501
+            version=self._version,
+            data_url=data_url,
+            rdp_url="http://reusabledata.org/chembl.html",
+            data_license_attributes={
+                "non_commercial": False,
+                "share_alike": True,
+                "attribution": True,
+            },
+        )
         self._database.add_source_metadata(self._src_name, metadata)

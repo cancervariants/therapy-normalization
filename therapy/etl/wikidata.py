@@ -1,14 +1,15 @@
-"""This module defines the Wikidata ETL methods."""
+"""Handle Wikidata data extraction and loading."""
+import datetime
 import json
 import logging
-import datetime
-from typing import Dict, Any
+from typing import Any, Dict
 
 from wikibaseintegrator.wbi_helpers import execute_sparql_query
 
-from therapy import XREF_SOURCES, DownloadException
-from therapy.schemas import SourceName, NamespacePrefix, RecordParams, SourceMeta
+from therapy import XREF_SOURCES
 from therapy.etl.base import Base
+from therapy.etl.exceptions import DownloadError
+from therapy.schemas import NamespacePrefix, RecordParams, SourceMeta, SourceName
 
 _logger = logging.getLogger(__name__)
 
@@ -89,12 +90,15 @@ class Wikidata(Base):
     """Class for Wikidata ETL methods."""
 
     def _download_data(self) -> None:
-        """Download latest Wikidata source dump."""
+        """Download latest Wikidata source dump.
+
+        :raise DownloadError: if download fails
+        """
         _logger.info("Retrieving source data for Wikidata")
 
         medicine_query_results = execute_sparql_query(SPARQL_QUERY)
         if medicine_query_results is None:
-            raise DownloadException("Wikidata medicine SPARQL query failed")
+            raise DownloadError("Wikidata medicine SPARQL query failed")
         results = medicine_query_results["results"]["bindings"]
 
         transformed_data = []
@@ -124,8 +128,8 @@ class Wikidata(Base):
             data_license_attributes={
                 "non_commercial": False,
                 "share_alike": False,
-                "attribution": False
-            }
+                "attribution": False,
+            },
         )
         self._database.add_source_metadata(self._src_name, metadata)
 

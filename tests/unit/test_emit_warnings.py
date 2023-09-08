@@ -6,8 +6,7 @@ def test_emit_warnings(database):
     """Test that emit_warnings works correctly."""
     expected_warnings = [
         {
-            "non_breaking_space_characters":
-                "Query contains non-breaking space characters"
+            "non_breaking_space_characters": "Query contains non-breaking space characters"
         }
     ]
     query_handler = QueryHandler(database)

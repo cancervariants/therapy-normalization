@@ -1,10 +1,10 @@
 """Build chemidplus test data."""
-from typing import Generator
+import xml.etree.ElementTree as ET  # noqa: N817
 from pathlib import Path
-import xml.etree.ElementTree as ET
+from typing import Generator
 
-from therapy.etl import ChemIDplus
 from therapy.database import create_db
+from therapy.etl import ChemIDplus
 
 TEST_IDS = [
     "87-08-1",

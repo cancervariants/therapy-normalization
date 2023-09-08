@@ -5,7 +5,7 @@ import isodate
 import pytest
 
 from therapy.etl.wikidata import Wikidata
-from therapy.schemas import Therapy, MatchType
+from therapy.schemas import MatchType, Therapy
 
 
 @pytest.fixture(scope="module")
@@ -121,8 +121,11 @@ def atropine():
         ],
         "approval_ratings": [],
         "xrefs": [
-            "drugbank:DB00572", "chemidplus:51-55-8", "rxcui:1223",
-            "chembl:CHEMBL517712", "iuphar.ligand:320",
+            "drugbank:DB00572",
+            "chemidplus:51-55-8",
+            "rxcui:1223",
+            "chembl:CHEMBL517712",
+            "iuphar.ligand:320",
         ],
         "associated_with": [
             "pubchem.compound:174174",

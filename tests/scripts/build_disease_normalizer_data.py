@@ -2,15 +2,15 @@
 Assumes complete and functioning disease normalizer endpoint is available.
 """
 import json
-from typing import Dict
 from pathlib import Path
+from typing import Dict
 
-from disease.query import QueryHandler as DiseaseQueryHandler
 from disease.database import create_db as create_disease_db
+from disease.query import QueryHandler as DiseaseQueryHandler
 from disease.schemas import NormalizationService as DiseaseNormalizationService
 
-from therapy.etl import ChEMBL, HemOnc
 from therapy.database import create_db
+from therapy.etl import ChEMBL, HemOnc
 from therapy.schemas import SourceMeta, SourceName
 
 TEST_ROOT = Path(__file__).resolve().parents[1]

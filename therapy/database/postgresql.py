@@ -1,22 +1,25 @@
 """Provide PostgreSQL client."""
-import tarfile
 import atexit
 import logging
 import os
-from pathlib import Path
-from typing import Dict, List, Optional, Set, Union
+import tarfile
 import tempfile
 from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Optional, Set, Union
 
 import psycopg
-from psycopg.types.json import Jsonb
-from psycopg.errors import DuplicateObject, DuplicateTable, UndefinedTable, \
-    UniqueViolation
 import requests
+from psycopg.errors import (
+    DuplicateObject,
+    DuplicateTable,
+    UndefinedTable,
+    UniqueViolation,
+)
+from psycopg.types.json import Jsonb
 
 from therapy.database import AbstractDatabase, DatabaseException, DatabaseWriteException
-from therapy.schemas import DatabaseType, RefType, SourceMeta, SourceName, HasIndication
-
+from therapy.schemas import DatabaseType, HasIndication, RefType, SourceMeta, SourceName
 
 logger = logging.getLogger(__name__)
 
@@ -298,12 +301,14 @@ class PostgresDatabase(AbstractDatabase):
                     "non_commercial": metadata_result[6],
                     "attribution": metadata_result[7],
                     "share_alike": metadata_result[8],
-                }
+                },
             }
             self._cached_sources[src_name] = metadata
             return metadata
 
-    _get_record_query = b"SELECT * FROM record_lookup_view WHERE lower(concept_id) = %s;"  # noqa: E501
+    _get_record_query = (
+        b"SELECT * FROM record_lookup_view WHERE lower(concept_id) = %s;"  # noqa: E501
+    )
 
     def _get_record(self, concept_id: str, case_sensitive: bool) -> Optional[Dict]:
         """Retrieve non-merged record. The query is pretty different, so this method
@@ -343,13 +348,15 @@ class PostgresDatabase(AbstractDatabase):
                     disease_id=ind[0],
                     disease_label=ind[1],
                     normalized_disease_id=ind[2],
-                    supplemental_info=ind[3]
+                    supplemental_info=ind[3],
                 )
                 for ind in ind
             ]
         return {k: v for k, v in therapy_record.items() if v}
 
-    _get_merged_record_query = b"SELECT * FROM therapy_merged WHERE lower(concept_id) = %s;"  # noqa: E501
+    _get_merged_record_query = (
+        b"SELECT * FROM therapy_merged WHERE lower(concept_id) = %s;"  # noqa: E501
+    )
 
     def _get_merged_record(
         self, concept_id: str, case_sensitive: bool
@@ -386,8 +393,9 @@ class PostgresDatabase(AbstractDatabase):
             ]
         return {k: v for k, v in merged_record.items() if v}
 
-    def get_record_by_id(self, concept_id: str, case_sensitive: bool = True,
-                         merge: bool = False) -> Optional[Dict]:
+    def get_record_by_id(
+        self, concept_id: str, case_sensitive: bool = True, merge: bool = False
+    ) -> Optional[Dict]:
         """Fetch record corresponding to provided concept ID
 
         :param str concept_id: concept ID for therapy record
@@ -406,7 +414,7 @@ class PostgresDatabase(AbstractDatabase):
         RefType.TRADE_NAMES: b"SELECT concept_id FROM therapy_trade_names WHERE lower(trade_name) = %s;",  # noqa: E501
         RefType.ALIASES: b"SELECT concept_id FROM therapy_aliases WHERE lower(alias) = %s;",  # noqa: E501
         RefType.XREFS: b"SELECT concept_id FROM therapy_xrefs WHERE lower(xref) = %s;",
-        RefType.ASSOCIATED_WITH: b"SELECT concept_id FROM therapy_associations WHERE lower(associated_with) = %s;"  # noqa: E501
+        RefType.ASSOCIATED_WITH: b"SELECT concept_id FROM therapy_associations WHERE lower(associated_with) = %s;",  # noqa: E501
     }
 
     def get_refs_by_type(self, search_term: str, ref_type: RefType) -> List[str]:
@@ -422,7 +430,7 @@ class PostgresDatabase(AbstractDatabase):
             raise ValueError("invalid reference type")
 
         with self.conn.cursor() as cur:
-            cur.execute(query, (search_term.lower(), ))
+            cur.execute(query, (search_term.lower(),))
             concept_ids = cur.fetchall()
         if concept_ids:
             return [i[0] for i in concept_ids]
@@ -438,7 +446,7 @@ class PostgresDatabase(AbstractDatabase):
         :return: RxNorm therapy concept ID if successful, None otherwise
         """
         with self.conn.cursor() as cur:
-            cur.execute(self._get_rxnorm_id_by_brand_query, (brand_id, ))
+            cur.execute(self._get_rxnorm_id_by_brand_query, (brand_id,))
             results = cur.fetchall()
         if results and len(results) == 1:
             return results[0][0]
@@ -467,7 +475,7 @@ class PostgresDatabase(AbstractDatabase):
         :return: set of directly associated Drugs@FDA concept IDs.
         """
         with self.conn.cursor() as cur:
-            cur.execute(self._get_dafda_unii_query, (unii, ))
+            cur.execute(self._get_dafda_unii_query, (unii,))
             results = cur.fetchall()
         return {d[0] for d in results}
 
@@ -493,7 +501,7 @@ class PostgresDatabase(AbstractDatabase):
             if source is None:
                 cur.execute(query)
             else:
-                cur.execute(query, (source, ))
+                cur.execute(query, (source,))
             ids_tuple = cur.fetchall()
         return {i[0] for i in ids_tuple}
 
@@ -517,12 +525,15 @@ class PostgresDatabase(AbstractDatabase):
                 self._add_source_metadata_query,
                 [
                     src_name.value,
-                    meta.data_license, meta.data_license_url, meta.version,
-                    meta.data_url, meta.rdp_url,
+                    meta.data_license,
+                    meta.data_license_url,
+                    meta.version,
+                    meta.data_url,
+                    meta.rdp_url,
                     meta.data_license_attributes["non_commercial"],
                     meta.data_license_attributes["attribution"],
                     meta.data_license_attributes["share_alike"],
-                ]
+                ],
             )
         self.conn.commit()
 
@@ -544,10 +555,14 @@ class PostgresDatabase(AbstractDatabase):
         )
         VALUES (%s, %s, %s, %s, %s);
     """
-    _insert_label_query = b"INSERT INTO therapy_labels (label, concept_id) VALUES (%s, %s);"  # noqa: E501
+    _insert_label_query = (
+        b"INSERT INTO therapy_labels (label, concept_id) VALUES (%s, %s);"  # noqa: E501
+    )
     _insert_alias_query = b"INSERT INTO therapy_aliases (alias, concept_id) VALUES (%s, %s);"  # noqa: E501
     _insert_trade_name_query = b"INSERT INTO therapy_trade_names (trade_name, concept_id) VALUES (%s, %s);"  # noqa: E501
-    _insert_xref_query = b"INSERT INTO therapy_xrefs (xref, concept_id) VALUES (%s, %s);"  # noqa: E501
+    _insert_xref_query = (
+        b"INSERT INTO therapy_xrefs (xref, concept_id) VALUES (%s, %s);"  # noqa: E501
+    )
     _insert_assoc_query = b"INSERT INTO therapy_associations (associated_with, concept_id) VALUES (%s, %s);"  # noqa: E501
 
     @staticmethod
@@ -571,13 +586,16 @@ class PostgresDatabase(AbstractDatabase):
         indications_entry = self._jsonify_indications(record.get("has_indication"))
         with self.conn.cursor() as cur:
             try:
-                cur.execute(self._add_record_query, [
-                    concept_id,
-                    src_name.value,
-                    record.get("approval_ratings"),
-                    record.get("approval_year"),
-                    indications_entry
-                ])
+                cur.execute(
+                    self._add_record_query,
+                    [
+                        concept_id,
+                        src_name.value,
+                        record.get("approval_ratings"),
+                        record.get("approval_year"),
+                        indications_entry,
+                    ],
+                )
                 if record.get("label"):
                     cur.execute(self._insert_label_query, [record["label"], concept_id])
                 for a in record.get("aliases", []):
@@ -610,17 +628,20 @@ class PostgresDatabase(AbstractDatabase):
             [i.dict() for i in record.get("has_indication", [])]
         )
         with self.conn.cursor() as cur:
-            cur.execute(self._add_merged_record_query, [
-                record["concept_id"],
-                record["label"],
-                record.get("aliases"),
-                record.get("associated_with"),
-                record.get("trade_names"),
-                record.get("xrefs"),
-                record.get("approval_ratings"),
-                record.get("approval_year"),
-                indications_entry
-            ])
+            cur.execute(
+                self._add_merged_record_query,
+                [
+                    record["concept_id"],
+                    record["label"],
+                    record.get("aliases"),
+                    record.get("associated_with"),
+                    record.get("trade_names"),
+                    record.get("xrefs"),
+                    record.get("approval_ratings"),
+                    record.get("approval_year"),
+                    indications_entry,
+                ],
+            )
             self.conn.commit()
 
     _update_merge_ref_query = b"""
@@ -639,7 +660,7 @@ class PostgresDatabase(AbstractDatabase):
         with self.conn.cursor() as cur:
             cur.execute(
                 self._update_merge_ref_query,
-                {"merge_ref": merge_ref, "concept_id": concept_id}
+                {"merge_ref": merge_ref, "concept_id": concept_id},
             )
             row_count = cur.rowcount
             self.conn.commit()
@@ -811,7 +832,9 @@ class PostgresDatabase(AbstractDatabase):
         :raise DatabaseException: if psql call fails
         """
         if not output_directory.is_dir() or not output_directory.exists():
-            raise ValueError(f"Output location {output_directory} isn't a directory or doesn't exist")  # noqa: E501
+            raise ValueError(
+                f"Output location {output_directory} isn't a directory or doesn't exist"
+            )  # noqa: E501
         now = datetime.now().strftime("%Y%m%d%H%M%S")
         output_location = output_directory / f"therapy_norm_{now}.sql"
         user = self.conn.info.user

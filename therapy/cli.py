@@ -1,19 +1,36 @@
-"""This module provides a CLI util to make updates to normalizer database."""
-import os
+"""Provides a CLI util to make updates to normalizer database."""
 import logging
+import os
+from pathlib import Path
 from timeit import default_timer as timer
 from typing import Collection, List, Optional, Set
-from pathlib import Path
 
 import click
-from disease.schemas import SourceName as DiseaseSourceName
 from disease.cli import _update_normalizers as update_disease_db
+from disease.schemas import SourceName as DiseaseSourceName
 
 from therapy import SOURCES
-from therapy.database.database import AWS_ENV_VAR_NAME, AbstractDatabase, \
-    DatabaseException, DatabaseReadException, DatabaseWriteException, create_db
-from therapy.etl import ChEMBL, Wikidata, DrugBank, NCIt, ChemIDplus, RxNorm, HemOnc, \
-    GuideToPHARMACOLOGY, DrugsAtFDA  # noqa: F401
+from therapy.database.database import (
+    AWS_ENV_VAR_NAME,
+    AbstractDatabase,
+    DatabaseException,
+    DatabaseReadException,
+    DatabaseWriteException,
+    create_db,
+)
+from therapy.etl import (  # noqa: F401
+    ChEMBL,
+    ChemIDplus,
+    DrugBank,
+    DrugsAtFDA,
+    GuideToPHARMACOLOGY,
+    HemOnc,
+    NCIt,
+    RxNorm,
+    Wikidata,
+)
+
+# noqa: F401
 from therapy.etl.base import create_indications_db
 from therapy.etl.merge import Merge
 from therapy.schemas import SourceName
@@ -66,7 +83,9 @@ def update_from_remote(data_url: Optional[str], db_url: str) -> None:
     try:
         db.load_from_remote(data_url)
     except NotImplementedError:
-        click.echo(f"Error: Fetching remote data dump not supported for {db.__class__.__name__}")  # noqa: E501
+        click.echo(
+            f"Error: Fetching remote data dump not supported for {db.__class__.__name__}"
+        )  # noqa: E501
         click.get_current_context().exit(1)
     except DatabaseException as e:
         click.echo(f"Encountered exception during update: {str(e)}")
@@ -75,9 +94,10 @@ def update_from_remote(data_url: Optional[str], db_url: str) -> None:
 
 @click.command()
 @click.option(
-    "--output_directory", "-o",
+    "--output_directory",
+    "-o",
     help="Output location to write to",
-    type=click.Path(exists=True, path_type=Path)
+    type=click.Path(exists=True, path_type=Path),
 )
 @click.option("--db_url", help="URL endpoint for the application database.")
 def dump_database(output_directory: Path, db_url: str) -> None:
@@ -128,8 +148,10 @@ def _check_disease_normalizer(
     _logger.debug(msg)
     click.echo(msg)
     update_disease_db(
-        normalizers=list(DiseaseSourceName), db=disease_db, from_local=from_local,
-        update_merged=True
+        normalizers=list(DiseaseSourceName),
+        db=disease_db,
+        from_local=from_local,
+        update_merged=True,
     )
     msg = "Disease Normalizer reloaded successfully."
     _logger.debug(msg)
@@ -137,8 +159,10 @@ def _check_disease_normalizer(
 
 
 def _update_normalizers(
-    normalizers: Collection[SourceName], db: AbstractDatabase, update_merged: bool,
-    from_local: bool
+    normalizers: Collection[SourceName],
+    db: AbstractDatabase,
+    update_merged: bool,
+    from_local: bool,
 ) -> None:
     """Update selected normalizer sources.
 
@@ -178,8 +202,11 @@ def _delete_source(n: SourceName, db: AbstractDatabase) -> float:
 
 
 def _load_source(
-    n: SourceName, db: AbstractDatabase, delete_time: float, processed_ids: List[str],
-    from_local: bool
+    n: SourceName,
+    db: AbstractDatabase,
+    delete_time: float,
+    processed_ids: List[str],
+    from_local: bool,
 ) -> None:
     """Load individual source data.
 
@@ -195,7 +222,7 @@ def _load_source(
     start_load = timer()
 
     # used to get source class name from string
-    SourceClass = eval(n.value)
+    SourceClass = eval(n.value)  # noqa: N806
 
     source = SourceClass(database=db)
     processed_ids += source.perform_etl(use_existing=from_local)
@@ -245,37 +272,29 @@ def _load_merge(db: AbstractDatabase, processed_ids: Set[str]) -> None:
 
 @click.command()
 @click.option(
-    "--sources",
-    help="The source(s) you wish to update, separated by spaces."
+    "--sources", help="The source(s) you wish to update, separated by spaces."
 )
-@click.option(
-    "--aws_instance",
-    is_flag=True,
-    help="Using AWS DynamodDB instance."
-)
-@click.option(
-    "--db_url",
-    help="URL endpoint for the application database."
-)
-@click.option(
-    "--update_all",
-    is_flag=True,
-    help="Update all normalizer sources."
-)
+@click.option("--aws_instance", is_flag=True, help="Using AWS DynamodDB instance.")
+@click.option("--db_url", help="URL endpoint for the application database.")
+@click.option("--update_all", is_flag=True, help="Update all normalizer sources.")
 @click.option(
     "--update_merged",
     is_flag=True,
-    help="Update concepts for normalize endpoint from accepted sources."
+    help="Update concepts for normalize endpoint from accepted sources.",
 )
 @click.option(
     "--from_local",
     is_flag=True,
     default=False,
-    help="Use most recent local source data instead of fetching latest versions."
+    help="Use most recent local source data instead of fetching latest versions.",
 )
 def update_normalizer_db(
-    sources: str, aws_instance: bool, db_url: str, update_all: bool,
-    update_merged: bool, from_local: bool
+    sources: str,
+    aws_instance: bool,
+    db_url: str,
+    update_all: bool,
+    update_merged: bool,
+    from_local: bool,
 ) -> None:
     """Update selected normalizer source(s) in the therapy database.
 

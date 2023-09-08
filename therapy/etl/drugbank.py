@@ -1,10 +1,10 @@
-"""This module defines the DrugBank ETL methods."""
-from typing import Dict, Any
-import logging
+"""Provide methods for extracting and loading DrugBank data."""
 import csv
+import logging
+from typing import Any, Dict
 
-from therapy.schemas import SourceMeta, NamespacePrefix
 from therapy.etl.base import Base
+from therapy.schemas import NamespacePrefix, SourceMeta
 
 _logger = logging.getLogger(__name__)
 

@@ -1,9 +1,9 @@
 """Test merged record generation."""
+import json
 import os
+import random
 from pathlib import Path
 from typing import Callable, Dict, Set
-import random
-import json
 
 import pytest
 
@@ -36,9 +36,16 @@ def merge_instance(test_source: Callable, is_test_env: bool):
                 f"forbidden -- either unset {AWS_ENV_VAR_NAME} or unset THERAPY_TEST"
             )
         else:
-            for SourceClass in (
-                ChEMBL, ChemIDplus, DrugBank, DrugsAtFDA, GuideToPHARMACOLOGY, HemOnc,
-                NCIt, RxNorm, Wikidata
+            for SourceClass in (  # noqa: N806
+                ChEMBL,
+                ChemIDplus,
+                DrugBank,
+                DrugsAtFDA,
+                GuideToPHARMACOLOGY,
+                HemOnc,
+                NCIt,
+                RxNorm,
+                Wikidata,
             ):
                 if not database.get_source_metadata(SourceName(SourceClass.__name__)):
                     test_source(SourceClass)
@@ -130,14 +137,14 @@ def record_id_groups():
             "wikidata:Q407241",
             "drugbank:DB01174",
             "chembl:CHEMBL40",
-            "iuphar.ligand:2804"
+            "iuphar.ligand:2804",
         },
         "spiramycin": {
             "rxcui:9991",
             "ncit:C839",
             "chemidplus:8025-81-8",
             "drugbank:DB06145",
-            "wikidata:Q422265"
+            "wikidata:Q422265",
         },
         "cisplatin": {
             "rxcui:2555",
@@ -154,7 +161,7 @@ def record_id_groups():
             "drugsatfda.anda:207323",
             "drugsatfda.anda:075036",
             "iuphar.ligand:5343",
-            "drugsatfda.nda:018057"
+            "drugsatfda.nda:018057",
         },
         # tests lookup of wikidata reference to rxnorm brand record, and
         # drugbank reference to dead chemidplus record
@@ -169,22 +176,15 @@ def record_id_groups():
             "chembl:CHEMBL1006",
             "chemidplus:112901-68-5",
             "chemidplus:20537-88-6",
-            "wikidata:Q251698"
+            "wikidata:Q251698",
         },
-        "therapeutic procedure": {
-            "ncit:C49236"
-        },
+        "therapeutic procedure": {"ncit:C49236"},
         # test exclusion of drugs@fda records with multiple UNIIs
-        "misc": {
-            "drugsatfda.nda:210595"
-        }
+        "misc": {"drugsatfda.nda:210595"},
     }
 
 
-def test_id_sets(
-    merge_instance: Merge,
-    record_id_groups: Dict[str, Set[str]]
-):
+def test_id_sets(merge_instance: Merge, record_id_groups: Dict[str, Set[str]]):
     """Test creation of record ID sets. Queries DB and matches against
     record_id_groups fixture.
     """
@@ -217,8 +217,12 @@ def test_id_sets(
 
 
 def test_generate_merged_record(
-    merge_instance, record_id_groups, phenobarbital_merged, cisplatin_merged,
-    spiramycin_merged, amifostine_merged
+    merge_instance,
+    record_id_groups,
+    phenobarbital_merged,
+    cisplatin_merged,
+    spiramycin_merged,
+    amifostine_merged,
 ) -> None:
     """Test generation of individual merged record"""
     merge_instance._groups = {}  # reset from previous tests
