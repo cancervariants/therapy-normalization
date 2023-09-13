@@ -488,6 +488,7 @@ class UnmergedNormalizationService(BaseNormalizationService):
 class NormalizationService(BaseNormalizationService):
     """Response containing one or more merged records and source data."""
 
+    normalized_id: Optional[str] = None
     therapeutic_agent: Optional[core_models.TherapeuticAgent] = None
     source_meta_: Optional[Dict[SourceName, SourceMeta]] = None
 
@@ -497,9 +498,10 @@ class NormalizationService(BaseNormalizationService):
                 "query": "cisplatin",
                 "warnings": None,
                 "match_type": 80,
+                "normalized_id": "rxcui:2555",
                 "therapeutic_agent": {
                     "type": "TherapeuticAgent",
-                    "id": "rxcui:2555",
+                    "id": "normalize.therapy.rxcui:2555",
                     "label": "cisplatin",
                     "mappings": [
                         {

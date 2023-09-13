@@ -386,7 +386,7 @@ class QueryHandler:
         """
         sources_meta = {}
         therapeutic_agent = response.therapeutic_agent
-        sources = [therapeutic_agent.id.split(":")[0]]
+        sources = [response.normalized_id.split(":")[0]]
         if therapeutic_agent.mappings:
             sources += [m.coding.system for m in therapeutic_agent.mappings]
 
@@ -424,7 +424,7 @@ class QueryHandler:
         :return: completed response object ready to return to user
         """
         therapeutic_agent_obj = core_models.TherapeuticAgent(
-            id=record["concept_id"], label=record.get("label")
+            id=f"normalize.therapy.{record['concept_id']}", label=record.get("label")
         )
 
         source_ids = record.get("xrefs", []) + record.get("associated_with")
@@ -511,6 +511,7 @@ class QueryHandler:
             therapeutic_agent_obj.extensions = extensions
 
         response.match_type = match_type
+        response.normalized_id = record["concept_id"]
         response.therapeutic_agent = therapeutic_agent_obj
         response = self._add_merged_meta(response)
         return response

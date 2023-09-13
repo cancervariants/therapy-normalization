@@ -3,7 +3,7 @@
     "type": "TherapeuticAgent",
     "label": "cisplatin",
     "description": null,
-    "id": "rxcui:2555",
+    "id": "normalize.therapy.rxcui:2555",
     "aliases": [
       "cis-Diamminedichloroplatinum(II)",
       "cis Diamminedichloroplatinum",
@@ -2922,7 +2922,7 @@
     "type": "TherapeuticAgent",
     "label": "phenobarbital",
     "description": null,
-    "id": "rxcui:8134",
+    "id": "normalize.therapy.rxcui:8134",
     "aliases": [
       "fenobarbital",
       "APRD00184",
@@ -3346,7 +3346,7 @@
     "type": "TherapeuticAgent",
     "label": "spiramycin",
     "description": null,
-    "id": "rxcui:9991",
+    "id": "normalize.therapy.rxcui:9991",
     "aliases": [
       "Provamycin",
       "Spiramycin A",
@@ -3456,7 +3456,7 @@
     "type": "TherapeuticAgent",
     "label": "Therapeutic Procedure",
     "description": null,
-    "id": "ncit:C49236",
+    "id": "normalize.therapy.ncit:C49236",
     "aliases": [
       "Therapeutic Interventions",
       "any therapy",
