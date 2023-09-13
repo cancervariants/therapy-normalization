@@ -81,6 +81,7 @@ unmerged_normalize_description = ("Return unmerged records associated with the "
          operation_id="getQueryResponse",
          response_description=response_descr,
          response_model=SearchService,
+         response_model_exclude_none=True,
          description=search_description)
 def search(q: str = Query(..., description=q_descr),
            keyed: Optional[bool] = Query(False, description=keyed_descr),
@@ -116,6 +117,7 @@ def search(q: str = Query(..., description=q_descr),
          operation_id="getMergedRecord",
          response_description=merged_response_descr,
          response_model=NormalizationService,
+         response_model_exclude_none=True,
          description=normalize_description)
 def normalize(q: str = Query(..., description=normalize_q_descr),
               infer_namespace: bool = Query(True, description=infer_descr)
