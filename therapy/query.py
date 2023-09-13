@@ -1,13 +1,12 @@
 """This module provides methods for handling queries."""
 import re
 from typing import Callable, List, Dict, Set, Tuple, TypeVar, Union, Any, Optional
-from urllib.parse import quote
 from datetime import datetime
 import json
 
+from ga4gh.core import core_models
 from uvicorn.config import logger
 from botocore.exceptions import ClientError
-from ga4gh.vrsatile.pydantic.vrsatile_models import TherapeuticDescriptor
 
 from therapy import SOURCES, PREFIX_LOOKUP, ITEM_TYPES, NAMESPACE_LUIS
 from therapy.database import Database
@@ -376,7 +375,7 @@ class QueryHandler:
 
         response["service_meta_"] = ServiceMeta(
             response_datetime=datetime.now(),
-        ).dict()
+        ).model_dump()
         return SearchService(**response)
 
     def _add_merged_meta(self, response: NormalizationService) -> NormalizationService:
@@ -386,15 +385,20 @@ class QueryHandler:
         :return: completed response object.
         """
         sources_meta = {}
-        vod = response.therapeutic_descriptor
+        therapeutic_agent = response.therapeutic_agent
+        sources = [therapeutic_agent.id.split(":")[0]]
+        if therapeutic_agent.mappings:
+            sources += [m.coding.system for m in therapeutic_agent.mappings]
 
-        xrefs = vod.xrefs or []  # type: ignore
-        ids = [vod.therapeutic] + xrefs  # type: ignore
-        for concept_id in ids:
-            prefix = concept_id.split(":")[0]
-            src_name = PREFIX_LOOKUP[prefix.lower()]
-            if src_name not in sources_meta:
-                sources_meta[src_name] = self._fetch_meta(src_name)
+        for src in sources:
+            try:
+                src_name = PREFIX_LOOKUP[src]
+            except KeyError:
+                # not an imported source
+                continue
+            else:
+                if src_name not in sources_meta:
+                    sources_meta[src_name] = self._fetch_meta(src_name)
         response.source_meta_ = sources_meta  # type: ignore
         return response
 
@@ -408,85 +412,106 @@ class QueryHandler:
         source_rank = SourcePriority[src]
         return source_rank, record["concept_id"]
 
-    def _add_vod(self, response: NormalizationService, record: Dict, query: str,
-                 match_type: MatchType) -> NormalizationService:
-        """Format received DB record as VOD and update response object.
+    def _add_therapeutic_agent(
+        self, response: NormalizationService, record: Dict, query: str,
+        match_type: MatchType
+    ) -> NormalizationService:
+        """Format received DB record as therapeutic agent and update response object.
         :param NormalizationService response: in-progress response object
         :param Dict record: record as stored in DB
         :param str query: query string from user request
         :param MatchType match_type: type of match achieved
         :return: completed response object ready to return to user
         """
-        vod = {
-            "id": f"normalize.therapy:{quote(query.strip())}",
-            "type": "TherapeuticDescriptor",
-            "therapeutic": record["concept_id"],
-            "label": record.get("label"),
-            "extensions": [],
-        }
+        therapeutic_agent_obj = core_models.TherapeuticAgent(
+            id=record["concept_id"], label=record.get("label")
+        )
 
-        if "xrefs" in record:
-            vod["xrefs"] = record["xrefs"]
+        source_ids = record.get("xrefs", []) + record.get("associated_with")
+        mappings = []
+        for source_id in source_ids:
+            system, code = source_id.split(":")
+            mappings.append(
+                core_models.Mapping(
+                    coding=core_models.Coding(
+                        code=core_models.Code(code), system=system.lower()
+                    ),
+                    relation=core_models.Relation.RELATED_MATCH
+                )
+            )
+        if mappings:
+            therapeutic_agent_obj.mappings = mappings
+
         if "aliases" in record:
-            vod["alternate_labels"] = record["aliases"]
+            therapeutic_agent_obj.aliases = record["aliases"]
 
+        extensions = []
         if any(filter(lambda f: f in record, ("approval_ratings",
                                               "approval_year",
                                               "has_indication"))):
-            approv = {
-                "type": "Extension",
-                "name": "regulatory_approval",
-                "value": {}
-            }
+
+            approv_value = {}
             if "approval_ratings" in record:
                 value = record.get("approval_ratings")
                 if value:
-                    approv["value"]["approval_ratings"] = value  # type: ignore
+                    approv_value["approval_ratings"] = value  # type: ignore
             if "approval_year" in record:
                 value = record.get("approval_year")
                 if value:
-                    approv["value"]["approval_year"] = value  # type: ignore
+                    approv_value["approval_year"] = value  # type: ignore
 
             inds = record.get("has_indication", [])
             inds_list = []
             for ind_db in inds:
                 indication = self._get_indication(ind_db)
-                ind_value_obj: Dict[str, Optional[Union[str, List]]] = {
-                    "id": indication.disease_id,
-                    "type": "DiseaseDescriptor",
-                    "label": indication.disease_label,
-                    "disease": indication.normalized_disease_id,
-                }
+
+                if indication.normalized_disease_id:
+                    system, code = indication.normalized_disease_id.split(":")
+                    mappings = [
+                        core_models.Mapping(
+                            coding=core_models.Coding(
+                                code=core_models.Code(code), system=system.lower()
+                            ),
+                            relation=core_models.Relation.RELATED_MATCH
+                        )
+                    ]
+                else:
+                    mappings = None
+                ind_disease_obj = core_models.Disease(
+                    id=indication.disease_id,
+                    label=indication.disease_label,
+                    mappings=mappings
+                )
+
                 if indication.supplemental_info:
-                    ind_value_obj["extensions"] = [
-                        {
-                            "type": "Extension",
-                            "name": k,
-                            "value": v
-                        }
+                    ind_disease_obj.extensions = [
+                        core_models.Extension(
+                            name=k, value=v
+                        )
                         for k, v in indication.supplemental_info.items()
                     ]
-                inds_list.append(ind_value_obj)
+                inds_list.append(ind_disease_obj.model_dump(exclude_none=True))
             if inds_list:
-                approv["value"]["has_indication"] = inds_list  # type: ignore
-            vod["extensions"].append(approv)
+                approv_value["has_indication"] = inds_list  # type: ignore
+
+            approv = core_models.Extension(
+                name="regulatory_approval",
+                value=approv_value
+            )
+            extensions.append(approv)
 
         for field, name in (("trade_names", "trade_names"),
                             ("associated_with", "associated_with")):
             values = record.get(field)
 
             if values:
-                vod["extensions"].append({
-                    "type": "Extension",
-                    "name": name,
-                    "value": values
-                })
+                extensions.append(core_models.Extension(name=name, value=values))
 
-        if not vod["extensions"]:
-            del vod["extensions"]
+        if extensions:
+            therapeutic_agent_obj.extensions = extensions
 
         response.match_type = match_type
-        response.therapeutic_descriptor = TherapeuticDescriptor(**vod)  # type: ignore
+        response.therapeutic_agent = therapeutic_agent_obj
         response = self._add_merged_meta(response)
         return response
 
@@ -551,8 +576,8 @@ class QueryHandler:
         # prepare basic response
         response = NormalizationService(**self._prepare_normalized_response(query))
 
-        add_vod_curry = lambda res, rec, mat: self._add_vod(res, rec, query, mat)  # noqa: E501 E731
-        return self._perform_normalized_lookup(response, query, infer, add_vod_curry)
+        add_ta_curry = lambda res, rec, mat: self._add_therapeutic_agent(res, rec, query, mat)  # noqa: E501 E731
+        return self._perform_normalized_lookup(response, query, infer, add_ta_curry)
 
     def _construct_drug_match(self, record: Dict) -> Drug:
         """Create individual Drug match for unmerged normalization endpoint.

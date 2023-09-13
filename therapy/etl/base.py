@@ -328,7 +328,7 @@ class DiseaseIndicationBase(Base):
         """
         response = self.disease_normalizer.normalize(query)
         if response.match_type > 0:
-            return response.disease_descriptor.disease
+            return response.disease.id
         else:
             logger.warning(f"Failed to normalize disease term: {query}")
             return None

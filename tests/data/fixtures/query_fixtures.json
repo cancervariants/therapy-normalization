@@ -1,26 +1,10 @@
 {
   "normalize_cisplatin": {
-    "id": "normalize.therapy:rxcui%3A2555",
-    "type": "TherapeuticDescriptor",
+    "type": "TherapeuticAgent",
     "label": "cisplatin",
     "description": null,
-    "xrefs": [
-      "ncit:C376",
-      "hemonc:105",
-      "drugbank:DB00515",
-      "drugbank:DB12117",
-      "drugsatfda.anda:074656",
-      "drugsatfda.anda:074735",
-      "drugsatfda.anda:075036",
-      "drugsatfda.anda:206774",
-      "drugsatfda.anda:207323",
-      "drugsatfda.nda:018057",
-      "iuphar.ligand:5343",
-      "chembl:CHEMBL11359",
-      "chemidplus:15663-27-1",
-      "wikidata:Q412415"
-    ],
-    "alternate_labels": [
+    "id": "rxcui:2555",
+    "aliases": [
       "cis-Diamminedichloroplatinum(II)",
       "cis Diamminedichloroplatinum",
       "Platinum Diamminodichloride",
@@ -61,7 +45,6 @@
     ],
     "extensions": [
       {
-        "type": "Extension",
         "name": "regulatory_approval",
         "value": {
           "approval_ratings": [
@@ -71,193 +54,307 @@
             "fda_prescription",
             "chembl_phase_4"
           ],
-          "approval_year": ["1978"],
-          "has_indication":  [
+          "approval_year": [
+            "1978"
+          ],
+          "has_indication": [
             {
               "id": "hemonc:671",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Testicular cancer",
-              "disease": "ncit:C7251",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "regulatory_body",
                   "value": "FDA"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C7251",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "hemonc:645",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Ovarian cancer",
-              "disease": "ncit:C7431",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "regulatory_body",
                   "value": "FDA"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C7431",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "hemonc:569",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Bladder cancer",
-              "disease": "ncit:C9334",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "regulatory_body",
                   "value": "FDA"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C9334",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D001005",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Anus Neoplasms",
-              "disease": "ncit:C2877",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C2877",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D046152",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Gastrointestinal Stromal Tumors",
-              "disease": "ncit:C3868",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3868",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D004806",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Ependymoma",
-              "disease": "ncit:C3017",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3017",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D015266",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Carcinoma, Merkel Cell",
-              "disease": "ncit:C9231",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C9231",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D004938",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Esophageal Neoplasms",
-              "disease": "ncit:C7478",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C7478",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D008223",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Lymphoma",
-              "disease": "ncit:C3208",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3208",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D018236",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Carcinoma, Embryonal",
-              "disease": "ncit:C3752",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3752",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D009373",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Neoplasms, Germ Cell and Embryonal",
-              "disease": "ncit:C3708",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3708",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D001932",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Brain Neoplasms",
-              "disease": "ncit:C3568",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3568",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D005833",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Genital Neoplasms, Female",
-              "disease": "ncit:C3053",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3053",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D058922",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Inflammatory Breast Neoplasms",
-              "disease": "ncit:C4001",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C4001",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D014565",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Urogenital Neoplasms",
               "disease": null,
               "extensions": [
@@ -270,462 +367,742 @@
             },
             {
               "id": "mesh:D007119",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Immunoblastic Lymphadenopathy",
-              "disease": "ncit:C7528",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C7528",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D010051",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Ovarian Neoplasms",
-              "disease": "ncit:C7431",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C7431",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D018285",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Klatskin Tumor",
-              "disease": "ncit:C36077",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C36077",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D005185",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Fallopian Tube Neoplasms",
-              "disease": "ncit:C3032",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3032",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D021441",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Carcinoma, Pancreatic Ductal",
-              "disease": "ncit:C9120",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C9120",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D007680",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Kidney Neoplasms",
-              "disease": "ncit:C7548",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C7548",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D012509",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Sarcoma",
-              "disease": "ncit:C9118",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C9118",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D012878",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Skin Neoplasms",
-              "disease": "ncit:C3372",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3372",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D016411",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Lymphoma, T-Cell, Peripheral",
-              "disease": "ncit:C3468",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3468",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D002822",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Choriocarcinoma",
-              "disease": "ncit:C2948",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C2948",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D012175",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Retinoblastoma",
-              "disease": "ncit:C7541",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C7541",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "EFO:0003868",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "mouth neoplasm",
-              "disease": "ncit:C7606",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C7606",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D000740",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Anemia",
-              "disease": "ncit:C2869",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C2869",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D000306",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Adrenal Cortex Neoplasms",
-              "disease": "ncit:C2858",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C2858",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D004067",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Digestive System Neoplasms",
-              "disease": "ncit:C4890",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C4890",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D012468",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Salivary Gland Neoplasms",
-              "disease": "ncit:C3811",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3811",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D031901",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Gestational Trophoblastic Disease",
-              "disease": "mondo:0016784",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "0016784",
+                    "system": "mondo"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D013724",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Teratoma",
-              "disease": "ncit:C3403",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3403",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D017728",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Lymphoma, Large-Cell, Anaplastic",
-              "disease": "ncit:C3720",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3720",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D008175",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Lung Neoplasms",
-              "disease": "ncit:C3200",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3200",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D018273",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Carcinoma, Islet Cell",
-              "disease": "ncit:C3770",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3770",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D016483",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Lymphoma, AIDS-Related",
-              "disease": "ncit:C3471",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3471",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D000230",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Adenocarcinoma",
-              "disease": "ncit:C2852",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C2852",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D002294",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Carcinoma, Squamous Cell",
-              "disease": "ncit:C2929",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C2929",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D005706",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Gallbladder Neoplasms",
-              "disease": "ncit:C3048",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3048",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D016543",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Central Nervous System Neoplasms",
-              "disease": "ncit:C4627",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C4627",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D064726",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Triple Negative Breast Neoplasms",
-              "disease": "ncit:C71732",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C71732",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D010255",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Paranasal Sinus Neoplasms",
-              "disease": "ncit:C6014",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C6014",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D013945",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Thymoma",
-              "disease": "ncit:C3411",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3411",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D010412",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Penile Neoplasms",
-              "disease": "ncit:C3317",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3317",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D013274",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Stomach Neoplasms",
-              "disease": "ncit:C3387",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3387",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D002280",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Carcinoma, Basal Cell",
-              "disease": "ncit:C156767",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C156767",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D014523",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Urethral Neoplasms",
-              "disease": "ncit:C3619",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3619",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D016889",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Endometrial Neoplasms",
-              "disease": "ncit:C3012",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3012",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D008228",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Lymphoma, Non-Hodgkin",
-              "disease": "ncit:C3211",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3211",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D020250",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Postoperative Nausea and Vomiting",
               "disease": null,
               "extensions": [
@@ -738,306 +1115,490 @@
             },
             {
               "id": "mesh:D009303",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Nasopharyngeal Neoplasms",
-              "disease": "ncit:C3257",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3257",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D007674",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Kidney Diseases",
-              "disease": "ncit:C3149",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3149",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D016545",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Choroid Plexus Neoplasms",
-              "disease": "ncit:C4533",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C4533",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D006258",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Head and Neck Neoplasms",
-              "disease": "ncit:C4013",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C4013",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D008288",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Malaria",
-              "disease": "ncit:C34797",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C34797",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D008113",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Liver Neoplasms",
-              "disease": "ncit:C34803",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C34803",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D018278",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Carcinoma, Neuroendocrine",
-              "disease": "ncit:C3773",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3773",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D018240",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Endodermal Sinus Tumor",
-              "disease": "ncit:C3011",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3011",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D008479",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Mediastinal Neoplasms",
-              "disease": "ncit:C3549",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3549",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D018305",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Ganglioneuroblastoma",
-              "disease": "ncit:C3790",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3790",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D010610",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Pharyngeal Neoplasms",
-              "disease": "ncit:C7545",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C7545",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D018242",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Neuroectodermal Tumors, Primitive",
-              "disease": "ncit:C3222",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3222",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "EFO:0005570",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "oral cavity cancer",
-              "disease": "ncit:C9314",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C9314",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D002583",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Uterine Cervical Neoplasms",
-              "disease": "ncit:C9311",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C9311",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D014062",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Tongue Neoplasms",
-              "disease": "ncit:C9345",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C9345",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D010534",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Peritoneal Neoplasms",
-              "disease": "ncit:C3322",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3322",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "EFO:1000043",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "ovarian serous cystadenocarcinoma",
-              "disease": "ncit:C7978",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C7978",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D008545",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Melanoma",
-              "disease": "ncit:C3224",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3224",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D005910",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Glioma",
-              "disease": "ncit:C3059",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3059",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D001749",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Urinary Bladder Neoplasms",
-              "disease": "ncit:C9334",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C9334",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D002277",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Carcinoma",
-              "disease": "ncit:C2916",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C2916",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D009190",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Myelodysplastic Syndromes",
-              "disease": "ncit:C3247",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3247",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D002292",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Carcinoma, Renal Cell",
-              "disease": "mondo:0005086",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "0005086",
+                    "system": "mondo"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D009325",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Nausea",
               "disease": null,
               "extensions": [
@@ -1050,241 +1611,385 @@
             },
             {
               "id": "mesh:D008107",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Liver Diseases",
-              "disease": "ncit:C3196",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3196",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D009369",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Neoplasms",
-              "disease": "ncit:C3262",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_4"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3262",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D064129",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Prostatic Neoplasms, Castration-Resistant",
-              "disease": "DOID:0080909",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "0080909",
+                    "system": "doid"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D055752",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Small Cell Lung Carcinoma",
-              "disease": "ncit:C4917",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C4917",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D008654",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Mesothelioma",
-              "disease": "ncit:C3234",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3234",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D004066",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Digestive System Diseases",
-              "disease": "ncit:C3959",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3959",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D014846",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Vulvar Neoplasms",
-              "disease": "ncit:C7502",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C7502",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D008527",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Medulloblastoma",
-              "disease": "ncit:C3222",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3222",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D013953",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Thymus Neoplasms",
-              "disease": "ncit:C4962",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C4962",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D018239",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Seminoma",
-              "disease": "ncit:C9309",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C9309",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D007822",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Laryngeal Neoplasms",
-              "disease": "ncit:C3156",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3156",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D018312",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Sex Cord-Gonadal Stromal Tumors",
-              "disease": "ncit:C3794",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3794",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D001661",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Biliary Tract Neoplasms",
-              "disease": "mondo:0003060",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "0003060",
+                    "system": "mondo"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D006103",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Granuloma, Lethal Midline",
-              "disease": "mondo:0006828",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "0006828",
+                    "system": "mondo"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D007938",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Leukemia",
-              "disease": "ncit:C3161",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3161",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D015179",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Colorectal Neoplasms",
-              "disease": "ncit:C2956",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C2956",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D013964",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Thyroid Neoplasms",
-              "disease": "ncit:C7510",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C7510",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D010190",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Pancreatic Neoplasms",
-              "disease": "ncit:C3305",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3305",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D009362",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Neoplasm Metastasis",
               "disease": null,
               "extensions": [
@@ -1297,137 +2002,217 @@
             },
             {
               "id": "mesh:D016403",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Lymphoma, Large B-Cell, Diffuse",
-              "disease": "ncit:C8851",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C8851",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D007012",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Hypopharyngeal Neoplasms",
-              "disease": "ncit:C7190",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C7190",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D014594",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Uterine Neoplasms",
-              "disease": "ncit:C3552",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3552",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D006689",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Hodgkin Disease",
-              "disease": "ncit:C9357",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C9357",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D008224",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Lymphoma, Follicular",
-              "disease": "ncit:C3209",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3209",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D052016",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Mucositis",
-              "disease": "ncit:C3853",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3853",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D002276",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Carcinoid Tumor",
-              "disease": "ncit:C2915",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C2915",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D006528",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Carcinoma, Hepatocellular",
-              "disease": "ncit:C3099",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3099",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D002289",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Carcinoma, Non-Small-Cell Lung",
-              "disease": "ncit:C2926",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C2926",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D009447",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Neuroblastoma",
-              "disease": "ncit:C3270",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3270",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D010996",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Pleural Effusion",
               "disease": null,
               "extensions": [
@@ -1440,46 +2225,70 @@
             },
             {
               "id": "mesh:D013736",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Testicular Neoplasms",
-              "disease": "ncit:C7251",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C7251",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D018197",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Hepatoblastoma",
-              "disease": "ncit:C3728",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3728",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D013280",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Stomatitis",
-              "disease": "ncit:C26887",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C26887",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D014987",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Xerostomia",
               "disease": null,
               "extensions": [
@@ -1492,144 +2301,232 @@
             },
             {
               "id": "mesh:D000077195",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Squamous Cell Carcinoma of Head and Neck",
-              "disease": "ncit:C4044",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C4044",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D015459",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Leukemia-Lymphoma, Adult T-Cell",
-              "disease": "ncit:C3184",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3184",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D020522",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Lymphoma, Mantle-Cell",
-              "disease": "ncit:C4337",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C4337",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D000077192",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Adenocarcinoma of Lung",
-              "disease": "ncit:C3512",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3512",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D012208",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Rhabdomyosarcoma",
-              "disease": "ncit:C3359",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_0"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3359",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D009101",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Multiple Myeloma",
-              "disease": "ncit:C3242",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3242",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D012516",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Osteosarcoma",
-              "disease": "ncit:C53707",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C53707",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D018281",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Cholangiocarcinoma",
-              "disease": "ncit:C4436",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C4436",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D001943",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Breast Neoplasms",
-              "disease": "ncit:C2910",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C2910",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D009959",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Oropharyngeal Neoplasms",
-              "disease": "ncit:C7398",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C7398",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D018269",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Carcinoma, Endometrioid",
-              "disease": "ncit:C7558",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C7558",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             }
@@ -1637,7 +2534,6 @@
         }
       },
       {
-        "type": "Extension",
         "name": "trade_names",
         "value": [
           "Platinol",
@@ -1646,69 +2542,388 @@
           "PLATINOL-AQ",
           "PLATINOL"
         ]
-      },
-      {
-        "type": "Extension",
-        "name": "associated_with",
-        "value": [
-          "ndc:0703-5748",
-          "ndc:63323-103",
-          "ndc:70860-206",
-          "ndc:44567-509",
-          "spl:5a24d5bd-c44a-43f7-a04c-76caf3475012",
-          "usp:m17910",
-          "ndc:44567-530",
-          "pubchem.substance:178102005",
-          "spl:9b008181-ab66-db2f-e053-2995a90aad57",
-          "ndc:16729-288",
-          "spl:a66eda32-1164-439a-ac8e-73138365ec06",
-          "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
-          "CHEBI:27899",
-          "ndc:44567-511",
-          "ndc:0703-5747",
-          "ndc:68083-162",
-          "atc:L01XA01",
-          "mesh:D002945",
-          "ndc:44567-510",
-          "mmsl:31747",
-          "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c",
-          "vandf:4018139",
-          "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
-          "ndc:68083-163",
-          "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
-          "spl:adf5773e-9095-4cb4-a90f-72cbf82f4493",
-          "mmsl:d00195",
-          "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
-          "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2",
-          "unii:H8MTN7XVC2",
-          "ndc:68001-283",
-          "unii:Q20Q21Q62J",
-          "pubchem.compound:5702198",
-          "pubchem.compound:441203",
-          "ndc:0143-9505",
-          "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
-          "mmsl:4456",
-          "umls:C0008838",
-          "ndc:0143-9504"
-        ]
       }
     ],
-    "therapeutic": "rxcui:2555"
+    "mappings": [
+      {
+        "coding": {
+          "code": "C376",
+          "system": "ncit"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "105",
+          "system": "hemonc"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "DB00515",
+          "system": "drugbank"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "DB12117",
+          "system": "drugbank"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "074656",
+          "system": "drugsatfda.anda"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "074735",
+          "system": "drugsatfda.anda"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "075036",
+          "system": "drugsatfda.anda"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "206774",
+          "system": "drugsatfda.anda"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "207323",
+          "system": "drugsatfda.anda"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "018057",
+          "system": "drugsatfda.nda"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "5343",
+          "system": "iuphar.ligand"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "CHEMBL11359",
+          "system": "chembl"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "15663-27-1",
+          "system": "chemidplus"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "Q412415",
+          "system": "wikidata"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "0703-5748",
+          "system": "ndc"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "63323-103",
+          "system": "ndc"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "70860-206",
+          "system": "ndc"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "44567-509",
+          "system": "ndc"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "5a24d5bd-c44a-43f7-a04c-76caf3475012",
+          "system": "spl"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "m17910",
+          "system": "usp"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "44567-530",
+          "system": "ndc"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "178102005",
+          "system": "pubchem.substance"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "9b008181-ab66-db2f-e053-2995a90aad57",
+          "system": "spl"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "16729-288",
+          "system": "ndc"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "a66eda32-1164-439a-ac8e-73138365ec06",
+          "system": "spl"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
+          "system": "spl"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "27899",
+          "system": "chebi"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "44567-511",
+          "system": "ndc"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "0703-5747",
+          "system": "ndc"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "68083-162",
+          "system": "ndc"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "L01XA01",
+          "system": "atc"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "D002945",
+          "system": "mesh"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "44567-510",
+          "system": "ndc"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "31747",
+          "system": "mmsl"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "2c569ef0-588f-4828-8b2d-03a2120c9b4c",
+          "system": "spl"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "4018139",
+          "system": "vandf"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "LXZZYRPGZAFOLE-UHFFFAOYSA-L",
+          "system": "inchikey"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "68083-163",
+          "system": "ndc"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
+          "system": "inchikey"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "adf5773e-9095-4cb4-a90f-72cbf82f4493",
+          "system": "spl"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "d00195",
+          "system": "mmsl"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "01c7a680-ee0d-42da-85e8-8d56c6fe7006",
+          "system": "spl"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "c43de769-d6d8-3bb9-e053-2995a90a5aa2",
+          "system": "spl"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "H8MTN7XVC2",
+          "system": "unii"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "68001-283",
+          "system": "ndc"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "Q20Q21Q62J",
+          "system": "unii"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "5702198",
+          "system": "pubchem.compound"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "441203",
+          "system": "pubchem.compound"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "0143-9505",
+          "system": "ndc"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
+          "system": "spl"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "4456",
+          "system": "mmsl"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "C0008838",
+          "system": "umls"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "0143-9504",
+          "system": "ndc"
+        },
+        "relation": "relatedMatch"
+      }
+    ]
   },
   "normalize_phenobarbital": {
-    "id": "normalize.therapy:Phenobarbital",
-    "type": "TherapeuticDescriptor",
+    "type": "TherapeuticAgent",
     "label": "phenobarbital",
     "description": null,
-    "xrefs": [
-      "ncit:C739",
-      "drugbank:DB01174",
-      "iuphar.ligand:2804",
-      "chembl:CHEMBL40",
-      "chemidplus:50-06-6",
-      "wikidata:Q407241"
-    ],
-    "alternate_labels": [
+    "id": "rxcui:8134",
+    "aliases": [
       "fenobarbital",
       "APRD00184",
       "5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione",
@@ -1724,18 +2939,18 @@
       "Fenobarbital",
       "5-Phenyl-5-ethylbarbituric acid",
       "phenobarbital sodium",
-      "Luminal®",
+      "Luminal\u00ae",
       "Phenobarbital",
       "Phenylbarbital",
       "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
       "PHENO",
-      "Phenylethylbarbitursäure",
+      "Phenylethylbarbiturs\u00e4ure",
       "phenylethylbarbiturate",
       "PHENOBARBITAL",
       "Phenylethylbarbiturate",
       "NSC-128143-",
       "Phenylaethylbarbitursaeure",
-      "Phenyläthylbarbitursäure",
+      "Phenyl\u00e4thylbarbiturs\u00e4ure",
       "Phenobarbitone",
       "Phenobarbitol",
       "Phenylethylbarbituric Acid",
@@ -1751,7 +2966,6 @@
     ],
     "extensions": [
       {
-        "type": "Extension",
         "name": "regulatory_approval",
         "value": {
           "approval_ratings": [
@@ -1762,131 +2976,211 @@
           "has_indication": [
             {
               "id": "mesh:D009357",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Neonatal Abstinence Syndrome",
-              "disease": "ncit:C87101",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C87101",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D012559",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Schizophrenia",
-              "disease": "mondo:0005090",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "0005090",
+                    "system": "mondo"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D001007",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Anxiety",
-              "disease": "mondo:0011918",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "0011918",
+                    "system": "mondo"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D012640",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Seizures",
-              "disease": "ncit:C3980",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3980",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D009503",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Neutropenia",
-              "disease": "mondo:0001475",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "0001475",
+                    "system": "mondo"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D008223",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Lymphoma",
-              "disease": "ncit:C3208",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3208",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D013226",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Status Epilepticus",
-              "disease": "ncit:C85079",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C85079",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             },
             {
               "id": "mesh:D003704",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Dementia",
-              "disease": "mondo:0001627",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "0001627",
+                    "system": "mondo"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D004827",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Epilepsy",
-              "disease": "ncit:C3020",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_4"
                 }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "C3020",
+                    "system": "ncit"
+                  },
+                  "relation": "relatedMatch"
+                }
               ]
             },
             {
               "id": "mesh:D003866",
-              "type": "DiseaseDescriptor",
+              "type": "Disease",
               "label": "Depressive Disorder",
-              "disease": "mondo:0002050",
               "extensions": [
                 {
                   "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "code": "0002050",
+                    "system": "mondo"
+                  },
+                  "relation": "relatedMatch"
                 }
               ]
             }
@@ -1894,7 +3188,6 @@
         }
       },
       {
-        "type": "Extension",
         "name": "trade_names",
         "value": [
           "Phenobarbitone",
@@ -1904,42 +3197,157 @@
           "Talpheno",
           "Noptil"
         ]
-      },
-      {
-        "type": "Extension",
-        "name": "associated_with",
-        "value": [
-          "mmsl:d00340",
-          "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N",
-          "pubchem.compound:4763",
-          "unii:YQE403BP4D",
-          "usp:m63400",
-          "atc:N03AA02",
-          "CHEBI:8069",
-          "mesh:D010634",
-          "mmsl:2390",
-          "drugcentral:2134",
-          "mmsl:5272",
-          "vandf:4017422",
-          "pubchem.substance:135650817",
-          "umls:C0031412"
-        ]
       }
     ],
-    "therapeutic": "rxcui:8134"
+    "mappings": [
+      {
+        "coding": {
+          "code": "C739",
+          "system": "ncit"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "DB01174",
+          "system": "drugbank"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "2804",
+          "system": "iuphar.ligand"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "CHEMBL40",
+          "system": "chembl"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "50-06-6",
+          "system": "chemidplus"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "Q407241",
+          "system": "wikidata"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "d00340",
+          "system": "mmsl"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "DDBREPKUVSBGFI-UHFFFAOYSA-N",
+          "system": "inchikey"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "4763",
+          "system": "pubchem.compound"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "YQE403BP4D",
+          "system": "unii"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "m63400",
+          "system": "usp"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "N03AA02",
+          "system": "atc"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "8069",
+          "system": "chebi"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "D010634",
+          "system": "mesh"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "2390",
+          "system": "mmsl"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "2134",
+          "system": "drugcentral"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "5272",
+          "system": "mmsl"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "4017422",
+          "system": "vandf"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "135650817",
+          "system": "pubchem.substance"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "C0031412",
+          "system": "umls"
+        },
+        "relation": "relatedMatch"
+      }
+    ]
   },
   "normalize_spiramycin": {
-    "id": "normalize.therapy:Spiramycin",
-    "type": "TherapeuticDescriptor",
+    "type": "TherapeuticAgent",
     "label": "spiramycin",
     "description": null,
-    "xrefs": [
-      "ncit:C839",
-      "drugbank:DB06145",
-      "chemidplus:8025-81-8",
-      "wikidata:Q422265"
-    ],
-    "alternate_labels": [
+    "id": "rxcui:9991",
+    "aliases": [
       "Provamycin",
       "Spiramycin A",
       "Rovamycine",
@@ -1956,31 +3364,100 @@
       "Spiramycin I",
       "Foromacidin A"
     ],
-    "extensions": [
+    "extensions": [],
+    "mappings": [
       {
-        "type": "Extension",
-        "name": "associated_with",
-        "value": [
-          "pubchem.compound:5356392",
-          "mesh:D015572",
-          "mesh:C017186",
-          "inchikey:ACTOXUHEUCPTEW-CEUOBAOPSA-N",
-          "unii:71ODY0V87H",
-          "unii:033ECH6IFG",
-          "atc:J01FA02",
-          "umls:C0037962"
-        ]
+        "coding": {
+          "code": "C839",
+          "system": "ncit"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "DB06145",
+          "system": "drugbank"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "8025-81-8",
+          "system": "chemidplus"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "Q422265",
+          "system": "wikidata"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "5356392",
+          "system": "pubchem.compound"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "D015572",
+          "system": "mesh"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "C017186",
+          "system": "mesh"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "ACTOXUHEUCPTEW-CEUOBAOPSA-N",
+          "system": "inchikey"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "71ODY0V87H",
+          "system": "unii"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "033ECH6IFG",
+          "system": "unii"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "J01FA02",
+          "system": "atc"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "code": "C0037962",
+          "system": "umls"
+        },
+        "relation": "relatedMatch"
       }
-    ],
-    "therapeutic": "rxcui:9991"
+    ]
   },
   "normalize_therapeutic_procedure": {
-    "id": "normalize.therapy:ncit%3AC49236",
-    "type": "TherapeuticDescriptor",
+    "type": "TherapeuticAgent",
     "label": "Therapeutic Procedure",
     "description": null,
-    "xrefs": [],
-    "alternate_labels": [
+    "id": "ncit:C49236",
+    "aliases": [
       "Therapeutic Interventions",
       "any therapy",
       "therapy",
@@ -1995,14 +3472,16 @@
       "any_therapy",
       "treatment"
     ],
-    "extensions": [
+    "extensions": [],
+    "mappings": [
       {
-        "type": "Extension",
-        "name": "associated_with",
-        "value": ["umls:C0087111"]
+        "coding": {
+          "code": "C0087111",
+          "system": "umls"
+        },
+        "relation": "relatedMatch"
       }
-    ],
-    "therapeutic": "ncit:C49236"
+    ]
   },
   "unmerged_normalize_therapeutic_procedure": {
     "normalized_concept_id": "ncit:C49236",
@@ -2029,7 +3508,9 @@
             ],
             "trade_names": [],
             "xrefs": [],
-            "associated_with": ["umls:C0087111"],
+            "associated_with": [
+              "umls:C0087111"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -2068,8 +3549,14 @@
               "Spiramycine"
             ],
             "trade_names": [],
-            "xrefs": ["drugbank:DB06145"],
-            "associated_with": ["atc:J01FA02", "mesh:D015572", "mesh:C017186"],
+            "xrefs": [
+              "drugbank:DB06145"
+            ],
+            "associated_with": [
+              "atc:J01FA02",
+              "mesh:D015572",
+              "mesh:C017186"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -2103,8 +3590,13 @@
               "RP 5337"
             ],
             "trade_names": [],
-            "xrefs": ["chemidplus:8025-81-8"],
-            "associated_with": ["umls:C0037962", "unii:71ODY0V87H"],
+            "xrefs": [
+              "chemidplus:8025-81-8"
+            ],
+            "associated_with": [
+              "umls:C0037962",
+              "unii:71ODY0V87H"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -2137,7 +3629,9 @@
               "Demycarosylturimycin H"
             ],
             "trade_names": [],
-            "xrefs": ["chemidplus:24916-50-5"],
+            "xrefs": [
+              "chemidplus:24916-50-5"
+            ],
             "associated_with": [
               "inchikey:ACTOXUHEUCPTEW-CEUOBAOPSA-N",
               "unii:033ECH6IFG"
@@ -2168,7 +3662,9 @@
             "aliases": [],
             "trade_names": [],
             "xrefs": [],
-            "associated_with": ["unii:71ODY0V87H"],
+            "associated_with": [
+              "unii:71ODY0V87H"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -2192,14 +3688,18 @@
           {
             "concept_id": "wikidata:Q422265",
             "label": "spiramycin",
-            "aliases": ["spiramycin I"],
+            "aliases": [
+              "spiramycin I"
+            ],
             "trade_names": [],
             "xrefs": [
               "chemidplus:8025-81-8",
               "rxcui:9991",
               "chembl:CHEMBL1256397"
             ],
-            "associated_with": ["pubchem.compound:5356392"],
+            "associated_with": [
+              "pubchem.compound:5356392"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -2244,8 +3744,14 @@
               "cis-Diamminedichloroplatinum",
               "cis-diamminedichloroplatinum(II)"
             ],
-            "trade_names": ["Cisplatin", "Platinol"],
-            "xrefs": ["drugbank:DB12117", "drugbank:DB00515"],
+            "trade_names": [
+              "Cisplatin",
+              "Platinol"
+            ],
+            "xrefs": [
+              "drugbank:DB12117",
+              "drugbank:DB00515"
+            ],
             "associated_with": [
               "mmsl:4456",
               "vandf:4018139",
@@ -2256,7 +3762,9 @@
               "usp:m17910",
               "unii:Q20Q21Q62J"
             ],
-            "approval_ratings": ["rxnorm_prescribable"],
+            "approval_ratings": [
+              "rxnorm_prescribable"
+            ],
             "approval_year": [],
             "has_indication": []
           }
@@ -2281,7 +3789,9 @@
             "label": "Cisplatin",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["chemidplus:15663-27-1"],
+            "xrefs": [
+              "chemidplus:15663-27-1"
+            ],
             "associated_with": [
               "unii:Q20Q21Q62J",
               "CHEBI:27899",
@@ -2320,10 +3830,16 @@
               "cisplatinum"
             ],
             "trade_names": [],
-            "xrefs": ["rxcui:2555"],
+            "xrefs": [
+              "rxcui:2555"
+            ],
             "associated_with": [],
-            "approval_ratings": ["hemonc_approved"],
-            "approval_year": ["1978"],
+            "approval_ratings": [
+              "hemonc_approved"
+            ],
+            "approval_year": [
+              "1978"
+            ],
             "has_indication": [
               {
                 "disease_id": "hemonc:569",
@@ -2378,7 +3894,9 @@
               "cis-diamminedichloroplatinum(II)"
             ],
             "trade_names": [],
-            "xrefs": ["chemidplus:15663-27-1"],
+            "xrefs": [
+              "chemidplus:15663-27-1"
+            ],
             "associated_with": [
               "unii:Q20Q21Q62J",
               "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L"
@@ -2390,9 +3908,13 @@
           {
             "concept_id": "drugbank:DB12117",
             "label": "Mitometh",
-            "aliases": ["DDP"],
+            "aliases": [
+              "DDP"
+            ],
             "trade_names": [],
-            "xrefs": ["chemidplus:107465-03-2"],
+            "xrefs": [
+              "chemidplus:107465-03-2"
+            ],
             "associated_with": [
               "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
               "unii:H8MTN7XVC2"
@@ -2422,14 +3944,18 @@
             "label": "CISPLATIN",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["rxcui:309311"],
+            "xrefs": [
+              "rxcui:309311"
+            ],
             "associated_with": [
               "unii:Q20Q21Q62J",
               "spl:adf5773e-9095-4cb4-a90f-72cbf82f4493",
               "ndc:0703-5748",
               "ndc:0703-5747"
             ],
-            "approval_ratings": ["fda_prescription"],
+            "approval_ratings": [
+              "fda_prescription"
+            ],
             "approval_year": [],
             "has_indication": []
           },
@@ -2438,13 +3964,17 @@
             "label": "CISPLATIN",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["rxcui:309311"],
+            "xrefs": [
+              "rxcui:309311"
+            ],
             "associated_with": [
               "unii:Q20Q21Q62J",
               "ndc:63323-103",
               "spl:9b008181-ab66-db2f-e053-2995a90aad57"
             ],
-            "approval_ratings": ["fda_prescription"],
+            "approval_ratings": [
+              "fda_prescription"
+            ],
             "approval_year": [],
             "has_indication": []
           },
@@ -2453,14 +3983,18 @@
             "label": "CISPLATIN",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["rxcui:309311"],
+            "xrefs": [
+              "rxcui:309311"
+            ],
             "associated_with": [
               "unii:Q20Q21Q62J",
               "ndc:0143-9504",
               "ndc:0143-9505",
               "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c"
             ],
-            "approval_ratings": ["fda_prescription"],
+            "approval_ratings": [
+              "fda_prescription"
+            ],
             "approval_year": [],
             "has_indication": []
           },
@@ -2469,7 +4003,9 @@
             "label": "CISPLATIN",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["rxcui:309311"],
+            "xrefs": [
+              "rxcui:309311"
+            ],
             "associated_with": [
               "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
               "ndc:16729-288",
@@ -2477,7 +4013,9 @@
               "ndc:68001-283",
               "unii:Q20Q21Q62J"
             ],
-            "approval_ratings": ["fda_prescription"],
+            "approval_ratings": [
+              "fda_prescription"
+            ],
             "approval_year": [],
             "has_indication": []
           },
@@ -2486,7 +4024,9 @@
             "label": "CISPLATIN",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["rxcui:309311"],
+            "xrefs": [
+              "rxcui:309311"
+            ],
             "associated_with": [
               "ndc:68083-163",
               "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
@@ -2495,7 +4035,9 @@
               "ndc:70860-206",
               "unii:Q20Q21Q62J"
             ],
-            "approval_ratings": ["fda_prescription"],
+            "approval_ratings": [
+              "fda_prescription"
+            ],
             "approval_year": [],
             "has_indication": []
           },
@@ -2503,8 +4045,14 @@
             "concept_id": "drugsatfda.nda:018057",
             "label": "CISPLATIN",
             "aliases": [],
-            "trade_names": ["PLATINOL-AQ", "PLATINOL"],
-            "xrefs": ["rxcui:1736854", "rxcui:309311"],
+            "trade_names": [
+              "PLATINOL-AQ",
+              "PLATINOL"
+            ],
+            "xrefs": [
+              "rxcui:1736854",
+              "rxcui:309311"
+            ],
             "associated_with": [
               "ndc:44567-509",
               "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
@@ -2537,7 +4085,9 @@
           {
             "concept_id": "iuphar.ligand:5343",
             "label": "cisplatin",
-            "aliases": ["Platinol"],
+            "aliases": [
+              "Platinol"
+            ],
             "trade_names": [],
             "xrefs": [
               "chembl:CHEMBL11359",
@@ -2549,7 +4099,9 @@
               "CHEBI:27899",
               "pubchem.substance:178102005"
             ],
-            "approval_ratings": ["gtopdb_approved"],
+            "approval_ratings": [
+              "gtopdb_approved"
+            ],
             "approval_year": [],
             "has_indication": []
           }
@@ -2596,7 +4148,9 @@
             ],
             "xrefs": [],
             "associated_with": [],
-            "approval_ratings": ["chembl_phase_4"],
+            "approval_ratings": [
+              "chembl_phase_4"
+            ],
             "approval_year": [],
             "has_indication": [
               {
@@ -3561,8 +5115,12 @@
               "cis-Diaminedichloroplatinum"
             ],
             "trade_names": [],
-            "xrefs": ["drugbank:DB00515"],
-            "associated_with": ["unii:Q20Q21Q62J"],
+            "xrefs": [
+              "drugbank:DB00515"
+            ],
+            "associated_with": [
+              "unii:Q20Q21Q62J"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -3601,7 +5159,9 @@
               "drugbank:DB00515",
               "chemidplus:15663-27-1"
             ],
-            "associated_with": ["pubchem.compound:5702198"],
+            "associated_with": [
+              "pubchem.compound:5702198"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []

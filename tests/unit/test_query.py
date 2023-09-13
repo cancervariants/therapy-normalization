@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 import pytest
-from ga4gh.vrsatile.pydantic.vrsatile_models import TherapeuticDescriptor
+from ga4gh.core import core_models
 
 from therapy.query import QueryHandler, InvalidParameterException
 from therapy.schemas import MatchType, SourceName, Drug
@@ -95,14 +95,13 @@ def unmerged_normalized_spiramycin(fixture_data):
     return fixture_data["unmerged_normalize_spiramycin"]
 
 
-def compare_vod(response, fixture, query, match_type, response_id, warnings=None):
-    """Verify correctness of returned VOD object against test fixture.
+def compare_ta(response, fixture, query, match_type, warnings=None):
+    """Verify correctness of returned core therapeutic agent object against test fixture
 
     :param Dict response: actual response
-    :param Dict fixture: expected Descriptor object
+    :param Dict fixture: expected therapeutic agent object
     :param str query: query used in search
     :param MatchType match_type: expected MatchType
-    :param str response_id: expected response_id value
     :param List warnings: expected warnings
     """
     if warnings is None:
@@ -127,22 +126,33 @@ def compare_vod(response, fixture, query, match_type, response_id, warnings=None
 
     assert response.match_type == match_type
 
-    fixture = TherapeuticDescriptor(**fixture.copy())
-    fixture.id = response_id
-    actual = response.therapeutic_descriptor
+    fixture = core_models.TherapeuticAgent(**fixture.copy())
+    actual = response.therapeutic_agent
+    actual_keys = actual.model_dump(exclude_none=True).keys()
+    fixture_keys = fixture.model_dump(exclude_none=True).keys()
+    assert actual_keys == fixture_keys
 
     assert actual.id == fixture.id
     assert actual.type == fixture.type
-    assert actual.therapeutic == fixture.therapeutic
     assert actual.label == fixture.label
 
-    assert bool(actual.xrefs) == bool(fixture.xrefs)
-    if bool(actual.xrefs) and bool(fixture.xrefs):
-        assert set(actual.xrefs) == set(fixture.xrefs)
+    assert bool(actual.mappings) == bool(fixture.mappings)
+    if actual.mappings:
+        no_matches = []
+        for actual_mapping in actual.mappings:
+            match = None
+            for fixture_mapping in fixture.mappings:
+                if actual_mapping == fixture_mapping:
+                    match = actual_mapping
+                    break
+            if not match:
+                no_matches.append(actual_mapping)
+        assert no_matches == [], no_matches
+        assert len(actual.mappings) == len(fixture.mappings)
 
-    assert bool(actual.alternate_labels) == bool(fixture.alternate_labels)
-    if bool(actual.alternate_labels) and bool(fixture.alternate_labels):
-        assert set(actual.alternate_labels) == set(fixture.alternate_labels)
+    assert bool(actual.aliases) == bool(fixture.aliases)
+    if actual.aliases:
+        assert set(actual.aliases) == set(fixture.aliases)
 
     def get_extension(extensions, name):
         matches = [e for e in extensions if e.name == name]
@@ -154,7 +164,7 @@ def compare_vod(response, fixture, query, match_type, response_id, warnings=None
             return None
 
     assert bool(actual.extensions) == bool(fixture.extensions)
-    if bool(actual.extensions) == bool(fixture.extensions):
+    if actual.extensions:
         ext_actual = actual.extensions
         ext_fixture = fixture.extensions
 
@@ -174,14 +184,6 @@ def compare_vod(response, fixture, query, match_type, response_id, warnings=None
             fixture_inds = [json.dumps(ind) for ind
                             in approv_fixture.value.get("has_indication", [])]
             assert set(approv_inds) == set(fixture_inds)
-
-        assoc_actual = get_extension(ext_actual, "associated_with")
-        assoc_fixture = get_extension(ext_fixture, "associated_with")
-        assert (assoc_actual is None) == (assoc_fixture is None)
-        if assoc_actual:
-            assert assoc_fixture
-            assert assoc_actual.value
-            assert set(assoc_actual.value) == set(assoc_fixture.value)
 
         tn_actual = get_extension(ext_actual, "trade_names")
         tn_fixture = get_extension(ext_fixture, "trade_names")
@@ -444,61 +446,51 @@ def test_query_normalize(normalize_handler, normalized_phenobarbital,
     # test merged id match
     query = "rxcui:2555"
     response = normalize_handler.normalize(query)
-    compare_vod(response, normalized_cisplatin, query, MatchType.CONCEPT_ID,
-                "normalize.therapy:rxcui%3A2555")
+    compare_ta(response, normalized_cisplatin, query, MatchType.CONCEPT_ID)
 
     # test concept id match
     query = "chemidplus:50-06-6"
     response = normalize_handler.normalize(query)
-    compare_vod(response, normalized_phenobarbital, query, MatchType.CONCEPT_ID,
-                "normalize.therapy:chemidplus%3A50-06-6")
+    compare_ta(response, normalized_phenobarbital, query, MatchType.CONCEPT_ID)
 
     query = "hemonc:105"
     response = normalize_handler.normalize(query)
-    compare_vod(response, normalized_cisplatin, query, MatchType.CONCEPT_ID,
-                "normalize.therapy:hemonc%3A105")
+    compare_ta(response, normalized_cisplatin, query, MatchType.CONCEPT_ID)
 
     # test label match
     query = "Phenobarbital"
     response = normalize_handler.normalize(query)
-    compare_vod(response, normalized_phenobarbital, query, MatchType.LABEL,
-                "normalize.therapy:Phenobarbital")
+    compare_ta(response, normalized_phenobarbital, query, MatchType.LABEL)
 
     # test trade name match
     query = "Platinol"
     response = normalize_handler.normalize(query)
-    compare_vod(response, normalized_cisplatin, query, MatchType.TRADE_NAME,
-                "normalize.therapy:Platinol")
+    compare_ta(response, normalized_cisplatin, query, MatchType.TRADE_NAME)
 
     # test alias match
     query = "cis Diamminedichloroplatinum"
     response = normalize_handler.normalize(query)
-    compare_vod(response, normalized_cisplatin, query, MatchType.ALIAS,
-                "normalize.therapy:cis%20Diamminedichloroplatinum")
+    compare_ta(response, normalized_cisplatin, query, MatchType.ALIAS)
 
     query = "Rovamycine"
     response = normalize_handler.normalize(query)
-    compare_vod(response, normalized_spiramycin, query, MatchType.ALIAS,
-                "normalize.therapy:Rovamycine")
+    compare_ta(response, normalized_spiramycin, query, MatchType.ALIAS)
 
     # test normalized group with single member
     query = "any therapy"
     response = normalize_handler.normalize(query)
-    compare_vod(response, normalized_therapeutic_procedure, query, MatchType.ALIAS,
-                "normalize.therapy:any%20therapy")
+    compare_ta(response, normalized_therapeutic_procedure, query, MatchType.ALIAS)
 
     # test that term with multiple possible resolutions resolves at highest
     # match
     query = "Cisplatin"
     response = normalize_handler.normalize(query)
-    compare_vod(response, normalized_cisplatin, query, MatchType.TRADE_NAME,
-                "normalize.therapy:Cisplatin")
+    compare_ta(response, normalized_cisplatin, query, MatchType.TRADE_NAME)
 
     # test whitespace stripping
     query = "   Cisplatin "
     response = normalize_handler.normalize(query)
-    compare_vod(response, normalized_cisplatin, query, MatchType.TRADE_NAME,
-                "normalize.therapy:Cisplatin")
+    compare_ta(response, normalized_cisplatin, query, MatchType.TRADE_NAME)
 
     # test no match
     query = "zzzz fake therapy zzzz"

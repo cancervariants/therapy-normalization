@@ -9,11 +9,11 @@ fastapi = ">=0.92.0"
 click = "*"
 uvicorn = "*"
 boto3 = "*"
-"ga4gh.vrsatile.pydantic" = ">=0.1.dev3"
+"ga4gh.vrs" = "~=2.0.0.dev1"
 
 [dev-packages]
 thera-py = {editable = true, path = "."}
-disease-normalizer = ">=0.3.1"
+disease-normalizer = {editable = true, path = "cancervariants/disease-normalization"}
 owlready2 = "*"
 rdflib = "*"
 wikibaseintegrator = ">=0.12.0"
