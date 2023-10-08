@@ -1,11 +1,11 @@
 """This module contains data models for representing VICC therapy records."""
-from typing import List, Optional, Dict, Union, Any, Type, Set
+from typing import List, Optional, Dict, Union, Any, Type, Set, Literal
 from enum import Enum, IntEnum
 from datetime import datetime
 
 from ga4gh.vrsatile.pydantic.core_models import CURIE
 from ga4gh.vrsatile.pydantic.vrsatile_models import TherapeuticDescriptor
-from pydantic import BaseModel, StrictBool
+from pydantic import BaseModel, StrictBool, StrictStr
 
 from therapy.version import __version__
 
@@ -395,10 +395,12 @@ class MatchesListed(BaseModel):
 class ServiceMeta(BaseModel):
     """Metadata regarding the therapy-normalization service."""
 
-    name = "thera-py"
-    version = __version__
+    name: Literal["thera-py"] = "thera-py"
+    version: StrictStr = __version__
     response_datetime: datetime
-    url = "https://github.com/cancervariants/therapy-normalization"
+    url: Literal[
+        "https://github.com/cancervariants/therapy-normalization"
+    ] = "https://github.com/cancervariants/therapy-normalization"
 
     class Config:
         """Configure OpenAPI schema"""
