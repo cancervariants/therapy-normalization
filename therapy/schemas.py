@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Literal, Optional, Set, Type, Union
 from ga4gh.vrsatile.pydantic import return_value
 from ga4gh.vrsatile.pydantic.vrs_models import CURIE
 from ga4gh.vrsatile.pydantic.vrsatile_models import ValueObjectDescriptor
-from pydantic import BaseModel, StrictBool, validator
+from pydantic import BaseModel, StrictBool, StrictStr, validator
 
 from therapy.version import __version__
 
@@ -395,10 +395,12 @@ class TherapyDescriptor(ValueObjectDescriptor):
 class ServiceMeta(BaseModel):
     """Metadata regarding the therapy-normalization service."""
 
-    name = "thera-py"
-    version = __version__
+    name: Literal["thera-py"] = "thera-py"
+    version: StrictStr = __version__
     response_datetime: datetime
-    url = "https://github.com/cancervariants/therapy-normalization"
+    url: Literal[
+        "https://github.com/cancervariants/therapy-normalization"
+    ] = "https://github.com/cancervariants/therapy-normalization"
 
     class Config:
         """Configure OpenAPI schema"""
