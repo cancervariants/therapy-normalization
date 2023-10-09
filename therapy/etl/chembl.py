@@ -52,6 +52,7 @@ class ChEMBL(DiseaseIndicationBase):
     @staticmethod
     def _get_approval_rating(value: Optional[float]) -> Optional[ApprovalRating]:
         """Standardize approval rating value
+
         :param value: value retrieved from ChEMBL database
         :return: instantiated ApprovalRating
         :raise: ValueError if invalid value is provided
@@ -106,7 +107,6 @@ class ChEMBL(DiseaseIndicationBase):
                     indication = {
                         "disease_id": ind_group[0],
                         "disease_label": ind_group[2],
-                        "supplemental_info": {"chembl_max_phase_for_ind": phase},
                     }
                     if phase is not None:
                         indication["supplemental_info"] = {

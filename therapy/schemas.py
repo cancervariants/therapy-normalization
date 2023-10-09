@@ -40,6 +40,15 @@ class ApprovalRating(str, Enum):
     ulcer at Phase 3, and also liver disease at Phase 1. "
      - CHEMBL_4: "A marketed drug e.g. AMINOPHYLLINE (CHEMBL1370561) is an FDA
     approved drug for treatment of asthma. "
+     - CHEMBL_WITHDRAWN: "A withdrawn drug is an approved drug contained in a medicinal
+    product that subsequently had been removed from the market. The reasons for
+    withdrawal may include toxicity, lack of efficacy, or other reasons such as an
+    unfavorable risk-to-benefit ratio following approval and marketing of the drug.
+    ChEMBL considers an approved drug to be withdrawn only if all medicinal products
+    that contain the drug as an active ingredient have been withdrawn from one (or more)
+    regions of the world. Note that all medicinal products for a drug can be withdrawn
+    in one region of the world while still being marketed in other jurisdictions."
+    https://pubs.acs.org/doi/10.1021/acs.chemrestox.0c00296
 
     Drugs@FDA:
      - FDA_PRESCRIPTION: "A prescription drug product requires a doctor's authorization
