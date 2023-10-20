@@ -36,7 +36,9 @@ class DrugsAtFDA(Base):
                 raise DownloadException(msg)
             return date
         else:
-            raise requests.HTTPError("Unable to retrieve version from FDA API")
+            raise requests.HTTPError(
+                "Unable to retrieve version from FDA API", response=requests.Response()
+            )
 
     def _load_meta(self) -> None:
         """Add Drugs@FDA metadata."""
