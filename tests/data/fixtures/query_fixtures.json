@@ -356,7 +356,6 @@
               "id": "mesh:D014565",
               "type": "Disease",
               "label": "Urogenital Neoplasms",
-              "disease": null,
               "extensions": [
                 {
                   "type": "Extension",
@@ -1104,7 +1103,6 @@
               "id": "mesh:D020250",
               "type": "Disease",
               "label": "Postoperative Nausea and Vomiting",
-              "disease": null,
               "extensions": [
                 {
                   "type": "Extension",
@@ -1600,7 +1598,6 @@
               "id": "mesh:D009325",
               "type": "Disease",
               "label": "Nausea",
-              "disease": null,
               "extensions": [
                 {
                   "type": "Extension",
@@ -1991,7 +1988,6 @@
               "id": "mesh:D009362",
               "type": "Disease",
               "label": "Neoplasm Metastasis",
-              "disease": null,
               "extensions": [
                 {
                   "type": "Extension",
@@ -2214,7 +2210,6 @@
               "id": "mesh:D010996",
               "type": "Disease",
               "label": "Pleural Effusion",
-              "disease": null,
               "extensions": [
                 {
                   "type": "Extension",
@@ -2290,7 +2285,6 @@
               "id": "mesh:D014987",
               "type": "Disease",
               "label": "Xerostomia",
-              "disease": null,
               "extensions": [
                 {
                   "type": "Extension",
@@ -3364,7 +3358,6 @@
       "Spiramycin I",
       "Foromacidin A"
     ],
-    "extensions": [],
     "mappings": [
       {
         "coding": {
@@ -3472,7 +3465,6 @@
       "any_therapy",
       "treatment"
     ],
-    "extensions": [],
     "mappings": [
       {
         "coding": {

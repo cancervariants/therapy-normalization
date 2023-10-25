@@ -500,12 +500,11 @@ class QueryHandler:
             )
             extensions.append(approv)
 
-        for field, name in (("trade_names", "trade_names"),
-                            ("associated_with", "associated_with")):
-            values = record.get(field)
-
-            if values:
-                extensions.append(core_models.Extension(name=name, value=values))
+        trade_names = record.get("trade_names")
+        if trade_names:
+            extensions.append(
+                core_models.Extension(name="trade_names", value=trade_names)
+            )
 
         if extensions:
             therapeutic_agent_obj.extensions = extensions

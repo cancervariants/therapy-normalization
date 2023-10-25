@@ -180,9 +180,9 @@ def compare_ta(response, fixture, query, match_type, warnings=None):
                 assert set(ratings_actual) == set(ratings_fixture)
             assert set(approv_actual.value.get("approval_year", [])) == \
                 set(approv_fixture.value.get("approval_year", []))
-            approv_inds = [json.dumps(ind) for ind
+            approv_inds = [json.dumps(ind, sort_keys=True) for ind
                            in approv_actual.value.get("has_indication", [])]
-            fixture_inds = [json.dumps(ind) for ind
+            fixture_inds = [json.dumps(ind, sort_keys=True) for ind
                             in approv_fixture.value.get("has_indication", [])]
             assert set(approv_inds) == set(fixture_inds)
 
