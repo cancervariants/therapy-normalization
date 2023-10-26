@@ -386,9 +386,11 @@ class QueryHandler:
         """
         sources_meta = {}
         therapeutic_agent = response.therapeutic_agent
-        sources = [response.normalized_id.split(":")[0]]
-        if therapeutic_agent.mappings:
-            sources += [m.coding.system for m in therapeutic_agent.mappings]
+        sources = [response.normalized_id.split(":")[0]]  # type: ignore
+        if therapeutic_agent.mappings:  # type: ignore
+            sources += [
+                m.coding.system for m in therapeutic_agent.mappings  # type: ignore
+            ]
 
         for src in sources:
             try:
@@ -476,11 +478,11 @@ class QueryHandler:
                         )
                     ]
                 else:
-                    mappings = None
+                    mappings = []
                 ind_disease_obj = core_models.Disease(
                     id=indication.disease_id,
                     label=indication.disease_label,
-                    mappings=mappings
+                    mappings=mappings or None
                 )
 
                 if indication.supplemental_info:

@@ -355,7 +355,7 @@ class ServiceMeta(BaseModel):
     """Metadata regarding the therapy-normalization service."""
 
     name: Literal["thera-py"] = "thera-py"
-    version: Literal[__version__] = __version__
+    version: Literal[__version__] = __version__  # type: ignore
     response_datetime: datetime
     url: Literal[
         "https://github.com/cancervariants/therapy-normalization"
@@ -395,7 +395,9 @@ class UnmergedNormalizationService(BaseNormalizationService):
     attributes.
     """
 
-    normalized_concept_id: Optional[constr(pattern=r"^\w[^:]*:.+$")] = None  # noqa: F722, E501
+    normalized_concept_id: Optional[  # type: ignore
+        constr(pattern=r"^\w[^:]*:.+$")  # noqa: F722
+    ] = None
     source_matches: Dict[SourceName, MatchesNormalized]
 
     model_config = ConfigDict(
