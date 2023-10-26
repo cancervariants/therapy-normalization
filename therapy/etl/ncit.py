@@ -10,7 +10,7 @@ from therapy import DownloadException
 from therapy.etl.base import Base
 from therapy.schemas import NamespacePrefix, RecordParams, SourceMeta, SourceName
 
-logger = logging.getLogger('therapy')
+logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
 
@@ -30,23 +30,23 @@ class NCIt(Base):
         root (where the current version is typically posted) as well as the year-by-year
         archives if that fails.
         """
-        logger.info('Retrieving source data for NCIt')
-        base_url = 'https://evs.nci.nih.gov/ftp1/NCI_Thesaurus'
+        logger.info("Retrieving source data for NCIt")
+        base_url = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus"
         # ping base NCIt directory
-        release_fname = f'Thesaurus_{self._version}.OWL.zip'
-        src_url = f'{base_url}/{release_fname}'
+        release_fname = f"Thesaurus_{self._version}.OWL.zip"
+        src_url = f"{base_url}/{release_fname}"
         r_try = requests.get(src_url)
         if r_try.status_code != 200:
             # ping NCIt archive directories
-            archive_url = f'{base_url}/archive/{self._version}_Release/{release_fname}'
+            archive_url = f"{base_url}/archive/{self._version}_Release/{release_fname}"
             archive_try = requests.get(archive_url)
             if archive_try.status_code != 200:
-                old_archive_url = f'{base_url}/archive/20{self._version[0:2]}/{self._version}_Release/{release_fname}'  # noqa: E501
+                old_archive_url = f"{base_url}/archive/20{self._version[0:2]}/{self._version}_Release/{release_fname}"  # noqa: E501
                 old_archive_try = requests.get(old_archive_url)
                 if old_archive_try.status_code != 200:
                     msg = (
-                        f'NCIt download failed: tried {src_url}, {archive_url}, and '
-                        f'{old_archive_url}'
+                        f"NCIt download failed: tried {src_url}, {archive_url}, and "
+                        f"{old_archive_url}"
                     )
                     logger.error(msg)
                     raise DownloadException(msg)
@@ -57,10 +57,10 @@ class NCIt(Base):
 
         self._http_download(
             src_url,
-            self._src_dir / f'ncit_{self._version}.owl',
+            self._src_dir / f"ncit_{self._version}.owl",
             handler=self._zip_handler,
         )
-        logger.info('Successfully retrieved source data for NCIt')
+        logger.info("Successfully retrieved source data for NCIt")
 
     def _get_desc_nodes(
         self, node: ThingClass, uq_nodes: Set[ThingClass]
@@ -116,7 +116,7 @@ class NCIt(Base):
 
         for result in typed_results:
             # parse result as URI and get ThingClass object back from NCIt
-            class_object = ncit[result[0].toPython().split('#')[1]]
+            class_object = ncit[result[0].toPython().split("#")[1]]
             uq_nodes.add(class_object)
         return uq_nodes
 
@@ -128,7 +128,7 @@ class NCIt(Base):
         uq_nodes = self._get_desc_nodes(ncit.C1909, uq_nodes)
         uq_nodes = self._get_typed_nodes(uq_nodes, ncit)
         for node in uq_nodes:
-            concept_id = f'{NamespacePrefix.NCIT.value}:{node.name}'
+            concept_id = f"{NamespacePrefix.NCIT.value}:{node.name}"
             if node.P108:
                 label = node.P108.first()
             else:
@@ -141,44 +141,44 @@ class NCIt(Base):
             associated_with = []
             if node.P207:
                 associated_with.append(
-                    f'{NamespacePrefix.UMLS.value}:' f'{node.P207.first()}'
+                    f"{NamespacePrefix.UMLS.value}:" f"{node.P207.first()}"
                 )
             if node.P210:
                 xrefs.append(
-                    f'{NamespacePrefix.CASREGISTRY.value}:' f'{node.P210.first()}'
+                    f"{NamespacePrefix.CASREGISTRY.value}:" f"{node.P210.first()}"
                 )
             if node.P319:
                 associated_with.append(
-                    f'{NamespacePrefix.UNII.value}:' f'{node.P319.first()}'
+                    f"{NamespacePrefix.UNII.value}:" f"{node.P319.first()}"
                 )
             if node.P368:
                 iri = node.P368.first()
-                if ':' in iri:
-                    iri = iri.split(':')[1]
-                associated_with.append(f'{NamespacePrefix.CHEBI.value}:{iri}')
+                if ":" in iri:
+                    iri = iri.split(":")[1]
+                associated_with.append(f"{NamespacePrefix.CHEBI.value}:{iri}")
             params: RecordParams = {  # type: ignore
-                'concept_id': concept_id,
-                'label': label,
-                'aliases': aliases,
-                'xrefs': xrefs,
-                'associated_with': associated_with,
+                "concept_id": concept_id,
+                "label": label,
+                "aliases": aliases,
+                "xrefs": xrefs,
+                "associated_with": associated_with,
             }
             self._load_therapy(params)
 
     def _load_meta(self) -> None:
         """Load metadata"""
         metadata = SourceMeta(
-            data_license='CC BY 4.0',
-            data_license_url='https://creativecommons.org/licenses/by/4.0/legalcode',  # noqa F401
+            data_license="CC BY 4.0",
+            data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
             version=self._version,
-            data_url='https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/',
-            rdp_url='http://reusabledata.org/ncit.html',
+            data_url="https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/",
+            rdp_url="http://reusabledata.org/ncit.html",
             data_license_attributes={
-                'non_commercial': False,
-                'share_alike': False,
-                'attribution': True,
+                "non_commercial": False,
+                "share_alike": False,
+                "attribution": True,
             },
         )
         params = dict(metadata)
-        params['src_name'] = SourceName.NCIT.value
+        params["src_name"] = SourceName.NCIT.value
         self.database.metadata.put_item(Item=params)

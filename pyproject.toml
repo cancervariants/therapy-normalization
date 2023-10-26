@@ -28,9 +28,6 @@ fixable = ["I", "F401"]
 # *ignored for compatibility with formatter
 ignore = ["D203", "D205", "D206", "D213", "D400", "D415", "ANN101", "ANN003", "E501", "Q", "W191"]
 
-[tool.ruff.format]
-quote-style = "single"
-
 [tool.ruff.per-file-ignores]
 # ANN001 - missing-type-function-argument
 # ANN2 - missing-return-type

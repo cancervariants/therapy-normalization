@@ -9,7 +9,7 @@ from disease.query import QueryHandler as DiseaseQueryHandler
 from therapy.etl.base import DiseaseIndicationBase
 
 RUN_TEST = (
-    os.environ.get('THERAPY_TEST', '').lower() == 'true'
+    os.environ.get("THERAPY_TEST", "").lower() == "true"
     and AWS_ENV_VAR_NAME not in os.environ
 )  # noqa: E501
 
@@ -27,33 +27,33 @@ class TestDiseaseIndication(DiseaseIndicationBase):
     def load_disease_test_data(self):
         """Load disease data"""
         disease = {
-            'label_and_type': 'mondo:0700110##identity',
-            'item_type': 'identity',
-            'src_name': 'Mondo',
-            'concept_id': 'mondo:0700110',
-            'label': 'pneumonia, non-human animal',
-            'merge_ref': 'mondo:07001110##merger',
+            "label_and_type": "mondo:0700110##identity",
+            "item_type": "identity",
+            "src_name": "Mondo",
+            "concept_id": "mondo:0700110",
+            "label": "pneumonia, non-human animal",
+            "merge_ref": "mondo:07001110##merger",
         }
         self.disease_normalizer.db.diseases.put_item(Item=disease)
 
         merge = {
-            'label_and_type': 'mondo:0700110##merger',
-            'item_type': 'merger',
-            'src_name': 'Mondo',
-            'concept_id': 'mondo:0700110',
-            'label': 'pneumonia, non-human animal',
+            "label_and_type": "mondo:0700110##merger",
+            "item_type": "merger",
+            "src_name": "Mondo",
+            "concept_id": "mondo:0700110",
+            "label": "pneumonia, non-human animal",
         }
         self.disease_normalizer.db.diseases.put_item(Item=merge)
 
         source = {
-            'src_name': 'Mondo',
-            'data_license': 'CC BY 4.0',
-            'data_license_url': 'https://creativecommons.org/licenses/by/4.0/legalcode',
-            'version': '2022-10-11',
-            'data_license_attributes': {
-                'non_commercial': False,
-                'share_alike': False,
-                'attribution': True,
+            "src_name": "Mondo",
+            "data_license": "CC BY 4.0",
+            "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
+            "version": "2022-10-11",
+            "data_license_attributes": {
+                "non_commercial": False,
+                "share_alike": False,
+                "attribution": True,
             },
         }
         self.disease_normalizer.db.metadata.put_item(Item=source)
@@ -78,5 +78,5 @@ class TestDiseaseIndication(DiseaseIndicationBase):
 def test_normalize_disease():
     """Test that DiseaseIndicationBase works correctly when normalizing diseases"""
     dib = TestDiseaseIndication()
-    norm_disease = dib._normalize_disease('mondo:0700110')
-    assert norm_disease == 'mondo:0700110'
+    norm_disease = dib._normalize_disease("mondo:0700110")
+    assert norm_disease == "mondo:0700110"

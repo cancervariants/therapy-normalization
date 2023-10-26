@@ -25,17 +25,17 @@ class Rules:
         """Initialize rules class.
         :param source_name: name of source to use, for filtering unneeded rules
         """
-        rules_path = APP_ROOT / 'etl' / 'rules.csv'
+        rules_path = APP_ROOT / "etl" / "rules.csv"
         self.rules: Dict[str, List[Tuple[str, str]]] = {}
-        with open(rules_path, 'r') as rules_file:
-            reader = csv.DictReader(rules_file, delimiter=',')
+        with open(rules_path, "r") as rules_file:
+            reader = csv.DictReader(rules_file, delimiter=",")
             for row in reader:
-                if row['source'] == source_name:
-                    concept_id = row['concept_id']
+                if row["source"] == source_name:
+                    concept_id = row["concept_id"]
                     if not self.rules.get(concept_id):
-                        self.rules[concept_id] = [(row['field'], row['value'])]
+                        self.rules[concept_id] = [(row["field"], row["value"])]
                     else:
-                        self.rules[concept_id].append((row['field'], row['value']))
+                        self.rules[concept_id].append((row["field"], row["value"]))
 
     def apply_rules_to_therapy(self, therapy: Dict) -> Dict:
         """Apply all rules to therapy. First find relevant rules, then call the
@@ -43,7 +43,7 @@ class Rules:
         :param therapy: therapy object from ETL base
         :return: processed therapy object
         """
-        relevant_rules = self.rules.get(therapy['concept_id'], [])
+        relevant_rules = self.rules.get(therapy["concept_id"], [])
         for rule in relevant_rules:
             therapy = self._apply_rule_to_field(therapy, rule[0], rule[1])
         return therapy
@@ -57,8 +57,8 @@ class Rules:
         :param value: value to remove from field, if possible
         :return: therapy object with rule applied
         """
-        if field not in {'aliases', 'trade_names', 'xrefs', 'associated_with'}:
-            raise Exception('Non-scalar fields currently not implemented')
+        if field not in {"aliases", "trade_names", "xrefs", "associated_with"}:
+            raise Exception("Non-scalar fields currently not implemented")
         field_data = set(therapy.get(field, []))
         if value in field_data:
             field_data.remove(value)

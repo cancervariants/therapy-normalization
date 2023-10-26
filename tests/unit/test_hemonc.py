@@ -17,135 +17,125 @@ def hemonc(test_source):
 @pytest.fixture(scope="module")
 def cisplatin():
     """Construct cisplatin fixture."""
-    return Drug(**{
-        "concept_id": "hemonc:105",
-        "label": "Cisplatin",
-        "aliases": [
-            "cis-diamminedichloroplatinum III",
-            "DDP",
-            "cisplatinum",
-            "cis-platinum",
-            "DACP",
-            "NSC 119875",
-            "CDDP"
-        ],
-        "trade_names": [],
-        "xrefs": ["rxcui:2555"],
-        "associated_with": [],
-        "approval_ratings": ["hemonc_approved"],
-        "approval_year": ["1978"],
-        "has_indication": [
-            {
-                "disease_id": "hemonc:569",
-                "disease_label": "Bladder cancer",
-                "normalized_disease_id": "ncit:C9334",
-                "supplemental_info": {
-                    "regulatory_body": "FDA"
-                }
-            },
-            {
-                "disease_id": "hemonc:645",
-                "disease_label": "Ovarian cancer",
-                "normalized_disease_id": "ncit:C7431",
-                "supplemental_info": {
-                    "regulatory_body": "FDA"
-                }
-            },
-            {
-                "disease_id": "hemonc:671",
-                "disease_label": "Testicular cancer",
-                "normalized_disease_id": "ncit:C7251",
-                "supplemental_info": {
-                    "regulatory_body": "FDA"
-                }
-            }
-        ]
-    })
+    return Drug(
+        **{
+            "concept_id": "hemonc:105",
+            "label": "Cisplatin",
+            "aliases": [
+                "cis-diamminedichloroplatinum III",
+                "DDP",
+                "cisplatinum",
+                "cis-platinum",
+                "DACP",
+                "NSC 119875",
+                "CDDP",
+            ],
+            "trade_names": [],
+            "xrefs": ["rxcui:2555"],
+            "associated_with": [],
+            "approval_ratings": ["hemonc_approved"],
+            "approval_year": ["1978"],
+            "has_indication": [
+                {
+                    "disease_id": "hemonc:569",
+                    "disease_label": "Bladder cancer",
+                    "normalized_disease_id": "ncit:C9334",
+                    "supplemental_info": {"regulatory_body": "FDA"},
+                },
+                {
+                    "disease_id": "hemonc:645",
+                    "disease_label": "Ovarian cancer",
+                    "normalized_disease_id": "ncit:C7431",
+                    "supplemental_info": {"regulatory_body": "FDA"},
+                },
+                {
+                    "disease_id": "hemonc:671",
+                    "disease_label": "Testicular cancer",
+                    "normalized_disease_id": "ncit:C7251",
+                    "supplemental_info": {"regulatory_body": "FDA"},
+                },
+            ],
+        }
+    )
 
 
 @pytest.fixture(scope="module")
 def bendamustine():
     """Construct bendamustine fixture."""
-    return Drug(**{
-        "concept_id": "hemonc:65",
-        "label": "Bendamustine",
-        "aliases": [
-            "CEP-18083",
-            "cytostasan hydrochloride",
-            "SyB L-0501",
-            "SDX-105",
-            "bendamustine hydrochloride",
-            "bendamustin hydrochloride"
-        ],
-        "xrefs": ["rxcui:134547"],
-        "associated_with": [],
-        "trade_names": [
-            "Belrapzo",
-            "Bendamax",
-            "Bendawel",
-            "Bendeka",
-            "Bendit",
-            "Innomustine",
-            "Leuben",
-            "Levact",
-            "Maxtorin",
-            "MyMust",
-            "Purplz",
-            "Ribomustin",
-            "Treakisym",
-            "Treanda",
-            "Xyotin"
-        ],
-        "approval_ratings": ["hemonc_approved"],
-        "approval_year": ["2008", "2015"],
-        "has_indication": [
-            {
-                "disease_id": "hemonc:581",
-                "disease_label": "Chronic lymphocytic leukemia",
-                "normalized_disease_id": "ncit:C3163",
-                "supplemental_info": {
-                    "regulatory_body": "FDA"
-                }
-            },
-            {
-                "disease_id": "hemonc:46094",
-                "disease_label": "Indolent lymphoma",
-                "normalized_disease_id": "ncit:C8504",
-                "supplemental_info": {
-                    "regulatory_body": "FDA"
-                }
-            }
-        ]
-    })
+    return Drug(
+        **{
+            "concept_id": "hemonc:65",
+            "label": "Bendamustine",
+            "aliases": [
+                "CEP-18083",
+                "cytostasan hydrochloride",
+                "SyB L-0501",
+                "SDX-105",
+                "bendamustine hydrochloride",
+                "bendamustin hydrochloride",
+            ],
+            "xrefs": ["rxcui:134547"],
+            "associated_with": [],
+            "trade_names": [
+                "Belrapzo",
+                "Bendamax",
+                "Bendawel",
+                "Bendeka",
+                "Bendit",
+                "Innomustine",
+                "Leuben",
+                "Levact",
+                "Maxtorin",
+                "MyMust",
+                "Purplz",
+                "Ribomustin",
+                "Treakisym",
+                "Treanda",
+                "Xyotin",
+            ],
+            "approval_ratings": ["hemonc_approved"],
+            "approval_year": ["2008", "2015"],
+            "has_indication": [
+                {
+                    "disease_id": "hemonc:581",
+                    "disease_label": "Chronic lymphocytic leukemia",
+                    "normalized_disease_id": "ncit:C3163",
+                    "supplemental_info": {"regulatory_body": "FDA"},
+                },
+                {
+                    "disease_id": "hemonc:46094",
+                    "disease_label": "Indolent lymphoma",
+                    "normalized_disease_id": "ncit:C8504",
+                    "supplemental_info": {"regulatory_body": "FDA"},
+                },
+            ],
+        }
+    )
 
 
 @pytest.fixture(scope="module")
 def degarelix():
     """Create fixture for degarelix drug."""
-    return Drug(**{
-        "label": "Degarelix",
-        "concept_id": "hemonc:151",
-        "aliases": [
-            "degarelix acetate",
-            "FE200486",
-            "ASP3550"
-        ],
-        "xrefs": ["rxcui:475230"],
-        "associated_with": [],
-        "trade_names": ["Firmagon"],
-        "approval_ratings": ["hemonc_approved"],
-        "approval_year": ["2008"],
-        "has_indication": [
-            {
-                "disease_id": "hemonc:658",
-                "disease_label": "Prostate cancer",
-                "normalized_disease_id": "ncit:C7378",
-                "supplemental_info": {
-                    "regulatory_body": "FDA"
+    return Drug(
+        **{
+            "label": "Degarelix",
+            "concept_id": "hemonc:151",
+            "aliases": ["degarelix acetate", "FE200486", "ASP3550"],
+            "xrefs": ["rxcui:475230"],
+            "associated_with": [],
+            "trade_names": ["Firmagon"],
+            "approval_ratings": ["hemonc_approved"],
+            "approval_year": ["2008"],
+            "has_indication": [
+                {
+                    "disease_id": "hemonc:658",
+                    "disease_label": "Prostate cancer",
+                    "normalized_disease_id": "ncit:C7378",
+                    "supplemental_info": {"regulatory_body": "FDA"},
                 }
-            }
-        ]
-    })
+            ],
+        }
+    )
 
 
 def test_concept_id_match(hemonc, compare_response, cisplatin, bendamustine, degarelix):
@@ -225,9 +215,15 @@ def test_metadata(hemonc):
     """Test that source metadata returns correctly."""
     response = hemonc.query_handler._fetch_meta("HemOnc")
     assert response.data_license == "CC BY 4.0"
-    assert response.data_license_url == "https://creativecommons.org/licenses/by/4.0/legalcode"  # noqa: E501
+    assert (
+        response.data_license_url
+        == "https://creativecommons.org/licenses/by/4.0/legalcode"
+    )  # noqa: E501
     assert isodate.parse_date(response.version)
-    assert response.data_url == "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6"  # noqa: E501
+    assert (
+        response.data_url
+        == "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6"
+    )  # noqa: E501
     assert response.rdp_url is None
     assert response.data_license_attributes == {
         "non_commercial": False,

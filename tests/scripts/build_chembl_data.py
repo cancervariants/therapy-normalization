@@ -20,7 +20,7 @@ TEST_IDS = [
 ch = ChEMBL(Database())
 ch._extract_data()
 
-TEST_DATA_DIR = Path(__file__).resolve().parents[1] / 'data' / 'chembl'
+TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "chembl"
 out_db_path = TEST_DATA_DIR / ch._src_file.name
 
 try:

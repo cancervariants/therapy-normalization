@@ -26,7 +26,7 @@ from therapy.schemas import (
     UnmergedNormalizationService,
 )
 
-NormService = TypeVar('NormService', bound=BaseNormalizationService)
+NormService = TypeVar("NormService", bound=BaseNormalizationService)
 
 
 class InvalidParameterException(Exception):  # noqa: N818
@@ -38,7 +38,7 @@ class QueryHandler:
     normalizes query input.
     """
 
-    def __init__(self, db_url: str = '', db_region: str = 'us-east-2') -> None:
+    def __init__(self, db_url: str = "", db_region: str = "us-east-2") -> None:
         """Initialize Normalizer instance.
 
         :param str db_url: URL to database source.
@@ -53,15 +53,15 @@ class QueryHandler:
         :return: List of warnings (dicts)
         """
         warnings: List[Dict[str, str]] = []
-        nbsp = re.search('\xa0|&nbsp;', query_str)
+        nbsp = re.search("\xa0|&nbsp;", query_str)
         if nbsp:
             warnings = [
                 {
-                    'non_breaking_space_characters': 'Query contains non-breaking space characters'
+                    "non_breaking_space_characters": "Query contains non-breaking space characters"
                 }
             ]
             logger.warning(
-                f'Query ({query_str}) contains non-breaking space characters.'
+                f"Query ({query_str}) contains non-breaking space characters."
             )
         return warnings
 
@@ -75,15 +75,15 @@ class QueryHandler:
             return self.db.cached_sources[src_name]
         else:
             try:
-                db_response = self.db.metadata.get_item(Key={'src_name': src_name})
+                db_response = self.db.metadata.get_item(Key={"src_name": src_name})
             except ClientError as e:
-                msg = e.response['Error']['Message']
+                msg = e.response["Error"]["Message"]
                 logger.error(msg)
                 raise Exception(msg)
             try:
-                response = SourceMeta(**db_response['Item'])
+                response = SourceMeta(**db_response["Item"])
             except KeyError:
-                msg = f'Metadata lookup failed for source {src_name}'
+                msg = f"Metadata lookup failed for source {src_name}"
                 logger.error(msg)
                 raise Exception(msg)
             self.db.cached_sources[src_name] = response
@@ -114,27 +114,27 @@ class QueryHandler:
         :return: Tuple containing updated response object, and string containing name of
             the source of the match
         """
-        inds = item.get('has_indication')
+        inds = item.get("has_indication")
         if inds:
-            item['has_indication'] = [self._get_indication(i) for i in inds]
+            item["has_indication"] = [self._get_indication(i) for i in inds]
 
         drug = Drug(**item)
-        src_name = item['src_name']
+        src_name = item["src_name"]
 
-        matches = response['source_matches']
+        matches = response["source_matches"]
         if src_name not in matches.keys():
             pass
         elif matches[src_name] is None:
             matches[src_name] = {
-                'match_type': MatchType[match_type.upper()],
-                'records': [drug],
-                'source_meta_': self._fetch_meta(src_name),
+                "match_type": MatchType[match_type.upper()],
+                "records": [drug],
+                "source_meta_": self._fetch_meta(src_name),
             }
-        elif matches[src_name]['match_type'] == MatchType[match_type.upper()]:
+        elif matches[src_name]["match_type"] == MatchType[match_type.upper()]:
             if drug.concept_id not in [
-                r.concept_id for r in matches[src_name]['records']
+                r.concept_id for r in matches[src_name]["records"]
             ]:
-                matches[src_name]['records'].append(drug)
+                matches[src_name]["records"].append(drug)
 
         return response, src_name
 
@@ -157,11 +157,11 @@ class QueryHandler:
                 match = self.db.get_record_by_id(
                     concept_id.lower(), case_sensitive=False
                 )
-                assert match, f'Unable to retrieve record for {concept_id}'
+                assert match, f"Unable to retrieve record for {concept_id}"
                 (response, src) = self._add_record(response, match, match_type)
                 matched_sources.add(src)
             except ClientError as e:
-                logger.error(e.response['Error']['Message'])
+                logger.error(e.response["Error"]["Message"])
 
         return response, matched_sources
 
@@ -172,12 +172,12 @@ class QueryHandler:
         :return: response object with empty source slots filled with NO_MATCH results
             and corresponding source metadata
         """
-        for src_name in resp['source_matches'].keys():
-            if resp['source_matches'][src_name] is None:
-                resp['source_matches'][src_name] = {
-                    'match_type': MatchType.NO_MATCH,
-                    'records': [],
-                    'source_meta_': self._fetch_meta(src_name),
+        for src_name in resp["source_matches"].keys():
+            if resp["source_matches"][src_name] is None:
+                resp["source_matches"][src_name] = {
+                    "match_type": MatchType.NO_MATCH,
+                    "records": [],
+                    "source_meta_": self._fetch_meta(src_name),
                 }
         return resp
 
@@ -194,11 +194,11 @@ class QueryHandler:
             if match:
                 if source == SourceName.DRUGSATFDA.value:
                     subspace, lui = match.groups()
-                    namespace = f'drugsatfda.{subspace.lower()}'
-                    inferred_id = f'{namespace}:{lui}'
+                    namespace = f"drugsatfda.{subspace.lower()}"
+                    inferred_id = f"{namespace}:{lui}"
                 else:
                     namespace = NamespacePrefix[source.upper()].value
-                    inferred_id = f'{namespace}:{query}'
+                    inferred_id = f"{namespace}:{query}"
                 record = self.db.get_record_by_id(inferred_id, case_sensitive=False)
                 if record:
                     inferred_records.append((record, namespace, inferred_id))
@@ -207,10 +207,10 @@ class QueryHandler:
             return (
                 inferred_records[0][0],
                 {
-                    'inferred_namespace': namespace,
-                    'adjusted_query': inferred_records[0][2],
+                    "inferred_namespace": namespace,
+                    "adjusted_query": inferred_records[0][2],
                     # probably not possible but just in case
-                    'alternate_inferred_matches': [i[2] for i in inferred_records[1:]],
+                    "alternate_inferred_matches": [i[2] for i in inferred_records[1:]],
                 },
             )
         else:
@@ -232,7 +232,7 @@ class QueryHandler:
             infer_response = self._infer_namespace(query)
             if infer_response:
                 records.append(infer_response[0])
-                resp['warnings'].append(infer_response[1])
+                resp["warnings"].append(infer_response[1])
         query_lower = query.lower()
         if [p for p in PREFIX_LOOKUP.keys() if query_lower.startswith(p)]:
             record = self.db.get_record_by_id(query, False)
@@ -257,7 +257,7 @@ class QueryHandler:
         """
         matches = self.db.get_records_by_type(query, match_type)
         if matches:
-            concept_ids = {i['concept_id'] for i in matches}
+            concept_ids = {i["concept_id"] for i in matches}
             (resp, matched_srcs) = self._fetch_records(resp, concept_ids, match_type)
             sources = sources - matched_srcs
         return resp, sources
@@ -274,11 +274,11 @@ class QueryHandler:
         :return: completed response object to return to client
         """
         response: Dict[str, Union[None, str, List[Dict], Dict]] = {
-            'query': query,
-            'warnings': self._emit_char_warnings(query),
-            'source_matches': {source: None for source in sources},
+            "query": query,
+            "warnings": self._emit_char_warnings(query),
+            "source_matches": {source: None for source in sources},
         }
-        if query == '':
+        if query == "":
             response = self._fill_no_matches(response)
             return response
         query = query.strip()
@@ -310,13 +310,13 @@ class QueryHandler:
         """
         response_dict = self._response_keyed(query, sources, infer)
         source_list = []
-        for src_name in response_dict['source_matches'].keys():
-            src = {'source': src_name}
-            to_merge = response_dict['source_matches'][src_name]
+        for src_name in response_dict["source_matches"].keys():
+            src = {"source": src_name}
+            to_merge = response_dict["source_matches"][src_name]
             src.update(to_merge)
 
             source_list.append(src)
-        response_dict['source_matches'] = source_list
+        response_dict["source_matches"] = source_list
 
         return response_dict
 
@@ -324,8 +324,8 @@ class QueryHandler:
         self,
         query_str: str,
         keyed: bool = False,
-        incl: str = '',
-        excl: str = '',
+        incl: str = "",
+        excl: str = "",
         infer: bool = True,
     ) -> SearchService:
         """Fetch normalized therapy objects.
@@ -345,15 +345,15 @@ class QueryHandler:
         """
         sources = dict()
         for k, v in SOURCES.items():
-            if self.db.metadata.get_item(Key={'src_name': v}).get('Item'):
+            if self.db.metadata.get_item(Key={"src_name": v}).get("Item"):
                 sources[k] = v
         if not incl and not excl:
             query_sources = set(sources.values())
         elif incl and excl:
-            detail = 'Cannot request both source inclusions and exclusions.'
+            detail = "Cannot request both source inclusions and exclusions."
             raise InvalidParameterException(detail)
         elif incl:
-            req_sources = [n.strip() for n in incl.split(',')]
+            req_sources = [n.strip() for n in incl.split(",")]
             invalid_sources = []
             query_sources = set()
             for source in req_sources:
@@ -362,10 +362,10 @@ class QueryHandler:
                 else:
                     invalid_sources.append(source)
             if invalid_sources:
-                detail = f'Invalid source name(s): {invalid_sources}'
+                detail = f"Invalid source name(s): {invalid_sources}"
                 raise InvalidParameterException(detail)
         else:
-            req_exclusions = [n.strip() for n in excl.lower().split(',')]
+            req_exclusions = [n.strip() for n in excl.lower().split(",")]
             req_excl_dict = {r.lower(): r for r in req_exclusions}
             invalid_sources = []
             query_sources = set()
@@ -376,7 +376,7 @@ class QueryHandler:
                 if src_l not in req_excl_dict.keys():
                     query_sources.add(src)
             if invalid_sources:
-                detail = f'Invalid source name(s): {invalid_sources}'
+                detail = f"Invalid source name(s): {invalid_sources}"
                 raise InvalidParameterException(detail)
 
         if keyed:
@@ -384,7 +384,7 @@ class QueryHandler:
         else:
             response = self._response_list(query_str, query_sources, infer)
 
-        response['service_meta_'] = ServiceMeta(
+        response["service_meta_"] = ServiceMeta(
             response_datetime=datetime.now(),
         ).model_dump()
         return SearchService(**response)
@@ -397,7 +397,7 @@ class QueryHandler:
         """
         sources_meta = {}
         therapeutic_agent = response.therapeutic_agent
-        sources = [response.normalized_id.split(':')[0]]  # type: ignore
+        sources = [response.normalized_id.split(":")[0]]  # type: ignore
         if therapeutic_agent.mappings:  # type: ignore
             sources += [
                 m.coding.system
@@ -422,9 +422,9 @@ class QueryHandler:
         :param Dict record: individual record item in iterable to sort
         :return: tuple with rank value and concept ID
         """
-        src = record['src_name'].upper()
+        src = record["src_name"].upper()
         source_rank = SourcePriority[src]
-        return source_rank, record['concept_id']
+        return source_rank, record["concept_id"]
 
     def _add_therapeutic_agent(
         self,
@@ -441,13 +441,13 @@ class QueryHandler:
         :return: completed response object ready to return to user
         """
         therapeutic_agent_obj = core_models.TherapeuticAgent(
-            id=f"normalize.therapy.{record['concept_id']}", label=record.get('label')
+            id=f"normalize.therapy.{record['concept_id']}", label=record.get("label")
         )
 
-        source_ids = record.get('xrefs', []) + record.get('associated_with', [])
+        source_ids = record.get("xrefs", []) + record.get("associated_with", [])
         mappings = []
         for source_id in source_ids:
-            system, code = source_id.split(':')
+            system, code = source_id.split(":")
             mappings.append(
                 core_models.Mapping(
                     coding=core_models.Coding(
@@ -459,33 +459,33 @@ class QueryHandler:
         if mappings:
             therapeutic_agent_obj.mappings = mappings
 
-        if 'aliases' in record:
-            therapeutic_agent_obj.aliases = record['aliases']
+        if "aliases" in record:
+            therapeutic_agent_obj.aliases = record["aliases"]
 
         extensions = []
         if any(
             filter(
                 lambda f: f in record,
-                ('approval_ratings', 'approval_year', 'has_indication'),
+                ("approval_ratings", "approval_year", "has_indication"),
             )
         ):
             approv_value = {}
-            if 'approval_ratings' in record:
-                value = record.get('approval_ratings')
+            if "approval_ratings" in record:
+                value = record.get("approval_ratings")
                 if value:
-                    approv_value['approval_ratings'] = value  # type: ignore
-            if 'approval_year' in record:
-                value = record.get('approval_year')
+                    approv_value["approval_ratings"] = value  # type: ignore
+            if "approval_year" in record:
+                value = record.get("approval_year")
                 if value:
-                    approv_value['approval_year'] = value  # type: ignore
+                    approv_value["approval_year"] = value  # type: ignore
 
-            inds = record.get('has_indication', [])
+            inds = record.get("has_indication", [])
             inds_list = []
             for ind_db in inds:
                 indication = self._get_indication(ind_db)
 
                 if indication.normalized_disease_id:
-                    system, code = indication.normalized_disease_id.split(':')
+                    system, code = indication.normalized_disease_id.split(":")
                     mappings = [
                         core_models.Mapping(
                             coding=core_models.Coding(
@@ -509,24 +509,24 @@ class QueryHandler:
                     ]
                 inds_list.append(ind_disease_obj.model_dump(exclude_none=True))
             if inds_list:
-                approv_value['has_indication'] = inds_list  # type: ignore
+                approv_value["has_indication"] = inds_list  # type: ignore
 
             approv = core_models.Extension(
-                name='regulatory_approval', value=approv_value
+                name="regulatory_approval", value=approv_value
             )
             extensions.append(approv)
 
-        trade_names = record.get('trade_names')
+        trade_names = record.get("trade_names")
         if trade_names:
             extensions.append(
-                core_models.Extension(name='trade_names', value=trade_names)
+                core_models.Extension(name="trade_names", value=trade_names)
             )
 
         if extensions:
             therapeutic_agent_obj.extensions = extensions
 
         response.match_type = match_type
-        response.normalized_id = record['concept_id']
+        response.normalized_id = record["concept_id"]
         response.therapeutic_agent = therapeutic_agent_obj
         response = self._add_merged_meta(response)
         return response
@@ -548,7 +548,7 @@ class QueryHandler:
         :param Callable callback: response constructor method
         :return: Normalized response object
         """
-        merge_ref = record.get('merge_ref')
+        merge_ref = record.get("merge_ref")
         if merge_ref:
             # follow merge_ref
             merge = self.db.get_record_by_id(merge_ref, False, True)
@@ -571,10 +571,10 @@ class QueryHandler:
         :return: basic normalization response boilerplate
         """
         return {
-            'query': query,
-            'match_type': MatchType.NO_MATCH,
-            'warnings': self._emit_char_warnings(query),
-            'service_meta_': ServiceMeta(response_datetime=datetime.now()),
+            "query": query,
+            "match_type": MatchType.NO_MATCH,
+            "warnings": self._emit_char_warnings(query),
+            "service_meta_": ServiceMeta(response_datetime=datetime.now()),
         }
 
     def _get_matches_by_type(self, query: str, match_type: str) -> List[Dict]:
@@ -585,7 +585,7 @@ class QueryHandler:
         """
         matching_refs = self.db.get_records_by_type(query, match_type)
         matching_records = [
-            self.db.get_record_by_id(m['concept_id'], False) for m in matching_refs
+            self.db.get_record_by_id(m["concept_id"], False) for m in matching_refs
         ]
         return sorted(matching_records, key=self._record_order)  # type: ignore
 
@@ -610,9 +610,9 @@ class QueryHandler:
         :param Dict record: record to add
         :return: completed Drug object
         """
-        inds = record.get('has_indication')
+        inds = record.get("has_indication")
         if inds:
-            record['has_indication'] = [self._get_indication(i) for i in inds]
+            record["has_indication"] = [self._get_indication(i) for i in inds]
         return Drug(**record)
 
     def _add_normalized_records(
@@ -630,22 +630,22 @@ class QueryHandler:
         :return: Completed response object
         """
         response.match_type = match_type
-        response.normalized_concept_id = normalized_record['concept_id']
-        if normalized_record['item_type'] == 'identity':
-            record_source = SourceName[normalized_record['src_name'].upper()]
+        response.normalized_concept_id = normalized_record["concept_id"]
+        if normalized_record["item_type"] == "identity":
+            record_source = SourceName[normalized_record["src_name"].upper()]
             response.source_matches[record_source] = MatchesNormalized(
                 records=[self._construct_drug_match(normalized_record)],
                 source_meta_=self._fetch_meta(record_source.value),
             )
         else:
-            concept_ids = [normalized_record['concept_id']] + normalized_record.get(
-                'xrefs', []
+            concept_ids = [normalized_record["concept_id"]] + normalized_record.get(
+                "xrefs", []
             )
             for concept_id in concept_ids:
                 record = self.db.get_record_by_id(concept_id, case_sensitive=False)
                 if not record:
                     continue  # cover a few chemidplus edge cases
-                record_source = SourceName[record['src_name'].upper()]
+                record_source = SourceName[record["src_name"].upper()]
                 drug = self._construct_drug_match(record)
                 if record_source in response.source_matches:
                     response.source_matches[record_source].records.append(drug)
@@ -666,7 +666,7 @@ class QueryHandler:
         :param Callable response_builder: response constructor callback method
         :return: completed service response object
         """
-        if query == '':
+        if query == "":
             return response
         query_str = query.lower().strip()
 
@@ -705,7 +705,7 @@ class QueryHandler:
             # attempt merge ref resolution until successful
             for match in matching_records:
                 assert match is not None
-                record = self.db.get_record_by_id(match['concept_id'], False)
+                record = self.db.get_record_by_id(match["concept_id"], False)
                 if record:
                     match_type_value = MatchType[match_type.upper()]
                     return self._resolve_merge(

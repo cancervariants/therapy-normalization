@@ -7,10 +7,10 @@ from .version import __version__
 
 APP_ROOT: Path = Path(__file__).resolve().parents[0]
 logging.basicConfig(
-    filename='therapy.log',
-    format='[%(asctime)s] - %(name)s - %(levelname)s : %(message)s',
+    filename="therapy.log",
+    format="[%(asctime)s] - %(name)s - %(levelname)s : %(message)s",
 )
-logger = logging.getLogger('therapy')
+logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
 
@@ -45,12 +45,12 @@ PREFIX_LOOKUP = {
 
 # Namespace LUI patterns. Use for namespace inference.
 NAMESPACE_LUIS = (
-    (re.compile(r'^CHEMBL\d+$', re.IGNORECASE), SourceName.CHEMBL.value),
-    (re.compile(r'^\d+\-\d+\-\d+$', re.IGNORECASE), SourceName.CHEMIDPLUS.value),
-    (re.compile(r'^(Q|P)\d+$', re.IGNORECASE), SourceName.WIKIDATA.value),
-    (re.compile(r'^C\d+$', re.IGNORECASE), SourceName.NCIT.value),
-    (re.compile(r'^DB\d{5}$', re.IGNORECASE), SourceName.DRUGBANK.value),
-    (re.compile(r'^(A?NDA)(\d+)$', re.IGNORECASE), SourceName.DRUGSATFDA.value),
+    (re.compile(r"^CHEMBL\d+$", re.IGNORECASE), SourceName.CHEMBL.value),
+    (re.compile(r"^\d+\-\d+\-\d+$", re.IGNORECASE), SourceName.CHEMIDPLUS.value),
+    (re.compile(r"^(Q|P)\d+$", re.IGNORECASE), SourceName.WIKIDATA.value),
+    (re.compile(r"^C\d+$", re.IGNORECASE), SourceName.NCIT.value),
+    (re.compile(r"^DB\d{5}$", re.IGNORECASE), SourceName.DRUGBANK.value),
+    (re.compile(r"^(A?NDA)(\d+)$", re.IGNORECASE), SourceName.DRUGSATFDA.value),
 )
 
 # Sources that we import directly

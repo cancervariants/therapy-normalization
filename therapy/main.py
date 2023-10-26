@@ -15,9 +15,9 @@ from therapy.schemas import (
 
 query_handler = QueryHandler()
 app = FastAPI(
-    docs_url='/therapy',
-    openapi_url='/therapy/openapi.json',
-    swagger_ui_parameters={'tryItOutEnabled': True},
+    docs_url="/therapy",
+    openapi_url="/therapy/openapi.json",
+    swagger_ui_parameters={"tryItOutEnabled": True},
 )
 
 
@@ -26,20 +26,20 @@ def custom_openapi() -> Dict:
     if app.openapi_schema:
         return app.openapi_schema
     openapi_schema = get_openapi(
-        title='The VICC Therapy Normalizer',
+        title="The VICC Therapy Normalizer",
         version=__version__,
-        openapi_version='3.0.3',
-        description='Normalize drugs and other therapy terms.',
+        openapi_version="3.0.3",
+        description="Normalize drugs and other therapy terms.",
         routes=app.routes,
     )
     #    openapi_schema["info"]["license"] = {  # TODO
     #        "name": "Name-of-license",
     #        "url": "http://www.to-be-determined.com"
     #    }
-    openapi_schema['info']['contact'] = {
-        'name': 'Alex H. Wagner',
-        'email': 'Alex.Wagner@nationwidechildrens.org',
-        'url': 'https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine/research-labs/wagner-lab',  # noqa: E501
+    openapi_schema["info"]["contact"] = {
+        "name": "Alex H. Wagner",
+        "email": "Alex.Wagner@nationwidechildrens.org",
+        "url": "https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine/research-labs/wagner-lab",  # noqa: E501
     }
     app.openapi_schema = openapi_schema
     return app.openapi_schema
@@ -48,55 +48,55 @@ def custom_openapi() -> Dict:
 app.openapi = custom_openapi  # type: ignore
 
 # endpoint description text
-get_matches_summary = 'Given query, provide highest matches from each source.'
-response_descr = 'A response to a validly-formed query.'
-q_descr = 'Therapy to search.'
+get_matches_summary = "Given query, provide highest matches from each source."
+response_descr = "A response to a validly-formed query."
+q_descr = "Therapy to search."
 keyed_descr = (
-    'If true, return response as key-value pairs of sources to source ' 'matches.'
+    "If true, return response as key-value pairs of sources to source " "matches."
 )
 incl_descr = (
-    'Comma-separated list of source names to include in response. Will '
-    'exclude all other sources. Will return HTTP status code 422: '
+    "Comma-separated list of source names to include in response. Will "
+    "exclude all other sources. Will return HTTP status code 422: "
     'Unprocessable Entity if both "incl" and "excl" parameters are given.'
 )
 excl_descr = (
-    'Comma-separated list of source names to exclude in response. Will '
-    'include all other sources. Will return HTTP status code 422: '
+    "Comma-separated list of source names to exclude in response. Will "
+    "include all other sources. Will return HTTP status code 422: "
     'Unprocessable Entity if both "incl" and "excl" parameters are given.'
 )
 infer_descr = (
-    'If true, attempt namespace inference when queries match known '
-    'Local Unique Identifier patterns.'
+    "If true, attempt namespace inference when queries match known "
+    "Local Unique Identifier patterns."
 )
 search_description = (
-    'For each source, return strongest-match concepts for query '
-    'string provided by user'
+    "For each source, return strongest-match concepts for query "
+    "string provided by user"
 )
 normalize_description = (
-    'Return merged strongest-match concept for query string ' 'provided by user.'
+    "Return merged strongest-match concept for query string " "provided by user."
 )
 merged_matches_summary = (
-    'Given query, provide merged normalized record as a ' 'Therapeutic Agent.'
+    "Given query, provide merged normalized record as a " "Therapeutic Agent."
 )
-merged_response_descr = 'A response to a validly-formed query.'
-normalize_q_descr = 'Therapy to normalize.'
+merged_response_descr = "A response to a validly-formed query."
+normalize_q_descr = "Therapy to normalize."
 unmerged_matches_summary = (
-    'Given query, provide source records corresponding to ' 'normalized concept.'
+    "Given query, provide source records corresponding to " "normalized concept."
 )
 unmerged_response_descr = (
-    'Response containing source records contained within ' 'normalized concept.'
+    "Response containing source records contained within " "normalized concept."
 )
 unmerged_normalize_description = (
-    'Return unmerged records associated with the '
-    'normalized result of the user-provided query '
-    'string.'
+    "Return unmerged records associated with the "
+    "normalized result of the user-provided query "
+    "string."
 )
 
 
 @app.get(
-    '/therapy/search',
+    "/therapy/search",
     summary=get_matches_summary,
-    operation_id='getQueryResponse',
+    operation_id="getQueryResponse",
     response_description=response_descr,
     response_model=SearchService,
     response_model_exclude_none=True,
@@ -136,9 +136,9 @@ def search(
 
 
 @app.get(
-    '/therapy/normalize',
+    "/therapy/normalize",
     summary=merged_matches_summary,
-    operation_id='getMergedRecord',
+    operation_id="getMergedRecord",
     response_description=merged_response_descr,
     response_model=NormalizationService,
     response_model_exclude_none=True,
@@ -164,9 +164,9 @@ def normalize(
 
 
 @app.get(
-    '/therapy/normalize_unmerged',
+    "/therapy/normalize_unmerged",
     summary=unmerged_matches_summary,
-    operation_id='getUnmergedRecords',
+    operation_id="getUnmergedRecords",
     response_description=unmerged_response_descr,
     response_model=UnmergedNormalizationService,
     description=unmerged_normalize_description,

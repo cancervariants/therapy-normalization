@@ -22,10 +22,10 @@ from therapy.database import Database
 from therapy.etl.rules import Rules
 from therapy.schemas import Drug, SourceName
 
-logger = logging.getLogger('therapy')
+logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
-DEFAULT_DATA_PATH: Path = APP_ROOT / 'data'
+DEFAULT_DATA_PATH: Path = APP_ROOT / "data"
 
 
 class Base(ABC):
@@ -86,7 +86,7 @@ class Base(ABC):
         :param Path dl_path: path to temp data file
         :param Path outfile_path: path to save file within
         """
-        with zipfile.ZipFile(dl_path, 'r') as zip_ref:
+        with zipfile.ZipFile(dl_path, "r") as zip_ref:
             if len(zip_ref.filelist) > 1:
                 files = sorted(
                     zip_ref.filelist, key=lambda z: z.file_size, reverse=True
@@ -114,7 +114,7 @@ class Base(ABC):
             file requires additional action, e.g. it's a zip file.
         """
         if handler:
-            dl_path = Path(tempfile.gettempdir()) / 'therapy_dl_tmp'
+            dl_path = Path(tempfile.gettempdir()) / "therapy_dl_tmp"
         else:
             dl_path = outfile_path
         # use stream to avoid saving download completely to memory
@@ -123,9 +123,9 @@ class Base(ABC):
                 r.raise_for_status()
             except requests.HTTPError:
                 raise DownloadException(
-                    f'Failed to download {outfile_path.name} from {url}.'
+                    f"Failed to download {outfile_path.name} from {url}."
                 )
-            with open(dl_path, 'wb') as h:
+            with open(dl_path, "wb") as h:
                 for chunk in r.iter_content(chunk_size=8192):
                     if chunk:
                         h.write(chunk)
@@ -141,12 +141,12 @@ class Base(ABC):
         try:
             with ftplib.FTP(host) as ftp:
                 ftp.login()
-                logger.debug(f'FTP login to {host} was successful')
+                logger.debug(f"FTP login to {host} was successful")
                 ftp.cwd(host_dir)
-                with open(self._src_dir / host_fn, 'wb') as fp:
-                    ftp.retrbinary(f'RETR {host_fn}', fp.write)
+                with open(self._src_dir / host_fn, "wb") as fp:
+                    ftp.retrbinary(f"RETR {host_fn}", fp.write)
         except ftplib.all_errors as e:
-            logger.error(f'FTP download failed: {e}')
+            logger.error(f"FTP download failed: {e}")
             raise Exception(e)
 
     def _parse_version(
@@ -160,7 +160,7 @@ class Base(ABC):
         :raises: FileNotFoundError if version parsing fails
         """
         if pattern is None:
-            pattern = re.compile(type(self).__name__.lower() + r'_(.+)\..+')
+            pattern = re.compile(type(self).__name__.lower() + r"_(.+)\..+")
         matches = re.match(pattern, file_path.name)
         if matches is None:
             raise FileNotFoundError
@@ -171,7 +171,7 @@ class Base(ABC):
         """Get existing source files from data directory.
         :return: sorted list of file objects
         """
-        return list(sorted(self._src_dir.glob(f'{self._name.lower()}_*.*')))
+        return list(sorted(self._src_dir.glob(f"{self._name.lower()}_*.*")))
 
     def _extract_data(self, use_existing: bool = False) -> None:
         """Get source file from data directory.
@@ -191,20 +191,20 @@ class Base(ABC):
         if use_existing:
             files = self._get_existing_files()
             if len(files) < 1:
-                raise FileNotFoundError(f'No source data found for {src_name}')
+                raise FileNotFoundError(f"No source data found for {src_name}")
             self._src_file: Path = files[-1]
             try:
                 self._version = self._parse_version(self._src_file)
             except FileNotFoundError:
                 raise FileNotFoundError(
-                    f'Unable to parse version value from {src_name} source data file '
-                    f'located at {self._src_file.absolute().as_uri()} -- '
-                    'check filename against schema defined in README: '
-                    'https://github.com/cancervariants/therapy-normalization#update-sources'  # noqa: E501
+                    f"Unable to parse version value from {src_name} source data file "
+                    f"located at {self._src_file.absolute().as_uri()} -- "
+                    "check filename against schema defined in README: "
+                    "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
                 )
         else:
             self._version = self.get_latest_version()
-            fglob = f'{src_name}_{self._version}.*'
+            fglob = f"{src_name}_{self._version}.*"
             latest = list(self._src_dir.glob(fglob))
             if not latest:
                 self._download_data()
@@ -237,10 +237,10 @@ class Base(ABC):
         try:
             Drug(**therapy)
         except ValidationError as e:
-            logger.error(f'Attempted to load invalid therapy: {therapy}')
+            logger.error(f"Attempted to load invalid therapy: {therapy}")
             raise e
 
-        concept_id = therapy['concept_id']
+        concept_id = therapy["concept_id"]
 
         for attr_type, item_type in ITEM_TYPES.items():
             if attr_type in therapy:
@@ -249,29 +249,29 @@ class Base(ABC):
                     del therapy[attr_type]
                     continue
 
-                if attr_type == 'label':
+                if attr_type == "label":
                     value = value.strip()
-                    therapy['label'] = value
+                    therapy["label"] = value
                     self.database.add_ref_record(value.lower(), concept_id, item_type)
                     continue
 
                 value_set = {v.strip() for v in value}
 
                 # clean up listlike symbol fields
-                if attr_type == 'aliases' and 'trade_names' in therapy:
-                    value = list(value_set - set(therapy['trade_names']))
+                if attr_type == "aliases" and "trade_names" in therapy:
+                    value = list(value_set - set(therapy["trade_names"]))
                 else:
                     value = list(value_set)
 
-                if attr_type in ('aliases', 'trade_names'):
-                    if 'label' in therapy:
+                if attr_type in ("aliases", "trade_names"):
+                    if "label" in therapy:
                         try:
-                            value.remove(therapy['label'])
+                            value.remove(therapy["label"])
                         except ValueError:
                             pass
 
                 if len(value) > 20:
-                    logger.debug(f'{concept_id} has > 20 {attr_type}.')
+                    logger.debug(f"{concept_id} has > 20 {attr_type}.")
                     del therapy[attr_type]
                     continue
 
@@ -280,26 +280,26 @@ class Base(ABC):
                 therapy[attr_type] = value
 
         # compress has_indication
-        indications = therapy.get('has_indication')
+        indications = therapy.get("has_indication")
         if indications:
-            therapy['has_indication'] = list(
+            therapy["has_indication"] = list(
                 {
                     json.dumps(
                         [
-                            ind['disease_id'],
-                            ind['disease_label'],
-                            ind.get('normalized_disease_id'),
-                            ind.get('supplemental_info'),
+                            ind["disease_id"],
+                            ind["disease_label"],
+                            ind.get("normalized_disease_id"),
+                            ind.get("supplemental_info"),
                         ]
                     )
                     for ind in indications
                 }
             )
-        elif 'has_indication' in therapy:
-            del therapy['has_indication']
+        elif "has_indication" in therapy:
+            del therapy["has_indication"]
 
         # handle detail fields
-        approval_attrs = ('approval_ratings', 'approval_year')
+        approval_attrs = ("approval_ratings", "approval_year")
         for field in approval_attrs:
             if approval_attrs in therapy and therapy[field] is None:
                 del therapy[field]
@@ -331,7 +331,7 @@ class DiseaseIndicationBase(Base):
         if response.match_type > 0:
             return response.normalized_id
         else:
-            logger.warning(f'Failed to normalize disease term: {query}')
+            logger.warning(f"Failed to normalize disease term: {query}")
             return None
 
 

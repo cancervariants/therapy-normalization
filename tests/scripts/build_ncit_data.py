@@ -12,33 +12,33 @@ from therapy.etl import NCIt
 
 # define captured ids in `test_classes` variable
 
-NCIT_PREFIX = 'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl'
-OWL_PREFIX = '{http://www.w3.org/2002/07/owl#}'
-RDFS_PREFIX = '{http://www.w3.org/2000/01/rdf-schema#}'
-RDF_PREFIX = '{http://www.w3.org/1999/02/22-rdf-syntax-ns#}'
+NCIT_PREFIX = "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl"
+OWL_PREFIX = "{http://www.w3.org/2002/07/owl#}"
+RDFS_PREFIX = "{http://www.w3.org/2000/01/rdf-schema#}"
+RDF_PREFIX = "{http://www.w3.org/1999/02/22-rdf-syntax-ns#}"
 
-ANNOTATION_PROPERTY_TAG = f'{OWL_PREFIX}AnnotationProperty'
-DESCRIPTION_TAG = f'{RDF_PREFIX}Description'
-ABOUT_ATTRIB = f'{RDF_PREFIX}about'
-AXIOM_TAG = f'{OWL_PREFIX}Axiom'
-DATATYPE_TAG = f'{RDFS_PREFIX}Datatype'
-OBJECT_PROPERTY_TAG = f'{OWL_PREFIX}ObjectProperty'
-CLASS_TAG = f'{OWL_PREFIX}Class'
+ANNOTATION_PROPERTY_TAG = f"{OWL_PREFIX}AnnotationProperty"
+DESCRIPTION_TAG = f"{RDF_PREFIX}Description"
+ABOUT_ATTRIB = f"{RDF_PREFIX}about"
+AXIOM_TAG = f"{OWL_PREFIX}Axiom"
+DATATYPE_TAG = f"{RDFS_PREFIX}Datatype"
+OBJECT_PROPERTY_TAG = f"{OWL_PREFIX}ObjectProperty"
+CLASS_TAG = f"{OWL_PREFIX}Class"
 
 
 ncit = NCIt(Database())
 ncit._extract_data()
-TEST_DATA_DIR = Path(__file__).resolve().parents[1] / 'data' / 'ncit'
+TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "ncit"
 outfile_path = TEST_DATA_DIR / ncit._src_file.name
 
 
 def ncit_parser() -> Generator:
     """Get unique XML elements."""
     context = iter(
-        etr.iterparse(ncit._src_file, events=('start', 'end'), huge_tree=True)
+        etr.iterparse(ncit._src_file, events=("start", "end"), huge_tree=True)
     )
     for event, elem in context:
-        if event == 'start':
+        if event == "start":
             yield elem
 
 
@@ -47,10 +47,10 @@ parser = ncit_parser()
 # make root element
 root = next(parser)
 nsmap = root.nsmap
-new_root = etr.Element(f'{RDF_PREFIX}RDF', nsmap=nsmap)
+new_root = etr.Element(f"{RDF_PREFIX}RDF", nsmap=nsmap)
 new_root.set(
-    '{http://www.w3.org/XML/1998/namespace}base',
-    'http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl',
+    "{http://www.w3.org/XML/1998/namespace}base",
+    "http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl",
 )
 
 # add ontology element
@@ -123,12 +123,12 @@ for c in test_classes:
 parent_concepts.remove(owl.Thing)
 parent_concept_iris = {p.iri for p in parent_concepts}
 
-while element.attrib.get(ABOUT_ATTRIB) != f'{NCIT_PREFIX}#term-group':
+while element.attrib.get(ABOUT_ATTRIB) != f"{NCIT_PREFIX}#term-group":
     elements = [element]
     element = next(parser)
     while (
         element.tag != CLASS_TAG or ABOUT_ATTRIB not in element.attrib
-    ) and element.attrib.get(ABOUT_ATTRIB) != f'{NCIT_PREFIX}#term-group':
+    ) and element.attrib.get(ABOUT_ATTRIB) != f"{NCIT_PREFIX}#term-group":
         if element.tag == AXIOM_TAG:
             elements.append(element)
         element = next(parser)
@@ -160,11 +160,11 @@ etr.ElementTree(new_root).write(outfile_path, pretty_print=True)
 pi = XETree.ProcessingInstruction(  # TODO get encoding attrib out
     target='xml version="1.0"'
 )
-pi_string = XETree.tostring(pi).decode('ASCII')
-with open(outfile_path, 'r+') as f:
+pi_string = XETree.tostring(pi).decode("ASCII")
+with open(outfile_path, "r+") as f:
     content = f.read()
     f.seek(0, 0)
-    f.write(pi_string.rstrip('\r\n') + '\n' + content)
+    f.write(pi_string.rstrip("\r\n") + "\n" + content)
 
 formatter = xmlformatter.Formatter(indent=2)
 formatter.format_file(outfile_path)

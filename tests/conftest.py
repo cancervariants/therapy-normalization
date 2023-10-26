@@ -17,56 +17,56 @@ def pytest_collection_modifyitems(items):
     When creating new test modules, be sure to add them here.
     """
     MODULE_ORDER = [  # noqa: N806
-        'test_chembl',
-        'test_chemidplus',
-        'test_drugbank',
-        'test_drugsatfda',
-        'test_guidetopharmacology',
-        'test_hemonc',
-        'test_ncit',
-        'test_rxnorm',
-        'test_wikidata',
-        'test_merge',
-        'test_database',
-        'test_query',
-        'test_emit_warnings',
-        'test_disease_indication',
+        "test_chembl",
+        "test_chemidplus",
+        "test_drugbank",
+        "test_drugsatfda",
+        "test_guidetopharmacology",
+        "test_hemonc",
+        "test_ncit",
+        "test_rxnorm",
+        "test_wikidata",
+        "test_merge",
+        "test_database",
+        "test_query",
+        "test_emit_warnings",
+        "test_disease_indication",
     ]
     items.sort(key=lambda i: MODULE_ORDER.index(i.module.__name__))
 
 
 TEST_ROOT = Path(__file__).resolve().parents[1]
-TEST_DATA_DIRECTORY = TEST_ROOT / 'tests' / 'data'
+TEST_DATA_DIRECTORY = TEST_ROOT / "tests" / "data"
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def test_data():
     """Provide test data location to test modules"""
     return TEST_DATA_DIRECTORY
 
 
-@pytest.fixture(scope='session', autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def db():
     """Provide a database instance to be used by tests."""
     database = Database()
-    if os.environ.get('THERAPY_TEST', '').lower() == 'true':
+    if os.environ.get("THERAPY_TEST", "").lower() == "true":
         if os.environ.get(AWS_ENV_VAR_NAME):
-            assert False, f'Cannot have both THERAPY_TEST and {AWS_ENV_VAR_NAME} set.'
-        existing_tables = database.dynamodb_client.list_tables()['TableNames']
-        if 'therapy_concepts' in existing_tables:
-            database.dynamodb_client.delete_table(TableName='therapy_concepts')
-        if 'therapy_metadata' in existing_tables:
-            database.dynamodb_client.delete_table(TableName='therapy_metadata')
-        existing_tables = database.dynamodb_client.list_tables()['TableNames']
+            assert False, f"Cannot have both THERAPY_TEST and {AWS_ENV_VAR_NAME} set."
+        existing_tables = database.dynamodb_client.list_tables()["TableNames"]
+        if "therapy_concepts" in existing_tables:
+            database.dynamodb_client.delete_table(TableName="therapy_concepts")
+        if "therapy_metadata" in existing_tables:
+            database.dynamodb_client.delete_table(TableName="therapy_metadata")
+        existing_tables = database.dynamodb_client.list_tables()["TableNames"]
         database.create_therapies_table(existing_tables)
         database.create_meta_data_table(existing_tables)
     return database
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def disease_normalizer():
     """Provide mock disease normalizer."""
-    with open(TEST_DATA_DIRECTORY / 'disease_normalization.json', 'r') as f:
+    with open(TEST_DATA_DIRECTORY / "disease_normalization.json", "r") as f:
         disease_data = json.load(f)
 
         def _normalize_disease(query: str):
@@ -75,7 +75,7 @@ def disease_normalizer():
     return _normalize_disease
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def test_source(db: Database, test_data: Path, disease_normalizer: Callable):
     """Provide query endpoint for testing sources. If THERAPY_TEST is set, will try to
     load DB from test data.
@@ -84,7 +84,7 @@ def test_source(db: Database, test_data: Path, disease_normalizer: Callable):
     """
 
     def test_source_factory(EtlClass: Base):  # noqa: N803
-        if os.environ.get('THERAPY_TEST', '').lower() == 'true':
+        if os.environ.get("THERAPY_TEST", "").lower() == "true":
             test_class = EtlClass(db, test_data)  # type: ignore
             test_class._normalize_disease = disease_normalizer  # type: ignore
             test_class.perform_etl(use_existing=True)
@@ -146,7 +146,7 @@ def _compare_records(actual: Drug, fixt: Drug):
             assert actual_inds[i] == fixture_inds[i]
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def compare_records():
     """Provide record comparison function"""
     return _compare_records
@@ -171,11 +171,11 @@ def _compare_response(
         fixture_list otherwise)
     """
     if fixture and fixture_list:
-        raise Exception('Args provided for both `fixture` and `fixture_list`')
+        raise Exception("Args provided for both `fixture` and `fixture_list`")
     elif not fixture and not fixture_list:
-        raise Exception('Must pass 1 of {fixture, fixture_list}')
+        raise Exception("Must pass 1 of {fixture, fixture_list}")
     if fixture and num_records:
-        raise Exception('`num_records` should only be given with ' '`fixture_list`.')
+        raise Exception("`num_records` should only be given with " "`fixture_list`.")
 
     assert response.match_type == match_type
     if fixture:
@@ -195,7 +195,7 @@ def _compare_response(
                 assert False  # test fixture not found in response
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def compare_response():
     """Provide response comparison function"""
     return _compare_response
