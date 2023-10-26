@@ -7,8 +7,8 @@ from typing import List, Optional
 import click
 from botocore.exceptions import ClientError
 from boto3.dynamodb.conditions import Key
-from disease.database import Database as DiseaseDatabase
-from disease.cli import CLI as DiseaseCLI
+from disease.database.dynamodb import DynamoDbDatabase as DiseaseDatabase
+from disease.cli import update_db as update_disease_db
 from disease.schemas import SourceName as DiseaseSources
 
 from therapy import SOURCES
@@ -134,7 +134,7 @@ class CLI:
                 logger.debug(msg)
                 click.echo(msg)
                 try:
-                    DiseaseCLI().update_normalizer_db(
+                    update_disease_db(
                         ["--update_all", "--update_merged", "--db_url", endpoint_url]
                     )
                 except Exception as e:
