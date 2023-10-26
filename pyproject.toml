@@ -6,11 +6,10 @@ build-backend = "setuptools.build_meta:__legacy__"
 # pycodestyle (E, W)
 # Pyflakes (F)
 # flake8-annotations (ANN)
-# flake8-quotes (Q)
 # pydocstyle (D)
 # pep8-naming (N)
 # isort (I)
-select = ["E", "W", "F", "ANN", "Q", "D", "N", "I"]
+select = ["E", "W", "F", "ANN", "D", "N", "I"]
 
 fixable = ["I", "F401"]
 
@@ -23,7 +22,6 @@ fixable = ["I", "F401"]
 # ANN101 - missing-type-self
 # ANN003 - missing-type-kwargs
 # E501 - line-too-long
-# Q - flake8-quotes*
 # W191 - tab-indentation*
 # *ignored for compatibility with formatter
 ignore = ["D203", "D205", "D206", "D213", "D400", "D415", "ANN101", "ANN003", "E501", "Q", "W191"]
