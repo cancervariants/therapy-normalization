@@ -14,6 +14,7 @@ from functools import lru_cache
 from pydantic import ValidationError
 import requests
 import bioversions
+from disease.database.dynamodb import DynamoDbDatabase
 from disease.query import QueryHandler as DiseaseNormalizer
 
 from therapy import APP_ROOT, ITEM_TYPES, DownloadException
@@ -318,7 +319,8 @@ class DiseaseIndicationBase(Base):
         :param Path data_path: path to normalizer data directory
         """
         super().__init__(database, data_path)
-        self.disease_normalizer = DiseaseNormalizer(self.database.endpoint_url)
+        db = DynamoDbDatabase(self.database.endpoint_url)
+        self.disease_normalizer = DiseaseNormalizer(db)
 
     @lru_cache(maxsize=64)
     def _normalize_disease(self, query: str) -> Optional[str]:
@@ -328,7 +330,7 @@ class DiseaseIndicationBase(Base):
         """
         response = self.disease_normalizer.normalize(query)
         if response.match_type > 0:
-            return response.disease_descriptor.disease
+            return response.normalized_id
         else:
             logger.warning(f"Failed to normalize disease term: {query}")
             return None

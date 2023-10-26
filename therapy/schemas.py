@@ -1,11 +1,10 @@
 """This module contains data models for representing VICC therapy records."""
-from typing import List, Optional, Dict, Union, Any, Type, Set, Literal
+from typing import List, Optional, Dict, Union, Any, Literal, Set
 from enum import Enum, IntEnum
 from datetime import datetime
 
-from ga4gh.vrsatile.pydantic.core_models import CURIE
-from ga4gh.vrsatile.pydantic.vrsatile_models import TherapeuticDescriptor
-from pydantic import BaseModel, StrictBool, StrictStr
+from pydantic import BaseModel, StrictBool, constr, ConfigDict
+from ga4gh.core import core_models
 
 from therapy.version import __version__
 
@@ -101,37 +100,21 @@ class HasIndication(BaseModel):
 
     disease_id: str
     disease_label: str
-    normalized_disease_id: Optional[str]
+    normalized_disease_id: Optional[str] = None
     supplemental_info: Optional[Dict[str, str]] = None
 
-    class Config:
-        """Configure HasIndication class"""
-
-        @staticmethod
-        def schema_extra(schema: Dict[str, Any], model: Type["HasIndication"]) -> None:
-            """Configure OpenAPI schema"""
-            if "title" in schema.keys():
-                schema.pop("title", None)
-            for prop in schema.get("properties", {}).values():
-                prop.pop("title", None)
-            schema["example"] = [
-                {
-                    "disease_id": "mesh:D016778",
-                    "disease_label": "Malaria, Falciparum",
-                    "normalized_disease_id": "ncit:C34798",
-                    "supplemental_info": {
-                        "chembl_max_phase_for_ind": "chembl_phase_2"
-                    }
-                },
-                {
-                    "disease_id": "hemonc:634",
-                    "disease_label": "Myelodysplastic syndrome",
-                    "normalized_disease_id": "ncit:C3247",
-                    "supplemental_info": {
-                        "regulatory_body": "FDA"
-                    }
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "disease_id": "mesh:D016778",
+                "disease_label": "Malaria, Falciparum",
+                "normalized_disease_id": "ncit:C34798",
+                "supplemental_info": {
+                    "chembl_max_phase_for_ind": "chembl_phase_2"
                 }
-            ]
+            }
+        }
+    )
 
 
 class Drug(BaseModel):
@@ -147,17 +130,9 @@ class Drug(BaseModel):
     approval_year: Optional[List[str]] = []
     has_indication: Optional[List[HasIndication]] = []
 
-    class Config:
-        """Configure Drug class"""
-
-        @staticmethod
-        def schema_extra(schema: Dict[str, Any], model: Type["Drug"]) -> None:
-            """Configure OpenAPI schema"""
-            if "title" in schema.keys():
-                schema.pop("title", None)
-            for prop in schema.get("properties", {}).values():
-                prop.pop("title", None)
-            schema["example"] = {
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
                 "label": "CISPLATIN",
                 "concept_id": "chembl:CHEMBL11359",
                 "aliases": [
@@ -179,6 +154,8 @@ class Drug(BaseModel):
                 "has_indication": [],
                 "trade_names": ["PLATINOL", "PLATINOL-AQ", "CISPLATIN"]
             }
+        }
+    )
 
 
 class MatchType(IntEnum):
@@ -282,21 +259,13 @@ class SourceMeta(BaseModel):
     data_license: str
     data_license_url: str
     version: str
-    data_url: Optional[str]
-    rdp_url: Optional[str]
+    data_url: Optional[str] = None
+    rdp_url: Optional[str] = None
     data_license_attributes: Dict[str, StrictBool]
 
-    class Config:
-        """Configure OpenAPI schema"""
-
-        @staticmethod
-        def schema_extra(schema: Dict[str, Any], model: Type["SourceMeta"]) -> None:
-            """Configure OpenAPI schema"""
-            if "title" in schema.keys():
-                schema.pop("title", None)
-            for prop in schema.get("properties", {}).values():
-                prop.pop("title", None)
-            schema["example"] = {
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
                 "data_license": "CC BY-SA 3.0",
                 "data_license_url":
                     "https://creativecommons.org/licenses/by-sa/3.0/",
@@ -310,6 +279,8 @@ class SourceMeta(BaseModel):
                     "attribution": True
                 }
             }
+        }
+    )
 
 
 class MatchesKeyed(BaseModel):
@@ -321,17 +292,9 @@ class MatchesKeyed(BaseModel):
     records: List[Drug]
     source_meta_: SourceMeta
 
-    class Config:
-        """Configure OpenAPI schema"""
-
-        @staticmethod
-        def schema_extra(schema: Dict[str, Any], model: Type["MatchesKeyed"]) -> None:
-            """Configure OpenAPI schema"""
-            if "title" in schema.keys():
-                schema.pop("title", None)
-            for prop in schema.get("properties", {}).values():
-                prop.pop("title", None)
-            schema["example"] = {
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
                 "match_type": 0,
                 "records": [],
                 "source_meta_": {
@@ -349,6 +312,8 @@ class MatchesKeyed(BaseModel):
                     }
                 },
             }
+        }
+    )
 
 
 class MatchesListed(BaseModel):
@@ -361,17 +326,9 @@ class MatchesListed(BaseModel):
     records: List[Drug]
     source_meta_: SourceMeta
 
-    class Config:
-        """Configure openAPI schema"""
-
-        @staticmethod
-        def schema_extra(schema: Dict[str, Any], model: Type["MatchesListed"]) -> None:
-            """Configure OpenAPI schema"""
-            if "title" in schema.keys():
-                schema.pop("title", None)
-            for prop in schema.get("properties", {}).values():
-                prop.pop("title", None)
-            schema["example"] = {
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
                 "source": "ChEMBL",
                 "match_type": 0,
                 "records": [],
@@ -390,34 +347,30 @@ class MatchesListed(BaseModel):
                     }
                 },
             }
+        }
+    )
 
 
 class ServiceMeta(BaseModel):
     """Metadata regarding the therapy-normalization service."""
 
     name: Literal["thera-py"] = "thera-py"
-    version: StrictStr = __version__
+    version: Literal[__version__] = __version__  # type: ignore
     response_datetime: datetime
     url: Literal[
         "https://github.com/cancervariants/therapy-normalization"
     ] = "https://github.com/cancervariants/therapy-normalization"
 
-    class Config:
-        """Configure OpenAPI schema"""
-
-        @staticmethod
-        def schema_extra(schema: Dict[str, Any], model: Type["ServiceMeta"]) -> None:
-            """Configure OpenAPI schema"""
-            if "title" in schema.keys():
-                schema.pop("title", None)
-            for prop in schema.get("properties", {}).values():
-                prop.pop("title", None)
-            schema["example"] = {
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
                 "name": "thera-py",
-                "version": "0.1.0",
+                "version": __version__,
                 "response_datetime": "2021-04-05T16:44:15.367831",
                 "url": "https://github.com/cancervariants/therapy-normalization"
             }
+        }
+    )
 
 
 class MatchesNormalized(BaseModel):
@@ -426,24 +379,12 @@ class MatchesNormalized(BaseModel):
     records: List[Drug]
     source_meta_: SourceMeta
 
-    class Config:
-        """Configure OpenAPI schema"""
-
-        @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type["MatchesNormalized"]) -> None:
-            """Configure OpenAPI schema"""
-            if "title" in schema.keys():
-                schema.pop("title", None)
-            for prop in schema.get("properties", {}).values():
-                prop.pop("title", None)
-
 
 class BaseNormalizationService(BaseModel):
     """Base method providing shared attributes to Normalization service classes."""
 
     query: str
-    warnings: Optional[List[Dict]]
+    warnings: List[Dict] = []
     match_type: MatchType
     service_meta_: ServiceMeta
 
@@ -454,28 +395,21 @@ class UnmergedNormalizationService(BaseNormalizationService):
     attributes.
     """
 
-    normalized_concept_id: Optional[CURIE]
+    normalized_concept_id: Optional[  # type: ignore
+        constr(pattern=r"^\w[^:]*:.+$")  # noqa: F722
+    ] = None
     source_matches: Dict[SourceName, MatchesNormalized]
 
-    class Config:
-        """Configure OpenAPI schema"""
-
-        @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type["UnmergedNormalizationService"]) -> None:
-            """Configure OpenAPI schema example"""
-            if "title" in schema.keys():
-                schema.pop("title", None)
-            for prop in schema.get("properties", {}).values():
-                prop.pop("title", None)
-            schema["example"] = {
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
                 "query": "L745870",
                 "warnings": [],
                 "match_type": 80,
                 "service_meta_": {
                     "response_datetime": "2022-04-22T11:40:18.921859",
                     "name": "thera-py",
-                    "version": "0.3.4",
+                    "version": __version__,
                     "url": "https://github.com/cancervariants/therapy-normalization"
                 },
                 "normalized_concept_id": "iuphar.ligand:3303",
@@ -549,39 +483,91 @@ class UnmergedNormalizationService(BaseNormalizationService):
                     }
                 }
             }
+        }
+    )
 
 
 class NormalizationService(BaseNormalizationService):
     """Response containing one or more merged records and source data."""
 
-    therapeutic_descriptor: Optional[TherapeuticDescriptor]
-    source_meta_: Optional[Dict[SourceName, SourceMeta]]
+    normalized_id: Optional[str] = None
+    therapeutic_agent: Optional[core_models.TherapeuticAgent] = None
+    source_meta_: Optional[Dict[SourceName, SourceMeta]] = None
 
-    class Config:
-        """Configure OpenAPI schema"""
-
-        @staticmethod
-        def schema_extra(schema: Dict[str, Any],
-                         model: Type["NormalizationService"]) -> None:
-            """Configure OpenAPI schema"""
-            if "title" in schema.keys():
-                schema.pop("title", None)
-            for prop in schema.get("properties", {}).values():
-                prop.pop("title", None)
-            schema["example"] = {
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
                 "query": "cisplatin",
                 "warnings": None,
                 "match_type": 80,
-                "therapeutic_descriptor": {
-                    "id": "normalize.therapy:cisplatin",
-                    "type": "TherapeuticDescriptor",
-                    "therapeutic": "rxcui:2555",
+                "normalized_id": "rxcui:2555",
+                "therapeutic_agent": {
+                    "type": "TherapeuticAgent",
+                    "id": "normalize.therapy.rxcui:2555",
                     "label": "cisplatin",
-                    "xrefs": [
-                        "ncit:C376", "chemidplus:15663-27-1",
-                        "wikidata:Q412415"
+                    "mappings": [
+                        {
+                            "coding": {"code": "C376", "system": "ncit"},
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {"code": "15663-27-1", "system": "chemidplus"},
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {"code": "Q412415", "system": "wikidata"},
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {"code": "L01XA01", "system": "atc"},
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {"code": "4456", "system": "mmsl"},
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {"code": "27899", "system": "chebi"},
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {"code": "5702198", "system": "pubchem.compound"},
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {"code": "C0008838", "system": "umls"},
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {"code": "m17910", "system": "usp"},
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {"code": "Q20Q21Q62J", "system": "fda"},
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {"code": "d00195", "system": "mmsl"},
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {"code": "Q20Q21Q62J", "system": "mthspl"},
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {"code": "31747", "system": "mmsl"},
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {"code": "D002945", "system": "mesh"},
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {"code": "4018139", "system": "vandf"},
+                            "relation": "relatedMatch",
+                        },
                     ],
-                    "alternate_labels": [
+                    "aliases": [
                         "CIS-DDP", "cis Platinum", "DDP",
                         "Dichlorodiammineplatinum",
                         "1,2-Diaminocyclohexaneplatinum II citrate",
@@ -607,24 +593,6 @@ class NormalizationService(BaseNormalizationService):
                                 "Platinol", "Cisplatin"
                             ]
                         },
-                        {
-                            "type": "Extension",
-                            "name": "associated_with",
-                            "value": [
-                                "atc:L01XA01",
-                                "mmsl:4456",
-                                "chebi:CHEBI:27899",
-                                "pubchem.compound:5702198",
-                                "umls:C0008838",
-                                "usp:m17910",
-                                "fda:Q20Q21Q62J",
-                                "mmsl:d00195",
-                                "mthspl:Q20Q21Q62J",
-                                "mmsl:31747",
-                                "mesh:D002945",
-                                "vandf:4018139"
-                            ]
-                        }
                     ]
                 },
                 "source_meta_": {
@@ -678,32 +646,26 @@ class NormalizationService(BaseNormalizationService):
                 },
                 "service_meta_": {
                     "name": "thera-py",
-                    "version": "0.1.0",
+                    "version": __version__,
                     "response_datetime": "2021-04-05T16:44:15.367831",
                     "url": "https://github.com/cancervariants/therapy-normalization"
                 }
             }
+        }
+    )
 
 
 class SearchService(BaseModel):
     """Core response schema containing matches for each source"""
 
     query: str
-    warnings: Optional[List[Dict]]
+    warnings: List[Dict] = []
     source_matches: Union[Dict[SourceName, MatchesKeyed], List[MatchesListed]]
     service_meta_: ServiceMeta
 
-    class Config:
-        """Enables orm_mode"""
-
-        @staticmethod
-        def schema_extra(schema: Dict[str, Any], model: Type["SearchService"]) -> None:
-            """Configure OpenAPI schema"""
-            if "title" in schema.keys():
-                schema.pop("title", None)
-            for prop in schema.get("properties", {}).values():
-                prop.pop("title", None)
-            schema["example"] = {
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
                 "query": "cisplatin",
                 "warnings": None,
                 "source_matches": [
@@ -869,8 +831,10 @@ class SearchService(BaseModel):
                 ],
                 "service_meta_": {
                     "name": "thera-py",
-                    "version": "0.1.0",
+                    "version": __version__,
                     "response_datetime": "2021-04-05T16:44:15.367831",
                     "url": "https://github.com/cancervariants/therapy-normalization"
                 }
             }
+        }
+    )
