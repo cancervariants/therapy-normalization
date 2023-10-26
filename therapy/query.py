@@ -429,7 +429,7 @@ class QueryHandler:
             id=f"normalize.therapy.{record['concept_id']}", label=record.get("label")
         )
 
-        source_ids = record.get("xrefs", []) + record.get("associated_with")
+        source_ids = record.get("xrefs", []) + record.get("associated_with", [])
         mappings = []
         for source_id in source_ids:
             system, code = source_id.split(":")
