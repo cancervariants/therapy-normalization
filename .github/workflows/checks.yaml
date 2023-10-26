@@ -1,65 +1,64 @@
 name: checks
 on: [push, pull_request]
 jobs:
-    test:
-        name: test py${{ matrix.python-version }}
-        runs-on: ubuntu-latest
-        env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.DUMMY_AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.DUMMY_AWS_SECRET_ACCESS_KEY }}
-            AWS_DEFAULT_REGION: us-east-2
-            AWS_DEFAULT_OUTPUT: text
-            DISEASE_NORM_DB_URL: http://localhost:8002
-            THERAPY_NORM_DB_URL: http://localhost:8002
-            THERAPY_TEST: true
-        strategy:
-            matrix:
-              python-version: ['3.8', '3.9', '3.10']
-        steps:
-            - uses: actions/checkout@v3
+  test:
+    name: test py${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.DUMMY_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.DUMMY_AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: us-east-2
+      AWS_DEFAULT_OUTPUT: text
+      DISEASE_NORM_DB_URL: http://localhost:8002
+      THERAPY_NORM_DB_URL: http://localhost:8002
+      THERAPY_TEST: true
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+    steps:
+      - uses: actions/checkout@v3
 
-            - name: Setup Python
-              uses: actions/setup-python@v4
-              with:
-                  python-version: ${{ matrix.python-version }}
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
 
-            - name: Install dependencies
-              run: |
-                  python3 -m pip install ".[dev,test]"
+      - name: Install dependencies
+        run: |
+          python3 -m pip install ".[dev,test]"
 
-            - name: Build local DynamoDB
-              run: |
-                  chmod +x ./tests/scripts/dynamodb_run.sh
-                  ./tests/scripts/dynamodb_run.sh
+      - name: Build local DynamoDB
+        run: |
+          chmod +x ./tests/scripts/dynamodb_run.sh
+          ./tests/scripts/dynamodb_run.sh
 
-            - name: Run tests
-              run: python3 -m pytest
-    lint:
-        name: lint py${{ matrix.python-version }}
-        runs-on: ubuntu-latest
-        env:
-            AWS_ACCESS_KEY_ID: ${{ secrets.DUMMY_AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY: ${{ secrets.DUMMY_AWS_SECRET_ACCESS_KEY }}
-            AWS_DEFAULT_REGION: us-east-2
-            AWS_DEFAULT_OUTPUT: text
-        strategy:
-            matrix:
-              python-version: ['3.8', '3.9', '3.10']
-        steps:
-            - uses: actions/checkout@v3
+      - name: Run tests
+        run: python3 -m pytest
+  lint:
+    name: lint py${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.DUMMY_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.DUMMY_AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: us-east-2
+      AWS_DEFAULT_OUTPUT: text
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+    steps:
+      - uses: actions/checkout@v3
 
-            - name: Setup Python
-              uses: actions/setup-python@v4
-              with:
-                  python-version: ${{ matrix.python-version }}
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
 
-            - name: Install dependencies
-              run: python3 -m pip install ".[dev,test]"
+      - name: Install dependencies
+        run: python3 -m pip install ".[dev,test]"
 
-            - name: Check style
-              run: python3 -m flake8 therapy/ tests/ setup.py
+      - name: Check style
+        run: python3 -m ruff check . && ruff format --check .
 
-            - name: Check type correctness
-              if: ${{ always() }}
-              run: python3 -m mypy --ignore-missing-imports therapy/
-
+      - name: Check type correctness
+        if: ${{ always() }}
+        run: python3 -m mypy --ignore-missing-imports therapy/

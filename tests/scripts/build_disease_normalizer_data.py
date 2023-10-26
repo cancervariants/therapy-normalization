@@ -2,23 +2,23 @@
 Assumes complete and functioning disease normalizer endpoint is available.
 """
 import json
-from typing import Dict, Any
 from pathlib import Path
+from typing import Any, Dict
 
 from disease.query import QueryHandler as DiseaseQueryHandler
 from disease.schemas import NormalizationService as DiseaseNormalizationService
 
-from therapy.etl import ChEMBL, HemOnc
 from therapy.database import Database
+from therapy.etl import ChEMBL, HemOnc
 
 TEST_ROOT = Path(__file__).resolve().parents[1]
-TEST_DATA_DIRECTORY = TEST_ROOT / "data"
+TEST_DATA_DIRECTORY = TEST_ROOT / 'data'
 
 
 class ReadOnlyDatabase(Database):
     """Provide read-only instance of database for security's sake"""
 
-    def add_record(self, record: Dict, record_type: str = "identity") -> None:
+    def add_record(self, record: Dict, record_type: str = 'identity') -> None:
         """Add new record to database"""
         pass
 
@@ -26,8 +26,13 @@ class ReadOnlyDatabase(Database):
         """Add ref record to database"""
         pass
 
-    def update_record(self, concept_id: str, field: str, new_value: Any,  # noqa
-                      item_type: str = "identity") -> None:
+    def update_record(
+        self,
+        concept_id: str,
+        field: str,
+        new_value: Any,  # noqa
+        item_type: str = 'identity',
+    ) -> None:
         """Update an individual record"""
         pass
 
@@ -61,5 +66,5 @@ h.disease_normalizer = disease_query_handler
 h.perform_etl(use_existing=True)
 
 
-with open(TEST_DATA_DIRECTORY / "disease_normalization.json", "w") as f:
+with open(TEST_DATA_DIRECTORY / 'disease_normalization.json', 'w') as f:
     json.dump(disease_normalizer_table, f)

@@ -1,19 +1,17 @@
-"""This module defines the ChEMBL ETL methods."""
+"""Defines the ChEMBL ETL methods."""
 import logging
 import os
 import shutil
 import sqlite3
-from typing import Optional, List, Dict
+from typing import Dict, List, Optional
 
-import chembl_downloader
 import bioversions
+import chembl_downloader
 
 from therapy.etl.base import DiseaseIndicationBase
-from therapy.schemas import SourceName, NamespacePrefix, ApprovalRating, \
-    SourceMeta
+from therapy.schemas import ApprovalRating, NamespacePrefix, SourceMeta, SourceName
 
-
-logger = logging.getLogger("therapy")
+logger = logging.getLogger('therapy')
 logger.setLevel(logging.DEBUG)
 
 
@@ -22,12 +20,12 @@ class ChEMBL(DiseaseIndicationBase):
 
     def _download_data(self) -> None:
         """Download latest ChEMBL database file from EBI."""
-        logger.info("Retrieving source data for ChEMBL")
-        os.environ["PYSTOW_HOME"] = str(self._src_dir.parent.absolute())
+        logger.info('Retrieving source data for ChEMBL')
+        os.environ['PYSTOW_HOME'] = str(self._src_dir.parent.absolute())
         tmp_path = chembl_downloader.download_extract_sqlite()
         shutil.move(tmp_path, self._src_dir)
         shutil.rmtree(tmp_path.parent.parent.parent)
-        logger.info("Successfully retrieved source data for ChEMBL")
+        logger.info('Successfully retrieved source data for ChEMBL')
 
     def _extract_data(self, use_existing: bool = False) -> None:
         """Extract data from the ChEMBL source.
@@ -47,7 +45,7 @@ class ChEMBL(DiseaseIndicationBase):
         :return: List of separated values (empty if none present)
         """
         if value:
-            return value.split("||")
+            return value.split('||')
         else:
             return []
 
@@ -69,7 +67,7 @@ class ChEMBL(DiseaseIndicationBase):
         elif value == 4:
             return ApprovalRating.CHEMBL_4
         else:
-            raise ValueError(f"Unrecognized approval rating: {value}")
+            raise ValueError(f'Unrecognized approval rating: {value}')
 
     def _get_indications(self, value: Optional[str]) -> List[Dict]:
         """Construct indication objects to prepare for loading into DB
@@ -78,9 +76,9 @@ class ChEMBL(DiseaseIndicationBase):
         """
         if value:
             indications = []
-            indication_groups = value.split("|||")
+            indication_groups = value.split('|||')
             for group in set(indication_groups):
-                ind_group = group.split("||")
+                ind_group = group.split('||')
                 phase = self._get_approval_rating(int(ind_group[4]))
                 indication = {}
                 for i, term in enumerate(ind_group[:4]):
@@ -89,17 +87,17 @@ class ChEMBL(DiseaseIndicationBase):
                         label = ind_group[2] if i % 2 == 0 else ind_group[3]
                         disease_id = ind_group[0] if i % 2 == 0 else ind_group[1]
                         indication = {
-                            "disease_id": disease_id,
-                            "disease_label": label,
-                            "normalized_disease_id": normalized_disease_id,
-                            "supplemental_info": {"chembl_max_phase_for_ind": phase}
+                            'disease_id': disease_id,
+                            'disease_label': label,
+                            'normalized_disease_id': normalized_disease_id,
+                            'supplemental_info': {'chembl_max_phase_for_ind': phase},
                         }
                         break
                 if not indication:
                     indication = {
-                        "disease_id": ind_group[0],
-                        "disease_label": ind_group[2],
-                        "supplemental_info": {"chembl_max_phase_for_ind": phase}
+                        'disease_id': ind_group[0],
+                        'disease_label': ind_group[2],
+                        'supplemental_info': {'chembl_max_phase_for_ind': phase},
                     }
                 indications.append(indication)
             return indications
@@ -169,37 +167,39 @@ class ChEMBL(DiseaseIndicationBase):
 
         for row in self._cursor:
             appr_ratings = []
-            max_phase = self._get_approval_rating(row["max_phase"])
+            max_phase = self._get_approval_rating(row['max_phase'])
             if max_phase is not None:
                 appr_ratings.append(max_phase)
-            if row["withdrawn_flag"] == 1:
+            if row['withdrawn_flag'] == 1:
                 appr_ratings.append(ApprovalRating.CHEMBL_WITHDRAWN)
 
-            has_indication = self._get_indications(row["indications"])
+            has_indication = self._get_indications(row['indications'])
 
             params = {
-                "concept_id": f"{NamespacePrefix.CHEMBL.value}:{row['chembl_id']}",
-                "label": row["pref_name"],
-                "approval_ratings": appr_ratings,
-                "aliases": self._unwrap_group_concat(row["aliases"]),
-                "trade_names": self._unwrap_group_concat(row["trade_names"]),
-                "has_indication": has_indication
+                'concept_id': f"{NamespacePrefix.CHEMBL.value}:{row['chembl_id']}",
+                'label': row['pref_name'],
+                'approval_ratings': appr_ratings,
+                'aliases': self._unwrap_group_concat(row['aliases']),
+                'trade_names': self._unwrap_group_concat(row['trade_names']),
+                'has_indication': has_indication,
             }
             self._load_therapy(params)
         self._conn.close()
 
     def _load_meta(self) -> None:
         """Add ChEMBL metadata."""
-        metadata = SourceMeta(data_license="CC BY-SA 3.0",
-                              data_license_url="https://creativecommons.org/licenses/by-sa/3.0/",  # noqa: E501
-                              version=self._version,
-                              data_url=bioversions.resolve("chembl").homepage,
-                              rdp_url="http://reusabledata.org/chembl.html",
-                              data_license_attributes={
-                                  "non_commercial": False,
-                                  "share_alike": True,
-                                  "attribution": True
-                              })
+        metadata = SourceMeta(
+            data_license='CC BY-SA 3.0',
+            data_license_url='https://creativecommons.org/licenses/by-sa/3.0/',  # noqa: E501
+            version=self._version,
+            data_url=bioversions.resolve('chembl').homepage,
+            rdp_url='http://reusabledata.org/chembl.html',
+            data_license_attributes={
+                'non_commercial': False,
+                'share_alike': True,
+                'attribution': True,
+            },
+        )
         params = dict(metadata)
-        params["src_name"] = SourceName.CHEMBL.value
+        params['src_name'] = SourceName.CHEMBL.value
         self.database.metadata.put_item(Item=params)
