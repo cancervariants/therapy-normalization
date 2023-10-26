@@ -126,7 +126,7 @@ def search(
         response = query_handler.search(
             html.unescape(q),
             keyed=keyed,  # type: ignore
-            incl=incl,
+            incl=incl,  # type: ignore
             excl=excl,  # type: ignore
             infer=infer_namespace,
         )  # type: ignore
