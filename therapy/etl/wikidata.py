@@ -1,14 +1,14 @@
-"""This module defines the Wikidata ETL methods."""
+"""Defines the Wikidata ETL methods."""
+import datetime
 import json
 import logging
-import datetime
-from typing import Dict, Any
+from typing import Any, Dict
 
 from wikibaseintegrator.wbi_helpers import execute_sparql_query
 
 from therapy import XREF_SOURCES, DownloadException
-from therapy.schemas import SourceName, NamespacePrefix, RecordParams, SourceMeta
 from therapy.etl.base import Base
+from therapy.schemas import NamespacePrefix, RecordParams, SourceMeta, SourceName
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -116,8 +116,8 @@ class Wikidata(Base):
             data_license_attributes={
                 "non_commercial": False,
                 "share_alike": False,
-                "attribution": False
-            }
+                "attribution": False,
+            },
         )
         params = dict(metadata)
         params["src_name"] = SourceName.WIKIDATA.value
@@ -153,8 +153,7 @@ class Wikidata(Base):
                                     fmted_xref = f"{NAMESPACES[key]}:{ref}"
                                 xrefs.append(fmted_xref)
                             else:
-                                fmted_assoc = f"{NAMESPACES[key]}:" \
-                                              f"{ref}"
+                                fmted_assoc = f"{NAMESPACES[key]}:" f"{ref}"
                                 associated_with.append(fmted_assoc)
                     item["xrefs"] = xrefs
                     item["associated_with"] = associated_with

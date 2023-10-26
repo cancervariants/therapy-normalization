@@ -1,32 +1,36 @@
-"""This module provides methods for handling queries."""
-import re
-from typing import Callable, List, Dict, Set, Tuple, TypeVar, Union, Any, Optional
-from datetime import datetime
+"""Provides methods for handling queries."""
 import json
+import re
+from datetime import datetime
+from typing import Any, Callable, Dict, List, Optional, Set, Tuple, TypeVar, Union
 
+from botocore.exceptions import ClientError
 from ga4gh.core import core_models
 from uvicorn.config import logger
-from botocore.exceptions import ClientError
 
-from therapy import SOURCES, PREFIX_LOOKUP, ITEM_TYPES, NAMESPACE_LUIS
+from therapy import ITEM_TYPES, NAMESPACE_LUIS, PREFIX_LOOKUP, SOURCES
 from therapy.database import Database
-from therapy.schemas import BaseNormalizationService, Drug, SourceMeta, MatchType, \
-    ServiceMeta, HasIndication, SourcePriority, SearchService, NormalizationService, \
-    NamespacePrefix, SourceName, UnmergedNormalizationService, MatchesNormalized
-
+from therapy.schemas import (
+    BaseNormalizationService,
+    Drug,
+    HasIndication,
+    MatchesNormalized,
+    MatchType,
+    NamespacePrefix,
+    NormalizationService,
+    SearchService,
+    ServiceMeta,
+    SourceMeta,
+    SourceName,
+    SourcePriority,
+    UnmergedNormalizationService,
+)
 
 NormService = TypeVar("NormService", bound=BaseNormalizationService)
 
 
-class InvalidParameterException(Exception):
+class InvalidParameterException(Exception):  # noqa: N818
     """Exception for invalid parameter args provided by the user."""
-
-    def __init__(self, message: str) -> None:
-        """Create new instance
-
-        :param str message: string describing the nature of the error
-        """
-        super().__init__(message)
 
 
 class QueryHandler:
@@ -34,7 +38,7 @@ class QueryHandler:
     normalizes query input.
     """
 
-    def __init__(self, db_url: str = "", db_region: str = "us-east-2"):
+    def __init__(self, db_url: str = "", db_region: str = "us-east-2") -> None:
         """Initialize Normalizer instance.
 
         :param str db_url: URL to database source.
@@ -51,10 +55,11 @@ class QueryHandler:
         warnings: List[Dict[str, str]] = []
         nbsp = re.search("\xa0|&nbsp;", query_str)
         if nbsp:
-            warnings = [{
-                "non_breaking_space_characters":
-                    "Query contains non-breaking space characters"
-            }]
+            warnings = [
+                {
+                    "non_breaking_space_characters": "Query contains non-breaking space characters"
+                }
+            ]
             logger.warning(
                 f"Query ({query_str}) contains non-breaking space characters."
             )
@@ -95,13 +100,12 @@ class QueryHandler:
             disease_id=indication_values[0],
             disease_label=indication_values[1],
             normalized_disease_id=indication_values[2],
-            supplemental_info=indication_values[3]
+            supplemental_info=indication_values[3],
         )
 
-    def _add_record(self,
-                    response: Dict[str, Dict],
-                    item: Dict,
-                    match_type: str) -> Tuple[Dict, str]:
+    def _add_record(
+        self, response: Dict[str, Dict], item: Dict, match_type: str
+    ) -> Tuple[Dict, str]:
         """Add individual record (i.e. Item in DynamoDB) to response object
 
         :param Dict[str, Dict] response: in-progress response object
@@ -124,19 +128,19 @@ class QueryHandler:
             matches[src_name] = {
                 "match_type": MatchType[match_type.upper()],
                 "records": [drug],
-                "source_meta_": self._fetch_meta(src_name)
+                "source_meta_": self._fetch_meta(src_name),
             }
         elif matches[src_name]["match_type"] == MatchType[match_type.upper()]:
-            if drug.concept_id not in [r.concept_id for r
-                                       in matches[src_name]["records"]]:
+            if drug.concept_id not in [
+                r.concept_id for r in matches[src_name]["records"]
+            ]:
                 matches[src_name]["records"].append(drug)
 
         return response, src_name
 
-    def _fetch_records(self,
-                       response: Dict[str, Dict],
-                       concept_ids: Set[str],
-                       match_type: str) -> Tuple[Dict, Set]:
+    def _fetch_records(
+        self, response: Dict[str, Dict], concept_ids: Set[str], match_type: str
+    ) -> Tuple[Dict, Set]:
         """Return matched Drug records as a structured response for a given collection
         of concept IDs.
 
@@ -150,8 +154,9 @@ class QueryHandler:
         matched_sources = set()
         for concept_id in concept_ids:
             try:
-                match = self.db.get_record_by_id(concept_id.lower(),
-                                                 case_sensitive=False)
+                match = self.db.get_record_by_id(
+                    concept_id.lower(), case_sensitive=False
+                )
                 assert match, f"Unable to retrieve record for {concept_id}"
                 (response, src) = self._add_record(response, match, match_type)
                 matched_sources.add(src)
@@ -172,7 +177,7 @@ class QueryHandler:
                 resp["source_matches"][src_name] = {
                     "match_type": MatchType.NO_MATCH,
                     "records": [],
-                    "source_meta_": self._fetch_meta(src_name)
+                    "source_meta_": self._fetch_meta(src_name),
                 }
         return resp
 
@@ -205,14 +210,15 @@ class QueryHandler:
                     "inferred_namespace": namespace,
                     "adjusted_query": inferred_records[0][2],
                     # probably not possible but just in case
-                    "alternate_inferred_matches": [i[2] for i in inferred_records[1:]]
-                }
+                    "alternate_inferred_matches": [i[2] for i in inferred_records[1:]],
+                },
             )
         else:
             return None
 
-    def _check_concept_id(self, query: str, resp: Dict, sources: Set[str],
-                          infer: bool = True) -> Tuple[Dict, Set]:
+    def _check_concept_id(
+        self, query: str, resp: Dict, sources: Set[str], infer: bool = True
+    ) -> Tuple[Dict, Set]:
         """Check query for concept ID match. Should only find 0 or 1 matches.
 
         :param str query: search string
@@ -233,13 +239,13 @@ class QueryHandler:
             if record:
                 records.append(record)
         for item in records:
-            (resp, src_name) = self._add_record(resp, item,
-                                                MatchType.CONCEPT_ID.name)
+            (resp, src_name) = self._add_record(resp, item, MatchType.CONCEPT_ID.name)
             sources = sources - {src_name}
         return resp, sources
 
-    def _check_match_type(self, query: str, resp: Dict, sources: Set[str],
-                          match_type: str) -> Tuple[Dict, Set]:
+    def _check_match_type(
+        self, query: str, resp: Dict, sources: Set[str], match_type: str
+    ) -> Tuple[Dict, Set]:
         """Check query for selected match type.
         :param str query: search string
         :param Dict resp: in-progress response object to return to client
@@ -256,8 +262,9 @@ class QueryHandler:
             sources = sources - matched_srcs
         return resp, sources
 
-    def _response_keyed(self, query: str, sources: Set[str],
-                        infer: bool = True) -> Dict:
+    def _response_keyed(
+        self, query: str, sources: Set[str], infer: bool = True
+    ) -> Dict:
         """Return response as dict where key is source name and value
         is a list of records. Corresponds to `keyed=true` API parameter.
 
@@ -269,9 +276,7 @@ class QueryHandler:
         response: Dict[str, Union[None, str, List[Dict], Dict]] = {
             "query": query,
             "warnings": self._emit_char_warnings(query),
-            "source_matches": {
-                source: None for source in sources
-            }
+            "source_matches": {source: None for source in sources},
         }
         if query == "":
             response = self._fill_no_matches(response)
@@ -285,16 +290,16 @@ class QueryHandler:
 
         query = query.lower()
         for match_type in ITEM_TYPES.values():
-            response, sources = self._check_match_type(query, response, sources,
-                                                       match_type)
+            response, sources = self._check_match_type(
+                query, response, sources, match_type
+            )
             if len(sources) == 0:
                 return response
 
         # remaining sources get no match
         return self._fill_no_matches(response)
 
-    def _response_list(self, query: str, sources: Set[str],
-                       infer: bool = True) -> Dict:
+    def _response_list(self, query: str, sources: Set[str], infer: bool = True) -> Dict:
         """Return response as list, where the first key-value in each item is the
         source name. Corresponds to `keyed=false` API parameter.
 
@@ -315,8 +320,14 @@ class QueryHandler:
 
         return response_dict
 
-    def search(self, query_str: str, keyed: bool = False, incl: str = "",
-               excl: str = "", infer: bool = True) -> SearchService:
+    def search(
+        self,
+        query_str: str,
+        keyed: bool = False,
+        incl: str = "",
+        excl: str = "",
+        infer: bool = True,
+    ) -> SearchService:
         """Fetch normalized therapy objects.
 
         :param str query_str: query, a string, to search for
@@ -389,7 +400,8 @@ class QueryHandler:
         sources = [response.normalized_id.split(":")[0]]  # type: ignore
         if therapeutic_agent.mappings:  # type: ignore
             sources += [
-                m.coding.system for m in therapeutic_agent.mappings  # type: ignore
+                m.coding.system
+                for m in therapeutic_agent.mappings  # type: ignore
             ]
 
         for src in sources:
@@ -415,8 +427,11 @@ class QueryHandler:
         return source_rank, record["concept_id"]
 
     def _add_therapeutic_agent(
-        self, response: NormalizationService, record: Dict, query: str,
-        match_type: MatchType
+        self,
+        response: NormalizationService,
+        record: Dict,
+        query: str,
+        match_type: MatchType,
     ) -> NormalizationService:
         """Format received DB record as therapeutic agent and update response object.
         :param NormalizationService response: in-progress response object
@@ -438,7 +453,7 @@ class QueryHandler:
                     coding=core_models.Coding(
                         code=core_models.Code(code), system=system.lower()
                     ),
-                    relation=core_models.Relation.RELATED_MATCH
+                    relation=core_models.Relation.RELATED_MATCH,
                 )
             )
         if mappings:
@@ -448,10 +463,12 @@ class QueryHandler:
             therapeutic_agent_obj.aliases = record["aliases"]
 
         extensions = []
-        if any(filter(lambda f: f in record, ("approval_ratings",
-                                              "approval_year",
-                                              "has_indication"))):
-
+        if any(
+            filter(
+                lambda f: f in record,
+                ("approval_ratings", "approval_year", "has_indication"),
+            )
+        ):
             approv_value = {}
             if "approval_ratings" in record:
                 value = record.get("approval_ratings")
@@ -474,7 +491,7 @@ class QueryHandler:
                             coding=core_models.Coding(
                                 code=core_models.Code(code), system=system.lower()
                             ),
-                            relation=core_models.Relation.RELATED_MATCH
+                            relation=core_models.Relation.RELATED_MATCH,
                         )
                     ]
                 else:
@@ -482,14 +499,12 @@ class QueryHandler:
                 ind_disease_obj = core_models.Disease(
                     id=indication.disease_id,
                     label=indication.disease_label,
-                    mappings=mappings or None
+                    mappings=mappings or None,
                 )
 
                 if indication.supplemental_info:
                     ind_disease_obj.extensions = [
-                        core_models.Extension(
-                            name=k, value=v
-                        )
+                        core_models.Extension(name=k, value=v)
                         for k, v in indication.supplemental_info.items()
                     ]
                 inds_list.append(ind_disease_obj.model_dump(exclude_none=True))
@@ -497,8 +512,7 @@ class QueryHandler:
                 approv_value["has_indication"] = inds_list  # type: ignore
 
             approv = core_models.Extension(
-                name="regulatory_approval",
-                value=approv_value
+                name="regulatory_approval", value=approv_value
             )
             extensions.append(approv)
 
@@ -518,8 +532,12 @@ class QueryHandler:
         return response
 
     def _resolve_merge(
-        self, response: NormService, query: str, record: Dict,
-        match_type: MatchType, callback: Callable
+        self,
+        response: NormService,
+        query: str,
+        record: Dict,
+        match_type: MatchType,
+        callback: Callable,
     ) -> NormService:
         """Given a record, return the corresponding normalized record
 
@@ -535,8 +553,10 @@ class QueryHandler:
             # follow merge_ref
             merge = self.db.get_record_by_id(merge_ref, False, True)
             if merge is None:
-                logger.error(f"Merge ref lookup failed for ref {record['merge_ref']} "
-                             f"in record {record['concept_id']} from query `{query}`")
+                logger.error(
+                    f"Merge ref lookup failed for ref {record['merge_ref']} "
+                    f"in record {record['concept_id']} from query `{query}`"
+                )
                 return response
             else:
                 return callback(response, merge, match_type)
@@ -554,7 +574,7 @@ class QueryHandler:
             "query": query,
             "match_type": MatchType.NO_MATCH,
             "warnings": self._emit_char_warnings(query),
-            "service_meta_": ServiceMeta(response_datetime=datetime.now())
+            "service_meta_": ServiceMeta(response_datetime=datetime.now()),
         }
 
     def _get_matches_by_type(self, query: str, match_type: str) -> List[Dict]:
@@ -564,8 +584,9 @@ class QueryHandler:
         :return: List of records matching the query and match level
         """
         matching_refs = self.db.get_records_by_type(query, match_type)
-        matching_records = [self.db.get_record_by_id(m["concept_id"], False)
-                            for m in matching_refs]
+        matching_records = [
+            self.db.get_record_by_id(m["concept_id"], False) for m in matching_refs
+        ]
         return sorted(matching_records, key=self._record_order)  # type: ignore
 
     def normalize(self, query: str, infer: bool = True) -> NormalizationService:
@@ -578,7 +599,9 @@ class QueryHandler:
         # prepare basic response
         response = NormalizationService(**self._prepare_normalized_response(query))
 
-        add_ta_curry = lambda res, rec, mat: self._add_therapeutic_agent(res, rec, query, mat)  # noqa: E501 E731
+        add_ta_curry = lambda res, rec, mat: self._add_therapeutic_agent(  # noqa: E731
+            res, rec, query, mat
+        )
         return self._perform_normalized_lookup(response, query, infer, add_ta_curry)
 
     def _construct_drug_match(self, record: Dict) -> Drug:
@@ -592,9 +615,12 @@ class QueryHandler:
             record["has_indication"] = [self._get_indication(i) for i in inds]
         return Drug(**record)
 
-    def _add_normalized_records(self, response: UnmergedNormalizationService,
-                                normalized_record: Dict,
-                                match_type: MatchType) -> UnmergedNormalizationService:
+    def _add_normalized_records(
+        self,
+        response: UnmergedNormalizationService,
+        normalized_record: Dict,
+        match_type: MatchType,
+    ) -> UnmergedNormalizationService:
         """Add individual records to unmerged normalize response.
 
         :param UnmergedNormalizationService response: in-progress response object
@@ -609,11 +635,12 @@ class QueryHandler:
             record_source = SourceName[normalized_record["src_name"].upper()]
             response.source_matches[record_source] = MatchesNormalized(
                 records=[self._construct_drug_match(normalized_record)],
-                source_meta_=self._fetch_meta(record_source.value)
+                source_meta_=self._fetch_meta(record_source.value),
             )
         else:
-            concept_ids = [normalized_record["concept_id"]] + \
-                normalized_record.get("xrefs", [])
+            concept_ids = [normalized_record["concept_id"]] + normalized_record.get(
+                "xrefs", []
+            )
             for concept_id in concept_ids:
                 record = self.db.get_record_by_id(concept_id, case_sensitive=False)
                 if not record:
@@ -625,12 +652,13 @@ class QueryHandler:
                 else:
                     response.source_matches[record_source] = MatchesNormalized(
                         records=[drug],
-                        source_meta_=self._fetch_meta(record_source.value)
+                        source_meta_=self._fetch_meta(record_source.value),
                     )
         return response
 
-    def _perform_normalized_lookup(self, response: NormService, query: str, infer: bool,
-                                   response_builder: Callable) -> NormService:
+    def _perform_normalized_lookup(
+        self, response: NormService, query: str, infer: bool, response_builder: Callable
+    ) -> NormService:
         """Retrieve normalized concept, for use in normalization endpoints
         :param NormService response: in-progress response object
         :param str query: user-provided query
@@ -650,8 +678,9 @@ class QueryHandler:
         # check concept ID match
         record = self.db.get_record_by_id(query_str, case_sensitive=False)
         if record:
-            return self._resolve_merge(response, query, record, MatchType.CONCEPT_ID,
-                                       response_builder)
+            return self._resolve_merge(
+                response, query, record, MatchType.CONCEPT_ID, response_builder
+            )
 
         # check concept ID match with inferred namespace
         if infer:
@@ -661,9 +690,13 @@ class QueryHandler:
                     response.warnings.append(inferred_response[1])
                 else:
                     response.warnings = [inferred_response[1]]
-                return self._resolve_merge(response, query, inferred_response[0],
-                                           MatchType.CONCEPT_ID,
-                                           response_builder)
+                return self._resolve_merge(
+                    response,
+                    query,
+                    inferred_response[0],
+                    MatchType.CONCEPT_ID,
+                    response_builder,
+                )
 
         # check other match types
         for match_type in ITEM_TYPES.values():
@@ -675,9 +708,9 @@ class QueryHandler:
                 record = self.db.get_record_by_id(match["concept_id"], False)
                 if record:
                     match_type_value = MatchType[match_type.upper()]
-                    return self._resolve_merge(response, query, record,
-                                               match_type_value,
-                                               response_builder)
+                    return self._resolve_merge(
+                        response, query, record, match_type_value, response_builder
+                    )
 
         return response
 
@@ -692,8 +725,8 @@ class QueryHandler:
         :return: Normalized response object
         """
         response = UnmergedNormalizationService(
-            source_matches={},
-            **self._prepare_normalized_response(query)
+            source_matches={}, **self._prepare_normalized_response(query)
         )
-        return self._perform_normalized_lookup(response, query, infer,
-                                               self._add_normalized_records)
+        return self._perform_normalized_lookup(
+            response, query, infer, self._add_normalized_records
+        )

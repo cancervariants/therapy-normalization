@@ -1,7 +1,7 @@
 """Construct test data for Wikidata"""
+import datetime
 import json
 from pathlib import Path
-import datetime
 
 from wikibaseintegrator.wbi_helpers import execute_sparql_query
 

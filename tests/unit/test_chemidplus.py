@@ -15,85 +15,85 @@ def chemidplus(test_source):
 @pytest.fixture(scope="module")
 def penicillin_v():
     """Build test fixture for Penicillin V drug."""
-    return Drug(**{
-        "concept_id": "chemidplus:87-08-1",
-        "label": "Penicillin V",
-        "aliases": [
-            "Phenoxymethylpenicillin"
-        ],
-        "trade_names": [],
-        "xrefs": [
-            "drugbank:DB00417",
-        ],
-        "associated_with": [
-            "unii:Z61I075U2W",
-        ]
-    })
+    return Drug(
+        **{
+            "concept_id": "chemidplus:87-08-1",
+            "label": "Penicillin V",
+            "aliases": ["Phenoxymethylpenicillin"],
+            "trade_names": [],
+            "xrefs": [
+                "drugbank:DB00417",
+            ],
+            "associated_with": [
+                "unii:Z61I075U2W",
+            ],
+        }
+    )
 
 
 @pytest.fixture(scope="module")
 def imatinib():
     """Build test fixture for Imatinib."""
-    return Drug(**{
-        "concept_id": "chemidplus:152459-95-5",
-        "label": "Imatinib",
-        "aliases": [],
-        "trade_names": [],
-        "xrefs": [
-            "drugbank:DB00619",
-        ],
-        "associated_with": [
-            "unii:BKJ8M8G5HI",
-        ]
-    })
+    return Drug(
+        **{
+            "concept_id": "chemidplus:152459-95-5",
+            "label": "Imatinib",
+            "aliases": [],
+            "trade_names": [],
+            "xrefs": [
+                "drugbank:DB00619",
+            ],
+            "associated_with": [
+                "unii:BKJ8M8G5HI",
+            ],
+        }
+    )
 
 
 @pytest.fixture(scope="module")
 def other_imatinib():
     """Build test fixture for imatinib mesylate."""
-    return Drug(**{
-        "concept_id": "chemidplus:220127-57-1",
-        "label": "Imatinib mesylate",
-        "aliases": [],
-        "xrefs": ["drugbank:DB00619"],
-        "associated_with": ["unii:8A1O1M485B"],
-        "trade_names": [],
-    })
+    return Drug(
+        **{
+            "concept_id": "chemidplus:220127-57-1",
+            "label": "Imatinib mesylate",
+            "aliases": [],
+            "xrefs": ["drugbank:DB00619"],
+            "associated_with": ["unii:8A1O1M485B"],
+            "trade_names": [],
+        }
+    )
 
 
 @pytest.fixture(scope="module")
 def cisplatin():
     """Build test fixture for cisplatin."""
-    return Drug(**{
-        "concept_id": "chemidplus:15663-27-1",
-        "label": "Cisplatin",
-        "aliases": [
-            "cis-Diaminedichloroplatinum",
-            "1,2-Diaminocyclohexaneplatinum II citrate"
-        ],
-        "trade_names": [],
-        "xrefs": [
-            "drugbank:DB00515"
-        ],
-        "associated_with": [
-            "unii:Q20Q21Q62J"
-        ]
-    })
+    return Drug(
+        **{
+            "concept_id": "chemidplus:15663-27-1",
+            "label": "Cisplatin",
+            "aliases": [
+                "cis-Diaminedichloroplatinum",
+                "1,2-Diaminocyclohexaneplatinum II citrate",
+            ],
+            "trade_names": [],
+            "xrefs": ["drugbank:DB00515"],
+            "associated_with": ["unii:Q20Q21Q62J"],
+        }
+    )
 
 
 @pytest.fixture(scope="module")
 def glycopyrronium_bromide():
     """Provide fixture for chemidplus:51186-83-5"""
-    return Drug(**{
-        "concept_id": "chemidplus:51186-83-5",
-        "label": "Glycopyrronium bromide",
-        "xrefs": [
-            "drugbank:DB00986"
-        ],
-        "associated_with": [
-            "unii:V92SO9WP2I"
-        ],
-    })
+    return Drug(
+        **{
+            "concept_id": "chemidplus:51186-83-5",
+            "label": "Glycopyrronium bromide",
+            "xrefs": ["drugbank:DB00986"],
+            "associated_with": ["unii:V92SO9WP2I"],
+        }
+    )
 
 
 def test_penicillin(chemidplus, compare_records, penicillin_v):
@@ -191,9 +191,7 @@ def test_cisplatin(chemidplus, compare_records, cisplatin):
 
 
 def test_glycopyrronium_bromide(chemidplus, compare_records, glycopyrronium_bromide):
-    """This drug was processed with incorrect xref formatting -- this test is provided
-    to check on input QC.
-    """
+    """Check input QC. This drug was processed with incorrect xref formatting."""
     response = chemidplus.search("chemidplus:51186-83-5")
     assert response.match_type == MatchType.CONCEPT_ID
     assert len(response.records) == 1
@@ -204,12 +202,17 @@ def test_meta(chemidplus):
     """Test correctness of source metadata."""
     response = chemidplus.search("incoherent-string-of-text")
     assert response.source_meta_.data_license == "custom"
-    assert response.source_meta_.data_license_url == "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html"  # noqa: E501
+    assert (
+        response.source_meta_.data_license_url
+        == "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html"
+    )  # noqa: E501
     assert isodate.parse_date(response.source_meta_.version)
-    assert response.source_meta_.data_url == "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/"  # noqa: E501
+    assert (
+        response.source_meta_.data_url == "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/"
+    )  # noqa: E501
     assert response.source_meta_.rdp_url is None
     assert response.source_meta_.data_license_attributes == {
         "non_commercial": False,
         "share_alike": False,
-        "attribution": True
+        "attribution": True,
     }

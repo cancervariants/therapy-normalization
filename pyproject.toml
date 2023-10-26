@@ -1,3 +1,43 @@
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta:__legacy__"
+
+[tool.ruff]
+# pycodestyle (E, W)
+# Pyflakes (F)
+# flake8-annotations (ANN)
+# pydocstyle (D)
+# pep8-naming (N)
+# isort (I)
+select = ["E", "W", "F", "ANN", "D", "N", "I"]
+
+fixable = ["I", "F401"]
+
+# D203 - one-blank-line-before-class
+# D205 - blank-line-after-summary
+# D206 - indent-with-spaces*
+# D213 - multi-line-summary-second-line
+# D400 - ends-in-period
+# D415 - ends-in-punctuation
+# ANN101 - missing-type-self
+# ANN003 - missing-type-kwargs
+# E501 - line-too-long
+# W191 - tab-indentation*
+# *ignored for compatibility with formatter
+ignore = ["D203", "D205", "D206", "D213", "D400", "D415", "ANN101", "ANN003", "E501", "Q", "W191"]
+
+[tool.ruff.per-file-ignores]
+# ANN001 - missing-type-function-argument
+# ANN2 - missing-return-type
+# ANN201 - Missing type annotation
+# ANN102 - missing-type-cls
+# D103 - Missing docstring in public function
+# F821 - undefined-name
+# F401 - unused-import
+# I001 - Import block unsorted or unformatted
+# N805 - invalid-first-argument-name-for-method
+"tests/*" = ["ANN001", "ANN102", "ANN2"]
+"setup.py" = ["F821"]
+"*__init__.py" = ["F401"]
+"therapy/schemas.py" = ["ANN001", "ANN201", "N805"]
+"docs/source/conf.py" = ["D100", "I001", "D103", "ANN201", "ANN001"]

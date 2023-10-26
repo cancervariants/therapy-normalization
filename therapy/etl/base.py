@@ -1,27 +1,26 @@
 """A base class for extraction, transformation, and loading of data."""
-from abc import ABC, abstractmethod
 import ftplib
-from pathlib import Path
-import logging
-from typing import List, Dict, Optional, Callable
-import os
-import zipfile
-import tempfile
-import re
 import json
+import logging
+import os
+import re
+import tempfile
+import zipfile
+from abc import ABC, abstractmethod
 from functools import lru_cache
+from pathlib import Path
+from typing import Callable, Dict, List, Optional
 
-from pydantic import ValidationError
-import requests
 import bioversions
+import requests
 from disease.database.dynamodb import DynamoDbDatabase
 from disease.query import QueryHandler as DiseaseNormalizer
+from pydantic import ValidationError
 
 from therapy import APP_ROOT, ITEM_TYPES, DownloadException
-from therapy.schemas import Drug, SourceName
 from therapy.database import Database
 from therapy.etl.rules import Rules
-
+from therapy.schemas import Drug, SourceName
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -312,7 +311,7 @@ class Base(ABC):
 class DiseaseIndicationBase(Base):
     """Base class for sources that require disease normalization capabilities."""
 
-    def __init__(self, database: Database, data_path: Path = DEFAULT_DATA_PATH):
+    def __init__(self, database: Database, data_path: Path = DEFAULT_DATA_PATH) -> None:
         """Initialize source ETL instance.
 
         :param therapy.database.Database database: application database
@@ -336,9 +335,7 @@ class DiseaseIndicationBase(Base):
             return None
 
 
-class SourceFormatException(Exception):
+class SourceFormatException(Exception):  # noqa: N818
     """Raise when source data formatting is incompatible with the source transformation
     methods: for example, if columns in a CSV file have changed.
     """
-
-    pass

@@ -2,9 +2,8 @@
 import json
 from pathlib import Path
 
-from therapy.etl import DrugsAtFDA
 from therapy.database import Database
-
+from therapy.etl import DrugsAtFDA
 
 TEST_IDS = [
     "NDA020221",
@@ -24,7 +23,7 @@ TEST_IDS = [
     "NDA022007",
     "NDA050682",
     "NDA017604",
-    "ANDA214475"
+    "ANDA214475",
 ]
 
 daf = DrugsAtFDA(Database())

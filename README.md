@@ -21,7 +21,7 @@ We use Amazon DynamoDB for data storage. To deploy locally, follow [these instru
 
 ### Initialize development environment
 
-Code style is managed by [flake8](https://github.com/PyCQA/flake8) and checked prior to commit.
+Code style is managed by [Ruff](https://docs.astral.sh/ruff/) and checked prior to commit.
 
 We use [pre-commit](https://pre-commit.com/#usage) to run conformance tests.
 

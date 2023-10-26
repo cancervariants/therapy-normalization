@@ -1,17 +1,15 @@
-"""This module defines the ChEMBL ETL methods."""
+"""Defines the ChEMBL ETL methods."""
 import logging
 import os
 import shutil
 import sqlite3
-from typing import Optional, List, Dict
+from typing import Dict, List, Optional
 
-import chembl_downloader
 import bioversions
+import chembl_downloader
 
 from therapy.etl.base import DiseaseIndicationBase
-from therapy.schemas import SourceName, NamespacePrefix, ApprovalRating, \
-    SourceMeta
-
+from therapy.schemas import ApprovalRating, NamespacePrefix, SourceMeta, SourceName
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -92,14 +90,14 @@ class ChEMBL(DiseaseIndicationBase):
                             "disease_id": disease_id,
                             "disease_label": label,
                             "normalized_disease_id": normalized_disease_id,
-                            "supplemental_info": {"chembl_max_phase_for_ind": phase}
+                            "supplemental_info": {"chembl_max_phase_for_ind": phase},
                         }
                         break
                 if not indication:
                     indication = {
                         "disease_id": ind_group[0],
                         "disease_label": ind_group[2],
-                        "supplemental_info": {"chembl_max_phase_for_ind": phase}
+                        "supplemental_info": {"chembl_max_phase_for_ind": phase},
                     }
                 indications.append(indication)
             return indications
@@ -183,23 +181,25 @@ class ChEMBL(DiseaseIndicationBase):
                 "approval_ratings": appr_ratings,
                 "aliases": self._unwrap_group_concat(row["aliases"]),
                 "trade_names": self._unwrap_group_concat(row["trade_names"]),
-                "has_indication": has_indication
+                "has_indication": has_indication,
             }
             self._load_therapy(params)
         self._conn.close()
 
     def _load_meta(self) -> None:
         """Add ChEMBL metadata."""
-        metadata = SourceMeta(data_license="CC BY-SA 3.0",
-                              data_license_url="https://creativecommons.org/licenses/by-sa/3.0/",  # noqa: E501
-                              version=self._version,
-                              data_url=bioversions.resolve("chembl").homepage,
-                              rdp_url="http://reusabledata.org/chembl.html",
-                              data_license_attributes={
-                                  "non_commercial": False,
-                                  "share_alike": True,
-                                  "attribution": True
-                              })
+        metadata = SourceMeta(
+            data_license="CC BY-SA 3.0",
+            data_license_url="https://creativecommons.org/licenses/by-sa/3.0/",  # noqa: E501
+            version=self._version,
+            data_url=bioversions.resolve("chembl").homepage,
+            rdp_url="http://reusabledata.org/chembl.html",
+            data_license_attributes={
+                "non_commercial": False,
+                "share_alike": True,
+                "attribution": True,
+            },
+        )
         params = dict(metadata)
         params["src_name"] = SourceName.CHEMBL.value
         self.database.metadata.put_item(Item=params)

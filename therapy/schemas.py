@@ -1,10 +1,10 @@
-"""This module contains data models for representing VICC therapy records."""
-from typing import List, Optional, Dict, Union, Any, Literal, Set
-from enum import Enum, IntEnum
+"""Contains data models for representing VICC therapy records."""
 from datetime import datetime
+from enum import Enum, IntEnum
+from typing import Any, Dict, List, Literal, Optional, Set, Union
 
-from pydantic import BaseModel, StrictBool, constr, ConfigDict
 from ga4gh.core import core_models
+from pydantic import BaseModel, ConfigDict, StrictBool, constr
 
 from therapy.version import __version__
 
@@ -109,9 +109,7 @@ class HasIndication(BaseModel):
                 "disease_id": "mesh:D016778",
                 "disease_label": "Malaria, Falciparum",
                 "normalized_disease_id": "ncit:C34798",
-                "supplemental_info": {
-                    "chembl_max_phase_for_ind": "chembl_phase_2"
-                }
+                "supplemental_info": {"chembl_max_phase_for_ind": "chembl_phase_2"},
             }
         }
     )
@@ -145,14 +143,14 @@ class Drug(BaseModel):
                     "INT230-6 COMPONENT CISPLATIN",
                     "NSC-119875",
                     "Platinol",
-                    "Platinol-Aq"
+                    "Platinol-Aq",
                 ],
                 "xrefs": [],
                 "associated_with": None,
                 "approval_ratings": "approved",
                 "approval_year": [],
                 "has_indication": [],
-                "trade_names": ["PLATINOL", "PLATINOL-AQ", "CISPLATIN"]
+                "trade_names": ["PLATINOL", "PLATINOL-AQ", "CISPLATIN"],
             }
         }
     )
@@ -267,17 +265,15 @@ class SourceMeta(BaseModel):
         json_schema_extra={
             "example": {
                 "data_license": "CC BY-SA 3.0",
-                "data_license_url":
-                    "https://creativecommons.org/licenses/by-sa/3.0/",
+                "data_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
                 "version": "27",
-                "data_url":
-                    "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",  # noqa: E501
+                "data_url": "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",  # noqa: E501
                 "rdp_url": "http://reusabledata.org/chembl.html",
                 "data_license_attributes": {
                     "non_commercial": False,
                     "share_alike": True,
-                    "attribution": True
-                }
+                    "attribution": True,
+                },
             }
         }
     )
@@ -299,17 +295,15 @@ class MatchesKeyed(BaseModel):
                 "records": [],
                 "source_meta_": {
                     "data_license": "CC BY-SA 3.0",
-                    "data_license_url":
-                        "https://creativecommons.org/licenses/by-sa/3.0/",
+                    "data_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
                     "version": "27",
-                    "data_url":
-                        "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",  # noqa: E501
+                    "data_url": "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",  # noqa: E501
                     "rdp_url": "http://reusabledata.org/chembl.html",
                     "data_license_attributes": {
                         "non_commercial": False,
                         "share_alike": True,
-                        "attribution": True
-                    }
+                        "attribution": True,
+                    },
                 },
             }
         }
@@ -334,17 +328,15 @@ class MatchesListed(BaseModel):
                 "records": [],
                 "source_meta_": {
                     "data_license": "CC BY-SA 3.0",
-                    "data_license_url":
-                        "https://creativecommons.org/licenses/by-sa/3.0/",
+                    "data_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
                     "version": "27",
-                    "data_url":
-                        "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",  # noqa: E501
+                    "data_url": "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",  # noqa: E501
                     "rdp_url": "http://reusabledata.org/chembl.html",
                     "data_license_attributes": {
                         "non_commercial": False,
                         "share_alike": True,
-                        "attribution": True
-                    }
+                        "attribution": True,
+                    },
                 },
             }
         }
@@ -367,7 +359,7 @@ class ServiceMeta(BaseModel):
                 "name": "thera-py",
                 "version": __version__,
                 "response_datetime": "2021-04-05T16:44:15.367831",
-                "url": "https://github.com/cancervariants/therapy-normalization"
+                "url": "https://github.com/cancervariants/therapy-normalization",
             }
         }
     )
@@ -410,7 +402,7 @@ class UnmergedNormalizationService(BaseNormalizationService):
                     "response_datetime": "2022-04-22T11:40:18.921859",
                     "name": "thera-py",
                     "version": __version__,
-                    "url": "https://github.com/cancervariants/therapy-normalization"
+                    "url": "https://github.com/cancervariants/therapy-normalization",
                 },
                 "normalized_concept_id": "iuphar.ligand:3303",
                 "source_matches": {
@@ -422,21 +414,21 @@ class UnmergedNormalizationService(BaseNormalizationService):
                                 "aliases": [
                                     "L-745,870",
                                     "L 745870",
-                                    "3-[[4-(4-chlorophenyl)piperazin-1-yl]methyl]-1H-pyrrolo[2,3-b]pyridine"  # noqa: E501
+                                    "3-[[4-(4-chlorophenyl)piperazin-1-yl]methyl]-1H-pyrrolo[2,3-b]pyridine",  # noqa: E501
                                 ],
                                 "trade_names": [],
                                 "xrefs": [
                                     "chemidplus:158985-00-3",
-                                    "chembl:CHEMBL267014"
+                                    "chembl:CHEMBL267014",
                                 ],
                                 "associated_with": [
                                     "pubchem.substance:178100340",
                                     "pubchem.compound:5311200",
-                                    "inchikey:OGJGQVFWEPNYSB-UHFFFAOYSA-N"
+                                    "inchikey:OGJGQVFWEPNYSB-UHFFFAOYSA-N",
                                 ],
                                 "approval_ratings": None,
                                 "approval_year": [],
-                                "has_indication": []
+                                "has_indication": [],
                             }
                         ],
                         "source_meta_": {
@@ -448,9 +440,9 @@ class UnmergedNormalizationService(BaseNormalizationService):
                             "data_license_attributes": {
                                 "non_commercial": False,
                                 "share_alike": True,
-                                "attribution": True
-                            }
-                        }
+                                "attribution": True,
+                            },
+                        },
                     },
                     "ChEMBL": {
                         "records": [
@@ -461,11 +453,9 @@ class UnmergedNormalizationService(BaseNormalizationService):
                                 "trade_names": [],
                                 "xrefs": [],
                                 "associated_with": [],
-                                "approval_ratings": [
-                                    "chembl_phase_0"
-                                ],
+                                "approval_ratings": ["chembl_phase_0"],
                                 "approval_year": [],
-                                "has_indication": []
+                                "has_indication": [],
                             }
                         ],
                         "source_meta_": {
@@ -477,11 +467,11 @@ class UnmergedNormalizationService(BaseNormalizationService):
                             "data_license_attributes": {
                                 "non_commercial": False,
                                 "share_alike": True,
-                                "attribution": True
-                            }
-                        }
-                    }
-                }
+                                "attribution": True,
+                            },
+                        },
+                    },
+                },
             }
         }
     )
@@ -568,7 +558,9 @@ class NormalizationService(BaseNormalizationService):
                         },
                     ],
                     "aliases": [
-                        "CIS-DDP", "cis Platinum", "DDP",
+                        "CIS-DDP",
+                        "cis Platinum",
+                        "DDP",
                         "Dichlorodiammineplatinum",
                         "1,2-Diaminocyclohexaneplatinum II citrate",
                         "CISplatin",
@@ -582,18 +574,17 @@ class NormalizationService(BaseNormalizationService):
                         "Cis-DDP",
                         "cis-Diamminedichloroplatinum",
                         "cis-Diaminedichloroplatinum",
-                        "Platinol-AQ", "Platinol",
-                        "Platinum Diamminodichloride"
+                        "Platinol-AQ",
+                        "Platinol",
+                        "Platinum Diamminodichloride",
                     ],
                     "extensions": [
                         {
                             "type": "Extension",
                             "name": "trade_names",
-                            "value": [
-                                "Platinol", "Cisplatin"
-                            ]
+                            "value": ["Platinol", "Cisplatin"],
                         },
-                    ]
+                    ],
                 },
                 "source_meta_": {
                     "RxNorm": {
@@ -605,8 +596,8 @@ class NormalizationService(BaseNormalizationService):
                         "data_license_attributes": {
                             "non_commercial": False,
                             "attribution": True,
-                            "share_alike": False
-                        }
+                            "share_alike": False,
+                        },
                     },
                     "NCIt": {
                         "data_license": "CC BY 4.0",
@@ -617,19 +608,20 @@ class NormalizationService(BaseNormalizationService):
                         "data_license_attributes": {
                             "non_commercial": False,
                             "attribution": True,
-                            "share_alike": False
-                        }
+                            "share_alike": False,
+                        },
                     },
                     "ChemIDplus": {
                         "data_license": "custom",
                         "data_license_url": "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501
-                        "version": "20200327", "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",  # noqa: E501
+                        "version": "20200327",
+                        "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",  # noqa: E501
                         "rdp_url": None,
                         "data_license_attributes": {
                             "non_commercial": False,
                             "attribution": True,
-                            "share_alike": False
-                        }
+                            "share_alike": False,
+                        },
                     },
                     "Wikidata": {
                         "data_license": "CC0 1.0",
@@ -640,16 +632,16 @@ class NormalizationService(BaseNormalizationService):
                         "data_license_attributes": {
                             "non_commercial": False,
                             "attribution": False,
-                            "share_alike": False
-                        }
-                    }
+                            "share_alike": False,
+                        },
+                    },
                 },
                 "service_meta_": {
                     "name": "thera-py",
                     "version": __version__,
                     "response_datetime": "2021-04-05T16:44:15.367831",
-                    "url": "https://github.com/cancervariants/therapy-normalization"
-                }
+                    "url": "https://github.com/cancervariants/therapy-normalization",
+                },
             }
         }
     )
@@ -678,12 +670,12 @@ class SearchService(BaseModel):
                                 "concept_id": "chemidplus:15663-27-1",
                                 "aliases": [
                                     "cis-Diaminedichloroplatinum",
-                                    "1,2-Diaminocyclohexaneplatinum II citrate"
+                                    "1,2-Diaminocyclohexaneplatinum II citrate",
                                 ],
                                 "xrefs": ["drugbank:DB00515"],
                                 "associated_with": ["fda:Q20Q21Q62J"],
                                 "approval_ratings": None,
-                                "trade_names": []
+                                "trade_names": [],
                             }
                         ],
                         "source_meta_": {
@@ -695,9 +687,9 @@ class SearchService(BaseModel):
                             "data_license_attributes": {
                                 "non_commercial": False,
                                 "attribution": True,
-                                "share_alike": False
-                            }
-                        }
+                                "share_alike": False,
+                            },
+                        },
                     },
                     {
                         "source": "RxNorm",
@@ -720,12 +712,9 @@ class SearchService(BaseModel):
                                     "cis-Diamminedichloroplatinum(II)",
                                     "Cis-DDP",
                                     "DDP",
-                                    "Diamminodichloride, Platinum"
+                                    "Diamminodichloride, Platinum",
                                 ],
-                                "xrefs": [
-                                    "drugbank:DB00515",
-                                    "drugbank:DB12117"
-                                ],
+                                "xrefs": ["drugbank:DB00515", "drugbank:DB12117"],
                                 "associated_with": [
                                     "usp:m17910",
                                     "vandf:4018139",
@@ -734,13 +723,10 @@ class SearchService(BaseModel):
                                     "mmsl:d00195",
                                     "atc:L01XA01",
                                     "mmsl:31747",
-                                    "mmsl:4456"
+                                    "mmsl:4456",
                                 ],
                                 "approval_ratings": ["rxnorm_prescribable"],
-                                "trade_names": [
-                                    "Cisplatin",
-                                    "Platinol"
-                                ]
+                                "trade_names": ["Cisplatin", "Platinol"],
                             }
                         ],
                         "source_meta_": {
@@ -752,9 +738,9 @@ class SearchService(BaseModel):
                             "data_license_attributes": {
                                 "non_commercial": False,
                                 "attribution": True,
-                                "share_alike": False
-                            }
-                        }
+                                "share_alike": False,
+                            },
+                        },
                     },
                     {
                         "source": "NCIt",
@@ -768,10 +754,10 @@ class SearchService(BaseModel):
                                 "associated_with": [
                                     "umls:C0008838",
                                     "fda:Q20Q21Q62J",
-                                    "chebi:CHEBI:27899"
+                                    "chebi:CHEBI:27899",
                                 ],
                                 "approval_ratings": None,
-                                "trade_names": []
+                                "trade_names": [],
                             }
                         ],
                         "source_meta_": {
@@ -783,9 +769,9 @@ class SearchService(BaseModel):
                             "data_license_attributes": {
                                 "non_commercial": False,
                                 "attribution": True,
-                                "share_alike": False
-                            }
-                        }
+                                "share_alike": False,
+                            },
+                        },
                     },
                     {
                         "source": "Wikidata",
@@ -800,19 +786,17 @@ class SearchService(BaseModel):
                                     "CDDP",
                                     "Cis-DDP",
                                     "CIS-DDP",
-                                    "Platinol-AQ"
+                                    "Platinol-AQ",
                                 ],
                                 "xrefs": [
                                     "chemidplus:15663-27-1",
                                     "chembl:CHEMBL11359",
                                     "rxcui:2555",
-                                    "drugbank:DB00515"
+                                    "drugbank:DB00515",
                                 ],
-                                "associated_with": [
-                                    "pubchem.compound:5702198"
-                                ],
+                                "associated_with": ["pubchem.compound:5702198"],
                                 "approval_ratings": None,
-                                "trade_names": []
+                                "trade_names": [],
                             }
                         ],
                         "source_meta_": {
@@ -824,17 +808,17 @@ class SearchService(BaseModel):
                             "data_license_attributes": {
                                 "non_commercial": False,
                                 "attribution": False,
-                                "share_alike": False
-                            }
-                        }
-                    }
+                                "share_alike": False,
+                            },
+                        },
+                    },
                 ],
                 "service_meta_": {
                     "name": "thera-py",
                     "version": __version__,
                     "response_datetime": "2021-04-05T16:44:15.367831",
-                    "url": "https://github.com/cancervariants/therapy-normalization"
-                }
+                    "url": "https://github.com/cancervariants/therapy-normalization",
+                },
             }
         }
     )
