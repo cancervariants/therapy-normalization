@@ -3,7 +3,7 @@ disease-normalizer introduced breaking changes.
 """
 import os
 
-from disease.database import AWS_ENV_VAR_NAME
+from disease.database import AWS_ENV_VAR_NAME, create_db
 from disease.query import QueryHandler as DiseaseQueryHandler
 
 from therapy.etl.base import DiseaseIndicationBase
@@ -17,7 +17,7 @@ class TestDiseaseIndication(DiseaseIndicationBase):
 
     def __init__(self):
         """Initialize test TestDiseaseIndication"""
-        self.disease_normalizer = DiseaseQueryHandler()
+        self.disease_normalizer = DiseaseQueryHandler(create_db())
 
         if RUN_TEST:
             self.load_disease_test_data()

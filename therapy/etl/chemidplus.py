@@ -118,7 +118,7 @@ class ChemIDplus(Base):
                 non_commercial=False,
                 share_alike=False,
                 attribution=True
-            )
+            ).model_dump()
         )
         item = dict(meta)
         item["src_name"] = SourceName.CHEMIDPLUS.value

@@ -64,7 +64,7 @@ search_description = ("For each source, return strongest-match concepts for quer
 normalize_description = ("Return merged strongest-match concept for query string "
                          "provided by user.")
 merged_matches_summary = ("Given query, provide merged normalized record as a "
-                          "TherapeuticDescriptor.")
+                          "Therapeutic Agent.")
 merged_response_descr = "A response to a validly-formed query."
 normalize_q_descr = "Therapy to normalize."
 unmerged_matches_summary = ("Given query, provide source records corresponding to "
@@ -81,6 +81,7 @@ unmerged_normalize_description = ("Return unmerged records associated with the "
          operation_id="getQueryResponse",
          response_description=response_descr,
          response_model=SearchService,
+         response_model_exclude_none=True,
          description=search_description)
 def search(q: str = Query(..., description=q_descr),
            keyed: Optional[bool] = Query(False, description=keyed_descr),
@@ -116,6 +117,7 @@ def search(q: str = Query(..., description=q_descr),
          operation_id="getMergedRecord",
          response_description=merged_response_descr,
          response_model=NormalizationService,
+         response_model_exclude_none=True,
          description=normalize_description)
 def normalize(q: str = Query(..., description=normalize_q_descr),
               infer_namespace: bool = Query(True, description=infer_descr)
@@ -126,7 +128,7 @@ def normalize(q: str = Query(..., description=normalize_q_descr),
     :param q: therapy search term
     :param bool infer_namespace: if True, try to infer namespace from query term.
     :returns: JSON response with matching normalized record provided as a
-    TherapeuticDescriptor, and source metadata
+    Therapeutic Agent, and source metadata
     """
     try:
         response = query_handler.normalize(html.unescape(q),
