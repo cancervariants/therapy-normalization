@@ -49,7 +49,7 @@ def fixture_data(test_data: Path):
 
 @pytest.fixture(scope="module")
 def normalized_phenobarbital(fixture_data):
-    """Create phenobarbital VOD fixture."""
+    """Create phenobarbital fixture."""
     return fixture_data["normalize_phenobarbital"]
 
 
