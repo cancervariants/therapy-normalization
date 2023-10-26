@@ -3,6 +3,8 @@ from typing import Dict, Any
 import logging
 import csv
 
+from wags_tails import DrugBankData
+
 from therapy.schemas import SourceName, SourceMeta, NamespacePrefix
 from therapy.etl.base import Base
 
@@ -13,13 +15,7 @@ logger.setLevel(logging.DEBUG)
 class DrugBank(Base):
     """Class for DrugBank ETL methods."""
 
-    def _download_data(self) -> None:
-        """Download DrugBank source data."""
-        logger.info("Retrieving source data for DrugBank")
-        url = f"https://go.drugbank.com/releases/{self._version.replace('.', '-')}/downloads/all-drugbank-vocabulary"  # noqa: E501
-        csv_file = self._src_dir / f"drugbank_{self._version}.csv"
-        self._http_download(url, csv_file, handler=self._zip_handler)
-        logger.info("Successfully retrieved source data for DrugBank")
+    _DataSourceClass = DrugBankData
 
     def _load_meta(self) -> None:
         """Add DrugBank metadata."""

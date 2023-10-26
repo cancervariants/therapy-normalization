@@ -2,9 +2,11 @@
 import json
 import logging
 import datetime
+from pathlib import Path
 from typing import Dict, Any
 
 from wikibaseintegrator.wbi_helpers import execute_sparql_query
+from wags_tails.custom import CustomData
 
 from therapy import XREF_SOURCES, DownloadException
 from therapy.schemas import SourceName, NamespacePrefix, RecordParams, SourceMeta
@@ -79,10 +81,14 @@ WHERE {
 class Wikidata(Base):
     """Class for Wikidata ETL methods."""
 
-    def _download_data(self) -> None:
-        """Download latest Wikidata source dump."""
-        logger.info("Retrieving source data for Wikidata")
+    @staticmethod
+    def _download_data(file: Path, version: str) -> None:
+        """Download latest Wikidata source dump.
 
+        :param file: location to save data dump at
+        :param version: not used by this method
+        :raise DownloadException: if SPARQL query fails
+        """
         medicine_query_results = execute_sparql_query(SPARQL_QUERY)
         if medicine_query_results is None:
             raise DownloadException("Wikidata medicine SPARQL query failed")
@@ -94,15 +100,34 @@ class Wikidata(Base):
             for attr in item:
                 params[attr] = item[attr]["value"]
             transformed_data.append(params)
-        with open(f"{self._src_dir}/wikidata_{self._version}.json", "w+") as f:
+        with open(file, "w+") as f:
             json.dump(transformed_data, f)
-        logger.info("Successfully retrieved source data for Wikidata")
 
-    def get_latest_version(self) -> str:
+    @staticmethod
+    def _get_latest_version() -> str:
         """Wikidata is constantly, immediately updated, so source data has no strict
         versioning. We use the current date as a pragmatic way to indicate the version.
         """
         return datetime.datetime.today().strftime("%Y-%m-%d")
+
+    _DataSourceClass = CustomData
+
+    def _extract_data(self, use_existing: bool) -> None:
+        """Acquire source data.
+
+        This method is responsible for initializing an instance of
+        ``self._DataSourceClass``, and, in most cases, setting ``self._src_file``.
+
+        :param bool use_existing: if True, don't try to fetch latest source data
+        """
+        data_source: CustomData = self._DataSourceClass(
+            src_name="wikidata_drugs",  # type: ignore
+            file_suffix="json",  # type: ignore
+            latest_version_cb=self._get_latest_version,  # type: ignore
+            download_cb=self._download_data,  # type: ignore
+            data_dir=self._therapy_data_dir
+        )  # type: ignore
+        self._src_file, self._version = data_source.get_latest(from_local=use_existing)
 
     def _load_meta(self) -> None:
         """Add Wikidata metadata."""

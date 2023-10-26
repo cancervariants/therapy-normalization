@@ -1,11 +1,9 @@
 """This module defines the ChEMBL ETL methods."""
 import logging
-import os
-import shutil
 import sqlite3
 from typing import Optional, List, Dict
 
-import chembl_downloader
+from wags_tails import ChemblData
 import bioversions
 
 from therapy.etl.base import DiseaseIndicationBase
@@ -20,25 +18,7 @@ logger.setLevel(logging.DEBUG)
 class ChEMBL(DiseaseIndicationBase):
     """Class for ChEMBL ETL methods."""
 
-    def _download_data(self) -> None:
-        """Download latest ChEMBL database file from EBI."""
-        logger.info("Retrieving source data for ChEMBL")
-        os.environ["PYSTOW_HOME"] = str(self._src_dir.parent.absolute())
-        tmp_path = chembl_downloader.download_extract_sqlite()
-        shutil.move(tmp_path, self._src_dir)
-        shutil.rmtree(tmp_path.parent.parent.parent)
-        logger.info("Successfully retrieved source data for ChEMBL")
-
-    def _extract_data(self, use_existing: bool = False) -> None:
-        """Extract data from the ChEMBL source.
-
-        :param bool use_existing: if True, don't try to fetch latest source data
-        """
-        super()._extract_data(use_existing)
-        conn = sqlite3.connect(self._src_file)
-        conn.row_factory = sqlite3.Row
-        self._conn = conn
-        self._cursor = conn.cursor()
+    _DataSourceClass = ChemblData
 
     @staticmethod
     def _unwrap_group_concat(value: Optional[str]) -> List[str]:
@@ -108,6 +88,11 @@ class ChEMBL(DiseaseIndicationBase):
 
     def _transform_data(self) -> None:
         """Transform SQLite data and load to DB."""
+        conn = sqlite3.connect(self._src_file)
+        conn.row_factory = sqlite3.Row
+        self._conn = conn
+        self._cursor = conn.cursor()
+
         query = """
         SELECT
             md.chembl_id,

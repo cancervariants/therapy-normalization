@@ -2,9 +2,9 @@
 from typing import List, Optional
 import json
 
-import requests
+from wags_tails import DrugsAtFdaData
 
-from therapy import DownloadException, logger
+from therapy import logger
 from therapy.schemas import SourceMeta, SourceName, NamespacePrefix, ApprovalRating, \
     RecordParams
 from therapy.etl.base import Base
@@ -13,32 +13,7 @@ from therapy.etl.base import Base
 class DrugsAtFDA(Base):
     """Class for Drugs@FDA ETL methods."""
 
-    def _download_data(self) -> None:
-        """Download source data from instance-provided source URL."""
-        logger.info("Retrieving source data for Drugs@FDA")
-        url = "https://download.open.fda.gov/drug/drugsfda/drug-drugsfda-0001-of-0001.json.zip"  # noqa: E501
-        outfile_path = self._src_dir / f"drugsatfda_{self._version}.json"
-        self._http_download(url, outfile_path, handler=self._zip_handler)
-        logger.info("Successfully retrieved source data for Drugs@FDA")
-
-    def get_latest_version(self) -> str:
-        """Retrieve latest version of source data.
-        :return: version as a str -- expected formatting is YYYY-MM-DD
-        """
-        r = requests.get("https://api.fda.gov/download.json")
-        if r.status_code == 200:
-            r_json = r.json()
-            try:
-                date = r_json["results"]["drug"]["drugsfda"]["export_date"]
-            except KeyError:
-                msg = "Unable to parse OpenFDA version API - check for breaking changes"
-                logger.error(msg)
-                raise DownloadException(msg)
-            return date
-        else:
-            raise requests.HTTPError(
-                "Unable to retrieve version from FDA API", response=requests.Response()
-            )
+    _DataSourceClass = DrugsAtFdaData
 
     def _load_meta(self) -> None:
         """Add Drugs@FDA metadata."""

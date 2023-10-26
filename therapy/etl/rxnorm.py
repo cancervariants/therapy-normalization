@@ -7,18 +7,16 @@ Library of Medicine (NLM), National Institutes of Health, Department of Health
 """
 import csv
 import logging
-import shutil
-import zipfile
-import re
-from os import environ, remove
-from typing import List, Dict
 from pathlib import Path
+import re
+from typing import List, Dict
 
+from wags_tails import CustomData, RxNormData
 import yaml
 import bioversions
 from boto3.dynamodb.table import BatchWriter
 
-from therapy import DownloadException, XREF_SOURCES, ASSOC_WITH_SOURCES, ITEM_TYPES
+from therapy import XREF_SOURCES, ASSOC_WITH_SOURCES, ITEM_TYPES
 from therapy.schemas import SourceName, NamespacePrefix, SourceMeta, ApprovalRating, \
     RecordParams
 from therapy.etl.base import Base
@@ -44,77 +42,43 @@ RXNORM_XREFS = ["ATC", "CVX", "DRUGBANK", "MMSL", "MSH", "MTHCMSFRF", "MTHSPL",
 class RxNorm(Base):
     """Class for RxNorm ETL methods."""
 
-    def _create_drug_form_yaml(self) -> None:
+    @staticmethod
+    def _create_drug_form_yaml(file: Path, version: str, rxnorm_file: Path) -> None:
         """Create a YAML file containing RxNorm drug form values."""
-        self._drug_forms_file = self._src_dir / f"rxnorm_drug_forms_{self._version}.yaml"  # noqa: E501
         dfs = []
-        with open(self._src_file) as f:  # type: ignore
+        with open(rxnorm_file, "r") as f:
             data = csv.reader(f, delimiter="|")
             for row in data:
                 if row[12] == "DF" and row[11] == "RXNORM":
                     if row[14] not in dfs:
                         dfs.append(row[14])
-        with open(self._drug_forms_file, "w") as file:
-            yaml.dump(dfs, file)
+        with open(file, "w") as f:
+            yaml.dump(dfs, f)
 
-    def _zip_handler(self, dl_path: Path, outfile_path: Path) -> None:
-        """Extract required files from RxNorm zip. This method should be passed to
-        the base class's _http_download method.
-        :param Path dl_path: path to RxNorm zip file in tmp directory
-        :param Path outfile_path: path to RxNorm data directory
-        """
-        rrf_path = outfile_path / f"rxnorm_{self._version}.RRF"
-        with zipfile.ZipFile(dl_path, "r") as zf:
-            rrf = zf.open("rrf/RXNCONSO.RRF")
-            target = open(rrf_path, "wb")
-            with rrf, target:
-                shutil.copyfileobj(rrf, target)
-        remove(dl_path)
-        self._src_file = rrf_path
-        self._create_drug_form_yaml()
-        logger.info("Successfully retrieved source data for RxNorm")
+    _DataSourceClass = RxNormData
 
-    def _download_data(self) -> None:
-        """Download latest RxNorm data file.
+    def _extract_data(self, use_existing: bool) -> None:
+        """Acquire source data.
 
-        :raises DownloadException: if API Key is not defined in the environment.
-        """
-        logger.info("Retrieving source data for RxNorm")
-        api_key = environ.get("RXNORM_API_KEY")
-        if api_key is None:
-            logger.error("Could not find RXNORM_API_KEY in environment variables.")
-            raise DownloadException("RXNORM_API_KEY not found.")
-
-        url = bioversions.resolve("rxnorm").homepage
-        if not url:
-            raise DownloadException("Could not resolve RxNorm homepage")
-
-        self._http_download(
-            f"https://uts-ws.nlm.nih.gov/download?url={url}&apiKey={api_key}",
-            self._src_dir,
-            handler=self._zip_handler
-        )
-
-    def _get_existing_files(self) -> List[Path]:
-        """Get existing source RRF files from data directory.
-        :return: sorted list of file objects
-        """
-        return list(sorted(self._src_dir.glob("rxnorm_*.RRF")))
-
-    def _extract_data(self, use_existing: bool = False) -> None:
-        """Get source files from RxNorm data directory.
-        This class expects a file named `rxnorm_<version>.RRF` and a file named
-        `rxnorm_drug_forms_<version>.yaml`. This method will download and
-        generate them if they are unavailable.
+        This method is responsible for initializing an instance of
+        ``self._DataSourceClass``, and, in most cases, setting ``self._src_file``.
 
         :param bool use_existing: if True, don't try to fetch latest source data
         """
-        super()._extract_data(use_existing)
-        drug_forms_path = self._src_dir / f"rxnorm_drug_forms_{self._version}.yaml"
-        if not drug_forms_path.exists():
-            self._create_drug_form_yaml()
-        else:
-            self._drug_forms_file = drug_forms_path
+        data_source = self._DataSourceClass(data_dir=self._therapy_data_dir)
+        self._src_file, self._version = data_source.get_latest(from_local=use_existing)
+
+        drug_form_data_handler = CustomData(
+            src_name="rxnorm",
+            file_suffix="yaml",
+            latest_version_cb=lambda: self._version,
+            download_cb=lambda file, version: self._create_drug_form_yaml(
+                file, version, self._src_file
+            ),
+            data_dir=self._therapy_data_dir,
+            file_name="rxnorm_drug_forms",
+        )
+        self._drug_forms_file, _ = drug_form_data_handler.get_latest()
 
     def _transform_data(self) -> None:
         """Transform the RxNorm source."""
