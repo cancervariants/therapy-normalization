@@ -25,7 +25,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python3 -m pip install ".[dev,test]"
+          python3 -m pip install ".[etl,test]"
 
       - name: Build local DynamoDB
         run: |
@@ -54,7 +54,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
-        run: python3 -m pip install ".[dev,test]"
+        run: python3 -m pip install ".[dev]"
 
       - name: Check style
         run: python3 -m ruff check . && ruff format --check .
