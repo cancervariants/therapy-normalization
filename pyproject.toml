@@ -56,6 +56,9 @@ version = {attr = "therapy.version.__version__"}
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+"therapy.etl" = ["*.csv"]
+
 [tool.pytest.ini_options]
 addopts = "--cov=src --cov-report term-missing"
 testpaths = ["tests"]
