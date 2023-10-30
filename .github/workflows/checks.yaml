@@ -61,4 +61,4 @@ jobs:
 
       - name: Check type correctness
         if: ${{ always() }}
-        run: python3 -m mypy --ignore-missing-imports therapy/
+        run: python3 -m mypy src/therapy/
