@@ -13,12 +13,12 @@ from typing import Callable, Dict, List, Optional
 
 import bioversions
 import requests
-from disease.database.dynamodb import DynamoDbDatabase
+from disease.database import create_db as create_disease_db
 from disease.query import QueryHandler as DiseaseNormalizer
 from pydantic import ValidationError
 
 from therapy import APP_ROOT, ITEM_TYPES, DownloadException
-from therapy.database import Database
+from therapy.database import AbstractDatabase
 from therapy.etl.rules import Rules
 from therapy.schemas import Drug, SourceName
 
@@ -38,17 +38,19 @@ class Base(ABC):
     needed.
     """
 
-    def __init__(self, database: Database, data_path: Path = DEFAULT_DATA_PATH) -> None:
+    def __init__(
+        self, database: AbstractDatabase, data_path: Path = DEFAULT_DATA_PATH
+    ) -> None:
         """Extract from sources.
 
-        :param Database database: application database object
-        :param Path data_path: path to app data directory
+        :param database: application database object
+        :param data_path: path to app data directory
         """
-        self._name = self.__class__.__name__
+        self._name = SourceName[self.__class__.__name__.upper()]
         self.database = database
-        self._src_dir: Path = Path(data_path / self._name.lower())
+        self._src_dir: Path = Path(data_path / self._name.value.lower())
         self._added_ids: List[str] = []
-        self._rules = Rules(SourceName(self._name))
+        self._rules = Rules(self._name)
 
     def perform_etl(self, use_existing: bool = False) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
@@ -171,7 +173,7 @@ class Base(ABC):
         """Get existing source files from data directory.
         :return: sorted list of file objects
         """
-        return list(sorted(self._src_dir.glob(f"{self._name.lower()}_*.*")))
+        return list(sorted(self._src_dir.glob(f"{self._name.value.lower()}_*.*")))
 
     def _extract_data(self, use_existing: bool = False) -> None:
         """Get source file from data directory.
@@ -242,7 +244,7 @@ class Base(ABC):
 
         concept_id = therapy["concept_id"]
 
-        for attr_type, item_type in ITEM_TYPES.items():
+        for attr_type in ITEM_TYPES.keys():
             if attr_type in therapy:
                 value = therapy[attr_type]
                 if value is None or value == []:
@@ -252,8 +254,6 @@ class Base(ABC):
                 if attr_type == "label":
                     value = value.strip()
                     therapy["label"] = value
-                    self.database.add_ref_record(value.lower(), concept_id, item_type)
-                    continue
 
                 value_set = {v.strip() for v in value}
 
@@ -275,8 +275,6 @@ class Base(ABC):
                     del therapy[attr_type]
                     continue
 
-                for item in {item.lower() for item in value}:
-                    self.database.add_ref_record(item, concept_id, item_type)
                 therapy[attr_type] = value
 
         # compress has_indication
@@ -304,22 +302,23 @@ class Base(ABC):
             if approval_attrs in therapy and therapy[field] is None:
                 del therapy[field]
 
-        self.database.add_record(therapy)
+        self.database.add_record(therapy, self._name)
         self._added_ids.append(concept_id)
 
 
 class DiseaseIndicationBase(Base):
     """Base class for sources that require disease normalization capabilities."""
 
-    def __init__(self, database: Database, data_path: Path = DEFAULT_DATA_PATH) -> None:
+    def __init__(
+        self, database: AbstractDatabase, data_path: Path = DEFAULT_DATA_PATH
+    ) -> None:
         """Initialize source ETL instance.
 
-        :param therapy.database.Database database: application database
-        :param Path data_path: path to normalizer data directory
+        :param database: application database
+        :param data_path: path to normalizer data directory
         """
         super().__init__(database, data_path)
-        db = DynamoDbDatabase(self.database.endpoint_url)
-        self.disease_normalizer = DiseaseNormalizer(db)
+        self.disease_normalizer = DiseaseNormalizer(create_disease_db())
 
     @lru_cache(maxsize=64)
     def _normalize_disease(self, query: str) -> Optional[str]:
