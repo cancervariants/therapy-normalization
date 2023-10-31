@@ -1,8 +1,77 @@
+[project]
+name = "therapy-normalizer"
+authors = [
+    {name = "Alex Wagner"},
+    {name = "Kori Kuzma"},
+    {name = "James Stevenson"}
+]
+readme = "README.md"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: FastAPI",
+    "Framework :: Pydantic",
+    "Framework :: Pydantic :: 2",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.8"
+description = "VICC normalization routines for therapeutics"
+license = {file = "LICENSE"}
+dependencies = [
+    "pydantic==2.*",
+    "fastapi",
+    "uvicorn",
+    "click",
+    "boto3",
+    "ga4gh.vrs~=2.0.0a1",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+etl = ["disease-normalizer~=0.4.0.dev0", "owlready2", "rdflib", "wikibaseintegrator>=0.12.0", "chembl-downloader", "bioversions>=0.4.3"]
+test = ["pytest", "pytest-cov"]
+dev = ["pre-commit", "ruff>=0.1.2", "lxml", "xmlformatter", "mypy", "types-requests", "types-pyyaml"]
+
+[project.urls]
+Homepage = "https://github.com/cancervariants/therapy-normalization"
+Documentation = "https://github.com/cancervariants/therapy-normalization"
+Changelog = "https://github.com/cancervariants/therapy-normalization/releases"
+Source = "https://github.com/cancervariants/therapy-normalization"
+"Bug Tracker" = "https://github.com/cancervariants/therapy-normalization/issues"
+
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta:__legacy__"
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+version = {attr = "therapy.version.__version__"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"therapy.etl" = ["*.csv"]
+
+[tool.pytest.ini_options]
+addopts = "--cov=src --cov-report term-missing"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+branch = true
+
+[tool.mypy]
+plugins = "pydantic.mypy"
+ignore_missing_imports = true
 
 [tool.ruff]
+src = ["src"]
 # pycodestyle (E, W)
 # Pyflakes (F)
 # flake8-annotations (ANN)

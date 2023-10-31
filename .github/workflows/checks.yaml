@@ -25,7 +25,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python3 -m pip install ".[dev,test]"
+          python3 -m pip install ".[etl,test]"
 
       - name: Build local DynamoDB
         run: |
@@ -54,11 +54,11 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
-        run: python3 -m pip install ".[dev,test]"
+        run: python3 -m pip install ".[dev]"
 
       - name: Check style
         run: python3 -m ruff check . && ruff format --check .
 
       - name: Check type correctness
         if: ${{ always() }}
-        run: python3 -m mypy --ignore-missing-imports therapy/
+        run: python3 -m mypy src/therapy/

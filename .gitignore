@@ -147,8 +147,7 @@ cython_debug/
 pytest.ini
 
 # data directories
-data/*
-therapy/data/
+src/therapy/data/*
 
 # dynamodb
 dynamodb_local_latest/*
