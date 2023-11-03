@@ -86,7 +86,7 @@ class DynamoDbDatabase(AbstractDatabase):
 
         self.therapies = self.dynamodb.Table(self.therapy_table)
         self.batch = self.therapies.batch_writer()
-        self._cached_sources = {}
+        self._cached_sources: Dict[str, Dict] = {}
         atexit.register(self.close_connection)
 
     def list_tables(self) -> List[str]:
