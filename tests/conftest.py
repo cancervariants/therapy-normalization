@@ -1,15 +1,18 @@
 """Pytest test config tools."""
 import json
+import logging
 import os
 from pathlib import Path
-from typing import Callable, List, Optional
+from typing import List, Optional
 
 import pytest
 
-from therapy.database import AWS_ENV_VAR_NAME, Database
+from therapy.database.database import AWS_ENV_VAR_NAME, AbstractDatabase, create_db
 from therapy.etl.base import Base
 from therapy.query import QueryHandler
 from therapy.schemas import Drug, MatchesKeyed, MatchType
+
+_logger = logging.getLogger(__name__)
 
 
 def pytest_collection_modifyitems(items):
@@ -37,6 +40,17 @@ def pytest_collection_modifyitems(items):
 
 TEST_ROOT = Path(__file__).resolve().parents[1]
 TEST_DATA_DIRECTORY = TEST_ROOT / "tests" / "data"
+IS_TEST_ENV = os.environ.get("DISEASE_TEST", "").lower() == "true"
+
+
+def pytest_sessionstart():
+    """Wipe DB before testing if in test environment."""
+    if IS_TEST_ENV:
+        if os.environ.get(AWS_ENV_VAR_NAME):
+            assert False, f"Cannot have both DISEASE_TEST and {AWS_ENV_VAR_NAME} set."
+        db = create_db()
+        db.drop_db()
+        db.initialize_db()
 
 
 @pytest.fixture(scope="session")
@@ -45,22 +59,12 @@ def test_data():
     return TEST_DATA_DIRECTORY
 
 
-@pytest.fixture(scope="session", autouse=True)
-def db():
+@pytest.fixture(scope="module")
+def database():
     """Provide a database instance to be used by tests."""
-    database = Database()
-    if os.environ.get("THERAPY_TEST", "").lower() == "true":
-        if os.environ.get(AWS_ENV_VAR_NAME):
-            assert False, f"Cannot have both THERAPY_TEST and {AWS_ENV_VAR_NAME} set."
-        existing_tables = database.dynamodb_client.list_tables()["TableNames"]
-        if "therapy_concepts" in existing_tables:
-            database.dynamodb_client.delete_table(TableName="therapy_concepts")
-        if "therapy_metadata" in existing_tables:
-            database.dynamodb_client.delete_table(TableName="therapy_metadata")
-        existing_tables = database.dynamodb_client.list_tables()["TableNames"]
-        database.create_therapies_table(existing_tables)
-        database.create_meta_data_table(existing_tables)
-    return database
+    db = create_db()
+    yield db
+    db.close_connection()
 
 
 @pytest.fixture(scope="session")
@@ -75,29 +79,31 @@ def disease_normalizer():
     return _normalize_disease
 
 
-@pytest.fixture(scope="session")
-def test_source(db: Database, test_data: Path, disease_normalizer: Callable):
-    """Provide query endpoint for testing sources. If THERAPY_TEST is set, will try to
+@pytest.fixture(scope="module")
+def test_source(database: AbstractDatabase, is_test_env: bool):
+    """Provide query endpoint for testing sources. If DISEASE_TEST is set, will try to
     load DB from test data.
+
+    :param database: test database instance
+    :param is_test_env: if true, load from test data
     :return: factory function that takes an ETL class instance and returns a query
     endpoint.
     """
 
     def test_source_factory(EtlClass: Base):  # noqa: N803
-        if os.environ.get("THERAPY_TEST", "").lower() == "true":
-            test_class = EtlClass(db, test_data)  # type: ignore
-            test_class._normalize_disease = disease_normalizer  # type: ignore
+        if IS_TEST_ENV:
+            _logger.debug(f"Reloading DB with data from {TEST_DATA_DIRECTORY}")
+            test_class = EtlClass(database, TEST_DATA_DIRECTORY)  # type: ignore
             test_class.perform_etl(use_existing=True)
-            test_class.database.flush_batch()
 
         class QueryGetter:
             def __init__(self):
-                self.query_handler = QueryHandler()
+                self.query_handler = QueryHandler(database)
                 self._src_name = EtlClass.__name__  # type: ignore
 
             def search(self, query_str: str):
                 resp = self.query_handler.search(
-                    query_str, keyed=True, incl=self._src_name
+                    query_str, incl=self._src_name, keyed=True
                 )
                 return resp.source_matches[self._src_name]
 

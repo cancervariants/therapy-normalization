@@ -10,14 +10,12 @@ from typing import Dict, Optional, Tuple
 import isodate
 import requests
 
-from therapy import DownloadException
-from therapy.etl.base import DiseaseIndicationBase
+from therapy.etl.base import DiseaseIndicationBase, EtlError
 from therapy.schemas import (
     ApprovalRating,
     NamespacePrefix,
     RecordParams,
     SourceMeta,
-    SourceName,
 )
 
 logger = logging.getLogger("therapy")
@@ -69,7 +67,7 @@ class HemOnc(DiseaseIndicationBase):
         """
         api_key = os.environ.get("DATAVERSE_API_KEY")
         if api_key is None:
-            raise DownloadException(
+            raise EtlError(
                 "Must provide Harvard Dataverse API key in environment variable "
                 "DATAVERSE_API_KEY. See "
                 "https://guides.dataverse.org/en/latest/user/account.html"
@@ -153,9 +151,7 @@ class HemOnc(DiseaseIndicationBase):
                 "attribution": True,
             },
         }
-        assert SourceMeta(**meta)
-        meta["src_name"] = SourceName.HEMONC.value
-        self.database.metadata.put_item(Item=meta)
+        self.database.add_source_metadata(self._name, SourceMeta(**meta))
 
     def _get_concepts(self) -> Tuple[Dict, Dict, Dict]:
         """Get therapy, brand name, and disease concepts from concepts file.

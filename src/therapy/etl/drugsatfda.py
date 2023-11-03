@@ -4,14 +4,13 @@ from typing import List, Optional
 
 import requests
 
-from therapy import DownloadException, logger
-from therapy.etl.base import Base
+from therapy import logger
+from therapy.etl.base import Base, EtlError
 from therapy.schemas import (
     ApprovalRating,
     NamespacePrefix,
     RecordParams,
     SourceMeta,
-    SourceName,
 )
 
 
@@ -38,7 +37,7 @@ class DrugsAtFDA(Base):
             except KeyError:
                 msg = "Unable to parse OpenFDA version API - check for breaking changes"
                 logger.error(msg)
-                raise DownloadException(msg)
+                raise EtlError(msg)
             return date
         else:
             raise requests.HTTPError(
@@ -59,9 +58,7 @@ class DrugsAtFDA(Base):
                 "attribution": False,
             },
         }
-        assert SourceMeta(**meta)
-        meta["src_name"] = SourceName.DRUGSATFDA
-        self.database.metadata.put_item(Item=meta)
+        self.database.add_source_metadata(self._name, SourceMeta(**meta))
 
     def _get_marketing_status_rating(
         self, products: List, concept_id: str

@@ -3,7 +3,7 @@ import logging
 from timeit import default_timer as timer
 from typing import Any, Dict, Optional, Set, Tuple
 
-from therapy.database import Database
+from therapy.database.database import AbstractDatabase
 from therapy.schemas import SourcePriority
 
 logger = logging.getLogger("therapy")
@@ -13,7 +13,7 @@ logger.setLevel(logging.DEBUG)
 class Merge:
     """Handles record merging."""
 
-    def __init__(self, database: Database) -> None:
+    def __init__(self, database: AbstractDatabase) -> None:
         """Initialize Merge instance.
 
         * self._groups is a dictionary keying concept IDs to the Set of concept IDs in
@@ -27,7 +27,7 @@ class Merge:
         and failed. Because we don't associate these IDs with groups, a separate
         mapping is necessary to prevent repeat queries.
 
-        :param Database database: db instance to use for record retrieval and creation.
+        :param database: db instance to use for record retrieval and creation.
         """
         self.database = database
         self._groups: Dict[str, Set[str]] = {}
@@ -54,7 +54,7 @@ class Merge:
             merged_record = self._generate_merged_record(group)
 
             # add group merger item to DB
-            self.database.add_record(merged_record, "merger")
+            self.database.add_merged_record(merged_record)
 
             # add updated references
             for concept_id in group:
@@ -65,7 +65,7 @@ class Merge:
                     )
                 else:
                     merge_ref = merged_record["concept_id"].lower()
-                    self.database.update_record(concept_id, "merge_ref", merge_ref)
+                    self.database.update_merge_ref(concept_id, merge_ref)
             uploaded_ids |= group
         logger.info("Merged concept generation successful.")
         end = timer()
