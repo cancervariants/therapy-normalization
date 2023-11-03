@@ -17,7 +17,7 @@ from disease.database import create_db as create_disease_db
 from disease.query import QueryHandler as DiseaseNormalizer
 from pydantic import ValidationError
 
-from therapy import APP_ROOT, ITEM_TYPES, DownloadException
+from therapy import APP_ROOT, ITEM_TYPES
 from therapy.database import AbstractDatabase
 from therapy.etl.rules import Rules
 from therapy.schemas import Drug, SourceName
@@ -26,6 +26,10 @@ logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
 DEFAULT_DATA_PATH: Path = APP_ROOT / "data"
+
+
+class EtlError(Exception):
+    """Raise for data transform errors."""
 
 
 class Base(ABC):
@@ -124,9 +128,7 @@ class Base(ABC):
             try:
                 r.raise_for_status()
             except requests.HTTPError:
-                raise DownloadException(
-                    f"Failed to download {outfile_path.name} from {url}."
-                )
+                raise Exception(f"Failed to download {outfile_path.name} from {url}.")
             with open(dl_path, "wb") as h:
                 for chunk in r.iter_content(chunk_size=8192):
                     if chunk:
