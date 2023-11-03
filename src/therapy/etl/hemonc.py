@@ -1,16 +1,10 @@
 """Provide ETL methods for HemOnc.org data."""
 import csv
 import logging
-import os
-import re
-import zipfile
-from pathlib import Path
-from typing import Dict, Optional, Tuple
+from typing import Dict, Tuple
 
-import isodate
-import requests
+from wags_tails.hemonc import HemOncData, HemOncPaths
 
-from therapy import DownloadException
 from therapy.etl.base import DiseaseIndicationBase
 from therapy.schemas import (
     ApprovalRating,
@@ -27,117 +21,19 @@ logger.setLevel(logging.DEBUG)
 class HemOnc(DiseaseIndicationBase):
     """Class for HemOnc.org ETL methods."""
 
-    def get_latest_version(self) -> str:
-        """Retrieve latest version of source data.
-        :raise: Exception if retrieval is unsuccessful
-        """
-        response = requests.get(
-            "https://dataverse.harvard.edu/api/datasets/export?persistentId=doi:10.7910/DVN/9CY9C6&exporter=dataverse_json"
-        )  # noqa: E501
-        try:
-            response.raise_for_status()
-        except requests.HTTPError as e:
-            logger.error("Unable to retrieve HemOnc version from Harvard Dataverse")
-            raise e
-        iso_datetime = isodate.parse_datetime(
-            response.json()["datasetVersion"]["releaseTime"]
-        )
-        return iso_datetime.strftime(isodate.isostrf.DATE_EXT_COMPLETE)
+    _DataSourceClass = HemOncData
 
-    def _zip_handler(self, dl_path: Path, outfile_path: Path) -> None:
-        """Extract concepts, rels, and synonyms files from tmp zip file and save to
-        data directory.
-        :param Path dl_path: path to temp data zipfile
-        :param Path outfile_path: directory to save data within
-        """
-        file_terms = ("concepts", "rels", "synonyms")
-        with zipfile.ZipFile(dl_path, "r") as zip_ref:
-            for file in zip_ref.filelist:
-                for term in file_terms:
-                    if term in file.filename:
-                        file.filename = f"hemonc_{term}_{self._version}.csv"
-                        zip_ref.extract(file, outfile_path)
+    def _extract_data(self, use_existing: bool) -> None:
+        """Acquire source data.
 
-        os.remove(dl_path)
-
-    def _download_data(self) -> None:
-        """Download HemOnc.org source data. Requires Harvard Dataverse API key to be set
-        as environment variable DATAVERSE_API_KEY. Instructions for generating an API
-        key are available here: https://guides.dataverse.org/en/latest/user/account.html
-
-        :raises: DownloadException if API key environment variable isn't set
-        """
-        api_key = os.environ.get("DATAVERSE_API_KEY")
-        if api_key is None:
-            raise DownloadException(
-                "Must provide Harvard Dataverse API key in environment variable "
-                "DATAVERSE_API_KEY. See "
-                "https://guides.dataverse.org/en/latest/user/account.html"
-            )
-        url = "https://dataverse.harvard.edu//api/access/dataset/:persistentId/?persistentId=doi:10.7910/DVN/9CY9C6"  # noqa: E501
-        headers = {"X-Dataverse-key": api_key}
-        self._http_download(url, self._src_dir, headers, self._zip_handler)
-
-    def _extract_data(self, use_existing: bool = False) -> None:
-        """Get source files from data directory.
-
-        The following files are necessary for data processing:
-            hemonc_concepts_<version>.csv
-            hemonc_rels_<version>.csv
-            hemonc_synonyms_<version>.csv
-        This method will attempt to retrieve their latest versions if they are
-        unavailable locally.
+        This method is responsible for initializing an instance of
+        ``self._DataSourceClass``, and, in most cases, setting ``self._src_file``.
 
         :param bool use_existing: if True, don't try to fetch latest source data
         """
-        self._src_dir.mkdir(exist_ok=True, parents=True)
-
-        if use_existing:
-            concepts = list(sorted(self._src_dir.glob("hemonc_concepts_*.csv")))
-            if len(concepts) < 1:
-                raise FileNotFoundError("No HemOnc concepts file found")
-
-            src_files: Optional[Tuple] = None
-            for concepts_file in concepts[::-1]:
-                try:
-                    version = self._parse_version(
-                        concepts_file, re.compile(r"hemonc_concepts_(.+)\.csv")
-                    )
-                except FileNotFoundError:
-                    raise FileNotFoundError(
-                        f"Unable to parse HemOnc version value from concepts file "
-                        f"located at {concepts_file.absolute().as_uri()} -- check "
-                        "filename against schema defined in README: "
-                        "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
-                    )
-                other_files = (
-                    self._src_dir / f"hemonc_rels_{version}.csv",
-                    self._src_dir / f"hemonc_synonyms_{version}.csv",
-                )
-                if other_files[0].exists() and other_files[1].exists():
-                    self._version = version
-                    src_files = (concepts_file, other_files[0], other_files[1])
-                    break
-            if src_files is None:
-                raise FileNotFoundError(
-                    "Unable to find complete HemOnc data set with matching version "
-                    "values. Check filenames against schema defined in README: "
-                    "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
-                )
-            else:
-                self._src_files = src_files
-        else:
-            self._version = self.get_latest_version()
-            data_filenames = (
-                self._src_dir / f"hemonc_concepts_{self._version}.csv",
-                self._src_dir / f"hemonc_rels_{self._version}.csv",
-                self._src_dir / f"hemonc_synonyms_{self._version}.csv",
-            )
-            if not all((f.exists() for f in data_filenames)):
-                self._download_data()
-            self._src_files = data_filenames
-            for file in self._src_files:
-                assert file.exists()
+        data_source: HemOncData = self._DataSourceClass(data_dir=self._therapy_data_dir)  # type: ignore
+        src_files, self._version = data_source.get_latest(from_local=use_existing)
+        self._src_files: HemOncPaths = src_files
 
     def _load_meta(self) -> None:
         """Add HemOnc metadata."""
@@ -165,7 +61,7 @@ class HemOnc(DiseaseIndicationBase):
         brand_names: Dict[str, str] = {}  # hemonc id -> brand name
         conditions: Dict[str, str] = {}  # hemonc id -> condition name
 
-        concepts_file = open(self._src_files[0], "r")
+        concepts_file = open(self._src_files.concepts, "r")
         concepts_reader = csv.reader(concepts_file)
         next(concepts_reader)  # skip header
         for row in concepts_reader:
@@ -217,7 +113,7 @@ class HemOnc(DiseaseIndicationBase):
         :param dict conditions: mapping from IDs to disease conditions
         :return: therapies dict updated with brand names and conditions
         """
-        rels_file = open(self._src_files[1], "r")
+        rels_file = open(self._src_files.rels, "r")
         rels_reader = csv.reader(rels_file)
         next(rels_reader)  # skip header
 
@@ -283,7 +179,7 @@ class HemOnc(DiseaseIndicationBase):
         :param dict therapies: mapping of IDs to therapy objects
         :return: therapies dict with synonyms added as aliases
         """
-        synonyms_file = open(self._src_files[2], "r")
+        synonyms_file = open(self._src_files.synonyms, "r")
         synonyms_reader = csv.reader(synonyms_file)
         next(synonyms_reader)
         for row in synonyms_reader:

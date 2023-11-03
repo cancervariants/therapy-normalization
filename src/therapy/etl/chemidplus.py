@@ -5,11 +5,10 @@ Courtesy of the U.S. National Library of Medicine.
 import logging
 import re
 import xml.etree.ElementTree as ElTree
-import zipfile
-from os import remove
 from pathlib import Path
-from shutil import move
 from typing import Generator
+
+from wags_tails import ChemIDplusData
 
 from therapy.etl.base import Base
 from therapy.schemas import (
@@ -30,23 +29,7 @@ TAGS_REGEX = r" \[.*\]"
 class ChemIDplus(Base):
     """Class for ChemIDplus ETL methods."""
 
-    def _download_data(self) -> None:
-        """Download source data from default location."""
-        logger.info("Retrieving source data for ChemIDplus")
-        file = "currentchemid.zip"
-        self._ftp_download("ftp.nlm.nih.gov", "nlmdata/.chemidlease", file)
-        zip_path = (self._src_dir / file).absolute()
-        zip_file = zipfile.ZipFile(zip_path, "r")
-        outfile = self._src_dir / f"chemidplus_{self._version}.xml"
-        for info in zip_file.infolist():
-            if re.match(r".*\.xml", info.filename):
-                xml_filename = info.filename
-                zip_file.extract(info, path=self._src_dir)
-                move(str(self._src_dir / xml_filename), outfile)
-                break
-        remove(zip_path)
-        assert outfile.exists()
-        logger.info("Successfully retrieved source data for ChemIDplus")
+    _DataSourceClass = ChemIDplusData
 
     @staticmethod
     def parse_xml(path: Path, tag: str) -> Generator:
