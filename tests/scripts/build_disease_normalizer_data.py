@@ -8,14 +8,14 @@ from typing import Any, Dict
 from disease.query import QueryHandler as DiseaseQueryHandler
 from disease.schemas import NormalizationService as DiseaseNormalizationService
 
-from therapy.database import Database
+from therapy.database.dynamodb import DynamoDbDatabase
 from therapy.etl import ChEMBL, HemOnc
 
 TEST_ROOT = Path(__file__).resolve().parents[1]
 TEST_DATA_DIRECTORY = TEST_ROOT / "data"
 
 
-class ReadOnlyDatabase(Database):
+class ReadOnlyDatabase(DynamoDbDatabase):
     """Provide read-only instance of database for security's sake"""
 
     def add_record(self, record: Dict, record_type: str = "identity") -> None:
@@ -68,3 +68,5 @@ h.perform_etl(use_existing=True)
 
 with open(TEST_DATA_DIRECTORY / "disease_normalization.json", "w") as f:
     json.dump(disease_normalizer_table, f)
+
+# TODO circle back to this

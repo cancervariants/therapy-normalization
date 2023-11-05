@@ -46,6 +46,10 @@ Changelog = "https://github.com/cancervariants/therapy-normalization/releases"
 Source = "https://github.com/cancervariants/therapy-normalization"
 "Bug Tracker" = "https://github.com/cancervariants/therapy-normalization/issues"
 
+[project.scripts]
+therapy_norm_update = "therapy.cli:update_normalizer_db"
+therapy_norm_check_db = "therapy.cli:check_db"
+
 [build-system]
 requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"

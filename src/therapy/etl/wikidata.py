@@ -6,8 +6,8 @@ from typing import Any, Dict
 
 from wikibaseintegrator.wbi_helpers import execute_sparql_query
 
-from therapy import XREF_SOURCES, DownloadException
-from therapy.etl.base import Base
+from therapy import XREF_SOURCES
+from therapy.etl.base import Base, EtlError
 from therapy.schemas import NamespacePrefix, RecordParams, SourceMeta, SourceName
 
 logger = logging.getLogger("therapy")
@@ -80,12 +80,15 @@ class Wikidata(Base):
     """Class for Wikidata ETL methods."""
 
     def _download_data(self) -> None:
-        """Download latest Wikidata source dump."""
+        """Download latest Wikidata source dump.
+
+        :raise EtlError: if query returns no results
+        """
         logger.info("Retrieving source data for Wikidata")
 
         medicine_query_results = execute_sparql_query(SPARQL_QUERY)
         if medicine_query_results is None:
-            raise DownloadException("Wikidata medicine SPARQL query failed")
+            raise EtlError("Wikidata medicine SPARQL query failed")
         results = medicine_query_results["results"]["bindings"]
 
         transformed_data = []

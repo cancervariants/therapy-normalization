@@ -6,8 +6,7 @@ import owlready2 as owl
 import requests
 from owlready2.entity import ThingClass
 
-from therapy import DownloadException
-from therapy.etl.base import Base
+from therapy.etl.base import Base, EtlError
 from therapy.schemas import NamespacePrefix, RecordParams, SourceMeta, SourceName
 
 logger = logging.getLogger("therapy")
@@ -29,6 +28,8 @@ class NCIt(Base):
         retrieve a file matching the latest version number from both the subdirectory
         root (where the current version is typically posted) as well as the year-by-year
         archives if that fails.
+
+        :raise EtlError: if Download fails
         """
         logger.info("Retrieving source data for NCIt")
         base_url = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus"
@@ -49,7 +50,7 @@ class NCIt(Base):
                         f"{old_archive_url}"
                     )
                     logger.error(msg)
-                    raise DownloadException(msg)
+                    raise EtlError(msg)
                 else:
                     src_url = old_archive_url
             else:

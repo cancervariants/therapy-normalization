@@ -2,7 +2,7 @@
 import csv
 from pathlib import Path
 
-from therapy.database import Database
+from therapy.database.database import create_db
 from therapy.etl import DrugBank
 
 TEST_IDS = [
@@ -15,7 +15,7 @@ TEST_IDS = [
     "DB14257",
 ]
 
-db = DrugBank(Database())
+db = DrugBank(create_db())
 db._extract_data()
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "drugbank"
 outfile_path = TEST_DATA_DIR / db._src_file.name

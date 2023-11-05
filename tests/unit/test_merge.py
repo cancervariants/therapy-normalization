@@ -3,11 +3,12 @@ import json
 import os
 import random
 from pathlib import Path
-from typing import Any, Dict, Set
+from typing import Dict, Set
 
 import pytest
 
-from therapy.database import AWS_ENV_VAR_NAME, Database
+from therapy.database import AWS_ENV_VAR_NAME
+from therapy.database.database import create_db
 from therapy.etl.chembl import ChEMBL
 from therapy.etl.chemidplus import ChemIDplus
 from therapy.etl.drugbank import DrugBank
@@ -18,6 +19,7 @@ from therapy.etl.merge import Merge
 from therapy.etl.ncit import NCIt
 from therapy.etl.rxnorm import RxNorm
 from therapy.etl.wikidata import Wikidata
+from therapy.schemas import SourceName
 
 
 def compare_merged_records(actual: Dict, fixture: Dict):
@@ -89,54 +91,38 @@ def amifostine_merged(fixture_data) -> Dict:
 
 
 @pytest.fixture(scope="module")
-def merge_instance(test_source):
-    """Provide fixture for ETL merge class"""
-    update_db = os.environ.get("THERAPY_TEST", "").lower() == "true"
-    if update_db and os.environ.get(AWS_ENV_VAR_NAME):
-        assert False, (
-            f"Running the full therapy ETL pipeline test on an AWS environment is "
-            f"forbidden -- either unset {AWS_ENV_VAR_NAME} or unset THERAPY_TEST"
-        )
+def merge_instance(test_source, is_test_env: bool):
+    """Provide fixture for ETL merge class.
 
-    class TrackingDatabase(Database):
-        """Provide injection for DB instance to track added/updated records"""
+    If in a test environment (e.g. CI) this method will attempt to load any missing
+    source data, and then perform merged record generation.
+    """
+    database = create_db()
+    if is_test_env:
+        if os.environ.get(AWS_ENV_VAR_NAME):
+            assert False, (
+                f"Running the full therapy ETL pipeline test on an AWS environment is "
+                f"forbidden -- either unset {AWS_ENV_VAR_NAME} or unset THERAPY_TEST"
+            )
+        else:
+            for SourceClass in (
+                ChEMBL,
+                ChemIDplus,
+                DrugBank,
+                DrugsAtFDA,
+                GuideToPHARMACOLOGY,
+                HemOnc,
+                NCIt,
+                RxNorm,
+                Wikidata,
+            ):  # noqa: N806
+                if not database.get_source_metadata(SourceName(SourceClass.__name__)):
+                    test_source(SourceClass)
 
-        def __init__(self, **kwargs):
-            self.additions = {}
-            self.updates = {}
-            super().__init__(**kwargs)
-
-        def add_record(self, record: Dict, record_type: str):
-            if update_db:
-                super().add_record(record, record_type)
-            self.additions[record["concept_id"]] = record
-
-        def update_record(
-            self,
-            concept_id: str,
-            field: str,
-            new_value: Any,  # noqa: ANN401
-            item_type: str = "identity",
-        ):
-            if update_db:
-                super().update_record(concept_id, field, new_value, item_type)
-            self.updates[concept_id] = {field: new_value}
-
-    if update_db:
-        for SourceClass in (  # noqa: N806
-            ChEMBL,
-            ChemIDplus,
-            DrugBank,
-            DrugsAtFDA,
-            GuideToPHARMACOLOGY,
-            HemOnc,
-            NCIt,
-            RxNorm,
-            Wikidata,
-        ):
-            test_source(SourceClass)
-
-    m = Merge(TrackingDatabase())
+    m = Merge(database)
+    if is_test_env:
+        concept_ids = database.get_all_concept_ids()
+        m.create_merged_concepts(concept_ids)
     return m
 
 

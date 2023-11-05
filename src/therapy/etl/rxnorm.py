@@ -18,8 +18,8 @@ import bioversions
 import yaml
 from boto3.dynamodb.table import BatchWriter
 
-from therapy import ASSOC_WITH_SOURCES, ITEM_TYPES, XREF_SOURCES, DownloadException
-from therapy.etl.base import Base
+from therapy import ASSOC_WITH_SOURCES, ITEM_TYPES, XREF_SOURCES
+from therapy.etl.base import Base, EtlError
 from therapy.schemas import (
     ApprovalRating,
     NamespacePrefix,
@@ -94,13 +94,13 @@ class RxNorm(Base):
     def _download_data(self) -> None:
         """Download latest RxNorm data file.
 
-        :raises DownloadException: if API Key is not defined in the environment.
+        :raises EtlError: if API Key is not defined in the environment.
         """
         logger.info("Retrieving source data for RxNorm")
         api_key = environ.get("RXNORM_API_KEY")
         if api_key is None:
             logger.error("Could not find RXNORM_API_KEY in environment variables.")
-            raise DownloadException("RXNORM_API_KEY not found.")
+            raise EtlError("RXNORM_API_KEY not found.")
 
         url = bioversions.resolve("rxnorm").homepage
         if not url:
