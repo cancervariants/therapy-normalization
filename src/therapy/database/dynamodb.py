@@ -201,10 +201,11 @@ class DynamoDbDatabase(AbstractDatabase):
         if not self.check_schema_initialized():
             self._create_therapies_table()
 
-    def get_source_metadata(self, src_name: Union[str, SourceName]) -> Dict:
+    def get_source_metadata(self, src_name: Union[str, SourceName]) -> Optional[Dict]:
         """Get license, versioning, data lookup, etc information for a source.
 
         :param src_name: name of the source to get data for
+        :return: Dict containing metadata if lookup is successful
         """
         if isinstance(src_name, SourceName):
             src_name = src_name.value
@@ -217,9 +218,7 @@ class DynamoDbDatabase(AbstractDatabase):
                 Key={"label_and_type": pk, "concept_id": concept_id}
             ).get("Item")
             if not metadata:
-                raise DatabaseReadError(
-                    f"Unable to retrieve data for source {src_name}"
-                )
+                return None
             self._cached_sources[src_name] = metadata
             return metadata
 

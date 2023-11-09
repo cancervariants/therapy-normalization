@@ -110,7 +110,6 @@ class Wikidata(Base):
     def _load_meta(self) -> None:
         """Add Wikidata metadata."""
         metadata = SourceMeta(
-            src_name=SourceName.WIKIDATA.value,
             data_license="CC0 1.0",
             data_license_url="https://creativecommons.org/publicdomain/zero/1.0/",
             version=self._version,
@@ -122,9 +121,7 @@ class Wikidata(Base):
                 "attribution": False,
             },
         )
-        params = dict(metadata)
-        params["src_name"] = SourceName.WIKIDATA.value
-        self.database.metadata.put_item(Item=params)
+        self.database.add_source_metadata(SourceName.WIKIDATA, metadata)
 
     def _transform_data(self) -> None:
         """Transform the Wikidata source data."""

@@ -18,6 +18,7 @@ from therapy.schemas import (
     MatchType,
     NamespacePrefix,
     NormalizationService,
+    RefType,
     SearchService,
     ServiceMeta,
     SourceName,
@@ -68,30 +69,6 @@ class QueryHandler:
                 f"Query ({query_str}) contains non-breaking space characters."
             )
         return warnings
-
-    # def _fetch_meta(self, src_name: str) -> SourceMeta:
-    #     """Fetch metadata for src_name.
-    #
-    #     :param str src_name: name of source to get metadata for
-    #     :return: SourceMeta object containing source metadata
-    #     """
-    #     if src_name in self.db.cached_sources.keys():
-    #         return self.db.cached_sources[src_name]
-    #     else:
-    #         try:
-    #             db_response = self.db.metadata.get_item(Key={"src_name": src_name})
-    #         except ClientError as e:
-    #             msg = e.response["Error"]["Message"]
-    #             logger.error(msg)
-    #             raise Exception(msg)
-    #         try:
-    #             response = SourceMeta(**db_response["Item"])
-    #         except KeyError:
-    #             msg = f"Metadata lookup failed for source {src_name}"
-    #             logger.error(msg)
-    #             raise Exception(msg)
-    #         self.db.cached_sources[src_name] = response
-    #         return response
 
     @staticmethod
     def _get_indication(indication_string: str) -> HasIndication:
@@ -193,6 +170,7 @@ class QueryHandler:
         or None if unsuccessful
         """
         inferred_records = []
+        namespace = None
         for pattern, source in NAMESPACE_LUIS:
             match = re.match(pattern, query)
             if match:
@@ -206,7 +184,7 @@ class QueryHandler:
                 record = self.db.get_record_by_id(inferred_id, case_sensitive=False)
                 if record:
                     inferred_records.append((record, namespace, inferred_id))
-        if inferred_records:
+        if inferred_records and namespace:
             inferred_records.sort(key=lambda r: self._record_order(r[0]))
             return (
                 inferred_records[0][0],
@@ -248,21 +226,22 @@ class QueryHandler:
         return resp, sources
 
     def _check_match_type(
-        self, query: str, resp: Dict, sources: Set[str], match_type: str
+        self, query: str, resp: Dict, sources: Set[str], match_type: RefType
     ) -> Tuple[Dict, Set]:
         """Check query for selected match type.
+
         :param str query: search string
         :param Dict resp: in-progress response object to return to client
         :param Set[str] sources: remaining unmatched sources
-        :param str match_type: Match type to check for. Should be one of
-        {'trade_name', 'label', 'alias', 'xref', 'associated_with'}
+        :param RefType match_type: Match type to check for
         :return: Tuple with updated resp object and updated set of unmatched
-            sources
+                 sources
         """
-        matches = self.db.get_records_by_type(query, match_type)
-        if matches:
-            concept_ids = {i["concept_id"] for i in matches}
-            (resp, matched_srcs) = self._fetch_records(resp, concept_ids, match_type)
+        matching_ids = self.db.get_refs_by_type(query, match_type)
+        if matching_ids:
+            (resp, matched_srcs) = self._fetch_records(
+                resp, set(matching_ids), match_type
+            )
             sources = sources - matched_srcs
         return resp, sources
 
@@ -293,7 +272,7 @@ class QueryHandler:
             return response
 
         query = query.lower()
-        for match_type in ITEM_TYPES.values():
+        for match_type in RefType:
             response, sources = self._check_match_type(
                 query, response, sources, match_type
             )

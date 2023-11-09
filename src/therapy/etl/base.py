@@ -253,14 +253,12 @@ class Base(ABC):
                     del therapy[attr_type]
                     continue
 
-                if attr_type == "label":
-                    value = value.strip()
-                    therapy["label"] = value
-
                 value_set = {v.strip() for v in value}
 
+                if attr_type == "label":
+                    value = value.strip()
                 # clean up listlike symbol fields
-                if attr_type == "aliases" and "trade_names" in therapy:
+                elif attr_type == "aliases" and "trade_names" in therapy:
                     value = list(value_set - set(therapy["trade_names"]))
                 else:
                     value = list(value_set)

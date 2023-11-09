@@ -15,8 +15,8 @@ logger.setLevel(logging.DEBUG)
 
 
 from therapy.schemas import (  # noqa: E402, E501, I100, I202
-    ItemTypes,
     NamespacePrefix,
+    RefType,
     SourceName,
 )
 
@@ -24,7 +24,7 @@ from therapy.schemas import (  # noqa: E402, E501, I100, I202
 # eg {"label": "label", "trade_names": "trade_name"}
 # key is the field name in the record object, value is the item_type value
 # in reference objects
-ITEM_TYPES = {k.lower(): v.value for k, v in ItemTypes.__members__.items()}
+ITEM_TYPES = {k.lower(): v.value for k, v in RefType.__members__.items()}
 
 # Sources we import directly
 SOURCES = {

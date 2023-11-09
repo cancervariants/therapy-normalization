@@ -40,7 +40,13 @@ def pytest_collection_modifyitems(items):
 
 TEST_ROOT = Path(__file__).resolve().parents[1]
 TEST_DATA_DIRECTORY = TEST_ROOT / "tests" / "data"
-IS_TEST_ENV = os.environ.get("DISEASE_TEST", "").lower() == "true"
+IS_TEST_ENV = os.environ.get("THERAPY_TEST", "").lower() == "true"
+
+
+@pytest.fixture(scope="session")
+def is_test_env():
+    """Identify whether test is running in CI."""
+    return IS_TEST_ENV
 
 
 def pytest_sessionstart():
@@ -81,7 +87,7 @@ def disease_normalizer():
 
 @pytest.fixture(scope="module")
 def test_source(database: AbstractDatabase, is_test_env: bool):
-    """Provide query endpoint for testing sources. If DISEASE_TEST is set, will try to
+    """Provide query endpoint for testing sources. If THERAPY_TEST is set, will try to
     load DB from test data.
 
     :param database: test database instance
