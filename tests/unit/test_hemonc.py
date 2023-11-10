@@ -218,12 +218,12 @@ def test_metadata(hemonc):
     assert (
         response.data_license_url
         == "https://creativecommons.org/licenses/by/4.0/legalcode"
-    )  # noqa: E501
+    )
     assert isodate.parse_date(response.version)
     assert (
         response.data_url
         == "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6"
-    )  # noqa: E501
+    )
     assert response.rdp_url is None
     assert response.data_license_attributes == {
         "non_commercial": False,
