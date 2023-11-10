@@ -1,5 +1,10 @@
-# Therapy Normalization
-Services and guidelines for normalizing drug (and non-drug therapy) terms
+# Thera-Py
+
+Services and guidelines for normalizing drug (and non-drug therapy) terms.
+
+If you use Thera-Py in scientific works, please cite the following article:
+
+> Matthew Cannon, James Stevenson, Kori Kuzma, Susanna Kiwala, Jeremy L Warner, Obi L Griffith, Malachi Griffith, Alex H Wagner, Normalization of drug and therapeutic concepts with Thera-Py, JAMIA Open, Volume 6, Issue 4, December 2023, ooad093, https://doi.org/10.1093/jamiaopen/ooad093 
 
 ## Developer instructions
 The following sections include instructions specifically for developers.
