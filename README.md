@@ -1,10 +1,6 @@
 # Thera-Py
 
-![https://img.shields.io/badge/DOI-10.1093/jamiaopen/ooad093-blue](https://doi.org/10.1093/jamiaopen/ooad093)
-
-![Static Badge](https://img.shields.io/badge/DOI-10.1093%2Fjamiaopen%2Fooad093-blue)
-
-[![General badge](https://img.shields.io/badge/DOI-10.1093%2Fjamiaopen%2Fooad093-blue)](https://shields.io/)
+[![DOI: 10.1093/jamiaopen/ooad093](https://img.shields.io/badge/DOI-10.1093%2Fjamiaopen%2Fooad093-blue)](https://doi.org/10.1093/jamiaopen/ooad093)
 
 Services and guidelines for normalizing drug (and non-drug therapy) terms.
 
