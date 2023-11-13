@@ -175,21 +175,20 @@ class RxNorm(Base):
                             )
                             self._add_xref_assoc(params, row)
 
-            with self.database.therapies.batch_writer() as batch:
-                for value in data.values():
-                    if "label" in value:
-                        self._get_trade_names(
-                            value, precise_ingredient, ingredient_brands, sbdfs
-                        )
-                        self._load_brand_concepts(value, brands, batch)
+            for value in data.values():
+                if "label" in value:
+                    self._get_trade_names(
+                        value, precise_ingredient, ingredient_brands, sbdfs
+                    )
+                    # self._load_brand_concepts(value, brands, batch)  # TODO
 
-                        params = {"concept_id": value["concept_id"]}
+                    params = {"concept_id": value["concept_id"]}
 
-                        for field in list(ITEM_TYPES.keys()) + ["approval_ratings"]:
-                            field_value = value.get(field)
-                            if field_value:
-                                params[field] = field_value
-                        self._load_therapy(params)
+                    for field in list(ITEM_TYPES.keys()) + ["approval_ratings"]:
+                        field_value = value.get(field)
+                        if field_value:
+                            params[field] = field_value
+                    self._load_therapy(params)
 
     def _get_brands(self, row: List, ingredient_brands: Dict) -> None:
         """Add ingredient and brand to ingredient_brands.
@@ -363,6 +362,4 @@ class RxNorm(Base):
                 "attribution": True,
             },
         )
-        params = dict(meta)
-        params["src_name"] = SourceName.RXNORM.value
-        self.database.metadata.put_item(Item=params)
+        self.database.add_source_metadata(SourceName.RXNORM, meta)

@@ -317,6 +317,4 @@ class GuideToPHARMACOLOGY(Base):
                 "attribution": True,
             },
         )
-        params = dict(meta)
-        params["src_name"] = SourceName.GUIDETOPHARMACOLOGY.value
-        self.database.metadata.put_item(Item=params)
+        self.database.add_source_metadata(SourceName.GUIDETOPHARMACOLOGY, meta)

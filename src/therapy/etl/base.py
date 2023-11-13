@@ -245,6 +245,7 @@ class Base(ABC):
             raise e
 
         concept_id = therapy["concept_id"]
+        print(concept_id)
 
         for attr_type in ITEM_TYPES.keys():
             if attr_type in therapy:

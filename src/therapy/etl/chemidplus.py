@@ -126,6 +126,4 @@ class ChemIDplus(Base):
                 non_commercial=False, share_alike=False, attribution=True
             ).model_dump(),
         )
-        item = dict(meta)
-        item["src_name"] = SourceName.CHEMIDPLUS.value
-        self.database.metadata.put_item(Item=item)
+        self.database.add_source_metadata(SourceName.CHEMIDPLUS, meta)
