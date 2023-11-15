@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Generator
 from xml.etree import ElementTree
 
-from therapy.database.database import create_db
+from therapy.database import create_db
 from therapy.etl import ChemIDplus
 
 TEST_IDS = [

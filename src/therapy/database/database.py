@@ -138,6 +138,23 @@ class AbstractDatabase(abc.ABC):
         """
 
     @abc.abstractmethod
+    def get_rxnorm_id_by_brand(self, brand_id: str) -> Optional[str]:
+        """Given RxNorm brand ID, retrieve associated drug concept ID.
+
+        :param brand_id: rxcui brand identifier to dereference
+        :return: RxNorm therapy concept ID if successful, None otherwise
+        """
+
+    @abc.abstractmethod
+    def get_drugsatfda_from_unii(self, unii: str) -> Set[str]:
+        """Get Drugs@FDA IDs associated with a single UNII, given that UNII. Used
+        in merged concept generation.
+
+        :param unii: UNII to find associations for
+        :return: set of directly associated Drugs@FDA concept IDs.
+        """
+
+    @abc.abstractmethod
     def get_all_concept_ids(self) -> Set[str]:
         """Retrieve all available concept IDs for use in generating normalized records.
 
@@ -160,6 +177,14 @@ class AbstractDatabase(abc.ABC):
 
         :param record_type: type of result to return
         :return: Generator that lazily provides records as they are retrieved
+        """
+
+    @abc.abstractmethod
+    def add_rxnorm_brand(self, brand_id: str, record_id: str) -> None:
+        """Add RxNorm brand association to an existing RxNorm concept.
+
+        :param brand_id: ID of RxNorm brand concept
+        :param record_id: ID of RxNorm drug concept
         """
 
     @abc.abstractmethod

@@ -22,18 +22,8 @@ class ReadOnlyDatabase(DynamoDbDatabase):
         """Add new record to database"""
         pass
 
-    def add_ref_record(self, term: str, concept_id: str, ref_type: str) -> None:
-        """Add ref record to database"""
-        pass
-
-    def update_record(
-        self,
-        concept_id: str,
-        field: str,
-        new_value: Any,  # noqa
-        item_type: str = "identity",
-    ) -> None:
-        """Update an individual record"""
+    def update_merge_ref(self, concept_id: str, merge_ref: Any) -> None:  # noqa: ANN401
+        """Update merge reference."""
         pass
 
 

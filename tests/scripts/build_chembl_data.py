@@ -2,7 +2,7 @@
 import sqlite3
 from pathlib import Path
 
-from therapy.database.database import create_db
+from therapy.database import create_db
 from therapy.etl import ChEMBL
 
 TEST_IDS = [

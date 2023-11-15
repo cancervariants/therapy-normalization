@@ -23,9 +23,15 @@ from therapy.database.database import (
     DatabaseWriteError,
     confirm_aws_db_use,
 )
-from therapy.schemas import RecordType, RefType, SourceMeta, SourceName
+from therapy.schemas import (
+    RXNORM_BRAND_ITEM_TYPE,
+    RecordType,
+    RefType,
+    SourceMeta,
+    SourceName,
+)
 
-logger = logging.getLogger(__name__)
+_logger = logging.getLogger(__name__)
 
 
 class DynamoDbDatabase(AbstractDatabase):
@@ -156,7 +162,7 @@ class DynamoDbDatabase(AbstractDatabase):
         existing_tables = self.list_tables()
         exists = self.therapy_table in existing_tables
         if not exists:
-            logger.info(f"{self.therapy_table} table is missing or unavailable.")
+            _logger.info(f"{self.therapy_table} table is missing or unavailable.")
         return exists
 
     def check_tables_populated(self) -> bool:
@@ -173,7 +179,7 @@ class DynamoDbDatabase(AbstractDatabase):
             KeyConditionExpression=Key("item_type").eq("source"),
         ).get("Items", [])
         if len(sources) < len(SourceName):
-            logger.info("Therapy sources table is missing expected sources.")
+            _logger.info("Therapy sources table is missing expected sources.")
             return False
 
         records = self.therapies.query(
@@ -182,7 +188,7 @@ class DynamoDbDatabase(AbstractDatabase):
             Limit=1,
         )
         if len(records.get("Items", [])) < 1:
-            logger.info("Therapy records index is empty.")
+            _logger.info("Therapy records index is empty.")
             return False
 
         normalized_records = self.therapies.query(
@@ -191,7 +197,7 @@ class DynamoDbDatabase(AbstractDatabase):
             Limit=1,
         )
         if len(normalized_records.get("Items", [])) < 1:
-            logger.info("Normalized therapy records index is empty.")
+            _logger.info("Normalized therapy records index is empty.")
             return False
 
         return True
@@ -252,7 +258,7 @@ class DynamoDbDatabase(AbstractDatabase):
                 del record["label_and_type"]
                 return record
         except ClientError as e:
-            logger.error(
+            _logger.error(
                 f"boto3 client error on get_records_by_id for "
                 f"search term {concept_id}: "
                 f"{e.response['Error']['Message']}"
@@ -275,12 +281,55 @@ class DynamoDbDatabase(AbstractDatabase):
             matches = self.therapies.query(KeyConditionExpression=filter_exp)
             return [m["concept_id"] for m in matches.get("Items", None)]
         except ClientError as e:
-            logger.error(
+            _logger.error(
                 f"boto3 client error on get_refs_by_type for "
                 f"search term {search_term}: "
                 f"{e.response['Error']['Message']}"
             )
             return []
+
+    def get_rxnorm_id_by_brand(self, brand_id: str) -> Optional[str]:
+        """Given RxNorm brand ID, retrieve associated drug concept ID.
+
+        :param brand_id: rxcui brand identifier to dereference
+        :return: RxNorm therapy concept ID if successful, None otherwise
+        """
+        pk = f"{brand_id.lower()}##rx_brand"
+        filter_exp = Key("label_and_type").eq(pk)
+        try:
+            matches = self.therapies.query(KeyConditionExpression=filter_exp)
+        except ClientError as e:
+            _logger.error(
+                f"boto3 client error on rx_brand fetch for "
+                f"brand ID {brand_id}: "
+                f"{e.response['Error']['Message']}"
+            )
+            return None
+        if matches.get("Items") and len(matches["Items"]) == 1:
+            return matches["Items"][0]["concept_id"]
+        else:
+            return None
+
+    def get_drugsatfda_from_unii(self, unii: str) -> Set[str]:
+        """Get Drugs@FDA IDs associated with a single UNII, given that UNII. Used
+        in merged concept generation.
+
+        :param unii: UNII to find associations for
+        :return: set of directly associated Drugs@FDA concept IDs.
+        """
+        dafda_concepts = set()
+        associated_concepts = self.get_refs_by_type(unii, RefType.ASSOCIATED_WITH)
+        for concept_id in associated_concepts:
+            if concept_id.startswith("drugsatfda"):
+                record = self.get_record_by_id(concept_id)
+                if not record:
+                    continue
+                uniis = [
+                    a for a in record.get("associated_with", []) if a.startswith("unii")
+                ]
+                if len(uniis) == 1:
+                    dafda_concepts.add(concept_id)
+        return dafda_concepts
 
     def get_all_concept_ids(self) -> Set[str]:
         """Retrieve concept IDs for use in generating normalized records.
@@ -365,6 +414,26 @@ class DynamoDbDatabase(AbstractDatabase):
         except ClientError as e:
             raise DatabaseWriteError(e)
 
+    def add_rxnorm_brand(self, brand_id: str, record_id: str) -> None:
+        """Add RxNorm brand association to an existing RxNorm concept.
+
+        :param brand_id: ID of RxNorm brand concept
+        :param record_id: ID of RxNorm drug concept
+        """
+        item = {
+            "label_and_type": f"{brand_id.lower()}##{RXNORM_BRAND_ITEM_TYPE}",
+            "concept_id": record_id,
+            "src_name": SourceName.RXNORM.value,
+            "item_type": RXNORM_BRAND_ITEM_TYPE,
+        }
+        try:
+            self.batch.put_item(Item=item)
+        except ClientError as e:
+            _logger.error(
+                f"boto3 client error on add_rxnorm_brand for {brand_id} -> "
+                f"{record_id}: {e.response['Error']['Message']}"
+            )
+
     def add_record(self, record: Dict, src_name: SourceName) -> None:
         """Add new record to database.
 
@@ -379,7 +448,7 @@ class DynamoDbDatabase(AbstractDatabase):
         try:
             self.batch.put_item(Item=record)
         except ClientError as e:
-            logger.error(
+            _logger.error(
                 "boto3 client error on add_record for "
                 f"{concept_id}: {e.response['Error']['Message']}"
             )
@@ -411,7 +480,7 @@ class DynamoDbDatabase(AbstractDatabase):
         try:
             self.batch.put_item(Item=record)
         except ClientError as e:
-            logger.error(
+            _logger.error(
                 "boto3 client error on add_record for "
                 f"{concept_id}: {e.response['Error']['Message']}"
             )
@@ -437,7 +506,7 @@ class DynamoDbDatabase(AbstractDatabase):
         try:
             self.batch.put_item(Item=record)
         except ClientError as e:
-            logger.error(
+            _logger.error(
                 f"boto3 client error adding reference {term} for "
                 f"{concept_id} with match type {ref_type}: "
                 f"{e.response['Error']['Message']}"
@@ -469,7 +538,7 @@ class DynamoDbDatabase(AbstractDatabase):
                     f"No such record exists for keys {label_and_type}, {concept_id}"
                 )
             else:
-                logger.error(
+                _logger.error(
                     f"boto3 client error in `database.update_record()`: "
                     f"{e.response['Error']['Message']}"
                 )

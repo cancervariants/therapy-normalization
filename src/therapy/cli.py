@@ -226,7 +226,7 @@ def update_normalizer_db(
     use_existing: bool,
 ) -> None:
     """Update selected normalizer source(s) in the therapy database. For example, the
-    following command will update NCBI and HGNC data, using a database connection at port 8001:
+    following command will update RxNorm and Wikidata data, using a database connection at port 8001:
 
     % therapy_norm_update --sources="rxnorm wikidata" --db_url=http://localhost:8001
 

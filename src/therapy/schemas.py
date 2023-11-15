@@ -174,6 +174,10 @@ class RefType(str, Enum):
     ASSOCIATED_WITH = "associated_with"
 
 
+# not incorporated as a RefType because it shouldn't be publicly searchable
+RXNORM_BRAND_ITEM_TYPE = "rx_brand"
+
+
 class MatchType(IntEnum):
     """Define string constraints for use in Match Type attributes."""
 
