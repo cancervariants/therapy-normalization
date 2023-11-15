@@ -15,7 +15,8 @@
       "Cis-diamminedichloroplatinum ii",
       "Cis-platin",
       "Fauldiscipla",
-      "Peyrone's salt"
+      "Peyrone's salt",
+            "(sp-4-2)-diamminedichloroplatinum"
     ],
     "trade_names": [
       "PLATINOL",
@@ -971,7 +972,6 @@
     "label": "L-745870",
     "concept_id": "chembl:CHEMBL267014",
     "aliases": [],
-    "approval_ratings": ["chembl_phase_0"],
     "xrefs": [],
     "associated_with": [],
     "trade_names": []
@@ -990,7 +990,8 @@
       "Acetylsalicylic acid (who-ip)",
       "Acetylsalicylicum acidum",
       "Acidum acetylsalicylicum",
-      "Benzoic acid, 2-(acetyloxy)-"
+      "Benzoic acid, 2-(acetyloxy)-",
+            "Acidum acetylsalicylicum (who-ip)"
     ],
     "trade_names": [],
     "xrefs": [],
@@ -2267,4 +2268,3 @@
     ]
   }
 }
-

@@ -26,7 +26,6 @@ def bifidobacterium_infantis():
             "Bifidobacterium longum subsp. infantis",
             "Bifidobacterium longum subsp. infantis whole",
             "Bifidobacterium longum infantis whole",
-            "Bifidobacterium longum ssp. infantis",
             "bifidobacterium infantis",
             "Bifidobacterium longum bv. infantis whole",
         ],
@@ -45,20 +44,17 @@ def cisplatin():
         "label": "cisplatin",
         "concept_id": "rxcui:2555",
         "aliases": [
-            "cis-Platinum",
-            "CISplatin",
-            "cis Diamminedichloroplatinum",
-            "cis Platinum",
-            "Diamminodichloride, Platinum",
-            "cis-Diamminedichloroplatinum",
-            "DDP",
-            "Dichlorodiammineplatinum",
-            "cis-Dichlorodiammineplatinum(II)",
-            "Platinum Diamminodichloride",
-            "cis-Diamminedichloroplatinum(II)",
-            "cis-diamminedichloroplatinum(II)",
-            "CDDP",
-            "Cis-DDP",
+            {
+                "(SP-4-2)-DIAMMINEDICHLOROPLATINUM",
+                "CDDP",
+                "CIS-DIAMMINEDICHLOROPLATINUM",
+                "CIS-DIAMMINEDICHLOROPLATINUM II",
+                "CISplatin",
+                "Cis-DDP",
+                "DDP",
+                "PLATINUM, DIAMMINEDICHLORO-, (SP-4-2)-",
+                "cis-diamminedichloroplatinum(II)",
+            }
         ],
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": ["drugbank:DB00515", "drugbank:DB12117"],
@@ -85,8 +81,6 @@ def amiloride_hydrochloride():
         "concept_id": "rxcui:142424",
         "aliases": [
             "aMILoride hydrochloride",
-            "Amiloride Hydrochloride",
-            "Hydrochloride, Amiloride",
         ],
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": [],
@@ -136,13 +130,7 @@ def amiloride():
             "atc:C03DB01",
         ],
         "trade_names": [
-            "Midamor",
-            "Frusemek",
-            "Moduret",
-            "Aridil",
-            "Zida-Co",
             "Amilamont",
-            "Moduretic",
         ],
     }
     return Drug(**params)
@@ -154,14 +142,7 @@ def timolol():
     params = {
         "label": "timolol",
         "concept_id": "rxcui:10600",
-        "aliases": [
-            "(S)-1-((1,1-Dimethylethyl)amino)-3-((4-(4-morpholinyl)"
-            "-1,2,5-thiadazol-3-yl)oxy)-2-propanol",
-            "2-Propanol, 1-((1,1-dimethylethyl)amino)-3-((4-(4-morpholi"
-            "nyl)-1,2,5-thiadiazol-3-yl)oxy)-, (S)-",
-            "(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol"
-            "-3-yl)oxy]propan-2-ol",
-        ],
+        "aliases": [],
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": ["drugbank:DB00373"],
         "associated_with": [
@@ -199,19 +180,6 @@ def lymphocyte():
         "label": "lymphocyte immune globulin, anti-thymocyte globulin",
         "concept_id": "rxcui:1011",
         "aliases": [
-            "Lymphocyte Immune Globulin, Anti-Thymocyte Globulin",
-            "Anti-Thymocyte Globulin",
-            "Antithymocyte Globulin",
-            "Antithymoglobulin",
-            "Lymphocyte Immune Globulin, Anti Thymocyte Globulin",
-            "Globulins, Antithymocyte",
-            "Antithymocyte Globulins",
-            "Antithymoglobulins",
-            "Anti-Thymocyte Globulins",
-            "Globulins, Anti-Thymocyte",
-            "Globulin, Antithymocyte",
-            "Anti Thymocyte Globulin",
-            "Globulin, Anti-Thymocyte",
             "lymphocyte immune globulin, anti-thy (obs)",
         ],
         "approval_ratings": ["rxnorm_prescribable"],
@@ -237,15 +205,12 @@ def aspirin():
         "aliases": [
             "Salicylic acid acetate",
             "Aspirin",
-            "Acid, Acetylsalicylic",
-            "2-(Acetyloxy)benzoic Acid",
             "2-Acetoxybenzenecarboxylic acid",
             "ASA",
             "O-acetylsalicylic acid",
             "2-Acetoxybenzoic acid",
             "o-acetoxybenzoic acid",
             "o-carboxyphenyl acetate",
-            "Acetylsalicylic Acid",
         ],
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": ["drugbank:DB00945"],
@@ -273,13 +238,7 @@ def mesna():
     params = {
         "label": "mesna",
         "concept_id": "rxcui:44",
-        "aliases": [
-            "Mesnum",
-            "Ethanesulfonic acid, 2-mercapto-, monosodium salt",
-            "Sodium 2-Mercaptoethanesulphonate",
-            "2-Mercaptoethanesulphonate, Sodium",
-            "Sodium 2-Mercaptoethanesulphonate",
-        ],
+        "aliases": [],
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": [],
         "associated_with": [
@@ -304,7 +263,7 @@ def beta_alanine():
     params = {
         "label": "beta-alanine",
         "concept_id": "rxcui:61",
-        "aliases": ["beta Alanine", "3 Aminopropionic Acid", "3-Aminopropionic Acid"],
+        "aliases": [],
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": [],
         "associated_with": ["mesh:D015091", "vandf:4028377", "unii:11P2JDE17B"],
@@ -319,12 +278,7 @@ def algestone():
     params = {
         "label": "algestone",
         "concept_id": "rxcui:595",
-        "aliases": [
-            "Pregn-4-ene-3,20-dione, 16,17-dihydroxy-, (16alpha)-",
-            "16 alpha,17-Dihydroxypregn-4-ene-3,20-dione",
-            "Alphasone",
-            "Dihydroxyprogesterone",
-        ],
+        "aliases": [],
         "approval_ratings": [],
         "xrefs": [],
         "associated_with": ["mesh:D000523"],
@@ -342,10 +296,6 @@ def levothyroxine():
         "aliases": [
             "3,5,3',5'-Tetraiodo-L-thyronine",
             "Thyroxine",
-            "Thyroid Hormone, T4",
-            "Thyroxin",
-            "T4 Thyroid Hormone",
-            "O-(4-Hydroxy-3,5-diiodophenyl)-3,5-diiodotyrosine",
             "3,5,3',5'-Tetraiodothyronine",
             "O-(4-Hydroxy-3,5-diiodophenyl)-3,5-diiodo-L-tyrosine",
             "L-T4",
@@ -354,7 +304,6 @@ def levothyroxine():
             "3,3',5,5'-Tetraiodo-L-thyronine",
             "L-Thyroxine",
             "O-(4-Hydroxy-3,5-diidophenyl)-3,5-diiodo-L-tyrosine",
-            "4-(4-Hydroxy-3,5-diiodophenoxy)-3,5-diiodo-L-phenylalanine",
             "Levothyroxin",
         ],
         "approval_ratings": ["rxnorm_prescribable"],
@@ -378,8 +327,6 @@ def fluoxetine():
         "concept_id": "rxcui:4493",
         "aliases": [
             "FLUoxetine",
-            "N-Methyl-gamma-(4-(trifluoromethyl)phenoxy)" "benzenepropanamine",
-            "Fluoxetin",
             "(+-)-N-Methyl-gamma-(4-(trifluoromethyl)phenoxy)" "benzenepropanamine",
             "(+-)-N-Methyl-3-phenyl-3-((alpha,alpha,alpha-trifluoro-"
             "P-tolyl)oxy)propylamine",
@@ -412,7 +359,7 @@ def fluoxetine_hydrochloride():
     params = {
         "label": "fluoxetine hydrochloride",
         "concept_id": "rxcui:227224",
-        "aliases": ["FLUoxetine hydrochloride", "Fluoxetine Hydrochloride"],
+        "aliases": [],
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": [],
         "associated_with": [
