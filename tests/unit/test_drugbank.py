@@ -196,16 +196,19 @@ def test_no_match(drugbank):
 
 def test_meta_info(drugbank):
     """Test that the meta field is correct."""
-    response = drugbank.query_handler._fetch_meta("DrugBank")
-    assert response.data_license == "CC0 1.0"
+    response = drugbank.search("search")
+    assert response.source_meta_.data_license == "CC0 1.0"
     assert (
-        response.data_license_url
+        response.source_meta_.data_license_url
         == "https://creativecommons.org/publicdomain/zero/1.0/"
     )
-    assert re.match(r"[0-9]+\.[0-9]+\.[0-9]", response.version)
-    assert response.data_url == "https://go.drugbank.com/releases/latest#open-data"
-    assert response.rdp_url == "http://reusabledata.org/drugbank.html"
-    assert response.data_license_attributes == {
+    assert re.match(r"[0-9]+\.[0-9]+\.[0-9]", response.source_meta_.version)
+    assert (
+        response.source_meta_.data_url
+        == "https://go.drugbank.com/releases/latest#open-data"
+    )
+    assert response.source_meta_.rdp_url == "http://reusabledata.org/drugbank.html"
+    assert response.source_meta_.data_license_attributes == {
         "non_commercial": False,
         "share_alike": False,
         "attribution": False,
