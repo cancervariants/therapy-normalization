@@ -3,7 +3,7 @@ import csv
 import shutil
 from pathlib import Path
 
-from therapy.database.database import create_db
+from therapy.database import create_db
 from therapy.etl.rxnorm import RXNORM_XREFS, RxNorm
 
 rx = RxNorm(create_db())

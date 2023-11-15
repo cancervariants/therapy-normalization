@@ -7,7 +7,7 @@ import lxml.etree as etr
 import owlready2 as owl
 import xmlformatter
 
-from therapy.database.database import create_db
+from therapy.database import create_db
 from therapy.etl import NCIt
 
 # define captured ids in `test_classes` variable

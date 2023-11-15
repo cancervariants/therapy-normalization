@@ -43,20 +43,24 @@ TEST_DATA_DIRECTORY = TEST_ROOT / "tests" / "data"
 IS_TEST_ENV = os.environ.get("THERAPY_TEST", "").lower() == "true"
 
 
-@pytest.fixture(scope="session")
-def is_test_env():
-    """Identify whether test is running in CI."""
-    return IS_TEST_ENV
-
-
 def pytest_sessionstart():
     """Wipe DB before testing if in test environment."""
     if IS_TEST_ENV:
         if os.environ.get(AWS_ENV_VAR_NAME):
-            assert False, f"Cannot have both DISEASE_TEST and {AWS_ENV_VAR_NAME} set."
+            assert False, f"Cannot have both THERAPY_TEST and {AWS_ENV_VAR_NAME} set."
         db = create_db()
         db.drop_db()
         db.initialize_db()
+
+
+@pytest.fixture(scope="session")
+def is_test_env():
+    """If true, currently in test environment (i.e. okay to overwrite DB). Downstream
+    users should also make sure to check if in a production environment.
+
+    Provided here to be accessible directly within test modules.
+    """
+    return IS_TEST_ENV
 
 
 @pytest.fixture(scope="session")

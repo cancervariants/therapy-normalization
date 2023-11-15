@@ -4,11 +4,12 @@ import os
 import random
 from pathlib import Path
 from typing import Dict, Set
+from typing import Any, Dict, Set
+from typing import Callable, Dict, Set
 
 import pytest
 
-from therapy.database import AWS_ENV_VAR_NAME
-from therapy.database.database import create_db
+from therapy.database import AWS_ENV_VAR_NAME, create_db
 from therapy.etl.chembl import ChEMBL
 from therapy.etl.chemidplus import ChemIDplus
 from therapy.etl.drugbank import DrugBank
@@ -20,6 +21,44 @@ from therapy.etl.ncit import NCIt
 from therapy.etl.rxnorm import RxNorm
 from therapy.etl.wikidata import Wikidata
 from therapy.schemas import SourceName
+from therapy.schemas import SourceName
+
+
+@pytest.fixture(scope="module")
+def merge_instance(test_source: Callable, is_test_env: bool):
+    """Provide fixture for ETL merge class.
+
+    If in a test environment (e.g. CI) this method will attempt to load any missing
+    source data, and then perform merged record generation.
+    """
+    database = create_db()
+    if is_test_env:
+        if os.environ.get(AWS_ENV_VAR_NAME):
+            assert False, (
+                f"Running the full disease ETL pipeline test on an AWS environment is "
+                f"forbidden -- either unset {AWS_ENV_VAR_NAME} or unset DISEASE_TEST"
+            )
+        else:
+            for SourceClass in (  # noqa: N806
+                ChEMBL,
+                ChemIDplus,
+                DrugBank,
+                DrugsAtFDA,
+                GuideToPHARMACOLOGY,
+                HemOnc,
+                NCIt,
+                RxNorm,
+                Wikidata,
+            ):
+                if not database.get_source_metadata(SourceName(SourceClass.__name__)):
+                    test_source(SourceClass)
+
+    m = Merge(database)
+    if is_test_env:
+        concept_ids = database.get_all_concept_ids()
+        m.create_merged_concepts(concept_ids)
+    return m
+>>>>>>> f44a1bd (more progress)
 
 
 def compare_merged_records(actual: Dict, fixture: Dict):
@@ -91,6 +130,7 @@ def amifostine_merged(fixture_data) -> Dict:
 
 
 @pytest.fixture(scope="module")
+<<<<<<< HEAD
 def merge_instance(test_source, is_test_env: bool):
     """Provide fixture for ETL merge class.
 

@@ -3,8 +3,9 @@ Assumes complete and functioning disease normalizer endpoint is available.
 """
 import json
 from pathlib import Path
-from typing import Any, Dict
+from typing import Dict
 
+from disease.database import create_db as create_disease_db
 from disease.query import QueryHandler as DiseaseQueryHandler
 from disease.schemas import NormalizationService as DiseaseNormalizationService
 
@@ -22,10 +23,6 @@ class ReadOnlyDatabase(DynamoDbDatabase):
         """Add new record to database"""
         pass
 
-    def update_merge_ref(self, concept_id: str, merge_ref: Any) -> None:  # noqa: ANN401
-        """Update merge reference."""
-        pass
-
 
 db = ReadOnlyDatabase()
 disease_normalizer_table = {}
@@ -37,15 +34,15 @@ class SaveQueryHandler(DiseaseQueryHandler):
     def normalize(self, query: str) -> DiseaseNormalizationService:
         """Normalize query term"""
         response = super().normalize(query)
-        if response.disease_descriptor:
-            result = response.disease_descriptor.disease
+        if response.normalized_id:
+            result = response.normalized_id
         else:
             result = None
         disease_normalizer_table[query.lower()] = result
         return response
 
 
-disease_query_handler = SaveQueryHandler()
+disease_query_handler = SaveQueryHandler(create_disease_db())
 
 ch = ChEMBL(database=db, data_path=TEST_DATA_DIRECTORY)
 ch.disease_normalizer = disease_query_handler
@@ -57,6 +54,16 @@ h.perform_etl(use_existing=True)
 
 
 with open(TEST_DATA_DIRECTORY / "disease_normalization.json", "w") as f:
+<<<<<<< HEAD
     json.dump(disease_normalizer_table, f)
 
 # TODO circle back to this
+||||||| parent of f44a1bd (more progress)
+    json.dump(disease_normalizer_table, f)
+=======
+    # for consistency/easier diffing
+    sorted_dict = {
+        key: value for key, value in sorted(disease_normalizer_table.items())
+    }
+    json.dump(sorted_dict, f, indent=2)
+>>>>>>> f44a1bd (more progress)

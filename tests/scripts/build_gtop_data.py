@@ -2,7 +2,7 @@
 import csv
 from pathlib import Path
 
-from therapy.database.database import create_db
+from therapy.database import create_db
 from therapy.etl import GuideToPHARMACOLOGY
 
 TEST_IDS = {"5343", "2169", "2804", "240", "3303", "5260"}
