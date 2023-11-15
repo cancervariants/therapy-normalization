@@ -260,7 +260,11 @@ class HemOnc(DiseaseIndicationBase):
                     record["approval_year"] = [year]
 
             elif rel_type == "Has FDA indication":
-                label = conditions[row[1]]
+                try:
+                    label = conditions[row[1]]
+                except KeyError:
+                    # concept is deprecated or otherwise unavailable
+                    continue
                 norm_id = self._normalize_disease(label)
                 hemonc_concept_id = f"{NamespacePrefix.HEMONC.value}:{row[1]}"
                 indication = {
