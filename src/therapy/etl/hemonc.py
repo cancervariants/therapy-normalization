@@ -18,8 +18,7 @@ from therapy.schemas import (
     SourceMeta,
 )
 
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
+_logger = logging.getLogger("therapy")
 
 
 class HemOnc(DiseaseIndicationBase):
@@ -35,7 +34,7 @@ class HemOnc(DiseaseIndicationBase):
         try:
             response.raise_for_status()
         except requests.HTTPError as e:
-            logger.error("Unable to retrieve HemOnc version from Harvard Dataverse")
+            _logger.error("Unable to retrieve HemOnc version from Harvard Dataverse")
             raise e
         iso_datetime = isodate.parse_datetime(
             response.json()["datasetVersion"]["releaseTime"]
@@ -233,7 +232,7 @@ class HemOnc(DiseaseIndicationBase):
                 elif src_raw == "RxNorm Extension":
                     continue  # skip
                 else:
-                    logger.warning(f"Unrecognized `Maps To` source: {src_raw}")
+                    _logger.warning(f"Unrecognized `Maps To` source: {src_raw}")
 
             elif rel_type == "Has brand name":
                 record["trade_names"].append(brand_names[row[1]])
@@ -242,13 +241,15 @@ class HemOnc(DiseaseIndicationBase):
                 try:
                     year = self._id_to_yr(row[1])
                 except TypeError:
-                    logger.error(
+                    _logger.error(
                         f"Failed parse of FDA approval year ID "
                         f"{row[1]} for HemOnc ID {row[0]}"
                     )
                     continue
                 if year == "9999":
-                    logger.warning(f"HemOnc ID {row[0]} has FDA approval year" f" 9999")
+                    _logger.warning(
+                        f"HemOnc ID {row[0]} has FDA approval year" f" 9999"
+                    )
                 record["approval_ratings"] = [ApprovalRating.HEMONC_APPROVED.value]
                 if "approval_year" in record:
                     record["approval_year"].append(year)
@@ -256,7 +257,14 @@ class HemOnc(DiseaseIndicationBase):
                     record["approval_year"] = [year]
 
             elif rel_type == "Has FDA indication":
-                label = conditions[row[1]]
+                try:
+                    label = conditions[row[1]]
+                except KeyError:
+                    # concept is deprecated or otherwise unavailable
+                    _logger.error(
+                        f"Unable to process relation with indication {row[0]} -- deprecated?"
+                    )
+                    continue
                 norm_id = self._normalize_disease(label)
                 hemonc_concept_id = f"{NamespacePrefix.HEMONC.value}:{row[1]}"
                 indication = {
