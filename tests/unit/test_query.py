@@ -520,7 +520,7 @@ def test_query_normalize(
     compare_ta(response, normalized_cisplatin, query, MatchType.TRADE_NAME)
 
     # test alias match
-    query = "cis Diamminedichloroplatinum"
+    query = "cis-ddp"
     response = normalize_handler.normalize(query)
     compare_ta(response, normalized_cisplatin, query, MatchType.ALIAS)
 

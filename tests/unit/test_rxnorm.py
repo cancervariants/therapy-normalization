@@ -31,7 +31,7 @@ def bifidobacterium_infantis():
         ],
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": ["drugbank:DB14222"],
-        "associated_with": ["mmsl:d07347", "mesh:D000070236"],
+        "associated_with": ["mmsl:d07347", "unii:EF3U3H7I76", "mmsl:32421"],
         "trade_names": ["Align", "Evivo"],
     }
     return Drug(**params)
@@ -44,24 +44,21 @@ def cisplatin():
         "label": "cisplatin",
         "concept_id": "rxcui:2555",
         "aliases": [
-            {
-                "(SP-4-2)-DIAMMINEDICHLOROPLATINUM",
-                "CDDP",
-                "CIS-DIAMMINEDICHLOROPLATINUM",
-                "CIS-DIAMMINEDICHLOROPLATINUM II",
-                "CISplatin",
-                "Cis-DDP",
-                "DDP",
-                "PLATINUM, DIAMMINEDICHLORO-, (SP-4-2)-",
-                "cis-diamminedichloroplatinum(II)",
-            }
+            "(SP-4-2)-DIAMMINEDICHLOROPLATINUM",
+            "CDDP",
+            "CIS-DIAMMINEDICHLOROPLATINUM",
+            "CIS-DIAMMINEDICHLOROPLATINUM II",
+            "CISplatin",
+            "Cis-DDP",
+            "DDP",
+            "PLATINUM, DIAMMINEDICHLORO-, (SP-4-2)-",
+            "cis-diamminedichloroplatinum(II)",
         ],
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": ["drugbank:DB00515", "drugbank:DB12117"],
         "associated_with": [
             "usp:m17910",
             "vandf:4018139",
-            "mesh:D002945",
             "unii:Q20Q21Q62J",
             "mmsl:d00195",
             "atc:L01XA01",
@@ -88,7 +85,6 @@ def amiloride_hydrochloride():
             "usp:m2650",
             "unii:FZJ37245UC",
             "mmsl:2658",
-            "mesh:D000584",
             "mmsl:4166",
             "vandf:4017935",
         ],
@@ -97,7 +93,6 @@ def amiloride_hydrochloride():
             "Midamor",
             "Aridil",
             "Frusemek",
-            "Midamor",
             "Moduret",
             "Moduretic",
             "Zida-Co",
@@ -123,7 +118,6 @@ def amiloride():
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": ["drugbank:DB00594"],
         "associated_with": [
-            "mesh:D000584",
             "vandf:4019603",
             "unii:7DZO8EB0Z3",
             "mmsl:d00169",
@@ -142,13 +136,14 @@ def timolol():
     params = {
         "label": "timolol",
         "concept_id": "rxcui:10600",
-        "aliases": [],
+        "aliases": [
+            "(S)-1-(tert-butylamino)-3-[(4-morpholin-4-yl-1,2,5-thiadiazol-3-yl)oxy]propan-2-ol",
+        ],
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": ["drugbank:DB00373"],
         "associated_with": [
             "vandf:4019949",
             "unii:817W3C6175",
-            "mesh:D013999",
             "mmsl:d00139",
             "atc:C07AA06",
             "atc:S01ED01",
@@ -185,7 +180,6 @@ def lymphocyte():
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": [],
         "associated_with": [
-            "mesh:D000961",
             "vandf:4022194",
             "vandf:4018097",
             "mmsl:d01141",
@@ -220,7 +214,6 @@ def aspirin():
             "mmsl:34512",
             "unii:R16CO5Y76E",
             "mmsl:244",
-            "mesh:D001241",
             "mmsl:4223",
             "mmsl:d00170",
             "atc:A01AD05",
@@ -243,7 +236,6 @@ def mesna():
         "xrefs": [],
         "associated_with": [
             "usp:m49500",
-            "mesh:D015080",
             "vandf:4019477",
             "unii:NR7O1405Q9",
             "atc:R05CB05",
@@ -266,7 +258,7 @@ def beta_alanine():
         "aliases": [],
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": [],
-        "associated_with": ["mesh:D015091", "vandf:4028377", "unii:11P2JDE17B"],
+        "associated_with": ["vandf:4028377", "unii:11P2JDE17B"],
         "trade_names": [],
     }
     return Drug(**params)
@@ -281,7 +273,7 @@ def algestone():
         "aliases": [],
         "approval_ratings": [],
         "xrefs": [],
-        "associated_with": ["mesh:D000523"],
+        "associated_with": [],
         "trade_names": [],
     }
     return Drug(**params)
@@ -296,7 +288,6 @@ def levothyroxine():
         "aliases": [
             "3,5,3',5'-Tetraiodo-L-thyronine",
             "Thyroxine",
-            "3,5,3',5'-Tetraiodothyronine",
             "O-(4-Hydroxy-3,5-diiodophenyl)-3,5-diiodo-L-tyrosine",
             "L-T4",
             "LT4",
@@ -305,12 +296,12 @@ def levothyroxine():
             "L-Thyroxine",
             "O-(4-Hydroxy-3,5-diidophenyl)-3,5-diiodo-L-tyrosine",
             "Levothyroxin",
+            "4-(4-Hydroxy-3,5-diiodophenoxy)-3,5-diiodo-L-phenylalanine",
         ],
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": ["drugbank:DB00451"],
         "associated_with": [
             "vandf:4022126",
-            "mesh:D013974",
             "mmsl:d00278",
             "unii:Q51BO43MG4",
         ],
@@ -334,7 +325,6 @@ def fluoxetine():
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": ["drugbank:DB00472"],
         "associated_with": [
-            "mesh:D005473",
             "mmsl:17711",
             "vandf:4019761",
             "mmsl:d00236",
@@ -343,7 +333,6 @@ def fluoxetine():
         ],
         "trade_names": [
             "Prozac",
-            "RECONCILE",
             "Sarafem",
             "Symbyax",
             "Rapiflux",
@@ -359,7 +348,7 @@ def fluoxetine_hydrochloride():
     params = {
         "label": "fluoxetine hydrochloride",
         "concept_id": "rxcui:227224",
-        "aliases": [],
+        "aliases": ["FLUoxetine hydrochloride"],
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": [],
         "associated_with": [
@@ -370,7 +359,6 @@ def fluoxetine_hydrochloride():
             "vandf:4019389",
             "mmsl:41730",
             "mmsl:37675",
-            "mesh:D005473",
         ],
         "trade_names": ["FLUoxetine HCl", "FLUoxetine Hydrochloride", "RECONCILE"],
     }
@@ -387,15 +375,12 @@ def phenobarbital():
             "aliases": [
                 "Phenobarbituric Acid",
                 "Phenylethylbarbiturate",
-                "Acid, Phenylethylbarbituric",
                 "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
                 "5-Phenyl-5-ethylbarbituric acid",
                 "Phenylethylbarbituric Acid",
                 "5-Ethyl-5-phenylbarbituric acid",
                 "Phenobarbitone",
                 "Phenobarbitol",
-                "Phenylbarbital",
-                "Phenemal",
                 "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
                 "PHENobarbital",
                 "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
@@ -409,7 +394,6 @@ def phenobarbital():
                 "mmsl:5272",
                 "vandf:4017422",
                 "unii:YQE403BP4D",
-                "mesh:D010634",
                 "atc:N03AA02",
             ],
             "approval_ratings": ["rxnorm_prescribable"],
@@ -478,16 +462,6 @@ def test_cisplatin(cisplatin, rxnorm, compare_records):
     assert len(response.records) == 1
     compare_records(response.records[0], cisplatin)
 
-    response = rxnorm.search("Dichlorodiammineplatinum")
-    assert response.match_type == MatchType.ALIAS
-    assert len(response.records) == 1
-    compare_records(response.records[0], cisplatin)
-
-    response = rxnorm.search("cis Platinum")
-    assert response.match_type == MatchType.ALIAS
-    assert len(response.records) == 1
-    compare_records(response.records[0], cisplatin)
-
     # Trade Name Match
     response = rxnorm.search("platinol")
     assert response.match_type == MatchType.TRADE_NAME
@@ -520,7 +494,8 @@ def test_amiloride_hydrochloride(amiloride_hydrochloride, rxnorm, compare_record
     # Trade Name Match
     response = rxnorm.search("Midamor")
     assert response.match_type == MatchType.LABEL
-    assert len(response.records) == 2
+    assert len(response.records) == 1
+    compare_records(response.records[0], amiloride_hydrochloride)
 
 
 def test_amiloride(amiloride, rxnorm, compare_records):
@@ -551,11 +526,6 @@ def test_amiloride(amiloride, rxnorm, compare_records):
     assert response.match_type == MatchType.ALIAS
     assert len(response.records) == 1
     compare_records(response.records[0], amiloride)
-
-    # Trade Name Match
-    response = rxnorm.search("Midamor")
-    assert response.match_type == MatchType.TRADE_NAME
-    assert len(response.records) == 2
 
 
 def test_timolol(timolol, rxnorm, compare_records):
@@ -603,17 +573,6 @@ def test_lymphocyte(lymphocyte, rxnorm, compare_records):
     assert len(response.records) == 1
     compare_records(response.records[0], lymphocyte)
 
-    # Alias Match
-    response = rxnorm.search("Anti Thymocyte Globulin")
-    assert response.match_type == MatchType.ALIAS
-    assert len(response.records) == 1
-    compare_records(response.records[0], lymphocyte)
-
-    response = rxnorm.search("Antithymoglobulin")
-    assert response.match_type == MatchType.ALIAS
-    assert len(response.records) == 1
-    compare_records(response.records[0], lymphocyte)
-
     # Trade Name Match
     response = rxnorm.search("Thymoglobulin")
     assert response.match_type == MatchType.TRADE_NAME
@@ -656,17 +615,6 @@ def test_mesnan(mesna, rxnorm, compare_records):
     assert len(response.records) == 1
     compare_records(response.records[0], mesna)
 
-    # Alias Match
-    response = rxnorm.search("Mesnum")
-    assert response.match_type == MatchType.ALIAS
-    assert len(response.records) == 1
-    compare_records(response.records[0], mesna)
-
-    response = rxnorm.search("Ethanesulfonic acid, 2-mercapto-, " "monosodium salt")
-    assert response.match_type == MatchType.ALIAS
-    assert len(response.records) == 1
-    compare_records(response.records[0], mesna)
-
     # Trade Name Match
     response = rxnorm.search("Mesnex")
     assert response.match_type == MatchType.TRADE_NAME
@@ -688,12 +636,6 @@ def test_beta_alanine(beta_alanine, rxnorm, compare_records):
     assert len(response.records) == 1
     compare_records(response.records[0], beta_alanine)
 
-    # Alias Match
-    response = rxnorm.search("3 Aminopropionic Acid")
-    assert response.match_type == MatchType.ALIAS
-    assert len(response.records) == 1
-    compare_records(response.records[0], beta_alanine)
-
 
 def test_algestone(algestone, rxnorm, compare_records):
     """Test that algestone drug normalizes to correct drug concept."""
@@ -706,12 +648,6 @@ def test_algestone(algestone, rxnorm, compare_records):
     # Label Match
     response = rxnorm.search("algestone")
     assert response.match_type == MatchType.LABEL
-    assert len(response.records) == 1
-    compare_records(response.records[0], algestone)
-
-    # Alias Match
-    response = rxnorm.search("Pregn-4-ene-3,20-dione, 16," "17-dihydroxy-, (16alpha)-")
-    assert response.match_type == MatchType.ALIAS
     assert len(response.records) == 1
     compare_records(response.records[0], algestone)
 
@@ -731,11 +667,6 @@ def test_levothyroxine(levothyroxine, rxnorm, compare_records):
     compare_records(response.records[0], levothyroxine)
 
     # Alias Match
-    response = rxnorm.search("Thyroxin")
-    assert response.match_type == MatchType.ALIAS
-    assert len(response.records) == 1
-    compare_records(response.records[0], levothyroxine)
-
     response = rxnorm.search("LT4")
     assert response.match_type == MatchType.ALIAS
     assert len(response.records) == 1
@@ -840,11 +771,6 @@ def test_xref_lookup(
     assert response.match_type == MatchType.ASSOCIATED_WITH
     assert len(response.records) == 1
     compare_records(response.records[0], bifidobacterium_infantis)
-
-    response = rxnorm.search("mesh:D002945")
-    assert response.match_type == MatchType.ASSOCIATED_WITH
-    assert len(response.records) == 1
-    compare_records(response.records[0], cisplatin)
 
     response = rxnorm.search("atc:C03DB01")
     assert response.match_type == MatchType.ASSOCIATED_WITH

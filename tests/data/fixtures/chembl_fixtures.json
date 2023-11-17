@@ -992,7 +992,8 @@
     "aliases": [],
     "xrefs": [],
     "associated_with": [],
-    "trade_names": []
+    "trade_names": [],
+        "approval_ratings": ["chembl_phase_null"]
   },
   "aspirin": {
     "concept_id": "chembl:CHEMBL25",

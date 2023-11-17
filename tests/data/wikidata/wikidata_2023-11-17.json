@@ -1,0 +1,93 @@
+[
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "itemLabel": "phenobarbital",
+    "casRegistry": "50-06-6",
+    "pubchemCompound": "4763",
+    "chembl": "CHEMBL40",
+    "rxnorm": "8134",
+    "drugbank": "01174",
+    "guideToPharmacology": "2804",
+    "aliases": "PHENYLETHYLMALONYLUREA;;Phenylethylmalonylurea;;Phenylethylbarbitursaeure;;Phenylethylbarbituric Acid;;Phenylethylbarbiturate;;phenylethylbarbiturate;;Phenylaethylbarbitursaeure;;Phenobarbituric Acid;;Phenobarbitone;;Phenobarbitol;;phenobarbital sodium;;Luminal\u00ae;;fenobarbital;;5-Phenyl-5-ethylbarbituric acid;;5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione;;5-Ethyl-5-phenylbarbituric acid;;5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione;;5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione;;Phenobarbital"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q412415",
+    "itemLabel": "cisplatin",
+    "casRegistry": "15663-27-1",
+    "pubchemCompound": "5702198",
+    "chembl": "CHEMBL11359",
+    "rxnorm": "2555",
+    "drugbank": "00515",
+    "guideToPharmacology": "5343",
+    "aliases": "Platinol-AQ;;Platinol;;cis-diamminedichloroplatinum(II);;CIS-DDP;;Cis-DDP;;CDDP"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q418702",
+    "itemLabel": "basiliximab",
+    "casRegistry": "179045-86-4",
+    "chembl": "CHEMBL1201439",
+    "rxnorm": "196102",
+    "drugbank": "00074",
+    "guideToPharmacology": "6879",
+    "aliases": "SDZ-CHI-621;;chimeric mouse-human antiCD25;;CHI621;;CHI-621;;Ig gamma-1 chain C region"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q27287118",
+    "itemLabel": "ro-5045337",
+    "casRegistry": "939981-39-2",
+    "pubchemCompound": "57406853",
+    "chembl": "CHEMBL2386346",
+    "drugbank": "14793",
+    "guideToPharmacology": "9599",
+    "aliases": "RO 5045337;;RG7112"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q26272",
+    "itemLabel": "atropine",
+    "casRegistry": "51-55-8",
+    "pubchemCompound": "174174",
+    "chembl": "CHEMBL517712",
+    "rxnorm": "1223",
+    "drugbank": "00572",
+    "guideToPharmacology": "320",
+    "aliases": "Tropine tropate;;Mydriasine;;dl-tropyltropate;;dl-Hyoscyamine;;8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate;;8-Methyl-8-azabicyclo[3.2.1]oct-3-yl 3-hydroxy-2-phenylpropanoate;;[(1S,5R)-8-Methyl-8-azabicyclo[3.2.1]oct-3-yl] 3-hydroxy-2-phenyl-propanoate;;(3-Endo)-8-methyl-8-azabicyclo[3.2.1]oct-3-yl tropate;;(+,-)-Tropyl tropate;;(+-)-Hyoscyamine;;(+-)-Atropine;;(\u00b1)-hyoscyamine;;(\u00b1)-atropine"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "itemLabel": "D-methamphetamine",
+    "casRegistry": "537-46-2",
+    "pubchemCompound": "10836",
+    "chembl": "CHEMBL1201201",
+    "rxnorm": "6816",
+    "drugbank": "01577",
+    "aliases": "crypto;;fast;;ice;;crystal;;pure;;chalk;;glass;;speed;;crank;;base;;methyl-beta-phenylisopropylamine;;dextromethamphetamine;;(S)-N,alpha-dimethylbenzeneethanamine;;(alphaS)-N,alpha-dimethylbenzeneethanamine;;(+)-(S)-N-alpha-dimethylphenethylamine;;wax;;tweak;;S-methamphetamine;;N-methylamphetamine;;methylamphetamine;;methyl-\u03b2-phenylisopropylamine;;methamphetamine;;meth;;metamfetamine;;desoxyephedrine;;d-phenylisopropylmethylamine;;d-N-methylamphetamine;;d-meth;;d-desoxyephedrine;;d-deoxyephedrine;;d-1-phenyl-2-methylaminopropane;;crystal meth;;(\u03b1S)-N,\u03b1-dimethylbenzeneethanamine;;(S)-N,\u03b1-dimethylbenzeneethanamine;;(+)-(S)-P-\u03b1-dimethylphenethylamine;;whiz"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "itemLabel": "amifostine",
+    "casRegistry": "20537-88-6",
+    "pubchemCompound": "2141",
+    "chembl": "CHEMBL1006",
+    "rxnorm": "1545987",
+    "drugbank": "01143",
+    "aliases": "WR-2721;;SAPEP;;Gammaphos;;Ethyol;;Ethiofos;;Apaetp;;Aminopropylaminoethyl Thiophosphate;;Aminopropylaminoethyl thiophosphate;;Amifostinum;;Amifostine Ethiofos;;Amifostine anhydrous;;amifostine anhydrous;;Amifostina;;Amifostine;;WR-1065"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q422265",
+    "itemLabel": "spiramycin",
+    "casRegistry": "8025-81-8",
+    "pubchemCompound": "5356392",
+    "chembl": "CHEMBL1256397",
+    "rxnorm": "9991",
+    "aliases": "spiramycin I"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q15353101",
+    "itemLabel": "interferon alfacon-1",
+    "casRegistry": "118390-30-0",
+    "chembl": "CHEMBL1201557",
+    "rxnorm": "59744",
+    "drugbank": "00069",
+    "aliases": "Recombinant methionyl human consensus interferon;;Recombinant Consensus Interferon;;rCon-IFN;;methionyl-interferon-consensus;;methionyl interferon consensus;;Interferon Consensus, Methionyl;;IFN Alfacon-1;;consensus interferon;;CIFN"
+  }
+]

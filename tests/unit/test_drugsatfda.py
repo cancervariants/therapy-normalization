@@ -142,11 +142,16 @@ def cisplatin() -> List[Drug]:
                 "concept_id": "drugsatfda.anda:207323",
                 "xrefs": ["rxcui:309311"],
                 "associated_with": [
+                    "ndc:25021-253",
+                    "ndc:72266-252",
+                    "ndc:72266-253",
                     "ndc:68083-162",
                     "ndc:68083-163",
                     "ndc:70860-206",
                     "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
-                    "spl:5a24d5bd-c44a-43f7-a04c-76caf3475012",
+                    "spl:0219ee77-eb38-b81f-e063-6394a90a5ca4",
+                    "spl:64bcce1a-6e31-4e73-8da5-11aa9e890da2",
+                    "spl:89007399-3c34-40d2-8068-a0b8e09cbef8",
                     "unii:Q20Q21Q62J",
                 ],
                 "approval_ratings": ["fda_prescription"],
@@ -215,9 +220,9 @@ def fenortho() -> List[Drug]:
                     "ndc:42195-600",
                     "spl:d8a6c130-bc1d-01a4-e053-2995a90afd52",
                     "spl:f0305a11-4494-e237-e053-2995a90ad12e",
-                    "spl:f0306480-f778-5c6b-e053-2a95a90ad461",
-                    "spl:f03034a3-a06c-4446-e053-2995a90a58fe",
                     "unii:0X2CW1QABJ",
+                    "spl:079cb594-ac07-14e3-e063-6394a90aeb77",
+                    "spl:079db405-aab1-a400-e063-6294a90a1489",
                 ],
                 "trade_names": ["NALFON"],
             }
@@ -228,7 +233,7 @@ def fenortho() -> List[Drug]:
                 "label": "FENOPROFEN CALCIUM",
                 "xrefs": ["rxcui:858116"],
                 "associated_with": [
-                    "spl:c00e4b3b-cec3-46ab-952f-c6c3856e8b98",
+                    "spl:b3a58d34-7780-4056-b144-bad674c51494",
                     "unii:0X2CW1QABJ",
                     "ndc:16571-688",
                 ],
@@ -414,7 +419,7 @@ def test_fenortho(fenortho, compare_records, drugsatfda):
 
     response = drugsatfda.search("fenoprofen calcium")
     assert response.match_type == MatchType.LABEL
-    assert len(response.records) == 2
+    assert len(response.records) == 3
     for r in response.records:
         fixture = [f for f in fenortho if r.concept_id == f.concept_id][0]
         compare_records(r, fixture)
@@ -426,7 +431,7 @@ def test_fenortho(fenortho, compare_records, drugsatfda):
 
     response = drugsatfda.search("unii:0X2CW1QABJ")
     assert response.match_type == MatchType.ASSOCIATED_WITH
-    assert len(response.records) == 2
+    assert len(response.records) == 3
     for r in response.records:
         fixture = [f for f in fenortho if r.concept_id == f.concept_id][0]
         compare_records(r, fixture)
