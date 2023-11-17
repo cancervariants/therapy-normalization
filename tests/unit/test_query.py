@@ -690,7 +690,7 @@ def test_unmerged_normalize(
         compare_records,
     )
 
-    query = "Dichlorodiammineplatinum"
+    query = "CIS-DDP"
     response = normalize_handler.normalize_unmerged(query)
     compare_unmerged_response(
         response,
@@ -720,17 +720,6 @@ def test_unmerged_normalize(
         [],
         MatchType.ASSOCIATED_WITH,
         unmerged_normalized_therapeutic_procedure,
-        compare_records,
-    )
-
-    query = "mesh:D015572"
-    response = normalize_handler.normalize_unmerged(query)
-    compare_unmerged_response(
-        response,
-        query,
-        [],
-        MatchType.ASSOCIATED_WITH,
-        unmerged_normalized_spiramycin,
         compare_records,
     )
 

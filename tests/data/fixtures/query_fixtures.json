@@ -3580,12 +3580,11 @@
               "Foromacidin A",
               "Foromacidine A",
               "Demycarosylturimycin H",
-              "Spiramycin I",
-              "Spiramycine"
+              "Spiramycin I"
             ],
             "trade_names": [],
             "xrefs": ["drugbank:DB06145"],
-            "associated_with": ["atc:J01FA02", "mesh:D015572", "mesh:C017186"],
+            "associated_with": ["atc:J01FA02"],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
