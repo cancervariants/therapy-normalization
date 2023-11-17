@@ -25,6 +25,8 @@ def test_normalize_disease(is_test_env: bool, db: Database):
     # set up normalizer
     os.environ["DISEASE_DYNAMO_TABLE"] = "disease_normalizer_therapy_test"
     chembl = ChEMBL(db)
+    chembl.disease_normalizer.db.drop_db()
+    chembl.disease_normalizer.db.initialize_db()
     chembl.disease_normalizer.db.add_source_metadata(
         DiseaseSourceName.MONDO,
         DiseaseSourceMeta(
@@ -47,5 +49,6 @@ def test_normalize_disease(is_test_env: bool, db: Database):
         },
         DiseaseSourceName.MONDO,
     )
+    chembl.disease_normalizer.db.complete_write_transaction()
     result = chembl._normalize_disease("mondo:0700110")
     assert result == "mondo:0700110"
