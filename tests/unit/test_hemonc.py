@@ -28,6 +28,8 @@ def cisplatin():
                 "cis-platinum",
                 "DACP",
                 "NSC 119875",
+                "NSC-119875",
+                "NSC119875",
                 "CDDP",
             ],
             "trade_names": [],
@@ -40,12 +42,6 @@ def cisplatin():
                     "disease_id": "hemonc:569",
                     "disease_label": "Bladder cancer",
                     "normalized_disease_id": "ncit:C9334",
-                    "supplemental_info": {"regulatory_body": "FDA"},
-                },
-                {
-                    "disease_id": "hemonc:645",
-                    "disease_label": "Ovarian cancer",
-                    "normalized_disease_id": "ncit:C7431",
                     "supplemental_info": {"regulatory_body": "FDA"},
                 },
                 {
@@ -71,6 +67,10 @@ def bendamustine():
                 "cytostasan hydrochloride",
                 "SyB L-0501",
                 "SDX-105",
+                "CEP 18083",
+                "CEP18083",
+                "SDX 105",
+                "SDX105",
                 "bendamustine hydrochloride",
                 "bendamustin hydrochloride",
             ],
@@ -94,7 +94,7 @@ def bendamustine():
                 "Xyotin",
             ],
             "approval_ratings": ["hemonc_approved"],
-            "approval_year": ["2008", "2015"],
+            "approval_year": ["2008"],
             "has_indication": [
                 {
                     "disease_id": "hemonc:581",
@@ -120,10 +120,18 @@ def degarelix():
         **{
             "label": "Degarelix",
             "concept_id": "hemonc:151",
-            "aliases": ["degarelix acetate", "FE200486", "ASP3550"],
+            "aliases": [
+                "degarelix acetate",
+                "FE200486",
+                "ASP3550",
+                "ASP 3550",
+                "ASP-3550",
+                "FE 200486",
+                "FE-200486",
+            ],
             "xrefs": ["rxcui:475230"],
             "associated_with": [],
-            "trade_names": ["Firmagon"],
+            "trade_names": ["Firmagon", "Gonax"],
             "approval_ratings": ["hemonc_approved"],
             "approval_year": ["2008"],
             "has_indication": [

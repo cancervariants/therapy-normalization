@@ -31,7 +31,7 @@ def test_item_type(db):  # noqa: F811
     assert "item_type" in item
     assert item["item_type"] == "xref"
 
-    filter_exp = Key("label_and_type").eq("dichlorodiammineplatinum##alias")
+    filter_exp = Key("label_and_type").eq("spiramycin i##alias")
     item = db.therapies.query(KeyConditionExpression=filter_exp)["Items"][0]
     assert "item_type" in item
     assert item["item_type"] == "alias"

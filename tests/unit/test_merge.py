@@ -89,10 +89,9 @@ def amifostine_merged(fixture_data) -> Dict:
 
 
 @pytest.fixture(scope="module")
-def merge_instance(test_source):
+def merge_instance(test_source, is_test_env):
     """Provide fixture for ETL merge class"""
-    update_db = os.environ.get("THERAPY_TEST", "").lower() == "true"
-    if update_db and os.environ.get(AWS_ENV_VAR_NAME):
+    if is_test_env and os.environ.get(AWS_ENV_VAR_NAME):
         assert False, (
             f"Running the full therapy ETL pipeline test on an AWS environment is "
             f"forbidden -- either unset {AWS_ENV_VAR_NAME} or unset THERAPY_TEST"
@@ -107,7 +106,7 @@ def merge_instance(test_source):
             super().__init__(**kwargs)
 
         def add_record(self, record: Dict, record_type: str):
-            if update_db:
+            if is_test_env:
                 super().add_record(record, record_type)
             self.additions[record["concept_id"]] = record
 
@@ -118,11 +117,11 @@ def merge_instance(test_source):
             new_value: Any,  # noqa: ANN401
             item_type: str = "identity",
         ):
-            if update_db:
+            if is_test_env:
                 super().update_record(concept_id, field, new_value, item_type)
             self.updates[concept_id] = {field: new_value}
 
-    if update_db:
+    if is_test_env:
         for SourceClass in (  # noqa: N806
             ChEMBL,
             ChemIDplus,

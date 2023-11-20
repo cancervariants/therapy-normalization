@@ -60,6 +60,17 @@ def pytest_configure(config):
 
 TEST_ROOT = Path(__file__).resolve().parents[1]
 TEST_DATA_DIRECTORY = TEST_ROOT / "tests" / "data"
+IS_TEST_ENV = os.environ.get("THERAPY_TEST", "").lower() == "true"
+
+
+@pytest.fixture(scope="session")
+def is_test_env():
+    """If true, currently in test environment (i.e. okay to overwrite DB). Downstream
+    users should also make sure to check if in a production environment.
+
+    Provided here to be accessible directly within test modules.
+    """
+    return IS_TEST_ENV
 
 
 @pytest.fixture(scope="session")
@@ -72,7 +83,7 @@ def test_data():
 def db():
     """Provide a database instance to be used by tests."""
     database = Database()
-    if os.environ.get("THERAPY_TEST", "").lower() == "true":
+    if IS_TEST_ENV:
         if os.environ.get(AWS_ENV_VAR_NAME):
             assert False, f"Cannot have both THERAPY_TEST and {AWS_ENV_VAR_NAME} set."
         existing_tables = database.dynamodb_client.list_tables()["TableNames"]
@@ -87,7 +98,7 @@ def db():
 
 
 @pytest.fixture(scope="session")
-def disease_normalizer():
+def mock_disease_normalizer():
     """Provide mock disease normalizer."""
     with open(TEST_DATA_DIRECTORY / "disease_normalization.json", "r") as f:
         disease_data = json.load(f)
@@ -99,17 +110,18 @@ def disease_normalizer():
 
 
 @pytest.fixture(scope="session")
-def test_source(db: Database, test_data: Path, disease_normalizer: Callable):
+def test_source(db: Database, test_data: Path, mock_disease_normalizer: Callable):
     """Provide query endpoint for testing sources. If THERAPY_TEST is set, will try to
     load DB from test data.
+
     :return: factory function that takes an ETL class instance and returns a query
     endpoint.
     """
 
     def test_source_factory(EtlClass: Base):  # noqa: N803
-        if os.environ.get("THERAPY_TEST", "").lower() == "true":
+        if IS_TEST_ENV:
             test_class = EtlClass(db, test_data)  # type: ignore
-            test_class._normalize_disease = disease_normalizer  # type: ignore
+            test_class._normalize_disease = mock_disease_normalizer  # type: ignore
             test_class.perform_etl(use_existing=True)
             test_class.database.flush_batch()
 
