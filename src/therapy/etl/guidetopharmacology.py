@@ -29,7 +29,7 @@ class GuideToPHARMACOLOGY(Base):
             assert self._ligands_file.exists()
         if not self._mapping_file.exists():
             self._http_download(
-                "https://www.guidetopharmacology.org/DATA/ligand_id_mapping.tsv",  # noqa: E501
+                "https://www.guidetopharmacology.org/DATA/ligand_id_mapping.tsv",
                 self._mapping_file,
             )
             assert self._mapping_file.exists()
@@ -78,7 +78,7 @@ class GuideToPHARMACOLOGY(Base):
                     )
                 check_mapping_file = (
                     self._src_dir / f"{prefix}_ligand_id_mapping_{version}.tsv"
-                )  # noqa: E501
+                )
                 if check_mapping_file.exists():
                     self._version = version
                     self._ligands_file = ligands_file
@@ -95,7 +95,7 @@ class GuideToPHARMACOLOGY(Base):
             self._ligands_file = self._src_dir / f"{prefix}_ligands_{self._version}.tsv"
             self._mapping_file = (
                 self._src_dir / f"{prefix}_ligand_id_mapping_{self._version}.tsv"
-            )  # noqa: E501
+            )
             if not (self._ligands_file.exists() and self._mapping_file.exists()):
                 self._download_data()
                 assert self._ligands_file.exists()
@@ -176,11 +176,11 @@ class GuideToPHARMACOLOGY(Base):
                 if row[8]:
                     associated_with.append(
                         f"{NamespacePrefix.PUBCHEMSUBSTANCE.value}:{row[8]}"
-                    )  # noqa: E501
+                    )
                 if row[9]:
                     associated_with.append(
                         f"{NamespacePrefix.PUBCHEMCOMPOUND.value}:{row[9]}"
-                    )  # noqa: E501
+                    )
                 if row[10]:
                     associated_with.append(f"{NamespacePrefix.UNIPROT.value}:{row[10]}")
                 if row[16]:
@@ -202,7 +202,7 @@ class GuideToPHARMACOLOGY(Base):
                 if row[20]:
                     associated_with.append(
                         f"{NamespacePrefix.INCHIKEY.value}:{row[20]}"
-                    )  # noqa: E501
+                    )
 
                 if associated_with:
                     params["associated_with"] = associated_with

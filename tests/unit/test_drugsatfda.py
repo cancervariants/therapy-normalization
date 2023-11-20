@@ -448,12 +448,12 @@ def test_meta(drugsatfda):
     assert (
         response.source_meta_.data_license_url
         == "https://creativecommons.org/publicdomain/zero/1.0/legalcode"
-    )  # noqa: E501
+    )
     assert isodate.parse_date(response.source_meta_.version)
     assert (
         response.source_meta_.data_url
         == "https://open.fda.gov/apis/drug/drugsfda/download/"
-    )  # noqa: E501
+    )
     assert response.source_meta_.rdp_url is None
     assert response.source_meta_.data_license_attributes == {
         "non_commercial": False,

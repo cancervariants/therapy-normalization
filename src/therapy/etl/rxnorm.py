@@ -63,7 +63,7 @@ class RxNorm(Base):
         """Create a YAML file containing RxNorm drug form values."""
         self._drug_forms_file = (
             self._src_dir / f"rxnorm_drug_forms_{self._version}.yaml"
-        )  # noqa: E501
+        )
         dfs = []
         with open(self._src_file) as f:  # type: ignore
             data = csv.reader(f, delimiter="|")
@@ -104,7 +104,7 @@ class RxNorm(Base):
 
         url = bioversions.resolve("rxnorm").homepage
         if not url:
-            raise DownloadException("Could not resolve RxNorm homepage")
+            raise EtlError("Could not resolve RxNorm homepage")
 
         self._http_download(
             f"https://uts-ws.nlm.nih.gov/download?url={url}&apiKey={api_key}",

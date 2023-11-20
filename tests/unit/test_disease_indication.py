@@ -11,7 +11,7 @@ from therapy.etl.base import DiseaseIndicationBase
 RUN_TEST = (
     os.environ.get("THERAPY_TEST", "").lower() == "true"
     and AWS_ENV_VAR_NAME not in os.environ
-)  # noqa: E501
+)
 
 
 class TestDiseaseIndication(DiseaseIndicationBase):

@@ -773,14 +773,14 @@ def test_service_meta(search_handler, normalize_handler):
     assert service_meta.name == "thera-py"
     assert service_meta.version >= "0.2.13"
     assert isinstance(service_meta.response_datetime, datetime)
-    assert service_meta.url == "https://github.com/cancervariants/therapy-normalization"  # noqa: E501
+    assert service_meta.url == "https://github.com/cancervariants/therapy-normalization"
 
     response = normalize_handler.normalize(query)
     service_meta = response.service_meta_
     assert service_meta.name == "thera-py"
     assert service_meta.version >= "0.2.13"
     assert isinstance(service_meta.response_datetime, datetime)
-    assert service_meta.url == "https://github.com/cancervariants/therapy-normalization"  # noqa: E501
+    assert service_meta.url == "https://github.com/cancervariants/therapy-normalization"
 
 
 def test_broken_db_handling(normalize_handler):

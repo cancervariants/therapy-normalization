@@ -31,7 +31,7 @@ class HemOnc(DiseaseIndicationBase):
         """
         response = requests.get(
             "https://dataverse.harvard.edu/api/datasets/export?persistentId=doi:10.7910/DVN/9CY9C6&exporter=dataverse_json"
-        )  # noqa: E501
+        )
         try:
             response.raise_for_status()
         except requests.HTTPError as e:

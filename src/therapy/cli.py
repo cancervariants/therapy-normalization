@@ -37,12 +37,6 @@ def check_db(db_url: str, verbose: bool = False) -> None:
         if verbose:
             click.echo("Health check failed: DB schema uninitialized.")
         click.get_current_context().exit(1)
-
-    if not db.check_tables_populated():
-        if verbose:
-            click.echo("Health check failed: DB is incompletely populated.")
-        click.get_current_context().exit(1)
-
     if verbose:
         click.echo("DB health check successful: tables appear complete.")
 
