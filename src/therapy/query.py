@@ -230,12 +230,11 @@ class QueryHandler:
     ) -> Tuple[Dict, Set]:
         """Check query for selected match type.
 
-        :param str query: search string
-        :param Dict resp: in-progress response object to return to client
-        :param Set[str] sources: remaining unmatched sources
-        :param RefType match_type: Match type to check for
-        :return: Tuple with updated resp object and updated set of unmatched
-                 sources
+        :param query: search string
+        :param resp: in-progress response object to return to client
+        :param sources: remaining unmatched sources
+        :param match_type: Match type to check for
+        :return: Tuple with updated resp object and updated set of unmatched sources
         """
         matching_ids = self.db.get_refs_by_type(query, match_type)
         if matching_ids:
