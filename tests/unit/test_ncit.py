@@ -116,7 +116,7 @@ def ivermectin():
         "aliases": [
             "Stromectol",
             "IVERMECTIN",
-            "Avermectin A1a, 5-O-demethyl-25-de(1-methylpropyl)-22,23-dihydro-25-(1-methylethyl)-",  # noqa: E501
+            "Avermectin A1a, 5-O-demethyl-25-de(1-methylpropyl)-22,23-dihydro-25-(1-methylethyl)-",
             "Sklice",
         ],
         "xrefs": ["chemidplus:70288-86-7"],

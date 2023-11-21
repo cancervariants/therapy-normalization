@@ -16,7 +16,7 @@ class DrugBank(Base):
     def _download_data(self) -> None:
         """Download DrugBank source data."""
         logger.info("Retrieving source data for DrugBank")
-        url = f"https://go.drugbank.com/releases/{self._version.replace('.', '-')}/downloads/all-drugbank-vocabulary"  # noqa: E501
+        url = f"https://go.drugbank.com/releases/{self._version.replace('.', '-')}/downloads/all-drugbank-vocabulary"
         csv_file = self._src_dir / f"drugbank_{self._version}.csv"
         self._http_download(url, csv_file, handler=self._zip_handler)
         logger.info("Successfully retrieved source data for DrugBank")

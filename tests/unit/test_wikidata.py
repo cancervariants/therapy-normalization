@@ -361,7 +361,7 @@ def test_meta_info(wikidata):
     assert response.source_meta_.data_license == "CC0 1.0"
     assert (
         response.source_meta_.data_license_url
-        == "https://creativecommons.org/publicdomain/zero/1.0/"  # noqa: W503
+        == "https://creativecommons.org/publicdomain/zero/1.0/"
     )
     assert isodate.parse_date(response.source_meta_.version)
     assert response.source_meta_.data_url is None

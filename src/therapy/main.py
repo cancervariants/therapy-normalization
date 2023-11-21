@@ -39,7 +39,7 @@ def custom_openapi() -> Dict:
     openapi_schema["info"]["contact"] = {
         "name": "Alex H. Wagner",
         "email": "Alex.Wagner@nationwidechildrens.org",
-        "url": "https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine/research-labs/wagner-lab",  # noqa: E501
+        "url": "https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine/research-labs/wagner-lab",
     }
     app.openapi_schema = openapi_schema
     return app.openapi_schema

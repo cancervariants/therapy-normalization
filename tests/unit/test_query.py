@@ -290,7 +290,7 @@ def test_search_sources(search_handler):
     assert set(resp.source_matches.keys()) == {"ChEMBL", "NCIt"}
 
     # test full inclusion
-    sources = "chembl,ncit,drugbank,wikidata,rxnorm,chemidplus,hemonc,guidetopharmacology,drugsatfda"  # noqa: E501
+    sources = "chembl,ncit,drugbank,wikidata,rxnorm,chemidplus,hemonc,guidetopharmacology,drugsatfda"
     resp = search_handler.search("cisplatin", keyed=True, incl=sources, excl="")
     assert set(resp.source_matches.keys()) == {
         "Wikidata",
@@ -318,7 +318,7 @@ def test_search_sources(search_handler):
     }
 
     # test full exclusion
-    sources = "chembl,wikidata,drugbank,ncit,rxnorm,chemidplus,hemonc,guidetopharmacology,drugsatfda"  # noqa: E501
+    sources = "chembl,wikidata,drugbank,ncit,rxnorm,chemidplus,hemonc,guidetopharmacology,drugsatfda"
     resp = search_handler.search("cisplatin", keyed=True, excl=sources)
     assert set(resp.source_matches.keys()) == set()
 
