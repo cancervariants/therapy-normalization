@@ -34,10 +34,7 @@ class SaveQueryHandler(DiseaseQueryHandler):
     def normalize(self, query: str) -> DiseaseNormalizationService:
         """Normalize query term"""
         response = super().normalize(query)
-        if response.normalized_id:
-            result = response.normalized_id
-        else:
-            result = None
+        result = response.normalized_id
         disease_normalizer_table[query.lower()] = result
         return response
 
@@ -54,16 +51,8 @@ h.perform_etl(use_existing=True)
 
 
 with open(TEST_DATA_DIRECTORY / "disease_normalization.json", "w") as f:
-<<<<<<< HEAD
-    json.dump(disease_normalizer_table, f)
-
-# TODO circle back to this
-||||||| parent of f44a1bd (more progress)
-    json.dump(disease_normalizer_table, f)
-=======
     # for consistency/easier diffing
     sorted_dict = {
         key: value for key, value in sorted(disease_normalizer_table.items())
     }
     json.dump(sorted_dict, f, indent=2)
->>>>>>> f44a1bd (more progress)

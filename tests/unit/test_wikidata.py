@@ -28,15 +28,14 @@ def cisplatin():
             "Platinol",
             "Platinol-AQ",
         ],
-        "approval_ratings": [],
         "xrefs": [
             "chembl:CHEMBL11359",
             "drugbank:DB00515",
             "rxcui:2555",
             "chemidplus:15663-27-1",
+            "iuphar.ligand:5343",
         ],
         "associated_with": ["pubchem.compound:5702198"],
-        "trade_names": [],
     }
     return Drug(**params)
 
@@ -58,15 +57,12 @@ def interferon_alfacon_1():
             "Recombinant Consensus Interferon",
             "Recombinant methionyl human consensus interferon",
         ],
-        "approval_ratings": [],
         "xrefs": [
             "chembl:CHEMBL1201557",
             "drugbank:DB00069",
             "rxcui:59744",
             "chemidplus:118390-30-0",
         ],
-        "associated_with": [],
-        "trade_names": [],
     }
     return Drug(**params)
 
@@ -118,7 +114,13 @@ def atropine():
             "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate",
         ],
         "approval_ratings": [],
-        "xrefs": ["drugbank:DB00572", "chemidplus:51-55-8", "rxcui:1223"],
+        "xrefs": [
+            "drugbank:DB00572",
+            "chemidplus:51-55-8",
+            "rxcui:1223",
+            "chembl:CHEMBL517712",
+            "iuphar.ligand:320",
+        ],
         "associated_with": [
             "pubchem.compound:174174",
         ],
@@ -139,6 +141,7 @@ def basiliximab():
             "rxcui:196102",
             "chembl:CHEMBL1201439",
             "chemidplus:179045-86-4",
+            "iuphar.ligand:6879",
         ],
     )
 

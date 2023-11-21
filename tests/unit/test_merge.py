@@ -251,7 +251,7 @@ def test_create_merged_concepts(
     """Test end-to-end creation and upload of merged concepts."""
     record_ids = record_id_groups.keys()
     merge_instance.create_merged_concepts(record_ids)  # type: ignore
-    merge_instance.database.flush_batch()
+    merge_instance.database.complete_write_transaction()
 
     # check merged record generation and storage
     # should only create new records for groups with n > 1 members

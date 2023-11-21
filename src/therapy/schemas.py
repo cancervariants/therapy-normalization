@@ -20,25 +20,27 @@ class ApprovalRating(str, Enum):
     US vs EU/other regulatory arenas, old or conflicting data, or other reasons). Value
     descriptions are provided below from each listed source.
 
-    ChEMBL:
-     - CHEMBL_PHASE_0: "Research: The compound has not yet reached clinical trials
-    (preclinical/research compound)"
-     - CHEMBL_PHASE_1: "The compound has reached Phase I clinical trials (safety
-    studies, usually with healthy volunteers)"
-     - CHEMBL_PHASE_2: "The compound has reached Phase II clinical trials (preliminary
-    studies of effectiveness)"
-     - CHEMBL_PHASE_3: "The compound has reached Phase III clinical trials (larger
-    studies of safety and effectiveness)"
-     - CHEMBL_PHASE_4: The compound has been approved in at least one country or area."
-     - CHEMBL_WITHDRAWN: "A withdrawn drug is an approved drug contained in a medicinal
-    product that subsequently had been removed from the market. The reasons for
-    withdrawal may include toxicity, lack of efficacy, or other reasons such as an
-    unfavorable risk-to-benefit ratio following approval and marketing of the drug.
-    ChEMBL considers an approved drug to be withdrawn only if all medicinal products
-    that contain the drug as an active ingredient have been withdrawn from one (or more)
-    regions of the world. Note that all medicinal products for a drug can be withdrawn
-    in one region of the world while still being marketed in other jurisdictions."
+    ChEMBL: [http://chembl.blogspot.com/2023/03/what-is-max-phase-in-chembl.html]
+     - CHEMBL_NULL: "preclinical compounds with bioactivity data"
+     - CHEMBL_0_5: "A clinical candidate drug in Early Phase 1 Clinical Trials e.g.
+    CITRULLINE MALATE (CHEMBL4297667) is under clinical investigation for coronary
+     - CHEMBL_1: "A clinical candidate drug in Phase 1 Clinical Trials e.g.
+    SALCAPROZATE SODIUM (CHEMBL2107027) is under clinical investigation for treatment
+    of diabetes mellitus. Note that this category also includes a small number of
+    trials that are defined by ClinicalTrials.gov as "Phase 1/Phase 2"."
+    artery disease at Early Phase 1."
+     - CHEMBL_2: "A clinical candidate drug in Phase 2 Clinical Trials e.g.
+    NEVANIMIBE HYDROCHLORIDE (CHEMBL542103) is under clinical investigation for
+    treatment of Cushing syndrome at Phase 2. Note that this category also includes a
+    small number of trials that are defined by ClinicalTrials.gov as "Phase 2/Phase 3"."
+     - CHEMBL_3: "A clinical candidate drug in Phase 3 Clinical Trials e.g.
+    TEGOPRAZAN (CHEMBL4297583) is under clinical investigation for treatment of peptic
+    ulcer at Phase 3, and also liver disease at Phase 1. "
+     - CHEMBL_4: "A marketed drug e.g. AMINOPHYLLINE (CHEMBL1370561) is an FDA
+    approved drug for treatment of asthma. "
     https://pubs.acs.org/doi/10.1021/acs.chemrestox.0c00296
+     - note: "Unknown (-1)" should simply be left as None, i.e. not assigned an
+    `ApprovalRating`.
 
     Drugs@FDA:
      - FDA_PRESCRIPTION: "A prescription drug product requires a doctor's authorization
@@ -79,7 +81,8 @@ class ApprovalRating(str, Enum):
     https://www.nlm.nih.gov/research/umls/rxnorm/docs/prescribe.html
     """
 
-    CHEMBL_0 = "chembl_phase_0"
+    CHEMBL_NULL = "chembl_phase_null"
+    CHEMBL_0_5 = "chembl_phase_0.5"
     CHEMBL_1 = "chembl_phase_1"
     CHEMBL_2 = "chembl_phase_2"
     CHEMBL_3 = "chembl_phase_3"
