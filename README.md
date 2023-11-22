@@ -130,7 +130,7 @@ Thera-Py can retrieve most required data itself, using the [wags-tails](https://
 ├── ncit
 │   └── ncit_20.09d.owl
 ├── rxnorm
-│   ├── drug_forms_20210104.yaml
+│   ├── rxnorm_drug_forms_20210104.yaml
 │   └── rxnorm_20210104.RRF
 └── wikidata
     └── wikidata_20210425.json
