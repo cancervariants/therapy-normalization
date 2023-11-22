@@ -4,7 +4,6 @@ from typing import Set
 
 import owlready2 as owl
 from owlready2.entity import ThingClass
-from wags_tails import NcitData
 
 from therapy.etl.base import Base
 from therapy.schemas import NamespacePrefix, RecordParams, SourceMeta, SourceName
@@ -21,8 +20,6 @@ class NCIt(Base):
        Retired_Concept
      * NCIt classes that are subclasses of C1909 (Pharmacologic Substance)
     """
-
-    _DataSourceClass = NcitData
 
     def _get_desc_nodes(
         self, node: ThingClass, uq_nodes: Set[ThingClass]
@@ -84,7 +81,7 @@ class NCIt(Base):
 
     def _transform_data(self) -> None:
         """Get data from file and construct objects for loading"""
-        ncit = owl.get_ontology(self._src_file.absolute().as_uri())
+        ncit = owl.get_ontology(self._data_file.absolute().as_uri())  # type: ignore
         ncit.load()
         uq_nodes = {ncit.C49236}  # add Therapeutic Procedure
         uq_nodes = self._get_desc_nodes(ncit.C1909, uq_nodes)

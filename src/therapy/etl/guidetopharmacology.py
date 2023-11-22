@@ -4,7 +4,7 @@ import html
 import re
 from typing import Any, Dict, List, Optional, Union
 
-from wags_tails.guide_to_pharmacology import GToPLigandData, GtoPLigandPaths
+from wags_tails.guide_to_pharmacology import GtoPLigandPaths
 
 from therapy import logger
 from therapy.etl.base import Base, SourceFormatException
@@ -17,22 +17,18 @@ PMID_PATTERN = re.compile(r"\[PMID:[ ]?\d+\]")
 class GuideToPHARMACOLOGY(Base):
     """Class for Guide to PHARMACOLOGY ETL methods."""
 
-    _DataSourceClass = GToPLigandData
-
     def _extract_data(self, use_existing: bool) -> None:
         """Acquire source data.
 
-        This method is responsible for initializing an instance of
-        ``self._DataSourceClass``, and, in most cases, setting ``self._src_file``
-        and ``self._version``.
+        This method is responsible for initializing an instance of a data handler and
+        setting ``self._data_files`` and ``self._version``.
 
         :param bool use_existing: if True, don't try to fetch latest source data
         """
-        data_source: GToPLigandData = self._DataSourceClass(
-            data_dir=self._therapy_data_dir
-        )  # type: ignore
-        file_paths, self._version = data_source.get_latest(from_local=use_existing)
-        self._src_files: GtoPLigandPaths = file_paths
+        data_files, self._version = self._data_source.get_latest(
+            from_local=use_existing
+        )
+        self._data_files: GtoPLigandPaths = data_files  # type: ignore
 
     def _transform_data(self) -> None:
         """Transform Guide To PHARMACOLOGY data."""
@@ -56,7 +52,7 @@ class GuideToPHARMACOLOGY(Base):
 
         :param dict data: Transformed data
         """
-        with open(self._src_files.ligands, "r") as f:
+        with open(self._data_files.ligands, "r") as f:
             rows = csv.reader(f, delimiter="\t")
 
             # check that file structure is the same
@@ -109,11 +105,11 @@ class GuideToPHARMACOLOGY(Base):
                 if row[8]:
                     associated_with.append(
                         f"{NamespacePrefix.PUBCHEMSUBSTANCE.value}:{row[8]}"
-                    )  # noqa: E501
+                    )
                 if row[9]:
                     associated_with.append(
                         f"{NamespacePrefix.PUBCHEMCOMPOUND.value}:{row[9]}"
-                    )  # noqa: E501
+                    )
                 if row[10]:
                     associated_with.append(f"{NamespacePrefix.UNIPROT.value}:{row[10]}")
                 if row[16]:
@@ -135,7 +131,7 @@ class GuideToPHARMACOLOGY(Base):
                 if row[20]:
                     associated_with.append(
                         f"{NamespacePrefix.INCHIKEY.value}:{row[20]}"
-                    )  # noqa: E501
+                    )
 
                 if associated_with:
                     params["associated_with"] = associated_with
@@ -163,7 +159,7 @@ class GuideToPHARMACOLOGY(Base):
 
         :param dict data: Transformed data
         """
-        with open(self._src_files.ligand_id_mapping.absolute(), "r") as f:
+        with open(self._data_files.ligand_id_mapping.absolute(), "r") as f:
             rows = csv.reader(f, delimiter="\t")
             next(rows)
             if next(rows) != [

@@ -3,9 +3,10 @@ import datetime
 import json
 import logging
 from pathlib import Path
-from typing import Any, Dict, Type
+from typing import Any, Dict, Optional
 
-from wags_tails import CustomData
+from wags_tails import CustomData, DataSource
+from wags_tails.utils.versioning import DATE_VERSION_PATTERN
 from wikibaseintegrator.wbi_helpers import execute_sparql_query
 
 from therapy import XREF_SOURCES, DownloadException
@@ -25,6 +26,7 @@ NAMESPACES = {
     "rxnorm": NamespacePrefix.RXNORM.value,
     "drugbank": NamespacePrefix.DRUGBANK.value,
     "wikidata": NamespacePrefix.WIKIDATA.value,
+    "guideToPharmacology": NamespacePrefix.GUIDETOPHARMACOLOGY.value,
 }
 
 # Provide standard concept ID prefixes
@@ -38,13 +40,16 @@ ID_PREFIXES = {
 SPARQL_QUERY = """
 SELECT
   ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl ?rxnorm
-  ?drugbank ?alias
+  ?drugbank ?guideToPharmacology
+  (GROUP_CONCAT(DISTINCT ?alias; separator=";;") AS ?aliases)
 WHERE {
   { ?item (wdt:P31/(wdt:P279*)) wd:Q12140. }
   UNION
   { ?item (wdt:P366/(wdt:P279*)) wd:Q12140. }
   UNION
   { ?item (wdt:P31/(wdt:P279*)) wd:Q35456. }
+  UNION
+  { ?item (wdt:P2868/(wdt:P279*)) wd:Q12187. }
   OPTIONAL {
     ?item skos:altLabel ?alias.
     FILTER((LANG(?alias)) = "en")
@@ -73,8 +78,14 @@ WHERE {
     ?item p:P715 ?wds6.
     ?wds6 ps:P715 ?drugbank.
   }
+  OPTIONAL {
+      ?item p:P595 ?wds7.
+      ?wds7 ps:P595 ?guideToPharmacology
+  }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
 }
+GROUP BY ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl
+  ?rxnorm ?drugbank ?guideToPharmacology
 """
 
 
@@ -107,27 +118,25 @@ class Wikidata(Base):
     def _get_latest_version() -> str:
         """Wikidata is constantly, immediately updated, so source data has no strict
         versioning. We use the current date as a pragmatic way to indicate the version.
+
+        :return: formatted string for the current date
         """
-        return datetime.datetime.today().strftime("%Y-%m-%d")
+        return datetime.datetime.today().strftime(DATE_VERSION_PATTERN)
 
-    _DataSourceClass: Type[CustomData] = CustomData
+    def _get_data_handler(self, data_path: Optional[Path] = None) -> DataSource:
+        """Construct data handler instance for source. Overwrites base class method
+        to use custom data handler instead.
 
-    def _extract_data(self, use_existing: bool) -> None:
-        """Acquire source data.
-
-        This method is responsible for initializing an instance of
-        ``self._DataSourceClass``, and, in most cases, setting ``self._src_file``.
-
-        :param bool use_existing: if True, don't try to fetch latest source data
+        :param data_path: location of data storage
+        :return: instance of wags_tails.DataSource to manage source file(s)
         """
-        data_source: CustomData = self._DataSourceClass(
-            src_name="wikidata_drugs",
-            filetype="json",
-            latest_version_cb=self._get_latest_version,
-            download_cb=self._download_data,
-            data_dir=self._therapy_data_dir,
-        )  # type: ignore
-        self._src_file, self._version = data_source.get_latest(from_local=use_existing)
+        return CustomData(
+            "wikidata",
+            "json",
+            self._get_latest_version,
+            self._download_data,
+            silent=self._silent,
+        )
 
     def _load_meta(self) -> None:
         """Add Wikidata metadata."""
@@ -149,7 +158,7 @@ class Wikidata(Base):
 
     def _transform_data(self) -> None:
         """Transform the Wikidata source data."""
-        with open(self._src_file, "r") as f:
+        with open(self._data_file, "r") as f:  # type: ignore
             records = json.load(f)
 
             items: Dict[str, Any] = dict()
@@ -177,18 +186,17 @@ class Wikidata(Base):
                                     fmted_xref = f"{NAMESPACES[key]}:{ref}"
                                 xrefs.append(fmted_xref)
                             else:
-                                fmted_assoc = f"{NAMESPACES[key]}:" f"{ref}"
+                                fmted_assoc = f"{NAMESPACES[key]}:{ref}"
                                 associated_with.append(fmted_assoc)
                     item["xrefs"] = xrefs
                     item["associated_with"] = associated_with
                     if "itemLabel" in record.keys():
                         item["label"] = record["itemLabel"]
                     items[concept_id] = item
-                if "alias" in record.keys():
+                if "aliases" in record.keys():
                     if "aliases" in items[concept_id].keys():
-                        items[concept_id]["aliases"].append(record["alias"])
+                        items[concept_id]["aliases"] += record["aliases"].split(";;")
                     else:
-                        items[concept_id]["aliases"] = [record["alias"]]
-
+                        items[concept_id]["aliases"] = record["aliases"].split(";;")
         for item in items.values():
             self._load_therapy(item)

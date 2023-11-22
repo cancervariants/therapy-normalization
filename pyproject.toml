@@ -1,5 +1,5 @@
 [project]
-name = "therapy-normalizer"
+name = "thera-py"
 authors = [
     {name = "Alex Wagner"},
     {name = "Kori Kuzma"},

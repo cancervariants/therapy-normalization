@@ -4,15 +4,26 @@ import logging
 from abc import ABC, abstractmethod
 from functools import lru_cache
 from pathlib import Path
-from typing import Dict, List, Optional, Type
+from typing import Dict, List, Optional, Union
 
-# import bioversions
+import click
 from disease.database.dynamodb import DynamoDbDatabase
 from disease.query import QueryHandler as DiseaseNormalizer
 from pydantic import ValidationError
-from wags_tails import DataSource
+from wags_tails import (
+    ChemblData,
+    ChemIDplusData,
+    CustomData,
+    DataSource,
+    DrugBankData,
+    DrugsAtFdaData,
+    GToPLigandData,
+    HemOncData,
+    NcitData,
+    RxNormData,
+)
 
-from therapy import APP_ROOT, ITEM_TYPES
+from therapy import ITEM_TYPES
 from therapy.database import Database
 from therapy.etl.rules import Rules
 from therapy.schemas import Drug, SourceName
@@ -20,7 +31,17 @@ from therapy.schemas import Drug, SourceName
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
 
-DEFAULT_DATA_PATH: Path = APP_ROOT / "data"
+
+DATA_DISPATCH = {
+    SourceName.CHEMBL: ChemblData,
+    SourceName.CHEMIDPLUS: ChemIDplusData,
+    SourceName.DRUGBANK: DrugBankData,
+    SourceName.DRUGSATFDA: DrugsAtFdaData,
+    SourceName.GUIDETOPHARMACOLOGY: GToPLigandData,
+    SourceName.HEMONC: HemOncData,
+    SourceName.NCIT: NcitData,
+    SourceName.RXNORM: RxNormData,
+}
 
 
 class Base(ABC):
@@ -33,30 +54,52 @@ class Base(ABC):
     needed.
     """
 
-    _DataSourceClass: Type[DataSource]
-
-    def __init__(self, database: Database, data_path: Optional[Path] = None) -> None:
+    def __init__(
+        self, database: Database, data_path: Optional[Path] = None, silent: bool = True
+    ) -> None:
         """Extract from sources.
 
-        :param Database database: application database object
-        :param Path data_path: path to app data directory
+        :param database: application database object
+        :param data_path: path to app data directory
+        :param silent: if True, don't print ETL results to console
         """
-        self._therapy_data_dir = data_path
-        self._name = self.__class__.__name__
+        self._silent = silent
+        self._src_name = SourceName(self.__class__.__name__)
+        self._data_source: Union[
+            ChemblData,
+            ChemIDplusData,
+            DrugBankData,
+            DrugsAtFdaData,
+            GToPLigandData,
+            HemOncData,
+            NcitData,
+            RxNormData,
+            CustomData,
+        ] = self._get_data_handler(data_path)  # type: ignore
         self.database = database
         self._added_ids: List[str] = []
-        self._rules = Rules(SourceName(self._name))
+        self._rules = Rules(self._src_name)
+
+    def _get_data_handler(self, data_path: Optional[Path] = None) -> DataSource:
+        """Construct data handler instance for source. Overwrite for edge-case sources.
+
+        :param data_path: location of data storage
+        :return: instance of wags_tails.DataSource to manage source file(s)
+        """
+        return DATA_DISPATCH[self._src_name](data_dir=data_path, silent=self._silent)
 
     def perform_etl(self, use_existing: bool = False) -> List[str]:
         """Public-facing method to begin ETL procedures on given data.
         Returned concept IDs can be passed to Merge method for computing
         merged concepts.
 
-        :param bool use_existing: if True, don't try to retrieve latest source data
+        :param use_existing: if True, don't try to retrieve latest source data
         :return: list of concept IDs which were successfully processed and
             uploaded.
         """
         self._extract_data(use_existing)
+        if not self._silent:
+            click.echo("Transforming and loading data to DB...")
         self._load_meta()
         self._transform_data()
         return self._added_ids
@@ -64,16 +107,14 @@ class Base(ABC):
     def _extract_data(self, use_existing: bool) -> None:
         """Acquire source data.
 
-        This method is responsible for initializing an instance of
-        ``self._DataSourceClass``, and, in most cases, setting ``self._src_file``
-        and ``self._version``.
+        This method is responsible for initializing an instance of a data handler and,
+        in most cases, setting ``self._data_file`` and ``self._version``.
 
         :param bool use_existing: if True, don't try to fetch latest source data
         """
-        data_source = self._DataSourceClass(
-            data_dir=self._therapy_data_dir, silent=False
-        )  # TODO silent true
-        self._src_file, self._version = data_source.get_latest(from_local=use_existing)
+        self._data_file, self._version = self._data_source.get_latest(
+            from_local=use_existing
+        )
 
     @abstractmethod
     def _load_meta(self) -> None:
@@ -174,13 +215,16 @@ class Base(ABC):
 class DiseaseIndicationBase(Base):
     """Base class for sources that require disease normalization capabilities."""
 
-    def __init__(self, database: Database, data_path: Path = DEFAULT_DATA_PATH) -> None:
-        """Initialize source ETL instance.
+    def __init__(
+        self, database: Database, data_path: Optional[Path] = None, silent: bool = True
+    ) -> None:
+        """Extract from sources.
 
-        :param therapy.database.Database database: application database
-        :param Path data_path: path to normalizer data directory
+        :param database: application database object
+        :param data_path: path to app data directory
+        :param silent: if True, don't print ETL results to console
         """
-        super().__init__(database, data_path)
+        super().__init__(database, data_path, silent)
         db = DynamoDbDatabase(self.database.endpoint_url)
         self.disease_normalizer = DiseaseNormalizer(db)
 

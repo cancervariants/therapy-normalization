@@ -8,7 +8,7 @@ from therapy.etl.rxnorm import RXNORM_XREFS, RxNorm
 
 db = Database()
 rx = RxNorm(db)
-rx._extract_data()
+rx._extract_data(False)
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "rxnorm"
 
 TEST_IDS = {
@@ -125,14 +125,14 @@ TEST_IDS = {
 
 rows_to_add = []
 pins = []
-with open(rx._src_file, "r") as f:
+with open(rx._data_file, "r") as f:
     reader = csv.reader(f, delimiter="|")
 
     for row in reader:
         if row[0] in TEST_IDS and row[11] in RXNORM_XREFS:
             rows_to_add.append(row)
 
-with open(TEST_DATA_DIR / rx._src_file.name, "w") as f:
+with open(TEST_DATA_DIR / rx._data_file.name, "w") as f:
     writer = csv.writer(f, delimiter="|")
     writer.writerows(rows_to_add)
 

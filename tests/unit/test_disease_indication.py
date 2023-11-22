@@ -3,80 +3,52 @@ disease-normalizer introduced breaking changes.
 """
 import os
 
-from disease.database import AWS_ENV_VAR_NAME, create_db
-from disease.query import QueryHandler as DiseaseQueryHandler
+import pytest
+from disease.schemas import (
+    SourceMeta as DiseaseSourceMeta,
+)
+from disease.schemas import (
+    SourceName as DiseaseSourceName,
+)
 
-from therapy.etl.base import DiseaseIndicationBase
-
-RUN_TEST = (
-    os.environ.get("THERAPY_TEST", "").lower() == "true"
-    and AWS_ENV_VAR_NAME not in os.environ
-)  # noqa: E501
-
-
-class TestDiseaseIndication(DiseaseIndicationBase):
-    """Test instance for DiseaseIndicationBase"""
-
-    def __init__(self):
-        """Initialize test TestDiseaseIndication"""
-        self.disease_normalizer = DiseaseQueryHandler(create_db())
-
-        if RUN_TEST:
-            self.load_disease_test_data()
-
-    def load_disease_test_data(self):
-        """Load disease data"""
-        disease = {
-            "label_and_type": "mondo:0700110##identity",
-            "item_type": "identity",
-            "src_name": "Mondo",
-            "concept_id": "mondo:0700110",
-            "label": "pneumonia, non-human animal",
-            "merge_ref": "mondo:07001110##merger",
-        }
-        self.disease_normalizer.db.diseases.put_item(Item=disease)
-
-        merge = {
-            "label_and_type": "mondo:0700110##merger",
-            "item_type": "merger",
-            "src_name": "Mondo",
-            "concept_id": "mondo:0700110",
-            "label": "pneumonia, non-human animal",
-        }
-        self.disease_normalizer.db.diseases.put_item(Item=merge)
-
-        source = {
-            "src_name": "Mondo",
-            "data_license": "CC BY 4.0",
-            "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
-            "version": "2022-10-11",
-            "data_license_attributes": {
-                "non_commercial": False,
-                "share_alike": False,
-                "attribution": True,
-            },
-        }
-        self.disease_normalizer.db.metadata.put_item(Item=source)
-
-    def _download_data():
-        """Implement abstract method"""
-        pass
-
-    def _http_download():
-        """Implement abstract method"""
-        pass
-
-    def _transform_data():
-        """Implement abstract method"""
-        pass
-
-    def _load_meta():
-        """Implement abstract method"""
-        pass
+from therapy.database import Database
+from therapy.etl import ChEMBL
 
 
-def test_normalize_disease():
+def test_normalize_disease(is_test_env: bool, db: Database):
     """Test that DiseaseIndicationBase works correctly when normalizing diseases"""
-    dib = TestDiseaseIndication()
-    norm_disease = dib._normalize_disease("mondo:0700110")
-    assert norm_disease == "mondo:0700110"
+    if not is_test_env:
+        pytest.skip(
+            "only perform direct check on Disease Normalizer in testing environment"
+        )
+
+    # set up normalizer
+    os.environ["DISEASE_DYNAMO_TABLE"] = "disease_normalizer_therapy_test"
+    chembl = ChEMBL(db)
+    chembl.disease_normalizer.db.drop_db()
+    chembl.disease_normalizer.db.initialize_db()
+    chembl.disease_normalizer.db.add_source_metadata(
+        DiseaseSourceName.MONDO,
+        DiseaseSourceMeta(
+            data_url="https://mondo.monarchinitiative.org/pages/download/",
+            data_license="CC BY 4.0",
+            data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",
+            version="2022-10-11",
+            rdp_url="http://reusabledata.org/monarch.html",
+            data_license_attributes={
+                "non_commercial": False,
+                "attribution": True,
+                "share_alike": False,
+            },
+        ),
+    )
+    chembl.disease_normalizer.db.add_record(
+        {
+            "concept_id": "mondo:0700110",
+            "label": "pneumonia, non-human animal",
+        },
+        DiseaseSourceName.MONDO,
+    )
+    chembl.disease_normalizer.db.complete_write_transaction()
+    result = chembl._normalize_disease("mondo:0700110")
+    assert result == "mondo:0700110"

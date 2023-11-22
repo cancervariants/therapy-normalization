@@ -79,22 +79,23 @@ class RxNorm(Base):
     def _extract_data(self, use_existing: bool) -> None:
         """Acquire source data.
 
-        This method is responsible for initializing an instance of
-        ``self._DataSourceClass``, and, in most cases, setting ``self._src_file``.
+        This method is responsible for initializing an instance of a data handler and,
+        in most cases, setting ``self._data_file`` and ``self._version``.
 
         :param bool use_existing: if True, don't try to fetch latest source data
         """
-        data_source = self._DataSourceClass(data_dir=self._therapy_data_dir)
-        self._src_file, self._version = data_source.get_latest(from_local=use_existing)
-
+        self._data_file, self._version = self._data_source.get_latest(
+            from_local=use_existing
+        )
         drug_form_data_handler = CustomData(
-            src_name="rxnorm",
+            src_name="rxnorm_drug_forms",
             filetype="yaml",
             latest_version_cb=lambda: self._version,
             download_cb=lambda version, file: self._create_drug_form_yaml(
-                file, self._src_file
+                file,
+                self._data_file,  # type: ignore
             ),
-            data_dir=self._therapy_data_dir,
+            data_dir=self._data_source.data_dir,
             file_name="rxnorm_drug_forms",
         )
         self._drug_forms_file, _ = drug_form_data_handler.get_latest()
@@ -104,7 +105,7 @@ class RxNorm(Base):
         with open(self._drug_forms_file, "r") as file:
             drug_forms = yaml.safe_load(file)
 
-        with open(self._src_file) as f:
+        with open(self._data_file) as f:  # type: ignore
             rff_data = csv.reader(f, delimiter="|")
             # Link ingredient to brand
             ingredient_brands: Dict[str, str] = dict()

@@ -3,7 +3,7 @@ import csv
 import logging
 from typing import Dict, Tuple
 
-from wags_tails.hemonc import HemOncData, HemOncPaths
+from wags_tails.hemonc import HemOncPaths
 
 from therapy.etl.base import DiseaseIndicationBase
 from therapy.schemas import (
@@ -14,26 +14,24 @@ from therapy.schemas import (
     SourceName,
 )
 
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
+_logger = logging.getLogger("therapy")
 
 
 class HemOnc(DiseaseIndicationBase):
     """Class for HemOnc.org ETL methods."""
 
-    _DataSourceClass = HemOncData
-
     def _extract_data(self, use_existing: bool) -> None:
         """Acquire source data.
 
-        This method is responsible for initializing an instance of
-        ``self._DataSourceClass``, and, in most cases, setting ``self._src_file``.
+        This method is responsible for initializing an instance of a data handler and
+        setting ``self._data_files`` and ``self._version``.
 
         :param bool use_existing: if True, don't try to fetch latest source data
         """
-        data_source: HemOncData = self._DataSourceClass(data_dir=self._therapy_data_dir)  # type: ignore
-        src_files, self._version = data_source.get_latest(from_local=use_existing)
-        self._src_files: HemOncPaths = src_files
+        data_files, self._version = self._data_source.get_latest(
+            from_local=use_existing
+        )
+        self._data_files: HemOncPaths = data_files  # type: ignore
 
     def _load_meta(self) -> None:
         """Add HemOnc metadata."""
@@ -61,7 +59,7 @@ class HemOnc(DiseaseIndicationBase):
         brand_names: Dict[str, str] = {}  # hemonc id -> brand name
         conditions: Dict[str, str] = {}  # hemonc id -> condition name
 
-        concepts_file = open(self._src_files.concepts, "r")
+        concepts_file = open(self._data_files.concepts, "r")
         concepts_reader = csv.reader(concepts_file)
         next(concepts_reader)  # skip header
         for row in concepts_reader:
@@ -113,7 +111,7 @@ class HemOnc(DiseaseIndicationBase):
         :param dict conditions: mapping from IDs to disease conditions
         :return: therapies dict updated with brand names and conditions
         """
-        rels_file = open(self._src_files.rels, "r")
+        rels_file = open(self._data_files.rels, "r")
         rels_reader = csv.reader(rels_file)
         next(rels_reader)  # skip header
 
@@ -133,7 +131,7 @@ class HemOnc(DiseaseIndicationBase):
                 elif src_raw == "RxNorm Extension":
                     continue  # skip
                 else:
-                    logger.warning(f"Unrecognized `Maps To` source: {src_raw}")
+                    _logger.warning(f"Unrecognized `Maps To` source: {src_raw}")
 
             elif rel_type == "Has brand name":
                 record["trade_names"].append(brand_names[row[1]])
@@ -142,13 +140,15 @@ class HemOnc(DiseaseIndicationBase):
                 try:
                     year = self._id_to_yr(row[1])
                 except TypeError:
-                    logger.error(
+                    _logger.error(
                         f"Failed parse of FDA approval year ID "
                         f"{row[1]} for HemOnc ID {row[0]}"
                     )
                     continue
                 if year == "9999":
-                    logger.warning(f"HemOnc ID {row[0]} has FDA approval year" f" 9999")
+                    _logger.warning(
+                        f"HemOnc ID {row[0]} has FDA approval year" f" 9999"
+                    )
                 record["approval_ratings"] = [ApprovalRating.HEMONC_APPROVED.value]
                 if "approval_year" in record:
                     record["approval_year"].append(year)
@@ -156,7 +156,14 @@ class HemOnc(DiseaseIndicationBase):
                     record["approval_year"] = [year]
 
             elif rel_type == "Has FDA indication":
-                label = conditions[row[1]]
+                try:
+                    label = conditions[row[1]]
+                except KeyError:
+                    # concept is deprecated or otherwise unavailable
+                    _logger.error(
+                        f"Unable to process relation with indication {row[0]} -- deprecated?"
+                    )
+                    continue
                 norm_id = self._normalize_disease(label)
                 hemonc_concept_id = f"{NamespacePrefix.HEMONC.value}:{row[1]}"
                 indication = {
@@ -179,7 +186,7 @@ class HemOnc(DiseaseIndicationBase):
         :param dict therapies: mapping of IDs to therapy objects
         :return: therapies dict with synonyms added as aliases
         """
-        synonyms_file = open(self._src_files.synonyms, "r")
+        synonyms_file = open(self._data_files.synonyms, "r")
         synonyms_reader = csv.reader(synonyms_file)
         next(synonyms_reader)
         for row in synonyms_reader:

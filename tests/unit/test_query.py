@@ -520,7 +520,7 @@ def test_query_normalize(
     compare_ta(response, normalized_cisplatin, query, MatchType.TRADE_NAME)
 
     # test alias match
-    query = "cis Diamminedichloroplatinum"
+    query = "cis-ddp"
     response = normalize_handler.normalize(query)
     compare_ta(response, normalized_cisplatin, query, MatchType.ALIAS)
 
@@ -690,7 +690,7 @@ def test_unmerged_normalize(
         compare_records,
     )
 
-    query = "Dichlorodiammineplatinum"
+    query = "CIS-DDP"
     response = normalize_handler.normalize_unmerged(query)
     compare_unmerged_response(
         response,
@@ -720,17 +720,6 @@ def test_unmerged_normalize(
         [],
         MatchType.ASSOCIATED_WITH,
         unmerged_normalized_therapeutic_procedure,
-        compare_records,
-    )
-
-    query = "mesh:D015572"
-    response = normalize_handler.normalize_unmerged(query)
-    compare_unmerged_response(
-        response,
-        query,
-        [],
-        MatchType.ASSOCIATED_WITH,
-        unmerged_normalized_spiramycin,
         compare_records,
     )
 
@@ -772,14 +761,14 @@ def test_service_meta(search_handler, normalize_handler):
     assert service_meta.name == "thera-py"
     assert service_meta.version >= "0.2.13"
     assert isinstance(service_meta.response_datetime, datetime)
-    assert service_meta.url == "https://github.com/cancervariants/therapy-normalization"  # noqa: E501
+    assert service_meta.url == "https://github.com/cancervariants/therapy-normalization"
 
     response = normalize_handler.normalize(query)
     service_meta = response.service_meta_
     assert service_meta.name == "thera-py"
     assert service_meta.version >= "0.2.13"
     assert isinstance(service_meta.response_datetime, datetime)
-    assert service_meta.url == "https://github.com/cancervariants/therapy-normalization"  # noqa: E501
+    assert service_meta.url == "https://github.com/cancervariants/therapy-normalization"
 
 
 def test_broken_db_handling(normalize_handler):

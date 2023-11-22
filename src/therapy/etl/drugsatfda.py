@@ -2,8 +2,6 @@
 import json
 from typing import List, Optional
 
-from wags_tails import DrugsAtFdaData
-
 from therapy import logger
 from therapy.etl.base import Base
 from therapy.schemas import (
@@ -17,8 +15,6 @@ from therapy.schemas import (
 
 class DrugsAtFDA(Base):
     """Class for Drugs@FDA ETL methods."""
-
-    _DataSourceClass = DrugsAtFdaData
 
     def _load_meta(self) -> None:
         """Add Drugs@FDA metadata."""
@@ -66,7 +62,7 @@ class DrugsAtFDA(Base):
 
     def _transform_data(self) -> None:
         """Prepare source data for loading into DB."""
-        with open(self._src_file, "r") as f:
+        with open(self._data_file, "r") as f:  # type: ignore
             data = json.load(f)["results"]
 
         for result in data:

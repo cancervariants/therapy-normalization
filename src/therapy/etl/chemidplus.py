@@ -8,8 +8,6 @@ import xml.etree.ElementTree as ElTree
 from pathlib import Path
 from typing import Generator
 
-from wags_tails import ChemIDplusData
-
 from therapy.etl.base import Base
 from therapy.schemas import (
     DataLicenseAttributes,
@@ -29,8 +27,6 @@ TAGS_REGEX = r" \[.*\]"
 class ChemIDplus(Base):
     """Class for ChemIDplus ETL methods."""
 
-    _DataSourceClass = ChemIDplusData
-
     @staticmethod
     def parse_xml(path: Path, tag: str) -> Generator:
         """Parse XML file and retrieve elements with matching tag value.
@@ -47,7 +43,7 @@ class ChemIDplus(Base):
 
     def _transform_data(self) -> None:
         """Open dataset and prepare for loading into database."""
-        parser = self.parse_xml(self._src_file, "Chemical")
+        parser = self.parse_xml(self._data_file, "Chemical")  # type: ignore
         for chemical in parser:  # type: ignore
             if "displayName" not in chemical.attrib:
                 continue
