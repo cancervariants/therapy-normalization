@@ -3,8 +3,6 @@ import logging
 import sqlite3
 from typing import Dict, List, Optional, Union
 
-import bioversions
-
 from therapy.etl.base import DiseaseIndicationBase
 from therapy.schemas import ApprovalRating, NamespacePrefix, SourceMeta, SourceName
 
@@ -188,7 +186,7 @@ class ChEMBL(DiseaseIndicationBase):
             data_license="CC BY-SA 3.0",
             data_license_url="https://creativecommons.org/licenses/by-sa/3.0/",
             version=self._version,
-            data_url=bioversions.resolve("chembl").homepage,
+            data_url="https://chembl.gitbook.io/chembl-interface-documentation/downloads",
             rdp_url="http://reusabledata.org/chembl.html",
             data_license_attributes={
                 "non_commercial": False,
