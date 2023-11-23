@@ -452,6 +452,7 @@ class DynamoDbDatabase(AbstractDatabase):
                 "boto3 client error on add_record for "
                 f"{concept_id}: {e.response['Error']['Message']}"
             )
+        # TODO not picking up aliases here
         for attr_type, item_type in ITEM_TYPES.items():
             if attr_type in record:
                 value = record.get(attr_type)
