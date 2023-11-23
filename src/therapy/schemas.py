@@ -171,9 +171,9 @@ class RefType(str, Enum):
 
     # Must be in descending MatchType order.
     LABEL = "label"
-    TRADE_NAME = "trade_name"
-    ALIAS = "alias"
-    XREF = "xref"
+    TRADE_NAMES = "trade_name"
+    ALIASES = "alias"
+    XREFS = "xref"
     ASSOCIATED_WITH = "associated_with"
 
 
