@@ -339,7 +339,7 @@ class DynamoDbDatabase(AbstractDatabase):
         last_evaluated_key = None
         concept_ids = []
         params = {
-            "ProjectionExpression": "concept_id",
+            "ProjectionExpression": "concept_id,item_type",
         }
         while True:
             if last_evaluated_key:
@@ -350,7 +350,10 @@ class DynamoDbDatabase(AbstractDatabase):
                 response = self.therapies.scan(**params)
             records = response["Items"]
             for record in records:
-                concept_ids.append(record["concept_id"])
+                if record["item_type"] == "identity":
+                    concept_id = record["concept_id"]
+                    if not concept_id.startswith("source"):
+                        concept_ids.append(record["concept_id"])
             last_evaluated_key = response.get("LastEvaluatedKey")
             if not last_evaluated_key:
                 break

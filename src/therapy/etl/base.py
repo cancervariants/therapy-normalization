@@ -68,6 +68,7 @@ class Base(ABC):
         self._extract_data(use_existing)
         self._load_meta()
         self._transform_data()
+        self.database.complete_write_transaction()
         return self._added_ids
 
     def get_latest_version(self) -> str:
@@ -246,22 +247,22 @@ class Base(ABC):
 
         concept_id = therapy["concept_id"]
 
-        for attr_type in ITEM_TYPES.keys():
+        for attr_type in ITEM_TYPES:
             if attr_type in therapy:
                 value = therapy[attr_type]
                 if value is None or value == []:
                     del therapy[attr_type]
                     continue
 
-                value_set = {v.strip() for v in value}
-
                 if attr_type == "label":
-                    value = value.strip()
-                # clean up listlike symbol fields
-                elif attr_type == "aliases" and "trade_names" in therapy:
-                    value = list(value_set - set(therapy["trade_names"]))
+                    therapy["label"] = value.strip()
+                    continue
+
+                unique_values = {v.strip() for v in value}
+                if attr_type == "aliases" and "trade_names" in therapy:
+                    value = list(unique_values - set(therapy["trade_names"]))
                 else:
-                    value = list(value_set)
+                    value = list(unique_values)
 
                 if attr_type in ("aliases", "trade_names"):
                     if "label" in therapy:

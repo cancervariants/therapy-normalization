@@ -221,19 +221,19 @@ def test_xref_match(hemonc, compare_response, cisplatin, bendamustine, degarelix
 
 def test_metadata(hemonc):
     """Test that source metadata returns correctly."""
-    response = hemonc.query_handler._fetch_meta("HemOnc")
-    assert response.data_license == "CC BY 4.0"
+    response = hemonc.search("search")
+    assert response.source_meta_.data_license == "CC BY 4.0"
     assert (
-        response.data_license_url
+        response.source_meta_.data_license_url
         == "https://creativecommons.org/licenses/by/4.0/legalcode"
     )
-    assert isodate.parse_date(response.version)
+    assert isodate.parse_date(response.source_meta_.version)
     assert (
-        response.data_url
+        response.source_meta_.data_url
         == "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6"
     )
-    assert response.rdp_url is None
-    assert response.data_license_attributes == {
+    assert response.source_meta_.rdp_url is None
+    assert response.source_meta_.data_license_attributes == {
         "non_commercial": False,
         "attribution": True,
         "share_alike": False,

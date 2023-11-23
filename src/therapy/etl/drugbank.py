@@ -23,21 +23,19 @@ class DrugBank(Base):
 
     def _load_meta(self) -> None:
         """Add DrugBank metadata."""
-        meta = {
-            "data_license": "CC0 1.0",
-            "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
-            "version": self._version,
-            "data_url": "https://go.drugbank.com/releases/latest#open-data",
-            "rdp_url": "http://reusabledata.org/drugbank.html",
-            "data_license_attributes": {
+        metadata = SourceMeta(
+            data_license="CC0 1.0",
+            data_license_url="https://creativecommons.org/publicdomain/zero/1.0/",
+            version=self._version,
+            data_url="https://go.drugbank.com/releases/latest#open-data",
+            rdp_url="http://reusabledata.org/drugbank.html",
+            data_license_attributes={
                 "non_commercial": False,
                 "share_alike": False,
                 "attribution": False,
             },
-        }
-        assert SourceMeta(**meta)
-        meta["src_name"] = SourceName.DRUGBANK.value
-        self.database.metadata.put_item(Item=meta)
+        )
+        self.database.add_source_metadata(SourceName.DRUGBANK, metadata)
 
     def _transform_data(self) -> None:
         """Transform the DrugBank source."""

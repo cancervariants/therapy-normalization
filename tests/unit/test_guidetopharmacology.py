@@ -300,13 +300,18 @@ def test_no_match(guidetopharmacology):
 
 def test_meta_info(guidetopharmacology):
     """Test that metadata is correct."""
-    resp = guidetopharmacology.query_handler._fetch_meta("GuideToPHARMACOLOGY")
-    assert resp.data_license == "CC BY-SA 4.0"
-    assert resp.data_license_url == "https://creativecommons.org/licenses/by-sa/4.0/"
-    assert re.match(r"\d{4}.\d+", resp.version)
-    assert resp.data_url == "https://www.guidetopharmacology.org/download.jsp"
-    assert resp.rdp_url is None
-    assert resp.data_license_attributes == {
+    resp = guidetopharmacology.search("search")
+    assert resp.source_meta_.data_license == "CC BY-SA 4.0"
+    assert (
+        resp.source_meta_.data_license_url
+        == "https://creativecommons.org/licenses/by-sa/4.0/"
+    )
+    assert re.match(r"\d{4}.\d+", resp.source_meta_.version)
+    assert (
+        resp.source_meta_.data_url == "https://www.guidetopharmacology.org/download.jsp"
+    )
+    assert resp.source_meta_.rdp_url is None
+    assert resp.source_meta_.data_license_attributes == {
         "non_commercial": False,
         "attribution": True,
         "share_alike": True,

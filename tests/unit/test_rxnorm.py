@@ -801,16 +801,18 @@ def test_phenobarbital(phenobarbital, rxnorm, compare_records):
 
 def test_meta_info(rxnorm):
     """Test that the meta field is correct."""
-    response = rxnorm.query_handler._fetch_meta("RxNorm")
-    assert response.data_license == "UMLS Metathesaurus"
+    response = rxnorm.search("RxNorm")
+    assert response.source_meta_.data_license == "UMLS Metathesaurus"
     assert (
-        response.data_license_url
+        response.source_meta_.data_license_url
         == "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html"
     )
-    assert isodate.parse_date(response.version)
-    assert response.data_url.startswith("https://download.nlm.nih.gov/umls/kss/rxnorm/")
-    assert not response.rdp_url
-    assert response.data_license_attributes == {
+    assert isodate.parse_date(response.source_meta_.version)
+    assert response.source_meta_.data_url.startswith(
+        "https://download.nlm.nih.gov/umls/kss/rxnorm/"
+    )
+    assert not response.source_meta_.rdp_url
+    assert response.source_meta_.data_license_attributes == {
         "non_commercial": False,
         "share_alike": False,
         "attribution": True,
