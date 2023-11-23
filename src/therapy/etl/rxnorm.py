@@ -11,7 +11,6 @@ import re
 from pathlib import Path
 from typing import Dict, List
 
-import bioversions
 import yaml
 from boto3.dynamodb.table import BatchWriter
 from wags_tails import CustomData, RxNormData
@@ -322,7 +321,7 @@ class RxNorm(Base):
             data_license="UMLS Metathesaurus",
             data_license_url="https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",  # noqa: E501
             version=self._version,
-            data_url=bioversions.resolve("rxnorm").homepage,
+            data_url="https://chembl.gitbook.io/chembl-interface-documentation/downloads",
             rdp_url=None,
             data_license_attributes={
                 "non_commercial": False,
