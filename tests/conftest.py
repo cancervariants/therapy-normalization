@@ -120,7 +120,7 @@ def test_source(db: Database, test_data: Path, mock_disease_normalizer: Callable
 
     def test_source_factory(EtlClass: Base):  # noqa: N803
         if IS_TEST_ENV:
-            test_class = EtlClass(db, test_data)  # type: ignore
+            test_class = EtlClass(db, test_data / EtlClass.__name__.lower())  # type: ignore
             test_class._normalize_disease = mock_disease_normalizer  # type: ignore
             test_class.perform_etl(use_existing=True)
             test_class.database.flush_batch()
