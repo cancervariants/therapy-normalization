@@ -110,7 +110,7 @@ You can update all sources at once with the `--update_all` flag:
 python3 -m therapy.cli --update_all
 ```
 
-Thera-Py can retrieve most required data itself, using the [wags-tails](https://github.com/GenomicMedLab/wags-tails) library. By default, data will be housed under `~/.local/share/wags_tails/` in a format like the following:
+Thera-Py can retrieve all required data itself, using the [wags-tails](https://github.com/GenomicMedLab/wags-tails) library. By default, data will be housed under `~/.local/share/wags_tails/` in a format like the following:
 
 ```
 ~/.local/share/wags_tails
