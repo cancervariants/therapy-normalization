@@ -19,7 +19,7 @@ from therapy.database import (
     Database,
     confirm_aws_db_use,
 )
-from therapy.etl import (  # noqa: F401, E501
+from therapy.etl import (  # noqa: F401
     ChEMBL,
     ChemIDplus,
     DrugBank,

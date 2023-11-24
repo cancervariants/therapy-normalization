@@ -3,7 +3,7 @@ import logging
 import re
 from pathlib import Path
 
-from .version import __version__
+from .version import __version__  # noqa: F401
 
 APP_ROOT: Path = Path(__file__).resolve().parents[0]
 logging.basicConfig(
@@ -18,7 +18,7 @@ class DownloadException(Exception):  # noqa: N818
     """Exception for failures relating to source file downloads."""
 
 
-from therapy.schemas import (  # noqa: E402, E501, I100, I202
+from therapy.schemas import (  # noqa: E402, I100, I202
     ItemTypes,
     NamespacePrefix,
     SourceName,

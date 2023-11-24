@@ -9,3 +9,16 @@ from .merge import Merge
 from .ncit import NCIt
 from .rxnorm import RxNorm
 from .wikidata import Wikidata
+
+__all__ = [
+    "ChEMBL",
+    "ChemIDplus",
+    "DrugBank",
+    "DrugsAtFDA",
+    "GuideToPHARMACOLOGY",
+    "HemOnc",
+    "Merge",
+    "NCIt",
+    "RxNorm",
+    "Wikidata",
+]

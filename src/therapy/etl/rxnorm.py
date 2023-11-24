@@ -353,7 +353,7 @@ class RxNorm(Base):
         """Add RxNorm metadata."""
         meta = SourceMeta(
             data_license="UMLS Metathesaurus",
-            data_license_url="https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",  # noqa: E501
+            data_license_url="https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",
             version=self._version,
             data_url=bioversions.resolve("rxnorm").homepage,
             rdp_url=None,
