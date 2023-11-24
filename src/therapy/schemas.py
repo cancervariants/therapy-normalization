@@ -270,7 +270,7 @@ class SourceMeta(BaseModel):
                 "data_license": "CC BY-SA 3.0",
                 "data_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
                 "version": "27",
-                "data_url": "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",  # noqa: E501
+                "data_url": "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",
                 "rdp_url": "http://reusabledata.org/chembl.html",
                 "data_license_attributes": {
                     "non_commercial": False,
@@ -300,7 +300,7 @@ class MatchesKeyed(BaseModel):
                     "data_license": "CC BY-SA 3.0",
                     "data_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
                     "version": "27",
-                    "data_url": "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",  # noqa: E501
+                    "data_url": "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",
                     "rdp_url": "http://reusabledata.org/chembl.html",
                     "data_license_attributes": {
                         "non_commercial": False,
@@ -333,7 +333,7 @@ class MatchesListed(BaseModel):
                     "data_license": "CC BY-SA 3.0",
                     "data_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
                     "version": "27",
-                    "data_url": "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",  # noqa: E501
+                    "data_url": "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",
                     "rdp_url": "http://reusabledata.org/chembl.html",
                     "data_license_attributes": {
                         "non_commercial": False,
@@ -417,7 +417,7 @@ class UnmergedNormalizationService(BaseNormalizationService):
                                 "aliases": [
                                     "L-745,870",
                                     "L 745870",
-                                    "3-[[4-(4-chlorophenyl)piperazin-1-yl]methyl]-1H-pyrrolo[2,3-b]pyridine",  # noqa: E501
+                                    "3-[[4-(4-chlorophenyl)piperazin-1-yl]methyl]-1H-pyrrolo[2,3-b]pyridine",
                                 ],
                                 "trade_names": [],
                                 "xrefs": [
@@ -436,9 +436,9 @@ class UnmergedNormalizationService(BaseNormalizationService):
                         ],
                         "source_meta_": {
                             "data_license": "CC BY-SA 4.0",
-                            "data_license_url": "https://creativecommons.org/licenses/by-sa/4.0/",  # noqa: E501
+                            "data_license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
                             "version": "2021.4",
-                            "data_url": "https://www.guidetopharmacology.org/download.jsp",  # noqa: E501
+                            "data_url": "https://www.guidetopharmacology.org/download.jsp",
                             "rdp_url": None,
                             "data_license_attributes": {
                                 "non_commercial": False,
@@ -463,9 +463,9 @@ class UnmergedNormalizationService(BaseNormalizationService):
                         ],
                         "source_meta_": {
                             "data_license": "CC BY-SA 3.0",
-                            "data_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",  # noqa: E501
+                            "data_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
                             "version": "29",
-                            "data_url": "ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_29",  # noqa: E501
+                            "data_url": "ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_29",
                             "rdp_url": "http://reusabledata.org/chembl.html",
                             "data_license_attributes": {
                                 "non_commercial": False,
@@ -592,9 +592,9 @@ class NormalizationService(BaseNormalizationService):
                 "source_meta_": {
                     "RxNorm": {
                         "data_license": "UMLS Metathesaurus",
-                        "data_license_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",  # noqa: E501
+                        "data_license_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",
                         "version": "20210104",
-                        "data_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/rxnormfiles.html",  # noqa: E501
+                        "data_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/rxnormfiles.html",
                         "rdp_url": None,
                         "data_license_attributes": {
                             "non_commercial": False,
@@ -604,9 +604,9 @@ class NormalizationService(BaseNormalizationService):
                     },
                     "NCIt": {
                         "data_license": "CC BY 4.0",
-                        "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa: E501
+                        "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
                         "version": "20.09d",
-                        "data_url": "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/",  # noqa: E501
+                        "data_url": "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/20.09d_Release/",
                         "rdp_url": "http://reusabledata.org/ncit.html",
                         "data_license_attributes": {
                             "non_commercial": False,
@@ -616,7 +616,7 @@ class NormalizationService(BaseNormalizationService):
                     },
                     "ChemIDplus": {
                         "data_license": "custom",
-                        "data_license_url": "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501
+                        "data_license_url": "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",
                         "version": "20200327",
                         "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
                         "rdp_url": None,
@@ -628,7 +628,7 @@ class NormalizationService(BaseNormalizationService):
                     },
                     "Wikidata": {
                         "data_license": "CC0 1.0",
-                        "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",  # noqa: E501
+                        "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
                         "version": "20200812",
                         "data_url": None,
                         "rdp_url": None,
@@ -683,7 +683,7 @@ class SearchService(BaseModel):
                         ],
                         "source_meta_": {
                             "data_license": "custom",
-                            "data_license_url": "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501
+                            "data_license_url": "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",
                             "version": "20210204",
                             "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
                             "rdp_url": None,
@@ -734,9 +734,9 @@ class SearchService(BaseModel):
                         ],
                         "source_meta_": {
                             "data_license": "UMLS Metathesaurus",
-                            "data_license_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",  # noqa: E501
+                            "data_license_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",
                             "version": "20210104",
-                            "data_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/rxnormfiles.html",  # noqa: E501
+                            "data_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/rxnormfiles.html",
                             "rdp_url": None,
                             "data_license_attributes": {
                                 "non_commercial": False,
@@ -765,9 +765,9 @@ class SearchService(BaseModel):
                         ],
                         "source_meta_": {
                             "data_license": "CC BY 4.0",
-                            "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa: E501
+                            "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
                             "version": "20.09d",
-                            "data_url": "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2020/20.09d_Release/",  # noqa: E501
+                            "data_url": "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2020/20.09d_Release/",
                             "rdp_url": "http://reusabledata.org/ncit.html",
                             "data_license_attributes": {
                                 "non_commercial": False,
@@ -804,7 +804,7 @@ class SearchService(BaseModel):
                         ],
                         "source_meta_": {
                             "data_license": "CC0 1.0",
-                            "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",  # noqa: E501
+                            "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
                             "version": "20210331",
                             "data_url": None,
                             "rdp_url": None,

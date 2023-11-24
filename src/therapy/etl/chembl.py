@@ -186,7 +186,7 @@ class ChEMBL(DiseaseIndicationBase):
             data_license="CC BY-SA 3.0",
             data_license_url="https://creativecommons.org/licenses/by-sa/3.0/",
             version=self._version,
-            data_url="https://chembl.gitbook.io/chembl-interface-documentation/downloads",
+            data_url=f"ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_{self._version}/chembl_{self._version}_sqlite.tar.gz",
             rdp_url="http://reusabledata.org/chembl.html",
             data_license_attributes={
                 "non_commercial": False,

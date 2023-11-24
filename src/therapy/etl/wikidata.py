@@ -135,6 +135,7 @@ class Wikidata(Base):
             "json",
             self._get_latest_version,
             self._download_data,
+            data_dir=data_path,
             silent=self._silent,
         )
 

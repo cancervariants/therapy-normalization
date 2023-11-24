@@ -97,7 +97,7 @@ class ChemIDplus(Base):
         """Add source metadata."""
         meta = SourceMeta(
             data_license="custom",
-            data_license_url="https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",  # noqa: E501
+            data_license_url="https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",
             version=self._version,
             data_url="ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
             rdp_url=None,

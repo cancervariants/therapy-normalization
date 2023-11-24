@@ -319,9 +319,9 @@ class RxNorm(Base):
         """Add RxNorm metadata."""
         meta = SourceMeta(
             data_license="UMLS Metathesaurus",
-            data_license_url="https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",  # noqa: E501
+            data_license_url="https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",
             version=self._version,
-            data_url="https://chembl.gitbook.io/chembl-interface-documentation/downloads",
+            data_url="https://download.nlm.nih.gov/umls/kss/rxnorm/",
             rdp_url=None,
             data_license_attributes={
                 "non_commercial": False,

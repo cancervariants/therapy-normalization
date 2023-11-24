@@ -25,8 +25,6 @@ class HemOnc(DiseaseIndicationBase):
 
         This method is responsible for initializing an instance of a data handler and
         setting ``self._data_files`` and ``self._version``.
-
-        :param bool use_existing: if True, don't try to fetch latest source data
         """
         data_files, self._version = self._data_source.get_latest(
             from_local=use_existing
@@ -39,7 +37,7 @@ class HemOnc(DiseaseIndicationBase):
             "data_license": "CC BY 4.0",
             "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
             "version": self._version,
-            "data_url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6",  # noqa: E501
+            "data_url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6",
             "rdp_url": None,
             "data_license_attributes": {
                 "non_commercial": False,

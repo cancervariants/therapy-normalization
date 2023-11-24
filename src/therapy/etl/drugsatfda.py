@@ -20,7 +20,7 @@ class DrugsAtFDA(Base):
         """Add Drugs@FDA metadata."""
         meta = {
             "data_license": "CC0",
-            "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode",  # noqa: E501
+            "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode",
             "version": self._version,
             "data_url": "https://open.fda.gov/apis/drug/drugsfda/download/",
             "rdp_url": None,
