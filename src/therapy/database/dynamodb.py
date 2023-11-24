@@ -294,7 +294,7 @@ class DynamoDbDatabase(AbstractDatabase):
         :param brand_id: rxcui brand identifier to dereference
         :return: RxNorm therapy concept ID if successful, None otherwise
         """
-        pk = f"{brand_id.lower()}##rx_brand"
+        pk = f"{brand_id.lower()}##{RXNORM_BRAND_ITEM_TYPE}"
         filter_exp = Key("label_and_type").eq(pk)
         try:
             matches = self.therapies.query(KeyConditionExpression=filter_exp)

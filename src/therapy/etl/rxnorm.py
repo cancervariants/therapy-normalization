@@ -252,7 +252,7 @@ class RxNorm(Base):
             for tn in rxnorm_record["trade_names"]:
                 brand = brands.get(tn)
                 if brand:
-                    self.database.add_rxnorm_brand(rxnorm_record["concept_id"], brand)
+                    self.database.add_rxnorm_brand(brand, rxnorm_record["concept_id"])
 
     def _add_str_field(
         self,

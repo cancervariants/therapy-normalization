@@ -3,8 +3,8 @@ import logging
 from timeit import default_timer as timer
 from typing import Any, Dict, Optional, Set, Tuple
 
-from therapy.database.database import AbstractDatabase
-from therapy.schemas import SourcePriority
+from therapy.database.database import AbstractDatabase, DatabaseWriteError
+from therapy.schemas import RefType, SourcePriority
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -40,9 +40,16 @@ class Merge:
         :param Set[str] record_ids: concept identifiers from which groups should be
             generated.
         """
-        self._create_record_id_sets(record_ids)
+        logger.info("Generating record ID sets...")
+        start = timer()
+        for record_id in record_ids:
+            new_group = self._create_record_id_set(record_id)
+            if new_group:
+                for concept_id in new_group:
+                    self._groups[concept_id] = new_group
+        end = timer()
+        logger.debug(f"Built record ID sets in {end - start} seconds")
 
-        # don't create separate records for single-member groups
         self._groups = {k: v for k, v in self._groups.items() if len(v) > 1}
 
         logger.info("Creating merged records and updating database...")
@@ -58,15 +65,19 @@ class Merge:
 
             # add updated references
             for concept_id in group:
-                if not self.database.get_record_by_id(concept_id, False):
-                    logger.error(
-                        f"Updating nonexistent record: {concept_id} "
-                        f"for {merged_record['label_and_type']}"
-                    )
-                else:
-                    merge_ref = merged_record["concept_id"].lower()
+                merge_ref = merged_record["concept_id"]
+                try:
                     self.database.update_merge_ref(concept_id, merge_ref)
+                except DatabaseWriteError as dw:
+                    if str(dw).startswith("No such record exists"):
+                        logger.error(
+                            f"Updating nonexistent record: {concept_id} "
+                            f"for merge ref to {merge_ref}"
+                        )
+                    else:
+                        logger.error(str(dw))
             uploaded_ids |= group
+        self.database.complete_write_transaction()
         logger.info("Merged concept generation successful.")
         end = timer()
         logger.debug(f"Generated and added concepts in {end - start} seconds")
@@ -133,8 +144,8 @@ class Merge:
                 xrefs |= drugsatfda_ids
                 continue
 
-            unii_assoc = self.database.get_records_by_type(
-                unii.lower(), "associated_with"
+            unii_assoc = self.database.get_refs_by_type(
+                unii.lower(), RefType.ASSOCIATED_WITH
             )
             drugsatfda_refs = set()
             for ref in unii_assoc:

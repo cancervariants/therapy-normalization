@@ -3,7 +3,7 @@ import json
 import logging
 import os
 from pathlib import Path
-from typing import List, Optional
+from typing import Callable, List, Optional
 
 import pytest
 
@@ -112,12 +112,15 @@ def disease_normalizer():
 
 
 @pytest.fixture(scope="module")
-def test_source(database: AbstractDatabase, is_test_env: bool):
+def test_source(
+    database: AbstractDatabase, is_test_env: bool, disease_normalizer: Callable
+):
     """Provide query endpoint for testing sources. If THERAPY_TEST is set, will try to
     load DB from test data.
 
     :param database: test database instance
     :param is_test_env: if true, load from test data
+    :param disease_normalizer: mock disease normalizer callback
     :return: factory function that takes an ETL class instance and returns a query
     endpoint.
     """
@@ -126,15 +129,16 @@ def test_source(database: AbstractDatabase, is_test_env: bool):
         if is_test_env:
             _logger.debug(f"Reloading DB with data from {TEST_DATA_DIRECTORY}")
             test_class = EtlClass(database, TEST_DATA_DIRECTORY)  # type: ignore
+            test_class._normalize_disease = disease_normalizer
             test_class.perform_etl(use_existing=True)
 
         class QueryGetter:
             def __init__(self):
-                self.query_handler = QueryHandler(database)
+                self._query_handler = QueryHandler(database)
                 self._src_name = EtlClass.__name__  # type: ignore
 
             def search(self, query_str: str):
-                resp = self.query_handler.search(
+                resp = self._query_handler.search(
                     query_str, incl=self._src_name, keyed=True
                 )
                 return resp.source_matches[self._src_name]

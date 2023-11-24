@@ -12,6 +12,12 @@ from therapy.schemas import Drug, MatchType, SourceName
 
 
 @pytest.fixture(scope="module")
+def handler(database: AbstractDatabase):
+    """Build query handler test fixture."""
+    return QueryHandler(database)
+
+
+@pytest.fixture(scope="module")
 def search_handler(database: AbstractDatabase):
     """Build query handler test fixture."""
 
