@@ -71,7 +71,7 @@ class HemOnc(DiseaseIndicationBase):
                 "DATAVERSE_API_KEY. See "
                 "https://guides.dataverse.org/en/latest/user/account.html"
             )
-        url = "https://dataverse.harvard.edu//api/access/dataset/:persistentId/?persistentId=doi:10.7910/DVN/9CY9C6"  # noqa: E501
+        url = "https://dataverse.harvard.edu//api/access/dataset/:persistentId/?persistentId=doi:10.7910/DVN/9CY9C6"
         headers = {"X-Dataverse-key": api_key}
         self._http_download(url, self._src_dir, headers, self._zip_handler)
 
@@ -105,7 +105,7 @@ class HemOnc(DiseaseIndicationBase):
                         f"Unable to parse HemOnc version value from concepts file "
                         f"located at {concepts_file.absolute().as_uri()} -- check "
                         "filename against schema defined in README: "
-                        "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
+                        "https://github.com/cancervariants/therapy-normalization#update-sources"
                     )
                 other_files = (
                     self._src_dir / f"hemonc_rels_{version}.csv",
@@ -119,7 +119,7 @@ class HemOnc(DiseaseIndicationBase):
                 raise FileNotFoundError(
                     "Unable to find complete HemOnc data set with matching version "
                     "values. Check filenames against schema defined in README: "
-                    "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
+                    "https://github.com/cancervariants/therapy-normalization#update-sources"
                 )
             else:
                 self._src_files = src_files
@@ -142,7 +142,7 @@ class HemOnc(DiseaseIndicationBase):
             "data_license": "CC BY 4.0",
             "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
             "version": self._version,
-            "data_url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6",  # noqa: E501
+            "data_url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6",
             "rdp_url": None,
             "data_license_attributes": {
                 "non_commercial": False,

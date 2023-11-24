@@ -74,7 +74,7 @@ class GuideToPHARMACOLOGY(Base):
                         "Unable to parse GtoPdb version value from ligands file "
                         f"located at {ligands_file.absolute().as_uri()} -- check "
                         "filename against schema defined in README: "
-                        "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
+                        "https://github.com/cancervariants/therapy-normalization#update-sources"
                     )
                 check_mapping_file = (
                     self._src_dir / f"{prefix}_ligand_id_mapping_{version}.tsv"
@@ -88,7 +88,7 @@ class GuideToPHARMACOLOGY(Base):
                 raise FileNotFoundError(
                     "Unable to find complete GtoPdb data set with matching version "
                     "values. Check filenames against schema defined in README: "
-                    "https://github.com/cancervariants/therapy-normalization#update-sources"  # noqa: E501
+                    "https://github.com/cancervariants/therapy-normalization#update-sources"
                 )
         else:
             self._version = self.get_latest_version()

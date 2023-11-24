@@ -20,7 +20,7 @@ class DrugsAtFDA(Base):
     def _download_data(self) -> None:
         """Download source data from instance-provided source URL."""
         logger.info("Retrieving source data for Drugs@FDA")
-        url = "https://download.open.fda.gov/drug/drugsfda/drug-drugsfda-0001-of-0001.json.zip"  # noqa: E501
+        url = "https://download.open.fda.gov/drug/drugsfda/drug-drugsfda-0001-of-0001.json.zip"
         outfile_path = self._src_dir / f"drugsatfda_{self._version}.json"
         self._http_download(url, outfile_path, handler=self._zip_handler)
         logger.info("Successfully retrieved source data for Drugs@FDA")
@@ -48,7 +48,7 @@ class DrugsAtFDA(Base):
         """Add Drugs@FDA metadata."""
         meta = {
             "data_license": "CC0",
-            "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode",  # noqa: E501
+            "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/legalcode",
             "version": self._version,
             "data_url": "https://open.fda.gov/apis/drug/drugsfda/download/",
             "rdp_url": None,
