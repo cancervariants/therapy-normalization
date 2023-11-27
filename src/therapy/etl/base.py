@@ -48,10 +48,9 @@ class Base(ABC):
     """The ETL base class.
 
     Default methods are declared to provide basic functions for core source
-    data-gathering phases (extraction, transformation, loading), as well
-    as some common subtasks (getting most recent version, downloading data
-    from an FTP server). Classes should expand or reimplement these methods as
-    needed.
+    data-gathering phases (extraction, transformation, loading).
+
+    Classes should expand or reimplement these methods as needed.
     """
 
     def __init__(
