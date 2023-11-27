@@ -212,7 +212,7 @@ class CLI:
             logger.info(msg)
 
             start_load = timer()
-            source = sources_class_map[n](database=db)
+            source = sources_class_map[n](database=db, silent=False)
             try:
                 processed_ids += source.perform_etl(use_existing)
             except FileNotFoundError as e:

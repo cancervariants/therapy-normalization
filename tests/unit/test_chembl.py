@@ -237,7 +237,7 @@ def test_meta_info(chembl):
     )
     assert response.source_meta_.version == "33"
     assert response.source_meta_.data_url.startswith(
-        "ftp://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb"
+        "ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb"
     )
     assert response.source_meta_.rdp_url == "http://reusabledata.org/chembl.html"
     assert response.source_meta_.data_license_attributes == {

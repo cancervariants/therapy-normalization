@@ -27,11 +27,11 @@ TEST_IDS = [
 ]
 
 daf = DrugsAtFDA(Database())
-daf._extract_data()
+daf._extract_data(False)
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "drugsatfda"
-outfile_path = TEST_DATA_DIR / daf._src_file.name
+outfile_path = TEST_DATA_DIR / daf._data_file.name
 
-with open(daf._src_file, "r") as f:
+with open(daf._data_file, "r") as f:
     data = json.load(f)
 
 out_data = {"meta": data["meta"], "results": []}

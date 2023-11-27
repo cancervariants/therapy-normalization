@@ -3,10 +3,8 @@ import logging
 from typing import Set
 
 import owlready2 as owl
-import requests
 from owlready2.entity import ThingClass
 
-from therapy import DownloadException
 from therapy.etl.base import Base
 from therapy.schemas import NamespacePrefix, RecordParams, SourceMeta, SourceName
 
@@ -22,45 +20,6 @@ class NCIt(Base):
        Retired_Concept
      * NCIt classes that are subclasses of C1909 (Pharmacologic Substance)
     """
-
-    def _download_data(self) -> None:
-        """Download NCI thesaurus source file.
-        The NCI directory structure can be a little tricky, so this method attempts to
-        retrieve a file matching the latest version number from both the subdirectory
-        root (where the current version is typically posted) as well as the year-by-year
-        archives if that fails.
-        """
-        logger.info("Retrieving source data for NCIt")
-        base_url = "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus"
-        # ping base NCIt directory
-        release_fname = f"Thesaurus_{self._version}.OWL.zip"
-        src_url = f"{base_url}/{release_fname}"
-        r_try = requests.get(src_url)
-        if r_try.status_code != 200:
-            # ping NCIt archive directories
-            archive_url = f"{base_url}/archive/{self._version}_Release/{release_fname}"
-            archive_try = requests.get(archive_url)
-            if archive_try.status_code != 200:
-                old_archive_url = f"{base_url}/archive/20{self._version[0:2]}/{self._version}_Release/{release_fname}"
-                old_archive_try = requests.get(old_archive_url)
-                if old_archive_try.status_code != 200:
-                    msg = (
-                        f"NCIt download failed: tried {src_url}, {archive_url}, and "
-                        f"{old_archive_url}"
-                    )
-                    logger.error(msg)
-                    raise DownloadException(msg)
-                else:
-                    src_url = old_archive_url
-            else:
-                src_url = archive_url
-
-        self._http_download(
-            src_url,
-            self._src_dir / f"ncit_{self._version}.owl",
-            handler=self._zip_handler,
-        )
-        logger.info("Successfully retrieved source data for NCIt")
 
     def _get_desc_nodes(
         self, node: ThingClass, uq_nodes: Set[ThingClass]
@@ -122,7 +81,7 @@ class NCIt(Base):
 
     def _transform_data(self) -> None:
         """Get data from file and construct objects for loading"""
-        ncit = owl.get_ontology(self._src_file.absolute().as_uri())
+        ncit = owl.get_ontology(self._data_file.absolute().as_uri())  # type: ignore
         ncit.load()
         uq_nodes = {ncit.C49236}  # add Therapeutic Procedure
         uq_nodes = self._get_desc_nodes(ncit.C1909, uq_nodes)

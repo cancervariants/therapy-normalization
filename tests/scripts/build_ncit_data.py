@@ -27,15 +27,15 @@ CLASS_TAG = f"{OWL_PREFIX}Class"
 
 
 ncit = NCIt(Database())
-ncit._extract_data()
+ncit._extract_data(False)
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "ncit"
-outfile_path = TEST_DATA_DIR / ncit._src_file.name
+outfile_path = TEST_DATA_DIR / ncit._data_file.name
 
 
 def ncit_parser() -> Generator:
     """Get unique XML elements."""
     context = iter(
-        etr.iterparse(ncit._src_file, events=("start", "end"), huge_tree=True)
+        etr.iterparse(ncit._data_file, events=("start", "end"), huge_tree=True)
     )
     for event, elem in context:
         if event == "start":
@@ -101,7 +101,7 @@ while element.tag != CLASS_TAG:
         element = next(parser)
 
 # get classes
-onto = owl.get_ontology(ncit._src_file.absolute().as_uri())
+onto = owl.get_ontology(ncit._data_file.absolute().as_uri())
 onto.load()
 test_classes = {
     onto.C95221,
