@@ -82,26 +82,7 @@ class Merge:
         end = timer()
         logger.debug(f"Generated and added concepts in {end - start} seconds")
 
-    def _rxnorm_brand_lookup(self, record_id: str) -> Optional[str]:
-        """Rx Norm provides brand references back to original therapy concepts.  This
-        routine checks whether an ID from a concept group requires an additional
-        dereference to obtain the original RxNorm record.
-
-        :param str record_id: RxNorm concept ID to check
-        :return: concept ID for RxNorm record if successful, None otherwise
-        """
-        brand_lookup = self.database.get_records_by_type(record_id, "rx_brand")
-        n = len(brand_lookup)
-        if n == 1:
-            lookup_id = brand_lookup[0]["concept_id"]
-            db_record = self.database.get_record_by_id(lookup_id, False)
-            if db_record:
-                return db_record["concept_id"]
-        elif n > 1:
-            logger.warning(f"Brand lookup for {record_id} had {n} matches")
-        return None
-
-    def _get_drugsatfda_from_unii(self, ref: Dict) -> Optional[str]:
+    def _get_drugsatfda_from_unii(self, ref: str) -> Optional[str]:
         """Given an `associated_with` item keying a UNII code to a Drugs@FDA record,
         verify that the record can be safely added to a concept group.
         Drugs@FDA tracks a number of "compound therapies", and provides UNIIs to each
@@ -109,18 +90,16 @@ class Merge:
         end up merging distinct therapies under the umbrella of the compound group.
         We're excluding Drugs@FDA records with multiple UNIIs as a tentative solution.
 
-        :param Dict ref: `associated_with` item where `label_and_type` includes
-            a UNII code and `src_name` == "DrugsAtFDA"
+        :param ref: a Drugs@FDA concept ID that includes an xref to a UNII identifier
         :return: Drugs@FDA concept ID if record meets rules, None otherwise
         """
-        concept_id = ref["concept_id"]
-        fetched = self.database.get_record_by_id(concept_id, False)
+        fetched = self.database.get_record_by_id(ref, False)
         if fetched:
             uniis = [
                 a for a in fetched.get("associated_with", []) if a.startswith("unii")
             ]
         else:
-            logger.error(f"Couldn't retrieve record for {concept_id} from {ref}")
+            logger.error(f"Couldn't retrieve record for {ref}")
             return None
         if len(uniis) == 1:
             return fetched["concept_id"]
@@ -149,7 +128,7 @@ class Merge:
             )
             drugsatfda_refs = set()
             for ref in unii_assoc:
-                if ref["src_name"] == "DrugsAtFDA":
+                if ref.startswith("drugsatfda"):
                     drugsatfda_ref = self._get_drugsatfda_from_unii(ref)
                     if drugsatfda_ref:
                         drugsatfda_refs.add(drugsatfda_ref)
@@ -179,12 +158,11 @@ class Merge:
         db_record = self.database.get_record_by_id(record_id)
         if not db_record:
             if record_id.startswith("rxcui"):
-                brand_lookup = self._rxnorm_brand_lookup(record_id)
+                brand_lookup = self.database.get_rxnorm_id_by_brand(record_id)
                 if brand_lookup:
                     return self._create_record_id_set(brand_lookup, observed_id_set)
             logger.warning(
-                f"Unable to resolve lookup for {record_id} in "
-                f"ID set: {observed_id_set}"
+                f"Unable to resolve lookup for {record_id} in ID set: {observed_id_set}"
             )
             self._failed_lookups.add(record_id)
             return observed_id_set - {record_id}

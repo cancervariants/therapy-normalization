@@ -113,7 +113,10 @@ def disease_normalizer():
 
 @pytest.fixture(scope="module")
 def test_source(
-    database: AbstractDatabase, is_test_env: bool, disease_normalizer: Callable
+    database: AbstractDatabase,
+    is_test_env: bool,
+    disease_normalizer: Callable,
+    test_data: Path,
 ):
     """Provide query endpoint for testing sources. If THERAPY_TEST is set, will try to
     load DB from test data.
@@ -127,7 +130,7 @@ def test_source(
 
     def test_source_factory(EtlClass: Base):  # noqa: N803
         if is_test_env:
-            _logger.debug(f"Reloading DB with data from {TEST_DATA_DIRECTORY}")
+            _logger.debug(f"Reloading DB with data from {test_data}")
             test_class = EtlClass(database, test_data / EtlClass.__name__.lower())  # type: ignore
             test_class._normalize_disease = disease_normalizer  # type: ignore
             test_class.perform_etl(use_existing=True)

@@ -8,7 +8,7 @@ from botocore.exceptions import ClientError
 from ga4gh.core import core_models
 from uvicorn.config import logger
 
-from therapy import ITEM_TYPES, NAMESPACE_LUIS, PREFIX_LOOKUP, SOURCES
+from therapy import NAMESPACE_LUIS, PREFIX_LOOKUP, SOURCES
 from therapy.database import AbstractDatabase
 from therapy.schemas import (
     BaseNormalizationService,
@@ -559,17 +559,18 @@ class QueryHandler:
             "service_meta_": ServiceMeta(response_datetime=datetime.now()),
         }
 
-    def _get_matches_by_type(self, query: str, match_type: str) -> List[Dict]:
-        """Get matches list for match tier.
-        :param str query: user-provided query
-        :param str match_type: keyword of match type to check
-        :return: List of records matching the query and match level
-        """
-        matching_refs = self.db.get_records_by_type(query, match_type)
-        matching_records = [
-            self.db.get_record_by_id(m["concept_id"], False) for m in matching_refs
-        ]
-        return sorted(matching_records, key=self._record_order)  # type: ignore
+    # def _get_matches_by_type(self, query: str, match_type: str) -> List[Dict]:
+    #     """Get matches list for match tier.
+    #
+    #     :param query: user-provided query
+    #     :param match_type: keyword of match type to check
+    #     :return: List of records matching the query and match level
+    #     """
+    #     matching_refs = self.db.get_records_by_type(query, match_type)
+    #     matching_records = [
+    #         self.db.get_record_by_id(m["concept_id"], False) for m in matching_refs
+    #     ]
+    #     return sorted(matching_records, key=self._record_order)  # type: ignore
 
     def normalize(self, query: str, infer: bool = True) -> NormalizationService:
         """Return merged, normalized concept for given search term.
@@ -681,8 +682,12 @@ class QueryHandler:
                 )
 
         # check other match types
-        for match_type in ITEM_TYPES.values():
-            matching_records = self._get_matches_by_type(query_str, match_type)
+        for match_type in RefType:
+            matching_refs = self.db.get_refs_by_type(query_str, match_type)
+            matching_records = [
+                self.db.get_record_by_id(ref, False) for ref in matching_refs
+            ]
+            matching_records.sort(key=self._record_order)  # type: ignore
 
             # attempt merge ref resolution until successful
             for match in matching_records:
