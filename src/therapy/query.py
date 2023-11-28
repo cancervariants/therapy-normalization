@@ -559,19 +559,6 @@ class QueryHandler:
             "service_meta_": ServiceMeta(response_datetime=datetime.now()),
         }
 
-    # def _get_matches_by_type(self, query: str, match_type: str) -> List[Dict]:
-    #     """Get matches list for match tier.
-    #
-    #     :param query: user-provided query
-    #     :param match_type: keyword of match type to check
-    #     :return: List of records matching the query and match level
-    #     """
-    #     matching_refs = self.db.get_records_by_type(query, match_type)
-    #     matching_records = [
-    #         self.db.get_record_by_id(m["concept_id"], False) for m in matching_refs
-    #     ]
-    #     return sorted(matching_records, key=self._record_order)  # type: ignore
-
     def normalize(self, query: str, infer: bool = True) -> NormalizationService:
         """Return merged, normalized concept for given search term.
 
