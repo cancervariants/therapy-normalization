@@ -19,13 +19,13 @@ TEST_IDS = [
 ]
 
 ch = ChemIDplus(create_db())
-ch._extract_data()
+ch._extract_data(False)
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "chemidplus"
-outfile_path = TEST_DATA_DIR / ch._src_file.name
+outfile_path = TEST_DATA_DIR / ch._data_file.name
 
 root = ElementTree.Element("file")
-root.set("name", ch._src_file.name)
-root.set("date", ch._src_file.stem.split("chemidplus_")[1])
+root.set("name", ch._data_file.name)
+root.set("date", ch._data_file.stem.split("chemidplus_")[1])
 
 
 def parse_xml(path: Path) -> Generator:
@@ -42,7 +42,7 @@ def parse_xml(path: Path) -> Generator:
             root.clear()
 
 
-parser = parse_xml(ch._src_file)
+parser = parse_xml(ch._data_file)
 for chemical in parser:
     regno = chemical.find("NumberList").find("CASRegistryNumber")
     if not regno:

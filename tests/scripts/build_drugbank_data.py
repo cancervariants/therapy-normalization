@@ -16,11 +16,11 @@ TEST_IDS = [
 ]
 
 db = DrugBank(create_db())
-db._extract_data()
+db._extract_data(False)
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "drugbank"
-outfile_path = TEST_DATA_DIR / db._src_file.name
+outfile_path = TEST_DATA_DIR / db._data_file.name
 
-with open(db._src_file, "r") as f:
+with open(db._data_file, "r") as f:
     rows = list(csv.DictReader(f))
 
 write_rows = []

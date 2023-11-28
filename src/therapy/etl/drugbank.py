@@ -13,14 +13,6 @@ logger.setLevel(logging.DEBUG)
 class DrugBank(Base):
     """Class for DrugBank ETL methods."""
 
-    def _download_data(self) -> None:
-        """Download DrugBank source data."""
-        logger.info("Retrieving source data for DrugBank")
-        url = f"https://go.drugbank.com/releases/{self._version.replace('.', '-')}/downloads/all-drugbank-vocabulary"
-        csv_file = self._src_dir / f"drugbank_{self._version}.csv"
-        self._http_download(url, csv_file, handler=self._zip_handler)
-        logger.info("Successfully retrieved source data for DrugBank")
-
     def _load_meta(self) -> None:
         """Add DrugBank metadata."""
         metadata = SourceMeta(
@@ -39,7 +31,7 @@ class DrugBank(Base):
 
     def _transform_data(self) -> None:
         """Transform the DrugBank source."""
-        with open(self._src_file, "r") as file:
+        with open(self._data_file, "r") as file:  # type: ignore
             reader = csv.reader(file)
             next(reader)  # skip header
             for row in reader:

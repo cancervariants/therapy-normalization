@@ -8,13 +8,13 @@ from therapy.etl import GuideToPHARMACOLOGY
 TEST_IDS = {"5343", "2169", "2804", "240", "3303", "5260"}
 
 gtop = GuideToPHARMACOLOGY(create_db())
-gtop._extract_data()
+gtop._extract_data(False)
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "guidetopharmacology"
-ligands_file_path = TEST_DATA_DIR / gtop._ligands_file.name
-mapping_file_path = TEST_DATA_DIR / gtop._mapping_file.name
+ligands_file_path = TEST_DATA_DIR / gtop._data_files.ligands.name
+mapping_file_path = TEST_DATA_DIR / gtop._data_files.ligand_id_mapping.name
 
 ligands_rows = []
-with open(gtop._ligands_file, "r") as f:
+with open(gtop._data_files.ligands, "r") as f:
     reader = csv.reader(f, delimiter="\t")
     ligands_rows.append(next(reader))
     ligands_rows.append(next(reader))
@@ -28,7 +28,7 @@ with open(ligands_file_path, "w") as f:
     writer.writerows(ligands_rows)
 
 map_rows = []
-with open(gtop._mapping_file, "r") as f:
+with open(gtop._data_files.ligand_id_mapping, "r") as f:
     reader = csv.reader(f, delimiter="\t")
     map_rows.append(next(reader))
     map_rows.append(next(reader))

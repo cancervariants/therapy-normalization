@@ -146,7 +146,6 @@ def _load_merge(db: AbstractDatabase, processed_ids: Set[str]) -> None:
     _delete_normalized_data(db)
     if not processed_ids:
         processed_ids = db.get_all_concept_ids()
-
     try:
         from therapy.etl.merge import Merge
     except ModuleNotFoundError as e:

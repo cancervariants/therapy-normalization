@@ -73,18 +73,20 @@ To change the port, simply add `-port value`.
 
 ### Setting Environment Variables
 RxNorm requires a UMLS license, which you can register for one [here](https://www.nlm.nih.gov/research/umls/index.html).
-You must set the `RxNORM_API_KEY` environment variable to your API key. This can be found in the [UTS 'My Profile' area](https://uts.nlm.nih.gov/uts/profile) after singing in.
+You must set the `UMLS_API_KEY` environment variable to your API key. This can be found in the [UTS 'My Profile' area](https://uts.nlm.nih.gov/uts/profile) after singing in.
+
 ```shell script
-export RXNORM_API_KEY={rxnorm_api_key}
+export UMLS_API_KEY=12345-6789-abcdefg-hijklmnop  # make sure to replace with your key!
 ```
 
 HemOnc.org data requires a Harvard Dataverse API key. After creating a user account on the Harvard Dataverse website, you can follow [these instructions](https://guides.dataverse.org/en/latest/user/account.html) to generate a key. Once you have a key, set the following environment variable:
 
 ```shell script
-export DATAVERSE_API_KEY={your api key}
+export DATAVERSE_API_KEY=12345-6789-abcdefgh-hijklmnop  # make sure to replace with your key!
 ```
 
 #### Update source(s)
+
 The Therapy Normalizer currently aggregates therapy data from:
 * [ChEMBL](https://www.ebi.ac.uk/chembl/)
 * [ChemIDPlus](https://chem.nlm.nih.gov/chemidplus/)
@@ -108,10 +110,10 @@ You can update all sources at once with the `--update_all` flag:
 python3 -m therapy.cli --update_all
 ```
 
-The `data/` subdirectory within the package source should house all desired input data. Files for all sources should follow the naming convention demonstrated below (with version numbers/dates changed where applicable).
+Thera-Py can retrieve all required data itself, using the [wags-tails](https://github.com/GenomicMedLab/wags-tails) library. By default, data will be housed under `~/.local/share/wags_tails/` in a format like the following:
 
 ```
-therapy/data
+~/.local/share/wags_tails
 ├── chembl
 │   └── chembl_27.db
 ├── chemidplus
@@ -128,7 +130,7 @@ therapy/data
 ├── ncit
 │   └── ncit_20.09d.owl
 ├── rxnorm
-│   ├── drug_forms.yaml
+│   ├── rxnorm_drug_forms_20210104.yaml
 │   └── rxnorm_20210104.RRF
 └── wikidata
     └── wikidata_20210425.json

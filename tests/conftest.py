@@ -128,8 +128,8 @@ def test_source(
     def test_source_factory(EtlClass: Base):  # noqa: N803
         if is_test_env:
             _logger.debug(f"Reloading DB with data from {TEST_DATA_DIRECTORY}")
-            test_class = EtlClass(database, TEST_DATA_DIRECTORY)  # type: ignore
-            test_class._normalize_disease = disease_normalizer
+            test_class = EtlClass(database, test_data / EtlClass.__name__.lower())  # type: ignore
+            test_class._normalize_disease = disease_normalizer  # type: ignore
             test_class.perform_etl(use_existing=True)
 
         class QueryGetter:

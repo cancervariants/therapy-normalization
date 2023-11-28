@@ -2,8 +2,11 @@
 import datetime
 import json
 import logging
-from typing import Any, Dict
+from pathlib import Path
+from typing import Any, Dict, Optional
 
+from wags_tails import CustomData, DataSource
+from wags_tails.utils.versioning import DATE_VERSION_PATTERN
 from wikibaseintegrator.wbi_helpers import execute_sparql_query
 
 from therapy import XREF_SOURCES
@@ -89,13 +92,14 @@ GROUP BY ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chemb
 class Wikidata(Base):
     """Class for Wikidata ETL methods."""
 
-    def _download_data(self) -> None:
+    @staticmethod
+    def _download_data(version: str, file: Path) -> None:
         """Download latest Wikidata source dump.
 
-        :raise EtlError: if query returns no results
+        :param version: not used by this method
+        :param file: location to save data dump at
+        :raise DownloadException: if SPARQL query fails
         """
-        logger.info("Retrieving source data for Wikidata")
-
         medicine_query_results = execute_sparql_query(SPARQL_QUERY)
         if medicine_query_results is None:
             raise EtlError("Wikidata medicine SPARQL query failed")
@@ -107,15 +111,33 @@ class Wikidata(Base):
             for attr in item:
                 params[attr] = item[attr]["value"]
             transformed_data.append(params)
-        with open(f"{self._src_dir}/wikidata_{self._version}.json", "w+") as f:
+        with open(file, "w+") as f:
             json.dump(transformed_data, f)
-        logger.info("Successfully retrieved source data for Wikidata")
 
-    def get_latest_version(self) -> str:
+    @staticmethod
+    def _get_latest_version() -> str:
         """Wikidata is constantly, immediately updated, so source data has no strict
         versioning. We use the current date as a pragmatic way to indicate the version.
+
+        :return: formatted string for the current date
         """
-        return datetime.datetime.today().strftime("%Y-%m-%d")
+        return datetime.datetime.today().strftime(DATE_VERSION_PATTERN)
+
+    def _get_data_handler(self, data_path: Optional[Path] = None) -> DataSource:
+        """Construct data handler instance for source. Overwrites base class method
+        to use custom data handler instead.
+
+        :param data_path: location of data storage
+        :return: instance of wags_tails.DataSource to manage source file(s)
+        """
+        return CustomData(
+            "wikidata",
+            "json",
+            self._get_latest_version,
+            self._download_data,
+            data_dir=data_path,
+            silent=self._silent,
+        )
 
     def _load_meta(self) -> None:
         """Add Wikidata metadata."""
@@ -135,7 +157,7 @@ class Wikidata(Base):
 
     def _transform_data(self) -> None:
         """Transform the Wikidata source data."""
-        with open(self._src_file, "r") as f:
+        with open(self._data_file, "r") as f:  # type: ignore
             records = json.load(f)
 
             items: Dict[str, Any] = dict()

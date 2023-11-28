@@ -18,10 +18,10 @@ TEST_IDS = [
 ]
 
 ch = ChEMBL(create_db())
-ch._extract_data()
+ch._extract_data(False)
 
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "chembl"
-out_db_path = TEST_DATA_DIR / ch._src_file.name
+out_db_path = TEST_DATA_DIR / ch._data_file.name  # type: ignore
 
 try:
     out_db_path.unlink()
@@ -29,7 +29,7 @@ except FileNotFoundError:
     pass
 out_con = sqlite3.connect(out_db_path)
 c = out_con.cursor()
-c.execute(f"ATTACH DATABASE '{ch._src_file}' AS chembl")
+c.execute(f"ATTACH DATABASE '{ch._data_file}' AS chembl")
 
 schema_query = """
 SELECT sql

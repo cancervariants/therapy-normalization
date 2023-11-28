@@ -1,12 +1,7 @@
 """Defines the ChEMBL ETL methods."""
 import logging
-import os
-import shutil
 import sqlite3
 from typing import Dict, List, Optional, Union
-
-import bioversions
-import chembl_downloader
 
 from therapy.etl.base import DiseaseIndicationBase
 from therapy.schemas import ApprovalRating, NamespacePrefix, SourceMeta, SourceName
@@ -17,26 +12,6 @@ logger.setLevel(logging.DEBUG)
 
 class ChEMBL(DiseaseIndicationBase):
     """Class for ChEMBL ETL methods."""
-
-    def _download_data(self) -> None:
-        """Download latest ChEMBL database file from EBI."""
-        logger.info("Retrieving source data for ChEMBL")
-        os.environ["PYSTOW_HOME"] = str(self._src_dir.parent.absolute())
-        tmp_path = chembl_downloader.download_extract_sqlite()
-        shutil.move(tmp_path, self._src_dir)
-        shutil.rmtree(tmp_path.parent.parent.parent)
-        logger.info("Successfully retrieved source data for ChEMBL")
-
-    def _extract_data(self, use_existing: bool = False) -> None:
-        """Extract data from the ChEMBL source.
-
-        :param bool use_existing: if True, don't try to fetch latest source data
-        """
-        super()._extract_data(use_existing)
-        conn = sqlite3.connect(self._src_file)
-        conn.row_factory = sqlite3.Row
-        self._conn = conn
-        self._cursor = conn.cursor()
 
     @staticmethod
     def _unwrap_group_concat(value: Optional[str]) -> List[str]:
@@ -120,6 +95,11 @@ class ChEMBL(DiseaseIndicationBase):
 
     def _transform_data(self) -> None:
         """Transform SQLite data and load to DB."""
+        conn = sqlite3.connect(self._data_file)  # type: ignore
+        conn.row_factory = sqlite3.Row
+        self._conn = conn
+        self._cursor = conn.cursor()
+
         query = """
         SELECT
             md.chembl_id,
@@ -206,7 +186,7 @@ class ChEMBL(DiseaseIndicationBase):
             data_license="CC BY-SA 3.0",
             data_license_url="https://creativecommons.org/licenses/by-sa/3.0/",
             version=self._version,
-            data_url=bioversions.resolve("chembl").homepage,
+            data_url=f"ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_{self._version}/chembl_{self._version}_sqlite.tar.gz",
             rdp_url="http://reusabledata.org/chembl.html",
             data_license_attributes={
                 "non_commercial": False,

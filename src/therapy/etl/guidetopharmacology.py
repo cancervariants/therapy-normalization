@@ -2,10 +2,9 @@
 import csv
 import html
 import re
-from pathlib import Path
 from typing import Any, Dict, List, Optional, Union
 
-import requests
+from wags_tails.guide_to_pharmacology import GtoPLigandPaths
 
 from therapy import logger
 from therapy.etl.base import Base, SourceFormatException
@@ -18,88 +17,18 @@ PMID_PATTERN = re.compile(r"\[PMID:[ ]?\d+\]")
 class GuideToPHARMACOLOGY(Base):
     """Class for Guide to PHARMACOLOGY ETL methods."""
 
-    def _download_data(self) -> None:
-        """Download the latest version of Guide to PHARMACOLOGY."""
-        logger.info("Retrieving source data for Guide to PHARMACOLOGY")
-        if not self._ligands_file.exists():
-            self._http_download(
-                "https://www.guidetopharmacology.org/DATA/ligands.tsv",
-                self._ligands_file,
-            )
-            assert self._ligands_file.exists()
-        if not self._mapping_file.exists():
-            self._http_download(
-                "https://www.guidetopharmacology.org/DATA/ligand_id_mapping.tsv",
-                self._mapping_file,
-            )
-            assert self._mapping_file.exists()
-        logger.info("Successfully retrieved source data for Guide to PHARMACOLOGY")
+    def _extract_data(self, use_existing: bool) -> None:
+        """Acquire source data.
 
-    def _download_file(self, file_url: str, fn: str) -> None:
-        """Download individual data file.
-
-        :param str file_url: Data url for file
-        :param str fn: File name
-        """
-        r = requests.get(file_url)
-        if r.status_code == 200:
-            prefix = SourceName.GUIDETOPHARMACOLOGY.value.lower()
-            path = self._src_dir / f"{prefix}_{fn}_{self._version}.tsv"
-            if fn == "ligands":
-                self._ligands_file: Path = path
-            else:
-                self._mapping_file: Path = path
-            with open(str(path), "wb") as f:
-                f.write(r.content)
-
-    def _extract_data(self, use_existing: bool = False) -> None:
-        """Gather GtoPdb source files.
+        This method is responsible for initializing an instance of a data handler and
+        setting ``self._data_files`` and ``self._version``.
 
         :param bool use_existing: if True, don't try to fetch latest source data
         """
-        self._src_dir.mkdir(exist_ok=True, parents=True)
-        prefix = SourceName.GUIDETOPHARMACOLOGY.value.lower()
-        if use_existing:
-            ligands_files = list(sorted(self._src_dir.glob(f"{prefix}_ligands_*.tsv")))
-            if len(ligands_files) < 1:
-                raise FileNotFoundError("No GtoPdb ligands files found")
-
-            for ligands_file in ligands_files[::-1]:
-                try:
-                    version = self._parse_version(
-                        ligands_file, re.compile(prefix + r"_ligands_(.+)\.tsv")
-                    )
-                except FileNotFoundError:
-                    raise FileNotFoundError(
-                        "Unable to parse GtoPdb version value from ligands file "
-                        f"located at {ligands_file.absolute().as_uri()} -- check "
-                        "filename against schema defined in README: "
-                        "https://github.com/cancervariants/therapy-normalization#update-sources"
-                    )
-                check_mapping_file = (
-                    self._src_dir / f"{prefix}_ligand_id_mapping_{version}.tsv"
-                )
-                if check_mapping_file.exists():
-                    self._version = version
-                    self._ligands_file = ligands_file
-                    self._mapping_file = check_mapping_file
-                    break
-            if self._mapping_file is None:
-                raise FileNotFoundError(
-                    "Unable to find complete GtoPdb data set with matching version "
-                    "values. Check filenames against schema defined in README: "
-                    "https://github.com/cancervariants/therapy-normalization#update-sources"
-                )
-        else:
-            self._version = self.get_latest_version()
-            self._ligands_file = self._src_dir / f"{prefix}_ligands_{self._version}.tsv"
-            self._mapping_file = (
-                self._src_dir / f"{prefix}_ligand_id_mapping_{self._version}.tsv"
-            )
-            if not (self._ligands_file.exists() and self._mapping_file.exists()):
-                self._download_data()
-                assert self._ligands_file.exists()
-                assert self._mapping_file.exists()
+        data_files, self._version = self._data_source.get_latest(
+            from_local=use_existing
+        )
+        self._data_files: GtoPLigandPaths = data_files  # type: ignore
 
     def _transform_data(self) -> None:
         """Transform Guide To PHARMACOLOGY data."""
@@ -123,7 +52,7 @@ class GuideToPHARMACOLOGY(Base):
 
         :param dict data: Transformed data
         """
-        with open(self._ligands_file, "r") as f:
+        with open(self._data_files.ligands, "r") as f:
             rows = csv.reader(f, delimiter="\t")
 
             # check that file structure is the same
@@ -230,7 +159,7 @@ class GuideToPHARMACOLOGY(Base):
 
         :param dict data: Transformed data
         """
-        with open(self._mapping_file.absolute(), "r") as f:
+        with open(self._data_files.ligand_id_mapping.absolute(), "r") as f:
             rows = csv.reader(f, delimiter="\t")
             next(rows)
             if next(rows) != [
