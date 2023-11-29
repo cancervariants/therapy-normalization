@@ -9,14 +9,14 @@ from disease.database import create_db as create_disease_db
 from disease.query import QueryHandler as DiseaseQueryHandler
 from disease.schemas import NormalizationService as DiseaseNormalizationService
 
-from therapy.database.dynamodb import DynamoDbDatabase
+from therapy.database.dynamodb import DynamoDatabase
 from therapy.etl import ChEMBL, HemOnc
 
 TEST_ROOT = Path(__file__).resolve().parents[1]
 TEST_DATA_DIRECTORY = TEST_ROOT / "data"
 
 
-class ReadOnlyDatabase(DynamoDbDatabase):
+class ReadOnlyDatabase(DynamoDatabase):
     """Provide read-only instance of database for security's sake"""
 
     def add_record(self, record: Dict, record_type: str = "identity") -> None:

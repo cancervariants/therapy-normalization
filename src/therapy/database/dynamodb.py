@@ -34,7 +34,7 @@ from therapy.schemas import (
 _logger = logging.getLogger(__name__)
 
 
-class DynamoDbDatabase(AbstractDatabase):
+class DynamoDatabase(AbstractDatabase):
     """Database class employing DynamoDB."""
 
     def __init__(self, db_url: Optional[str] = None, **db_args) -> None:
