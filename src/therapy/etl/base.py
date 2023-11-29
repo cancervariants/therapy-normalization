@@ -163,6 +163,7 @@ class Base(ABC):
                     continue
 
                 unique_values = {v.strip() for v in value}
+                unique_values = set(filter(None, unique_values))
                 if attr_type == "aliases" and "trade_names" in therapy:
                     value = list(unique_values - set(therapy["trade_names"]))
                 else:

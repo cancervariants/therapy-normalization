@@ -3,11 +3,11 @@ import json
 import os
 import random
 from pathlib import Path
-from typing import Callable, Dict, Set
+from typing import Dict, Set
 
 import pytest
 
-from therapy.database import AWS_ENV_VAR_NAME, create_db
+from therapy.database import AWS_ENV_VAR_NAME
 from therapy.etl.chembl import ChEMBL
 from therapy.etl.chemidplus import ChemIDplus
 from therapy.etl.drugbank import DrugBank
@@ -18,42 +18,49 @@ from therapy.etl.merge import Merge
 from therapy.etl.ncit import NCIt
 from therapy.etl.rxnorm import RxNorm
 from therapy.etl.wikidata import Wikidata
-from therapy.schemas import SourceName
 
 
 @pytest.fixture(scope="module")
-def merge_instance(test_source: Callable, is_test_env: bool):
-    """Provide fixture for ETL merge class.
-
-    If in a test environment (e.g. CI) this method will attempt to load any missing
-    source data, and then perform merged record generation.
-    """
-    database = create_db()
+def merge_instance(test_source, is_test_env, database):
+    """Provide fixture for ETL merge class"""
     if is_test_env:
         if os.environ.get(AWS_ENV_VAR_NAME):
             assert False, (
-                f"Running the full disease ETL pipeline test on an AWS environment is "
-                f"forbidden -- either unset {AWS_ENV_VAR_NAME} or unset DISEASE_TEST"
+                f"Running the full therapy ETL pipeline test on an AWS environment is "
+                f"forbidden -- either unset {AWS_ENV_VAR_NAME} or unset THERAPY_TEST"
             )
-        else:
-            for SourceClass in (  # noqa: N806
-                ChEMBL,
-                ChemIDplus,
-                DrugBank,
-                DrugsAtFDA,
-                GuideToPHARMACOLOGY,
-                HemOnc,
-                NCIt,
-                RxNorm,
-                Wikidata,
-            ):
-                if not database.get_source_metadata(SourceName(SourceClass.__name__)):
-                    test_source(SourceClass)
+        for SourceClass in (  # noqa: N806
+            ChEMBL,
+            ChemIDplus,
+            DrugBank,
+            DrugsAtFDA,
+            GuideToPHARMACOLOGY,
+            HemOnc,
+            NCIt,
+            RxNorm,
+            Wikidata,
+        ):
+            test_source(SourceClass)
+
+    # class TrackingDatabase(DynamoDbDatabase):
+    #     """Provide injection for DB instance to track added/updated records"""
+    #
+    #     def __init__(self, **kwargs):
+    #         self.added_records = {}
+    #         self.updated_merge_refs = {}
+    #         super().__init__(**kwargs)
+    #
+    #     def add_record(self, record: Dict, src_name: SourceName) -> None:
+    #         if is_test_env:
+    #             super().add_record(record, src_name)
+    #         self.added_records[record["concept_id"]] = record
+    #
+    #     def update_merge_ref(self, concept_id: str, merge_ref: Any) -> None:  # noqa: ANN401
+    #         if is_test_env:
+    #             super().update_merge_ref(concept_id, merge_ref)
+    #         self.updated_merge_refs[concept_id] = merge_ref
 
     m = Merge(database)
-    if is_test_env:
-        concept_ids = database.get_all_concept_ids()
-        m.create_merged_concepts(concept_ids)
     return m
 
 
@@ -238,3 +245,58 @@ def test_generate_merged_record(
     spiramycin_ids = record_id_groups["ncit:C839"]
     merge_response = merge_instance._generate_merged_record(spiramycin_ids)
     compare_merged_records(merge_response, spiramycin_merged)
+
+
+def test_create_merged_concepts(
+    merge_instance: Merge,
+    record_id_groups: Dict[str, Set[str]],
+    phenobarbital_merged: Dict,
+    cisplatin_merged: Dict,
+    spiramycin_merged: Dict,
+    amifostine_merged: Dict,
+    mocker,
+):
+    """Test end-to-end creation and upload of merged concepts."""
+    add_spy = mocker.spy(merge_instance.database, "add_merged_record")
+    update_spy = mocker.spy(merge_instance.database, "update_merge_ref")
+    merge_instance.create_merged_concepts(set(record_id_groups))
+    merge_instance.database.complete_write_transaction()
+
+    # check merged record generation and storage
+    added_records = {
+        call[1][0]["concept_id"]: call[1][0] for call in add_spy.mock_calls
+    }
+
+    phenobarbital_merged_id = phenobarbital_merged["concept_id"]
+    assert phenobarbital_merged_id in added_records.keys()
+    compare_merged_records(added_records[phenobarbital_merged_id], phenobarbital_merged)
+
+    cisplatin_merged_id = cisplatin_merged["concept_id"]
+    assert cisplatin_merged_id in added_records.keys()
+    compare_merged_records(added_records[cisplatin_merged_id], cisplatin_merged)
+
+    spiramycin_merged_id = spiramycin_merged["concept_id"]
+    assert spiramycin_merged_id in added_records.keys()
+    compare_merged_records(added_records[spiramycin_merged_id], spiramycin_merged)
+
+    amifostine_merged_id = amifostine_merged["concept_id"]
+    assert amifostine_merged_id in added_records.keys()
+    compare_merged_records(added_records[amifostine_merged_id], amifostine_merged)
+
+    # should only create new records for groups with n > 1 members
+    assert add_spy.call_count == 4
+
+    # check merged record reference updating
+    updated_records = {k[1][0]: k[1][1] for k in update_spy.mock_calls}
+    for concept_id in record_id_groups["rxcui:8134"]:
+        assert updated_records[concept_id] == phenobarbital_merged["concept_id"].lower()
+    for concept_id in record_id_groups["rxcui:2555"]:
+        assert updated_records[concept_id] == cisplatin_merged["concept_id"].lower()
+    for concept_id in record_id_groups["ncit:C839"]:
+        assert updated_records[concept_id] == spiramycin_merged["concept_id"].lower()
+
+    # no merged record should be generated
+    assert "ncit:C49236" not in updated_records
+    assert "drugsatfda.nda:210595" not in updated_records
+
+    assert update_spy.call_count == len(record_id_groups) - 2

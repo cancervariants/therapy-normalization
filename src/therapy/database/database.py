@@ -4,7 +4,7 @@ import sys
 from enum import Enum
 from os import environ
 from pathlib import Path
-from typing import Any, Dict, Generator, List, Optional, Set, Union
+from typing import Dict, Generator, List, Optional, Set, Union
 
 import click
 
@@ -212,7 +212,7 @@ class AbstractDatabase(abc.ABC):
         """
 
     @abc.abstractmethod
-    def update_merge_ref(self, concept_id: str, merge_ref: Any) -> None:  # noqa: ANN401
+    def update_merge_ref(self, concept_id: str, merge_ref: str) -> None:
         """Update the merged record reference of an individual record to a new value.
 
         :param concept_id: record to update

@@ -145,7 +145,7 @@ class RxNorm(Base):
                     self._get_trade_names(
                         value, precise_ingredient, ingredient_brands, sbdfs
                     )
-                    self._load_brand_concepts(value, brands)  # TODO
+                    self._load_brand_concepts(value, brands)
 
                     params = {"concept_id": value["concept_id"]}
 

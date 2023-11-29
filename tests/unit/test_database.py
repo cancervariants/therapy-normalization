@@ -1,12 +1,15 @@
-"""Test DynamoDB"""
+"""Test DynamoDB.
+
+In the future, this should be filled in with different tests for alternate
+implementations.
+"""
 from boto3.dynamodb.conditions import Key
 
 
 def test_tables_created(database):
     """Check that therapy_concepts and therapy_metadata are created."""
     existing_tables = database.dynamodb_client.list_tables()["TableNames"]
-    assert "therapy_concepts" in existing_tables
-    assert "therapy_metadata" in existing_tables
+    assert "therapy_normalizer" in existing_tables
 
 
 def test_item_type(database):

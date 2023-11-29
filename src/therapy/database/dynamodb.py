@@ -4,7 +4,7 @@ import logging
 import sys
 from os import environ
 from pathlib import Path
-from typing import Any, Dict, Generator, List, Optional, Set, Union
+from typing import Dict, Generator, List, Optional, Set, Union
 
 import boto3
 import click
@@ -455,7 +455,6 @@ class DynamoDbDatabase(AbstractDatabase):
                 "boto3 client error on add_record for "
                 f"{concept_id}: {e.response['Error']['Message']}"
             )
-        # TODO not picking up aliases here
         for attr_type, item_type in ITEM_TYPES.items():
             if attr_type in record:
                 value = record.get(attr_type)
@@ -516,7 +515,7 @@ class DynamoDbDatabase(AbstractDatabase):
                 f"{e.response['Error']['Message']}"
             )
 
-    def update_merge_ref(self, concept_id: str, merge_ref: Any) -> None:  # noqa: ANN401
+    def update_merge_ref(self, concept_id: str, merge_ref: str) -> None:
         """Update the merged record reference of an individual record to a new value.
 
         :param concept_id: record to update
