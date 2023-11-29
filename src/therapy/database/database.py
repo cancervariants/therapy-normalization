@@ -107,7 +107,7 @@ class AbstractDatabase(abc.ABC):
         """
 
     @abc.abstractmethod
-    def get_source_metadata(self, src_name: Union[str, SourceName]) -> Dict:
+    def get_source_metadata(self, src_name: Union[str, SourceName]) -> Optional[Dict]:
         """Get license, versioning, data lookup, etc information for a source.
 
         :param src_name: name of the source to get data for

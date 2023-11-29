@@ -463,7 +463,7 @@ class DynamoDbDatabase(AbstractDatabase):
                 if isinstance(value, str):
                     items = [value.lower()]
                 else:
-                    items = {item.lower() for item in value}
+                    items = list({item.lower() for item in value})
                 for item in items:
                     self._add_ref_record(
                         item, record["concept_id"], item_type, src_name

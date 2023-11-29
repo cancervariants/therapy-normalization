@@ -178,7 +178,7 @@ def _update_normalizer(
     :param use_existing: if True, use most recent local version of source data instead of
         fetching from remote
     """
-    processed_ids = list()
+    processed_ids: List[str] = list()
     for n in sources:
         delete_time = _delete_source(n, db)
         _load_source(n, db, delete_time, processed_ids, use_existing)
