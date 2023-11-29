@@ -64,7 +64,7 @@ class AbstractDatabase(abc.ABC):
         if environ.get(AWS_ENV_VAR_NAME, "") == AwsEnvName.PRODUCTION:
             if environ.get(SKIP_AWS_DB_ENV_NAME, "") == "true":
                 raise DatabaseWriteError(
-                    f"Must unset {SKIP_AWS_DB_ENV_NAME} env variable to enable drop_db()"  # noqa: E501
+                    f"Must unset {SKIP_AWS_DB_ENV_NAME} env variable to enable drop_db()"
                 )
             return click.confirm("Are you sure you want to delete existing data?")
         else:

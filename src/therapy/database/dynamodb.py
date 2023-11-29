@@ -52,18 +52,18 @@ class DynamoDatabase(AbstractDatabase):
             if "THERAPY_TEST" in environ:
                 raise DatabaseInitializationError(
                     f"Cannot have both THERAPY_TEST and {AWS_ENV_VAR_NAME} set."
-                )  # noqa: E501
+                )
 
             aws_env = environ[AWS_ENV_VAR_NAME]
             if aws_env not in VALID_AWS_ENV_NAMES:
                 raise DatabaseInitializationError(
                     f"{AWS_ENV_VAR_NAME} must be one of {VALID_AWS_ENV_NAMES}"
-                )  # noqa: E501
+                )
 
             skip_confirmation = environ.get(SKIP_AWS_DB_ENV_NAME)
             if (not skip_confirmation) or (
                 skip_confirmation and skip_confirmation != "true"
-            ):  # noqa: E501
+            ):
                 confirm_aws_db_use(environ[AWS_ENV_VAR_NAME])
 
             boto_params = {"region_name": region_name}
@@ -392,7 +392,7 @@ class DynamoDatabase(AbstractDatabase):
                 else:
                     if (
                         incoming_record_type == RecordType.IDENTITY
-                        and not record.get("merge_ref")  # noqa: E501
+                        and not record.get("merge_ref")
                     ) or incoming_record_type == RecordType.MERGER:
                         yield record
             last_evaluated_key = response.get("LastEvaluatedKey")

@@ -249,7 +249,7 @@ def update_normalizer_db(
             ctx = click.get_current_context()
             click.echo(
                 "Must either enter 1 or more sources, or use `--update_all` parameter"
-            )  # noqa: E501
+            )
             click.echo(ctx.get_help())
             ctx.exit()
     else:
