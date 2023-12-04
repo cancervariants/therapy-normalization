@@ -41,25 +41,6 @@ def merge_instance(test_source, is_test_env, database):
             Wikidata,
         ):
             test_source(SourceClass)
-
-    # class TrackingDatabase(DynamoDbDatabase):
-    #     """Provide injection for DB instance to track added/updated records"""
-    #
-    #     def __init__(self, **kwargs):
-    #         self.added_records = {}
-    #         self.updated_merge_refs = {}
-    #         super().__init__(**kwargs)
-    #
-    #     def add_record(self, record: Dict, src_name: SourceName) -> None:
-    #         if is_test_env:
-    #             super().add_record(record, src_name)
-    #         self.added_records[record["concept_id"]] = record
-    #
-    #     def update_merge_ref(self, concept_id: str, merge_ref: Any) -> None:  # noqa: ANN401
-    #         if is_test_env:
-    #             super().update_merge_ref(concept_id, merge_ref)
-    #         self.updated_merge_refs[concept_id] = merge_ref
-
     m = Merge(database)
     return m
 
