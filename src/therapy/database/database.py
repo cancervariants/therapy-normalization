@@ -61,8 +61,8 @@ class AbstractDatabase(abc.ABC):
         :raise DatabaseWriteException: if skip confirmation variable is set -- manual
         approval is required.
         """
-        if environ.get(AWS_ENV_VAR_NAME, "") == AwsEnvName.PRODUCTION:
-            if environ.get(SKIP_AWS_DB_ENV_NAME, "") == "true":
+       if environ.get(AWS_ENV_VAR_NAME) == AwsEnvName.PRODUCTION:
+           if environ.get(SKIP_AWS_DB_ENV_NAME) == "true":
                 raise DatabaseWriteError(
                     f"Must unset {SKIP_AWS_DB_ENV_NAME} env variable to enable drop_db()"
                 )
