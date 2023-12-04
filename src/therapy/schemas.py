@@ -159,6 +159,28 @@ class Drug(BaseModel):
     )
 
 
+class RecordType(str, Enum):
+    """Record item types."""
+
+    IDENTITY = "identity"
+    MERGER = "merger"
+
+
+class RefType(str, Enum):
+    """Reference item types."""
+
+    # Must be in descending MatchType order.
+    LABEL = "label"
+    TRADE_NAMES = "trade_name"
+    ALIASES = "alias"
+    XREFS = "xref"
+    ASSOCIATED_WITH = "associated_with"
+
+
+# not incorporated as a RefType because it shouldn't be publicly searchable
+RXNORM_BRAND_ITEM_TYPE = "rx_brand"
+
+
 class MatchType(IntEnum):
     """Define string constraints for use in Match Type attributes."""
 

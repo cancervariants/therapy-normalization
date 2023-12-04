@@ -9,7 +9,6 @@ from therapy.schemas import (
     NamespacePrefix,
     RecordParams,
     SourceMeta,
-    SourceName,
 )
 
 
@@ -30,9 +29,7 @@ class DrugsAtFDA(Base):
                 "attribution": False,
             },
         }
-        assert SourceMeta(**meta)
-        meta["src_name"] = SourceName.DRUGSATFDA
-        self.database.metadata.put_item(Item=meta)
+        self.database.add_source_metadata(self._name, SourceMeta(**meta))
 
     def _get_marketing_status_rating(
         self, products: List, concept_id: str

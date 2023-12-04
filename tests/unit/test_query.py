@@ -6,17 +6,24 @@ from pathlib import Path
 import pytest
 from ga4gh.core import core_models
 
+from therapy.database.database import AbstractDatabase
 from therapy.query import InvalidParameterException, QueryHandler
 from therapy.schemas import Drug, MatchType, SourceName
 
 
 @pytest.fixture(scope="module")
-def search_handler():
+def handler(database: AbstractDatabase):
+    """Build query handler test fixture."""
+    return QueryHandler(database)
+
+
+@pytest.fixture(scope="module")
+def search_handler(database: AbstractDatabase):
     """Build query handler test fixture."""
 
     class QueryGetter:
         def __init__(self):
-            self.query_handler = QueryHandler()
+            self.query_handler = QueryHandler(database)
 
         def search(self, query_str, keyed=False, incl="", excl="", infer=True):
             return self.query_handler.search(
@@ -27,12 +34,12 @@ def search_handler():
 
 
 @pytest.fixture(scope="module")
-def normalize_handler():
+def normalize_handler(database: AbstractDatabase):
     """Provide Merge instance to test cases."""
 
     class QueryGetter:
         def __init__(self):
-            self.query_handler = QueryHandler()
+            self.query_handler = QueryHandler(database)
 
         def normalize(self, query_str, infer=True):
             return self.query_handler.normalize(query_str, infer)

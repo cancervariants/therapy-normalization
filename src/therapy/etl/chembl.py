@@ -194,6 +194,4 @@ class ChEMBL(DiseaseIndicationBase):
                 "attribution": True,
             },
         )
-        params = dict(metadata)
-        params["src_name"] = SourceName.CHEMBL.value
-        self.database.metadata.put_item(Item=params)
+        self.database.add_source_metadata(SourceName.CHEMBL, metadata)

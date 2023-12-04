@@ -3,8 +3,8 @@ import logging
 from timeit import default_timer as timer
 from typing import Any, Dict, Optional, Set, Tuple
 
-from therapy.database import Database
-from therapy.schemas import SourcePriority
+from therapy.database.database import AbstractDatabase, DatabaseWriteError
+from therapy.schemas import RefType, SourcePriority
 
 logger = logging.getLogger("therapy")
 logger.setLevel(logging.DEBUG)
@@ -13,7 +13,7 @@ logger.setLevel(logging.DEBUG)
 class Merge:
     """Handles record merging."""
 
-    def __init__(self, database: Database) -> None:
+    def __init__(self, database: AbstractDatabase) -> None:
         """Initialize Merge instance.
 
         * self._groups is a dictionary keying concept IDs to the Set of concept IDs in
@@ -27,7 +27,7 @@ class Merge:
         and failed. Because we don't associate these IDs with groups, a separate
         mapping is necessary to prevent repeat queries.
 
-        :param Database database: db instance to use for record retrieval and creation.
+        :param database: db instance to use for record retrieval and creation.
         """
         self.database = database
         self._groups: Dict[str, Set[str]] = {}
@@ -40,9 +40,16 @@ class Merge:
         :param Set[str] record_ids: concept identifiers from which groups should be
             generated.
         """
-        self._create_record_id_sets(record_ids)
+        logger.info("Generating record ID sets...")
+        start = timer()
+        for record_id in record_ids:
+            new_group = self._create_record_id_set(record_id)
+            if new_group:
+                for concept_id in new_group:
+                    self._groups[concept_id] = new_group
+        end = timer()
+        logger.debug(f"Built record ID sets in {end - start} seconds")
 
-        # don't create separate records for single-member groups
         self._groups = {k: v for k, v in self._groups.items() if len(v) > 1}
 
         logger.info("Creating merged records and updating database...")
@@ -54,43 +61,28 @@ class Merge:
             merged_record = self._generate_merged_record(group)
 
             # add group merger item to DB
-            self.database.add_record(merged_record, "merger")
+            self.database.add_merged_record(merged_record)
 
             # add updated references
             for concept_id in group:
-                if not self.database.get_record_by_id(concept_id, False):
-                    logger.error(
-                        f"Updating nonexistent record: {concept_id} "
-                        f"for {merged_record['label_and_type']}"
-                    )
-                else:
-                    merge_ref = merged_record["concept_id"].lower()
-                    self.database.update_record(concept_id, "merge_ref", merge_ref)
+                merge_ref = merged_record["concept_id"]
+                try:
+                    self.database.update_merge_ref(concept_id, merge_ref)
+                except DatabaseWriteError as dw:
+                    if str(dw).startswith("No such record exists"):
+                        logger.error(
+                            f"Updating nonexistent record: {concept_id} "
+                            f"for merge ref to {merge_ref}"
+                        )
+                    else:
+                        logger.error(str(dw))
             uploaded_ids |= group
+        self.database.complete_write_transaction()
         logger.info("Merged concept generation successful.")
         end = timer()
         logger.debug(f"Generated and added concepts in {end - start} seconds")
 
-    def _rxnorm_brand_lookup(self, record_id: str) -> Optional[str]:
-        """Rx Norm provides brand references back to original therapy concepts.  This
-        routine checks whether an ID from a concept group requires an additional
-        dereference to obtain the original RxNorm record.
-
-        :param str record_id: RxNorm concept ID to check
-        :return: concept ID for RxNorm record if successful, None otherwise
-        """
-        brand_lookup = self.database.get_records_by_type(record_id, "rx_brand")
-        n = len(brand_lookup)
-        if n == 1:
-            lookup_id = brand_lookup[0]["concept_id"]
-            db_record = self.database.get_record_by_id(lookup_id, False)
-            if db_record:
-                return db_record["concept_id"]
-        elif n > 1:
-            logger.warning(f"Brand lookup for {record_id} had {n} matches")
-        return None
-
-    def _get_drugsatfda_from_unii(self, ref: Dict) -> Optional[str]:
+    def _get_drugsatfda_from_unii(self, ref: str) -> Optional[str]:
         """Given an `associated_with` item keying a UNII code to a Drugs@FDA record,
         verify that the record can be safely added to a concept group.
         Drugs@FDA tracks a number of "compound therapies", and provides UNIIs to each
@@ -98,18 +90,16 @@ class Merge:
         end up merging distinct therapies under the umbrella of the compound group.
         We're excluding Drugs@FDA records with multiple UNIIs as a tentative solution.
 
-        :param Dict ref: `associated_with` item where `label_and_type` includes
-            a UNII code and `src_name` == "DrugsAtFDA"
+        :param ref: a Drugs@FDA concept ID that includes an xref to a UNII identifier
         :return: Drugs@FDA concept ID if record meets rules, None otherwise
         """
-        concept_id = ref["concept_id"]
-        fetched = self.database.get_record_by_id(concept_id, False)
+        fetched = self.database.get_record_by_id(ref, False)
         if fetched:
             uniis = [
                 a for a in fetched.get("associated_with", []) if a.startswith("unii")
             ]
         else:
-            logger.error(f"Couldn't retrieve record for {concept_id} from {ref}")
+            logger.error(f"Couldn't retrieve record for {ref}")
             return None
         if len(uniis) == 1:
             return fetched["concept_id"]
@@ -133,12 +123,12 @@ class Merge:
                 xrefs |= drugsatfda_ids
                 continue
 
-            unii_assoc = self.database.get_records_by_type(
-                unii.lower(), "associated_with"
+            unii_assoc = self.database.get_refs_by_type(
+                unii.lower(), RefType.ASSOCIATED_WITH
             )
             drugsatfda_refs = set()
             for ref in unii_assoc:
-                if ref["src_name"] == "DrugsAtFDA":
+                if ref.startswith("drugsatfda"):
                     drugsatfda_ref = self._get_drugsatfda_from_unii(ref)
                     if drugsatfda_ref:
                         drugsatfda_refs.add(drugsatfda_ref)
@@ -168,12 +158,11 @@ class Merge:
         db_record = self.database.get_record_by_id(record_id)
         if not db_record:
             if record_id.startswith("rxcui"):
-                brand_lookup = self._rxnorm_brand_lookup(record_id)
+                brand_lookup = self.database.get_rxnorm_id_by_brand(record_id)
                 if brand_lookup:
                     return self._create_record_id_set(brand_lookup, observed_id_set)
             logger.warning(
-                f"Unable to resolve lookup for {record_id} in "
-                f"ID set: {observed_id_set}"
+                f"Unable to resolve lookup for {record_id} in ID set: {observed_id_set}"
             )
             self._failed_lookups.add(record_id)
             return observed_id_set - {record_id}

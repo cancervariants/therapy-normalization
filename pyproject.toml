@@ -36,7 +36,7 @@ dynamic = ["version"]
 
 [project.optional-dependencies]
 etl = ["disease-normalizer~=0.4.0.dev0", "owlready2", "rdflib", "wikibaseintegrator>=0.12.0", "wags-tails"]
-test = ["pytest", "pytest-cov"]
+test = ["pytest", "pytest-cov", "pytest-mock"]
 dev = ["pre-commit", "ruff>=0.1.2", "lxml", "xmlformatter", "mypy", "types-pyyaml"]
 
 [project.urls]
@@ -45,6 +45,10 @@ Documentation = "https://github.com/cancervariants/therapy-normalization"
 Changelog = "https://github.com/cancervariants/therapy-normalization/releases"
 Source = "https://github.com/cancervariants/therapy-normalization"
 "Bug Tracker" = "https://github.com/cancervariants/therapy-normalization/issues"
+
+[project.scripts]
+therapy_norm_update = "therapy.cli:update_normalizer_db"
+therapy_norm_check_db = "therapy.cli:check_db"
 
 [build-system]
 requires = ["setuptools>=61.0"]

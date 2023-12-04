@@ -11,7 +11,6 @@ from therapy.schemas import (
     NamespacePrefix,
     RecordParams,
     SourceMeta,
-    SourceName,
 )
 
 _logger = logging.getLogger("therapy")
@@ -45,9 +44,7 @@ class HemOnc(DiseaseIndicationBase):
                 "attribution": True,
             },
         }
-        assert SourceMeta(**meta)
-        meta["src_name"] = SourceName.HEMONC.value
-        self.database.metadata.put_item(Item=meta)
+        self.database.add_source_metadata(self._name, SourceMeta(**meta))
 
     def _get_concepts(self) -> Tuple[Dict, Dict, Dict]:
         """Get therapy, brand name, and disease concepts from concepts file.

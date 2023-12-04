@@ -9,8 +9,8 @@ from wags_tails import CustomData, DataSource
 from wags_tails.utils.versioning import DATE_VERSION_PATTERN
 from wikibaseintegrator.wbi_helpers import execute_sparql_query
 
-from therapy import XREF_SOURCES, DownloadException
-from therapy.etl.base import Base
+from therapy import XREF_SOURCES
+from therapy.etl.base import Base, EtlError
 from therapy.schemas import NamespacePrefix, RecordParams, SourceMeta, SourceName
 
 logger = logging.getLogger("therapy")
@@ -102,7 +102,7 @@ class Wikidata(Base):
         """
         medicine_query_results = execute_sparql_query(SPARQL_QUERY)
         if medicine_query_results is None:
-            raise DownloadException("Wikidata medicine SPARQL query failed")
+            raise EtlError("Wikidata medicine SPARQL query failed")
         results = medicine_query_results["results"]["bindings"]
 
         transformed_data = []
@@ -153,9 +153,7 @@ class Wikidata(Base):
                 "attribution": False,
             },
         )
-        params = dict(metadata)
-        params["src_name"] = SourceName.WIKIDATA.value
-        self.database.metadata.put_item(Item=params)
+        self.database.add_source_metadata(SourceName.WIKIDATA, metadata)
 
     def _transform_data(self) -> None:
         """Transform the Wikidata source data."""

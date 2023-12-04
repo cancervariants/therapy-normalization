@@ -1,7 +1,6 @@
 """Test that the therapy normalizer works as intended for the RxNorm source."""
 import isodate
 import pytest
-from boto3.dynamodb.conditions import Key
 
 from therapy.etl import RxNorm
 from therapy.schemas import Drug, MatchType
@@ -750,22 +749,13 @@ def test_no_match(rxnorm):
 
 def test_brand_name_to_concept(rxnorm):
     """Test that brand names are correctly linked to identity concept."""
-    r = rxnorm.query_handler.db.therapies.query(
-        KeyConditionExpression=Key("label_and_type").eq("rxcui:1041527##rx_brand")
+    assert (
+        rxnorm._query_handler.db.get_rxnorm_id_by_brand("rxcui:1041527") == "rxcui:161"
     )
-    assert r["Items"][0]["concept_id"] == "rxcui:161"
-    assert r["Items"][0]["concept_id"] != "rxcui:1041527"
-
-    r = rxnorm.query_handler.db.therapies.query(
-        KeyConditionExpression=Key("label_and_type").eq("rxcui:218330##rx_brand")
-    )
-    assert r["Items"][0]["concept_id"] == "rxcui:44"
-    assert r["Items"][0]["concept_id"] != "rxcui:218330"
+    assert rxnorm._query_handler.db.get_rxnorm_id_by_brand("rxcui:218330") == "rxcui:44"
 
 
-def test_xref_lookup(
-    rxnorm, bifidobacterium_infantis, cisplatin, amiloride, compare_records
-):
+def test_xref_lookup(rxnorm, bifidobacterium_infantis, amiloride, compare_records):
     """Test that xref lookup resolves to correct concept."""
     response = rxnorm.search("mmsl:d07347")
     assert response.match_type == MatchType.ASSOCIATED_WITH
@@ -801,16 +791,18 @@ def test_phenobarbital(phenobarbital, rxnorm, compare_records):
 
 def test_meta_info(rxnorm):
     """Test that the meta field is correct."""
-    response = rxnorm.query_handler._fetch_meta("RxNorm")
-    assert response.data_license == "UMLS Metathesaurus"
+    response = rxnorm.search("RxNorm")
+    assert response.source_meta_.data_license == "UMLS Metathesaurus"
     assert (
-        response.data_license_url
+        response.source_meta_.data_license_url
         == "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html"
     )
-    assert isodate.parse_date(response.version)
-    assert response.data_url.startswith("https://download.nlm.nih.gov/umls/kss/rxnorm/")
-    assert not response.rdp_url
-    assert response.data_license_attributes == {
+    assert isodate.parse_date(response.source_meta_.version)
+    assert response.source_meta_.data_url.startswith(
+        "https://download.nlm.nih.gov/umls/kss/rxnorm/"
+    )
+    assert not response.source_meta_.rdp_url
+    assert response.source_meta_.data_license_attributes == {
         "non_commercial": False,
         "share_alike": False,
         "attribution": True,

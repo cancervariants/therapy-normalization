@@ -2,12 +2,12 @@
 import csv
 from pathlib import Path
 
-from therapy.database import Database
+from therapy.database import create_db
 from therapy.etl import GuideToPHARMACOLOGY
 
 TEST_IDS = {"5343", "2169", "2804", "240", "3303", "5260"}
 
-gtop = GuideToPHARMACOLOGY(Database())
+gtop = GuideToPHARMACOLOGY(create_db())
 gtop._extract_data(False)
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "guidetopharmacology"
 ligands_file_path = TEST_DATA_DIR / gtop._data_files.ligands.name

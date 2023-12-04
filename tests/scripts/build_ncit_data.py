@@ -7,7 +7,7 @@ import lxml.etree as etr
 import owlready2 as owl
 import xmlformatter
 
-from therapy.database import Database
+from therapy.database import create_db
 from therapy.etl import NCIt
 
 # define captured ids in `test_classes` variable
@@ -26,7 +26,7 @@ OBJECT_PROPERTY_TAG = f"{OWL_PREFIX}ObjectProperty"
 CLASS_TAG = f"{OWL_PREFIX}Class"
 
 
-ncit = NCIt(Database())
+ncit = NCIt(create_db())
 ncit._extract_data(False)
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "ncit"
 outfile_path = TEST_DATA_DIR / ncit._data_file.name

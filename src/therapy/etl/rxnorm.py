@@ -12,7 +12,6 @@ from pathlib import Path
 from typing import Dict, List
 
 import yaml
-from boto3.dynamodb.table import BatchWriter
 from wags_tails import CustomData, RxNormData
 
 from therapy import ASSOC_WITH_SOURCES, ITEM_TYPES, XREF_SOURCES
@@ -141,21 +140,20 @@ class RxNorm(Base):
                             )
                             self._add_xref_assoc(params, row)
 
-            with self.database.therapies.batch_writer() as batch:
-                for value in data.values():
-                    if "label" in value:
-                        self._get_trade_names(
-                            value, precise_ingredient, ingredient_brands, sbdfs
-                        )
-                        self._load_brand_concepts(value, brands, batch)
+            for value in data.values():
+                if "label" in value:
+                    self._get_trade_names(
+                        value, precise_ingredient, ingredient_brands, sbdfs
+                    )
+                    self._load_brand_concepts(value, brands)
 
-                        params = {"concept_id": value["concept_id"]}
+                    params = {"concept_id": value["concept_id"]}
 
-                        for field in list(ITEM_TYPES.keys()) + ["approval_ratings"]:
-                            field_value = value.get(field)
-                            if field_value:
-                                params[field] = field_value
-                        self._load_therapy(params)
+                    for field in list(ITEM_TYPES.keys()) + ["approval_ratings"]:
+                        field_value = value.get(field)
+                        if field_value:
+                            params[field] = field_value
+                    self._load_therapy(params)
 
     def _get_brands(self, row: List, ingredient_brands: Dict) -> None:
         """Add ingredient and brand to ingredient_brands.
@@ -210,25 +208,17 @@ class RxNorm(Base):
             for tn in sbdfs[record_label]:
                 self._add_term(value, tn, "trade_names")
 
-    @staticmethod
-    def _load_brand_concepts(value: Dict, brands: Dict, batch: BatchWriter) -> None:
+    def _load_brand_concepts(self, rxnorm_record: Dict, brands: Dict) -> None:
         """Connect brand names to a concept and load into the database.
 
-        :params dict value: A transformed therapy record
-        :params dict brands: Connects brand names to concept records
-        :param BatchWriter batch: Object to write data to DynamoDB.
+        :params rxnorm_record: A transformed therapy record
+        :params brands: Connects brand names to concept records
         """
-        if "trade_names" in value:
-            for tn in value["trade_names"]:
-                if brands.get(tn):
-                    batch.put_item(
-                        Item={
-                            "label_and_type": f"{brands.get(tn)}##rx_brand",
-                            "concept_id": value["concept_id"],
-                            "src_name": SourceName.RXNORM.value,
-                            "item_type": "rx_brand",
-                        }
-                    )
+        if "trade_names" in rxnorm_record:
+            for tn in rxnorm_record["trade_names"]:
+                brand = brands.get(tn)
+                if brand:
+                    self.database.add_rxnorm_brand(brand, rxnorm_record["concept_id"])
 
     def _add_str_field(
         self,
@@ -329,6 +319,4 @@ class RxNorm(Base):
                 "attribution": True,
             },
         )
-        params = dict(meta)
-        params["src_name"] = SourceName.RXNORM.value
-        self.database.metadata.put_item(Item=params)
+        self.database.add_source_metadata(SourceName.RXNORM, meta)

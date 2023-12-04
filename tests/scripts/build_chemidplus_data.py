@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import Generator
 from xml.etree import ElementTree
 
-from therapy.database import Database
+from therapy.database import create_db
 from therapy.etl import ChemIDplus
 
 TEST_IDS = [
@@ -18,7 +18,7 @@ TEST_IDS = [
     "20537-88-6",
 ]
 
-ch = ChemIDplus(Database())
+ch = ChemIDplus(create_db())
 ch._extract_data(False)
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "chemidplus"
 outfile_path = TEST_DATA_DIR / ch._data_file.name
