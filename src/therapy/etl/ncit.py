@@ -8,8 +8,7 @@ from owlready2.entity import ThingClass
 from therapy.etl.base import Base
 from therapy.schemas import NamespacePrefix, RecordParams, SourceMeta, SourceName
 
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
+_logger = logging.getLogger(__name__)
 
 
 class NCIt(Base):

@@ -28,8 +28,7 @@ from therapy.database import AbstractDatabase
 from therapy.etl.rules import Rules
 from therapy.schemas import Drug, SourceName
 
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
+_logger = logging.getLogger(__name__)
 
 
 DATA_DISPATCH = {
@@ -146,7 +145,7 @@ class Base(ABC):
         try:
             Drug(**therapy)
         except ValidationError as e:
-            logger.error(f"Attempted to load invalid therapy: {therapy}")
+            _logger.error(f"Attempted to load invalid therapy: {therapy}")
             raise e
 
         concept_id = therapy["concept_id"]
@@ -177,7 +176,7 @@ class Base(ABC):
                             pass
 
                 if len(value) > 20:
-                    logger.debug(f"{concept_id} has > 20 {attr_type}.")
+                    _logger.debug(f"{concept_id} has > 20 {attr_type}.")
                     del therapy[attr_type]
                     continue
 
@@ -240,7 +239,7 @@ class DiseaseIndicationBase(Base):
         if response.match_type > 0:
             return response.normalized_id
         else:
-            logger.warning(f"Failed to normalize disease term: {query}")
+            _logger.warning(f"Failed to normalize disease term: {query}")
             return None
 
 

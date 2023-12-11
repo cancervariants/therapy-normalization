@@ -104,7 +104,7 @@ class HasIndication(BaseModel):
     disease_id: str
     disease_label: str
     normalized_disease_id: Optional[str] = None
-    supplemental_info: Optional[Dict[str, str]] = None
+    supplemental_info: Optional[Dict[str, Optional[str]]] = None
 
     model_config = ConfigDict(
         json_schema_extra={

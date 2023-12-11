@@ -1,7 +1,6 @@
 """Defines the Wikidata ETL methods."""
 import datetime
 import json
-import logging
 from pathlib import Path
 from typing import Any, Dict, Optional
 
@@ -12,9 +11,6 @@ from wikibaseintegrator.wbi_helpers import execute_sparql_query
 from therapy import XREF_SOURCES
 from therapy.etl.base import Base, EtlError
 from therapy.schemas import NamespacePrefix, RecordParams, SourceMeta, SourceName
-
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
 
 # Translate Wikidata keys to standardized namespaces
 NAMESPACES = {
