@@ -176,7 +176,7 @@ http://127.0.0.1:8000/therapy
 
 ### FAQ
 
-**A data import method raised a SourceFormatException instance. How do I proceed?**
+**A data import method raised a SourceFormatError instance. How do I proceed?**
 
 TheraPy will automatically try to acquire the latest version of data for each source, but sometimes, sources alter the structure of their data (e.g. adding or removing CSV columns). If you encounter a SourceFormatException while importing data, please notify us by creating a new [issue](https://github.com/cancervariants/therapy-normalization/issues) if one doesn't already exist, and we will attempt to resolve it.
 

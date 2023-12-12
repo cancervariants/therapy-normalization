@@ -105,8 +105,8 @@ class DynamoDatabase(AbstractDatabase):
     def drop_db(self) -> None:
         """Delete all tables from database. Requires manual confirmation.
 
-        :raise DatabaseWriteException: if called in a protected setting with
-            confirmation silenced.
+        :raise DatabaseWriteError: if called in a protected setting with confirmation
+            silenced.
         """
         try:
             if not self._check_delete_okay():
@@ -406,7 +406,7 @@ class DynamoDatabase(AbstractDatabase):
 
         :param src_name: name of source
         :param data: known source attributes
-        :raise DatabaseWriteException: if write fails
+        :raise DatabaseWriteError: if write fails
         """
         src_name_value = src_name.value
         metadata_item = metadata.model_dump()
@@ -522,7 +522,7 @@ class DynamoDatabase(AbstractDatabase):
 
         :param concept_id: record to update
         :param merge_ref: new ref value
-        :raise DatabaseWriteException: if attempting to update non-existent record
+        :raise DatabaseWriteError: if attempting to update non-existent record
         """
         label_and_type = f"{concept_id.lower()}##identity"
         key = {"label_and_type": label_and_type, "concept_id": concept_id}
@@ -552,9 +552,9 @@ class DynamoDatabase(AbstractDatabase):
         """Remove merged records from the database. Use when performing a new update
         of normalized data.
 
-        :raise DatabaseReadException: if DB client requires separate read calls and
+        :raise DatabaseReadError: if DB client requires separate read calls and
             encounters a failure in the process
-        :raise DatabaseWriteException: if deletion call fails
+        :raise DatabaseWriteError: if deletion call fails
         """
         while True:
             with self.therapies.batch_writer(
@@ -584,9 +584,9 @@ class DynamoDatabase(AbstractDatabase):
         """Delete all data for a source. Use when updating source data.
 
         :param src_name: name of source to delete
-        :raise DatabaseReadException: if DB client requires separate read calls and
+        :raise DatabaseReadError: if DB client requires separate read calls and
             encounters a failure in the process
-        :raise DatabaseWriteException: if deletion call fails
+        :raise DatabaseWriteError: if deletion call fails
         """
         while True:
             try:
