@@ -4,7 +4,7 @@ import re
 import pytest
 
 from therapy.etl.guidetopharmacology import GuideToPHARMACOLOGY
-from therapy.schemas import Drug, MatchType
+from therapy.schemas import MatchType, Therapy
 
 
 @pytest.fixture(scope="module")
@@ -28,7 +28,7 @@ def cisplatin():
         ],
         "aliases": ["Platinol"],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -50,7 +50,7 @@ def arginine_vasotocin():
             "AVT",
         ],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -78,7 +78,7 @@ def phenobarbital():
             "phenylethylbarbiturate",
         ],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -102,7 +102,7 @@ def cisapride():
             "Propulsid",
         ],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -110,7 +110,7 @@ def rolipram():
     """Create rolipram test fixture.
     Checks for correct handling of multiple references under same namespace.
     """
-    return Drug(
+    return Therapy(
         **{
             "concept_id": "iuphar.ligand:5260",
             "label": "rolipram",

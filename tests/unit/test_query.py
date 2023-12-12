@@ -7,8 +7,8 @@ import pytest
 from ga4gh.core import core_models
 
 from therapy.database.database import AbstractDatabase
-from therapy.query import InvalidParameterException, QueryHandler
-from therapy.schemas import Drug, MatchType, SourceName
+from therapy.query import InvalidParameterError, QueryHandler
+from therapy.schemas import MatchType, SourceName, Therapy
 
 
 @pytest.fixture(scope="module")
@@ -242,7 +242,7 @@ def compare_unmerged_response(
             # get corresponding fixture record
             for drug in fixture["source_matches"][source.value]["records"]:
                 if drug["concept_id"] == concept_id:
-                    fixture_drug = Drug(**drug)
+                    fixture_drug = Therapy(**drug)
                     break
             assert fixture_drug, f"Unable to find fixture for {concept_id}"
             compare_records(record, fixture_drug)
@@ -346,11 +346,11 @@ def test_search_sources(search_handler):
     assert set(resp.source_matches.keys()) == {"Wikidata", "ChEMBL"}
 
     # test error on invalid source names
-    with pytest.raises(InvalidParameterException):
+    with pytest.raises(InvalidParameterError):
         resp = search_handler.search("cisplatin", keyed=True, incl="chambl")
 
     # test error for supplying both incl and excl args
-    with pytest.raises(InvalidParameterException):
+    with pytest.raises(InvalidParameterError):
         resp = search_handler.search(
             "cisplatin", keyed=True, incl="chembl", excl="wikidata"
         )

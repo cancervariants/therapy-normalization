@@ -12,7 +12,6 @@ from therapy import NAMESPACE_LUIS, PREFIX_LOOKUP, SOURCES
 from therapy.database import AbstractDatabase
 from therapy.schemas import (
     BaseNormalizationService,
-    Drug,
     HasIndication,
     MatchesNormalized,
     MatchType,
@@ -23,13 +22,14 @@ from therapy.schemas import (
     ServiceMeta,
     SourceName,
     SourcePriority,
+    Therapy,
     UnmergedNormalizationService,
 )
 
 NormService = TypeVar("NormService", bound=BaseNormalizationService)
 
 
-class InvalidParameterException(Exception):  # noqa: N818
+class InvalidParameterError(Exception):
     """Exception for invalid parameter args provided by the user."""
 
 
@@ -99,7 +99,7 @@ class QueryHandler:
         if inds:
             item["has_indication"] = [self._get_indication(i) for i in inds]
 
-        drug = Drug(**item)
+        drug = Therapy(**item)
         src_name = item["src_name"]
 
         matches = response["source_matches"]
@@ -333,7 +333,7 @@ class QueryHandler:
             query_sources = set(sources.values())
         elif incl and excl:
             detail = "Cannot request both source inclusions and exclusions."
-            raise InvalidParameterException(detail)
+            raise InvalidParameterError(detail)
         elif incl:
             req_sources = [n.strip() for n in incl.split(",")]
             invalid_sources = []
@@ -345,7 +345,7 @@ class QueryHandler:
                     invalid_sources.append(source)
             if invalid_sources:
                 detail = f"Invalid source name(s): {invalid_sources}"
-                raise InvalidParameterException(detail)
+                raise InvalidParameterError(detail)
         else:
             req_exclusions = [n.strip() for n in excl.lower().split(",")]
             req_excl_dict = {r.lower(): r for r in req_exclusions}
@@ -359,7 +359,7 @@ class QueryHandler:
                     query_sources.add(src)
             if invalid_sources:
                 detail = f"Invalid source name(s): {invalid_sources}"
-                raise InvalidParameterException(detail)
+                raise InvalidParameterError(detail)
 
         if keyed:
             response = self._response_keyed(query_str, query_sources, infer)
@@ -574,7 +574,7 @@ class QueryHandler:
         )
         return self._perform_normalized_lookup(response, query, infer, add_ta_curry)
 
-    def _construct_drug_match(self, record: Dict) -> Drug:
+    def _construct_drug_match(self, record: Dict) -> Therapy:
         """Create individual Drug match for unmerged normalization endpoint.
 
         :param Dict record: record to add
@@ -583,7 +583,7 @@ class QueryHandler:
         inds = record.get("has_indication")
         if inds:
             record["has_indication"] = [self._get_indication(i) for i in inds]
-        return Drug(**record)
+        return Therapy(**record)
 
     def _add_normalized_records(
         self,

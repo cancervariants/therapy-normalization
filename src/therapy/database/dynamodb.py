@@ -92,7 +92,7 @@ class DynamoDatabase(AbstractDatabase):
 
         self.therapies = self.dynamodb.Table(self.therapy_table)
         self.batch = self.therapies.batch_writer()
-        self._cached_sources: Dict[str, Dict] = {}
+        self._cached_sources: Dict[str, SourceMeta] = {}
         atexit.register(self.close_connection)
 
     def list_tables(self) -> List[str]:
@@ -207,11 +207,13 @@ class DynamoDatabase(AbstractDatabase):
         if not self.check_schema_initialized():
             self._create_therapies_table()
 
-    def get_source_metadata(self, src_name: Union[str, SourceName]) -> Optional[Dict]:
+    def get_source_metadata(
+        self, src_name: Union[str, SourceName]
+    ) -> Optional[SourceMeta]:
         """Get license, versioning, data lookup, etc information for a source.
 
         :param src_name: name of the source to get data for
-        :return: Dict containing metadata if lookup is successful
+        :return: source metadata object if available
         """
         if isinstance(src_name, SourceName):
             src_name = src_name.value
@@ -225,8 +227,9 @@ class DynamoDatabase(AbstractDatabase):
             ).get("Item")
             if not metadata:
                 return None
-            self._cached_sources[src_name] = metadata
-            return metadata
+            formatted_metadata = SourceMeta(**metadata)
+            self._cached_sources[src_name] = formatted_metadata
+            return formatted_metadata
 
     def get_record_by_id(
         self, concept_id: str, case_sensitive: bool = True, merge: bool = False

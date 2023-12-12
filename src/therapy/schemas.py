@@ -104,7 +104,7 @@ class HasIndication(BaseModel):
     disease_id: str
     disease_label: str
     normalized_disease_id: Optional[str] = None
-    supplemental_info: Optional[Dict[str, str]] = None
+    supplemental_info: Optional[Dict[str, Optional[str]]] = None
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -118,7 +118,7 @@ class HasIndication(BaseModel):
     )
 
 
-class Drug(BaseModel):
+class Therapy(BaseModel):
     """A pharmacologic substance used to treat a medical condition."""
 
     concept_id: str
@@ -310,7 +310,7 @@ class MatchesKeyed(BaseModel):
     """
 
     match_type: MatchType
-    records: List[Drug]
+    records: List[Therapy]
     source_meta_: SourceMeta
 
     model_config = ConfigDict(
@@ -342,7 +342,7 @@ class MatchesListed(BaseModel):
 
     source: SourceName
     match_type: MatchType
-    records: List[Drug]
+    records: List[Therapy]
     source_meta_: SourceMeta
 
     model_config = ConfigDict(
@@ -393,7 +393,7 @@ class ServiceMeta(BaseModel):
 class MatchesNormalized(BaseModel):
     """Matches associated with normalized concept from a single source."""
 
-    records: List[Drug]
+    records: List[Therapy]
     source_meta_: SourceMeta
 
 

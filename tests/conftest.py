@@ -10,7 +10,7 @@ import pytest
 from therapy.database.database import AWS_ENV_VAR_NAME, AbstractDatabase, create_db
 from therapy.etl.base import Base
 from therapy.query import QueryHandler
-from therapy.schemas import Drug, MatchesKeyed, MatchType
+from therapy.schemas import MatchesKeyed, MatchType, Therapy
 
 _logger = logging.getLogger(__name__)
 
@@ -151,7 +151,7 @@ def test_source(
     return test_source_factory
 
 
-def _compare_records(actual: Drug, fixt: Drug):
+def _compare_records(actual: Therapy, fixt: Therapy):
     """Check that identity records are identical."""
     assert actual.concept_id == fixt.concept_id
     assert actual.label == fixt.label
@@ -200,8 +200,8 @@ def compare_records():
 def _compare_response(
     response: MatchesKeyed,
     match_type: MatchType,
-    fixture: Optional[Drug] = None,
-    fixture_list: Optional[List[Drug]] = None,
+    fixture: Optional[Therapy] = None,
+    fixture_list: Optional[List[Therapy]] = None,
     num_records: int = 0,
 ):
     """Check that test response is correct. Only 1 of {fixture, fixture_list}

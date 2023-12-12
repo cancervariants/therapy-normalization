@@ -4,7 +4,7 @@ import re
 import pytest
 
 from therapy.etl.ncit import NCIt
-from therapy.schemas import Drug, MatchType
+from therapy.schemas import MatchType, Therapy
 
 
 @pytest.fixture(scope="module")
@@ -32,7 +32,7 @@ def voglibose():
         "approval_ratings": None,
         "trade_names": [],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -54,7 +54,7 @@ def apricoxib():
         "approval_ratings": None,
         "trade_names": [],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 # Test aliases > 20
@@ -70,7 +70,7 @@ def trastuzumab():
         "approval_ratings": None,
         "trade_names": [],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 # Needed for MetaKB
@@ -100,7 +100,7 @@ def therapeutic_procedure():
         "xrefs": [],
         "associated_with": ["umls:C0087111"],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 # test correct CHEBI naming
@@ -122,7 +122,7 @@ def ivermectin():
         "xrefs": ["chemidplus:70288-86-7"],
         "associated_with": ["umls:C0022322", "unii:8883YP2R6D", "CHEBI:6078"],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 def test_concept_id_match(
