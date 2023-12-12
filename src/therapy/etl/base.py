@@ -2,7 +2,6 @@
 import json
 import logging
 from abc import ABC, abstractmethod
-from functools import lru_cache
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
@@ -215,6 +214,8 @@ class Base(ABC):
 class DiseaseIndicationBase(Base):
     """Base class for sources that require disease normalization capabilities."""
 
+    _disease_cache: Dict[str, Optional[str]] = {}
+
     def __init__(
         self,
         database: AbstractDatabase,
@@ -230,18 +231,22 @@ class DiseaseIndicationBase(Base):
         super().__init__(database, data_path, silent)
         self.disease_normalizer = DiseaseNormalizer(create_disease_db())
 
-    @lru_cache(maxsize=64)
     def _normalize_disease(self, query: str) -> Optional[str]:
         """Attempt normalization of disease term.
+
         :param str query: term to normalize
         :return: ID if successful, None otherwise
         """
-        response = self.disease_normalizer.normalize(query)
-        if response.match_type > 0:
-            return response.normalized_id
+        term = query.lower()
+        if term in self._disease_cache:
+            return self._disease_cache[term]
         else:
-            logger.warning(f"Failed to normalize disease term: {query}")
-            return None
+            response = self.disease_normalizer.normalize(term)
+            normalized_id = response.normalized_id
+            self._disease_cache[term] = normalized_id
+            if normalized_id is None:
+                logger.warning(f"Failed to normalize disease term: {query}")
+            return normalized_id
 
 
 class SourceFormatException(Exception):  # noqa: N818
