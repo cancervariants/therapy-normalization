@@ -238,13 +238,14 @@ class DiseaseIndicationBase(Base):
         :return: ID if successful, None otherwise
         """
         term = query.lower()
-        normalized_id = self._disease_cache.get(term)
-        if normalized_id is None:
+        if term in self._disease_cache:
+            return self._disease_cache[term]
+        else:
             response = self.disease_normalizer.normalize(term)
             normalized_id = response.normalized_id
             self._disease_cache[term] = normalized_id
-            return normalized_id
-        else:
+            if normalized_id is None:
+                logger.warning(f"Failed to normalize disease term: {query}")
             return normalized_id
 
 
