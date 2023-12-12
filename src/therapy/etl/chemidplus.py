@@ -2,7 +2,6 @@
 
 Courtesy of the U.S. National Library of Medicine.
 """
-import logging
 import re
 import xml.etree.ElementTree as ElTree
 from pathlib import Path
@@ -16,10 +15,6 @@ from therapy.schemas import (
     SourceMeta,
     SourceName,
 )
-
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
-
 
 TAGS_REGEX = r" \[.*\]"
 

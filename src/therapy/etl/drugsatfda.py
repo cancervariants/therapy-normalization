@@ -1,8 +1,8 @@
 """ETL methods for the Drugs@FDA source."""
 import json
+import logging
 from typing import List, Optional
 
-from therapy import logger
 from therapy.etl.base import Base
 from therapy.schemas import (
     ApprovalRating,
@@ -10,6 +10,8 @@ from therapy.schemas import (
     RecordParams,
     SourceMeta,
 )
+
+_logger = logging.getLogger(__name__)
 
 
 class DrugsAtFDA(Base):
@@ -52,7 +54,7 @@ class DrugsAtFDA(Base):
                 f"Application {concept_id} has inconsistent marketing "
                 f"statuses: {statuses}"
             )
-            logger.info(msg)
+            _logger.info(msg)
             return None
         else:
             return statuses_map.get(statuses[0])
@@ -99,7 +101,7 @@ class DrugsAtFDA(Base):
                         f"Application {concept_id} has {n_substances} "
                         f"substance names: {substances}"
                     )
-                    logger.debug(msg)
+                    _logger.debug(msg)
                     aliases += substances
                 elif n_substances == 1:
                     therapy["label"] = substances[0]

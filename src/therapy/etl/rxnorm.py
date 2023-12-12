@@ -24,8 +24,7 @@ from therapy.schemas import (
     SourceName,
 )
 
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
+_logger = logging.getLogger(__name__)
 
 # Designated Alias, Designated Syn, Tall Man Syn, Machine permutation
 # Generic Drug Name, Designated Preferred Name, Preferred Entry Term,
@@ -303,7 +302,7 @@ class RxNorm(Base):
                 source_id = f"{NamespacePrefix[xref_assoc].value}:{lui}"
                 self._add_term(params, source_id, "associated_with")
             else:
-                logger.info(f"{xref_assoc} not in NameSpacePrefix.")
+                _logger.info(f"{xref_assoc} not in NameSpacePrefix.")
 
     def _load_meta(self) -> None:
         """Add RxNorm metadata."""

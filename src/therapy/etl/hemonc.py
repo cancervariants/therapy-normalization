@@ -13,7 +13,7 @@ from therapy.schemas import (
     SourceMeta,
 )
 
-_logger = logging.getLogger("therapy")
+_logger = logging.getLogger(__name__)
 
 
 class HemOnc(DiseaseIndicationBase):

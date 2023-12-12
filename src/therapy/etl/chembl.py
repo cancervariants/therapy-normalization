@@ -1,13 +1,9 @@
 """Defines the ChEMBL ETL methods."""
-import logging
 import sqlite3
 from typing import Dict, List, Optional, Union
 
 from therapy.etl.base import DiseaseIndicationBase
 from therapy.schemas import ApprovalRating, NamespacePrefix, SourceMeta, SourceName
-
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
 
 
 class ChEMBL(DiseaseIndicationBase):

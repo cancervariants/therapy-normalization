@@ -6,8 +6,7 @@ from typing import Any, Dict, Optional, Set, Tuple
 from therapy.database.database import AbstractDatabase, DatabaseWriteError
 from therapy.schemas import RefType, SourcePriority
 
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 
 class Merge:

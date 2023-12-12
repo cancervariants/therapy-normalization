@@ -1,14 +1,16 @@
 """Module for Guide to PHARMACOLOGY ETL methods."""
 import csv
 import html
+import logging
 import re
 from typing import Any, Dict, List, Optional, Union
 
 from wags_tails.guide_to_pharmacology import GtoPLigandPaths
 
-from therapy import logger
 from therapy.etl.base import Base, SourceFormatException
 from therapy.schemas import ApprovalRating, NamespacePrefix, SourceMeta, SourceName
+
+_logger = logging.getLogger(__name__)
 
 TAG_PATTERN = re.compile("</?[a-zA-Z]+>")
 PMID_PATTERN = re.compile(r"\[PMID:[ ]?\d+\]")
@@ -188,7 +190,7 @@ class GuideToPHARMACOLOGY(Base):
                 concept_id = f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}"
 
                 if concept_id not in data:
-                    logger.debug(f"{concept_id} not in ligands")
+                    _logger.debug(f"{concept_id} not in ligands")
                     continue
                 params = data[concept_id]
                 xrefs = list()
