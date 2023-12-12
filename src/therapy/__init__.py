@@ -1,17 +1,10 @@
 """The VICC library for normalizing therapies."""
-import logging
 import re
 from pathlib import Path
 
 from .version import __version__  # noqa: F401
 
 APP_ROOT: Path = Path(__file__).resolve().parents[0]
-logging.basicConfig(
-    filename="therapy.log",
-    format="[%(asctime)s] - %(name)s - %(levelname)s : %(message)s",
-)
-logger = logging.getLogger("therapy")
-logger.setLevel(logging.DEBUG)
 
 
 from therapy.schemas import (  # noqa: E402, I100, I202
