@@ -94,7 +94,7 @@ class Wikidata(Base):
 
         :param version: not used by this method
         :param file: location to save data dump at
-        :raise DownloadException: if SPARQL query fails
+        :raise EtlError: if SPARQL query fails
         """
         medicine_query_results = execute_sparql_query(SPARQL_QUERY)
         if medicine_query_results is None:

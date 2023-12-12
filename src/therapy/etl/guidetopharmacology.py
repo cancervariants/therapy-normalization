@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional, Union
 
 from wags_tails.guide_to_pharmacology import GtoPLigandPaths
 
-from therapy.etl.base import Base, SourceFormatException
+from therapy.etl.base import Base, SourceFormatError
 from therapy.schemas import ApprovalRating, NamespacePrefix, SourceMeta, SourceName
 
 _logger = logging.getLogger(__name__)
@@ -37,6 +37,7 @@ class GuideToPHARMACOLOGY(Base):
         data: Dict[str, Any] = dict()
         self._transform_ligands(data)
         self._transform_ligand_id_mappings(data)
+
         for param in data.values():
             self._load_therapy(param)
 
@@ -86,7 +87,7 @@ class GuideToPHARMACOLOGY(Base):
                 "GtoMPdb",
                 "Antibacterial",
             ]:
-                raise SourceFormatException(
+                raise SourceFormatError(
                     "GtoP ligands file contains missing or unrecognized columns. See "
                     "FAQ in README for suggested resolution."
                 )
@@ -181,7 +182,7 @@ class GuideToPHARMACOLOGY(Base):
                 "DrugBank ID",
                 "Drug Central ID",
             ]:
-                raise SourceFormatException(
+                raise SourceFormatError(
                     "GtoP ligand mapping file contains missing or unrecognized "
                     "columns. See FAQ in README for suggested resolution."
                 )

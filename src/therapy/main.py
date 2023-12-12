@@ -7,7 +7,7 @@ from fastapi.openapi.utils import get_openapi
 
 from therapy import __version__
 from therapy.database.database import create_db
-from therapy.query import InvalidParameterException, QueryHandler
+from therapy.query import InvalidParameterError, QueryHandler
 from therapy.schemas import (
     NormalizationService,
     SearchService,
@@ -131,7 +131,7 @@ def search(
             excl=excl,  # type: ignore
             infer=infer_namespace,
         )  # type: ignore
-    except InvalidParameterException as e:
+    except InvalidParameterError as e:
         raise HTTPException(status_code=422, detail=str(e))
     return response
 
@@ -159,7 +159,7 @@ def normalize(
     """
     try:
         response = query_handler.normalize(html.unescape(q), infer_namespace)  # type: ignore
-    except InvalidParameterException as e:
+    except InvalidParameterError as e:
         raise HTTPException(status_code=422, detail=str(e))
     return response
 
@@ -184,6 +184,6 @@ def normalize_unmerged(
     """
     try:
         response = query_handler.normalize_unmerged(html.unescape(q), infer_namespace)
-    except InvalidParameterException as e:
+    except InvalidParameterError as e:
         raise HTTPException(status_code=422, detail=str(e))
     return response

@@ -3,7 +3,7 @@ import isodate
 import pytest
 
 from therapy.etl.chemidplus import ChemIDplus
-from therapy.schemas import Drug, MatchType
+from therapy.schemas import MatchType, Therapy
 
 
 @pytest.fixture(scope="module")
@@ -15,7 +15,7 @@ def chemidplus(test_source):
 @pytest.fixture(scope="module")
 def penicillin_v():
     """Build test fixture for Penicillin V drug."""
-    return Drug(
+    return Therapy(
         **{
             "concept_id": "chemidplus:87-08-1",
             "label": "Penicillin V",
@@ -34,7 +34,7 @@ def penicillin_v():
 @pytest.fixture(scope="module")
 def imatinib():
     """Build test fixture for Imatinib."""
-    return Drug(
+    return Therapy(
         **{
             "concept_id": "chemidplus:152459-95-5",
             "label": "Imatinib",
@@ -53,7 +53,7 @@ def imatinib():
 @pytest.fixture(scope="module")
 def other_imatinib():
     """Build test fixture for imatinib mesylate."""
-    return Drug(
+    return Therapy(
         **{
             "concept_id": "chemidplus:220127-57-1",
             "label": "Imatinib mesylate",
@@ -68,7 +68,7 @@ def other_imatinib():
 @pytest.fixture(scope="module")
 def cisplatin():
     """Build test fixture for cisplatin."""
-    return Drug(
+    return Therapy(
         **{
             "concept_id": "chemidplus:15663-27-1",
             "label": "Cisplatin",
@@ -86,7 +86,7 @@ def cisplatin():
 @pytest.fixture(scope="module")
 def glycopyrronium_bromide():
     """Provide fixture for chemidplus:51186-83-5"""
-    return Drug(
+    return Therapy(
         **{
             "concept_id": "chemidplus:51186-83-5",
             "label": "Glycopyrronium bromide",

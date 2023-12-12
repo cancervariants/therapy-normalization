@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 
 from therapy.etl import ChEMBL
-from therapy.schemas import Drug, MatchType
+from therapy.schemas import MatchType, Therapy
 
 
 @pytest.fixture(scope="module")
@@ -23,26 +23,26 @@ def fixture_data(test_data: Path):
 @pytest.fixture(scope="module")
 def cisplatin(fixture_data):
     """Create a cisplatin drug fixture."""
-    return Drug(**fixture_data["cisplatin"])
+    return Therapy(**fixture_data["cisplatin"])
 
 
 @pytest.fixture(scope="module")
 def l745870(fixture_data):
     """Create a L-745870 drug fixture."""
-    return Drug(**fixture_data["l745870"])
+    return Therapy(**fixture_data["l745870"])
 
 
 # Test with aliases and trade names > 20
 @pytest.fixture(scope="module")
 def aspirin(fixture_data):
     """Create an aspirin drug fixture."""
-    return Drug(**fixture_data["aspirin"])
+    return Therapy(**fixture_data["aspirin"])
 
 
 @pytest.fixture(scope="module")
 def rosiglitazone(fixture_data):
     """Create a rosiglitazone fixture for checking import of withdrawn flag."""
-    return Drug(**fixture_data["rosiglitazone"])
+    return Therapy(**fixture_data["rosiglitazone"])
 
 
 def test_concept_id_cisplatin(cisplatin, chembl, compare_records):

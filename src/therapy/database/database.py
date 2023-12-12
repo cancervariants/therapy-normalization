@@ -58,7 +58,7 @@ class AbstractDatabase(abc.ABC):
         """Check that environmental conditions permit DB deletion, and require
         confirmation.
 
-        :raise DatabaseWriteException: if skip confirmation variable is set -- manual
+        :raise DatabaseWriteError: if skip confirmation variable is set -- manual
         approval is required.
         """
         if environ.get(AWS_ENV_VAR_NAME) == AwsEnvName.PRODUCTION:
@@ -103,14 +103,17 @@ class AbstractDatabase(abc.ABC):
         existing content -- ie, this method is also responsible for checking whether
         the DB is already set up.
 
-        :raise DatabaseInitializationException: if initialization fails
+        :raise DatabaseInitializationError: if initialization fails
         """
 
     @abc.abstractmethod
-    def get_source_metadata(self, src_name: Union[str, SourceName]) -> Optional[Dict]:
+    def get_source_metadata(
+        self, src_name: Union[str, SourceName]
+    ) -> Optional[SourceMeta]:
         """Get license, versioning, data lookup, etc information for a source.
 
         :param src_name: name of the source to get data for
+        :return: source metadata object if available
         """
 
     @abc.abstractmethod
@@ -193,7 +196,7 @@ class AbstractDatabase(abc.ABC):
 
         :param src_name: name of source
         :param data: known source attributes
-        :raise DatabaseWriteException: if write fails
+        :raise DatabaseWriteError: if write fails
         """
 
     @abc.abstractmethod
@@ -217,7 +220,7 @@ class AbstractDatabase(abc.ABC):
 
         :param concept_id: record to update
         :param merge_ref: new ref value
-        :raise DatabaseWriteException: if attempting to update non-existent record
+        :raise DatabaseWriteError: if attempting to update non-existent record
         """
 
     @abc.abstractmethod
@@ -225,9 +228,9 @@ class AbstractDatabase(abc.ABC):
         """Remove merged records from the database. Use when performing a new update
         of normalized data.
 
-        :raise DatabaseReadException: if DB client requires separate read calls and
+        :raise DatabaseReadError: if DB client requires separate read calls and
             encounters a failure in the process
-        :raise DatabaseWriteException: if deletion call fails
+        :raise DatabaseWriteError: if deletion call fails
         """
 
     @abc.abstractmethod
@@ -235,9 +238,9 @@ class AbstractDatabase(abc.ABC):
         """Delete all data for a source. Use when updating source data.
 
         :param src_name: name of source to delete
-        :raise DatabaseReadException: if DB client requires separate read calls and
+        :raise DatabaseReadError: if DB client requires separate read calls and
             encounters a failure in the process
-        :raise DatabaseWriteException: if deletion call fails
+        :raise DatabaseWriteError: if deletion call fails
         """
 
     @abc.abstractmethod

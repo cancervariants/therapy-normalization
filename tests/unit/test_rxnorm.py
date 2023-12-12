@@ -3,7 +3,7 @@ import isodate
 import pytest
 
 from therapy.etl import RxNorm
-from therapy.schemas import Drug, MatchType
+from therapy.schemas import MatchType, Therapy
 
 
 @pytest.fixture(scope="module")
@@ -33,7 +33,7 @@ def bifidobacterium_infantis():
         "associated_with": ["mmsl:d07347", "unii:EF3U3H7I76", "mmsl:32421"],
         "trade_names": ["Align", "Evivo"],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -66,7 +66,7 @@ def cisplatin():
         ],
         "trade_names": ["Cisplatin", "Platinol"],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -97,7 +97,7 @@ def amiloride_hydrochloride():
             "Zida-Co",
         ],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -126,7 +126,7 @@ def amiloride():
             "Amilamont",
         ],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -162,7 +162,7 @@ def timolol():
             "Timoptol",
         ],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -186,7 +186,7 @@ def lymphocyte():
         ],
         "trade_names": ["ATGAM", "Thymoglobulin"],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -221,7 +221,7 @@ def aspirin():
         ],
         "trade_names": [],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -245,7 +245,7 @@ def mesna():
         ],
         "trade_names": ["Mesna", "Mesnex", "Mesna Nova Plus"],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -260,7 +260,7 @@ def beta_alanine():
         "associated_with": ["vandf:4028377", "unii:11P2JDE17B"],
         "trade_names": [],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -275,7 +275,7 @@ def algestone():
         "associated_with": [],
         "trade_names": [],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -306,7 +306,7 @@ def levothyroxine():
         ],
         # trade names length > 20
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -338,7 +338,7 @@ def fluoxetine():
             "Selfemra",
         ],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
@@ -361,13 +361,13 @@ def fluoxetine_hydrochloride():
         ],
         "trade_names": ["FLUoxetine HCl", "FLUoxetine Hydrochloride", "RECONCILE"],
     }
-    return Drug(**params)
+    return Therapy(**params)
 
 
 @pytest.fixture(scope="module")
 def phenobarbital():
     """Create phenobarbital fixture."""
-    return Drug(
+    return Therapy(
         **{
             "concept_id": "rxcui:8134",
             "label": "phenobarbital",

@@ -92,7 +92,7 @@ class DynamoDatabase(AbstractDatabase):
 
         self.therapies = self.dynamodb.Table(self.therapy_table)
         self.batch = self.therapies.batch_writer()
-        self._cached_sources: Dict[str, Dict] = {}
+        self._cached_sources: Dict[str, SourceMeta] = {}
         atexit.register(self.close_connection)
 
     def list_tables(self) -> List[str]:
@@ -105,8 +105,8 @@ class DynamoDatabase(AbstractDatabase):
     def drop_db(self) -> None:
         """Delete all tables from database. Requires manual confirmation.
 
-        :raise DatabaseWriteException: if called in a protected setting with
-            confirmation silenced.
+        :raise DatabaseWriteError: if called in a protected setting with confirmation
+            silenced.
         """
         try:
             if not self._check_delete_okay():
@@ -207,11 +207,13 @@ class DynamoDatabase(AbstractDatabase):
         if not self.check_schema_initialized():
             self._create_therapies_table()
 
-    def get_source_metadata(self, src_name: Union[str, SourceName]) -> Optional[Dict]:
+    def get_source_metadata(
+        self, src_name: Union[str, SourceName]
+    ) -> Optional[SourceMeta]:
         """Get license, versioning, data lookup, etc information for a source.
 
         :param src_name: name of the source to get data for
-        :return: Dict containing metadata if lookup is successful
+        :return: source metadata object if available
         """
         if isinstance(src_name, SourceName):
             src_name = src_name.value
@@ -225,8 +227,9 @@ class DynamoDatabase(AbstractDatabase):
             ).get("Item")
             if not metadata:
                 return None
-            self._cached_sources[src_name] = metadata
-            return metadata
+            formatted_metadata = SourceMeta(**metadata)
+            self._cached_sources[src_name] = formatted_metadata
+            return formatted_metadata
 
     def get_record_by_id(
         self, concept_id: str, case_sensitive: bool = True, merge: bool = False
@@ -403,7 +406,7 @@ class DynamoDatabase(AbstractDatabase):
 
         :param src_name: name of source
         :param data: known source attributes
-        :raise DatabaseWriteException: if write fails
+        :raise DatabaseWriteError: if write fails
         """
         src_name_value = src_name.value
         metadata_item = metadata.model_dump()
@@ -519,7 +522,7 @@ class DynamoDatabase(AbstractDatabase):
 
         :param concept_id: record to update
         :param merge_ref: new ref value
-        :raise DatabaseWriteException: if attempting to update non-existent record
+        :raise DatabaseWriteError: if attempting to update non-existent record
         """
         label_and_type = f"{concept_id.lower()}##identity"
         key = {"label_and_type": label_and_type, "concept_id": concept_id}
@@ -549,9 +552,9 @@ class DynamoDatabase(AbstractDatabase):
         """Remove merged records from the database. Use when performing a new update
         of normalized data.
 
-        :raise DatabaseReadException: if DB client requires separate read calls and
+        :raise DatabaseReadError: if DB client requires separate read calls and
             encounters a failure in the process
-        :raise DatabaseWriteException: if deletion call fails
+        :raise DatabaseWriteError: if deletion call fails
         """
         while True:
             with self.therapies.batch_writer(
@@ -581,9 +584,9 @@ class DynamoDatabase(AbstractDatabase):
         """Delete all data for a source. Use when updating source data.
 
         :param src_name: name of source to delete
-        :raise DatabaseReadException: if DB client requires separate read calls and
+        :raise DatabaseReadError: if DB client requires separate read calls and
             encounters a failure in the process
-        :raise DatabaseWriteException: if deletion call fails
+        :raise DatabaseWriteError: if deletion call fails
         """
         while True:
             try:

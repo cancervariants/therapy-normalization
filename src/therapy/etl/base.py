@@ -25,7 +25,7 @@ from wags_tails import (
 from therapy import ITEM_TYPES
 from therapy.database import AbstractDatabase
 from therapy.etl.rules import Rules
-from therapy.schemas import Drug, SourceName
+from therapy.schemas import SourceName, Therapy
 
 _logger = logging.getLogger(__name__)
 
@@ -142,7 +142,7 @@ class Base(ABC):
         """
         therapy = self._rules.apply_rules_to_therapy(therapy)
         try:
-            Drug(**therapy)
+            Therapy(**therapy)
         except ValidationError as e:
             _logger.error(f"Attempted to load invalid therapy: {therapy}")
             raise e
@@ -248,7 +248,7 @@ class DiseaseIndicationBase(Base):
             return normalized_id
 
 
-class SourceFormatException(Exception):  # noqa: N818
+class SourceFormatError(Exception):
     """Raise when source data formatting is incompatible with the source transformation
     methods: for example, if columns in a CSV file have changed.
     """
