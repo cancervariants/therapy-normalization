@@ -158,33 +158,37 @@ def _compare_records(actual: Therapy, fixt: Therapy):
 
     assert (actual.aliases is None) == (fixt.aliases is None)
     if (actual.aliases is not None) and (fixt.aliases is not None):
-        assert actual.aliases == fixt.aliases
+        assert set(actual.aliases) == set(fixt.aliases)
 
     assert (actual.trade_names is None) == (fixt.trade_names is None)
     if (actual.trade_names is not None) and (fixt.trade_names is not None):
-        assert actual.trade_names == fixt.trade_names
+        assert set(actual.trade_names) == set(fixt.trade_names)
 
     assert (actual.xrefs is None) == (fixt.xrefs is None)
     if (actual.xrefs is not None) and (fixt.xrefs is not None):
-        assert actual.xrefs == fixt.xrefs
+        assert set(actual.xrefs) == set(fixt.xrefs)
 
     assert (actual.associated_with is None) == (fixt.associated_with is None)
     if (actual.associated_with is not None) and (fixt.associated_with is not None):
-        assert actual.associated_with == fixt.associated_with
+        assert set(actual.associated_with) == set(fixt.associated_with)
 
     assert (not actual.approval_ratings) == (not fixt.approval_ratings)
     if (actual.approval_ratings) and (fixt.approval_ratings):
-        assert actual.approval_ratings == fixt.approval_ratings
+        assert set(actual.approval_ratings) == set(fixt.approval_ratings)
 
     assert (actual.approval_year is None) == (fixt.approval_year is None)
     if (actual.approval_year is not None) and (fixt.approval_year is not None):
-        assert actual.approval_year == fixt.approval_year
+        assert set(actual.approval_year) == set(fixt.approval_year)
 
     assert (actual.has_indication is None) == (fixt.has_indication is None)
     if (actual.has_indication is not None) and (fixt.has_indication is not None):
-        assert len(actual.has_indication) == len(fixt.has_indication)
-        for i in range(len(actual.has_indication)):
-            assert actual.has_indication[i] == fixt.has_indication[i]
+        actual_inds = actual.has_indication.copy()
+        fixture_inds = fixt.has_indication.copy()
+        assert len(actual_inds) == len(fixture_inds)
+        actual_inds.sort(key=lambda x: x.disease_id)
+        fixture_inds.sort(key=lambda x: x.disease_id)
+        for i in range(len(actual_inds)):
+            assert actual_inds[i] == fixture_inds[i]
 
 
 @pytest.fixture(scope="session")

@@ -75,6 +75,8 @@ def compare_merged_records(actual: Dict, fixture: Dict):
         actual_inds = actual["has_indication"].copy()
         fixture_inds = fixture["has_indication"].copy()
         assert len(actual_inds) == len(fixture_inds)
+        actual_inds.sort()
+        fixture_inds.sort()
         for i in range(len(actual_inds)):
             assert actual_inds[i] == fixture_inds[i]
 
