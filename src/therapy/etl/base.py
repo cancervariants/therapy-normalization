@@ -188,6 +188,7 @@ class Base(ABC):
         max_phase = indication.get("supplemental_info", {}).get(
             "chembl_max_phase_for_ind"
         )
+        # sometimes this value is explicitly set to None, which is unsortable
         if max_phase is None:
             max_phase = ""
         return max_phase
