@@ -131,24 +131,19 @@ class Base(ABC):
         """
         raise NotImplementedError
 
-    def _load_therapy(self, therapy: Dict) -> None:
-        """Load individual therapy record into database.
-        Additionally, this method takes responsibility for:
-            * validating record structure correctness
-            * removing duplicates from list-like fields
-            * removing empty fields
+    @staticmethod
+    def _process_searchable_attributes(therapy: Dict) -> Dict:
+        """Apply standardization to searchable therapy fields, e.g. ``label``,
+        ``trade_names`` etc
 
-        :param Dict therapy: valid therapy object.
+        * delete redundant values
+        * sort
+        * trim if field has > 20 values
+        * remove empty fields
+
+        :param therapy: in-progress therapy object
+        :return: processed therapy object
         """
-        therapy = self._rules.apply_rules_to_therapy(therapy)
-        try:
-            Therapy(**therapy)
-        except ValidationError as e:
-            _logger.error(f"Attempted to load invalid therapy: {therapy}")
-            raise e
-
-        concept_id = therapy["concept_id"]
-
         for attr_type in ITEM_TYPES:
             if attr_type in therapy:
                 value = therapy[attr_type]
@@ -175,16 +170,46 @@ class Base(ABC):
                             pass
 
                 if len(value) > 20:
-                    _logger.debug(f"{concept_id} has > 20 {attr_type}.")
+                    _logger.debug(f"{therapy['concept_id']} has > 20 {attr_type}.")
                     del therapy[attr_type]
                     continue
 
+                value.sort()
                 therapy[attr_type] = value
+        return therapy
 
-        # compress has_indication
+    @staticmethod
+    def _indication_sorter(indication: Dict) -> str:
+        """Produce sortable value for indication object.
+
+        :param indication: ``has_indication`` object
+        :return: either given max_phase, or an empty string
+        """
+        max_phase = indication.get("supplemental_info", {}).get(
+            "chembl_max_phase_for_ind"
+        )
+        # sometimes this value is explicitly set to None, which is unsortable
+        if max_phase is None:
+            max_phase = ""
+        return max_phase
+
+    def _process_detail_fields(self, therapy: Dict) -> Dict:
+        """Apply standardization to therapy detail fields, e.g. ``has_indication``,
+        ``approval_year``, ``approval_ratings``.
+
+        ``has_indication`` is sorted first by highest to lowest CHEMBL approval rating,
+        if available, and then by given disease ID/label
+
+        :param therapy: in-progress therapy object
+        :return: therapy object with detail fields processed appropriately
+        """
         indications = therapy.get("has_indication")
         if indications:
-            therapy["has_indication"] = list(
+            indications.sort(key=self._indication_sorter, reverse=True)
+            indications.sort(
+                key=lambda x: (x.get("disease_id"), x.get("disease_label"))
+            )
+            indications = list(
                 {
                     json.dumps(
                         [
@@ -197,6 +222,7 @@ class Base(ABC):
                     for ind in indications
                 }
             )
+            therapy["has_indication"] = indications
         elif "has_indication" in therapy:
             del therapy["has_indication"]
 
@@ -205,9 +231,29 @@ class Base(ABC):
         for field in approval_attrs:
             if approval_attrs in therapy and therapy[field] is None:
                 del therapy[field]
+        return therapy
+
+    def _load_therapy(self, therapy: Dict) -> None:
+        """Load individual therapy record into database. This method takes
+        responsibility for:
+            * validating record structure correctness
+            * removing duplicates from and sorting list-like fields
+            * removing empty fields
+
+        :param therapy: valid therapy object.
+        """
+        try:
+            Therapy(**therapy)
+        except ValidationError as e:
+            _logger.error(f"Attempted to load invalid therapy: {therapy}")
+            raise e
+
+        therapy = self._rules.apply_rules_to_therapy(therapy)
+        therapy = self._process_searchable_attributes(therapy)
+        therapy = self._process_detail_fields(therapy)
 
         self.database.add_record(therapy, self._name)
-        self._added_ids.append(concept_id)
+        self._added_ids.append(therapy["concept_id"])
 
 
 class DiseaseIndicationBase(Base):
