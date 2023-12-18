@@ -10,7 +10,7 @@ import pytest
 from therapy.database.database import AWS_ENV_VAR_NAME, AbstractDatabase, create_db
 from therapy.etl.base import Base
 from therapy.query import QueryHandler
-from therapy.schemas import MatchesKeyed, MatchType, Therapy
+from therapy.schemas import MatchType, SourceSearchMatches, Therapy
 
 _logger = logging.getLogger(__name__)
 
@@ -141,9 +141,7 @@ def test_source(
                 self._src_name = EtlClass.__name__  # type: ignore
 
             def search(self, query_str: str):
-                resp = self._query_handler.search(
-                    query_str, incl=self._src_name, keyed=True
-                )
+                resp = self._query_handler.search(query_str, incl=self._src_name)
                 return resp.source_matches[self._src_name]
 
         return QueryGetter()
@@ -198,7 +196,7 @@ def compare_records():
 
 
 def _compare_response(
-    response: MatchesKeyed,
+    response: SourceSearchMatches,
     match_type: MatchType,
     fixture: Optional[Therapy] = None,
     fixture_list: Optional[List[Therapy]] = None,

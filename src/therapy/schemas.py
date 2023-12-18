@@ -304,7 +304,7 @@ class SourceMeta(BaseModel):
     )
 
 
-class MatchesKeyed(BaseModel):
+class SourceSearchMatches(BaseModel):
     """Container for matching information from an individual source.
     Used when matches are requested as an object, not an array.
     """
@@ -316,51 +316,31 @@ class MatchesKeyed(BaseModel):
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
-                "match_type": 0,
-                "records": [],
+                "match_type": 80,
+                "records": [
+                    {
+                        "concept_id": "chemidplus:15663-27-1",
+                        "label": "Cisplatin",
+                        "aliases": [
+                            "1,2-Diaminocyclohexaneplatinum II citrate",
+                            "cis-Diaminedichloroplatinum",
+                        ],
+                        "trade_names": [],
+                        "xrefs": ["drugbank:DB00515"],
+                        "associated_with": ["unii:Q20Q21Q62J"],
+                        "approval_year": [],
+                        "has_indication": [],
+                    }
+                ],
                 "source_meta_": {
-                    "data_license": "CC BY-SA 3.0",
-                    "data_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
-                    "version": "27",
-                    "data_url": "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",
-                    "rdp_url": "http://reusabledata.org/chembl.html",
+                    "data_license": "custom",
+                    "data_license_url": "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",
+                    "version": "20230222",
+                    "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
                     "data_license_attributes": {
                         "non_commercial": False,
-                        "share_alike": True,
                         "attribution": True,
-                    },
-                },
-            }
-        }
-    )
-
-
-class MatchesListed(BaseModel):
-    """Container for matching information from an individual source.
-    Used when matches are requested as an array, not an object.
-    """
-
-    source: SourceName
-    match_type: MatchType
-    records: List[Therapy]
-    source_meta_: SourceMeta
-
-    model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "source": "ChEMBL",
-                "match_type": 0,
-                "records": [],
-                "source_meta_": {
-                    "data_license": "CC BY-SA 3.0",
-                    "data_license_url": "https://creativecommons.org/licenses/by-sa/3.0/",
-                    "version": "27",
-                    "data_url": "http://ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb/releases/chembl_27/",
-                    "rdp_url": "http://reusabledata.org/chembl.html",
-                    "data_license_attributes": {
-                        "non_commercial": False,
-                        "share_alike": True,
-                        "attribution": True,
+                        "share_alike": False,
                     },
                 },
             }
@@ -677,38 +657,37 @@ class SearchService(BaseModel):
 
     query: str
     warnings: List[Dict] = []
-    source_matches: Union[Dict[SourceName, MatchesKeyed], List[MatchesListed]]
+    source_matches: Dict[SourceName, SourceSearchMatches]
     service_meta_: ServiceMeta
 
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
                 "query": "cisplatin",
-                "warnings": None,
-                "source_matches": [
-                    {
-                        "source": "ChemIDplus",
+                "warnings": [],
+                "source_matches": {
+                    "ChemIDplus": {
                         "match_type": 80,
                         "records": [
                             {
-                                "label": "Cisplatin",
                                 "concept_id": "chemidplus:15663-27-1",
+                                "label": "Cisplatin",
                                 "aliases": [
-                                    "cis-Diaminedichloroplatinum",
                                     "1,2-Diaminocyclohexaneplatinum II citrate",
+                                    "cis-Diaminedichloroplatinum",
                                 ],
-                                "xrefs": ["drugbank:DB00515"],
-                                "associated_with": ["fda:Q20Q21Q62J"],
-                                "approval_ratings": None,
                                 "trade_names": [],
+                                "xrefs": ["drugbank:DB00515"],
+                                "associated_with": ["unii:Q20Q21Q62J"],
+                                "approval_year": [],
+                                "has_indication": [],
                             }
                         ],
                         "source_meta_": {
                             "data_license": "custom",
                             "data_license_url": "https://www.nlm.nih.gov/databases/download/terms_and_conditions.html",
-                            "version": "20210204",
+                            "version": "20230222",
                             "data_url": "ftp://ftp.nlm.nih.gov/nlmdata/.chemidlease/",
-                            "rdp_url": None,
                             "data_license_attributes": {
                                 "non_commercial": False,
                                 "attribution": True,
@@ -716,80 +695,188 @@ class SearchService(BaseModel):
                             },
                         },
                     },
-                    {
-                        "source": "RxNorm",
+                    "GuideToPHARMACOLOGY": {
                         "match_type": 80,
                         "records": [
                             {
+                                "concept_id": "iuphar.ligand:5343",
                                 "label": "cisplatin",
-                                "concept_id": "rxcui:2555",
-                                "aliases": [
-                                    "cis-Dichlorodiammineplatinum(II)",
-                                    "Platinum Diamminodichloride",
-                                    "cis Diamminedichloroplatinum",
-                                    "cis-diamminedichloroplatinum(II)",
-                                    "cis-Diamminedichloroplatinum",
-                                    "cis Platinum",
-                                    "CDDP",
-                                    "Dichlorodiammineplatinum",
-                                    "cis-Platinum",
-                                    "CISplatin",
-                                    "cis-Diamminedichloroplatinum(II)",
-                                    "Cis-DDP",
-                                    "DDP",
-                                    "Diamminodichloride, Platinum",
+                                "aliases": ["Platinol"],
+                                "trade_names": [],
+                                "xrefs": [
+                                    "chembl:CHEMBL11359",
+                                    "chemidplus:15663-27-1",
+                                    "drugbank:DB00515",
                                 ],
-                                "xrefs": ["drugbank:DB00515", "drugbank:DB12117"],
                                 "associated_with": [
-                                    "usp:m17910",
-                                    "vandf:4018139",
-                                    "mesh:D002945",
-                                    "mthspl:Q20Q21Q62J",
-                                    "mmsl:d00195",
-                                    "atc:L01XA01",
-                                    "mmsl:31747",
-                                    "mmsl:4456",
+                                    "CHEBI:27899",
+                                    "pubchem.compound:441203",
+                                    "pubchem.substance:178102005",
                                 ],
-                                "approval_ratings": ["rxnorm_prescribable"],
-                                "trade_names": ["Cisplatin", "Platinol"],
+                                "approval_ratings": ["gtopdb_approved"],
+                                "approval_year": [],
+                                "has_indication": [],
                             }
                         ],
                         "source_meta_": {
-                            "data_license": "UMLS Metathesaurus",
-                            "data_license_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/termsofservice.html",
-                            "version": "20210104",
-                            "data_url": "https://www.nlm.nih.gov/research/umls/rxnorm/docs/rxnormfiles.html",
-                            "rdp_url": None,
+                            "data_license": "CC BY-SA 4.0",
+                            "data_license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+                            "version": "2023.3",
+                            "data_url": "https://www.guidetopharmacology.org/download.jsp",
                             "data_license_attributes": {
                                 "non_commercial": False,
                                 "attribution": True,
+                                "share_alike": True,
+                            },
+                        },
+                    },
+                    "Wikidata": {
+                        "match_type": 80,
+                        "records": [
+                            {
+                                "concept_id": "wikidata:Q412415",
+                                "label": "cisplatin",
+                                "aliases": [
+                                    "CDDP",
+                                    "CIS-DDP",
+                                    "Cis-DDP",
+                                    "Platinol",
+                                    "Platinol-AQ",
+                                    "cis-diamminedichloroplatinum(II)",
+                                ],
+                                "trade_names": [],
+                                "xrefs": [
+                                    "chembl:CHEMBL11359",
+                                    "chemidplus:15663-27-1",
+                                    "drugbank:DB00515",
+                                    "iuphar.ligand:5343",
+                                    "rxcui:2555",
+                                ],
+                                "associated_with": ["pubchem.compound:5702198"],
+                                "approval_year": [],
+                                "has_indication": [],
+                            }
+                        ],
+                        "source_meta_": {
+                            "data_license": "CC0 1.0",
+                            "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+                            "version": "20231212",
+                            "data_license_attributes": {
+                                "non_commercial": False,
+                                "attribution": False,
                                 "share_alike": False,
                             },
                         },
                     },
-                    {
-                        "source": "NCIt",
+                    "DrugBank": {
                         "match_type": 80,
                         "records": [
                             {
+                                "concept_id": "drugbank:DB00515",
                                 "label": "Cisplatin",
-                                "concept_id": "ncit:C376",
-                                "aliases": [],
+                                "aliases": [
+                                    "APRD00359",
+                                    "CDDP",
+                                    "Cis-DDP",
+                                    "cis-diamminedichloroplatinum(II)",
+                                    "cisplatino",
+                                ],
+                                "trade_names": [],
                                 "xrefs": ["chemidplus:15663-27-1"],
                                 "associated_with": [
-                                    "umls:C0008838",
-                                    "fda:Q20Q21Q62J",
-                                    "chebi:CHEBI:27899",
+                                    "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
+                                    "unii:Q20Q21Q62J",
                                 ],
-                                "approval_ratings": None,
+                                "approval_year": [],
+                                "has_indication": [],
+                            }
+                        ],
+                        "source_meta_": {
+                            "data_license": "CC0 1.0",
+                            "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
+                            "version": "5.1.10",
+                            "data_url": "https://go.drugbank.com/releases/latest#open-data",
+                            "rdp_url": "http://reusabledata.org/drugbank.html",
+                            "data_license_attributes": {
+                                "non_commercial": False,
+                                "attribution": False,
+                                "share_alike": False,
+                            },
+                        },
+                    },
+                    "HemOnc": {
+                        "match_type": 80,
+                        "records": [
+                            {
+                                "concept_id": "hemonc:105",
+                                "label": "Cisplatin",
+                                "aliases": [
+                                    "CDDP",
+                                    "DACP",
+                                    "DDP",
+                                    "NSC 119875",
+                                    "NSC-119875",
+                                    "NSC119875",
+                                    "cis-diamminedichloroplatinum III",
+                                    "cis-platinum",
+                                    "cisplatinum",
+                                ],
                                 "trade_names": [],
+                                "xrefs": ["rxcui:2555"],
+                                "associated_with": [],
+                                "approval_ratings": ["hemonc_approved"],
+                                "approval_year": ["1978"],
+                                "has_indication": [
+                                    {
+                                        "disease_id": "hemonc:569",
+                                        "disease_label": "Bladder cancer",
+                                        "normalized_disease_id": "ncit:C9334",
+                                        "supplemental_info": {"regulatory_body": "FDA"},
+                                    },
+                                    {
+                                        "disease_id": "hemonc:671",
+                                        "disease_label": "Testicular cancer",
+                                        "normalized_disease_id": "ncit:C7251",
+                                        "supplemental_info": {"regulatory_body": "FDA"},
+                                    },
+                                ],
                             }
                         ],
                         "source_meta_": {
                             "data_license": "CC BY 4.0",
                             "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
-                            "version": "20.09d",
-                            "data_url": "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/2020/20.09d_Release/",
+                            "version": "2023-09-05",
+                            "data_url": "https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/9CY9C6",
+                            "data_license_attributes": {
+                                "non_commercial": False,
+                                "attribution": True,
+                                "share_alike": False,
+                            },
+                        },
+                    },
+                    "NCIt": {
+                        "match_type": 80,
+                        "records": [
+                            {
+                                "concept_id": "ncit:C376",
+                                "label": "Cisplatin",
+                                "aliases": [],
+                                "trade_names": [],
+                                "xrefs": ["chemidplus:15663-27-1"],
+                                "associated_with": [
+                                    "CHEBI:27899",
+                                    "umls:C0008838",
+                                    "unii:Q20Q21Q62J",
+                                ],
+                                "approval_year": [],
+                                "has_indication": [],
+                            }
+                        ],
+                        "source_meta_": {
+                            "data_license": "CC BY 4.0",
+                            "data_license_url": "https://creativecommons.org/licenses/by/4.0/legalcode",
+                            "version": "23.10e",
+                            "data_url": "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/",
                             "rdp_url": "http://reusabledata.org/ncit.html",
                             "data_license_attributes": {
                                 "non_commercial": False,
@@ -798,46 +885,7 @@ class SearchService(BaseModel):
                             },
                         },
                     },
-                    {
-                        "source": "Wikidata",
-                        "match_type": 80,
-                        "records": [
-                            {
-                                "label": "cisplatin",
-                                "concept_id": "wikidata:Q412415",
-                                "aliases": [
-                                    "Platinol",
-                                    "cis-diamminedichloroplatinum(II)",
-                                    "CDDP",
-                                    "Cis-DDP",
-                                    "CIS-DDP",
-                                    "Platinol-AQ",
-                                ],
-                                "xrefs": [
-                                    "chemidplus:15663-27-1",
-                                    "chembl:CHEMBL11359",
-                                    "rxcui:2555",
-                                    "drugbank:DB00515",
-                                ],
-                                "associated_with": ["pubchem.compound:5702198"],
-                                "approval_ratings": None,
-                                "trade_names": [],
-                            }
-                        ],
-                        "source_meta_": {
-                            "data_license": "CC0 1.0",
-                            "data_license_url": "https://creativecommons.org/publicdomain/zero/1.0/",
-                            "version": "20210331",
-                            "data_url": None,
-                            "rdp_url": None,
-                            "data_license_attributes": {
-                                "non_commercial": False,
-                                "attribution": False,
-                                "share_alike": False,
-                            },
-                        },
-                    },
-                ],
+                },
                 "service_meta_": {
                     "name": "thera-py",
                     "version": __version__,
