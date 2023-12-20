@@ -25,9 +25,9 @@ def search_handler(database: AbstractDatabase):
         def __init__(self):
             self.query_handler = QueryHandler(database)
 
-        def search(self, query_str, keyed=False, incl="", excl="", infer=True):
+        def search(self, query_str, incl="", excl="", infer=True):
             return self.query_handler.search(
-                query_str=query_str, keyed=keyed, incl=incl, excl=excl, infer=infer
+                query_str=query_str, incl=incl, excl=excl, infer=infer
             )
 
     return QueryGetter()
@@ -250,36 +250,26 @@ def compare_unmerged_response(
 
 def test_search(search_handler):
     """Test that query returns properly-structured response."""
-    resp = search_handler.search("cisplatin", keyed=False)
+    resp = search_handler.search("cisplatin")
     assert resp.query == "cisplatin"
     matches = resp.source_matches
-    assert isinstance(matches, list)
+    assert isinstance(matches, dict)
     assert len(matches) == 9
-    wikidata = list(filter(lambda m: m.source == "Wikidata", matches))[0]
+    wikidata = matches[SourceName.WIKIDATA]
     assert len(wikidata.records) == 1
     wikidata_record = wikidata.records[0]
     assert wikidata_record.label == "cisplatin"
 
     # test for not including redundant records w/ same match_type
-    resp = search_handler.search("penicillamine", keyed=True)
+    resp = search_handler.search("penicillamine")
     matches = resp.source_matches[SourceName.RXNORM]
     assert len(matches.records) == 1
-
-
-def test_search_keyed(search_handler):
-    """Test that query structures matches as dict when requested."""
-    resp = search_handler.search("penicillin v", keyed=True)
-    matches = resp.source_matches
-    assert isinstance(matches, dict)
-    chemidplus = matches[SourceName.CHEMIDPLUS]
-    chemidplus_record = chemidplus.records[0]
-    assert chemidplus_record.label == "Penicillin V"
 
 
 def test_search_sources(search_handler):
     """Test inclusion and exclusion of sources in query."""
     # test blank params
-    resp = search_handler.search("cisplatin", keyed=True)
+    resp = search_handler.search("cisplatin")
     assert set(resp.source_matches.keys()) == {
         "Wikidata",
         "ChEMBL",
@@ -293,12 +283,12 @@ def test_search_sources(search_handler):
     }
 
     # test partial inclusion
-    resp = search_handler.search("cisplatin", keyed=True, incl="chembl,ncit")
+    resp = search_handler.search("cisplatin", incl="chembl,ncit")
     assert set(resp.source_matches.keys()) == {"ChEMBL", "NCIt"}
 
     # test full inclusion
     sources = "chembl,ncit,drugbank,wikidata,rxnorm,chemidplus,hemonc,guidetopharmacology,drugsatfda"
-    resp = search_handler.search("cisplatin", keyed=True, incl=sources, excl="")
+    resp = search_handler.search("cisplatin", incl=sources, excl="")
     assert set(resp.source_matches.keys()) == {
         "Wikidata",
         "ChEMBL",
@@ -312,7 +302,7 @@ def test_search_sources(search_handler):
     }
 
     # test partial exclusion
-    resp = search_handler.search("cisplatin", keyed=True, excl="chemidplus")
+    resp = search_handler.search("cisplatin", excl="chemidplus")
     assert set(resp.source_matches.keys()) == {
         "Wikidata",
         "ChEMBL",
@@ -326,11 +316,11 @@ def test_search_sources(search_handler):
 
     # test full exclusion
     sources = "chembl,wikidata,drugbank,ncit,rxnorm,chemidplus,hemonc,guidetopharmacology,drugsatfda"
-    resp = search_handler.search("cisplatin", keyed=True, excl=sources)
+    resp = search_handler.search("cisplatin", excl=sources)
     assert set(resp.source_matches.keys()) == set()
 
     # test case insensitive
-    resp = search_handler.search("cisplatin", keyed=True, excl="ChEmBl")
+    resp = search_handler.search("cisplatin", excl="ChEmBl")
     assert set(resp.source_matches.keys()) == {
         "Wikidata",
         "NCIt",
@@ -342,18 +332,16 @@ def test_search_sources(search_handler):
         "DrugsAtFDA",
     }
 
-    resp = search_handler.search("cisplatin", keyed=True, incl="wIkIdAtA,cHeMbL")
+    resp = search_handler.search("cisplatin", incl="wIkIdAtA,cHeMbL")
     assert set(resp.source_matches.keys()) == {"Wikidata", "ChEMBL"}
 
     # test error on invalid source names
     with pytest.raises(InvalidParameterError):
-        resp = search_handler.search("cisplatin", keyed=True, incl="chambl")
+        resp = search_handler.search("cisplatin", incl="chambl")
 
     # test error for supplying both incl and excl args
     with pytest.raises(InvalidParameterError):
-        resp = search_handler.search(
-            "cisplatin", keyed=True, incl="chembl", excl="wikidata"
-        )
+        resp = search_handler.search("cisplatin", incl="chembl", excl="wikidata")
 
 
 def test_infer_option(search_handler, normalize_handler):
@@ -368,7 +356,7 @@ def test_infer_option(search_handler, normalize_handler):
         }
     ]
 
-    response = search_handler.search(query, keyed=True)
+    response = search_handler.search(query)
     assert (
         response.source_matches[SourceName.DRUGBANK].match_type == MatchType.CONCEPT_ID
     )
@@ -388,7 +376,7 @@ def test_infer_option(search_handler, normalize_handler):
         }
     ]
 
-    response = search_handler.search(query, keyed=True)
+    response = search_handler.search(query)
     assert response.source_matches["NCIt"].match_type == MatchType.CONCEPT_ID
     assert response.warnings == expected_warnings
 
@@ -406,7 +394,7 @@ def test_infer_option(search_handler, normalize_handler):
         }
     ]
 
-    response = search_handler.search(query, keyed=True)
+    response = search_handler.search(query)
     assert response.source_matches["ChemIDplus"].match_type == MatchType.CONCEPT_ID
     assert response.warnings == expected_warnings
 
@@ -424,7 +412,7 @@ def test_infer_option(search_handler, normalize_handler):
         }
     ]
 
-    response = search_handler.search(query, keyed=True)
+    response = search_handler.search(query)
     assert response.source_matches["ChEMBL"].match_type == MatchType.CONCEPT_ID
     assert response.warnings == expected_warnings
 
@@ -442,7 +430,7 @@ def test_infer_option(search_handler, normalize_handler):
         }
     ]
 
-    response = search_handler.search(query, keyed=True)
+    response = search_handler.search(query)
     assert response.source_matches["Wikidata"].match_type == MatchType.CONCEPT_ID
     assert response.warnings == expected_warnings
 
@@ -460,7 +448,7 @@ def test_infer_option(search_handler, normalize_handler):
         }
     ]
 
-    response = search_handler.search(query, keyed=True)
+    response = search_handler.search(query)
     assert response.source_matches["DrugsAtFDA"].match_type == MatchType.CONCEPT_ID
     assert response.warnings == expected_warnings
 
@@ -477,7 +465,7 @@ def test_infer_option(search_handler, normalize_handler):
         }
     ]
 
-    response = search_handler.search(query, keyed=True)
+    response = search_handler.search(query)
     assert response.source_matches["DrugsAtFDA"].match_type == MatchType.CONCEPT_ID
     assert response.warnings == expected_warnings
 

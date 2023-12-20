@@ -52,9 +52,6 @@ app.openapi = custom_openapi  # type: ignore
 get_matches_summary = "Given query, provide highest matches from each source."
 response_descr = "A response to a validly-formed query."
 q_descr = "Therapy to search."
-keyed_descr = (
-    "If true, return response as key-value pairs of sources to source " "matches."
-)
 incl_descr = (
     "Comma-separated list of source names to include in response. Will "
     "exclude all other sources. Will return HTTP status code 422: "
@@ -105,7 +102,6 @@ unmerged_normalize_description = (
 )
 def search(
     q: str = Query(..., description=q_descr),
-    keyed: Optional[bool] = Query(False, description=keyed_descr),
     incl: Optional[str] = Query(None, description=incl_descr),
     excl: Optional[str] = Query(None, description=excl_descr),
     infer_namespace: bool = Query(True, description=infer_descr),
@@ -114,8 +110,6 @@ def search(
     provided by user.
 
     :param q: therapy search term
-    :param bool keyed: if true, response is structured as key/value pair of sources to
-        source match lists.
     :param str incl: comma-separated list of sources to include, with all others
         excluded. Raises HTTPException if both `incl` and `excl` are given.
     :param str excl: comma-separated list of sources exclude, with all others included.
@@ -126,7 +120,6 @@ def search(
     try:
         response = query_handler.search(
             html.unescape(q),
-            keyed=keyed,  # type: ignore
             incl=incl,  # type: ignore
             excl=excl,  # type: ignore
             infer=infer_namespace,
