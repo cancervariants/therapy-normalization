@@ -102,7 +102,7 @@ def _load_source(
         click.get_current_context().exit()
     SourceClass = eval(name.value)  # noqa: N806
 
-    source = SourceClass(database=db)
+    source = SourceClass(database=db, silent=False)
     try:
         processed_ids += source.perform_etl(use_existing)
     except EtlError as e:
