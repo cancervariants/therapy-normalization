@@ -82,7 +82,7 @@ export UMLS_API_KEY=12345-6789-abcdefg-hijklmnop  # make sure to replace with yo
 HemOnc.org data requires a Harvard Dataverse API token. You must create a user account on the [Harvard Dataverse website](https://dataverse.harvard.edu/), you can follow [these instructions](https://guides.dataverse.org/en/latest/user/account.html) to create an account and generate an API token. Once you have an API token, set the following environment variable:
 
 ```shell script
-export DATAVERSE_API_KEY=12345-6789-abcdefgh-hijklmnop  # make sure to replace with your key!
+export HARVARD_DATAVERSE_API_KEY=12345-6789-abcdefgh-hijklmnop  # make sure to replace with your key!
 ```
 
 #### Update source(s)
