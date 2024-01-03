@@ -98,10 +98,10 @@ The Therapy Normalizer currently aggregates therapy data from:
 * [RxNorm](https://www.nlm.nih.gov/research/umls/rxnorm/index.html)
 * [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page)
 
-To update source(s), simply set `--normalizer` to the source(s) you wish to update separated by spaces. For example, the following command updates ChEMBL and Wikidata:
+To update source(s), simply set `--sources` to the source(s) you wish to update separated by spaces. For example, the following command updates ChEMBL and Wikidata:
 
 ```commandline
-python3 -m therapy.cli --normalizer="chembl wikidata"
+python3 -m therapy.cli --sources="chembl wikidata"
 ```
 
 You can update all sources at once with the `--update_all` flag:
