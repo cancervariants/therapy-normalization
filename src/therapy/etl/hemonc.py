@@ -129,7 +129,15 @@ class HemOnc(DiseaseIndicationBase):
                     _logger.warning(f"Unrecognized `Maps To` source: {src_raw}")
 
             elif rel_type == "Has brand name":
-                record["trade_names"].append(brand_names[row[1]])
+                try:
+                    record["trade_names"].append(brand_names[row[1]])
+                except KeyError:
+                    _logger.warning(
+                        "Unrecognized brand name ID (%s) for HemOnc concept %s",
+                        row[1],
+                        row[0],
+                    )
+                    continue
 
             elif rel_type == "Was FDA approved yr":
                 try:
