@@ -76,6 +76,27 @@
               "type": "Disease"
             },
             {
+              "id": "hemonc:645",
+              "label": "Ovarian cancer",
+              "extensions": [
+                {
+                  "type": "Extension",
+                  "name": "regulatory_body",
+                  "value": "FDA"
+                }
+              ],
+              "mappings": [
+                {
+                  "coding": {
+                    "system": "ncit",
+                    "code": "C7431"
+                  },
+                  "relation": "relatedMatch"
+                }
+              ],
+              "type": "Disease"
+            },
+            {
               "id": "hemonc:569",
               "label": "Bladder cancer",
               "extensions": [
@@ -3500,7 +3521,7 @@
       "TX",
       "TREAT",
       "Therapeutic Method",
-            "Therapeutic",
+      "Therapeutic",
       "Treatment",
       "Therapeutic Technique",
       "Therapy",
@@ -3532,7 +3553,7 @@
               "treatment",
               "TREAT",
               "Therapy",
-            "Therapeutic",
+              "Therapeutic",
               "Therapeutic Method",
               "Therapeutic Interventions",
               "Treatment",
@@ -3851,6 +3872,12 @@
                 "supplemental_info": {
                   "regulatory_body": "FDA"
                 }
+              },
+              {
+                "disease_id": "hemonc:645",
+                "disease_label": "Ovarian cancer",
+                "normalized_disease_id": "ncit:C7431",
+                "supplemental_info": { "regulatory_body": "FDA" }
               }
             ]
           }

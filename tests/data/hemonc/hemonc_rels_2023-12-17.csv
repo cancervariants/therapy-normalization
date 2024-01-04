@@ -1,14 +1,14 @@
 concept_code_1,concept_code_2,vocabulary_id_1,vocabulary_id_2,relationship_id
 26,3100,HemOnc,HemOnc,Has brand name
 26,3101,HemOnc,HemOnc,Has brand name
+26,645,HemOnc,HemOnc,Has FDA indication
 26,44957,HemOnc,HemOnc,Has route
 26,45069,HemOnc,HemOnc,Is a
 26,755,HemOnc,HemOnc,Was FDA approved yr
-26,4126,HemOnc,RxNorm,Maps to
-26,J0207,HemOnc,HCPCS,Maps to
 26,45069,HemOnc,HemOnc,Has major class
+26,J0207,HemOnc,HCPCS,Maps to
 26,76310-017,HemOnc,NDC,Maps to
-26,645,HemOnc,HemOnc,Has FDA indication
+26,4126,HemOnc,RxNorm,Maps to
 65,51576,HemOnc,HemOnc,Has brand name
 65,5159,HemOnc,HemOnc,Has brand name
 65,5160,HemOnc,HemOnc,Has brand name
@@ -24,6 +24,8 @@ concept_code_1,concept_code_2,vocabulary_id_1,vocabulary_id_2,relationship_id
 65,5170,HemOnc,HemOnc,Has brand name
 65,5171,HemOnc,HemOnc,Has brand name
 65,5172,HemOnc,HemOnc,Has brand name
+65,581,HemOnc,HemOnc,Has FDA indication
+65,46094,HemOnc,HemOnc,Has FDA indication
 65,44957,HemOnc,HemOnc,Has route
 65,45092,HemOnc,HemOnc,Is a
 65,45230,HemOnc,HemOnc,Is a
@@ -31,23 +33,21 @@ concept_code_1,concept_code_2,vocabulary_id_1,vocabulary_id_2,relationship_id
 65,45303,HemOnc,HemOnc,Is a
 65,45050,HemOnc,HemOnc,Is a
 65,768,HemOnc,HemOnc,Was FDA approved yr
-65,134547,HemOnc,RxNorm,Maps to
+65,45058,HemOnc,HemOnc,Has major class
+65,45230,HemOnc,HemOnc,Has minor class
 65,C9042,HemOnc,HCPCS,Maps to
 65,C9243,HemOnc,HCPCS,Maps to
 65,J9033,HemOnc,HCPCS,Maps to
 65,J9034,HemOnc,HCPCS,Maps to
-65,J9036,HemOnc,HCPCS,Maps to
 65,J9056,HemOnc,HCPCS,Maps to
 65,J9058,HemOnc,HCPCS,Maps to
 65,J9059,HemOnc,HCPCS,Maps to
-65,45058,HemOnc,HemOnc,Has major class
-65,45230,HemOnc,HemOnc,Has minor class
+65,J9036,HemOnc,HCPCS,Maps to
 65,42367-521,HemOnc,NDC,Maps to
 65,63459-348,HemOnc,NDC,Maps to
 65,63459-390,HemOnc,NDC,Maps to
 65,63459-391,HemOnc,NDC,Maps to
-65,581,HemOnc,HemOnc,Has FDA indication
-65,46094,HemOnc,HemOnc,Has FDA indication
+65,134547,HemOnc,RxNorm,Maps to
 105,13471,HemOnc,HemOnc,Has brand name
 105,13472,HemOnc,HemOnc,Has brand name
 105,13473,HemOnc,HemOnc,Has brand name
@@ -117,6 +117,9 @@ concept_code_1,concept_code_2,vocabulary_id_1,vocabulary_id_2,relationship_id
 105,13531,HemOnc,HemOnc,Has brand name
 105,13532,HemOnc,HemOnc,Has brand name
 105,13533,HemOnc,HemOnc,Has brand name
+105,569,HemOnc,HemOnc,Has FDA indication
+105,645,HemOnc,HemOnc,Has FDA indication
+105,671,HemOnc,HemOnc,Has FDA indication
 105,44957,HemOnc,HemOnc,May have route
 105,45273,HemOnc,HemOnc,May have route
 105,45092,HemOnc,HemOnc,Is a
@@ -125,12 +128,11 @@ concept_code_1,concept_code_2,vocabulary_id_1,vocabulary_id_2,relationship_id
 105,45058,HemOnc,HemOnc,Is a
 105,45050,HemOnc,HemOnc,Is a
 105,738,HemOnc,HemOnc,Was FDA approved yr
-105,2555,HemOnc,RxNorm,Maps to
+105,45058,HemOnc,HemOnc,Has major class
+105,45388,HemOnc,HemOnc,Has minor class
 105,C9418,HemOnc,HCPCS,Maps to
 105,J9060,HemOnc,HCPCS,Maps to
 105,J9062,HemOnc,HCPCS,Maps to
-105,45058,HemOnc,HemOnc,Has major class
-105,45388,HemOnc,HemOnc,Has minor class
 105,0143-9504,HemOnc,NDC,Maps to
 105,0143-9505,HemOnc,NDC,Maps to
 105,0703-5747,HemOnc,NDC,Maps to
@@ -145,17 +147,29 @@ concept_code_1,concept_code_2,vocabulary_id_1,vocabulary_id_2,relationship_id
 105,68083-162,HemOnc,NDC,Maps to
 105,68083-163,HemOnc,NDC,Maps to
 105,70860-206,HemOnc,NDC,Maps to
-105,569,HemOnc,HemOnc,Has FDA indication
-105,671,HemOnc,HemOnc,Has FDA indication
+105,2555,HemOnc,RxNorm,Maps to
 151,15844,HemOnc,HemOnc,Has brand name
 151,120237,HemOnc,HemOnc,Has brand name
+151,658,HemOnc,HemOnc,Has FDA indication
 151,45153,HemOnc,HemOnc,Has route
 151,45632,HemOnc,HemOnc,Is a
 151,768,HemOnc,HemOnc,Was FDA approved yr
-151,475230,HemOnc,RxNorm,Maps to
-151,J9155,HemOnc,HCPCS,Maps to
 151,46196,HemOnc,HemOnc,Has major class
 151,45632,HemOnc,HemOnc,Has minor class
+151,J9155,HemOnc,HCPCS,Maps to
 151,55566-8303,HemOnc,NDC,Maps to
 151,55566-8403,HemOnc,NDC,Maps to
-151,658,HemOnc,HemOnc,Has FDA indication
+151,475230,HemOnc,RxNorm,Maps to
+66258,18918,HemOnc,HemOnc,Has brand name
+66258,69510,HemOnc,HemOnc,Has brand name
+66258,45153,HemOnc,HemOnc,Has route
+66258,45734,HemOnc,HemOnc,Is a
+66258,45268,HemOnc,HemOnc,Is a
+66258,45050,HemOnc,HemOnc,Is a
+66258,778,HemOnc,HemOnc,Was FDA approved yr
+66258,Q5110,HemOnc,HCPCS,Maps to
+66258,0069-0291,HemOnc,NDC,Maps to
+66258,0069-0292,HemOnc,NDC,Maps to
+66258,0069-0293,HemOnc,NDC,Maps to
+66258,0069-0294,HemOnc,NDC,Maps to
+66258,68442,HemOnc,RxNorm,Maps to
