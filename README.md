@@ -79,10 +79,10 @@ You must set the `UMLS_API_KEY` environment variable to your API key. This can b
 export UMLS_API_KEY=12345-6789-abcdefg-hijklmnop  # make sure to replace with your key!
 ```
 
-HemOnc.org data requires a Harvard Dataverse API key. After creating a user account on the Harvard Dataverse website, you can follow [these instructions](https://guides.dataverse.org/en/latest/user/account.html) to generate a key. Once you have a key, set the following environment variable:
+HemOnc.org data requires a Harvard Dataverse API token. You must create a user account on the [Harvard Dataverse website](https://dataverse.harvard.edu/), you can follow [these instructions](https://guides.dataverse.org/en/latest/user/account.html) to create an account and generate an API token. Once you have an API token, set the following environment variable:
 
 ```shell script
-export DATAVERSE_API_KEY=12345-6789-abcdefgh-hijklmnop  # make sure to replace with your key!
+export HARVARD_DATAVERSE_API_KEY=12345-6789-abcdefgh-hijklmnop  # make sure to replace with your key!
 ```
 
 #### Update source(s)
@@ -98,10 +98,10 @@ The Therapy Normalizer currently aggregates therapy data from:
 * [RxNorm](https://www.nlm.nih.gov/research/umls/rxnorm/index.html)
 * [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page)
 
-To update source(s), simply set `--normalizer` to the source(s) you wish to update separated by spaces. For example, the following command updates ChEMBL and Wikidata:
+To update source(s), simply set `--sources` to the source(s) you wish to update separated by spaces. For example, the following command updates ChEMBL and Wikidata:
 
 ```commandline
-python3 -m therapy.cli --normalizer="chembl wikidata"
+python3 -m therapy.cli --sources="chembl wikidata"
 ```
 
 You can update all sources at once with the `--update_all` flag:
