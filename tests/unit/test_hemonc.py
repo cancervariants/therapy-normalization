@@ -50,6 +50,12 @@ def cisplatin():
                     "normalized_disease_id": "ncit:C7251",
                     "supplemental_info": {"regulatory_body": "FDA"},
                 },
+                {
+                    "disease_id": "hemonc:645",
+                    "disease_label": "Ovarian cancer",
+                    "normalized_disease_id": "ncit:C7431",
+                    "supplemental_info": {"regulatory_body": "FDA"},
+                },
             ],
         }
     )
@@ -146,7 +152,25 @@ def degarelix():
     )
 
 
-def test_concept_id_match(hemonc, compare_response, cisplatin, bendamustine, degarelix):
+@pytest.fixture(scope="module")
+def filgrastim():
+    """Create fixture for filgrastim drug (tests handling of deprecated brand name)"""
+    return Therapy(
+        **{
+            "label": "Filgrastim-aafi",
+            "concept_id": "hemonc:66258",
+            "aliases": [],
+            "xrefs": ["rxcui:68442"],
+            "trade_names": ["Nivestym"],
+            "approval_ratings": ["hemonc_approved"],
+            "approval_year": ["2018"],
+        }
+    )
+
+
+def test_concept_id_match(
+    hemonc, compare_response, cisplatin, bendamustine, degarelix, filgrastim
+):
     """Test that concept ID queries resolve to correct record."""
     response = hemonc.search("hemonc:105")
     compare_response(response, MatchType.CONCEPT_ID, cisplatin)
@@ -157,8 +181,13 @@ def test_concept_id_match(hemonc, compare_response, cisplatin, bendamustine, deg
     response = hemonc.search("hemonc:151")
     compare_response(response, MatchType.CONCEPT_ID, degarelix)
 
+    response = hemonc.search("hemonc:66258")
+    compare_response(response, MatchType.CONCEPT_ID, filgrastim)
 
-def test_label_match(hemonc, compare_response, cisplatin, bendamustine, degarelix):
+
+def test_label_match(
+    hemonc, compare_response, cisplatin, bendamustine, degarelix, filgrastim
+):
     """Test that label queries resolve to correct record."""
     response = hemonc.search("cisplatin")
     compare_response(response, MatchType.LABEL, cisplatin)
@@ -168,6 +197,9 @@ def test_label_match(hemonc, compare_response, cisplatin, bendamustine, degareli
 
     response = hemonc.search("DEGARELIX")
     compare_response(response, MatchType.LABEL, degarelix)
+
+    response = hemonc.search("Filgrastim-aafi")
+    compare_response(response, MatchType.LABEL, filgrastim)
 
 
 def test_alias_match(hemonc, compare_response, cisplatin, bendamustine, degarelix):
@@ -207,7 +239,9 @@ def test_trade_name(hemonc, compare_response, bendamustine, degarelix):
     assert response.match_type == MatchType.NO_MATCH
 
 
-def test_xref_match(hemonc, compare_response, cisplatin, bendamustine, degarelix):
+def test_xref_match(
+    hemonc, compare_response, cisplatin, bendamustine, degarelix, filgrastim
+):
     """Test that xref query resolves to correct record."""
     response = hemonc.search("rxcui:2555")
     compare_response(response, MatchType.XREF, cisplatin)
@@ -217,6 +251,9 @@ def test_xref_match(hemonc, compare_response, cisplatin, bendamustine, degarelix
 
     response = hemonc.search("rxcui:475230")
     compare_response(response, MatchType.XREF, degarelix)
+
+    response = hemonc.search("rxcui:68442")
+    compare_response(response, MatchType.XREF, filgrastim)
 
 
 def test_metadata(hemonc):

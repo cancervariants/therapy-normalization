@@ -185,6 +185,7 @@
     ],
     "has_indication": [
       "[\"hemonc:671\", \"Testicular cancer\", \"ncit:C7251\", {\"regulatory_body\": \"FDA\"}]",
+      "[\"hemonc:645\", \"Ovarian cancer\", \"ncit:C7431\", {\"regulatory_body\": \"FDA\"}]",
       "[\"hemonc:569\", \"Bladder cancer\", \"ncit:C9334\", {\"regulatory_body\": \"FDA\"}]",
       "[\"mesh:D018273\", \"Carcinoma, Islet Cell\", \"ncit:C3770\", {\"chembl_max_phase_for_ind\": \"chembl_phase_2\"}]",
       "[\"mesh:D000077195\", \"Squamous Cell Carcinoma of Head and Neck\", \"ncit:C4044\", {\"chembl_max_phase_for_ind\": \"chembl_phase_3\"}]",
