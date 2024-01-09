@@ -35,7 +35,7 @@ dependencies = [
 dynamic = ["version"]
 
 [project.optional-dependencies]
-etl = ["disease-normalizer~=0.4.0.dev0", "owlready2", "rdflib", "wikibaseintegrator>=0.12.0", "wags-tails"]
+etl = ["disease-normalizer[etl]~=0.4.0.dev0", "owlready2", "rdflib", "wikibaseintegrator>=0.12.0", "wags-tails"]
 test = ["pytest", "pytest-cov", "pytest-mock"]
 dev = ["pre-commit", "ruff>=0.1.2", "lxml", "xmlformatter", "mypy", "types-pyyaml"]
 
