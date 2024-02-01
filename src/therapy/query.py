@@ -351,9 +351,9 @@ class QueryHandler:
         """
         sources_meta = {}
         therapeutic_agent = response.therapeutic_agent
-        sources = [response.normalized_id.split(":")[0]]
-        if therapeutic_agent.mappings:
-            sources += [m.coding.system for m in therapeutic_agent.mappings]
+        sources = [response.normalized_id.split(":")[0]]  # type: ignore[union-attr]
+        if therapeutic_agent.mappings:  # type: ignore[union-attr]
+            sources += [m.coding.system for m in therapeutic_agent.mappings]  # type: ignore[union-attr]
 
         for src in sources:
             try:
@@ -364,7 +364,7 @@ class QueryHandler:
             else:
                 if src_name not in sources_meta:
                     sources_meta[src_name] = self.db.get_source_metadata(src_name)
-        response.source_meta_ = sources_meta
+        response.source_meta_ = sources_meta  # type: ignore[assignment]
         return response
 
     def _record_order(self, record: Dict) -> Tuple[int, str]:
@@ -643,7 +643,7 @@ class QueryHandler:
             matching_records = [
                 self.db.get_record_by_id(ref, False) for ref in matching_refs
             ]
-            matching_records.sort(key=self._record_order)
+            matching_records.sort(key=self._record_order)  # type: ignore[arg-type]
 
             # attempt merge ref resolution until successful
             for match in matching_records:

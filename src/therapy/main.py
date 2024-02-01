@@ -46,7 +46,7 @@ def custom_openapi() -> Dict:
     return app.openapi_schema
 
 
-app.openapi = custom_openapi
+app.openapi = custom_openapi  # type: ignore[method-assign]
 
 # endpoint description text
 get_matches_summary = "Given query, provide highest matches from each source."
@@ -120,8 +120,8 @@ def search(
     try:
         response = query_handler.search(
             html.unescape(q),
-            incl=incl,
-            excl=excl,
+            incl=incl,  # type: ignore[arg-type]
+            excl=excl,  # type: ignore[arg-type]
             infer=infer_namespace,
         )
     except InvalidParameterError as e:
