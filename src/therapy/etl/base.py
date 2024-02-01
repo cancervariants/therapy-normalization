@@ -161,7 +161,7 @@ class Base(ABC):
                 if attr_type == "aliases" and "trade_names" in therapy:
                     value = list(unique_values - set(therapy["trade_names"]))
                 else:
-                    value = [unique_values]
+                    value = list(unique_values)
 
                 if (attr_type in ("aliases", "trade_names")) and ("label" in therapy):
                     with contextlib.suppress(ValueError):
