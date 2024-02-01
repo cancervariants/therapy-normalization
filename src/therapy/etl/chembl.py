@@ -17,8 +17,7 @@ class ChEMBL(DiseaseIndicationBase):
         """
         if value:
             return value.split("||")
-        else:
-            return []
+        return []
 
     @staticmethod
     def _get_approval_rating(value: Optional[float]) -> Optional[ApprovalRating]:
@@ -32,20 +31,20 @@ class ChEMBL(DiseaseIndicationBase):
             # theoretically, 0 should be deprecated, but it's still showing up in
             # some places...
             return ApprovalRating.CHEMBL_NULL
-        elif value == -1:
+        if value == -1:
             return None
-        elif value == 0.5:
+        if value == 0.5:
             return ApprovalRating.CHEMBL_0_5
-        elif value == 1:
+        if value == 1:
             return ApprovalRating.CHEMBL_1
-        elif value == 2:
+        if value == 2:
             return ApprovalRating.CHEMBL_2
-        elif value == 3:
+        if value == 3:
             return ApprovalRating.CHEMBL_3
-        elif value == 4:
+        if value == 4:
             return ApprovalRating.CHEMBL_4
-        else:
-            raise ValueError(f"Unrecognized approval rating: {value}")
+        msg = f"Unrecognized approval rating: {value}"
+        raise ValueError(msg)
 
     def _get_indications(self, value: Optional[str]) -> List[Dict]:
         """Construct indication objects to prepare for loading into DB
@@ -86,8 +85,7 @@ class ChEMBL(DiseaseIndicationBase):
                         }
                 indications.append(indication)
             return indications
-        else:
-            return []
+        return []
 
     def _transform_data(self) -> None:
         """Transform SQLite data and load to DB."""

@@ -27,7 +27,6 @@ TEST_IDS = {
     "1041527",
     "218330",
     "161",
-    "44",
     "107044",
     "91601",
     "2003328",
@@ -68,8 +67,6 @@ TEST_IDS = {
     "563425",
     "2282528",
     "2282519",
-    "2282527",
-    "2282518",
     "1041528",
     "891136",
     "8134",
@@ -124,14 +121,14 @@ TEST_IDS = {
 
 rows_to_add = []
 pins = []
-with open(rx._data_file, "r") as f:
+with rx._data_file.open() as f:
     reader = csv.reader(f, delimiter="|")
 
     for row in reader:
         if row[0] in TEST_IDS and row[11] in RXNORM_XREFS:
             rows_to_add.append(row)
 
-with open(TEST_DATA_DIR / rx._data_file.name, "w") as f:
+with (TEST_DATA_DIR / rx._data_file.name).open("w") as f:
     writer = csv.writer(f, delimiter="|")
     writer.writerows(rows_to_add)
 

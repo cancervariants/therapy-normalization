@@ -53,7 +53,8 @@ def normalize_handler(database: AbstractDatabase):
 @pytest.fixture(scope="module")
 def fixture_data(test_data: Path):
     """Fetch fixture data"""
-    return json.load(open(test_data / "fixtures" / "query_fixtures.json", "r"))
+    with (test_data / "fixtures" / "query_fixtures.json").open() as f:
+        return json.load(f)
 
 
 @pytest.fixture(scope="module")
@@ -167,7 +168,7 @@ def compare_ta(response, fixture, query, match_type, warnings=None):
     def get_extension(extensions, name):
         matches = [e for e in extensions if e.name == name]
         if len(matches) > 1:
-            assert False
+            pytest.fail(f"Multiple extensions named {name}")
         elif len(matches) == 1:
             return matches[0]
         else:

@@ -16,18 +16,16 @@ def chemidplus(test_source):
 def penicillin_v():
     """Build test fixture for Penicillin V drug."""
     return Therapy(
-        **{
-            "concept_id": "chemidplus:87-08-1",
-            "label": "Penicillin V",
-            "aliases": ["Phenoxymethylpenicillin"],
-            "trade_names": [],
-            "xrefs": [
-                "drugbank:DB00417",
-            ],
-            "associated_with": [
-                "unii:Z61I075U2W",
-            ],
-        }
+        concept_id="chemidplus:87-08-1",
+        label="Penicillin V",
+        aliases=["Phenoxymethylpenicillin"],
+        trade_names=[],
+        xrefs=[
+            "drugbank:DB00417",
+        ],
+        associated_with=[
+            "unii:Z61I075U2W",
+        ],
     )
 
 
@@ -35,18 +33,16 @@ def penicillin_v():
 def imatinib():
     """Build test fixture for Imatinib."""
     return Therapy(
-        **{
-            "concept_id": "chemidplus:152459-95-5",
-            "label": "Imatinib",
-            "aliases": [],
-            "trade_names": [],
-            "xrefs": [
-                "drugbank:DB00619",
-            ],
-            "associated_with": [
-                "unii:BKJ8M8G5HI",
-            ],
-        }
+        concept_id="chemidplus:152459-95-5",
+        label="Imatinib",
+        aliases=[],
+        trade_names=[],
+        xrefs=[
+            "drugbank:DB00619",
+        ],
+        associated_with=[
+            "unii:BKJ8M8G5HI",
+        ],
     )
 
 
@@ -54,14 +50,12 @@ def imatinib():
 def other_imatinib():
     """Build test fixture for imatinib mesylate."""
     return Therapy(
-        **{
-            "concept_id": "chemidplus:220127-57-1",
-            "label": "Imatinib mesylate",
-            "aliases": [],
-            "xrefs": ["drugbank:DB00619"],
-            "associated_with": ["unii:8A1O1M485B"],
-            "trade_names": [],
-        }
+        concept_id="chemidplus:220127-57-1",
+        label="Imatinib mesylate",
+        aliases=[],
+        xrefs=["drugbank:DB00619"],
+        associated_with=["unii:8A1O1M485B"],
+        trade_names=[],
     )
 
 
@@ -69,17 +63,15 @@ def other_imatinib():
 def cisplatin():
     """Build test fixture for cisplatin."""
     return Therapy(
-        **{
-            "concept_id": "chemidplus:15663-27-1",
-            "label": "Cisplatin",
-            "aliases": [
-                "cis-Diaminedichloroplatinum",
-                "1,2-Diaminocyclohexaneplatinum II citrate",
-            ],
-            "trade_names": [],
-            "xrefs": ["drugbank:DB00515"],
-            "associated_with": ["unii:Q20Q21Q62J"],
-        }
+        concept_id="chemidplus:15663-27-1",
+        label="Cisplatin",
+        aliases=[
+            "cis-Diaminedichloroplatinum",
+            "1,2-Diaminocyclohexaneplatinum II citrate",
+        ],
+        trade_names=[],
+        xrefs=["drugbank:DB00515"],
+        associated_with=["unii:Q20Q21Q62J"],
     )
 
 
@@ -87,12 +79,10 @@ def cisplatin():
 def glycopyrronium_bromide():
     """Provide fixture for chemidplus:51186-83-5"""
     return Therapy(
-        **{
-            "concept_id": "chemidplus:51186-83-5",
-            "label": "Glycopyrronium bromide",
-            "xrefs": ["drugbank:DB00986"],
-            "associated_with": ["unii:V92SO9WP2I"],
-        }
+        concept_id="chemidplus:51186-83-5",
+        label="Glycopyrronium bromide",
+        xrefs=["drugbank:DB00986"],
+        associated_with=["unii:V92SO9WP2I"],
     )
 
 
@@ -156,7 +146,7 @@ def test_imatinib(chemidplus, compare_records, imatinib, other_imatinib):
         elif record.concept_id == "chemidplus:220127-57-1":
             compare_records(record, other_imatinib)
         else:
-            assert False  # retrieved incorrect record
+            pytest.fail("retrieved incorrect record")
 
     response = chemidplus.search("unii:BKJ8M8G5HI")
     assert response.match_type == MatchType.ASSOCIATED_WITH

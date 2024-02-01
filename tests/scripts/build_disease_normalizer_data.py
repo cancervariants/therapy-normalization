@@ -21,7 +21,6 @@ class ReadOnlyDatabase(DynamoDatabase):
 
     def add_record(self, record: Dict, record_type: str = "identity") -> None:
         """Add new record to database"""
-        pass
 
 
 db = ReadOnlyDatabase()
@@ -50,9 +49,9 @@ h.disease_normalizer = disease_query_handler
 h.perform_etl(use_existing=True)
 
 
-with open(TEST_DATA_DIRECTORY / "disease_normalization.json", "w") as f:
+with (TEST_DATA_DIRECTORY / "disease_normalization.json").open("w") as f:
     # for consistency/easier diffing
-    sorted_dict = {
+    sorted_dict = {  # noqa: C416
         key: value for key, value in sorted(disease_normalizer_table.items())
     }
     json.dump(sorted_dict, f, indent=2)

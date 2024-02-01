@@ -161,7 +161,7 @@ pi = XETree.ProcessingInstruction(  # TODO get encoding attrib out
     target='xml version="1.0"'
 )
 pi_string = XETree.tostring(pi).decode("ASCII")
-with open(outfile_path, "r+") as f:
+with outfile_path.open("r+") as f:
     content = f.read()
     f.seek(0, 0)
     f.write(pi_string.rstrip("\r\n") + "\n" + content)

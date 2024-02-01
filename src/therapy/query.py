@@ -1,7 +1,7 @@
 """Provides methods for handling queries."""
+import datetime
 import json
 import re
-from datetime import datetime
 from typing import Any, Callable, Dict, List, Optional, Set, Tuple, TypeVar, Union
 
 from botocore.exceptions import ClientError
@@ -103,7 +103,7 @@ class QueryHandler:
         src_name = item["src_name"]
 
         matches = response["source_matches"]
-        if src_name not in matches.keys():
+        if src_name not in matches:
             pass
         elif matches[src_name] is None:
             matches[src_name] = {
@@ -111,11 +111,10 @@ class QueryHandler:
                 "records": [drug],
                 "source_meta_": self.db.get_source_metadata(src_name),
             }
-        elif matches[src_name]["match_type"] == MatchType[match_type.upper()]:
-            if drug.concept_id not in [
-                r.concept_id for r in matches[src_name]["records"]
-            ]:
-                matches[src_name]["records"].append(drug)
+        elif (matches[src_name]["match_type"] == MatchType[match_type.upper()]) and (
+            drug.concept_id not in [r.concept_id for r in matches[src_name]["records"]]
+        ):
+            matches[src_name]["records"].append(drug)
 
         return response, src_name
 
@@ -138,7 +137,9 @@ class QueryHandler:
                 match = self.db.get_record_by_id(
                     concept_id.lower(), case_sensitive=False
                 )
-                assert match, f"Unable to retrieve record for {concept_id}"
+                if not match:
+                    msg = f"Unable to retrieve record for {concept_id}"
+                    raise KeyError(msg)
                 (response, src) = self._add_record(response, match, match_type)
                 matched_sources.add(src)
             except ClientError as e:
@@ -153,7 +154,7 @@ class QueryHandler:
         :return: response object with empty source slots filled with NO_MATCH results
             and corresponding source metadata
         """
-        for src_name in resp["source_matches"].keys():
+        for src_name in resp["source_matches"]:
             if resp["source_matches"][src_name] is None:
                 resp["source_matches"][src_name] = {
                     "match_type": MatchType.NO_MATCH,
@@ -195,8 +196,7 @@ class QueryHandler:
                     "alternate_inferred_matches": [i[2] for i in inferred_records[1:]],
                 },
             )
-        else:
-            return None
+        return None
 
     def _check_concept_id(
         self, query: str, resp: Dict, sources: Set[str], infer: bool = True
@@ -216,7 +216,7 @@ class QueryHandler:
                 records.append(infer_response[0])
                 resp["warnings"].append(infer_response[1])
         query_lower = query.lower()
-        if [p for p in PREFIX_LOOKUP.keys() if query_lower.startswith(p)]:
+        if [p for p in PREFIX_LOOKUP if query_lower.startswith(p)]:
             record = self.db.get_record_by_id(query, False)
             if record:
                 records.append(record)
@@ -261,8 +261,7 @@ class QueryHandler:
             "source_matches": {source: None for source in sources},
         }
         if query == "":
-            response = self._fill_no_matches(response)
-            return response
+            return self._fill_no_matches(response)
         query = query.strip()
 
         # check if concept ID match
@@ -301,7 +300,7 @@ class QueryHandler:
         :raises InvalidParameterException: if both incl and excl args are provided, or
             if invalid source names are given.
         """
-        sources = dict()
+        sources = {}
         for k, v in SOURCES.items():
             if self.db.get_source_metadata(v):
                 sources[k] = v
@@ -315,7 +314,7 @@ class QueryHandler:
             invalid_sources = []
             query_sources = set()
             for source in req_sources:
-                if source.lower() in sources.keys():
+                if source.lower() in sources:
                     query_sources.add(sources[source.lower()])
                 else:
                     invalid_sources.append(source)
@@ -328,10 +327,10 @@ class QueryHandler:
             invalid_sources = []
             query_sources = set()
             for req_l, req in req_excl_dict.items():
-                if req_l not in sources.keys():
+                if req_l not in sources:
                     invalid_sources.append(req)
             for src_l, src in sources.items():
-                if src_l not in req_excl_dict.keys():
+                if src_l not in req_excl_dict:
                     query_sources.add(src)
             if invalid_sources:
                 detail = f"Invalid source name(s): {invalid_sources}"
@@ -340,7 +339,7 @@ class QueryHandler:
         response = self._get_search_response(query_str, query_sources, infer)
 
         response["service_meta_"] = ServiceMeta(
-            response_datetime=datetime.now(),
+            response_datetime=datetime.datetime.now(tz=datetime.timezone.utc),
         ).model_dump()
         return SearchService(**response)
 
@@ -352,12 +351,9 @@ class QueryHandler:
         """
         sources_meta = {}
         therapeutic_agent = response.therapeutic_agent
-        sources = [response.normalized_id.split(":")[0]]  # type: ignore
-        if therapeutic_agent.mappings:  # type: ignore
-            sources += [
-                m.coding.system
-                for m in therapeutic_agent.mappings  # type: ignore
-            ]
+        sources = [response.normalized_id.split(":")[0]]
+        if therapeutic_agent.mappings:
+            sources += [m.coding.system for m in therapeutic_agent.mappings]
 
         for src in sources:
             try:
@@ -368,7 +364,7 @@ class QueryHandler:
             else:
                 if src_name not in sources_meta:
                     sources_meta[src_name] = self.db.get_source_metadata(src_name)
-        response.source_meta_ = sources_meta  # type: ignore
+        response.source_meta_ = sources_meta
         return response
 
     def _record_order(self, record: Dict) -> Tuple[int, str]:
@@ -428,11 +424,11 @@ class QueryHandler:
             if "approval_ratings" in record:
                 value = record.get("approval_ratings")
                 if value:
-                    approv_value["approval_ratings"] = value  # type: ignore
+                    approv_value["approval_ratings"] = value
             if "approval_year" in record:
                 value = record.get("approval_year")
                 if value:
-                    approv_value["approval_year"] = value  # type: ignore
+                    approv_value["approval_year"] = value
 
             inds = record.get("has_indication", [])
             inds_list = []
@@ -464,7 +460,7 @@ class QueryHandler:
                     ]
                 inds_list.append(ind_disease_obj.model_dump(exclude_none=True))
             if inds_list:
-                approv_value["has_indication"] = inds_list  # type: ignore
+                approv_value["has_indication"] = inds_list
 
             approv = core_models.Extension(
                 name="regulatory_approval", value=approv_value
@@ -483,8 +479,7 @@ class QueryHandler:
         response.match_type = match_type
         response.normalized_id = record["concept_id"]
         response.therapeutic_agent = therapeutic_agent_obj
-        response = self._add_merged_meta(response)
-        return response
+        return self._add_merged_meta(response)
 
     def _resolve_merge(
         self,
@@ -513,11 +508,9 @@ class QueryHandler:
                     f"in record {record['concept_id']} from query `{query}`"
                 )
                 return response
-            else:
-                return callback(response, merge, match_type)
-        else:
-            # record is sole member of concept group
-            return callback(response, record, match_type)
+            return callback(response, merge, match_type)
+        # record is sole member of concept group
+        return callback(response, record, match_type)
 
     def _prepare_normalized_response(self, query: str) -> Dict[str, Any]:
         """Provide base response object for normalize endpoints.
@@ -529,7 +522,9 @@ class QueryHandler:
             "query": query,
             "match_type": MatchType.NO_MATCH,
             "warnings": self._emit_char_warnings(query),
-            "service_meta_": ServiceMeta(response_datetime=datetime.now()),
+            "service_meta_": ServiceMeta(
+                response_datetime=datetime.datetime.now(tz=datetime.timezone.utc)
+            ),
         }
 
     def normalize(self, query: str, infer: bool = True) -> NormalizationService:
@@ -581,9 +576,10 @@ class QueryHandler:
                 source_meta_=self.db.get_source_metadata(record_source),
             )
         else:
-            concept_ids = [normalized_record["concept_id"]] + normalized_record.get(
-                "xrefs", []
-            )
+            concept_ids = [
+                normalized_record["concept_id"],
+                *normalized_record.get("xrefs", []),
+            ]
             for concept_id in concept_ids:
                 record = self.db.get_record_by_id(concept_id, case_sensitive=False)
                 if not record:
@@ -647,11 +643,12 @@ class QueryHandler:
             matching_records = [
                 self.db.get_record_by_id(ref, False) for ref in matching_refs
             ]
-            matching_records.sort(key=self._record_order)  # type: ignore
+            matching_records.sort(key=self._record_order)
 
             # attempt merge ref resolution until successful
             for match in matching_records:
-                assert match is not None
+                if match is None:
+                    raise ValueError
                 record = self.db.get_record_by_id(match["concept_id"], False)
                 if record:
                     match_type_value = MatchType[match_type.upper()]

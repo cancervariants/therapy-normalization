@@ -49,19 +49,18 @@ class DrugsAtFDA(Base):
             "None (Tentative Approval)": ApprovalRating.FDA_TENTATIVE.value,
         }
         statuses = [p["marketing_status"] for p in products]
-        if not all([s == statuses[0] for s in statuses]):
+        if not all(s == statuses[0] for s in statuses):
             msg = (
                 f"Application {concept_id} has inconsistent marketing "
                 f"statuses: {statuses}"
             )
             _logger.info(msg)
             return None
-        else:
-            return statuses_map.get(statuses[0])
+        return statuses_map.get(statuses[0])
 
     def _transform_data(self) -> None:
         """Prepare source data for loading into DB."""
-        with open(self._data_file, "r") as f:  # type: ignore
+        with self._data_file.open() as f:  # type: ignore
             data = json.load(f)["results"]
 
         for result in data:

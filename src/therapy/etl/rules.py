@@ -27,7 +27,7 @@ class Rules:
         """
         rules_path = APP_ROOT / "etl" / "rules.csv"
         self.rules: Dict[str, List[Tuple[str, str]]] = {}
-        with open(rules_path, "r") as rules_file:
+        with rules_path.open() as rules_file:
             reader = csv.DictReader(rules_file, delimiter=",")
             for row in reader:
                 if row["source"] == source_name:
@@ -58,7 +58,8 @@ class Rules:
         :return: therapy object with rule applied
         """
         if field not in {"aliases", "trade_names", "xrefs", "associated_with"}:
-            raise Exception("Non-scalar fields currently not implemented")
+            msg = "Non-scalar fields currently not implemented"
+            raise Exception(msg)
         field_data = set(therapy.get(field, []))
         if value in field_data:
             field_data.remove(value)

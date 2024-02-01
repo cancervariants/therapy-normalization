@@ -29,7 +29,7 @@ class ChemIDplus(Base):
         :param str tag: XML tag
         :return: generator yielding elements of corresponding tag
         """
-        context = iter(ElTree.iterparse(path, events=("start", "end")))
+        context = iter(ElTree.iterparse(path, events=("start", "end")))  # noqa: S314
         _, root = next(context)
         for event, elem in context:
             if event == "end" and elem.tag == tag:

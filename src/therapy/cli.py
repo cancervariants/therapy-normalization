@@ -100,7 +100,7 @@ def _load_source(
             f"Encountered ModuleNotFoundError attempting to import {e.name}. Are ETL dependencies installed?"
         )
         click.get_current_context().exit()
-    SourceClass = eval(name.value)  # noqa: N806
+    SourceClass = eval(name.value)  # noqa: N806 PGH001 S307
 
     source = SourceClass(database=db, silent=False)
     try:
@@ -177,7 +177,7 @@ def _update_normalizer(
     :param use_existing: if True, use most recent local version of source data instead of
         fetching from remote
     """
-    processed_ids: List[str] = list()
+    processed_ids: List[str] = []
     for n in sources:
         delete_time = _delete_source(n, db)
         _load_source(n, db, delete_time, processed_ids, use_existing)
@@ -255,12 +255,14 @@ def update_normalizer_db(
         sources_split = sources.lower().split()
 
         if len(sources_split) == 0:
-            raise Exception("Must enter 1 or more source names to update")
+            msg = "Must enter 1 or more source names to update"
+            raise Exception(msg)
 
         non_sources = set(sources_split) - set(SOURCES)
 
         if len(non_sources) != 0:
-            raise Exception(f"Not valid source(s): {non_sources}")
+            msg = f"Not valid source(s): {non_sources}"
+            raise Exception(msg)
 
         parsed_source_names = {SourceName(SOURCES[s]) for s in sources_split}
         if (

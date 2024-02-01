@@ -18,46 +18,44 @@ def hemonc(test_source):
 def cisplatin():
     """Construct cisplatin fixture."""
     return Therapy(
-        **{
-            "concept_id": "hemonc:105",
-            "label": "Cisplatin",
-            "aliases": [
-                "cis-diamminedichloroplatinum III",
-                "DDP",
-                "cisplatinum",
-                "cis-platinum",
-                "DACP",
-                "NSC 119875",
-                "NSC-119875",
-                "NSC119875",
-                "CDDP",
-            ],
-            "trade_names": [],
-            "xrefs": ["rxcui:2555"],
-            "associated_with": [],
-            "approval_ratings": ["hemonc_approved"],
-            "approval_year": ["1978"],
-            "has_indication": [
-                {
-                    "disease_id": "hemonc:569",
-                    "disease_label": "Bladder cancer",
-                    "normalized_disease_id": "ncit:C9334",
-                    "supplemental_info": {"regulatory_body": "FDA"},
-                },
-                {
-                    "disease_id": "hemonc:671",
-                    "disease_label": "Testicular cancer",
-                    "normalized_disease_id": "ncit:C7251",
-                    "supplemental_info": {"regulatory_body": "FDA"},
-                },
-                {
-                    "disease_id": "hemonc:645",
-                    "disease_label": "Ovarian cancer",
-                    "normalized_disease_id": "ncit:C7431",
-                    "supplemental_info": {"regulatory_body": "FDA"},
-                },
-            ],
-        }
+        concept_id="hemonc:105",
+        label="Cisplatin",
+        aliases=[
+            "cis-diamminedichloroplatinum III",
+            "DDP",
+            "cisplatinum",
+            "cis-platinum",
+            "DACP",
+            "NSC 119875",
+            "NSC-119875",
+            "NSC119875",
+            "CDDP",
+        ],
+        trade_names=[],
+        xrefs=["rxcui:2555"],
+        associated_with=[],
+        approval_ratings=["hemonc_approved"],
+        approval_year=["1978"],
+        has_indication=[
+            {
+                "disease_id": "hemonc:569",
+                "disease_label": "Bladder cancer",
+                "normalized_disease_id": "ncit:C9334",
+                "supplemental_info": {"regulatory_body": "FDA"},
+            },
+            {
+                "disease_id": "hemonc:671",
+                "disease_label": "Testicular cancer",
+                "normalized_disease_id": "ncit:C7251",
+                "supplemental_info": {"regulatory_body": "FDA"},
+            },
+            {
+                "disease_id": "hemonc:645",
+                "disease_label": "Ovarian cancer",
+                "normalized_disease_id": "ncit:C7431",
+                "supplemental_info": {"regulatory_body": "FDA"},
+            },
+        ],
     )
 
 
@@ -65,57 +63,55 @@ def cisplatin():
 def bendamustine():
     """Construct bendamustine fixture."""
     return Therapy(
-        **{
-            "concept_id": "hemonc:65",
-            "label": "Bendamustine",
-            "aliases": [
-                "CEP-18083",
-                "cytostasan hydrochloride",
-                "SyB L-0501",
-                "SDX-105",
-                "CEP 18083",
-                "CEP18083",
-                "SDX 105",
-                "SDX105",
-                "bendamustine hydrochloride",
-                "bendamustin hydrochloride",
-            ],
-            "xrefs": ["rxcui:134547"],
-            "associated_with": [],
-            "trade_names": [
-                "Belrapzo",
-                "Bendamax",
-                "Bendawel",
-                "Bendeka",
-                "Bendit",
-                "Innomustine",
-                "Leuben",
-                "Levact",
-                "Maxtorin",
-                "MyMust",
-                "Purplz",
-                "Ribomustin",
-                "Treakisym",
-                "Treanda",
-                "Xyotin",
-            ],
-            "approval_ratings": ["hemonc_approved"],
-            "approval_year": ["2008"],
-            "has_indication": [
-                {
-                    "disease_id": "hemonc:581",
-                    "disease_label": "Chronic lymphocytic leukemia",
-                    "normalized_disease_id": "ncit:C3163",
-                    "supplemental_info": {"regulatory_body": "FDA"},
-                },
-                {
-                    "disease_id": "hemonc:46094",
-                    "disease_label": "Indolent lymphoma",
-                    "normalized_disease_id": "ncit:C8504",
-                    "supplemental_info": {"regulatory_body": "FDA"},
-                },
-            ],
-        }
+        concept_id="hemonc:65",
+        label="Bendamustine",
+        aliases=[
+            "CEP-18083",
+            "cytostasan hydrochloride",
+            "SyB L-0501",
+            "SDX-105",
+            "CEP 18083",
+            "CEP18083",
+            "SDX 105",
+            "SDX105",
+            "bendamustine hydrochloride",
+            "bendamustin hydrochloride",
+        ],
+        xrefs=["rxcui:134547"],
+        associated_with=[],
+        trade_names=[
+            "Belrapzo",
+            "Bendamax",
+            "Bendawel",
+            "Bendeka",
+            "Bendit",
+            "Innomustine",
+            "Leuben",
+            "Levact",
+            "Maxtorin",
+            "MyMust",
+            "Purplz",
+            "Ribomustin",
+            "Treakisym",
+            "Treanda",
+            "Xyotin",
+        ],
+        approval_ratings=["hemonc_approved"],
+        approval_year=["2008"],
+        has_indication=[
+            {
+                "disease_id": "hemonc:581",
+                "disease_label": "Chronic lymphocytic leukemia",
+                "normalized_disease_id": "ncit:C3163",
+                "supplemental_info": {"regulatory_body": "FDA"},
+            },
+            {
+                "disease_id": "hemonc:46094",
+                "disease_label": "Indolent lymphoma",
+                "normalized_disease_id": "ncit:C8504",
+                "supplemental_info": {"regulatory_body": "FDA"},
+            },
+        ],
     )
 
 
@@ -123,32 +119,30 @@ def bendamustine():
 def degarelix():
     """Create fixture for degarelix drug."""
     return Therapy(
-        **{
-            "label": "Degarelix",
-            "concept_id": "hemonc:151",
-            "aliases": [
-                "degarelix acetate",
-                "FE200486",
-                "ASP3550",
-                "ASP 3550",
-                "ASP-3550",
-                "FE 200486",
-                "FE-200486",
-            ],
-            "xrefs": ["rxcui:475230"],
-            "associated_with": [],
-            "trade_names": ["Firmagon", "Gonax"],
-            "approval_ratings": ["hemonc_approved"],
-            "approval_year": ["2008"],
-            "has_indication": [
-                {
-                    "disease_id": "hemonc:658",
-                    "disease_label": "Prostate cancer",
-                    "normalized_disease_id": "ncit:C7378",
-                    "supplemental_info": {"regulatory_body": "FDA"},
-                }
-            ],
-        }
+        label="Degarelix",
+        concept_id="hemonc:151",
+        aliases=[
+            "degarelix acetate",
+            "FE200486",
+            "ASP3550",
+            "ASP 3550",
+            "ASP-3550",
+            "FE 200486",
+            "FE-200486",
+        ],
+        xrefs=["rxcui:475230"],
+        associated_with=[],
+        trade_names=["Firmagon", "Gonax"],
+        approval_ratings=["hemonc_approved"],
+        approval_year=["2008"],
+        has_indication=[
+            {
+                "disease_id": "hemonc:658",
+                "disease_label": "Prostate cancer",
+                "normalized_disease_id": "ncit:C7378",
+                "supplemental_info": {"regulatory_body": "FDA"},
+            }
+        ],
     )
 
 
@@ -156,15 +150,13 @@ def degarelix():
 def filgrastim():
     """Create fixture for filgrastim drug (tests handling of deprecated brand name)"""
     return Therapy(
-        **{
-            "label": "Filgrastim-aafi",
-            "concept_id": "hemonc:66258",
-            "aliases": [],
-            "xrefs": ["rxcui:68442"],
-            "trade_names": ["Nivestym"],
-            "approval_ratings": ["hemonc_approved"],
-            "approval_year": ["2018"],
-        }
+        label="Filgrastim-aafi",
+        concept_id="hemonc:66258",
+        aliases=[],
+        xrefs=["rxcui:68442"],
+        trade_names=["Nivestym"],
+        approval_ratings=["hemonc_approved"],
+        approval_year=["2018"],
     )
 
 

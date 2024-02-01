@@ -34,7 +34,7 @@ def parse_xml(path: Path) -> Generator:
     :param str tag: XML tag
     :return: generator yielding elements of corresponding tag
     """
-    context = iter(ElementTree.iterparse(path, events=("start", "end")))
+    context = iter(ElementTree.iterparse(path, events=("start", "end")))  # noqa: S314
     _, root = next(context)
     for event, elem in context:
         if event == "end" and elem.tag == "Chemical":
@@ -51,14 +51,14 @@ for chemical in parser:
     if regno.text in TEST_IDS:
         root.append(chemical)
 
-with open(outfile_path, "w") as f:
+with outfile_path.open("w") as f:
     ElementTree.ElementTree(root).write(f, encoding="unicode")
 
 pi = ElementTree.ProcessingInstruction(
     target='xml version="1.0" encoding="UTF-8" standalone="yes"'
 )
 pi_string = ElementTree.tostring(pi).decode("UTF8")
-with open(outfile_path, "r+") as f:
+with outfile_path.open("r+") as f:
     content = f.read()
     f.seek(0, 0)
     f.write(pi_string.rstrip("\r\n") + "\n" + content)

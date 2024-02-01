@@ -20,7 +20,7 @@ def voglibose():
         "label": "Voglibose",
         "concept_id": "ncit:C95221",
         "aliases": [
-            "3,4-Dideoxy-4-((2-Hydroxy-1-(Hydroxymethyl)Ethyl)Amino)-2-C-(Hydroxymethyl)-D-Epi-Inositol",  # noqa F401
+            "3,4-Dideoxy-4-((2-Hydroxy-1-(Hydroxymethyl)Ethyl)Amino)-2-C-(Hydroxymethyl)-D-Epi-Inositol",  # F401
             "A-71100",
             "AO-128",
             "Basen",

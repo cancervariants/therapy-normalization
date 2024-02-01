@@ -69,7 +69,7 @@ def pytest_sessionstart():
     """Wipe DB before testing if in test environment."""
     if IS_TEST_ENV:
         if os.environ.get(AWS_ENV_VAR_NAME):
-            assert False, f"Cannot have both THERAPY_TEST and {AWS_ENV_VAR_NAME} set."
+            pytest.fail(f"Cannot have both THERAPY_TEST and {AWS_ENV_VAR_NAME} set.")
         db = create_db()
         db.drop_db()
         db.initialize_db()
@@ -102,7 +102,7 @@ def database():
 @pytest.fixture(scope="session")
 def disease_normalizer():
     """Provide mock disease normalizer."""
-    with open(TEST_DATA_DIRECTORY / "disease_normalization.json", "r") as f:
+    with (TEST_DATA_DIRECTORY / "disease_normalization.json").open() as f:
         disease_data = json.load(f)
 
         def _normalize_disease(query: str):
@@ -130,7 +130,7 @@ def test_source(
 
     def test_source_factory(EtlClass: Base):  # noqa: N803
         if is_test_env:
-            _logger.debug(f"Reloading DB with data from {test_data}")
+            _logger.debug("Reloading DB with data from %s", test_data)
             test_class = EtlClass(database, test_data / EtlClass.__name__.lower())  # type: ignore
             test_class._normalize_disease = disease_normalizer  # type: ignore
             test_class.perform_etl(use_existing=True)
@@ -214,11 +214,14 @@ def _compare_response(
         fixture_list otherwise)
     """
     if fixture and fixture_list:
-        raise Exception("Args provided for both `fixture` and `fixture_list`")
-    elif not fixture and not fixture_list:
-        raise Exception("Must pass 1 of {fixture, fixture_list}")
+        msg = "Args provided for both `fixture` and `fixture_list`"
+        raise Exception(msg)
+    if not fixture and not fixture_list:
+        msg = "Must pass 1 of {fixture, fixture_list}"
+        raise Exception(msg)
     if fixture and num_records:
-        raise Exception("`num_records` should only be given with " "`fixture_list`.")
+        msg = "`num_records` should only be given with " "`fixture_list`."
+        raise Exception(msg)
 
     assert response.match_type == match_type
     if fixture:
@@ -235,7 +238,7 @@ def _compare_response(
                     _compare_records(record, fixt)
                     break
             else:
-                assert False  # test fixture not found in response
+                pytest.fail("Fixture not found in response")
 
 
 @pytest.fixture(scope="session")

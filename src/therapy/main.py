@@ -46,7 +46,7 @@ def custom_openapi() -> Dict:
     return app.openapi_schema
 
 
-app.openapi = custom_openapi  # type: ignore
+app.openapi = custom_openapi
 
 # endpoint description text
 get_matches_summary = "Given query, provide highest matches from each source."
@@ -120,12 +120,12 @@ def search(
     try:
         response = query_handler.search(
             html.unescape(q),
-            incl=incl,  # type: ignore
-            excl=excl,  # type: ignore
+            incl=incl,
+            excl=excl,
             infer=infer_namespace,
-        )  # type: ignore
+        )
     except InvalidParameterError as e:
-        raise HTTPException(status_code=422, detail=str(e))
+        raise HTTPException(status_code=422, detail=str(e)) from None
     return response
 
 
@@ -151,9 +151,9 @@ def normalize(
     Therapeutic Agent, and source metadata
     """
     try:
-        response = query_handler.normalize(html.unescape(q), infer_namespace)  # type: ignore
+        response = query_handler.normalize(html.unescape(q), infer_namespace)
     except InvalidParameterError as e:
-        raise HTTPException(status_code=422, detail=str(e))
+        raise HTTPException(status_code=422, detail=str(e)) from None
     return response
 
 
@@ -178,5 +178,5 @@ def normalize_unmerged(
     try:
         response = query_handler.normalize_unmerged(html.unescape(q), infer_namespace)
     except InvalidParameterError as e:
-        raise HTTPException(status_code=422, detail=str(e))
+        raise HTTPException(status_code=422, detail=str(e)) from None
     return response

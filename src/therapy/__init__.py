@@ -7,7 +7,7 @@ from .version import __version__  # noqa: F401
 APP_ROOT: Path = Path(__file__).resolve().parents[0]
 
 
-from therapy.schemas import (  # noqa: E402, I100, I202
+from therapy.schemas import (  # noqa: E402
     NamespacePrefix,
     RefType,
     SourceName,
@@ -29,7 +29,7 @@ SOURCES = {
 PREFIX_LOOKUP = {
     v.value: SourceName[k].value
     for k, v in NamespacePrefix.__members__.items()
-    if k in SourceName.__members__.keys()
+    if k in SourceName.__members__
 }
 
 # Namespace LUI patterns. Use for namespace inference.
@@ -43,7 +43,7 @@ NAMESPACE_LUIS = (
 )
 
 # Sources that we import directly
-XREF_SOURCES = {source for source in SourceName.__members__}
+XREF_SOURCES = set(SourceName.__members__)
 
 # Sources that are found in data from imported sources
-ASSOC_WITH_SOURCES = {source for source in NamespacePrefix.__members__} - XREF_SOURCES
+ASSOC_WITH_SOURCES = set(NamespacePrefix.__members__) - XREF_SOURCES
