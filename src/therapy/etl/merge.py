@@ -47,7 +47,7 @@ class Merge:
                 for concept_id in new_group:
                     self._groups[concept_id] = new_group
         end = timer()
-        logger.debug(f"Built record ID sets in {end - start} seconds")
+        logger.debug("Built record ID sets in %s seconds", end - start)
 
         self._groups = {k: v for k, v in self._groups.items() if len(v) > 1}
 
@@ -70,8 +70,9 @@ class Merge:
                 except DatabaseWriteError as dw:
                     if str(dw).startswith("No such record exists"):
                         logger.error(
-                            f"Updating nonexistent record: {concept_id} "
-                            f"for merge ref to {merge_ref}"
+                            "Updating nonexistent record: %s for merge ref to %s",
+                            concept_id,
+                            merge_ref,
                         )
                     else:
                         logger.error(str(dw))
@@ -79,7 +80,7 @@ class Merge:
         self.database.complete_write_transaction()
         logger.info("Merged concept generation successful.")
         end = timer()
-        logger.debug(f"Generated and added concepts in {end - start} seconds")
+        logger.debug("Generated and added concepts in %s seconds", end - start)
 
     def _get_drugsatfda_from_unii(self, ref: str) -> Optional[str]:
         """Given an `associated_with` item keying a UNII code to a Drugs@FDA record,
@@ -98,12 +99,11 @@ class Merge:
                 a for a in fetched.get("associated_with", []) if a.startswith("unii")
             ]
         else:
-            logger.error(f"Couldn't retrieve record for {ref}")
+            logger.error("Couldn't retrieve record for %s", ref)
             return None
         if len(uniis) == 1:
             return fetched["concept_id"]
-        else:
-            return None
+        return None
 
     def _get_xrefs(self, record: Dict[str, Any]) -> Set[str]:
         """Extract references to entries in other sources from a record.
@@ -148,9 +148,9 @@ class Merge:
 
         if record_id in self._groups:
             return self._groups[record_id]
-        elif record_id.startswith("drugsatfda"):
+        if record_id.startswith("drugsatfda"):
             return {record_id}
-        elif record_id in self._failed_lookups:
+        if record_id in self._failed_lookups:
             return observed_id_set - {record_id}
 
         # get record
@@ -161,7 +161,9 @@ class Merge:
                 if brand_lookup:
                     return self._create_record_id_set(brand_lookup, observed_id_set)
             logger.warning(
-                f"Unable to resolve lookup for {record_id} in ID set: {observed_id_set}"
+                "Unable to resolve lookup for %s in ID set: %s",
+                record_id,
+                observed_id_set,
             )
             self._failed_lookups.add(record_id)
             return observed_id_set - {record_id}
@@ -188,7 +190,7 @@ class Merge:
                 for concept_id in new_group:
                     self._groups[concept_id] = new_group
         end = timer()
-        logger.debug(f"Built record ID sets in {end - start} seconds")
+        logger.debug("Built record ID sets in %s seconds", end - start)
 
     def _generate_merged_record(self, record_id_set: Set[str]) -> Dict:
         """Generate merged record from provided concept ID group.
@@ -208,8 +210,9 @@ class Merge:
                 records.append(record)
             else:
                 logger.error(
-                    f"Merge record generator could not retrieve "
-                    f"record for {record_id} in {record_id_set}"
+                    "Merge record generator could not retrieve record for %s in %s",
+                    record_id,
+                    record_id_set,
                 )
 
         def record_order(record: Dict) -> Tuple[int, str]:
@@ -220,9 +223,10 @@ class Merge:
             if src in SourcePriority.__members__:
                 source_rank = SourcePriority[src].value
             else:
-                raise Exception(
+                msg = (
                     f"Prohibited source: {src} in concept_id " f"{record['concept_id']}"
                 )
+                raise Exception(msg)
             return source_rank, record["concept_id"]
 
         records.sort(key=record_order)
@@ -255,7 +259,7 @@ class Merge:
                     merged_attrs["has_indication"].append(ind)
 
         # clear unused fields
-        for field in set_fields + ["has_indication", "approval_ratings"]:
+        for field in [*set_fields, "has_indication", "approval_ratings"]:
             field_value = merged_attrs[field]
             if field_value:
                 merged_attrs[field] = list(field_value)

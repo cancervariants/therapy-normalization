@@ -368,37 +368,35 @@ def fluoxetine_hydrochloride():
 def phenobarbital():
     """Create phenobarbital fixture."""
     return Therapy(
-        **{
-            "concept_id": "rxcui:8134",
-            "label": "phenobarbital",
-            "aliases": [
-                "Phenobarbituric Acid",
-                "Phenylethylbarbiturate",
-                "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
-                "5-Phenyl-5-ethylbarbituric acid",
-                "Phenylethylbarbituric Acid",
-                "5-Ethyl-5-phenylbarbituric acid",
-                "Phenobarbitone",
-                "Phenobarbitol",
-                "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
-                "PHENobarbital",
-                "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
-                "Phenylethylmalonylurea",
-            ],
-            "xrefs": ["drugbank:DB01174"],
-            "associated_with": [
-                "mmsl:d00340",
-                "usp:m63400",
-                "mmsl:2390",
-                "mmsl:5272",
-                "vandf:4017422",
-                "unii:YQE403BP4D",
-                "atc:N03AA02",
-            ],
-            "approval_ratings": ["rxnorm_prescribable"],
-            "approval_year": [],
-            "has_indication": [],
-        }
+        concept_id="rxcui:8134",
+        label="phenobarbital",
+        aliases=[
+            "Phenobarbituric Acid",
+            "Phenylethylbarbiturate",
+            "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
+            "5-Phenyl-5-ethylbarbituric acid",
+            "Phenylethylbarbituric Acid",
+            "5-Ethyl-5-phenylbarbituric acid",
+            "Phenobarbitone",
+            "Phenobarbitol",
+            "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+            "PHENobarbital",
+            "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
+            "Phenylethylmalonylurea",
+        ],
+        xrefs=["drugbank:DB01174"],
+        associated_with=[
+            "mmsl:d00340",
+            "usp:m63400",
+            "mmsl:2390",
+            "mmsl:5272",
+            "vandf:4017422",
+            "unii:YQE403BP4D",
+            "atc:N03AA02",
+        ],
+        approval_ratings=["rxnorm_prescribable"],
+        approval_year=[],
+        has_indication=[],
     )
 
 

@@ -87,10 +87,7 @@ class NCIt(Base):
         uq_nodes = self._get_typed_nodes(uq_nodes, ncit)
         for node in uq_nodes:
             concept_id = f"{NamespacePrefix.NCIT.value}:{node.name}"
-            if node.P108:
-                label = node.P108.first()
-            else:
-                label = None
+            label = node.P108.first() if node.P108 else None
             aliases = node.P90.copy()  # prevent CallbackList error
             if label and aliases and label in aliases:
                 aliases.remove(label)
@@ -127,7 +124,7 @@ class NCIt(Base):
         """Load metadata"""
         metadata = SourceMeta(
             data_license="CC BY 4.0",
-            data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",  # noqa F401
+            data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",
             version=self._version,
             data_url="https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/",
             rdp_url="http://reusabledata.org/ncit.html",

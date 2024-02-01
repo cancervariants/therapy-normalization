@@ -11,11 +11,11 @@ ho = HemOnc(create_db())  # don't need to write any data
 ho._extract_data(False)
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "hemonc"
 
-with open(ho._data_files.concepts, "r") as f:
+with ho._data_files.concepts.open() as f:
     concepts = list(csv.DictReader(f))
-with open(ho._data_files.rels, "r") as f:
+with ho._data_files.rels.open() as f:
     rels = list(csv.DictReader(f))
-with open(ho._data_files.synonyms, "r") as f:
+with ho._data_files.synonyms.open() as f:
     syns = list(csv.DictReader(f))
 
 concept_ids = set()
@@ -41,15 +41,15 @@ for row in syns:
     if row["synonym_concept_code"] in concept_ids:
         test_syn_rows.append(row)
 
-with open(TEST_DATA_DIR / ho._data_files.concepts.name, "w") as f:
+with (TEST_DATA_DIR / ho._data_files.concepts.name).open("w") as f:
     writer = csv.DictWriter(f, concepts[0].keys())
     writer.writeheader()
     writer.writerows(test_concepts_rows)
-with open(TEST_DATA_DIR / ho._data_files.rels.name, "w") as f:
+with (TEST_DATA_DIR / ho._data_files.rels.name).open("w") as f:
     writer = csv.DictWriter(f, rels[0].keys())
     writer.writeheader()
     writer.writerows(test_rels_rows)
-with open(TEST_DATA_DIR / ho._data_files.synonyms.name, "w") as f:
+with (TEST_DATA_DIR / ho._data_files.synonyms.name).open("w") as f:
     writer = csv.DictWriter(f, syns[0].keys())
     writer.writeheader()
     writer.writerows(test_syn_rows)

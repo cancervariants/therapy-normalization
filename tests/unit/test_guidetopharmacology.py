@@ -111,27 +111,25 @@ def rolipram():
     Checks for correct handling of multiple references under same namespace.
     """
     return Therapy(
-        **{
-            "concept_id": "iuphar.ligand:5260",
-            "label": "rolipram",
-            "xrefs": [
-                "chembl:CHEMBL63",
-                "chemidplus:61413-54-5",
-                "drugbank:DB04149",
-                "drugbank:DB03606",
-            ],
-            "aliases": [
-                "4-[3-(cyclopentyloxy)-4-methoxyphenyl]pyrrolidin-2-one",
-                "(R,S)-rolipram",
-                "(±)-rolipram",
-            ],
-            "associated_with": [
-                "CHEBI:104872",
-                "pubchem.substance:178101944",
-                "pubchem.compound:5092",
-                "inchikey:HJORMJIFDVBMOB-UHFFFAOYSA-N",
-            ],
-        }
+        concept_id="iuphar.ligand:5260",
+        label="rolipram",
+        xrefs=[
+            "chembl:CHEMBL63",
+            "chemidplus:61413-54-5",
+            "drugbank:DB04149",
+            "drugbank:DB03606",
+        ],
+        aliases=[
+            "4-[3-(cyclopentyloxy)-4-methoxyphenyl]pyrrolidin-2-one",
+            "(R,S)-rolipram",
+            "(±)-rolipram",
+        ],
+        associated_with=[
+            "CHEBI:104872",
+            "pubchem.substance:178101944",
+            "pubchem.compound:5092",
+            "inchikey:HJORMJIFDVBMOB-UHFFFAOYSA-N",
+        ],
     )
 
 

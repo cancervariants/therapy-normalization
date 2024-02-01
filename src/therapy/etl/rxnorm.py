@@ -62,13 +62,14 @@ class RxNorm(Base):
         :param rxnorm_file: source RRF file to extract drug form values from
         """
         dfs = []
-        with open(rxnorm_file, "r") as f:
+        with rxnorm_file.open() as f:
             data = csv.reader(f, delimiter="|")
             for row in data:
-                if row[12] == "DF" and row[11] == "RXNORM":
-                    if row[14] not in dfs:
-                        dfs.append(row[14])
-        with open(drug_forms_file, "w") as f:
+                if ((row[12] == "DF") and (row[11] == "RXNORM")) and (
+                    row[14] not in dfs
+                ):
+                    dfs.append(row[14])
+        with drug_forms_file.open("w") as f:
             yaml.dump(dfs, f)
 
     _DataSourceClass = RxNormData
@@ -99,21 +100,21 @@ class RxNorm(Base):
 
     def _transform_data(self) -> None:
         """Transform the RxNorm source."""
-        with open(self._drug_forms_file, "r") as file:
+        with self._drug_forms_file.open() as file:
             drug_forms = yaml.safe_load(file)
 
-        with open(self._data_file) as f:  # type: ignore
+        with self._data_file.open() as f:  # type: ignore
             rff_data = csv.reader(f, delimiter="|")
             # Link ingredient to brand
-            ingredient_brands: Dict[str, str] = dict()
+            ingredient_brands: Dict[str, str] = {}
             # Link precise ingredient to get brand
-            precise_ingredient: Dict[str, str] = dict()
+            precise_ingredient: Dict[str, str] = {}
             # Transformed therapy records
-            data: Dict[str, Dict] = dict()
+            data: Dict[str, Dict] = {}
             # Link ingredient to brand
-            sbdfs: Dict[str, str] = dict()
+            sbdfs: Dict[str, str] = {}
             # Get RXNORM|BN to concept_id
-            brands: Dict[str, str] = dict()
+            brands: Dict[str, str] = {}
             for row in rff_data:
                 if row[11] in RXNORM_XREFS:
                     concept_id = f"{NamespacePrefix.RXNORM.value}:{row[0]}"
@@ -123,7 +124,7 @@ class RxNorm(Base):
                         # Semantic Branded Drug Component
                         self._get_brands(row, ingredient_brands)
                     else:
-                        if concept_id not in data.keys():
+                        if concept_id not in data:
                             params: RecordParams = {}
                             params["concept_id"] = concept_id
                             self._add_str_field(
@@ -148,7 +149,7 @@ class RxNorm(Base):
 
                     params = {"concept_id": value["concept_id"]}
 
-                    for field in list(ITEM_TYPES.keys()) + ["approval_ratings"]:
+                    for field in [*list(ITEM_TYPES.keys()), "approval_ratings"]:
                         field_value = value.get(field)
                         if field_value:
                             params[field] = field_value
@@ -248,15 +249,14 @@ class RxNorm(Base):
         elif term_type in TRADE_NAMES:
             self._add_term(params, term, "trade_names")
 
-        if source == "RXNORM":
-            if term_type == "SBDF":
-                brand = term.split("[")[-1].split("]")[0]
-                ingredient_strength = term.replace(f"[{brand}]", "")
-                for df in drug_forms:
-                    if df in ingredient_strength:
-                        ingredient = ingredient_strength.replace(df, "").strip()
-                        self._add_term(sbdfs, brand, ingredient.lower())
-                        break
+        if source == "RXNORM" and term_type == "SBDF":
+            brand = term.split("[")[-1].split("]")[0]
+            ingredient_strength = term.replace(f"[{brand}]", "")
+            for df in drug_forms:
+                if df in ingredient_strength:
+                    ingredient = ingredient_strength.replace(df, "").strip()
+                    self._add_term(sbdfs, brand, ingredient.lower())
+                    break
 
         if source == "MSH":
             if term_type == "MH":
@@ -288,10 +288,7 @@ class RxNorm(Base):
         ref = row[11]
         lui = row[13]
         if ref and lui != "NOCODE":
-            if ref == "MTHSPL":
-                xref_assoc = "UNII"
-            else:
-                xref_assoc = row[11].upper()
+            xref_assoc = "UNII" if ref == "MTHSPL" else row[11].upper()
 
             if xref_assoc in XREF_SOURCES:
                 source_id = f"{NamespacePrefix[xref_assoc].value}:{lui}"
@@ -302,7 +299,7 @@ class RxNorm(Base):
                 source_id = f"{NamespacePrefix[xref_assoc].value}:{lui}"
                 self._add_term(params, source_id, "associated_with")
             else:
-                _logger.info(f"{xref_assoc} not in NameSpacePrefix.")
+                _logger.info("%s not in NameSpacePrefix.", xref_assoc)
 
     def _load_meta(self) -> None:
         """Add RxNorm metadata."""

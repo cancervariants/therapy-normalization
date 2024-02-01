@@ -29,7 +29,7 @@ for item in result:
         test_data.append(params)
 
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "wikidata"
-date = datetime.datetime.today().strftime("%Y-%m-%d")
+date = datetime.datetime.now(tz=datetime.timezone.utc).strftime("%Y-%m-%d")
 outfile_path = TEST_DATA_DIR / f"wikidata_{date}.json"
-with open(outfile_path, "w+") as f:
+with outfile_path.open("w+") as f:
     json.dump(test_data, f, indent=2)

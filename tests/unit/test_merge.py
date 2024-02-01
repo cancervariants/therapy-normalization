@@ -25,9 +25,8 @@ def merge_instance(test_source, is_test_env, database):
     """Provide fixture for ETL merge class"""
     if is_test_env:
         if os.environ.get(AWS_ENV_VAR_NAME):
-            assert False, (
-                f"Running the full therapy ETL pipeline test on an AWS environment is "
-                f"forbidden -- either unset {AWS_ENV_VAR_NAME} or unset THERAPY_TEST"
+            pytest.fail(
+                f"Running the full therapy ETL pipeline test on an AWS environment is forbidden -- either unset {AWS_ENV_VAR_NAME} or unset THERAPY_TEST"
             )
         for SourceClass in (  # noqa: N806
             ChEMBL,
@@ -41,8 +40,7 @@ def merge_instance(test_source, is_test_env, database):
             Wikidata,
         ):
             test_source(SourceClass)
-    m = Merge(database)
-    return m
+    return Merge(database)
 
 
 def compare_merged_records(actual: Dict, fixture: Dict):
@@ -84,7 +82,8 @@ def compare_merged_records(actual: Dict, fixture: Dict):
 @pytest.fixture(scope="module")
 def fixture_data(test_data: Path):
     """Fetch fixture data"""
-    return json.load(open(test_data / "fixtures" / "merged_fixtures.json", "r"))
+    with (test_data / "fixtures" / "merged_fixtures.json").open() as f:
+        return json.load(f)
 
 
 @pytest.fixture(scope="module")
@@ -186,18 +185,18 @@ def test_id_sets(merge_instance: Merge, record_id_groups: Dict[str, Set[str]]):
     record_id_groups fixture.
     """
     # try a few different orders
-    keys = list(record_id_groups.keys())
+    keys = list(record_id_groups)
     key_len = len(keys)
     order0 = list(range(key_len))
     random.seed(42)
     orders = [random.sample(order0, key_len) for _ in range(5)]
-    for order in [order0] + orders:
+    for order in [order0, *orders]:
         ordered_keys = [keys[i] for i in order]
         merge_instance._create_record_id_sets(ordered_keys)  # type: ignore
         groups = merge_instance._groups
 
         # perform checks
-        for concept_id in groups.keys():
+        for concept_id in groups:
             assert groups[concept_id] == record_id_groups[concept_id], f"{concept_id}"
         assert len(groups) == len(record_id_groups)  # check if any are missing
 
@@ -249,19 +248,19 @@ def test_create_merged_concepts(
     }
 
     phenobarbital_merged_id = phenobarbital_merged["concept_id"]
-    assert phenobarbital_merged_id in added_records.keys()
+    assert phenobarbital_merged_id in added_records
     compare_merged_records(added_records[phenobarbital_merged_id], phenobarbital_merged)
 
     cisplatin_merged_id = cisplatin_merged["concept_id"]
-    assert cisplatin_merged_id in added_records.keys()
+    assert cisplatin_merged_id in added_records
     compare_merged_records(added_records[cisplatin_merged_id], cisplatin_merged)
 
     spiramycin_merged_id = spiramycin_merged["concept_id"]
-    assert spiramycin_merged_id in added_records.keys()
+    assert spiramycin_merged_id in added_records
     compare_merged_records(added_records[spiramycin_merged_id], spiramycin_merged)
 
     amifostine_merged_id = amifostine_merged["concept_id"]
-    assert amifostine_merged_id in added_records.keys()
+    assert amifostine_merged_id in added_records
     compare_merged_records(added_records[amifostine_merged_id], amifostine_merged)
 
     # should only create new records for groups with n > 1 members

@@ -1,9 +1,10 @@
 """A base class for extraction, transformation, and loading of data."""
+import contextlib
 import json
 import logging
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import ClassVar, Dict, List, Optional, Union
 
 import click
 from disease.database import create_db as create_disease_db
@@ -162,15 +163,12 @@ class Base(ABC):
                 else:
                     value = list(unique_values)
 
-                if attr_type in ("aliases", "trade_names"):
-                    if "label" in therapy:
-                        try:
-                            value.remove(therapy["label"])
-                        except ValueError:
-                            pass
+                if (attr_type in ("aliases", "trade_names")) and ("label" in therapy):
+                    with contextlib.suppress(ValueError):
+                        value.remove(therapy["label"])
 
                 if len(value) > 20:
-                    _logger.debug(f"{therapy['concept_id']} has > 20 {attr_type}.")
+                    _logger.debug("%s has > 20 %s.", therapy["concept_id"], attr_type)
                     del therapy[attr_type]
                     continue
 
@@ -245,7 +243,7 @@ class Base(ABC):
         try:
             Therapy(**therapy)
         except ValidationError as e:
-            _logger.error(f"Attempted to load invalid therapy: {therapy}")
+            _logger.error("Attempted to load invalid therapy: %s", therapy)
             raise e
 
         therapy = self._rules.apply_rules_to_therapy(therapy)
@@ -259,7 +257,7 @@ class Base(ABC):
 class DiseaseIndicationBase(Base):
     """Base class for sources that require disease normalization capabilities."""
 
-    _disease_cache: Dict[str, Optional[str]] = {}
+    _disease_cache: ClassVar[Dict[str, Optional[str]]] = {}
 
     def __init__(
         self,
@@ -285,13 +283,12 @@ class DiseaseIndicationBase(Base):
         term = query.lower()
         if term in self._disease_cache:
             return self._disease_cache[term]
-        else:
-            response = self.disease_normalizer.normalize(term)
-            normalized_id = response.normalized_id
-            self._disease_cache[term] = normalized_id
-            if normalized_id is None:
-                _logger.warning(f"Failed to normalize disease term: {query}")
-            return normalized_id
+        response = self.disease_normalizer.normalize(term)
+        normalized_id = response.normalized_id
+        self._disease_cache[term] = normalized_id
+        if normalized_id is None:
+            _logger.warning("Failed to normalize disease term: %s", query)
+        return normalized_id
 
 
 class SourceFormatError(Exception):

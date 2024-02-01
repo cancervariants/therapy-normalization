@@ -98,7 +98,8 @@ class Wikidata(Base):
         """
         medicine_query_results = execute_sparql_query(SPARQL_QUERY)
         if medicine_query_results is None:
-            raise EtlError("Wikidata medicine SPARQL query failed")
+            msg = "Wikidata medicine SPARQL query failed"
+            raise EtlError(msg)
         results = medicine_query_results["results"]["bindings"]
 
         transformed_data = []
@@ -107,7 +108,7 @@ class Wikidata(Base):
             for attr in item:
                 params[attr] = item[attr]["value"]
             transformed_data.append(params)
-        with open(file, "w+") as f:
+        with file.open("w+") as f:
             json.dump(transformed_data, f)
 
     @staticmethod
@@ -117,7 +118,9 @@ class Wikidata(Base):
 
         :return: formatted string for the current date
         """
-        return datetime.datetime.today().strftime(DATE_VERSION_PATTERN)
+        return datetime.datetime.now(tz=datetime.timezone.utc).strftime(
+            DATE_VERSION_PATTERN
+        )
 
     def _get_data_handler(self, data_path: Optional[Path] = None) -> DataSource:
         """Construct data handler instance for source. Overwrites base class method
@@ -153,10 +156,10 @@ class Wikidata(Base):
 
     def _transform_data(self) -> None:
         """Transform the Wikidata source data."""
-        with open(self._data_file, "r") as f:  # type: ignore
+        with self._data_file.open() as f:
             records = json.load(f)
 
-            items: Dict[str, Any] = dict()
+            items: Dict[str, Any] = {}
 
             for record in records:
                 record_id = record["item"].split("/")[-1]
@@ -164,10 +167,10 @@ class Wikidata(Base):
                 if concept_id not in items:
                     item: Dict[str, Any] = {"concept_id": concept_id}
 
-                    xrefs = list()
-                    associated_with = list()
-                    for key in NAMESPACES.keys():
-                        if key in record.keys():
+                    xrefs = []
+                    associated_with = []
+                    for key in NAMESPACES:
+                        if key in record:
                             ref = record[key]
 
                             if key.upper() == "CASREGISTRY":
@@ -185,11 +188,11 @@ class Wikidata(Base):
                                 associated_with.append(fmted_assoc)
                     item["xrefs"] = xrefs
                     item["associated_with"] = associated_with
-                    if "itemLabel" in record.keys():
+                    if "itemLabel" in record:
                         item["label"] = record["itemLabel"]
                     items[concept_id] = item
-                if "aliases" in record.keys():
-                    if "aliases" in items[concept_id].keys():
+                if "aliases" in record:
+                    if "aliases" in items[concept_id]:
                         items[concept_id]["aliases"] += record["aliases"].split(";;")
                     else:
                         items[concept_id]["aliases"] = record["aliases"].split(";;")

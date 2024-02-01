@@ -34,7 +34,7 @@ class GuideToPHARMACOLOGY(Base):
 
     def _transform_data(self) -> None:
         """Transform Guide To PHARMACOLOGY data."""
-        data: Dict[str, Any] = dict()
+        data: Dict[str, Any] = {}
         self._transform_ligands(data)
         self._transform_ligand_id_mappings(data)
 
@@ -47,15 +47,14 @@ class GuideToPHARMACOLOGY(Base):
         :param name: raw drug referent
         :return: cleaned name (may be unchanged)
         """
-        name = re.sub(TAG_PATTERN, "", name)
-        return name
+        return re.sub(TAG_PATTERN, "", name)
 
     def _transform_ligands(self, data: Dict) -> None:
         """Transform ligands data file and add this data to `data`.
 
         :param dict data: Transformed data
         """
-        with open(self._data_files.ligands, "r") as f:
+        with self._data_files.ligands.open() as f:
             rows = csv.reader(f, delimiter="\t")
 
             # check that file structure is the same
@@ -87,10 +86,8 @@ class GuideToPHARMACOLOGY(Base):
                 "GtoMPdb",
                 "Antibacterial",
             ]:
-                raise SourceFormatError(
-                    "GtoP ligands file contains missing or unrecognized columns. See "
-                    "FAQ in README for suggested resolution."
-                )
+                msg = "GtoP ligands file contains missing or unrecognized columns. See FAQ in README for suggested resolution."
+                raise SourceFormatError(msg)
 
             for row in rows:
                 params: Dict[str, Union[List[str], str]] = {
@@ -103,8 +100,8 @@ class GuideToPHARMACOLOGY(Base):
                 if approval_rating:
                     params["approval_ratings"] = [approval_rating]
 
-                associated_with = list()
-                aliases = list()
+                associated_with = []
+                aliases = []
                 if row[8]:
                     associated_with.append(
                         f"{NamespacePrefix.PUBCHEMSUBSTANCE.value}:{row[8]}"
@@ -162,7 +159,7 @@ class GuideToPHARMACOLOGY(Base):
 
         :param dict data: Transformed data
         """
-        with open(self._data_files.ligand_id_mapping.absolute(), "r") as f:
+        with self._data_files.ligand_id_mapping.open() as f:
             rows = csv.reader(f, delimiter="\t")
             next(rows)
             if next(rows) != [
@@ -182,19 +179,17 @@ class GuideToPHARMACOLOGY(Base):
                 "DrugBank ID",
                 "Drug Central ID",
             ]:
-                raise SourceFormatError(
-                    "GtoP ligand mapping file contains missing or unrecognized "
-                    "columns. See FAQ in README for suggested resolution."
-                )
+                msg = "GtoP ligand mapping file contains missing or unrecognized columns. See FAQ in README for suggested resolution."
+                raise SourceFormatError(msg)
 
             for row in rows:
                 concept_id = f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}"
 
                 if concept_id not in data:
-                    _logger.debug(f"{concept_id} not in ligands")
+                    _logger.debug("%s not in ligands", concept_id)
                     continue
                 params = data[concept_id]
-                xrefs = list()
+                xrefs = []
                 associated_with = params.get("associated_with", [])
                 if row[6]:
                     xrefs += self._get_xrefs(row[6], NamespacePrefix.CHEMBL.value)

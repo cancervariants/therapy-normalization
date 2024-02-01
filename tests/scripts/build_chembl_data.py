@@ -1,4 +1,5 @@
 """Construct test data for ChEMBL source."""
+import contextlib
 import sqlite3
 from pathlib import Path
 
@@ -23,10 +24,8 @@ ch._extract_data(False)
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "chembl"
 out_db_path = TEST_DATA_DIR / ch._data_file.name  # type: ignore
 
-try:
+with contextlib.suppress(FileNotFoundError):
     out_db_path.unlink()
-except FileNotFoundError:
-    pass
 out_con = sqlite3.connect(out_db_path)
 c = out_con.cursor()
 c.execute(f"ATTACH DATABASE '{ch._data_file}' AS chembl")

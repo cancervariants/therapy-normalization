@@ -27,7 +27,7 @@ class DrugBank(Base):
 
     def _transform_data(self) -> None:
         """Transform the DrugBank source."""
-        with open(self._data_file, "r") as file:  # type: ignore
+        with self._data_file.open() as file:  # type: ignore
             reader = csv.reader(file)
             next(reader)  # skip header
             for row in reader:
