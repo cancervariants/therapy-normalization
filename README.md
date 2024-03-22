@@ -1,75 +1,30 @@
 # Thera-Py
 
-[![DOI: 10.1093/jamiaopen/ooad093](https://img.shields.io/badge/DOI-10.1093%2Fjamiaopen%2Fooad093-blue)](https://doi.org/10.1093/jamiaopen/ooad093)
+[![image](https://img.shields.io/pypi/v/thera-py.svg)](https://pypi.python.org/pypi/thera-py) [![image](https://img.shields.io/pypi/l/thera-py.svg)](https://pypi.python.org/pypi/thera-py) [![image](https://img.shields.io/pypi/pyversions/thera-py.svg)](https://pypi.python.org/pypi/thera-py) [![Actions status](https://github.com/cancervariants/therapy-normalization/actions/workflows/checks.yaml/badge.svg)](https://github.com/cancervariants/therapy-normalization/actions/checks.yaml)[![DOI: 10.1093/jamiaopen/ooad093](https://img.shields.io/badge/DOI-10.1093%2Fjamiaopen%2Fooad093-blue)](https://doi.org/10.1093/jamiaopen/ooad093)
 
-Services and guidelines for normalizing drug (and non-drug therapy) terms.
+<!-- description -->
+`Thera-Py` normalizes free-text names and references for drugs and other biomedical therapeutics to stable, unambiguous concept identifiers to support genomic knowledge harmonization.
+<!-- /description -->
 
-If you use Thera-Py in scientific works, please cite the following article:
+---
 
-> Matthew Cannon, James Stevenson, Kori Kuzma, Susanna Kiwala, Jeremy L Warner, Obi L Griffith, Malachi Griffith, Alex H Wagner, Normalization of drug and therapeutic concepts with Thera-Py, JAMIA Open, Volume 6, Issue 4, December 2023, ooad093, https://doi.org/10.1093/jamiaopen/ooad093
+[Live OpenAPI service](https://normalize.cancervariants.org/therapy/)
 
-## Developer instructions
-The following sections include instructions specifically for developers.
+---
 
-### Installation
-For a development install, we recommend using Pipenv. See the
-[pipenv docs](https://pipenv-fork.readthedocs.io/en/latest/#install-pipenv-today)
-for direction on installing pipenv in your compute environment.
+## Installation
 
-Once installed, from the project root dir, just run:
+Install from [PyPI](https://pypi.org/projects/thera-py):
 
-```commandline
-pipenv sync
+```shell
+python3 -m pip install thera-py
 ```
+
+## Usage
 
 ### Deploying DynamoDB Locally
 
 We use Amazon DynamoDB for data storage. To deploy locally, follow [these instructions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html).
-
-### Initialize development environment
-
-Code style is managed by [Ruff](https://docs.astral.sh/ruff/) and checked prior to commit.
-
-We use [pre-commit](https://pre-commit.com/#usage) to run conformance tests.
-
-This ensures:
-
-* Style correctness
-* No large files
-* AWS credentials are present
-* Private key is present
-
-Pre-commit *must* be installed before your first commit. Use the following command:
-
-```commandline
-pre-commit install
-```
-
-### Running tests
-
-Unit tests are provided via pytest.
-
-```commandline
-pipenv run pytest
-```
-
-By default, tests will employ an existing DynamoDB database. For test environments where this is unavailable (e.g. in CI), the `THERAPY_TEST` environment variable can be set to initialize a local DynamoDB instance with miniature versions of input data files before tests are executed.
-
-```commandline
-export THERAPY_TEST=true
-```
-
-Sometimes, sources will update their data, and our test fixtures and data will become incorrect. The `tests/scripts/` subdirectory includes scripts to rebuild data files, although most fixtures will need to be updated manually.
-
-### Updating the database
-
-Before you use the CLI to update the database, run the following in a separate terminal to start DynamoDB on `port 8000`:
-
-```
-java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
-```
-
-To change the port, simply add `-port value`.
 
 ### Setting Environment Variables
 RxNorm requires a UMLS license, which you can register for one [here](https://www.nlm.nih.gov/research/umls/index.html).
@@ -181,3 +136,48 @@ http://127.0.0.1:8000/therapy
 TheraPy will automatically try to acquire the latest version of data for each source, but sometimes, sources alter the structure of their data (e.g. adding or removing CSV columns). If you encounter a SourceFormatException while importing data, please notify us by creating a new [issue](https://github.com/cancervariants/therapy-normalization/issues) if one doesn't already exist, and we will attempt to resolve it.
 
 In the meantime, you can force TheraPy to use an older data release by removing the incompatible version from the source data folder, manually downloading and replacing it with an older version of the data per the structure described above, and calling the CLI with the `--use_existing` argument.
+
+
+## Citation
+
+If you use Thera-Py in scientific works, please cite the following article:
+
+> Matthew Cannon, James Stevenson, Kori Kuzma, Susanna Kiwala, Jeremy L Warner, Obi L Griffith, Malachi Griffith, Alex H Wagner, Normalization of drug and therapeutic concepts with Thera-Py, JAMIA Open, Volume 6, Issue 4, December 2023, ooad093, [https://doi.org/10.1093/jamiaopen/ooad093](https://doi.org/10.1093/jamiaopen/ooad093)
+
+## Development
+
+Clone the repo and create a virtual environment:
+
+```shell
+git clone https://github.com/cancervariants/therapy-normalization
+cd therapy-normalization
+python3 -m virtualenv venv
+source venv/bin/activate
+```
+
+Install development dependencies and `pre-commit`:
+
+```shell
+python3 -m pip install -e '.[dev,test]'
+pre-commit install
+```
+
+Check style with `ruff`:
+
+```shell
+python3 -m ruff format . && python3 -m ruff check --fix .
+```
+
+Run tests with `pytest`:
+
+```commandline
+pipenv run pytest
+```
+
+By default, tests will employ an existing DynamoDB database. For test environments where this is unavailable (e.g. in CI), the `THERAPY_TEST` environment variable can be set to initialize a local DynamoDB instance with miniature versions of input data files before tests are executed.
+
+```commandline
+export THERAPY_TEST=true
+```
+
+Sometimes, sources will update their data, and our test fixtures and data will become incorrect. The `tests/scripts/` subdirectory includes scripts to rebuild data files, although most fixtures will need to be updated manually.
