@@ -134,6 +134,7 @@ fixable = [
 # E114 - indentation-with-invalid-multiple-comment*
 # E117 - over-indented*
 # E501 - line-too-long*
+# PGH003 - blanket-type-ignore
 # W191 - tab-indentation*
 # S321 - suspicious-ftp-lib-usage
 # *ignored for compatibility with formatter
@@ -141,6 +142,7 @@ ignore = [
     "ANN101", "ANN003",
     "D203", "D205", "D206", "D213", "D300", "D400", "D415",
     "E111", "E114", "E117", "E501",
+    "PGH003",
     "W191",
     "S321",
 ]
