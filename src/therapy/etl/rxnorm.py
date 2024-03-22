@@ -273,7 +273,7 @@ class RxNorm(Base):
         :param Str term: The term to be added
         :param Str label_type: The type of term
         """
-        if label_type in params and params[label_type]:
+        if params.get(label_type):
             if term not in params[label_type]:
                 params[label_type].append(term)
         else:
