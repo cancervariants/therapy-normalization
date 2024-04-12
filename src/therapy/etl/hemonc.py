@@ -118,6 +118,10 @@ class HemOnc(DiseaseIndicationBase):
                     continue  # skip non-drug items
 
                 if rel_type == "Maps to":
+                    if " and " in record.get("label", ""):
+                        # xref from the HemOnc combo treatment to individual drugs
+                        # see https://github.com/cancervariants/therapy-normalization/issues/417
+                        continue
                     src_raw = row[3]
                     if src_raw == "RxNorm":
                         xref = f"{NamespacePrefix.RXNORM.value}:{row[1]}"
