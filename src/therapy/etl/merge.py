@@ -288,7 +288,7 @@ class Merge:
             if label:
                 if merged_attrs["label"] is None:
                     merged_attrs["label"] = label
-                else:
+                elif label != merged_attrs["label"]:
                     merged_attrs["aliases"].add(label)
             for ind in record.get("has_indication", []):
                 if ind not in merged_attrs["has_indication"]:
