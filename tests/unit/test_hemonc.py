@@ -161,6 +161,22 @@ def filgrastim():
     )
 
 
+@pytest.fixture(scope="module")
+def combo_drug():
+    """Create fixture for `aspirin and dipyridamole`, a combo drug. Ensure that xref
+    to rxcui:226716 isn't added.
+    """
+    return Therapy(
+        label="Aspirin and dipyridamole",
+        concept_id="hemonc:48",
+        aliases=[],
+        xrefs=[],
+        trade_names=["Aggrenox"],
+        approval_ratings=["hemonc_approved"],
+        approval_year=["1999"],
+    )
+
+
 def test_concept_id_match(
     hemonc, compare_response, cisplatin, bendamustine, degarelix, filgrastim
 ):
@@ -242,6 +258,18 @@ def test_xref_match(hemonc, compare_response, cisplatin, bendamustine, degarelix
 
     response = hemonc.search("rxcui:475230")
     compare_response(response, MatchType.XREF, degarelix)
+
+
+def test_combo_drug_xref(hemonc, compare_response, combo_drug):
+    """Ensure that xrefs in combo treatments aren't included.
+
+    See https://github.com/cancervariants/therapy-normalization/issues/417
+    """
+    response = hemonc.search("aspirin and dipyridamole")
+    compare_response(response, MatchType.LABEL, combo_drug)
+
+    response = hemonc.search("rxcui:226716")
+    assert response.match_type == MatchType.NO_MATCH
 
 
 def test_metadata(hemonc):
