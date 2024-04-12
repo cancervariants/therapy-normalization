@@ -195,7 +195,8 @@ class GuideToPHARMACOLOGY(Base):
                     xrefs += self._get_xrefs(row[6], NamespacePrefix.CHEMBL.value)
                 if row[7]:
                     # CHEBI IDs are already namespaced
-                    associated_with.append(row[7])
+                    for chebi_id in row[7].split("|"):
+                        associated_with.append(chebi_id)
                 if row[8]:
                     associated_with += self._get_xrefs(
                         row[8], NamespacePrefix.UNIPROT.value
