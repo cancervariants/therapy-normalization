@@ -1,10 +1,11 @@
 """Create concept groups and merged records."""
 import logging
+import re
 from timeit import default_timer as timer
-from typing import Any, Dict, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from therapy.database.database import AbstractDatabase, DatabaseWriteError
-from therapy.schemas import RefType, SourcePriority
+from therapy.schemas import RefType, SourceName, SourcePriority
 
 logger = logging.getLogger(__name__)
 
@@ -192,6 +193,38 @@ class Merge:
         end = timer()
         logger.debug("Built record ID sets in %s seconds", end - start)
 
+    _biologic_suffix_pattern = re.compile(r"^(.*)[ -][a-z]{4}$")
+
+    def _handle_rxnorm_biologic_suffixes(self, records: List[Dict]) -> List[Dict]:
+        """Properly sort record sets that include RxNorm records for different biologic
+        designations of the same drug. This is necessary to ensure that the normalized
+        drug's label is something like "trastuzumab" and not "trastuzumab-abcd".
+
+        See https://www.fda.gov/files/drugs/published/Nonproprietary-Naming-of-Biological-Products-Guidance-for-Industry.pdf,
+        and https://github.com/cancervariants/therapy-normalization/issues/299.
+
+        :param records: record group for a normalized concept
+        :return: the same record group, with relevant rxnorm records internally sorted
+            correctly.
+        """
+        if len([r for r in records if r["src_name"] == SourceName.RXNORM]) <= 1:
+            return records
+        first_match = re.findall(
+            self._biologic_suffix_pattern, records[0].get("label", "")
+        )
+        if first_match:
+            base = first_match[0].lower()
+            for i, record in enumerate(records[1:], start=1):
+                if (
+                    record["src_name"] == SourceName.RXNORM
+                    and record.get("label", "").lower() == base
+                ):
+                    tmp = records[0]
+                    records[0] = records[i]
+                    records[i] = tmp
+                    break
+        return records
+
     def _generate_merged_record(self, record_id_set: Set[str]) -> Dict:
         """Generate merged record from provided concept ID group.
         Where attributes are 'set-like', they should be combined, and where
@@ -215,7 +248,7 @@ class Merge:
                     record_id_set,
                 )
 
-        def record_order(record: Dict) -> Tuple[int, str]:
+        def _record_order(record: Dict) -> Tuple[int, str]:
             """Provide priority values of concepts for sort function."""
             src = record["src_name"].upper()
             if src == "DRUGS@FDA":
@@ -223,13 +256,12 @@ class Merge:
             if src in SourcePriority.__members__:
                 source_rank = SourcePriority[src].value
             else:
-                msg = (
-                    f"Prohibited source: {src} in concept_id " f"{record['concept_id']}"
-                )
+                msg = f"Prohibited source: {src} in concept_id {record['concept_id']}"
                 raise Exception(msg)
             return source_rank, record["concept_id"]
 
-        records.sort(key=record_order)
+        records.sort(key=_record_order)
+        records = self._handle_rxnorm_biologic_suffixes(records)
 
         # initialize merged record
         merged_attrs = {
@@ -252,8 +284,12 @@ class Merge:
             approval_ratings = record.get("approval_ratings")
             if approval_ratings:
                 merged_attrs["approval_ratings"] |= set(approval_ratings)
-            if merged_attrs["label"] is None:
-                merged_attrs["label"] = record.get("label")
+            label = record.get("label")
+            if label:
+                if merged_attrs["label"] is None:
+                    merged_attrs["label"] = label
+                else:
+                    merged_attrs["aliases"].add(label)
             for ind in record.get("has_indication", []):
                 if ind not in merged_attrs["has_indication"]:
                     merged_attrs["has_indication"].append(ind)
