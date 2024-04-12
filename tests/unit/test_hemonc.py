@@ -94,6 +94,7 @@ def bendamustine():
             "Ribomustin",
             "Treakisym",
             "Treanda",
+            "Vivimusta",
             "Xyotin",
         ],
         approval_ratings=["hemonc_approved"],
@@ -231,9 +232,7 @@ def test_trade_name(hemonc, compare_response, bendamustine, degarelix):
     assert response.match_type == MatchType.NO_MATCH
 
 
-def test_xref_match(
-    hemonc, compare_response, cisplatin, bendamustine, degarelix, filgrastim
-):
+def test_xref_match(hemonc, compare_response, cisplatin, bendamustine, degarelix):
     """Test that xref query resolves to correct record."""
     response = hemonc.search("rxcui:2555")
     compare_response(response, MatchType.XREF, cisplatin)
@@ -243,9 +242,6 @@ def test_xref_match(
 
     response = hemonc.search("rxcui:475230")
     compare_response(response, MatchType.XREF, degarelix)
-
-    response = hemonc.search("rxcui:68442")
-    compare_response(response, MatchType.XREF, filgrastim)
 
 
 def test_metadata(hemonc):

@@ -8,7 +8,6 @@ concept_code_1,concept_code_2,vocabulary_id_1,vocabulary_id_2,relationship_id
 26,45069,HemOnc,HemOnc,Has major class
 26,J0207,HemOnc,HCPCS,Maps to
 26,76310-017,HemOnc,NDC,Maps to
-26,4126,HemOnc,RxNorm,Maps to
 65,51576,HemOnc,HemOnc,Has brand name
 65,5159,HemOnc,HemOnc,Has brand name
 65,5160,HemOnc,HemOnc,Has brand name
@@ -48,6 +47,7 @@ concept_code_1,concept_code_2,vocabulary_id_1,vocabulary_id_2,relationship_id
 65,63459-390,HemOnc,NDC,Maps to
 65,63459-391,HemOnc,NDC,Maps to
 65,134547,HemOnc,RxNorm,Maps to
+65,136381,HemOnc,HemOnc,Has brand name
 105,13471,HemOnc,HemOnc,Has brand name
 105,13472,HemOnc,HemOnc,Has brand name
 105,13473,HemOnc,HemOnc,Has brand name
