@@ -1,4 +1,5 @@
 """Test merged record generation."""
+
 import json
 import os
 import random
@@ -18,6 +19,7 @@ from therapy.etl.merge import Merge
 from therapy.etl.ncit import NCIt
 from therapy.etl.rxnorm import RxNorm
 from therapy.etl.wikidata import Wikidata
+from therapy.schemas import SourceName
 
 
 @pytest.fixture(scope="module")
@@ -279,3 +281,71 @@ def test_create_merged_concepts(
     assert "drugsatfda.nda:210595" not in updated_records
 
     assert update_spy.call_count == len(record_id_groups) - 2
+
+
+def test_merge_record_ordering(merge_instance: Merge):
+    """Test record ordering within merged record generation.
+
+    This test uses dummy data and only checks the ordering pipeline because relevant
+    edge cases are quite large and would entail considerable effort to maintain fixtures.
+    """
+    records = [
+        {
+            "label": "Trastuzumab",
+            "src_name": SourceName.HEMONC,
+            "concept_id": "hemonc:1",
+        },
+        {
+            "label": "trastuzumab-xxxx",
+            "src_name": SourceName.RXNORM,
+            "concept_id": "rxcui:1",
+        },
+        {
+            "label": "Trastuzumab",
+            "src_name": SourceName.RXNORM,
+            "concept_id": "rxcui:2",
+        },
+    ]
+    result = merge_instance._sort_records(records)
+    assert [r["concept_id"] for r in result] == ["rxcui:2", "rxcui:1", "hemonc:1"]
+
+    records = [
+        {
+            "label": "drug",
+            "src_name": SourceName.DRUGSATFDA,
+            "concept_id": "drugsatfda:1",
+        },
+        {"label": "drug", "src_name": SourceName.NCIT, "concept_id": "ncit:1"},
+        {
+            "label": "Trastuzumab-xxxx",
+            "src_name": SourceName.RXNORM,
+            "concept_id": "rxcui:1",
+        },
+        {
+            "label": "Trastuzumab-yyyy",
+            "src_name": SourceName.RXNORM,
+            "concept_id": "rxcui:2",
+        },
+    ]
+    result = merge_instance._sort_records(records)
+    assert [r["concept_id"] for r in result] == [
+        "rxcui:1",
+        "rxcui:2",
+        "ncit:1",
+        "drugsatfda:1",
+    ]
+
+    records = [
+        {
+            "label": "trastuzumab-aaaa",
+            "src_name": SourceName.RXNORM,
+            "concept_id": "rxcui:2",
+        },
+        {
+            "label": "trastuzumab",
+            "src_name": SourceName.CHEMBL,
+            "concept_id": "chembl:CHEMBL1",
+        },
+    ]
+    result = merge_instance._sort_records(records)
+    assert [r["concept_id"] for r in result] == ["rxcui:2", "chembl:CHEMBL1"]

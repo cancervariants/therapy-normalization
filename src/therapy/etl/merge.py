@@ -1,4 +1,5 @@
 """Create concept groups and merged records."""
+
 import logging
 import re
 from timeit import default_timer as timer
@@ -195,18 +196,37 @@ class Merge:
 
     _biologic_suffix_pattern = re.compile(r"^(.*)[ -][a-z]{4}$")
 
-    def _handle_rxnorm_biologic_suffixes(self, records: List[Dict]) -> List[Dict]:
-        """Properly sort record sets that include RxNorm records for different biologic
-        designations of the same drug. This is necessary to ensure that the normalized
-        drug's label is something like "trastuzumab" and not "trastuzumab-abcd".
+    def _sort_records(self, records: List[Dict]) -> List[Dict]:
+        """Ensure proper sorting of records in group.
 
-        See https://www.fda.gov/files/drugs/published/Nonproprietary-Naming-of-Biological-Products-Guidance-for-Industry.pdf,
+        First, order by source priority and tiebreak by smallest concept ID value.
+        Then, if the first entry appears to be an RxNorm biosimilar, find the base
+        therapeutic concept and move it in the front. This is necessary to ensure that
+        the normalized drug's label is something like "trastuzumab" and not
+        "trastuzumab-abcd". See
+        https://www.fda.gov/files/drugs/published/Nonproprietary-Naming-of-Biological-Products-Guidance-for-Industry.pdf,
         and https://github.com/cancervariants/therapy-normalization/issues/299.
 
-        :param records: record group for a normalized concept
-        :return: the same record group, with relevant rxnorm records internally sorted
-            correctly.
+        This method is broken out to faciliate more direct testing.
+
+        :param records: List of records in normalized group
+        :return: sorted records list
         """
+
+        def _record_order(record: Dict) -> Tuple[int, str]:
+            """Provide priority values of concepts for sort function."""
+            src = record["src_name"].upper()
+            if src == "DRUGS@FDA":
+                src = "DRUGSATFDA"
+            if src in SourcePriority.__members__:
+                source_rank = SourcePriority[src].value
+            else:
+                msg = f"Prohibited source: {src} in concept_id {record['concept_id']}"
+                raise Exception(msg)
+            return source_rank, record["concept_id"]
+
+        records.sort(key=_record_order)
+
         if len([r for r in records if r["src_name"] == SourceName.RXNORM]) <= 1:
             return records
         first_match = re.findall(
@@ -219,9 +239,12 @@ class Merge:
                     record["src_name"] == SourceName.RXNORM
                     and record.get("label", "").lower() == base
                 ):
-                    tmp = records[0]
-                    records[0] = records[i]
-                    records[i] = tmp
+                    logger.debug(
+                        "Reordering RxNorm entry %s ahead of biosimilars",
+                        record["concept_id"],
+                    )
+                    main_record = records.pop(i)
+                    records = [main_record, *records]
                     break
         return records
 
@@ -247,21 +270,7 @@ class Merge:
                     record_id,
                     record_id_set,
                 )
-
-        def _record_order(record: Dict) -> Tuple[int, str]:
-            """Provide priority values of concepts for sort function."""
-            src = record["src_name"].upper()
-            if src == "DRUGS@FDA":
-                src = "DRUGSATFDA"
-            if src in SourcePriority.__members__:
-                source_rank = SourcePriority[src].value
-            else:
-                msg = f"Prohibited source: {src} in concept_id {record['concept_id']}"
-                raise Exception(msg)
-            return source_rank, record["concept_id"]
-
-        records.sort(key=_record_order)
-        records = self._handle_rxnorm_biologic_suffixes(records)
+        records = self._sort_records(records)
 
         # initialize merged record
         merged_attrs = {

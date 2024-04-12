@@ -128,7 +128,10 @@
       "INT230-6 COMPONENT CISPLATIN",
       "cisplatino",
       "Cis-diamminedichloroplatinum ii",
-      "NSC 119875"
+      "NSC 119875",
+      "CISPLATIN",
+      "Cisplatin",
+      "Mitometh"
     ],
     "approval_ratings": [
       "gtopdb_approved",
@@ -345,6 +348,7 @@
     "label": "spiramycin",
     "aliases": [
       "RP 5337",
+      "Spiramycin",
       "SPIRAMYCIN",
       "Foromacidine A",
       "Provamycin",
@@ -380,6 +384,7 @@
       "AMIFOSTINE",
       "amifostine",
       "NSC-758236",
+      "Amifostine Anhydrous",
       "Amifostine anhydrous",
       "Ethiofos Anhydrous",
       "WR 2721",
@@ -483,9 +488,6 @@
       "wikidata:Q251698"
     ],
     "trade_names": ["Amifostine", "Ethyol", "ETHYOL"],
-    "approval_ratings": [
-      "rxnorm_prescribable",
-      "chembl_phase_4"
-    ]
+    "approval_ratings": ["rxnorm_prescribable", "chembl_phase_4"]
   }
 }
