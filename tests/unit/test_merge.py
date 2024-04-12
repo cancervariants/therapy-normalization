@@ -160,7 +160,6 @@ def record_id_groups():
             "rxcui:4126",
             "ncit:C488",
             "ncit:C66724",
-            "hemonc:26",
             "drugbank:DB01143",
             "drugsatfda.nda:020221",
             "chembl:CHEMBL1006",

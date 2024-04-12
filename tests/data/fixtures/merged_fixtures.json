@@ -411,11 +411,9 @@
     ],
     "label": "amifostine anhydrous",
     "src_name": "RxNorm",
-    "approval_year": ["1995"],
     "concept_id": "rxcui:1545987",
     "label_and_type": "rxcui:1545987##merger",
     "has_indication": [
-      "[\"hemonc:645\", \"Ovarian cancer\", \"ncit:C7431\", {\"regulatory_body\": \"FDA\"}]",
       "[\"mesh:D001749\", \"Urinary Bladder Neoplasms\", \"ncit:C9334\", {\"chembl_max_phase_for_ind\": \"chembl_phase_2\"}]",
       "[\"mesh:D001932\", \"Brain Neoplasms\", \"ncit:C3568\", {\"chembl_max_phase_for_ind\": \"chembl_phase_2\"}]",
       "[\"mesh:D001943\", \"Breast Neoplasms\", \"ncit:C2910\", {\"chembl_max_phase_for_ind\": \"chembl_phase_2\"}]",
@@ -477,7 +475,6 @@
       "rxcui:4126",
       "ncit:C488",
       "ncit:C66724",
-      "hemonc:26",
       "drugbank:DB01143",
       "drugsatfda.nda:020221",
       "chembl:CHEMBL1006",
@@ -485,10 +482,9 @@
       "chemidplus:20537-88-6",
       "wikidata:Q251698"
     ],
-    "trade_names": ["Cytofos", "Amifostine", "Ethyol", "ETHYOL"],
+    "trade_names": ["Amifostine", "Ethyol", "ETHYOL"],
     "approval_ratings": [
       "rxnorm_prescribable",
-      "hemonc_approved",
       "chembl_phase_4"
     ]
   }
