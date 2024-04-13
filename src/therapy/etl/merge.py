@@ -214,7 +214,12 @@ class Merge:
         """
 
         def _record_order(record: Dict) -> Tuple[int, str]:
-            """Provide priority values of concepts for sort function."""
+            """Provide priority values of concepts for sort function.
+
+            :param record: individual therapy record
+            :return: tuple (sortable) of source priority, and then concept ID
+            :raise ValueError: if unrecognized source
+            """
             src = record["src_name"].upper()
             if src == "DRUGS@FDA":
                 src = "DRUGSATFDA"
@@ -222,7 +227,7 @@ class Merge:
                 source_rank = SourcePriority[src].value
             else:
                 msg = f"Prohibited source: {src} in concept_id {record['concept_id']}"
-                raise Exception(msg)
+                raise ValueError(msg)
             return source_rank, record["concept_id"]
 
         records.sort(key=_record_order)
