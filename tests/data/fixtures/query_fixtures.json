@@ -38,7 +38,10 @@
       "Peyrone's salt",
       "Cis-platinum ii",
       "CISplatin",
-      "Fauldiscipla"
+      "Fauldiscipla",
+      "CISPLATIN",
+      "Cisplatin",
+      "Mitometh"
     ],
     "extensions": [
       {
@@ -3497,6 +3500,7 @@
       "Spiramycin 1",
       "Foromacidin A",
       "SPIRAMYCIN",
+      "Spiramycin",
       "Demycarosylturimycin H",
       "Antibiotic 799",
       "Rovamycine",
