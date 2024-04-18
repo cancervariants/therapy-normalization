@@ -100,6 +100,7 @@ class Base(ABC):
         merged concepts.
 
         :param use_existing: if True, don't try to retrieve latest source data
+        :param silent: if True, suppress all console output
         :return: list of concept IDs which were successfully processed and
             uploaded.
         """

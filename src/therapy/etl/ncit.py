@@ -4,6 +4,7 @@ from typing import Set
 
 import owlready2 as owl
 from owlready2.entity import ThingClass
+from tqdm import tqdm
 
 from therapy.etl.base import Base
 from therapy.schemas import NamespacePrefix, RecordParams, SourceMeta, SourceName
@@ -85,7 +86,11 @@ class NCIt(Base):
         uq_nodes = {ncit.C49236}  # add Therapeutic Procedure
         uq_nodes = self._get_desc_nodes(ncit.C1909, uq_nodes)
         uq_nodes = self._get_typed_nodes(uq_nodes, ncit)
-        for node in uq_nodes:
+        for node in tqdm(
+            uq_nodes,
+            ncols=80,
+            disable=self._silent,
+        ):
             concept_id = f"{NamespacePrefix.NCIT.value}:{node.name}"
             label = node.P108.first() if node.P108 else None
             aliases = node.P90.copy()  # prevent CallbackList error

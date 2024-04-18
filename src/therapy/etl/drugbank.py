@@ -2,6 +2,8 @@
 import csv
 from typing import Any, Dict
 
+from tqdm import tqdm
+
 from therapy.etl.base import Base
 from therapy.schemas import NamespacePrefix, SourceMeta, SourceName
 
@@ -28,9 +30,8 @@ class DrugBank(Base):
     def _transform_data(self) -> None:
         """Transform the DrugBank source."""
         with self._data_file.open() as file:  # type: ignore
-            reader = csv.reader(file)
-            next(reader)  # skip header
-            for row in reader:
+            reader = list(csv.reader(file))
+            for row in tqdm(reader[1:], ncols=80, disable=self._silent):
                 # get concept ID
                 params: Dict[str, Any] = {
                     "concept_id": f"{NamespacePrefix.DRUGBANK.value}:{row[0]}",

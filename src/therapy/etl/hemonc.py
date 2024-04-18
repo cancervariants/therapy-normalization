@@ -3,6 +3,7 @@ import csv
 import logging
 from typing import Dict, Tuple
 
+from tqdm import tqdm
 from wags_tails.hemonc import HemOncPaths
 
 from therapy.etl.base import DiseaseIndicationBase
@@ -211,5 +212,5 @@ class HemOnc(DiseaseIndicationBase):
         therapies = self._get_rels(therapies, brand_names, conditions)
         therapies = self._get_synonyms(therapies)
 
-        for therapy in therapies.values():
+        for therapy in tqdm(therapies.values(), ncols=80, disable=self._silent):
             self._load_therapy(therapy)

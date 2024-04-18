@@ -153,7 +153,7 @@ def _load_merge(db: AbstractDatabase, processed_ids: Set[str]) -> None:
         )
         click.get_current_context().exit()
 
-    merge = Merge(database=db)
+    merge = Merge(database=db, silent=False)
     click.echo("Constructing normalized records...")
     merge.create_merged_concepts(processed_ids)
     end = timer()

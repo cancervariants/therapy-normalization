@@ -2,6 +2,8 @@
 import sqlite3
 from typing import Dict, List, Optional, Union
 
+from tqdm import tqdm
+
 from therapy.etl.base import DiseaseIndicationBase
 from therapy.schemas import ApprovalRating, NamespacePrefix, SourceMeta, SourceName
 
@@ -153,7 +155,7 @@ class ChEMBL(DiseaseIndicationBase):
         """
         self._cursor.execute(query)
 
-        for row in self._cursor:
+        for row in tqdm(list(self._cursor), ncols=80, disable=self._silent):
             appr_ratings = []
             max_phase = self._get_approval_rating(row["max_phase"])
             if max_phase is not None:
