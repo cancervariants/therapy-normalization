@@ -5,6 +5,7 @@ import logging
 import re
 from typing import Any, Dict, List, Optional, Union
 
+from tqdm import tqdm
 from wags_tails.guide_to_pharmacology import GtoPLigandPaths
 
 from therapy.etl.base import Base, SourceFormatError
@@ -38,7 +39,7 @@ class GuideToPHARMACOLOGY(Base):
         self._transform_ligands(data)
         self._transform_ligand_id_mappings(data)
 
-        for param in data.values():
+        for param in tqdm(data.values(), ncols=80, disable=self._silent):
             self._load_therapy(param)
 
     @staticmethod

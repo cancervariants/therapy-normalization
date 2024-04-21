@@ -3,6 +3,8 @@ import json
 import logging
 from typing import List, Optional
 
+from tqdm import tqdm
+
 from therapy.etl.base import Base
 from therapy.schemas import (
     ApprovalRating,
@@ -63,7 +65,7 @@ class DrugsAtFDA(Base):
         with self._data_file.open() as f:  # type: ignore
             data = json.load(f)["results"]
 
-        for result in data:
+        for result in tqdm(data, ncols=80, disable=self._silent):
             if "products" not in result:
                 continue
             products = result["products"]

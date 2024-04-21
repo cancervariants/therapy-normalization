@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Dict, List
 
 import yaml
+from tqdm import tqdm
 from wags_tails import CustomData, RxNormData
 
 from therapy import ASSOC_WITH_SOURCES, ITEM_TYPES, XREF_SOURCES
@@ -140,7 +141,7 @@ class RxNorm(Base):
                             )
                             self._add_xref_assoc(params, row)
 
-            for value in data.values():
+            for value in tqdm(data.values(), ncols=80, disable=self._silent):
                 if "label" in value:
                     self._get_trade_names(
                         value, precise_ingredient, ingredient_brands, sbdfs

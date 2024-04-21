@@ -5,6 +5,8 @@ import re
 from timeit import default_timer as timer
 from typing import Any, Dict, List, Optional, Set, Tuple
 
+from tqdm import tqdm
+
 from therapy.database.database import AbstractDatabase, DatabaseWriteError
 from therapy.schemas import RefType, SourceName, SourcePriority
 
@@ -14,7 +16,7 @@ logger = logging.getLogger(__name__)
 class Merge:
     """Handles record merging."""
 
-    def __init__(self, database: AbstractDatabase) -> None:
+    def __init__(self, database: AbstractDatabase, silent: bool = True) -> None:
         """Initialize Merge instance.
 
         * self._groups is a dictionary keying concept IDs to the Set of concept IDs in
@@ -29,11 +31,13 @@ class Merge:
         mapping is necessary to prevent repeat queries.
 
         :param database: db instance to use for record retrieval and creation.
+        :param silent: if True, suppress all console output
         """
         self.database = database
         self._groups: Dict[str, Set[str]] = {}
         self._unii_to_drugsatfda: Dict[str, Set[str]] = {}
         self._failed_lookups: Set[str] = set()
+        self._silent = silent
 
     def create_merged_concepts(self, record_ids: Set[str]) -> None:
         """Create concept groups, generate merged concept records, and update database.
@@ -43,7 +47,7 @@ class Merge:
         """
         logger.info("Generating record ID sets...")
         start = timer()
-        for record_id in record_ids:
+        for record_id in tqdm(record_ids, ncols=80, disable=self._silent):
             new_group = self._create_record_id_set(record_id)
             if new_group:
                 for concept_id in new_group:
@@ -56,7 +60,9 @@ class Merge:
         logger.info("Creating merged records and updating database...")
         uploaded_ids = set()
         start = timer()
-        for record_id, group in self._groups.items():
+        for record_id, group in tqdm(
+            self._groups.items(), ncols=80, disable=self._silent
+        ):
             if record_id in uploaded_ids:
                 continue
             merged_record = self._generate_merged_record(group)

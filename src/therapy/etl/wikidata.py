@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from typing import Any, Dict, Optional
 
+from tqdm import tqdm
 from wags_tails import CustomData, DataSource
 from wags_tails.utils.versioning import DATE_VERSION_PATTERN
 from wikibaseintegrator.wbi_helpers import execute_sparql_query
@@ -157,7 +158,7 @@ class Wikidata(Base):
     def _transform_data(self) -> None:
         """Transform the Wikidata source data."""
         with self._data_file.open() as f:
-            records = json.load(f)
+            records: Dict = json.load(f)
 
             items: Dict[str, Any] = {}
 
@@ -196,5 +197,5 @@ class Wikidata(Base):
                         items[concept_id]["aliases"] += record["aliases"].split(";;")
                     else:
                         items[concept_id]["aliases"] = record["aliases"].split(";;")
-        for item in items.values():
+        for item in tqdm(items.values(), ncols=80, disable=self._silent):
             self._load_therapy(item)
