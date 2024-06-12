@@ -357,7 +357,7 @@ class QueryHandler:
 
         for src in sources:
             try:
-                src_name = PREFIX_LOOKUP[src]
+                src_name = SourceName(PREFIX_LOOKUP[src])
             except KeyError:
                 # not an imported source
                 continue
