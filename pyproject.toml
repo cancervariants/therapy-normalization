@@ -46,7 +46,7 @@ etl = [
     "rich"
 ]
 test = ["pytest", "pytest-cov", "pytest-mock"]
-dev = ["pre-commit", "ruff==0.2.0", "lxml", "xmlformatter", "mypy", "types-pyyaml"]
+dev = ["pre-commit>=3.7.1", "ruff==0.2.0", "lxml", "xmlformatter", "mypy", "types-pyyaml"]
 
 [project.urls]
 Homepage = "https://github.com/cancervariants/therapy-normalization"

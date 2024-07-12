@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v1.4.0
+    rev: v4.6.0  # pre-commit-hooks version
     hooks:
       - id: check-added-large-files
       - id: detect-private-key
@@ -12,3 +12,4 @@ repos:
       - id: ruff-format
       - id: ruff
         args: [ --fix, --exit-non-zero-on-fix ]
+minimum_pre_commit_version: 3.7.1
