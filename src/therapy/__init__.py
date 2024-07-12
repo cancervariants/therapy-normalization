@@ -1,10 +1,17 @@
 """The VICC library for normalizing therapies."""
 import re
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 
-from .version import __version__  # noqa: F401
-
 APP_ROOT: Path = Path(__file__).resolve().parents[0]
+
+
+try:
+    __version__ = version("{{ cookiecutter.project_slug }}")
+except PackageNotFoundError:
+    __version__ = "unknown"
+finally:
+    del version, PackageNotFoundError
 
 
 from therapy.schemas import (  # noqa: E402

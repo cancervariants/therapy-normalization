@@ -60,14 +60,13 @@ therapy_norm_update = "therapy.cli:update_normalizer_db"
 therapy_norm_check_db = "therapy.cli:check_db"
 
 [build-system]
-requires = ["setuptools>=64.0"]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
 build-backend = "setuptools.build_meta"
-
-[tool.setuptools.dynamic]
-version = {attr = "therapy.version.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools_scm]
 
 [tool.setuptools.package-data]
 "therapy.etl" = ["*.csv"]

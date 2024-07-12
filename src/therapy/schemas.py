@@ -6,7 +6,7 @@ from typing import Any, Dict, List, Literal, Optional, Set, Union
 from ga4gh.core import core_models
 from pydantic import BaseModel, ConfigDict, StrictBool, constr
 
-from therapy.version import __version__
+from therapy import __version__
 
 # Working structure for object in preparation for upload to DB
 RecordParams = Dict[str, Union[List, Set, str, Dict[str, Any]]]
