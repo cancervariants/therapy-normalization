@@ -4,7 +4,7 @@
     "label": "cisplatin",
     "description": null,
     "id": "normalize.therapy.rxcui:2555",
-    "aliases": [
+    "alternateLabels": [
       "Liplacis",
       "cis-diamminedichloroplatinum III",
       "APRD00359",
@@ -45,7 +45,6 @@
     ],
     "extensions": [
       {
-        "type": "Extension",
         "name": "regulatory_approval",
         "value": {
           "approval_ratings": [
@@ -62,7 +61,6 @@
               "label": "Testicular cancer",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "regulatory_body",
                   "value": "FDA"
                 }
@@ -83,7 +81,6 @@
               "label": "Ovarian cancer",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "regulatory_body",
                   "value": "FDA"
                 }
@@ -104,7 +101,6 @@
               "label": "Bladder cancer",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "regulatory_body",
                   "value": "FDA"
                 }
@@ -125,7 +121,6 @@
               "label": "Thymoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -146,7 +141,6 @@
               "label": "Prostatic Neoplasms, Castration-Resistant",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -167,7 +161,6 @@
               "label": "Biliary Tract Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -188,7 +181,6 @@
               "label": "Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_4"
                 }
@@ -209,7 +201,6 @@
               "label": "mouth neoplasm",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -230,7 +221,6 @@
               "label": "Carcinoma, Squamous Cell",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -251,7 +241,6 @@
               "label": "Cholangiocarcinoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -272,7 +261,6 @@
               "label": "Ependymoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -293,7 +281,6 @@
               "label": "Esophageal Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -314,7 +301,6 @@
               "label": "Small Cell Lung Carcinoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -335,7 +321,6 @@
               "label": "Kidney Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -356,7 +341,6 @@
               "label": "Carcinoid Tumor",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -377,7 +361,6 @@
               "label": "Neuroectodermal Tumors, Primitive",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -398,7 +381,6 @@
               "label": "Fallopian Tube Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -419,7 +401,6 @@
               "label": "Myelodysplastic Syndromes",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -440,7 +421,6 @@
               "label": "Lymphoma, Large B-Cell, Diffuse",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -461,7 +441,6 @@
               "label": "Kidney Diseases",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
@@ -482,7 +461,6 @@
               "label": "Stomach Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -503,7 +481,6 @@
               "label": "Urogenital Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -515,7 +492,6 @@
               "label": "Urethral Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -536,7 +512,6 @@
               "label": "Lymphoma, T-Cell, Peripheral",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -557,7 +532,6 @@
               "label": "Neoplasms, Germ Cell and Embryonal",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -578,7 +552,6 @@
               "label": "Anus Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -599,7 +572,6 @@
               "label": "Thymus Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -620,7 +592,6 @@
               "label": "Liver Diseases",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
@@ -641,7 +612,6 @@
               "label": "Vulvar Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -662,7 +632,6 @@
               "label": "Gestational Trophoblastic Disease",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -683,7 +652,6 @@
               "label": "Gallbladder Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -704,7 +672,6 @@
               "label": "Choroid Plexus Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -725,7 +692,6 @@
               "label": "Hypopharyngeal Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -746,7 +712,6 @@
               "label": "Carcinoma, Renal Cell",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -767,7 +732,6 @@
               "label": "Digestive System Diseases",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -788,7 +752,6 @@
               "label": "Liver Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -809,7 +772,6 @@
               "label": "ovarian serous cystadenocarcinoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
@@ -830,7 +792,6 @@
               "label": "Digestive System Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
@@ -851,7 +812,6 @@
               "label": "Colorectal Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -872,7 +832,6 @@
               "label": "Pancreatic Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -893,7 +852,6 @@
               "label": "Head and Neck Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -914,7 +872,6 @@
               "label": "Rhabdomyosarcoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_0.5"
                 }
@@ -935,7 +892,6 @@
               "label": "Lymphoma, AIDS-Related",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -956,7 +912,6 @@
               "label": "Brain Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -977,7 +932,6 @@
               "label": "Carcinoma, Pancreatic Ductal",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -998,7 +952,6 @@
               "label": "Choriocarcinoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1019,7 +972,6 @@
               "label": "Postoperative Nausea and Vomiting",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1031,7 +983,6 @@
               "label": "Inflammatory Breast Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1052,7 +1003,6 @@
               "label": "Carcinoma, Merkel Cell",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
@@ -1073,7 +1023,6 @@
               "label": "Testicular Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1094,7 +1043,6 @@
               "label": "Adenocarcinoma of Lung",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1115,7 +1063,6 @@
               "label": "Uterine Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1136,7 +1083,6 @@
               "label": "Genital Neoplasms, Female",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
@@ -1157,7 +1103,6 @@
               "label": "Mucositis",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1178,7 +1123,6 @@
               "label": "oral cavity cancer",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1199,7 +1143,6 @@
               "label": "Multiple Myeloma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1220,7 +1163,6 @@
               "label": "Carcinoma, Basal Cell",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
@@ -1241,7 +1183,6 @@
               "label": "Oropharyngeal Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1262,7 +1203,6 @@
               "label": "Neuroblastoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1283,7 +1223,6 @@
               "label": "Leukemia",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -1304,7 +1243,6 @@
               "label": "Pharyngeal Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1325,7 +1263,6 @@
               "label": "Melanoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1346,7 +1283,6 @@
               "label": "Adrenal Cortex Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1367,7 +1303,6 @@
               "label": "Hodgkin Disease",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1388,7 +1323,6 @@
               "label": "Uterine Cervical Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1409,7 +1343,6 @@
               "label": "Carcinoma, Non-Small-Cell Lung",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1430,7 +1363,6 @@
               "label": "Nausea",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -1442,7 +1374,6 @@
               "label": "Carcinoma, Small Cell",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -1463,7 +1394,6 @@
               "label": "Adenocarcinoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1484,7 +1414,6 @@
               "label": "Carcinoma, Large Cell",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -1505,7 +1434,6 @@
               "label": "Endodermal Sinus Tumor",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1526,7 +1454,6 @@
               "label": "Breast Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1547,7 +1474,6 @@
               "label": "Pleural Effusion",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1559,7 +1485,6 @@
               "label": "Central Nervous System Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1580,7 +1505,6 @@
               "label": "Salivary Gland Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -1601,7 +1525,6 @@
               "label": "Carcinoma, Hepatocellular",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1622,7 +1545,6 @@
               "label": "Mediastinal Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1643,7 +1565,6 @@
               "label": "Teratoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1664,7 +1585,6 @@
               "label": "Peritoneal Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1685,7 +1605,6 @@
               "label": "Paranasal Sinus Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1706,7 +1625,6 @@
               "label": "Klatskin Tumor",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
@@ -1727,7 +1645,6 @@
               "label": "Seminoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1748,7 +1665,6 @@
               "label": "Ovarian Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1769,7 +1685,6 @@
               "label": "Lymphoma, Follicular",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -1790,7 +1705,6 @@
               "label": "Squamous Cell Carcinoma of Head and Neck",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1811,7 +1725,6 @@
               "label": "Mesothelioma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1832,7 +1745,6 @@
               "label": "Hepatoblastoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1853,7 +1765,6 @@
               "label": "Carcinoma, Embryonal",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1874,7 +1785,6 @@
               "label": "Lymphoma, Large-Cell, Anaplastic",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -1895,7 +1805,6 @@
               "label": "Anemia",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1916,7 +1825,6 @@
               "label": "Carcinoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1937,7 +1845,6 @@
               "label": "Penile Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -1958,7 +1865,6 @@
               "label": "Skin Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -1979,7 +1885,6 @@
               "label": "Retinoblastoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -2000,7 +1905,6 @@
               "label": "Sarcoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -2021,7 +1925,6 @@
               "label": "Carcinoma, Islet Cell",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -2042,7 +1945,6 @@
               "label": "Lymphoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -2063,7 +1965,6 @@
               "label": "Lymphoma, Non-Hodgkin",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -2084,7 +1985,6 @@
               "label": "Lung Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -2105,7 +2005,6 @@
               "label": "Urinary Bladder Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -2126,7 +2025,6 @@
               "label": "Leukemia-Lymphoma, Adult T-Cell",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -2147,7 +2045,6 @@
               "label": "Medulloblastoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -2168,7 +2065,6 @@
               "label": "Endometrial Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -2189,7 +2085,6 @@
               "label": "Stomatitis",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -2210,7 +2105,6 @@
               "label": "Lymphoma, Mantle-Cell",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -2231,7 +2125,6 @@
               "label": "Xerostomia",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
@@ -2243,7 +2136,6 @@
               "label": "Osteosarcoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -2264,7 +2156,6 @@
               "label": "Sex Cord-Gonadal Stromal Tumors",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -2285,7 +2176,6 @@
               "label": "Nasopharyngeal Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -2306,7 +2196,6 @@
               "label": "Glioma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -2327,7 +2216,6 @@
               "label": "Ganglioneuroblastoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -2348,7 +2236,6 @@
               "label": "Neoplasm Metastasis",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -2360,7 +2247,6 @@
               "label": "Granuloma, Lethal Midline",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -2381,7 +2267,6 @@
               "label": "Laryngeal Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -2402,7 +2287,6 @@
               "label": "Primary Myelofibrosis",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
@@ -2423,7 +2307,6 @@
               "label": "Immunoblastic Lymphadenopathy",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -2444,7 +2327,6 @@
               "label": "Carcinoma, Neuroendocrine",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -2465,7 +2347,6 @@
               "label": "Malaria",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -2486,7 +2367,6 @@
               "label": "Carcinoma, Endometrioid",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
@@ -2507,7 +2387,6 @@
               "label": "Tongue Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -2528,7 +2407,6 @@
               "label": "Thyroid Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -2549,7 +2427,6 @@
               "label": "Gastrointestinal Stromal Tumors",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -2570,7 +2447,6 @@
               "label": "Triple Negative Breast Neoplasms",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_2"
                 }
@@ -2590,7 +2466,6 @@
         }
       },
       {
-        "type": "Extension",
         "name": "trade_names",
         "value": [
           "Platinol",
@@ -3008,7 +2883,6 @@
     "label": "phenobarbital",
     "extensions": [
       {
-        "type": "Extension",
         "name": "regulatory_approval",
         "value": {
           "approval_ratings": [
@@ -3022,7 +2896,6 @@
               "label": "Dementia",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -3043,7 +2916,6 @@
               "label": "Neutropenia",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
@@ -3064,7 +2936,6 @@
               "label": "Depressive Disorder",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -3085,7 +2956,6 @@
               "label": "Lymphoma",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_1"
                 }
@@ -3106,7 +2976,6 @@
               "label": "Schizophrenia",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -3127,7 +2996,6 @@
               "label": "Epilepsy",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_4"
                 }
@@ -3148,7 +3016,6 @@
               "label": "Status Epilepticus",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -3169,7 +3036,6 @@
               "label": "Neonatal Abstinence Syndrome",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -3190,7 +3056,6 @@
               "label": "Seizures",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -3211,7 +3076,6 @@
               "label": "Anxiety",
               "extensions": [
                 {
-                  "type": "Extension",
                   "name": "chembl_max_phase_for_ind",
                   "value": "chembl_phase_3"
                 }
@@ -3231,7 +3095,6 @@
         }
       },
       {
-        "type": "Extension",
         "name": "trade_names",
         "value": [
           "Luminal",
@@ -3379,7 +3242,7 @@
       }
     ],
     "type": "TherapeuticAgent",
-    "aliases": [
+    "alternateLabels": [
       "PHENOBARBITAL",
       "Phenemal",
       "5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
@@ -3495,7 +3358,7 @@
       }
     ],
     "type": "TherapeuticAgent",
-    "aliases": [
+    "alternateLabels": [
       "Rovamycin",
       "Spiramycin 1",
       "Foromacidin A",
@@ -3518,7 +3381,7 @@
     "label": "Therapeutic Procedure",
     "description": null,
     "id": "normalize.therapy.ncit:C49236",
-    "aliases": [
+    "alternateLabels": [
       "Therapeutic Interventions",
       "any therapy",
       "therapy",
@@ -3552,7 +3415,7 @@
           {
             "concept_id": "ncit:C49236",
             "label": "Therapeutic Procedure",
-            "aliases": [
+            "alternateLabels": [
               "treatment_or_therapy",
               "treatment",
               "TREAT",
@@ -3599,7 +3462,7 @@
           {
             "concept_id": "rxcui:9991",
             "label": "spiramycin",
-            "aliases": [
+            "alternateLabels": [
               "Spiramycin 1",
               "Spiramycin A",
               "Foromacidin A",
@@ -3633,7 +3496,7 @@
           {
             "concept_id": "ncit:C839",
             "label": "Spiramycin",
-            "aliases": [
+            "alternateLabels": [
               "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside",
               "Rovamycin",
               "Rovamycine",
@@ -3668,7 +3531,7 @@
           {
             "concept_id": "drugbank:DB06145",
             "label": "Spiramycin",
-            "aliases": [
+            "alternateLabels": [
               "Spiramycin A",
               "Spiramycin I",
               "Spiramycin 1",
@@ -3705,7 +3568,7 @@
           {
             "concept_id": "chemidplus:8025-81-8",
             "label": "Spiramycin",
-            "aliases": [],
+            "alternateLabels": [],
             "trade_names": [],
             "xrefs": [],
             "associated_with": ["unii:71ODY0V87H"],
@@ -3732,7 +3595,7 @@
           {
             "concept_id": "wikidata:Q422265",
             "label": "spiramycin",
-            "aliases": ["spiramycin I"],
+            "alternateLabels": ["spiramycin I"],
             "trade_names": [],
             "xrefs": [
               "chemidplus:8025-81-8",
@@ -3768,7 +3631,7 @@
           {
             "concept_id": "rxcui:2555",
             "label": "cisplatin",
-            "aliases": [
+            "alternateLabels": [
               "DDP",
               "CIS-DIAMMINEDICHLOROPLATINUM II",
               "CISplatin",
@@ -3813,7 +3676,7 @@
           {
             "concept_id": "ncit:C376",
             "label": "Cisplatin",
-            "aliases": [],
+            "alternateLabels": [],
             "trade_names": [],
             "xrefs": ["chemidplus:15663-27-1"],
             "associated_with": [
@@ -3844,7 +3707,7 @@
           {
             "concept_id": "hemonc:105",
             "label": "Cisplatin",
-            "aliases": [
+            "alternateLabels": [
               "NSC 119875",
               "DDP",
               "DACP",
@@ -3904,7 +3767,7 @@
           {
             "concept_id": "drugbank:DB00515",
             "label": "Cisplatin",
-            "aliases": [
+            "alternateLabels": [
               "cisplatino",
               "cis-diamminedichloroplatinum(II)",
               "CDDP",
@@ -3924,7 +3787,7 @@
           {
             "concept_id": "drugbank:DB12117",
             "label": "Mitometh",
-            "aliases": ["DDP"],
+            "alternateLabels": ["DDP"],
             "trade_names": [],
             "xrefs": ["chemidplus:107465-03-2"],
             "associated_with": [
@@ -3954,7 +3817,7 @@
           {
             "concept_id": "drugsatfda.anda:074656",
             "label": "CISPLATIN",
-            "aliases": [],
+            "alternateLabels": [],
             "trade_names": [],
             "xrefs": ["rxcui:309311"],
             "associated_with": [
@@ -3970,7 +3833,7 @@
           {
             "concept_id": "drugsatfda.anda:074735",
             "label": "CISPLATIN",
-            "aliases": [],
+            "alternateLabels": [],
             "trade_names": [],
             "xrefs": ["rxcui:309311"],
             "associated_with": [
@@ -3985,7 +3848,7 @@
           {
             "concept_id": "drugsatfda.anda:075036",
             "label": "CISPLATIN",
-            "aliases": [],
+            "alternateLabels": [],
             "trade_names": [],
             "xrefs": ["rxcui:309311"],
             "associated_with": [
@@ -4001,7 +3864,7 @@
           {
             "concept_id": "drugsatfda.anda:206774",
             "label": "CISPLATIN",
-            "aliases": [],
+            "alternateLabels": [],
             "trade_names": [],
             "xrefs": ["rxcui:309311"],
             "associated_with": [
@@ -4018,7 +3881,7 @@
           {
             "concept_id": "drugsatfda.anda:207323",
             "label": "CISPLATIN",
-            "aliases": [],
+            "alternateLabels": [],
             "trade_names": [],
             "xrefs": ["rxcui:309311"],
             "associated_with": [
@@ -4041,7 +3904,7 @@
           {
             "concept_id": "drugsatfda.nda:018057",
             "label": "CISPLATIN",
-            "aliases": [],
+            "alternateLabels": [],
             "trade_names": ["PLATINOL-AQ", "PLATINOL"],
             "xrefs": ["rxcui:309311", "rxcui:1736854"],
             "associated_with": [
@@ -4076,7 +3939,7 @@
           {
             "concept_id": "iuphar.ligand:5343",
             "label": "cisplatin",
-            "aliases": ["Platinol"],
+            "alternateLabels": ["Platinol"],
             "trade_names": [],
             "xrefs": [
               "chemidplus:15663-27-1",
@@ -4111,7 +3974,7 @@
           {
             "concept_id": "chembl:CHEMBL11359",
             "label": "CISPLATIN",
-            "aliases": [
+            "alternateLabels": [
               "CIS-DDP",
               "Cis-diamminedichloroplatinum",
               "Peyrone's salt",
@@ -5120,7 +4983,7 @@
           {
             "concept_id": "chemidplus:15663-27-1",
             "label": "Cisplatin",
-            "aliases": [
+            "alternateLabels": [
               "cis-Diaminedichloroplatinum",
               "1,2-Diaminocyclohexaneplatinum II citrate"
             ],
@@ -5150,7 +5013,7 @@
           {
             "concept_id": "wikidata:Q412415",
             "label": "cisplatin",
-            "aliases": [
+            "alternateLabels": [
               "CIS-DDP",
               "cis-diamminedichloroplatinum(II)",
               "CDDP",

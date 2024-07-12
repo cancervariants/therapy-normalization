@@ -3,7 +3,7 @@ from datetime import datetime
 from enum import Enum, IntEnum
 from typing import Any, Dict, List, Literal, Optional, Set, Union
 
-from ga4gh.core import core_models
+from ga4gh.core import domain_models
 from pydantic import BaseModel, ConfigDict, StrictBool, constr
 
 from therapy.version import __version__
@@ -484,7 +484,7 @@ class NormalizationService(BaseNormalizationService):
     """Response containing one or more merged records and source data."""
 
     normalized_id: Optional[str] = None
-    therapeutic_agent: Optional[core_models.TherapeuticAgent] = None
+    therapeutic_agent: Optional[domain_models.TherapeuticAgent] = None
     source_meta_: Optional[Dict[SourceName, SourceMeta]] = None
 
     model_config = ConfigDict(
@@ -583,7 +583,6 @@ class NormalizationService(BaseNormalizationService):
                     ],
                     "extensions": [
                         {
-                            "type": "Extension",
                             "name": "trade_names",
                             "value": ["Platinol", "Cisplatin"],
                         },
