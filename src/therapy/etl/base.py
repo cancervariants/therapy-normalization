@@ -1,4 +1,5 @@
 """A base class for extraction, transformation, and loading of data."""
+
 import contextlib
 import json
 import logging

@@ -1,4 +1,5 @@
 """Test correctness of Drugs@FDA ETL methods."""
+
 from typing import List
 
 import isodate

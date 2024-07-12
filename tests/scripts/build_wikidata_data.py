@@ -1,4 +1,5 @@
 """Construct test data for Wikidata"""
+
 import datetime
 import json
 from pathlib import Path

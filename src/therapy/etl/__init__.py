@@ -1,4 +1,5 @@
 """Module to load and init namespace at package level"""
+
 from .base import EtlError
 from .chembl import ChEMBL
 from .chemidplus import ChemIDplus

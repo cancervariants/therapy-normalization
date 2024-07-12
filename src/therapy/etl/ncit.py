@@ -1,4 +1,5 @@
 """ETL methods for NCIt source"""
+
 import logging
 from typing import Set
 

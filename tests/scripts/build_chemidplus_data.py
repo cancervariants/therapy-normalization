@@ -1,4 +1,5 @@
 """Build chemidplus test data."""
+
 from pathlib import Path
 from typing import Generator
 from xml.etree import ElementTree

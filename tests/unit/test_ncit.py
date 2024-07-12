@@ -1,4 +1,5 @@
 """Test NCIT source"""
+
 import re
 
 import pytest

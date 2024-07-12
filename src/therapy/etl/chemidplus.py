@@ -2,6 +2,7 @@
 
 Courtesy of the U.S. National Library of Medicine.
 """
+
 import re
 import xml.etree.ElementTree as ElTree
 from pathlib import Path
@@ -61,9 +62,9 @@ class ChemIDplus(Base):
                 reg_no = chemical.find("NumberList").find("CASRegistryNumber")
                 if not reg_no:
                     continue
-                params[
-                    "concept_id"
-                ] = f"{NamespacePrefix.CASREGISTRY.value}:{reg_no.text}"
+                params["concept_id"] = (
+                    f"{NamespacePrefix.CASREGISTRY.value}:{reg_no.text}"
+                )
 
                 # get aliases
                 aliases = []

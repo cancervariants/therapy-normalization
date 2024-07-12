@@ -1,4 +1,5 @@
 """Defines the DrugBank ETL methods."""
+
 import csv
 from typing import Any, Dict
 

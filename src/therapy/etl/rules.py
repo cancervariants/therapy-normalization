@@ -1,4 +1,5 @@
 """Apply manual data restrictions and annotations to extracted records."""
+
 import csv
 from typing import Dict, List, Tuple, Union
 

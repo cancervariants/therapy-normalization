@@ -1,4 +1,5 @@
 """Defines the ChEMBL ETL methods."""
+
 import sqlite3
 from typing import Dict, List, Optional, Union
 

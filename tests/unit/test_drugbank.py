@@ -1,6 +1,7 @@
 """Test that the therapy normalizer works as intended for the DrugBank
 source.
 """
+
 import re
 
 import pytest

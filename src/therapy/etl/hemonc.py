@@ -1,4 +1,5 @@
 """Provide ETL methods for HemOnc.org data."""
+
 import csv
 import logging
 from typing import Dict, Tuple

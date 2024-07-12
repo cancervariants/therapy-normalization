@@ -1,4 +1,5 @@
 """Provides methods for handling queries."""
+
 import datetime
 import json
 import re
@@ -142,7 +143,7 @@ class QueryHandler:
                     raise KeyError(msg)
                 (response, src) = self._add_record(response, match, match_type)
                 matched_sources.add(src)
-            except ClientError as e:
+            except ClientError as e:  # noqa: PERF203
                 logger.error(e.response["Error"]["Message"])
 
         return response, matched_sources
@@ -301,9 +302,7 @@ class QueryHandler:
             if invalid source names are given.
         """
         sources = {}
-        for k, v in SOURCES.items():
-            if self.db.get_source_metadata(v):
-                sources[k] = v
+        sources = {k: v for k, v in SOURCES.items() if self.db.get_source_metadata(v)}
         if not incl and not excl:
             query_sources = set(sources.values())
         elif incl and excl:
@@ -358,7 +357,7 @@ class QueryHandler:
         for src in sources:
             try:
                 src_name = SourceName(PREFIX_LOOKUP[src])
-            except KeyError:
+            except KeyError:  # noqa: PERF203
                 # not an imported source
                 continue
             else:
@@ -381,7 +380,6 @@ class QueryHandler:
         self,
         response: NormalizationService,
         record: Dict,
-        query: str,
         match_type: MatchType,
     ) -> NormalizationService:
         """Format received DB record as therapeutic agent and update response object.
@@ -537,10 +535,9 @@ class QueryHandler:
         # prepare basic response
         response = NormalizationService(**self._prepare_normalized_response(query))
 
-        add_ta_curry = lambda res, rec, mat: self._add_therapeutic_agent(  # noqa: E731
-            res, rec, query, mat
+        return self._perform_normalized_lookup(
+            response, query, infer, self._add_therapeutic_agent
         )
-        return self._perform_normalized_lookup(response, query, infer, add_ta_curry)
 
     def _construct_drug_match(self, record: Dict) -> Therapy:
         """Create individual Drug match for unmerged normalization endpoint.

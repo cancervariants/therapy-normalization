@@ -1,4 +1,5 @@
 """Main application for FastAPI"""
+
 import html
 from typing import Dict, Optional
 

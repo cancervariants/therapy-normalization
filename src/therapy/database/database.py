@@ -1,4 +1,5 @@
 """Provide abstract Database class and relevant tools for database initialization."""
+
 import abc
 import sys
 from enum import Enum
@@ -315,8 +316,7 @@ def create_db(
     >>> local_db = create_db()  # creates DynamoDB connection on port 8001
     >>>
     >>> os.environ["THERAPY_NORM_ENV"] = "Prod"
-    >>> prod_db = create_db()  # creates connection to AWS cloud DynamoDB instance,
-    >>>                        # overruling `THERAPY_NORM_DB_URL` variable setting
+    >>> prod_db = create_db()  # creates connection to AWS cloud DynamoDB instance, overruling `THERAPY_NORM_DB_URL` variable setting
 
     Precedence is handled for connection settings like so:
 

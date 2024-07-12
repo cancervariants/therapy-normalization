@@ -1,4 +1,5 @@
 """Defines the Wikidata ETL methods."""
+
 import datetime
 import json
 from pathlib import Path
@@ -90,7 +91,7 @@ class Wikidata(Base):
     """Class for Wikidata ETL methods."""
 
     @staticmethod
-    def _download_data(version: str, file: Path) -> None:
+    def _download_data(version: str, file: Path) -> None:  # noqa: ARG004
         """Download latest Wikidata source dump.
 
         :param version: not used by this method
