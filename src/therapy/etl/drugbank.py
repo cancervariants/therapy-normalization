@@ -1,6 +1,6 @@
 """Defines the DrugBank ETL methods."""
 import csv
-from typing import Any, Dict
+from typing import Any
 
 from tqdm import tqdm
 
@@ -33,7 +33,7 @@ class DrugBank(Base):
             reader = list(csv.reader(file))
             for row in tqdm(reader[1:], ncols=80, disable=self._silent):
                 # get concept ID
-                params: Dict[str, Any] = {
+                params: dict[str, Any] = {
                     "concept_id": f"{NamespacePrefix.DRUGBANK.value}:{row[0]}",
                 }
 

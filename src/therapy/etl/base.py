@@ -4,7 +4,7 @@ import json
 import logging
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import ClassVar, Dict, List, Optional, Union
+from typing import ClassVar
 
 import click
 from disease.database import create_db as create_disease_db
@@ -59,7 +59,7 @@ class Base(ABC):
     def __init__(
         self,
         database: AbstractDatabase,
-        data_path: Optional[Path] = None,
+        data_path: Path | None = None,
         silent: bool = True,
     ) -> None:
         """Extract from sources.
@@ -71,22 +71,14 @@ class Base(ABC):
         # self._name = SourceName[self.__class__.__name__.upper()]
         self._silent = silent
         self._name = SourceName(self.__class__.__name__)
-        self._data_source: Union[
-            ChemblData,
-            ChemIDplusData,
-            DrugBankData,
-            DrugsAtFdaData,
-            GToPLigandData,
-            HemOncData,
-            NcitData,
-            RxNormData,
-            CustomData,
-        ] = self._get_data_handler(data_path)  # type: ignore
+        self._data_source: ChemblData | ChemIDplusData | DrugBankData | DrugsAtFdaData | GToPLigandData | HemOncData | NcitData | RxNormData | CustomData = self._get_data_handler(
+            data_path
+        )  # type: ignore
         self.database = database
-        self._added_ids: List[str] = []
+        self._added_ids: list[str] = []
         self._rules = Rules(self._name)
 
-    def _get_data_handler(self, data_path: Optional[Path] = None) -> DataSource:
+    def _get_data_handler(self, data_path: Path | None = None) -> DataSource:
         """Construct data handler instance for source. Overwrite for edge-case sources.
 
         :param data_path: location of data storage
@@ -94,7 +86,7 @@ class Base(ABC):
         """
         return DATA_DISPATCH[self._name](data_dir=data_path, silent=self._silent)
 
-    def perform_etl(self, use_existing: bool = False) -> List[str]:
+    def perform_etl(self, use_existing: bool = False) -> list[str]:
         """Public-facing method to begin ETL procedures on given data.
         Returned concept IDs can be passed to Merge method for computing
         merged concepts.
@@ -134,7 +126,7 @@ class Base(ABC):
         raise NotImplementedError
 
     @staticmethod
-    def _process_searchable_attributes(therapy: Dict) -> Dict:
+    def _process_searchable_attributes(therapy: dict) -> dict:
         """Apply standardization to searchable therapy fields, e.g. ``label``,
         ``trade_names`` etc
 
@@ -178,7 +170,7 @@ class Base(ABC):
         return therapy
 
     @staticmethod
-    def _indication_sorter(indication: Dict) -> str:
+    def _indication_sorter(indication: dict) -> str:
         """Produce sortable value for indication object.
 
         :param indication: ``has_indication`` object
@@ -192,7 +184,7 @@ class Base(ABC):
             max_phase = ""
         return max_phase
 
-    def _process_detail_fields(self, therapy: Dict) -> Dict:
+    def _process_detail_fields(self, therapy: dict) -> dict:
         """Apply standardization to therapy detail fields, e.g. ``has_indication``,
         ``approval_year``, ``approval_ratings``.
 
@@ -232,7 +224,7 @@ class Base(ABC):
                 del therapy[field]
         return therapy
 
-    def _load_therapy(self, therapy: Dict) -> None:
+    def _load_therapy(self, therapy: dict) -> None:
         """Load individual therapy record into database. This method takes
         responsibility for:
             * validating record structure correctness
@@ -258,12 +250,12 @@ class Base(ABC):
 class DiseaseIndicationBase(Base):
     """Base class for sources that require disease normalization capabilities."""
 
-    _disease_cache: ClassVar[Dict[str, Optional[str]]] = {}
+    _disease_cache: ClassVar[dict[str, str | None]] = {}
 
     def __init__(
         self,
         database: AbstractDatabase,
-        data_path: Optional[Path] = None,
+        data_path: Path | None = None,
         silent: bool = True,
     ) -> None:
         """Initialize source ETL instance.
@@ -275,7 +267,7 @@ class DiseaseIndicationBase(Base):
         super().__init__(database, data_path, silent)
         self.disease_normalizer = DiseaseNormalizer(create_disease_db())
 
-    def _normalize_disease(self, query: str) -> Optional[str]:
+    def _normalize_disease(self, query: str) -> str | None:
         """Attempt normalization of disease term.
 
         :param str query: term to normalize

@@ -1,7 +1,7 @@
 """Provides a CLI util to make updates to normalizer database."""
 import logging
+from collections.abc import Collection
 from timeit import default_timer as timer
-from typing import Collection, List, Set
 
 import click
 from disease.cli import _update_sources as update_disease_sources
@@ -64,7 +64,7 @@ def _load_source(
     name: SourceName,
     db: AbstractDatabase,
     delete_time: float,
-    processed_ids: List[str],
+    processed_ids: list[str],
     use_existing: bool,
 ) -> None:
     """Load individual source data.
@@ -135,7 +135,7 @@ def _delete_normalized_data(database: AbstractDatabase) -> None:
     click.echo(f"Deleted normalized records in {delete_time:.5f} seconds.")
 
 
-def _load_merge(db: AbstractDatabase, processed_ids: Set[str]) -> None:
+def _load_merge(db: AbstractDatabase, processed_ids: set[str]) -> None:
     """Load merged concepts
 
     :param db: database instance
@@ -177,7 +177,7 @@ def _update_normalizer(
     :param use_existing: if True, use most recent local version of source data instead of
         fetching from remote
     """
-    processed_ids: List[str] = []
+    processed_ids: list[str] = []
     for n in sources:
         delete_time = _delete_source(n, db)
         _load_source(n, db, delete_time, processed_ids, use_existing)
