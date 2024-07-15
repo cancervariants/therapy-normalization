@@ -1,7 +1,6 @@
 """Main application for FastAPI"""
 
 import html
-from typing import Dict, Optional
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.openapi.utils import get_openapi
@@ -23,7 +22,7 @@ app = FastAPI(
 )
 
 
-def custom_openapi() -> Dict:
+def custom_openapi() -> dict:
     """Generate custom fields for OpenAPI response"""
     if app.openapi_schema:
         return app.openapi_schema
@@ -103,8 +102,8 @@ unmerged_normalize_description = (
 )
 def search(
     q: str = Query(..., description=q_descr),
-    incl: Optional[str] = Query(None, description=incl_descr),
-    excl: Optional[str] = Query(None, description=excl_descr),
+    incl: str | None = Query(None, description=incl_descr),
+    excl: str | None = Query(None, description=excl_descr),
     infer_namespace: bool = Query(True, description=infer_descr),
 ) -> SearchService:
     """For each source, return strongest-match concepts for query string

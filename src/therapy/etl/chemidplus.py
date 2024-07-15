@@ -5,8 +5,8 @@ Courtesy of the U.S. National Library of Medicine.
 
 import re
 import xml.etree.ElementTree as ElTree
+from collections.abc import Generator
 from pathlib import Path
-from typing import Generator
 
 from rich.console import Console
 

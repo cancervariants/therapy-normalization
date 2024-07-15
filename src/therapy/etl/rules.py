@@ -1,7 +1,6 @@
 """Apply manual data restrictions and annotations to extracted records."""
 
 import csv
-from typing import Dict, List, Tuple, Union
 
 from therapy import APP_ROOT
 from therapy.schemas import SourceName
@@ -27,7 +26,7 @@ class Rules:
         :param source_name: name of source to use, for filtering unneeded rules
         """
         rules_path = APP_ROOT / "etl" / "rules.csv"
-        self.rules: Dict[str, List[Tuple[str, str]]] = {}
+        self.rules: dict[str, list[tuple[str, str]]] = {}
         with rules_path.open() as rules_file:
             reader = csv.DictReader(rules_file, delimiter=",")
             for row in reader:
@@ -38,7 +37,7 @@ class Rules:
                     else:
                         self.rules[concept_id].append((row["field"], row["value"]))
 
-    def apply_rules_to_therapy(self, therapy: Dict) -> Dict:
+    def apply_rules_to_therapy(self, therapy: dict) -> dict:
         """Apply all rules to therapy. First find relevant rules, then call the
         apply method.
         :param therapy: therapy object from ETL base
@@ -50,8 +49,8 @@ class Rules:
         return therapy
 
     def _apply_rule_to_field(
-        self, therapy: Dict, field: str, value: Union[str, List, Dict, int, float]
-    ) -> Dict:
+        self, therapy: dict, field: str, value: str | list | dict | int | float
+    ) -> dict:
         """Given a (field, value) rule, apply it to the given therapy object.
         :param therapy: therapy object ready to load to DB
         :param field: name of object property field to check

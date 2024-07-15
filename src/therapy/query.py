@@ -3,7 +3,8 @@
 import datetime
 import json
 import re
-from typing import Any, Callable, Dict, List, Optional, Set, Tuple, TypeVar, Union
+from collections.abc import Callable
+from typing import Any, TypeVar
 
 from botocore.exceptions import ClientError
 from ga4gh.core import core_models
@@ -52,13 +53,13 @@ class QueryHandler:
         """
         self.db = database
 
-    def _emit_char_warnings(self, query_str: str) -> List[Dict]:
+    def _emit_char_warnings(self, query_str: str) -> list[dict]:
         """Emit warnings if query contains non breaking space characters.
 
         :param str query_str: query string
         :return: List of warnings (dicts)
         """
-        warnings: List[Dict[str, str]] = []
+        warnings: list[dict[str, str]] = []
         nbsp = re.search("\xa0|&nbsp;", query_str)
         if nbsp:
             warnings = [
@@ -86,8 +87,8 @@ class QueryHandler:
         )
 
     def _add_record(
-        self, response: Dict[str, Dict], item: Dict, match_type: str
-    ) -> Tuple[Dict, str]:
+        self, response: dict[str, dict], item: dict, match_type: str
+    ) -> tuple[dict, str]:
         """Add individual record (i.e. Item in DynamoDB) to response object
 
         :param Dict[str, Dict] response: in-progress response object
@@ -120,8 +121,8 @@ class QueryHandler:
         return response, src_name
 
     def _fetch_records(
-        self, response: Dict[str, Dict], concept_ids: Set[str], match_type: str
-    ) -> Tuple[Dict, Set]:
+        self, response: dict[str, dict], concept_ids: set[str], match_type: str
+    ) -> tuple[dict, set]:
         """Return matched Drug records as a structured response for a given collection
         of concept IDs.
 
@@ -148,7 +149,7 @@ class QueryHandler:
 
         return response, matched_sources
 
-    def _fill_no_matches(self, resp: Dict[str, Any]) -> Dict:
+    def _fill_no_matches(self, resp: dict[str, Any]) -> dict:
         """Fill all empty source_matches slots with NO_MATCH results.
 
         :param Dict[str, Dict] resp: incoming response object
@@ -164,7 +165,7 @@ class QueryHandler:
                 }
         return resp
 
-    def _infer_namespace(self, query: str) -> Optional[Tuple[Dict, Dict]]:
+    def _infer_namespace(self, query: str) -> tuple[dict, dict] | None:
         """Retrieve concept ID by inferring namespace. Attempts to match given query
         against known LUI patterns and performs concept ID lookup for all matches.
         :param str query: user-provided query string
@@ -200,8 +201,8 @@ class QueryHandler:
         return None
 
     def _check_concept_id(
-        self, query: str, resp: Dict, sources: Set[str], infer: bool = True
-    ) -> Tuple[Dict, Set]:
+        self, query: str, resp: dict, sources: set[str], infer: bool = True
+    ) -> tuple[dict, set]:
         """Check query for concept ID match. Should only find 0 or 1 matches.
 
         :param str query: search string
@@ -227,8 +228,8 @@ class QueryHandler:
         return resp, sources
 
     def _check_match_type(
-        self, query: str, resp: Dict, sources: Set[str], match_type: RefType
-    ) -> Tuple[Dict, Set]:
+        self, query: str, resp: dict, sources: set[str], match_type: RefType
+    ) -> tuple[dict, set]:
         """Check query for selected match type.
 
         :param query: search string
@@ -246,8 +247,8 @@ class QueryHandler:
         return resp, sources
 
     def _get_search_response(
-        self, query: str, sources: Set[str], infer: bool = True
-    ) -> Dict:
+        self, query: str, sources: set[str], infer: bool = True
+    ) -> dict:
         """Return response as dict where key is source name and value
         is a list of records.
 
@@ -256,7 +257,7 @@ class QueryHandler:
         :param bool infer: if true, attempt to infer namespaces from IDs
         :return: completed response object to return to client
         """
-        response: Dict[str, Union[None, str, List[Dict], Dict]] = {
+        response: dict[str, None | str | list[dict] | dict] = {
             "query": query,
             "warnings": self._emit_char_warnings(query),
             "source_matches": {source: None for source in sources},
@@ -366,7 +367,7 @@ class QueryHandler:
         response.source_meta_ = sources_meta  # type: ignore[assignment]
         return response
 
-    def _record_order(self, record: Dict) -> Tuple[int, str]:
+    def _record_order(self, record: dict) -> tuple[int, str]:
         """Construct priority order for matching. Only called by sort().
 
         :param Dict record: individual record item in iterable to sort
@@ -379,7 +380,7 @@ class QueryHandler:
     def _add_therapeutic_agent(
         self,
         response: NormalizationService,
-        record: Dict,
+        record: dict,
         match_type: MatchType,
     ) -> NormalizationService:
         """Format received DB record as therapeutic agent and update response object.
@@ -483,7 +484,7 @@ class QueryHandler:
         self,
         response: NormService,
         query: str,
-        record: Dict,
+        record: dict,
         match_type: MatchType,
         callback: Callable,
     ) -> NormService:
@@ -510,7 +511,7 @@ class QueryHandler:
         # record is sole member of concept group
         return callback(response, record, match_type)
 
-    def _prepare_normalized_response(self, query: str) -> Dict[str, Any]:
+    def _prepare_normalized_response(self, query: str) -> dict[str, Any]:
         """Provide base response object for normalize endpoints.
 
         :param str query: user-provided query
@@ -539,7 +540,7 @@ class QueryHandler:
             response, query, infer, self._add_therapeutic_agent
         )
 
-    def _construct_drug_match(self, record: Dict) -> Therapy:
+    def _construct_drug_match(self, record: dict) -> Therapy:
         """Create individual Drug match for unmerged normalization endpoint.
 
         :param Dict record: record to add
@@ -553,7 +554,7 @@ class QueryHandler:
     def _add_normalized_records(
         self,
         response: UnmergedNormalizationService,
-        normalized_record: Dict,
+        normalized_record: dict,
         match_type: MatchType,
     ) -> UnmergedNormalizationService:
         """Add individual records to unmerged normalize response.

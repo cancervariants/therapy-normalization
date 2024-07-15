@@ -2,7 +2,6 @@
 
 import csv
 import logging
-from typing import Dict, Tuple
 
 from tqdm import tqdm
 from wags_tails.hemonc import HemOncPaths
@@ -48,13 +47,13 @@ class HemOnc(DiseaseIndicationBase):
         }
         self.database.add_source_metadata(self._name, SourceMeta(**meta))
 
-    def _get_concepts(self) -> Tuple[Dict, Dict, Dict]:
+    def _get_concepts(self) -> tuple[dict, dict, dict]:
         """Get therapy, brand name, and disease concepts from concepts file.
         :return: Tuple of dicts mapping ID to object for each type of concept
         """
         therapies: RecordParams = {}  # hemonc id -> record
-        brand_names: Dict[str, str] = {}  # hemonc id -> brand name
-        conditions: Dict[str, str] = {}  # hemonc id -> condition name
+        brand_names: dict[str, str] = {}  # hemonc id -> brand name
+        conditions: dict[str, str] = {}  # hemonc id -> condition name
 
         with self._data_files.concepts.open() as concepts_file:
             concepts_reader = csv.reader(concepts_file)
@@ -98,7 +97,7 @@ class HemOnc(DiseaseIndicationBase):
             raise TypeError(msg)
         return str(id_int + 1240)
 
-    def _get_rels(self, therapies: Dict, brand_names: Dict, conditions: Dict) -> Dict:
+    def _get_rels(self, therapies: dict, brand_names: dict, conditions: dict) -> dict:
         """Gather relations to provide associations between therapies, brand names,
         and conditions.
 
@@ -189,7 +188,7 @@ class HemOnc(DiseaseIndicationBase):
 
         return therapies
 
-    def _get_synonyms(self, therapies: Dict) -> Dict:
+    def _get_synonyms(self, therapies: dict) -> dict:
         """Gather synonym entries and associate with therapy concepts.
 
         :param dict therapies: mapping of IDs to therapy objects

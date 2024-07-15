@@ -1,7 +1,5 @@
 """Test correctness of Drugs@FDA ETL methods."""
 
-from typing import List
-
 import isodate
 import pytest
 
@@ -74,7 +72,7 @@ def dactinomycin() -> Therapy:
 
 
 @pytest.fixture(scope="module")
-def cisplatin() -> List[Therapy]:
+def cisplatin() -> list[Therapy]:
     """Build cisplatin test fixtures"""
     return [
         Therapy(
@@ -163,7 +161,7 @@ def cisplatin() -> List[Therapy]:
 
 
 @pytest.fixture(scope="module")
-def fenortho() -> List[Therapy]:
+def fenortho() -> list[Therapy]:
     """Provide fenortho fixture. Tests for correct handling of conflicting
     approval_ratings values.
     """

@@ -1,7 +1,6 @@
 """Defines the ChEMBL ETL methods."""
 
 import sqlite3
-from typing import Dict, List, Optional, Union
 
 from tqdm import tqdm
 
@@ -13,7 +12,7 @@ class ChEMBL(DiseaseIndicationBase):
     """Class for ChEMBL ETL methods."""
 
     @staticmethod
-    def _unwrap_group_concat(value: Optional[str]) -> List[str]:
+    def _unwrap_group_concat(value: str | None) -> list[str]:
         """Process concatenated values retrieved from ChEMBL DB.
         :param Optional[str] value: the value provided by the cursor
         :return: List of separated values (empty if none present)
@@ -23,7 +22,7 @@ class ChEMBL(DiseaseIndicationBase):
         return []
 
     @staticmethod
-    def _get_approval_rating(value: Optional[float]) -> Optional[ApprovalRating]:
+    def _get_approval_rating(value: float | None) -> ApprovalRating | None:
         """Standardize approval rating value
 
         :param value: value retrieved from ChEMBL database
@@ -49,7 +48,7 @@ class ChEMBL(DiseaseIndicationBase):
         msg = f"Unrecognized approval rating: {value}"
         raise ValueError(msg)
 
-    def _get_indications(self, value: Optional[str]) -> List[Dict]:
+    def _get_indications(self, value: str | None) -> list[dict]:
         """Construct indication objects to prepare for loading into DB
         :param Optional[str] value: `indication` value fetched from ChEMBL DB
         :return: List containing indication dicts
@@ -60,7 +59,7 @@ class ChEMBL(DiseaseIndicationBase):
             for group in set(indication_groups):
                 ind_group = group.split("||")
                 phase = self._get_approval_rating(float(ind_group[4]))
-                indication: Dict[str, Union[str, Dict]] = {}
+                indication: dict[str, str | dict] = {}
                 for i, term in enumerate(ind_group[:4]):
                     normalized_disease_id = self._normalize_disease(term)
                     if normalized_disease_id is not None:

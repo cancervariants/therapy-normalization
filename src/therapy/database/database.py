@@ -2,10 +2,10 @@
 
 import abc
 import sys
+from collections.abc import Generator
 from enum import Enum
 from os import environ
 from pathlib import Path
-from typing import Dict, Generator, List, Optional, Set, Union
 
 import click
 
@@ -35,7 +35,7 @@ class AbstractDatabase(abc.ABC):
     """
 
     @abc.abstractmethod
-    def __init__(self, db_url: Optional[str] = None, **db_args) -> None:
+    def __init__(self, db_url: str | None = None, **db_args) -> None:
         """Initialize database instance.
 
         Generally, implementing classes should be able to construct a connection by
@@ -48,7 +48,7 @@ class AbstractDatabase(abc.ABC):
         """
 
     @abc.abstractmethod
-    def list_tables(self) -> List[str]:
+    def list_tables(self) -> list[str]:
         """Return names of tables in database.
 
         :return: Table names in database
@@ -106,9 +106,7 @@ class AbstractDatabase(abc.ABC):
         """
 
     @abc.abstractmethod
-    def get_source_metadata(
-        self, src_name: Union[str, SourceName]
-    ) -> Optional[SourceMeta]:
+    def get_source_metadata(self, src_name: str | SourceName) -> SourceMeta | None:
         """Get license, versioning, data lookup, etc information for a source.
 
         :param src_name: name of the source to get data for
@@ -118,7 +116,7 @@ class AbstractDatabase(abc.ABC):
     @abc.abstractmethod
     def get_record_by_id(
         self, concept_id: str, case_sensitive: bool = True, merge: bool = False
-    ) -> Optional[Dict]:
+    ) -> dict | None:
         """Fetch record corresponding to provided concept ID
 
         :param concept_id: concept ID for therapy record
@@ -130,7 +128,7 @@ class AbstractDatabase(abc.ABC):
         """
 
     @abc.abstractmethod
-    def get_refs_by_type(self, search_term: str, ref_type: RefType) -> List[str]:
+    def get_refs_by_type(self, search_term: str, ref_type: RefType) -> list[str]:
         """Retrieve concept IDs for records matching the user's query. Other methods
         are responsible for actually retrieving full records.
 
@@ -140,7 +138,7 @@ class AbstractDatabase(abc.ABC):
         """
 
     @abc.abstractmethod
-    def get_rxnorm_id_by_brand(self, brand_id: str) -> Optional[str]:
+    def get_rxnorm_id_by_brand(self, brand_id: str) -> str | None:
         """Given RxNorm brand ID, retrieve associated drug concept ID.
 
         :param brand_id: rxcui brand identifier to dereference
@@ -148,7 +146,7 @@ class AbstractDatabase(abc.ABC):
         """
 
     @abc.abstractmethod
-    def get_drugsatfda_from_unii(self, unii: str) -> Set[str]:
+    def get_drugsatfda_from_unii(self, unii: str) -> set[str]:
         """Get Drugs@FDA IDs associated with a single UNII, given that UNII. Used
         in merged concept generation.
 
@@ -157,14 +155,14 @@ class AbstractDatabase(abc.ABC):
         """
 
     @abc.abstractmethod
-    def get_all_concept_ids(self) -> Set[str]:
+    def get_all_concept_ids(self) -> set[str]:
         """Retrieve all available concept IDs for use in generating normalized records.
 
         :return: List of concept IDs as strings.
         """
 
     @abc.abstractmethod
-    def get_all_records(self, record_type: RecordType) -> Generator[Dict, None, None]:
+    def get_all_records(self, record_type: RecordType) -> Generator[dict, None, None]:
         """Retrieve all source or normalized records. Either return all source records,
         or all records that qualify as "normalized" (i.e., merged groups + source
         records that are otherwise ungrouped).
@@ -199,7 +197,7 @@ class AbstractDatabase(abc.ABC):
         """
 
     @abc.abstractmethod
-    def add_record(self, record: Dict, src_name: SourceName) -> None:
+    def add_record(self, record: dict, src_name: SourceName) -> None:
         """Add new record to database.
 
         :param record: record to upload
@@ -207,7 +205,7 @@ class AbstractDatabase(abc.ABC):
         """
 
     @abc.abstractmethod
-    def add_merged_record(self, record: Dict) -> None:
+    def add_merged_record(self, record: dict) -> None:
         """Add merged record to database.
 
         :param record: merged record to add
@@ -251,7 +249,7 @@ class AbstractDatabase(abc.ABC):
         """Perform any manual connection closure procedures if necessary."""
 
     @abc.abstractmethod
-    def load_from_remote(self, url: Optional[str] = None) -> None:
+    def load_from_remote(self, url: str | None = None) -> None:
         """Load DB from remote dump. Warning: Deletes all existing data.
 
         :param url: remote location to retrieve gzipped dump file from
@@ -299,7 +297,7 @@ def confirm_aws_db_use(env_name: str) -> None:
 
 
 def create_db(
-    db_url: Optional[str] = None, aws_instance: bool = False
+    db_url: str | None = None, aws_instance: bool = False
 ) -> AbstractDatabase:
     """Database factory method. Checks environment variables and provided parameters
     and creates a DB instance. Currently, Thera-Py only supports DynamoDB, but this

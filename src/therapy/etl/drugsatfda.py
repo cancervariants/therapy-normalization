@@ -2,7 +2,6 @@
 
 import json
 import logging
-from typing import List, Optional
 
 from tqdm import tqdm
 
@@ -37,8 +36,8 @@ class DrugsAtFDA(Base):
         self.database.add_source_metadata(self._name, SourceMeta(**meta))
 
     def _get_marketing_status_rating(
-        self, products: List, concept_id: str
-    ) -> Optional[str]:
+        self, products: list, concept_id: str
+    ) -> str | None:
         """Get approval status rating from products list.
         :param List products: list of individual FDA product objects
         :param str concept_id: FDA application concept ID, used in reporting error

@@ -4,7 +4,6 @@ import json
 import os
 import random
 from pathlib import Path
-from typing import Dict, Set
 
 import pytest
 
@@ -45,7 +44,7 @@ def merge_instance(test_source, is_test_env, database):
     return Merge(database)
 
 
-def compare_merged_records(actual: Dict, fixture: Dict):
+def compare_merged_records(actual: dict, fixture: dict):
     """Check that records are identical."""
     assert actual["concept_id"] == fixture["concept_id"]
     assert actual["label_and_type"] == fixture["label_and_type"]
@@ -89,19 +88,19 @@ def fixture_data(test_data: Path):
 
 
 @pytest.fixture(scope="module")
-def phenobarbital_merged(fixture_data) -> Dict:
+def phenobarbital_merged(fixture_data) -> dict:
     """Create phenobarbital fixture."""
     return fixture_data["phenobarbital"]
 
 
 @pytest.fixture(scope="module")
-def cisplatin_merged(fixture_data) -> Dict:
+def cisplatin_merged(fixture_data) -> dict:
     """Create cisplatin fixture."""
     return fixture_data["cisplatin"]
 
 
 @pytest.fixture(scope="module")
-def spiramycin_merged(fixture_data) -> Dict:
+def spiramycin_merged(fixture_data) -> dict:
     """Create fixture for spiramycin. The RxNorm entry should be inaccessible
     to this group.
     """
@@ -109,7 +108,7 @@ def spiramycin_merged(fixture_data) -> Dict:
 
 
 @pytest.fixture(scope="module")
-def amifostine_merged(fixture_data) -> Dict:
+def amifostine_merged(fixture_data) -> dict:
     """Create fixture for amifostine."""
     return fixture_data["amifostine"]
 
@@ -181,7 +180,7 @@ def record_id_groups():
     return groups_keyed
 
 
-def test_id_sets(merge_instance: Merge, record_id_groups: Dict[str, Set[str]]):
+def test_id_sets(merge_instance: Merge, record_id_groups: dict[str, set[str]]):
     """Test creation of record ID sets. Queries DB and matches against
     record_id_groups fixture.
     """
@@ -209,10 +208,10 @@ def test_id_sets(merge_instance: Merge, record_id_groups: Dict[str, Set[str]]):
 
 def test_generate_merged_record(
     merge_instance: Merge,
-    record_id_groups: Dict[str, Set[str]],
-    phenobarbital_merged: Dict,
-    cisplatin_merged: Dict,
-    spiramycin_merged: Dict,
+    record_id_groups: dict[str, set[str]],
+    phenobarbital_merged: dict,
+    cisplatin_merged: dict,
+    spiramycin_merged: dict,
 ):
     """Test generation of merged record method."""
     phenobarbital_ids = record_id_groups["rxcui:8134"]
@@ -230,11 +229,11 @@ def test_generate_merged_record(
 
 def test_create_merged_concepts(
     merge_instance: Merge,
-    record_id_groups: Dict[str, Set[str]],
-    phenobarbital_merged: Dict,
-    cisplatin_merged: Dict,
-    spiramycin_merged: Dict,
-    amifostine_merged: Dict,
+    record_id_groups: dict[str, set[str]],
+    phenobarbital_merged: dict,
+    cisplatin_merged: dict,
+    spiramycin_merged: dict,
+    amifostine_merged: dict,
     mocker,
 ):
     """Test end-to-end creation and upload of merged concepts."""

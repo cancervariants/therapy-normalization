@@ -1,8 +1,8 @@
 """Construct test data for NCIt source."""
 
 import xml.etree.ElementTree as XETree
+from collections.abc import Generator
 from pathlib import Path
-from typing import Generator
 
 import lxml.etree as etr
 import owlready2 as owl

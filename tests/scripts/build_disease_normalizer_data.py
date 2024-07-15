@@ -4,7 +4,6 @@ Assumes complete and functioning disease normalizer endpoint is available.
 
 import json
 from pathlib import Path
-from typing import Dict
 
 from disease.database import create_db as create_disease_db
 from disease.query import QueryHandler as DiseaseQueryHandler
@@ -20,7 +19,7 @@ TEST_DATA_DIRECTORY = TEST_ROOT / "data"
 class ReadOnlyDatabase(DynamoDatabase):
     """Provide read-only instance of database for security's sake"""
 
-    def add_record(self, record: Dict, record_type: str = "identity") -> None:
+    def add_record(self, record: dict, record_type: str = "identity") -> None:
         """Add new record to database"""
 
 

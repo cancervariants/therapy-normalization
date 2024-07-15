@@ -3,9 +3,9 @@
 import atexit
 import logging
 import sys
+from collections.abc import Generator
 from os import environ
 from pathlib import Path
-from typing import Dict, Generator, List, Optional, Set, Union
 
 import boto3
 import click
@@ -38,7 +38,7 @@ _logger = logging.getLogger(__name__)
 class DynamoDatabase(AbstractDatabase):
     """Database class employing DynamoDB."""
 
-    def __init__(self, db_url: Optional[str] = None, **db_args) -> None:
+    def __init__(self, db_url: str | None = None, **db_args) -> None:
         """Initialize Database class.
 
         :param db_url: URL endpoint for DynamoDB source
@@ -91,10 +91,10 @@ class DynamoDatabase(AbstractDatabase):
 
         self.therapies = self.dynamodb.Table(self.therapy_table)
         self.batch = self.therapies.batch_writer()
-        self._cached_sources: Dict[str, SourceMeta] = {}
+        self._cached_sources: dict[str, SourceMeta] = {}
         atexit.register(self.close_connection)
 
-    def list_tables(self) -> List[str]:
+    def list_tables(self) -> list[str]:
         """Return names of tables in database.
 
         :return: Table names in DynamoDB
@@ -206,9 +206,7 @@ class DynamoDatabase(AbstractDatabase):
         if not self.check_schema_initialized():
             self._create_therapies_table()
 
-    def get_source_metadata(
-        self, src_name: Union[str, SourceName]
-    ) -> Optional[SourceMeta]:
+    def get_source_metadata(self, src_name: str | SourceName) -> SourceMeta | None:
         """Get license, versioning, data lookup, etc information for a source.
 
         :param src_name: name of the source to get data for
@@ -231,7 +229,7 @@ class DynamoDatabase(AbstractDatabase):
 
     def get_record_by_id(
         self, concept_id: str, case_sensitive: bool = True, merge: bool = False
-    ) -> Optional[Dict]:
+    ) -> dict | None:
         """Fetch record corresponding to provided concept ID
 
         :param concept_id: concept ID for therapy record
@@ -266,7 +264,7 @@ class DynamoDatabase(AbstractDatabase):
         except (KeyError, IndexError):  # record doesn't exist
             return None
 
-    def get_refs_by_type(self, search_term: str, ref_type: RefType) -> List[str]:
+    def get_refs_by_type(self, search_term: str, ref_type: RefType) -> list[str]:
         """Retrieve concept IDs for records matching the user's query. Other methods
         are responsible for actually retrieving full records.
 
@@ -287,7 +285,7 @@ class DynamoDatabase(AbstractDatabase):
             )
             return []
 
-    def get_rxnorm_id_by_brand(self, brand_id: str) -> Optional[str]:
+    def get_rxnorm_id_by_brand(self, brand_id: str) -> str | None:
         """Given RxNorm brand ID, retrieve associated drug concept ID.
 
         :param brand_id: rxcui brand identifier to dereference
@@ -308,7 +306,7 @@ class DynamoDatabase(AbstractDatabase):
             return matches["Items"][0]["concept_id"]
         return None
 
-    def get_drugsatfda_from_unii(self, unii: str) -> Set[str]:
+    def get_drugsatfda_from_unii(self, unii: str) -> set[str]:
         """Get Drugs@FDA IDs associated with a single UNII, given that UNII. Used
         in merged concept generation.
 
@@ -329,7 +327,7 @@ class DynamoDatabase(AbstractDatabase):
                     dafda_concepts.add(concept_id)
         return dafda_concepts
 
-    def get_all_concept_ids(self) -> Set[str]:
+    def get_all_concept_ids(self) -> set[str]:
         """Retrieve concept IDs for use in generating normalized records.
 
         :return: List of concept IDs as strings.
@@ -357,7 +355,7 @@ class DynamoDatabase(AbstractDatabase):
                 break
         return set(concept_ids)
 
-    def get_all_records(self, record_type: RecordType) -> Generator[Dict, None, None]:
+    def get_all_records(self, record_type: RecordType) -> Generator[dict, None, None]:
         """Retrieve all source or normalized records. Either return all source records,
         or all records that qualify as "normalized" (i.e., merged groups + source
         records that are otherwise ungrouped).
@@ -437,7 +435,7 @@ class DynamoDatabase(AbstractDatabase):
                 e.response["Error"]["Message"],
             )
 
-    def add_record(self, record: Dict, src_name: SourceName) -> None:
+    def add_record(self, record: dict, src_name: SourceName) -> None:
         """Add new record to database.
 
         :param record: record to upload
@@ -470,7 +468,7 @@ class DynamoDatabase(AbstractDatabase):
                         item, record["concept_id"], item_type, src_name
                     )
 
-    def add_merged_record(self, record: Dict) -> None:
+    def add_merged_record(self, record: dict) -> None:
         """Add merged record to database.
 
         :param record: merged record to add
@@ -622,7 +620,7 @@ class DynamoDatabase(AbstractDatabase):
         """Perform any manual connection closure procedures if necessary."""
         self.batch.__exit__(*sys.exc_info())
 
-    def load_from_remote(self, url: Optional[str] = None) -> None:
+    def load_from_remote(self, url: str | None = None) -> None:
         """Load DB from remote dump. Not available for DynamoDB database backend.
 
         :param url: remote location to retrieve gzipped dump file from
