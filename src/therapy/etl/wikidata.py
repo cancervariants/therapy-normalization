@@ -2,7 +2,7 @@
 import datetime
 import json
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any
 
 from tqdm import tqdm
 from wags_tails import CustomData, DataSource
@@ -123,7 +123,7 @@ class Wikidata(Base):
             DATE_VERSION_PATTERN
         )
 
-    def _get_data_handler(self, data_path: Optional[Path] = None) -> DataSource:
+    def _get_data_handler(self, data_path: Path | None = None) -> DataSource:
         """Construct data handler instance for source. Overwrites base class method
         to use custom data handler instead.
 
@@ -158,15 +158,15 @@ class Wikidata(Base):
     def _transform_data(self) -> None:
         """Transform the Wikidata source data."""
         with self._data_file.open() as f:
-            records: Dict = json.load(f)
+            records: dict = json.load(f)
 
-            items: Dict[str, Any] = {}
+            items: dict[str, Any] = {}
 
             for record in records:
                 record_id = record["item"].split("/")[-1]
                 concept_id = f"{NamespacePrefix.WIKIDATA.value}:{record_id}"
                 if concept_id not in items:
-                    item: Dict[str, Any] = {"concept_id": concept_id}
+                    item: dict[str, Any] = {"concept_id": concept_id}
 
                     xrefs = []
                     associated_with = []
