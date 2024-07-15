@@ -3415,7 +3415,7 @@
           {
             "concept_id": "ncit:C49236",
             "label": "Therapeutic Procedure",
-            "alternativeLabels": [
+            "aliases": [
               "treatment_or_therapy",
               "treatment",
               "TREAT",
@@ -3462,7 +3462,7 @@
           {
             "concept_id": "rxcui:9991",
             "label": "spiramycin",
-            "alternativeLabels": [
+            "aliases": [
               "Spiramycin 1",
               "Spiramycin A",
               "Foromacidin A",
@@ -3496,7 +3496,7 @@
           {
             "concept_id": "ncit:C839",
             "label": "Spiramycin",
-            "alternativeLabels": [
+            "aliases": [
               "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside",
               "Rovamycin",
               "Rovamycine",
@@ -3531,7 +3531,7 @@
           {
             "concept_id": "drugbank:DB06145",
             "label": "Spiramycin",
-            "alternativeLabels": [
+            "aliases": [
               "Spiramycin A",
               "Spiramycin I",
               "Spiramycin 1",
@@ -3568,7 +3568,7 @@
           {
             "concept_id": "chemidplus:8025-81-8",
             "label": "Spiramycin",
-            "alternativeLabels": [],
+            "aliases": [],
             "trade_names": [],
             "xrefs": [],
             "associated_with": ["unii:71ODY0V87H"],
@@ -3595,7 +3595,7 @@
           {
             "concept_id": "wikidata:Q422265",
             "label": "spiramycin",
-            "alternativeLabels": ["spiramycin I"],
+            "aliases": ["spiramycin I"],
             "trade_names": [],
             "xrefs": [
               "chemidplus:8025-81-8",
@@ -3631,7 +3631,7 @@
           {
             "concept_id": "rxcui:2555",
             "label": "cisplatin",
-            "alternativeLabels": [
+            "aliases": [
               "DDP",
               "CIS-DIAMMINEDICHLOROPLATINUM II",
               "CISplatin",
@@ -3676,7 +3676,7 @@
           {
             "concept_id": "ncit:C376",
             "label": "Cisplatin",
-            "alternativeLabels": [],
+            "aliases": [],
             "trade_names": [],
             "xrefs": ["chemidplus:15663-27-1"],
             "associated_with": [
@@ -3707,7 +3707,7 @@
           {
             "concept_id": "hemonc:105",
             "label": "Cisplatin",
-            "alternativeLabels": [
+            "aliases": [
               "NSC 119875",
               "DDP",
               "DACP",
@@ -3767,7 +3767,7 @@
           {
             "concept_id": "drugbank:DB00515",
             "label": "Cisplatin",
-            "alternativeLabels": [
+            "aliases": [
               "cisplatino",
               "cis-diamminedichloroplatinum(II)",
               "CDDP",
@@ -3787,7 +3787,7 @@
           {
             "concept_id": "drugbank:DB12117",
             "label": "Mitometh",
-            "alternativeLabels": ["DDP"],
+            "aliases": ["DDP"],
             "trade_names": [],
             "xrefs": ["chemidplus:107465-03-2"],
             "associated_with": [
@@ -3817,7 +3817,7 @@
           {
             "concept_id": "drugsatfda.anda:074656",
             "label": "CISPLATIN",
-            "alternativeLabels": [],
+            "aliases": [],
             "trade_names": [],
             "xrefs": ["rxcui:309311"],
             "associated_with": [
@@ -3833,7 +3833,7 @@
           {
             "concept_id": "drugsatfda.anda:074735",
             "label": "CISPLATIN",
-            "alternativeLabels": [],
+            "aliases": [],
             "trade_names": [],
             "xrefs": ["rxcui:309311"],
             "associated_with": [
@@ -3848,7 +3848,7 @@
           {
             "concept_id": "drugsatfda.anda:075036",
             "label": "CISPLATIN",
-            "alternativeLabels": [],
+            "aliases": [],
             "trade_names": [],
             "xrefs": ["rxcui:309311"],
             "associated_with": [
@@ -3864,7 +3864,7 @@
           {
             "concept_id": "drugsatfda.anda:206774",
             "label": "CISPLATIN",
-            "alternativeLabels": [],
+            "aliases": [],
             "trade_names": [],
             "xrefs": ["rxcui:309311"],
             "associated_with": [
@@ -3881,7 +3881,7 @@
           {
             "concept_id": "drugsatfda.anda:207323",
             "label": "CISPLATIN",
-            "alternativeLabels": [],
+            "aliases": [],
             "trade_names": [],
             "xrefs": ["rxcui:309311"],
             "associated_with": [
@@ -3904,7 +3904,7 @@
           {
             "concept_id": "drugsatfda.nda:018057",
             "label": "CISPLATIN",
-            "alternativeLabels": [],
+            "aliases": [],
             "trade_names": ["PLATINOL-AQ", "PLATINOL"],
             "xrefs": ["rxcui:309311", "rxcui:1736854"],
             "associated_with": [
@@ -3939,7 +3939,7 @@
           {
             "concept_id": "iuphar.ligand:5343",
             "label": "cisplatin",
-            "alternativeLabels": ["Platinol"],
+            "aliases": ["Platinol"],
             "trade_names": [],
             "xrefs": [
               "chemidplus:15663-27-1",
@@ -3974,7 +3974,7 @@
           {
             "concept_id": "chembl:CHEMBL11359",
             "label": "CISPLATIN",
-            "alternativeLabels": [
+            "aliases": [
               "CIS-DDP",
               "Cis-diamminedichloroplatinum",
               "Peyrone's salt",
@@ -4983,7 +4983,7 @@
           {
             "concept_id": "chemidplus:15663-27-1",
             "label": "Cisplatin",
-            "alternativeLabels": [
+            "aliases": [
               "cis-Diaminedichloroplatinum",
               "1,2-Diaminocyclohexaneplatinum II citrate"
             ],
@@ -5013,7 +5013,7 @@
           {
             "concept_id": "wikidata:Q412415",
             "label": "cisplatin",
-            "alternativeLabels": [
+            "aliases": [
               "CIS-DDP",
               "cis-diamminedichloroplatinum(II)",
               "CDDP",
