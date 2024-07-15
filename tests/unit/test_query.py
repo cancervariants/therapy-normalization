@@ -161,9 +161,9 @@ def compare_ta(response, fixture, query, match_type, warnings=None):
         assert no_matches == [], no_matches
         assert len(actual.mappings) == len(fixture.mappings)
 
-    assert bool(actual.aliases) == bool(fixture.aliases)
-    if actual.aliases:
-        assert set(actual.aliases) == set(fixture.aliases)
+    assert bool(actual.alternativeLabels) == bool(fixture.alternativeLabels)
+    if actual.alternativeLabels:
+        assert set(actual.alternativeLabels) == set(fixture.alternativeLabels)
 
     def get_extension(extensions, name):
         matches = [e for e in extensions if e.name == name]
