@@ -1,4 +1,5 @@
 """Construct test data for ChEMBL source."""
+
 import contextlib
 import sqlite3
 from pathlib import Path

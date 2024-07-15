@@ -1,6 +1,7 @@
 """Test that the therapy normalizer works as intended for the
 Wikidata source.
 """
+
 import isodate
 import pytest
 

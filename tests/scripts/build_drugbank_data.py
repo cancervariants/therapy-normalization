@@ -1,4 +1,5 @@
 """Build DrugBank test data."""
+
 import csv
 from pathlib import Path
 

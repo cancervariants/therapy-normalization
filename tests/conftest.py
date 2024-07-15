@@ -1,4 +1,5 @@
 """Pytest test config tools."""
+
 import json
 import logging
 import os

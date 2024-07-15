@@ -1,4 +1,5 @@
 """Test the therapy querying method."""
+
 import json
 from datetime import datetime
 from pathlib import Path
@@ -125,7 +126,7 @@ def compare_ta(response, fixture, query, match_type, warnings=None):
         for e_warnings in warnings:
             for r_warnings in response.warnings:
                 for e_key, e_val in e_warnings.items():
-                    for _, r_val in r_warnings.items():
+                    for r_val in r_warnings.values():
                         if e_key == r_val:
                             if isinstance(e_val, list):
                                 assert set(r_val) == set(e_val), "warnings val"

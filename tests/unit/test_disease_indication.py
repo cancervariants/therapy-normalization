@@ -1,6 +1,7 @@
 """Module for testing DiseaseIndicationBase. This is needed so we know if
 disease-normalizer introduced breaking changes.
 """
+
 import os
 
 import pytest
