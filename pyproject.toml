@@ -44,7 +44,7 @@ etl = [
     "rich"
 ]
 test = ["pytest", "pytest-cov", "pytest-mock"]
-dev = ["pre-commit", "ruff==0.2.0", "lxml", "xmlformatter", "mypy", "types-pyyaml"]
+dev = ["pre-commit", "ruff==0.2.0", "lxml", "xmlformatter", "types-pyyaml"]
 
 [project.urls]
 Homepage = "https://github.com/cancervariants/therapy-normalization"
@@ -76,10 +76,6 @@ testpaths = ["tests"]
 
 [tool.coverage.run]
 branch = true
-
-[tool.mypy]
-plugins = "pydantic.mypy"
-ignore_missing_imports = true
 
 [tool.ruff]
 src = ["src"]
