@@ -3,7 +3,7 @@
 import logging
 import re
 from timeit import default_timer as timer
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any
 
 from tqdm import tqdm
 
@@ -34,12 +34,12 @@ class Merge:
         :param silent: if True, suppress all console output
         """
         self.database = database
-        self._groups: Dict[str, Set[str]] = {}
-        self._unii_to_drugsatfda: Dict[str, Set[str]] = {}
-        self._failed_lookups: Set[str] = set()
+        self._groups: dict[str, set[str]] = {}
+        self._unii_to_drugsatfda: dict[str, set[str]] = {}
+        self._failed_lookups: set[str] = set()
         self._silent = silent
 
-    def create_merged_concepts(self, record_ids: Set[str]) -> None:
+    def create_merged_concepts(self, record_ids: set[str]) -> None:
         """Create concept groups, generate merged concept records, and update database.
 
         :param Set[str] record_ids: concept identifiers from which groups should be
@@ -90,7 +90,7 @@ class Merge:
         end = timer()
         logger.debug("Generated and added concepts in %s seconds", end - start)
 
-    def _get_drugsatfda_from_unii(self, ref: str) -> Optional[str]:
+    def _get_drugsatfda_from_unii(self, ref: str) -> str | None:
         """Given an `associated_with` item keying a UNII code to a Drugs@FDA record,
         verify that the record can be safely added to a concept group.
         Drugs@FDA tracks a number of "compound therapies", and provides UNIIs to each
@@ -113,7 +113,7 @@ class Merge:
             return fetched["concept_id"]
         return None
 
-    def _get_xrefs(self, record: Dict[str, Any]) -> Set[str]:
+    def _get_xrefs(self, record: dict[str, Any]) -> set[str]:
         """Extract references to entries in other sources from a record.
 
         :param Dict record: record to process
@@ -144,8 +144,8 @@ class Merge:
         return xrefs
 
     def _create_record_id_set(
-        self, record_id: str, observed_id_set: Optional[Set] = None
-    ) -> Set[str]:
+        self, record_id: str, observed_id_set: set | None = None
+    ) -> set[str]:
         """Create concept ID group for an individual record ID.
 
         :param str record_id: concept ID for record to build group from
@@ -185,7 +185,7 @@ class Merge:
             merged_id_set |= self._create_record_id_set(local_record_id, merged_id_set)
         return merged_id_set
 
-    def _create_record_id_sets(self, record_ids: Set[str]) -> None:
+    def _create_record_id_sets(self, record_ids: set[str]) -> None:
         """Update self._groups with normalized concept groups.
         :param Set[str] record_ids: concept identifiers from which groups should be
             generated.
@@ -202,7 +202,7 @@ class Merge:
 
     _biologic_suffix_pattern = re.compile(r"^(.*)[ -][a-z]{4}$")
 
-    def _sort_records(self, records: List[Dict]) -> List[Dict]:
+    def _sort_records(self, records: list[dict]) -> list[dict]:
         """Ensure proper sorting of records in group.
 
         First, order by source priority and tiebreak by smallest concept ID value.
@@ -219,7 +219,7 @@ class Merge:
         :return: sorted records list
         """
 
-        def _record_order(record: Dict) -> Tuple[int, str]:
+        def _record_order(record: dict) -> tuple[int, str]:
             """Provide priority values of concepts for sort function.
 
             :param record: individual therapy record
@@ -259,7 +259,7 @@ class Merge:
                     break
         return records
 
-    def _generate_merged_record(self, record_id_set: Set[str]) -> Dict:
+    def _generate_merged_record(self, record_id_set: set[str]) -> dict:
         """Generate merged record from provided concept ID group.
         Where attributes are 'set-like', they should be combined, and where
         they are 'scalar-like', assign from the highest-priority source where

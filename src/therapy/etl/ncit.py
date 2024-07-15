@@ -1,6 +1,5 @@
 """ETL methods for NCIt source"""
 import logging
-from typing import Set
 
 import owlready2 as owl
 from owlready2.entity import ThingClass
@@ -22,8 +21,8 @@ class NCIt(Base):
     """
 
     def _get_desc_nodes(
-        self, node: ThingClass, uq_nodes: Set[ThingClass]
-    ) -> Set[ThingClass]:
+        self, node: ThingClass, uq_nodes: set[ThingClass]
+    ) -> set[ThingClass]:
         """Create set of unique subclasses of node parameter.
         Should be originally called on ncit:C1909: Pharmacologic Substance.
 
@@ -44,8 +43,8 @@ class NCIt(Base):
         return uq_nodes
 
     def _get_typed_nodes(
-        self, uq_nodes: Set[ThingClass], ncit: owl.namespace.Ontology
-    ) -> Set[ThingClass]:
+        self, uq_nodes: set[ThingClass], ncit: owl.namespace.Ontology
+    ) -> set[ThingClass]:
         """Get all nodes with semantic_type Pharmacologic Substance
 
         :param Set[owlready2.entity.ThingClass] uq_nodes: set of unique class nodes
