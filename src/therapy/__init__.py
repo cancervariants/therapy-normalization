@@ -1,4 +1,5 @@
 """The VICC library for normalizing therapies."""
+
 import re
 from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path

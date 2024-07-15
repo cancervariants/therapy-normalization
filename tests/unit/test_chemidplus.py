@@ -1,4 +1,5 @@
 """Test ChemIDplus ETL methods."""
+
 import isodate
 import pytest
 

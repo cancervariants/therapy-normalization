@@ -1,4 +1,5 @@
 """Construct test data for NCIt source."""
+
 import xml.etree.ElementTree as XETree
 from collections.abc import Generator
 from pathlib import Path

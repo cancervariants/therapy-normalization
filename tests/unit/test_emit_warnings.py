@@ -1,4 +1,5 @@
 """Test the emit_warnings function."""
+
 from therapy.query import QueryHandler
 
 
@@ -19,7 +20,7 @@ def test_emit_warnings(database):
     actual_warnings = query_handler._emit_char_warnings("CIS PLATIN")
     assert actual_warnings == actual_warnings
 
-    actual_warnings = query_handler._emit_char_warnings("CIS\u00A0platin")
+    actual_warnings = query_handler._emit_char_warnings("CIS\u00a0platin")
     assert expected_warnings == actual_warnings
 
     actual_warnings = query_handler._emit_char_warnings("CIS&nbsp;platin")

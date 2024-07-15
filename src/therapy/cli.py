@@ -1,4 +1,5 @@
 """Provides a CLI util to make updates to normalizer database."""
+
 import logging
 from collections.abc import Collection
 from timeit import default_timer as timer

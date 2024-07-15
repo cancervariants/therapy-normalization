@@ -1,6 +1,7 @@
 """Construct static mapping of disease normalizer input.
 Assumes complete and functioning disease normalizer endpoint is available.
 """
+
 import json
 from pathlib import Path
 

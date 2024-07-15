@@ -1,4 +1,5 @@
 """ETL methods for NCIt source"""
+
 import logging
 
 import owlready2 as owl
