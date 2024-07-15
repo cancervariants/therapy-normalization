@@ -6,7 +6,7 @@ from collections.abc import Callable
 from typing import Any, TypeVar
 
 from botocore.exceptions import ClientError
-from ga4gh.core import core_models
+from ga4gh.core import domain_models, entity_models
 from uvicorn.config import logger
 
 from therapy import NAMESPACE_LUIS, PREFIX_LOOKUP, SOURCES
@@ -392,7 +392,7 @@ class QueryHandler:
         :param MatchType match_type: type of match achieved
         :return: completed response object ready to return to user
         """
-        therapeutic_agent_obj = core_models.TherapeuticAgent(
+        therapeutic_agent_obj = domain_models.TherapeuticAgent(
             id=f"normalize.therapy.{record['concept_id']}", label=record.get("label")
         )
 
@@ -401,18 +401,18 @@ class QueryHandler:
         for source_id in source_ids:
             system, code = source_id.split(":")
             mappings.append(
-                core_models.Mapping(
-                    coding=core_models.Coding(
-                        code=core_models.Code(code), system=system.lower()
+                entity_models.ConceptMapping(
+                    coding=entity_models.Coding(
+                        code=entity_models.Code(code), system=system.lower()
                     ),
-                    relation=core_models.Relation.RELATED_MATCH,
+                    relation=entity_models.Relation.RELATED_MATCH,
                 )
             )
         if mappings:
             therapeutic_agent_obj.mappings = mappings
 
         if "aliases" in record:
-            therapeutic_agent_obj.aliases = record["aliases"]
+            therapeutic_agent_obj.alternativeLabels = record["aliases"]
 
         extensions = []
         if any(
@@ -439,16 +439,16 @@ class QueryHandler:
                 if indication.normalized_disease_id:
                     system, code = indication.normalized_disease_id.split(":")
                     mappings = [
-                        core_models.Mapping(
-                            coding=core_models.Coding(
-                                code=core_models.Code(code), system=system.lower()
+                        entity_models.ConceptMapping(
+                            coding=entity_models.Coding(
+                                code=entity_models.Code(code), system=system.lower()
                             ),
-                            relation=core_models.Relation.RELATED_MATCH,
+                            relation=entity_models.Relation.RELATED_MATCH,
                         )
                     ]
                 else:
                     mappings = []
-                ind_disease_obj = core_models.Disease(
+                ind_disease_obj = domain_models.Disease(
                     id=indication.disease_id,
                     label=indication.disease_label,
                     mappings=mappings or None,
@@ -456,14 +456,14 @@ class QueryHandler:
 
                 if indication.supplemental_info:
                     ind_disease_obj.extensions = [
-                        core_models.Extension(name=k, value=v)
+                        entity_models.Extension(name=k, value=v)
                         for k, v in indication.supplemental_info.items()
                     ]
                 inds_list.append(ind_disease_obj.model_dump(exclude_none=True))
             if inds_list:
                 approv_value["has_indication"] = inds_list
 
-            approv = core_models.Extension(
+            approv = entity_models.Extension(
                 name="regulatory_approval", value=approv_value
             )
             extensions.append(approv)
@@ -471,7 +471,7 @@ class QueryHandler:
         trade_names = record.get("trade_names")
         if trade_names:
             extensions.append(
-                core_models.Extension(name="trade_names", value=trade_names)
+                entity_models.Extension(name="trade_names", value=trade_names)
             )
 
         if extensions:
