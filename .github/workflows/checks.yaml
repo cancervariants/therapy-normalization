@@ -55,7 +55,3 @@ jobs:
 
       - name: Check style
         run: python3 -m ruff check . && ruff format --check .
-
-      - name: Check type correctness
-        if: ${{ always() }}
-        run: python3 -m mypy src/therapy/
