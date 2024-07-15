@@ -2,8 +2,8 @@
 import json
 import logging
 import os
+from collections.abc import Callable
 from pathlib import Path
-from typing import Callable, List, Optional
 
 import pytest
 
@@ -198,8 +198,8 @@ def compare_records():
 def _compare_response(
     response: SourceSearchMatches,
     match_type: MatchType,
-    fixture: Optional[Therapy] = None,
-    fixture_list: Optional[List[Therapy]] = None,
+    fixture: Therapy | None = None,
+    fixture_list: list[Therapy] | None = None,
     num_records: int = 0,
 ):
     """Check that test response is correct. Only 1 of {fixture, fixture_list}

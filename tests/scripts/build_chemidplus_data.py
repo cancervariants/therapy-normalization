@@ -1,6 +1,6 @@
 """Build chemidplus test data."""
+from collections.abc import Generator
 from pathlib import Path
-from typing import Generator
 from xml.etree import ElementTree
 
 from therapy.database import create_db

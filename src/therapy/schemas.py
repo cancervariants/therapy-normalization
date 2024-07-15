@@ -1,7 +1,7 @@
 """Contains data models for representing VICC therapy records."""
 from datetime import datetime
 from enum import Enum, IntEnum
-from typing import Any, Dict, List, Literal, Optional, Set, Union
+from typing import Any, Literal
 
 from ga4gh.core import domain_models
 from pydantic import BaseModel, ConfigDict, StrictBool, constr
@@ -9,7 +9,7 @@ from pydantic import BaseModel, ConfigDict, StrictBool, constr
 from therapy.version import __version__
 
 # Working structure for object in preparation for upload to DB
-RecordParams = Dict[str, Union[List, Set, str, Dict[str, Any]]]
+RecordParams = dict[str, list | set | str | dict[str, Any]]
 
 
 class ApprovalRating(str, Enum):
@@ -103,8 +103,8 @@ class HasIndication(BaseModel):
 
     disease_id: str
     disease_label: str
-    normalized_disease_id: Optional[str] = None
-    supplemental_info: Optional[Dict[str, Optional[str]]] = None
+    normalized_disease_id: str | None = None
+    supplemental_info: dict[str, str | None] | None = None
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -122,14 +122,14 @@ class Therapy(BaseModel):
     """A pharmacologic substance used to treat a medical condition."""
 
     concept_id: str
-    label: Optional[str] = None
-    aliases: Optional[List[str]] = []
-    trade_names: Optional[List[str]] = []
-    xrefs: Optional[List[str]] = []
-    associated_with: Optional[List[str]] = []
-    approval_ratings: Optional[List[ApprovalRating]] = None
-    approval_year: Optional[List[str]] = []
-    has_indication: Optional[List[HasIndication]] = []
+    label: str | None = None
+    aliases: list[str] | None = []
+    trade_names: list[str] | None = []
+    xrefs: list[str] | None = []
+    associated_with: list[str] | None = []
+    approval_ratings: list[ApprovalRating] | None = None
+    approval_year: list[str] | None = []
+    has_indication: list[HasIndication] | None = []
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -282,9 +282,9 @@ class SourceMeta(BaseModel):
     data_license: str
     data_license_url: str
     version: str
-    data_url: Optional[str] = None
-    rdp_url: Optional[str] = None
-    data_license_attributes: Dict[str, StrictBool]
+    data_url: str | None = None
+    rdp_url: str | None = None
+    data_license_attributes: dict[str, StrictBool]
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -310,7 +310,7 @@ class SourceSearchMatches(BaseModel):
     """
 
     match_type: MatchType
-    records: List[Therapy]
+    records: list[Therapy]
     source_meta_: SourceMeta
 
     model_config = ConfigDict(
@@ -373,7 +373,7 @@ class ServiceMeta(BaseModel):
 class MatchesNormalized(BaseModel):
     """Matches associated with normalized concept from a single source."""
 
-    records: List[Therapy]
+    records: list[Therapy]
     source_meta_: SourceMeta
 
 
@@ -381,7 +381,7 @@ class BaseNormalizationService(BaseModel):
     """Base method providing shared attributes to Normalization service classes."""
 
     query: str
-    warnings: List[Dict] = []
+    warnings: list[dict] = []
     match_type: MatchType
     service_meta_: ServiceMeta
 
@@ -392,8 +392,8 @@ class UnmergedNormalizationService(BaseNormalizationService):
     attributes.
     """
 
-    normalized_concept_id: Optional[constr(pattern=r"^\w[^:]*:.+$")] = None  # type: ignore[valid-type]
-    source_matches: Dict[SourceName, MatchesNormalized]
+    normalized_concept_id: constr(pattern="^\\w[^:]*:.+$") | None = None  # type: ignore[valid-type]
+    source_matches: dict[SourceName, MatchesNormalized]
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -483,9 +483,9 @@ class UnmergedNormalizationService(BaseNormalizationService):
 class NormalizationService(BaseNormalizationService):
     """Response containing one or more merged records and source data."""
 
-    normalized_id: Optional[str] = None
-    therapeutic_agent: Optional[domain_models.TherapeuticAgent] = None
-    source_meta_: Optional[Dict[SourceName, SourceMeta]] = None
+    normalized_id: str | None = None
+    therapeutic_agent: domain_models.TherapeuticAgent | None = None
+    source_meta_: dict[SourceName, SourceMeta] | None = None
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -653,8 +653,8 @@ class SearchService(BaseModel):
     """Core response schema containing matches for each source"""
 
     query: str
-    warnings: List[Dict] = []
-    source_matches: Dict[SourceName, SourceSearchMatches]
+    warnings: list[dict] = []
+    source_matches: dict[SourceName, SourceSearchMatches]
     service_meta_: ServiceMeta
 
     model_config = ConfigDict(

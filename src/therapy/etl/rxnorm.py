@@ -9,7 +9,6 @@ import csv
 import logging
 import re
 from pathlib import Path
-from typing import Dict, List
 
 import yaml
 from tqdm import tqdm
@@ -107,15 +106,15 @@ class RxNorm(Base):
         with self._data_file.open() as f:  # type: ignore
             rff_data = csv.reader(f, delimiter="|")
             # Link ingredient to brand
-            ingredient_brands: Dict[str, str] = {}
+            ingredient_brands: dict[str, str] = {}
             # Link precise ingredient to get brand
-            precise_ingredient: Dict[str, str] = {}
+            precise_ingredient: dict[str, str] = {}
             # Transformed therapy records
-            data: Dict[str, Dict] = {}
+            data: dict[str, dict] = {}
             # Link ingredient to brand
-            sbdfs: Dict[str, str] = {}
+            sbdfs: dict[str, str] = {}
             # Get RXNORM|BN to concept_id
-            brands: Dict[str, str] = {}
+            brands: dict[str, str] = {}
             for row in rff_data:
                 if row[11] in RXNORM_XREFS:
                     concept_id = f"{NamespacePrefix.RXNORM.value}:{row[0]}"
@@ -156,7 +155,7 @@ class RxNorm(Base):
                             params[field] = field_value
                     self._load_therapy(params)
 
-    def _get_brands(self, row: List, ingredient_brands: Dict) -> None:
+    def _get_brands(self, row: list, ingredient_brands: dict) -> None:
         """Add ingredient and brand to ingredient_brands.
 
         :param List row: A row in the RxNorm data file.
@@ -178,10 +177,10 @@ class RxNorm(Base):
 
     def _get_trade_names(
         self,
-        value: Dict,
-        precise_ingredient: Dict,
-        ingredient_brands: Dict,
-        sbdfs: Dict,
+        value: dict,
+        precise_ingredient: dict,
+        ingredient_brands: dict,
+        sbdfs: dict,
     ) -> None:
         """Get trade names for a given ingredient.
 
@@ -198,7 +197,7 @@ class RxNorm(Base):
                 labels.append(pin.lower())
 
         for label in labels:
-            trade_names: List[str] = [
+            trade_names: list[str] = [
                 val for key, val in ingredient_brands.items() if label == key.lower()
             ]
             trade_names_uq = {val for sublist in trade_names for val in sublist}
@@ -209,7 +208,7 @@ class RxNorm(Base):
             for tn in sbdfs[record_label]:
                 self._add_term(value, tn, "trade_names")
 
-    def _load_brand_concepts(self, rxnorm_record: Dict, brands: Dict) -> None:
+    def _load_brand_concepts(self, rxnorm_record: dict, brands: dict) -> None:
         """Connect brand names to a concept and load into the database.
 
         :params rxnorm_record: A transformed therapy record
@@ -223,11 +222,11 @@ class RxNorm(Base):
 
     def _add_str_field(
         self,
-        params: Dict,
-        row: List,
-        precise_ingredient: Dict,
-        drug_forms: List,
-        sbdfs: Dict,
+        params: dict,
+        row: list,
+        precise_ingredient: dict,
+        drug_forms: list,
+        sbdfs: dict,
     ) -> None:
         """Differentiate STR field.
 
@@ -267,7 +266,7 @@ class RxNorm(Base):
                 self._add_term(precise_ingredient, term, row[13])
 
     @staticmethod
-    def _add_term(params: Dict, term: str, label_type: str) -> None:
+    def _add_term(params: dict, term: str, label_type: str) -> None:
         """Add a single term to a therapy record in an associated field.
 
         :param Dict params: A transformed therapy record.
@@ -280,7 +279,7 @@ class RxNorm(Base):
         else:
             params[label_type] = [term]
 
-    def _add_xref_assoc(self, params: Dict, row: List) -> None:
+    def _add_xref_assoc(self, params: dict, row: list) -> None:
         """Add xref or associated_with to therapy.
 
         :param Dict params: A transformed therapy record.
