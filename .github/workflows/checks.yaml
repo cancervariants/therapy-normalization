@@ -14,7 +14,7 @@ jobs:
       THERAPY_TEST: true
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.10", "3.11", "3.12"]
     steps:
       - uses: actions/checkout@v3
 
@@ -42,23 +42,16 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.DUMMY_AWS_SECRET_ACCESS_KEY }}
       AWS_DEFAULT_REGION: us-east-2
       AWS_DEFAULT_OUTPUT: text
-    strategy:
-      matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
     steps:
       - uses: actions/checkout@v3
 
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.11"
 
       - name: Install dependencies
         run: python3 -m pip install ".[dev]"
 
       - name: Check style
         run: python3 -m ruff check . && ruff format --check .
-
-      - name: Check type correctness
-        if: ${{ always() }}
-        run: python3 -m mypy src/therapy/

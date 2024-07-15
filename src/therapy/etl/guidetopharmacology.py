@@ -3,7 +3,7 @@ import csv
 import html
 import logging
 import re
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 
 from tqdm import tqdm
 from wags_tails.guide_to_pharmacology import GtoPLigandPaths
@@ -35,7 +35,7 @@ class GuideToPHARMACOLOGY(Base):
 
     def _transform_data(self) -> None:
         """Transform Guide To PHARMACOLOGY data."""
-        data: Dict[str, Any] = {}
+        data: dict[str, Any] = {}
         self._transform_ligands(data)
         self._transform_ligand_id_mappings(data)
 
@@ -50,7 +50,7 @@ class GuideToPHARMACOLOGY(Base):
         """
         return re.sub(TAG_PATTERN, "", name)
 
-    def _transform_ligands(self, data: Dict) -> None:
+    def _transform_ligands(self, data: dict) -> None:
         """Transform ligands data file and add this data to `data`.
 
         :param dict data: Transformed data
@@ -91,7 +91,7 @@ class GuideToPHARMACOLOGY(Base):
                 raise SourceFormatError(msg)
 
             for row in rows:
-                params: Dict[str, Union[List[str], str]] = {
+                params: dict[str, list[str] | str] = {
                     "concept_id": f"{NamespacePrefix.GUIDETOPHARMACOLOGY.value}:{row[0]}",
                     "label": self._process_name(row[1]),
                     "src_name": SourceName.GUIDETOPHARMACOLOGY.value,
@@ -142,7 +142,7 @@ class GuideToPHARMACOLOGY(Base):
                 data[params["concept_id"]] = params
 
     @staticmethod
-    def _get_xrefs(ref: str, namespace: str) -> List[str]:
+    def _get_xrefs(ref: str, namespace: str) -> list[str]:
         """Construct xrefs from raw string.
         :param ref: raw ref value (may need to be separated)
         :param namspace: namespace prefix to use
@@ -154,7 +154,7 @@ class GuideToPHARMACOLOGY(Base):
             xrefs.append(xref)
         return xrefs
 
-    def _transform_ligand_id_mappings(self, data: Dict) -> None:
+    def _transform_ligand_id_mappings(self, data: dict) -> None:
         """Transform ligand_id_mappings and add this data to `data`
         All ligands found in this file should already be in data
 
@@ -215,7 +215,7 @@ class GuideToPHARMACOLOGY(Base):
                 if associated_with:
                     params["associated_with"] = associated_with
 
-    def _set_approval_rating(self, approved: str, withdrawn: str) -> Optional[str]:
+    def _set_approval_rating(self, approved: str, withdrawn: str) -> str | None:
         """Set approval rating value.
 
         :param str approved: The drug is or has in the past been approved for human
@@ -225,7 +225,7 @@ class GuideToPHARMACOLOGY(Base):
         :return: Approval rating
         """
         if approved and not withdrawn:
-            approval_rating: Optional[str] = ApprovalRating.GTOPDB_APPROVED.value
+            approval_rating: str | None = ApprovalRating.GTOPDB_APPROVED.value
         elif withdrawn:
             approval_rating = ApprovalRating.GTOPDB_WITHDRAWN.value
         else:
