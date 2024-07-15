@@ -7,7 +7,7 @@ APP_ROOT: Path = Path(__file__).resolve().parents[0]
 
 
 try:
-    __version__ = version("{{ cookiecutter.project_slug }}")
+    __version__ = version("thera-py")
 except PackageNotFoundError:
     __version__ = "unknown"
 finally:
