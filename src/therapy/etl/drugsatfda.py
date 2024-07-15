@@ -1,4 +1,5 @@
 """ETL methods for the Drugs@FDA source."""
+
 import json
 import logging
 

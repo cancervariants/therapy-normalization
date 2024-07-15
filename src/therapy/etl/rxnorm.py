@@ -5,6 +5,7 @@ Library of Medicine (NLM), National Institutes of Health, Department of Health
  and Human Services; NLM is not responsible for the product and does not
  endorse or recommend this or any other product."
 """
+
 import csv
 import logging
 import re
@@ -89,7 +90,7 @@ class RxNorm(Base):
             src_name="rxnorm_drug_forms",
             filetype="yaml",
             latest_version_cb=lambda: self._version,
-            download_cb=lambda version, file: self._create_drug_form_yaml(
+            download_cb=lambda version, file: self._create_drug_form_yaml(  # noqa: ARG005
                 file,
                 self._data_file,  # type: ignore
             ),
@@ -194,7 +195,7 @@ class RxNorm(Base):
 
         if "PIN" in value and value["PIN"] in precise_ingredient:
             for pin in precise_ingredient[value["PIN"]]:
-                labels.append(pin.lower())
+                labels.append(pin.lower())  # noqa: PERF401
 
         for label in labels:
             trade_names: list[str] = [

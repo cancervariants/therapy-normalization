@@ -1,4 +1,5 @@
 """Contains data models for representing VICC therapy records."""
+
 from datetime import datetime
 from enum import Enum, IntEnum
 from typing import Any, Literal
@@ -354,9 +355,9 @@ class ServiceMeta(BaseModel):
     name: Literal["thera-py"] = "thera-py"
     version: Literal[__version__] = __version__  # type: ignore[valid-type]
     response_datetime: datetime
-    url: Literal[
+    url: Literal["https://github.com/cancervariants/therapy-normalization"] = (
         "https://github.com/cancervariants/therapy-normalization"
-    ] = "https://github.com/cancervariants/therapy-normalization"
+    )
 
     model_config = ConfigDict(
         json_schema_extra={

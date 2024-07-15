@@ -1,6 +1,7 @@
 """Test that the therapy normalizer works as intended for the HemOnc.org
 source.
 """
+
 import isodate
 import pytest
 

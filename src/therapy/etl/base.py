@@ -1,4 +1,5 @@
 """A base class for extraction, transformation, and loading of data."""
+
 import contextlib
 import json
 import logging
@@ -71,9 +72,17 @@ class Base(ABC):
         # self._name = SourceName[self.__class__.__name__.upper()]
         self._silent = silent
         self._name = SourceName(self.__class__.__name__)
-        self._data_source: ChemblData | ChemIDplusData | DrugBankData | DrugsAtFdaData | GToPLigandData | HemOncData | NcitData | RxNormData | CustomData = self._get_data_handler(
-            data_path
-        )  # type: ignore
+        self._data_source: (
+            ChemblData
+            | ChemIDplusData
+            | DrugBankData
+            | DrugsAtFdaData
+            | GToPLigandData
+            | HemOncData
+            | NcitData
+            | RxNormData
+            | CustomData
+        ) = self._get_data_handler(data_path)  # type: ignore
         self.database = database
         self._added_ids: list[str] = []
         self._rules = Rules(self._name)

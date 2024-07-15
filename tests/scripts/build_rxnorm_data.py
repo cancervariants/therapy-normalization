@@ -1,4 +1,5 @@
 """Build RxNorm test data."""
+
 import csv
 import shutil
 from pathlib import Path

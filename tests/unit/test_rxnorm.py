@@ -1,4 +1,5 @@
 """Test that the therapy normalizer works as intended for the RxNorm source."""
+
 import isodate
 import pytest
 

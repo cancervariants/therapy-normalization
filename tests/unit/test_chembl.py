@@ -1,4 +1,5 @@
 """Test that the therapy normalizer works as intended for the ChEMBL source."""
+
 import json
 from pathlib import Path
 

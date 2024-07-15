@@ -3,6 +3,7 @@
 In the future, this should be filled in with different tests for alternate
 implementations.
 """
+
 from boto3.dynamodb.conditions import Key
 
 

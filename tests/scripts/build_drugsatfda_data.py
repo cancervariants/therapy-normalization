@@ -1,4 +1,5 @@
 """Build drugsatfda test data"""
+
 import json
 from pathlib import Path
 

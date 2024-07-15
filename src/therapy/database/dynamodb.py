@@ -1,4 +1,5 @@
 """Provide DynamoDB client."""
+
 import atexit
 import logging
 import sys
@@ -607,7 +608,7 @@ class DynamoDatabase(AbstractDatabase):
                                 "concept_id": record["concept_id"],
                             }
                         )
-                    except ClientError as e:
+                    except ClientError as e:  # noqa: PERF203
                         raise DatabaseWriteError(e) from e
 
     def complete_write_transaction(self) -> None:

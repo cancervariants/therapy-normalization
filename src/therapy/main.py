@@ -1,4 +1,5 @@
 """Main application for FastAPI"""
+
 import html
 
 from fastapi import FastAPI, HTTPException, Query
