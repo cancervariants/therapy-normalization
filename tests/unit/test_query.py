@@ -756,14 +756,14 @@ def test_service_meta(search_handler, normalize_handler):
     response = search_handler.search(query)
     service_meta = response.service_meta_
     assert service_meta.name == "thera-py"
-    assert service_meta.version >= "0.2.13"
+    assert service_meta.version != "unknown"
     assert isinstance(service_meta.response_datetime, datetime)
     assert service_meta.url == "https://github.com/cancervariants/therapy-normalization"
 
     response = normalize_handler.normalize(query)
     service_meta = response.service_meta_
     assert service_meta.name == "thera-py"
-    assert service_meta.version >= "0.2.13"
+    assert service_meta.version != "unknown"
     assert isinstance(service_meta.response_datetime, datetime)
     assert service_meta.url == "https://github.com/cancervariants/therapy-normalization"
 
