@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 
 import pytest
-from ga4gh.core import core_models
+from ga4gh.core import domain_models
 
 from therapy.database.database import AbstractDatabase
 from therapy.query import InvalidParameterError, QueryHandler
@@ -137,7 +137,7 @@ def compare_ta(response, fixture, query, match_type, warnings=None):
 
     assert response.match_type == match_type
 
-    fixture = core_models.TherapeuticAgent(**fixture.copy())
+    fixture = domain_models.TherapeuticAgent(**fixture.copy())
     assert response.normalized_id == fixture.id.split("normalize.therapy.")[-1]
     actual = response.therapeutic_agent
     actual_keys = actual.model_dump(exclude_none=True).keys()
@@ -162,9 +162,9 @@ def compare_ta(response, fixture, query, match_type, warnings=None):
         assert no_matches == [], no_matches
         assert len(actual.mappings) == len(fixture.mappings)
 
-    assert bool(actual.aliases) == bool(fixture.aliases)
-    if actual.aliases:
-        assert set(actual.aliases) == set(fixture.aliases)
+    assert bool(actual.alternativeLabels) == bool(fixture.alternativeLabels)
+    if actual.alternativeLabels:
+        assert set(actual.alternativeLabels) == set(fixture.alternativeLabels)
 
     def get_extension(extensions, name):
         matches = [e for e in extensions if e.name == name]
