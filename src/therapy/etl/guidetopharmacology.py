@@ -115,8 +115,6 @@ class GuideToPHARMACOLOGY(Base):
                     )
                 if row[10]:
                     associated_with.append(f"{NamespacePrefix.UNIPROT.value}:{row[10]}")
-                if row[12]:
-                    associated_with.append(f"{NamespacePrefix.CHEMBL.value}:{row[12]}")
                 if row[17]:
                     aliases.append(self._process_name(row[17]))  # IUPAC
                 if row[18]:
