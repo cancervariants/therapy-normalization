@@ -44,7 +44,7 @@ etl = [
     "rich",
     "pyyaml"
 ]
-test = ["pytest", "pytest-cov", "pytest-mock"]
+test = ["pytest", "pytest-cov", "pytest-mock", "isodate"]
 dev = ["pre-commit>=3.7.1", "ruff==0.5.0", "lxml", "xmlformatter", "types-pyyaml"]
 
 [project.urls]
