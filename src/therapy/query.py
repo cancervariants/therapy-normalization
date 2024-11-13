@@ -144,7 +144,7 @@ class QueryHandler:
                     raise KeyError(msg)
                 (response, src) = self._add_record(response, match, match_type)
                 matched_sources.add(src)
-            except ClientError as e:  # noqa: PERF203
+            except ClientError as e:
                 logger.error(e.response["Error"]["Message"])
 
         return response, matched_sources
@@ -339,7 +339,7 @@ class QueryHandler:
         response = self._get_search_response(query_str, query_sources, infer)
 
         response["service_meta_"] = ServiceMeta(
-            response_datetime=datetime.datetime.now(tz=datetime.timezone.utc),
+            response_datetime=datetime.datetime.now(tz=datetime.UTC),
         ).model_dump()
         return SearchService(**response)
 
@@ -358,7 +358,7 @@ class QueryHandler:
         for src in sources:
             try:
                 src_name = SourceName(PREFIX_LOOKUP[src])
-            except KeyError:  # noqa: PERF203
+            except KeyError:
                 # not an imported source
                 continue
             else:
@@ -522,7 +522,7 @@ class QueryHandler:
             "match_type": MatchType.NO_MATCH,
             "warnings": self._emit_char_warnings(query),
             "service_meta_": ServiceMeta(
-                response_datetime=datetime.datetime.now(tz=datetime.timezone.utc)
+                response_datetime=datetime.datetime.now(tz=datetime.UTC)
             ),
         }
 
