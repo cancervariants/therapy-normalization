@@ -120,9 +120,7 @@ class Wikidata(Base):
 
         :return: formatted string for the current date
         """
-        return datetime.datetime.now(tz=datetime.timezone.utc).strftime(
-            DATE_VERSION_PATTERN
-        )
+        return datetime.datetime.now(tz=datetime.UTC).strftime(DATE_VERSION_PATTERN)
 
     def _get_data_handler(self, data_path: Path | None = None) -> DataSource:
         """Construct data handler instance for source. Overwrites base class method

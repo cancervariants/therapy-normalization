@@ -608,7 +608,7 @@ class DynamoDatabase(AbstractDatabase):
                                 "concept_id": record["concept_id"],
                             }
                         )
-                    except ClientError as e:  # noqa: PERF203
+                    except ClientError as e:
                         raise DatabaseWriteError(e) from e
 
     def complete_write_transaction(self) -> None:
