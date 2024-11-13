@@ -61,4 +61,3 @@ def ApprovalStatus(Enum):
     FDA_PRESCRIPTION = "fda_prescription"
     FDA_DISCONTINUED = "fda_discontinued"
     FDA_TENTATIVE = "fda_tentative"
-
