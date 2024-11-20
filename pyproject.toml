@@ -16,11 +16,11 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Bio-Informatics",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 description = "VICC normalization routines for therapeutics"
 license = {file = "LICENSE"}
 dependencies = [
@@ -41,9 +41,10 @@ etl = [
     "wikibaseintegrator>=0.12.0",
     "wags-tails~=0.2.0",
     "tqdm",
-    "rich"
+    "rich",
+    "pyyaml"
 ]
-test = ["pytest", "pytest-cov", "pytest-mock"]
+test = ["pytest", "pytest-cov", "pytest-mock", "isodate"]
 dev = ["pre-commit>=3.7.1", "ruff==0.5.0", "lxml", "xmlformatter", "types-pyyaml"]
 
 [project.urls]
@@ -163,6 +164,8 @@ ignore = [
 # ANN001 - missing-type-function-argument
 # ANN2 - missing-return-type
 # ANN102 - missing-type-cls
+# D100 - undocumented-public-module
+# D102 - undocumented-public-class
 # S101 - assert
 # B011 - assert-false
 # N805 - invalid-first-argument-name-for-method
@@ -170,9 +173,23 @@ ignore = [
 # INP001 - implicit-namespace-package
 # SLF001 - private-member-access
 # PERF401 - manual-list-comprehension
-"tests/*" = ["ANN001", "ANN2", "ANN102", "S101", "B011", "INP001", "SLF001", "PERF401"]
+"tests/*" = [
+    "ANN001",
+    "ANN2",
+    "ANN102",
+    "D100",
+    "D102",
+    "S101",
+    "B011",
+    "INP001",
+    "SLF001",
+    "PERF401"
+]
 "tests/unit/test_emit_warnings.py" = ["RUF001"]
 "src/therapy/schemas.py" = ["ANN001", "ANN201", "N805"]
+
+[tool.ruff.lint.flake8-annotations]
+mypy-init-return = true
 
 [tool.ruff.format]
 docstring-code-format = true

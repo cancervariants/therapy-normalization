@@ -74,6 +74,7 @@ class GuideToPHARMACOLOGY(Base):
                 "PubChem CID",
                 "UniProt ID",
                 "Ensembl ID",
+                "ChEMBL ID",
                 "Ligand Subunit IDs",
                 "Ligand Subunit Name",
                 "Ligand Subunit UniProt IDs",
@@ -114,14 +115,14 @@ class GuideToPHARMACOLOGY(Base):
                     )
                 if row[10]:
                     associated_with.append(f"{NamespacePrefix.UNIPROT.value}:{row[10]}")
-                if row[16]:
-                    aliases.append(self._process_name(row[16]))  # IUPAC
                 if row[17]:
-                    # International Non-proprietary Name assigned by the WHO
-                    aliases.append(self._process_name(row[17]))
+                    aliases.append(self._process_name(row[17]))  # IUPAC
                 if row[18]:
+                    # International Non-proprietary Name assigned by the WHO
+                    aliases.append(self._process_name(row[18]))
+                if row[19]:
                     # synonyms
-                    synonyms = row[18].split("|")
+                    synonyms = row[19].split("|")
                     for s in synonyms:
                         if "&" in s and ";" in s:
                             name_code = s[s.index("&") : s.index(";") + 1]
@@ -130,9 +131,9 @@ class GuideToPHARMACOLOGY(Base):
                                 s = s.replace(name_code, "")
                             s = html.unescape(s)
                         aliases.append(self._process_name(s))
-                if row[20]:
+                if row[21]:
                     associated_with.append(
-                        f"{NamespacePrefix.INCHIKEY.value}:{row[20]}"
+                        f"{NamespacePrefix.INCHIKEY.value}:{row[21]}"
                     )
 
                 if associated_with:
