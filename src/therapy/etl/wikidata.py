@@ -2,17 +2,24 @@
 
 import datetime
 import json
+import os
 from pathlib import Path
 from typing import Any
 
 from tqdm import tqdm
 from wags_tails import CustomData, DataSource
 from wags_tails.utils.versioning import DATE_VERSION_PATTERN
+from wikibaseintegrator.wbi_config import config as wbi_config
 from wikibaseintegrator.wbi_helpers import execute_sparql_query
 
 from therapy import XREF_SOURCES
 from therapy.etl.base import Base, EtlError
 from therapy.schemas import NamespacePrefix, RecordParams, SourceMeta, SourceName
+
+wbi_config["USER_AGENT"] = (
+    os.environ.get("WIKIBASE_USER_AGENT")
+    or "thera_py (https://github.com/cancervariants/therapy-normalization)"
+)
 
 # Translate Wikidata keys to standardized namespaces
 NAMESPACES = {
