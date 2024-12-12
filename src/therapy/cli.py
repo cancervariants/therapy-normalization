@@ -16,6 +16,7 @@ from therapy.database.database import (
     DatabaseWriteError,
     create_db,
 )
+from therapy.log import configure_logs
 from therapy.schemas import SourceName
 
 _logger = logging.getLogger(__name__)
@@ -32,6 +33,7 @@ def check_db(db_url: str, verbose: bool = False) -> None:
     :param db_url: URL to normalizer database
     :param verbose: if true, print result to console
     """  # noqa: D301
+    configure_logs()
     db = create_db(db_url, False)
     if not db.check_schema_initialized():
         if verbose:
@@ -237,6 +239,7 @@ def update_normalizer_db(
     :param update_merged: if true, update normalized records
     :param use_existing: if True, use most recent local data instead of fetching latest version
     """  # noqa: D301
+    configure_logs()
     db = create_db(db_url, aws_instance)
 
     if update_all:
