@@ -1,7 +1,6 @@
 """Provide functions and utilities related to application logging."""
 
 import logging
-from pathlib import Path
 
 
 def _quiet_upstream_libs() -> None:
@@ -15,7 +14,7 @@ def _quiet_upstream_libs() -> None:
 
 
 def configure_logs(
-    log_file: Path | None = None,
+    log_file: str | None = None,
     log_level: int = logging.DEBUG,
     quiet_upstream: bool = True,
 ) -> None:
@@ -26,11 +25,11 @@ def configure_logs(
     :param quiet_upstream: if True, turn off debug logging for a selection of libraries
     """
     if log_file is None:
-        log_file = Path("therapy.log")
+        log_file = "therapy.log"
     if quiet_upstream:
         _quiet_upstream_libs()
     logging.basicConfig(
-        filename=log_file.absolute().as_uri(),
+        filename=log_file,
         format="[%(asctime)s] - %(name)s - %(levelname)s : %(message)s",
     )
     logger = logging.getLogger(__package__)
