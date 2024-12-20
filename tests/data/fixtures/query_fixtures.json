@@ -1,49 +1,52 @@
 {
   "normalize_cisplatin": {
-    "type": "TherapeuticAgent",
+    "conceptType": "Therapy",
     "label": "cisplatin",
     "description": null,
     "id": "normalize.therapy.rxcui:2555",
-    "alternativeLabels": [
-      "Liplacis",
-      "cis-diamminedichloroplatinum III",
-      "APRD00359",
-      "(sp-4-2)-diamminedichloroplatinum",
-      "cis-Diaminedichloroplatinum",
-      "CDDP",
-      "1,2-Diaminocyclohexaneplatinum II citrate",
-      "Platinol",
-      "Platinol-AQ",
-      "DDP",
-      "cis-platinum",
-      "cisplatino",
-      "PLATINUM, DIAMMINEDICHLORO-, (SP-4-2)-",
-      "Cis-diamminedichloroplatinum ii",
-      "INT230-6 COMPONENT CISPLATIN",
-      "Cis-diamminedichloroplatinum",
-      "DACP",
-      "Cis-DDP",
-      "cisplatinum",
-      "NSC 119875",
-      "cis-diamminedichloroplatinum(II)",
-      "Cis-platin",
-      "(SP-4-2)-DIAMMINEDICHLOROPLATINUM",
-      "NSC119875",
-      "CIS-DIAMMINEDICHLOROPLATINUM",
-      "NSC-119875",
-      "Cisplatinum",
-      "CIS-DIAMMINEDICHLOROPLATINUM II",
-      "INT-230-6 COMPONENT CISPLATIN",
-      "CIS-DDP",
-      "Peyrone's salt",
-      "Cis-platinum ii",
-      "CISplatin",
-      "Fauldiscipla",
-      "CISPLATIN",
-      "Cisplatin",
-      "Mitometh"
-    ],
     "extensions": [
+      {
+        "name": "aliases",
+        "value": [
+          "Liplacis",
+          "cis-diamminedichloroplatinum III",
+          "APRD00359",
+          "(sp-4-2)-diamminedichloroplatinum",
+          "cis-Diaminedichloroplatinum",
+          "CDDP",
+          "1,2-Diaminocyclohexaneplatinum II citrate",
+          "Platinol",
+          "Platinol-AQ",
+          "DDP",
+          "cis-platinum",
+          "cisplatino",
+          "PLATINUM, DIAMMINEDICHLORO-, (SP-4-2)-",
+          "Cis-diamminedichloroplatinum ii",
+          "INT230-6 COMPONENT CISPLATIN",
+          "Cis-diamminedichloroplatinum",
+          "DACP",
+          "Cis-DDP",
+          "cisplatinum",
+          "NSC 119875",
+          "cis-diamminedichloroplatinum(II)",
+          "Cis-platin",
+          "(SP-4-2)-DIAMMINEDICHLOROPLATINUM",
+          "NSC119875",
+          "CIS-DIAMMINEDICHLOROPLATINUM",
+          "NSC-119875",
+          "Cisplatinum",
+          "CIS-DIAMMINEDICHLOROPLATINUM II",
+          "INT-230-6 COMPONENT CISPLATIN",
+          "CIS-DDP",
+          "Peyrone's salt",
+          "Cis-platinum ii",
+          "CISplatin",
+          "Fauldiscipla",
+          "CISPLATIN",
+          "Cisplatin",
+          "Mitometh"
+        ]
+      },
       {
         "name": "regulatory_approval",
         "value": {
@@ -54,7 +57,9 @@
             "gtopdb_approved",
             "hemonc_approved"
           ],
-          "approval_year": ["1978"],
+          "approval_year": [
+            "1978"
+          ],
           "has_indication": [
             {
               "id": "hemonc:671",
@@ -74,7 +79,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "hemonc:645",
@@ -94,7 +99,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "hemonc:569",
@@ -114,7 +119,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D013945",
@@ -134,7 +139,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D064129",
@@ -154,7 +159,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D001661",
@@ -174,7 +179,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009369",
@@ -194,7 +199,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "EFO:0003868",
@@ -214,7 +219,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D002294",
@@ -234,7 +239,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018281",
@@ -254,7 +259,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D004806",
@@ -274,7 +279,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D004938",
@@ -294,7 +299,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D055752",
@@ -314,7 +319,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D007680",
@@ -334,7 +339,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D002276",
@@ -354,7 +359,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018242",
@@ -374,7 +379,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D005185",
@@ -394,7 +399,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009190",
@@ -414,7 +419,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D016403",
@@ -434,7 +439,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D007674",
@@ -454,7 +459,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D013274",
@@ -474,7 +479,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D014565",
@@ -485,7 +490,7 @@
                   "value": "chembl_phase_3"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D014523",
@@ -505,7 +510,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D016411",
@@ -525,7 +530,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009373",
@@ -545,7 +550,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D001005",
@@ -565,7 +570,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D013953",
@@ -585,7 +590,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008107",
@@ -605,7 +610,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D014846",
@@ -625,7 +630,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D031901",
@@ -645,7 +650,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D005706",
@@ -665,7 +670,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D016545",
@@ -685,7 +690,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D007012",
@@ -705,7 +710,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D002292",
@@ -725,7 +730,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D004066",
@@ -745,7 +750,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008113",
@@ -765,7 +770,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "EFO:1000043",
@@ -785,7 +790,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D004067",
@@ -805,7 +810,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D015179",
@@ -825,7 +830,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D010190",
@@ -845,7 +850,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D006258",
@@ -865,7 +870,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D012208",
@@ -885,7 +890,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D016483",
@@ -905,7 +910,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D001932",
@@ -925,7 +930,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D021441",
@@ -945,7 +950,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D002822",
@@ -965,7 +970,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D020250",
@@ -976,7 +981,7 @@
                   "value": "chembl_phase_3"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D058922",
@@ -996,7 +1001,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D015266",
@@ -1016,7 +1021,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D013736",
@@ -1036,7 +1041,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D000077192",
@@ -1056,7 +1061,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D014594",
@@ -1076,7 +1081,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D005833",
@@ -1096,7 +1101,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D052016",
@@ -1116,7 +1121,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "EFO:0005570",
@@ -1136,7 +1141,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009101",
@@ -1156,7 +1161,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D002280",
@@ -1176,7 +1181,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009959",
@@ -1196,7 +1201,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009447",
@@ -1216,7 +1221,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D007938",
@@ -1236,7 +1241,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D010610",
@@ -1256,7 +1261,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008545",
@@ -1276,7 +1281,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D000306",
@@ -1296,7 +1301,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D006689",
@@ -1316,7 +1321,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D002583",
@@ -1336,7 +1341,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D002289",
@@ -1356,7 +1361,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009325",
@@ -1367,7 +1372,7 @@
                   "value": "chembl_phase_2"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018288",
@@ -1387,7 +1392,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D000230",
@@ -1407,7 +1412,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018287",
@@ -1427,7 +1432,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018240",
@@ -1447,7 +1452,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D001943",
@@ -1467,7 +1472,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D010996",
@@ -1478,7 +1483,7 @@
                   "value": "chembl_phase_3"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D016543",
@@ -1498,7 +1503,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D012468",
@@ -1518,7 +1523,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D006528",
@@ -1538,7 +1543,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008479",
@@ -1558,7 +1563,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D013724",
@@ -1578,7 +1583,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D010534",
@@ -1598,7 +1603,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D010255",
@@ -1618,7 +1623,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018285",
@@ -1638,7 +1643,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018239",
@@ -1658,7 +1663,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D010051",
@@ -1678,7 +1683,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008224",
@@ -1698,7 +1703,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D000077195",
@@ -1718,7 +1723,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008654",
@@ -1738,7 +1743,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018197",
@@ -1758,7 +1763,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018236",
@@ -1778,7 +1783,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D017728",
@@ -1798,7 +1803,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D000740",
@@ -1818,7 +1823,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D002277",
@@ -1838,7 +1843,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D010412",
@@ -1858,7 +1863,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D012878",
@@ -1878,7 +1883,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D012175",
@@ -1898,7 +1903,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D012509",
@@ -1918,7 +1923,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018273",
@@ -1938,7 +1943,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008223",
@@ -1958,7 +1963,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008228",
@@ -1978,7 +1983,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008175",
@@ -1998,7 +2003,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D001749",
@@ -2018,7 +2023,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D015459",
@@ -2038,7 +2043,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008527",
@@ -2058,7 +2063,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D016889",
@@ -2078,7 +2083,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D013280",
@@ -2098,7 +2103,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D020522",
@@ -2118,7 +2123,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D014987",
@@ -2129,7 +2134,7 @@
                   "value": "chembl_phase_1"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D012516",
@@ -2149,7 +2154,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018312",
@@ -2169,7 +2174,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009303",
@@ -2189,7 +2194,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D005910",
@@ -2209,7 +2214,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018305",
@@ -2229,7 +2234,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009362",
@@ -2240,7 +2245,7 @@
                   "value": "chembl_phase_2"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D006103",
@@ -2260,7 +2265,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D007822",
@@ -2280,7 +2285,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D055728",
@@ -2300,7 +2305,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D007119",
@@ -2320,7 +2325,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018278",
@@ -2340,7 +2345,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008288",
@@ -2360,7 +2365,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018269",
@@ -2380,7 +2385,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D014062",
@@ -2400,7 +2405,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D013964",
@@ -2420,7 +2425,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D046152",
@@ -2440,7 +2445,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D064726",
@@ -2460,7 +2465,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             }
           ]
         }
@@ -2909,7 +2914,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009503",
@@ -2929,7 +2934,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D003866",
@@ -2949,7 +2954,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008223",
@@ -2969,7 +2974,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D012559",
@@ -2989,7 +2994,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D004827",
@@ -3009,7 +3014,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D013226",
@@ -3029,7 +3034,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009357",
@@ -3049,7 +3054,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D012640",
@@ -3069,7 +3074,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D001007",
@@ -3089,7 +3094,7 @@
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             }
           ]
         }
@@ -3103,6 +3108,48 @@
           "Eskabarb",
           "Solfoton",
           "Phenobarbitone"
+        ]
+      },
+      {
+        "name": "aliases",
+        "value": [
+          "PHENOBARBITAL",
+          "Phenemal",
+          "5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+          "phenobarbitone",
+          "Phenobarbitone",
+          "Phenobarbital civ",
+          "Phenylethylbarbituric Acid",
+          "phenobarb",
+          "PHENYLETHYLMALONYLUREA",
+          "Phenylethylbarbitursaeure",
+          "Phenylethylbarbitursäure",
+          "Phenobarbituric Acid",
+          "5-Ethyl-5-phenylbarbituric acid",
+          "PHENO",
+          "NSC-128143-",
+          "phenobarbital sodium",
+          "Phenylethylbarbiturate",
+          "Fenobarbital",
+          "phenobarbital",
+          "Phenobarbital",
+          "5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione",
+          "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
+          "Luminal®",
+          "Phenylaethylbarbitursaeure",
+          "NSC-9848",
+          "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+          "5-Phenyl-5-ethylbarbituric acid",
+          "fenobarbital",
+          "NSC-128143",
+          "Luminal",
+          "Phenylethylmalonylurea",
+          "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
+          "Phenobarbitol",
+          "PHENobarbital",
+          "APRD00184",
+          "phenylethylbarbiturate",
+          "Phenyläthylbarbitursäure"
         ]
       }
     ],
@@ -3241,46 +3288,7 @@
         "relation": "relatedMatch"
       }
     ],
-    "type": "TherapeuticAgent",
-    "alternativeLabels": [
-      "PHENOBARBITAL",
-      "Phenemal",
-      "5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
-      "phenobarbitone",
-      "Phenobarbitone",
-      "Phenobarbital civ",
-      "Phenylethylbarbituric Acid",
-      "phenobarb",
-      "PHENYLETHYLMALONYLUREA",
-      "Phenylethylbarbitursaeure",
-      "Phenylethylbarbitursäure",
-      "Phenobarbituric Acid",
-      "5-Ethyl-5-phenylbarbituric acid",
-      "PHENO",
-      "NSC-128143-",
-      "phenobarbital sodium",
-      "Phenylethylbarbiturate",
-      "Fenobarbital",
-      "phenobarbital",
-      "Phenobarbital",
-      "5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione",
-      "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
-      "Luminal®",
-      "Phenylaethylbarbitursaeure",
-      "NSC-9848",
-      "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
-      "5-Phenyl-5-ethylbarbituric acid",
-      "fenobarbital",
-      "NSC-128143",
-      "Luminal",
-      "Phenylethylmalonylurea",
-      "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
-      "Phenobarbitol",
-      "PHENobarbital",
-      "APRD00184",
-      "phenylethylbarbiturate",
-      "Phenyläthylbarbitursäure"
-    ]
+    "conceptType": "Therapy"
   },
   "normalize_spiramycin": {
     "id": "normalize.therapy.rxcui:9991",
@@ -3357,45 +3365,55 @@
         "relation": "relatedMatch"
       }
     ],
-    "type": "TherapeuticAgent",
-    "alternativeLabels": [
-      "Rovamycin",
-      "Spiramycin 1",
-      "Foromacidin A",
-      "SPIRAMYCIN",
-      "Spiramycin",
-      "Demycarosylturimycin H",
-      "Antibiotic 799",
-      "Rovamycine",
-      "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside",
-      "RP 5337",
-      "Provamycin",
-      "Spiramycin A",
-      "Spiramycin I",
-      "spiramycin I",
-      "Foromacidine A"
+    "conceptType": "Therapy",
+    "extensions": [
+      {
+        "name": "aliases",
+        "value": [
+          "Rovamycin",
+          "Spiramycin 1",
+          "Foromacidin A",
+          "SPIRAMYCIN",
+          "Spiramycin",
+          "Demycarosylturimycin H",
+          "Antibiotic 799",
+          "Rovamycine",
+          "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside",
+          "RP 5337",
+          "Provamycin",
+          "Spiramycin A",
+          "Spiramycin I",
+          "spiramycin I",
+          "Foromacidine A"
+        ]
+      }
     ]
   },
   "normalize_therapeutic_procedure": {
-    "type": "TherapeuticAgent",
+    "conceptType": "Therapy",
     "label": "Therapeutic Procedure",
     "description": null,
     "id": "normalize.therapy.ncit:C49236",
-    "alternativeLabels": [
-      "Therapeutic Interventions",
-      "any therapy",
-      "therapy",
-      "TX",
-      "TREAT",
-      "Therapeutic Method",
-      "Therapeutic",
-      "Treatment",
-      "Therapeutic Technique",
-      "Therapy",
-      "treatment_or_therapy",
-      "treatment or therapy",
-      "any_therapy",
-      "treatment"
+    "extensions": [
+      {
+        "name": "aliases",
+        "value": [
+          "Therapeutic Interventions",
+          "any therapy",
+          "therapy",
+          "TX",
+          "TREAT",
+          "Therapeutic Method",
+          "Therapeutic",
+          "Treatment",
+          "Therapeutic Technique",
+          "Therapy",
+          "treatment_or_therapy",
+          "treatment or therapy",
+          "any_therapy",
+          "treatment"
+        ]
+      }
     ],
     "mappings": [
       {
@@ -3433,7 +3451,9 @@
             ],
             "trade_names": [],
             "xrefs": [],
-            "associated_with": ["umls:C0087111"],
+            "associated_with": [
+              "umls:C0087111"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -3471,8 +3491,12 @@
               "Spiramycin I"
             ],
             "trade_names": [],
-            "xrefs": ["drugbank:DB06145"],
-            "associated_with": ["atc:J01FA02"],
+            "xrefs": [
+              "drugbank:DB06145"
+            ],
+            "associated_with": [
+              "atc:J01FA02"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -3506,8 +3530,13 @@
               "RP 5337"
             ],
             "trade_names": [],
-            "xrefs": ["chemidplus:8025-81-8"],
-            "associated_with": ["umls:C0037962", "unii:71ODY0V87H"],
+            "xrefs": [
+              "chemidplus:8025-81-8"
+            ],
+            "associated_with": [
+              "umls:C0037962",
+              "unii:71ODY0V87H"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -3540,7 +3569,9 @@
               "Demycarosylturimycin H"
             ],
             "trade_names": [],
-            "xrefs": ["chemidplus:24916-50-5"],
+            "xrefs": [
+              "chemidplus:24916-50-5"
+            ],
             "associated_with": [
               "inchikey:ACTOXUHEUCPTEW-CEUOBAOPSA-N",
               "unii:033ECH6IFG"
@@ -3571,7 +3602,9 @@
             "aliases": [],
             "trade_names": [],
             "xrefs": [],
-            "associated_with": ["unii:71ODY0V87H"],
+            "associated_with": [
+              "unii:71ODY0V87H"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -3595,14 +3628,18 @@
           {
             "concept_id": "wikidata:Q422265",
             "label": "spiramycin",
-            "aliases": ["spiramycin I"],
+            "aliases": [
+              "spiramycin I"
+            ],
             "trade_names": [],
             "xrefs": [
               "chemidplus:8025-81-8",
               "rxcui:9991",
               "chembl:CHEMBL1256397"
             ],
-            "associated_with": ["pubchem.compound:5356392"],
+            "associated_with": [
+              "pubchem.compound:5356392"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -3642,8 +3679,14 @@
               "Cis-DDP",
               "PLATINUM, DIAMMINEDICHLORO-, (SP-4-2)-"
             ],
-            "trade_names": ["Platinol", "Cisplatin"],
-            "xrefs": ["drugbank:DB12117", "drugbank:DB00515"],
+            "trade_names": [
+              "Platinol",
+              "Cisplatin"
+            ],
+            "xrefs": [
+              "drugbank:DB12117",
+              "drugbank:DB00515"
+            ],
             "associated_with": [
               "atc:L01XA01",
               "unii:Q20Q21Q62J",
@@ -3653,7 +3696,9 @@
               "vandf:4018139",
               "mmsl:d00195"
             ],
-            "approval_ratings": ["rxnorm_prescribable"],
+            "approval_ratings": [
+              "rxnorm_prescribable"
+            ],
             "approval_year": [],
             "has_indication": []
           }
@@ -3678,7 +3723,9 @@
             "label": "Cisplatin",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["chemidplus:15663-27-1"],
+            "xrefs": [
+              "chemidplus:15663-27-1"
+            ],
             "associated_with": [
               "CHEBI:27899",
               "unii:Q20Q21Q62J",
@@ -3719,10 +3766,16 @@
               "NSC119875"
             ],
             "trade_names": [],
-            "xrefs": ["rxcui:2555"],
+            "xrefs": [
+              "rxcui:2555"
+            ],
             "associated_with": [],
-            "approval_ratings": ["hemonc_approved"],
-            "approval_year": ["1978"],
+            "approval_ratings": [
+              "hemonc_approved"
+            ],
+            "approval_year": [
+              "1978"
+            ],
             "has_indication": [
               {
                 "disease_id": "hemonc:671",
@@ -3744,7 +3797,9 @@
                 "disease_id": "hemonc:645",
                 "disease_label": "Ovarian cancer",
                 "normalized_disease_id": "ncit:C7431",
-                "supplemental_info": { "regulatory_body": "FDA" }
+                "supplemental_info": {
+                  "regulatory_body": "FDA"
+                }
               }
             ]
           }
@@ -3775,7 +3830,9 @@
               "APRD00359"
             ],
             "trade_names": [],
-            "xrefs": ["chemidplus:15663-27-1"],
+            "xrefs": [
+              "chemidplus:15663-27-1"
+            ],
             "associated_with": [
               "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
               "unii:Q20Q21Q62J"
@@ -3787,9 +3844,13 @@
           {
             "concept_id": "drugbank:DB12117",
             "label": "Mitometh",
-            "aliases": ["DDP"],
+            "aliases": [
+              "DDP"
+            ],
             "trade_names": [],
-            "xrefs": ["chemidplus:107465-03-2"],
+            "xrefs": [
+              "chemidplus:107465-03-2"
+            ],
             "associated_with": [
               "unii:H8MTN7XVC2",
               "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N"
@@ -3819,14 +3880,18 @@
             "label": "CISPLATIN",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["rxcui:309311"],
+            "xrefs": [
+              "rxcui:309311"
+            ],
             "associated_with": [
               "spl:adf5773e-9095-4cb4-a90f-72cbf82f4493",
               "ndc:0703-5748",
               "unii:Q20Q21Q62J",
               "ndc:0703-5747"
             ],
-            "approval_ratings": ["fda_prescription"],
+            "approval_ratings": [
+              "fda_prescription"
+            ],
             "approval_year": [],
             "has_indication": []
           },
@@ -3835,13 +3900,17 @@
             "label": "CISPLATIN",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["rxcui:309311"],
+            "xrefs": [
+              "rxcui:309311"
+            ],
             "associated_with": [
               "ndc:63323-103",
               "unii:Q20Q21Q62J",
               "spl:9b008181-ab66-db2f-e053-2995a90aad57"
             ],
-            "approval_ratings": ["fda_prescription"],
+            "approval_ratings": [
+              "fda_prescription"
+            ],
             "approval_year": [],
             "has_indication": []
           },
@@ -3850,14 +3919,18 @@
             "label": "CISPLATIN",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["rxcui:309311"],
+            "xrefs": [
+              "rxcui:309311"
+            ],
             "associated_with": [
               "ndc:0143-9505",
               "unii:Q20Q21Q62J",
               "ndc:0143-9504",
               "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c"
             ],
-            "approval_ratings": ["fda_prescription"],
+            "approval_ratings": [
+              "fda_prescription"
+            ],
             "approval_year": [],
             "has_indication": []
           },
@@ -3866,7 +3939,9 @@
             "label": "CISPLATIN",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["rxcui:309311"],
+            "xrefs": [
+              "rxcui:309311"
+            ],
             "associated_with": [
               "ndc:16729-288",
               "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2",
@@ -3874,7 +3949,9 @@
               "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
               "ndc:68001-283"
             ],
-            "approval_ratings": ["fda_prescription"],
+            "approval_ratings": [
+              "fda_prescription"
+            ],
             "approval_year": [],
             "has_indication": []
           },
@@ -3883,7 +3960,9 @@
             "label": "CISPLATIN",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["rxcui:309311"],
+            "xrefs": [
+              "rxcui:309311"
+            ],
             "associated_with": [
               "ndc:72266-252",
               "spl:0219ee77-eb38-b81f-e063-6394a90a5ca4",
@@ -3897,7 +3976,9 @@
               "ndc:70860-206",
               "ndc:68083-163"
             ],
-            "approval_ratings": ["fda_prescription"],
+            "approval_ratings": [
+              "fda_prescription"
+            ],
             "approval_year": [],
             "has_indication": []
           },
@@ -3905,8 +3986,14 @@
             "concept_id": "drugsatfda.nda:018057",
             "label": "CISPLATIN",
             "aliases": [],
-            "trade_names": ["PLATINOL-AQ", "PLATINOL"],
-            "xrefs": ["rxcui:309311", "rxcui:1736854"],
+            "trade_names": [
+              "PLATINOL-AQ",
+              "PLATINOL"
+            ],
+            "xrefs": [
+              "rxcui:309311",
+              "rxcui:1736854"
+            ],
             "associated_with": [
               "unii:Q20Q21Q62J",
               "ndc:44567-509",
@@ -3939,7 +4026,9 @@
           {
             "concept_id": "iuphar.ligand:5343",
             "label": "cisplatin",
-            "aliases": ["Platinol"],
+            "aliases": [
+              "Platinol"
+            ],
             "trade_names": [],
             "xrefs": [
               "chemidplus:15663-27-1",
@@ -3951,7 +4040,9 @@
               "pubchem.substance:178102005",
               "CHEBI:27899"
             ],
-            "approval_ratings": ["gtopdb_approved"],
+            "approval_ratings": [
+              "gtopdb_approved"
+            ],
             "approval_year": [],
             "has_indication": []
           }
@@ -3999,7 +4090,9 @@
             ],
             "xrefs": [],
             "associated_with": [],
-            "approval_ratings": ["chembl_phase_4"],
+            "approval_ratings": [
+              "chembl_phase_4"
+            ],
             "approval_year": [],
             "has_indication": [
               {
@@ -4988,8 +5081,12 @@
               "1,2-Diaminocyclohexaneplatinum II citrate"
             ],
             "trade_names": [],
-            "xrefs": ["drugbank:DB00515"],
-            "associated_with": ["unii:Q20Q21Q62J"],
+            "xrefs": [
+              "drugbank:DB00515"
+            ],
+            "associated_with": [
+              "unii:Q20Q21Q62J"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -5029,7 +5126,9 @@
               "iuphar.ligand:5343",
               "drugbank:DB00515"
             ],
-            "associated_with": ["pubchem.compound:5702198"],
+            "associated_with": [
+              "pubchem.compound:5702198"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []

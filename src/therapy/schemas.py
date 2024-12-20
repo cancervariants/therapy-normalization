@@ -4,7 +4,7 @@ from datetime import datetime
 from enum import Enum, IntEnum
 from typing import Any, Literal
 
-from ga4gh.core import domain_models
+from ga4gh.core.models import MappableConcept
 from pydantic import BaseModel, ConfigDict, StrictBool, constr
 
 from therapy import __version__
@@ -485,7 +485,7 @@ class NormalizationService(BaseNormalizationService):
     """Response containing one or more merged records and source data."""
 
     normalized_id: str | None = None
-    therapeutic_agent: domain_models.TherapeuticAgent | None = None
+    therapy: MappableConcept | None = None
     source_meta_: dict[SourceName, SourceMeta] | None = None
 
     model_config = ConfigDict(
@@ -495,8 +495,8 @@ class NormalizationService(BaseNormalizationService):
                 "warnings": None,
                 "match_type": 80,
                 "normalized_id": "rxcui:2555",
-                "therapeutic_agent": {
-                    "type": "TherapeuticAgent",
+                "therapy": {
+                    "type": "Therapy",
                     "id": "normalize.therapy.rxcui:2555",
                     "label": "cisplatin",
                     "mappings": [
