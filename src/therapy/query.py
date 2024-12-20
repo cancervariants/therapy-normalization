@@ -7,7 +7,7 @@ from collections.abc import Callable
 from typing import Any, TypeVar
 
 from botocore.exceptions import ClientError
-from ga4gh.core import domain_models, entity_models
+from ga4gh.core.models import MappableConcept, ConceptMapping, Coding, code, Extension, Relation
 from uvicorn.config import logger
 
 from therapy import NAMESPACE_LUIS, PREFIX_LOOKUP, SOURCES
@@ -350,10 +350,10 @@ class QueryHandler:
         :return: completed response object.
         """
         sources_meta = {}
-        therapeutic_agent = response.therapeutic_agent
+        therapy = response.therapy
         sources = [response.normalized_id.split(":")[0]]  # type: ignore[union-attr]
-        if therapeutic_agent.mappings:  # type: ignore[union-attr]
-            sources += [m.coding.system for m in therapeutic_agent.mappings]  # type: ignore[union-attr]
+        if therapy.mappings:  # type: ignore[union-attr]
+            sources += [m.coding.system for m in therapy.mappings]  # type: ignore[union-attr]
 
         for src in sources:
             try:
@@ -377,42 +377,44 @@ class QueryHandler:
         source_rank = SourcePriority[src]
         return source_rank, record["concept_id"]
 
-    def _add_therapeutic_agent(
+    def _add_therapy(
         self,
         response: NormalizationService,
         record: dict,
         match_type: MatchType,
     ) -> NormalizationService:
-        """Format received DB record as therapeutic agent and update response object.
+        """Format received DB record as Mappable Concept and update response object.
         :param NormalizationService response: in-progress response object
         :param Dict record: record as stored in DB
         :param str query: query string from user request
         :param MatchType match_type: type of match achieved
         :return: completed response object ready to return to user
         """
-        therapeutic_agent_obj = domain_models.TherapeuticAgent(
-            id=f"normalize.therapy.{record['concept_id']}", label=record.get("label")
+        therapy_obj = MappableConcept(
+            id=f"normalize.therapy.{record['concept_id']}",
+            conceptType="Therapy",
+            label=record.get("label")
         )
 
         source_ids = record.get("xrefs", []) + record.get("associated_with", [])
         mappings = []
         for source_id in source_ids:
-            system, code = source_id.split(":")
+            system, source_code = source_id.split(":")
             mappings.append(
-                entity_models.ConceptMapping(
-                    coding=entity_models.Coding(
-                        code=entity_models.Code(code), system=system.lower()
+                ConceptMapping(
+                    coding=Coding(
+                        code=code(source_code), system=system.lower()
                     ),
-                    relation=entity_models.Relation.RELATED_MATCH,
+                    relation=Relation.RELATED_MATCH,
                 )
             )
         if mappings:
-            therapeutic_agent_obj.mappings = mappings
-
-        if "aliases" in record:
-            therapeutic_agent_obj.alternativeLabels = record["aliases"]
+            therapy_obj.mappings = mappings
 
         extensions = []
+        if "aliases" in record:
+            extensions.append(Extension(name="aliases", value=record["aliases"]))
+
         if any(
             filter(
                 lambda f: f in record,
@@ -435,33 +437,34 @@ class QueryHandler:
                 indication = self._get_indication(ind_db)
 
                 if indication.normalized_disease_id:
-                    system, code = indication.normalized_disease_id.split(":")
+                    system, source_code = indication.normalized_disease_id.split(":")
                     mappings = [
-                        entity_models.ConceptMapping(
-                            coding=entity_models.Coding(
-                                code=entity_models.Code(code), system=system.lower()
+                        ConceptMapping(
+                            coding=Coding(
+                                code=code(source_code), system=system.lower()
                             ),
-                            relation=entity_models.Relation.RELATED_MATCH,
+                            relation=Relation.RELATED_MATCH,
                         )
                     ]
                 else:
                     mappings = []
-                ind_disease_obj = domain_models.Disease(
+                ind_disease_obj = MappableConcept(
                     id=indication.disease_id,
+                    conceptType="Disease",
                     label=indication.disease_label,
                     mappings=mappings or None,
                 )
 
                 if indication.supplemental_info:
                     ind_disease_obj.extensions = [
-                        entity_models.Extension(name=k, value=v)
+                        Extension(name=k, value=v)
                         for k, v in indication.supplemental_info.items()
                     ]
                 inds_list.append(ind_disease_obj.model_dump(exclude_none=True))
             if inds_list:
                 approv_value["has_indication"] = inds_list
 
-            approv = entity_models.Extension(
+            approv = Extension(
                 name="regulatory_approval", value=approv_value
             )
             extensions.append(approv)
@@ -469,15 +472,15 @@ class QueryHandler:
         trade_names = record.get("trade_names")
         if trade_names:
             extensions.append(
-                entity_models.Extension(name="trade_names", value=trade_names)
+                Extension(name="trade_names", value=trade_names)
             )
 
         if extensions:
-            therapeutic_agent_obj.extensions = extensions
+            therapy_obj.extensions = extensions
 
         response.match_type = match_type
         response.normalized_id = record["concept_id"]
-        response.therapeutic_agent = therapeutic_agent_obj
+        response.therapy = therapy_obj
         return self._add_merged_meta(response)
 
     def _resolve_merge(
@@ -537,7 +540,7 @@ class QueryHandler:
         response = NormalizationService(**self._prepare_normalized_response(query))
 
         return self._perform_normalized_lookup(
-            response, query, infer, self._add_therapeutic_agent
+            response, query, infer, self._add_therapy
         )
 
     def _construct_drug_match(self, record: dict) -> Therapy:
