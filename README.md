@@ -14,7 +14,7 @@
 
 ## Installation
 
-Install from [PyPI](https://pypi.org/projects/thera-py):
+Install from [PyPI](https://pypi.org/project/thera-py):
 
 ```shell
 python3 -m pip install thera-py
