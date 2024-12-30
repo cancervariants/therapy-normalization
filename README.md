@@ -158,7 +158,7 @@ source venv/bin/activate
 Install development dependencies and `pre-commit`:
 
 ```shell
-python3 -m pip install -e '.[dev,test]'
+python3 -m pip install -e '.[dev,tests]'
 pre-commit install
 ```
 
