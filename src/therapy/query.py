@@ -7,12 +7,21 @@ from collections.abc import Callable
 from typing import Any, TypeVar
 
 from botocore.exceptions import ClientError
-from ga4gh.core.models import MappableConcept, ConceptMapping, Coding, code, Extension, Relation
+from ga4gh.core.models import (
+    Coding,
+    ConceptMapping,
+    Extension,
+    MappableConcept,
+    Relation,
+    code,
+)
 from uvicorn.config import logger
 
 from therapy import NAMESPACE_LUIS, PREFIX_LOOKUP, SOURCES
 from therapy.database import AbstractDatabase
 from therapy.schemas import (
+    NAMESPACE_TO_SYSTEM_URI,
+    SYSTEM_URI_TO_NAMESPACE,
     BaseNormalizationService,
     HasIndication,
     MatchesNormalized,
@@ -351,19 +360,16 @@ class QueryHandler:
         """
         sources_meta = {}
         therapy = response.therapy
-        sources = [response.normalized_id.split(":")[0]]  # type: ignore[union-attr]
-        if therapy.mappings:  # type: ignore[union-attr]
-            sources += [m.coding.system for m in therapy.mappings]  # type: ignore[union-attr]
+
+        sources = []
+        for m in therapy.mappings or []:
+            ns = SYSTEM_URI_TO_NAMESPACE.get(m.coding.system)
+            if ns in PREFIX_LOOKUP:
+                sources.append(PREFIX_LOOKUP[ns])
 
         for src in sources:
-            try:
-                src_name = SourceName(PREFIX_LOOKUP[src])
-            except KeyError:
-                # not an imported source
-                continue
-            else:
-                if src_name not in sources_meta:
-                    sources_meta[src_name] = self.db.get_source_metadata(src_name)
+            if src not in sources_meta:
+                sources_meta[src] = self.db.get_source_metadata(src)
         response.source_meta_ = sources_meta  # type: ignore[assignment]
         return response
 
@@ -390,24 +396,49 @@ class QueryHandler:
         :param MatchType match_type: type of match achieved
         :return: completed response object ready to return to user
         """
+
+        def _create_concept_mapping(
+            concept_id: str, relation: Relation = Relation.RELATED_MATCH
+        ) -> ConceptMapping:
+            """Create concept mapping for identifier
+
+            ``system`` will use OBO Foundry persistent URL (PURL), source homepage, or
+            namespace prefix, in that order of preference, if available.
+
+            :param concept_id: Concept identifier represented as a curie
+            :param relation: SKOS mapping relationship, default is relatedMatch
+            :return: Concept mapping for identifier
+            """
+            source, source_id = concept_id.split(":")
+
+            try:
+                source = NamespacePrefix(source)
+            except ValueError:
+                try:
+                    source = NamespacePrefix(source.upper())
+                except ValueError as e:
+                    err_msg = f"Namespace prefix not supported: {source}"
+                    raise ValueError(err_msg) from e
+
+            system = NAMESPACE_TO_SYSTEM_URI.get(source, source)
+
+            return ConceptMapping(
+                coding=Coding(code=code(source_id), system=system), relation=relation
+            )
+
         therapy_obj = MappableConcept(
             id=f"normalize.therapy.{record['concept_id']}",
+            primaryCode=code(root=record["concept_id"]),
             conceptType="Therapy",
-            label=record.get("label")
+            label=record.get("label"),
         )
 
+        # mappings
+        mappings = [
+            _create_concept_mapping(record["concept_id"], relation=Relation.EXACT_MATCH)
+        ]
         source_ids = record.get("xrefs", []) + record.get("associated_with", [])
-        mappings = []
-        for source_id in source_ids:
-            system, source_code = source_id.split(":")
-            mappings.append(
-                ConceptMapping(
-                    coding=Coding(
-                        code=code(source_code), system=system.lower()
-                    ),
-                    relation=Relation.RELATED_MATCH,
-                )
-            )
+        mappings.extend(_create_concept_mapping(source_id) for source_id in source_ids)
         if mappings:
             therapy_obj.mappings = mappings
 
@@ -437,14 +468,8 @@ class QueryHandler:
                 indication = self._get_indication(ind_db)
 
                 if indication.normalized_disease_id:
-                    system, source_code = indication.normalized_disease_id.split(":")
                     mappings = [
-                        ConceptMapping(
-                            coding=Coding(
-                                code=code(source_code), system=system.lower()
-                            ),
-                            relation=Relation.RELATED_MATCH,
-                        )
+                        _create_concept_mapping(indication.normalized_disease_id)
                     ]
                 else:
                     mappings = []
@@ -464,16 +489,12 @@ class QueryHandler:
             if inds_list:
                 approv_value["has_indication"] = inds_list
 
-            approv = Extension(
-                name="regulatory_approval", value=approv_value
-            )
+            approv = Extension(name="regulatory_approval", value=approv_value)
             extensions.append(approv)
 
         trade_names = record.get("trade_names")
         if trade_names:
-            extensions.append(
-                Extension(name="trade_names", value=trade_names)
-            )
+            extensions.append(Extension(name="trade_names", value=trade_names))
 
         if extensions:
             therapy_obj.extensions = extensions

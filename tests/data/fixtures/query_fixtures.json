@@ -4,6 +4,7 @@
     "label": "cisplatin",
     "description": null,
     "id": "normalize.therapy.rxcui:2555",
+    "primaryCode": "rxcui:2555",
     "extensions": [
       {
         "name": "aliases",
@@ -73,7 +74,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C7251"
                   },
                   "relation": "relatedMatch"
@@ -93,7 +94,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C7431"
                   },
                   "relation": "relatedMatch"
@@ -113,7 +114,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C9334"
                   },
                   "relation": "relatedMatch"
@@ -133,7 +134,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3411"
                   },
                   "relation": "relatedMatch"
@@ -193,7 +194,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3262"
                   },
                   "relation": "relatedMatch"
@@ -213,7 +214,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C7606"
                   },
                   "relation": "relatedMatch"
@@ -233,7 +234,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C2929"
                   },
                   "relation": "relatedMatch"
@@ -253,7 +254,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C4436"
                   },
                   "relation": "relatedMatch"
@@ -273,7 +274,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3017"
                   },
                   "relation": "relatedMatch"
@@ -293,7 +294,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C7478"
                   },
                   "relation": "relatedMatch"
@@ -313,7 +314,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C4917"
                   },
                   "relation": "relatedMatch"
@@ -333,7 +334,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C7548"
                   },
                   "relation": "relatedMatch"
@@ -353,7 +354,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C2915"
                   },
                   "relation": "relatedMatch"
@@ -373,7 +374,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3222"
                   },
                   "relation": "relatedMatch"
@@ -393,7 +394,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3032"
                   },
                   "relation": "relatedMatch"
@@ -413,7 +414,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3247"
                   },
                   "relation": "relatedMatch"
@@ -433,7 +434,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C8851"
                   },
                   "relation": "relatedMatch"
@@ -453,7 +454,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3149"
                   },
                   "relation": "relatedMatch"
@@ -473,7 +474,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3387"
                   },
                   "relation": "relatedMatch"
@@ -504,7 +505,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3619"
                   },
                   "relation": "relatedMatch"
@@ -524,7 +525,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3468"
                   },
                   "relation": "relatedMatch"
@@ -544,7 +545,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3708"
                   },
                   "relation": "relatedMatch"
@@ -564,7 +565,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C2877"
                   },
                   "relation": "relatedMatch"
@@ -584,7 +585,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C4962"
                   },
                   "relation": "relatedMatch"
@@ -604,7 +605,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3196"
                   },
                   "relation": "relatedMatch"
@@ -624,7 +625,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C7502"
                   },
                   "relation": "relatedMatch"
@@ -644,7 +645,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C4699"
                   },
                   "relation": "relatedMatch"
@@ -664,7 +665,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3048"
                   },
                   "relation": "relatedMatch"
@@ -684,7 +685,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C4533"
                   },
                   "relation": "relatedMatch"
@@ -704,7 +705,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C7190"
                   },
                   "relation": "relatedMatch"
@@ -744,7 +745,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3959"
                   },
                   "relation": "relatedMatch"
@@ -764,7 +765,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C34803"
                   },
                   "relation": "relatedMatch"
@@ -784,7 +785,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C7978"
                   },
                   "relation": "relatedMatch"
@@ -804,7 +805,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C4890"
                   },
                   "relation": "relatedMatch"
@@ -824,7 +825,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C2956"
                   },
                   "relation": "relatedMatch"
@@ -844,7 +845,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3305"
                   },
                   "relation": "relatedMatch"
@@ -864,7 +865,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C4013"
                   },
                   "relation": "relatedMatch"
@@ -884,7 +885,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3359"
                   },
                   "relation": "relatedMatch"
@@ -904,7 +905,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3471"
                   },
                   "relation": "relatedMatch"
@@ -924,7 +925,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3568"
                   },
                   "relation": "relatedMatch"
@@ -944,7 +945,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C9120"
                   },
                   "relation": "relatedMatch"
@@ -964,7 +965,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C2948"
                   },
                   "relation": "relatedMatch"
@@ -995,7 +996,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C4001"
                   },
                   "relation": "relatedMatch"
@@ -1015,7 +1016,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C9231"
                   },
                   "relation": "relatedMatch"
@@ -1035,7 +1036,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C7251"
                   },
                   "relation": "relatedMatch"
@@ -1055,7 +1056,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3512"
                   },
                   "relation": "relatedMatch"
@@ -1075,7 +1076,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3552"
                   },
                   "relation": "relatedMatch"
@@ -1095,7 +1096,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3053"
                   },
                   "relation": "relatedMatch"
@@ -1115,7 +1116,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C115965"
                   },
                   "relation": "relatedMatch"
@@ -1135,7 +1136,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C9314"
                   },
                   "relation": "relatedMatch"
@@ -1155,7 +1156,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3242"
                   },
                   "relation": "relatedMatch"
@@ -1175,7 +1176,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C156767"
                   },
                   "relation": "relatedMatch"
@@ -1195,7 +1196,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C7398"
                   },
                   "relation": "relatedMatch"
@@ -1215,7 +1216,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3270"
                   },
                   "relation": "relatedMatch"
@@ -1235,7 +1236,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3161"
                   },
                   "relation": "relatedMatch"
@@ -1255,7 +1256,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C7545"
                   },
                   "relation": "relatedMatch"
@@ -1275,7 +1276,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3224"
                   },
                   "relation": "relatedMatch"
@@ -1295,7 +1296,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C2858"
                   },
                   "relation": "relatedMatch"
@@ -1315,7 +1316,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C9357"
                   },
                   "relation": "relatedMatch"
@@ -1335,7 +1336,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C9311"
                   },
                   "relation": "relatedMatch"
@@ -1355,7 +1356,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C2926"
                   },
                   "relation": "relatedMatch"
@@ -1386,7 +1387,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3915"
                   },
                   "relation": "relatedMatch"
@@ -1406,7 +1407,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C2852"
                   },
                   "relation": "relatedMatch"
@@ -1426,7 +1427,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3780"
                   },
                   "relation": "relatedMatch"
@@ -1446,7 +1447,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3011"
                   },
                   "relation": "relatedMatch"
@@ -1466,7 +1467,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C2910"
                   },
                   "relation": "relatedMatch"
@@ -1497,7 +1498,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C4627"
                   },
                   "relation": "relatedMatch"
@@ -1517,7 +1518,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3811"
                   },
                   "relation": "relatedMatch"
@@ -1537,7 +1538,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3099"
                   },
                   "relation": "relatedMatch"
@@ -1557,7 +1558,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3549"
                   },
                   "relation": "relatedMatch"
@@ -1577,7 +1578,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3403"
                   },
                   "relation": "relatedMatch"
@@ -1597,7 +1598,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3322"
                   },
                   "relation": "relatedMatch"
@@ -1617,7 +1618,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C6014"
                   },
                   "relation": "relatedMatch"
@@ -1637,7 +1638,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C36077"
                   },
                   "relation": "relatedMatch"
@@ -1657,7 +1658,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C9309"
                   },
                   "relation": "relatedMatch"
@@ -1677,7 +1678,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C7431"
                   },
                   "relation": "relatedMatch"
@@ -1697,7 +1698,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3209"
                   },
                   "relation": "relatedMatch"
@@ -1717,7 +1718,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C4044"
                   },
                   "relation": "relatedMatch"
@@ -1737,7 +1738,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3234"
                   },
                   "relation": "relatedMatch"
@@ -1757,7 +1758,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3728"
                   },
                   "relation": "relatedMatch"
@@ -1777,7 +1778,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3752"
                   },
                   "relation": "relatedMatch"
@@ -1797,7 +1798,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3720"
                   },
                   "relation": "relatedMatch"
@@ -1817,7 +1818,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C2869"
                   },
                   "relation": "relatedMatch"
@@ -1837,7 +1838,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C2916"
                   },
                   "relation": "relatedMatch"
@@ -1857,7 +1858,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3317"
                   },
                   "relation": "relatedMatch"
@@ -1877,7 +1878,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3372"
                   },
                   "relation": "relatedMatch"
@@ -1897,7 +1898,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C7541"
                   },
                   "relation": "relatedMatch"
@@ -1917,7 +1918,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C9118"
                   },
                   "relation": "relatedMatch"
@@ -1937,7 +1938,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3770"
                   },
                   "relation": "relatedMatch"
@@ -1957,7 +1958,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3208"
                   },
                   "relation": "relatedMatch"
@@ -1977,7 +1978,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3211"
                   },
                   "relation": "relatedMatch"
@@ -1997,7 +1998,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3200"
                   },
                   "relation": "relatedMatch"
@@ -2017,7 +2018,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C9334"
                   },
                   "relation": "relatedMatch"
@@ -2037,7 +2038,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3184"
                   },
                   "relation": "relatedMatch"
@@ -2057,7 +2058,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3222"
                   },
                   "relation": "relatedMatch"
@@ -2077,7 +2078,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3012"
                   },
                   "relation": "relatedMatch"
@@ -2097,7 +2098,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C26887"
                   },
                   "relation": "relatedMatch"
@@ -2117,7 +2118,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C4337"
                   },
                   "relation": "relatedMatch"
@@ -2148,7 +2149,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C9145"
                   },
                   "relation": "relatedMatch"
@@ -2168,7 +2169,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3794"
                   },
                   "relation": "relatedMatch"
@@ -2188,7 +2189,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3257"
                   },
                   "relation": "relatedMatch"
@@ -2208,7 +2209,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3059"
                   },
                   "relation": "relatedMatch"
@@ -2228,7 +2229,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3790"
                   },
                   "relation": "relatedMatch"
@@ -2259,7 +2260,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C8196"
                   },
                   "relation": "relatedMatch"
@@ -2279,7 +2280,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3156"
                   },
                   "relation": "relatedMatch"
@@ -2299,7 +2300,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C2862"
                   },
                   "relation": "relatedMatch"
@@ -2319,7 +2320,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C7528"
                   },
                   "relation": "relatedMatch"
@@ -2339,7 +2340,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3773"
                   },
                   "relation": "relatedMatch"
@@ -2359,7 +2360,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C34797"
                   },
                   "relation": "relatedMatch"
@@ -2379,7 +2380,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C7558"
                   },
                   "relation": "relatedMatch"
@@ -2399,7 +2400,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C9345"
                   },
                   "relation": "relatedMatch"
@@ -2419,7 +2420,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C7510"
                   },
                   "relation": "relatedMatch"
@@ -2439,7 +2440,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3868"
                   },
                   "relation": "relatedMatch"
@@ -2459,7 +2460,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C71732"
                   },
                   "relation": "relatedMatch"
@@ -2484,400 +2485,407 @@
     "mappings": [
       {
         "coding": {
-          "code": "C376",
-          "system": "ncit"
+          "code": "rxcui:2555",
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/index.html"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "code": "ncit:C376",
+          "system": "http://purl.obolibrary.org/obo/ncit.owl"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "105",
-          "system": "hemonc"
+          "code": "hemonc:105",
+          "system": "https://hemonc.org"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "DB00515",
-          "system": "drugbank"
+          "code": "drugbank:DB00515",
+          "system": "https://go.drugbank.com"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "DB12117",
-          "system": "drugbank"
+          "code": "drugbank:DB12117",
+          "system": "https://go.drugbank.com"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "074656",
-          "system": "drugsatfda.anda"
+          "code": "drugsatfda.anda:074656",
+          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "074735",
-          "system": "drugsatfda.anda"
+          "code": "drugsatfda.nda:074735",
+          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "075036",
-          "system": "drugsatfda.anda"
+          "code": "drugsatfda.anda:075036",
+          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "206774",
-          "system": "drugsatfda.anda"
+          "code": "drugsatfda.anda:206774",
+          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "207323",
-          "system": "drugsatfda.anda"
+          "code": "drugsatfda.anda:207323",
+          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "018057",
-          "system": "drugsatfda.nda"
+          "code": "drugsatfda.nda:018057",
+          "system": "https://www.fda.gov/drugs/types-applications/new-drug-application-nda"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "5343",
-          "system": "iuphar.ligand"
+          "code": "iuphar.ligand:5343",
+          "system": "https://www.guidetopharmacology.org/GRAC/LigandListForward"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "CHEMBL11359",
-          "system": "chembl"
+          "code": "chembl:CHEMBL11359",
+          "system": "https://www.ebi.ac.uk/chembl/"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "15663-27-1",
-          "system": "chemidplus"
+          "code": "chemidplus:15663-27-1",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/source/ChemIDplus"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "Q412415",
-          "system": "wikidata"
+          "code": "wikidata:Q412415",
+          "system": "https://www.wikidata.org"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "0703-5748",
-          "system": "ndc"
+          "code": "ndc:0703-5748",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "63323-103",
-          "system": "ndc"
+          "code": "ndc:63323-103",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "70860-206",
-          "system": "ndc"
+          "code": "ndc:70860-206",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "44567-509",
-          "system": "ndc"
+          "code": "ndc:44567-509",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "m17910",
-          "system": "usp"
+          "code": "usp:m17910",
+          "system": "https://www.usp.org/health-quality-safety/compendial-nomenclature"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "44567-530",
-          "system": "ndc"
+          "code": "ndc:44567-530",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "178102005",
-          "system": "pubchem.substance"
+          "code": "pubchem.substance:178102005",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/substances"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "9b008181-ab66-db2f-e053-2995a90aad57",
-          "system": "spl"
+          "code": "spl:9b008181-ab66-db2f-e053-2995a90aad57",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "16729-288",
-          "system": "ndc"
+          "code": "ndc:16729-288",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "a66eda32-1164-439a-ac8e-73138365ec06",
-          "system": "spl"
+          "code": "spl:a66eda32-1164-439a-ac8e-73138365ec06",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
-          "system": "spl"
+          "code": "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "27899",
-          "system": "chebi"
+          "code": "chebi:27899",
+          "system": "http://purl.obolibrary.org/obo/chebi.owl"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "44567-511",
-          "system": "ndc"
+          "code": "ndc:44567-511",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "0703-5747",
-          "system": "ndc"
+          "code": "ndc:0703-5747",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "68083-162",
-          "system": "ndc"
+          "code": "ndc:68083-162",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "L01XA01",
-          "system": "atc"
+          "code": "atc:L01XA01",
+          "system": "https://www.who.int/tools/atc-ddd-toolkit/atc-classification/"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "44567-510",
-          "system": "ndc"
+          "code": "ndc:44567-510",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "31747",
-          "system": "mmsl"
+          "code": "mmsl:31747",
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "2c569ef0-588f-4828-8b2d-03a2120c9b4c",
-          "system": "spl"
+          "code": "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "4018139",
-          "system": "vandf"
+          "code": "vandf:4018139",
+          "system": "https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/VANDF"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "LXZZYRPGZAFOLE-UHFFFAOYSA-L",
+          "code": "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
           "system": "inchikey"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "68083-163",
-          "system": "ndc"
+          "code": "ndc:68083-163",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
+          "code": "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
           "system": "inchikey"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "adf5773e-9095-4cb4-a90f-72cbf82f4493",
-          "system": "spl"
+          "code": "spl:adf5773e-9095-4cb4-a90f-72cbf82f4493",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "d00195",
-          "system": "mmsl"
+          "code": "mmsl:d00195",
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "01c7a680-ee0d-42da-85e8-8d56c6fe7006",
-          "system": "spl"
+          "code": "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "c43de769-d6d8-3bb9-e053-2995a90a5aa2",
-          "system": "spl"
+          "code": "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "H8MTN7XVC2",
-          "system": "unii"
+          "code": "unii:H8MTN7XVC2",
+          "system": "https://precision.fda.gov/uniisearch"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "68001-283",
-          "system": "ndc"
+          "code": "ndc:68001-283",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "Q20Q21Q62J",
-          "system": "unii"
+          "code": "unii:Q20Q21Q62J",
+          "system": "https://precision.fda.gov/uniisearch"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "5702198",
-          "system": "pubchem.compound"
+          "code": "pubchem.compound:5702198",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/compounds"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "441203",
-          "system": "pubchem.compound"
+          "code": "pubchem.compound441203",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/compounds"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "0143-9505",
-          "system": "ndc"
+          "code": "ndc:0143-9505",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
-          "system": "spl"
+          "code": "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "4456",
-          "system": "mmsl"
+          "code": "mmsl:4456",
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "C0008838",
-          "system": "umls"
+          "code": "umls:C0008838",
+          "system": "https://www.nlm.nih.gov/research/umls/index.html"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "0219ee77-eb38-b81f-e063-6394a90a5ca4",
-          "system": "spl"
+          "code": "spl:0219ee77-eb38-b81f-e063-6394a90a5ca4",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "89007399-3c34-40d2-8068-a0b8e09cbef8",
-          "system": "spl"
+          "code": "spl:89007399-3c34-40d2-8068-a0b8e09cbef8",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "64bcce1a-6e31-4e73-8da5-11aa9e890da2",
-          "system": "spl"
+          "code": "spl:64bcce1a-6e31-4e73-8da5-11aa9e890da2",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "72266-253",
-          "system": "ndc"
+          "code": "ndc:72266-253",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "25021-253",
-          "system": "ndc"
+          "code": "ndc:25021-253",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "72266-252",
-          "system": "ndc"
+          "code": "ndc:72266-252",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "0143-9504",
-          "system": "ndc"
+          "code": "ndc:0143-9504",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       }
@@ -2968,7 +2976,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3208"
                   },
                   "relation": "relatedMatch"
@@ -3008,7 +3016,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3020"
                   },
                   "relation": "relatedMatch"
@@ -3028,7 +3036,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C85079"
                   },
                   "relation": "relatedMatch"
@@ -3048,7 +3056,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C87101"
                   },
                   "relation": "relatedMatch"
@@ -3068,7 +3076,7 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
                     "code": "C3980"
                   },
                   "relation": "relatedMatch"
@@ -3156,134 +3164,134 @@
     "mappings": [
       {
         "coding": {
-          "system": "ncit",
-          "code": "C739"
+          "system": "http://purl.obolibrary.org/obo/ncit.owl",
+          "code": "ncit:C739"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "drugbank",
-          "code": "DB01174"
+          "system": "https://go.drugbank.com",
+          "code": "drugbank:DB01174"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "iuphar.ligand",
-          "code": "2804"
+          "system": "https://www.guidetopharmacology.org/GRAC/LigandListForward",
+          "code": "iuphar.ligand:2804"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "chembl",
-          "code": "CHEMBL40"
+          "system": "https://www.ebi.ac.uk/chembl/",
+          "code": "chembl:CHEMBL40"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "chemidplus",
-          "code": "50-06-6"
+          "system": "https://pubchem.ncbi.nlm.nih.gov/source/ChemIDplus",
+          "code": "chemidplus:50-06-6"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "wikidata",
-          "code": "Q407241"
+          "system": "https://www.wikidata.org",
+          "code": "wikidata:Q407241"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "vandf",
-          "code": "4017422"
+          "system": "https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/VANDF",
+          "code": "vandf:4017422"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "usp",
-          "code": "m63400"
+          "system": "https://www.usp.org/health-quality-safety/compendial-nomenclature",
+          "code": "usp:m63400"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "chebi",
-          "code": "8069"
+          "system": "http://purl.obolibrary.org/obo/chebi.owl",
+          "code": "chebi:8069"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "unii",
-          "code": "YQE403BP4D"
+          "system": "https://precision.fda.gov/uniisearch",
+          "code": "unii:YQE403BP4D"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "atc",
-          "code": "N03AA02"
+          "system": "https://www.who.int/tools/atc-ddd-toolkit/atc-classification/",
+          "code": "atc:N03AA02"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
           "system": "inchikey",
-          "code": "DDBREPKUVSBGFI-UHFFFAOYSA-N"
+          "code": "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "umls",
-          "code": "C0031412"
+          "system": "https://www.nlm.nih.gov/research/umls/index.html",
+          "code": "umls:C0031412"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "pubchem.substance",
-          "code": "135650817"
+          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/substances",
+          "code": "pubchem.substance:135650817"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "mmsl",
-          "code": "d00340"
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
+          "code": "mmsl:d00340"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "mmsl",
-          "code": "2390"
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
+          "code": "mmsl:2390"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
           "system": "drugcentral",
-          "code": "2134"
+          "code": "drugcentral:2134"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "pubchem.compound",
-          "code": "4763"
+          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/compounds",
+          "code": "pubchem.compound:4763"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "mmsl",
-          "code": "5272"
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
+          "code": "mmsl:5272"
         },
         "relation": "relatedMatch"
       }
@@ -3296,71 +3304,71 @@
     "mappings": [
       {
         "coding": {
-          "system": "ncit",
-          "code": "C839"
+          "system": "http://purl.obolibrary.org/obo/ncit.owl",
+          "code": "ncit:C839"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "drugbank",
-          "code": "DB06145"
+          "system": "https://go.drugbank.com",
+          "code": "drugbank:DB06145"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "chemidplus",
-          "code": "8025-81-8"
+          "system": "https://pubchem.ncbi.nlm.nih.gov/source/ChemIDplus",
+          "code": "chemidplus:8025-81-8"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "wikidata",
-          "code": "Q422265"
+          "system": "https://www.wikidata.org",
+          "code": "wikidata:Q422265"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "unii",
-          "code": "71ODY0V87H"
+          "system": "https://precision.fda.gov/uniisearch",
+          "code": "unii:71ODY0V87H"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "pubchem.compound",
-          "code": "5356392"
+          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/compounds",
+          "code": "pubchem.compound:5356392"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "atc",
-          "code": "J01FA02"
+          "system": "https://www.who.int/tools/atc-ddd-toolkit/atc-classification/",
+          "code": "atc:J01FA02"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
           "system": "inchikey",
-          "code": "ACTOXUHEUCPTEW-CEUOBAOPSA-N"
+          "code": "inchikey:ACTOXUHEUCPTEW-CEUOBAOPSA-N"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "unii",
-          "code": "033ECH6IFG"
+          "system": "https://precision.fda.gov/uniisearch",
+          "code": "unii:033ECH6IFG"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "umls",
-          "code": "C0037962"
+          "system": "https://www.nlm.nih.gov/research/umls/index.html",
+          "code": "umls:C0037962"
         },
         "relation": "relatedMatch"
       }
@@ -3418,8 +3426,8 @@
     "mappings": [
       {
         "coding": {
-          "code": "C0087111",
-          "system": "umls"
+          "code": "umls:C0087111",
+          "system": "https://www.nlm.nih.gov/research/umls/index.html"
         },
         "relation": "relatedMatch"
       }
