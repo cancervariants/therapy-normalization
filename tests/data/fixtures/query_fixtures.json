@@ -75,7 +75,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C7251"
+                    "code": "ncit:C7251"
                   },
                   "relation": "relatedMatch"
                 }
@@ -95,7 +95,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C7431"
+                    "code": "ncit:C7431"
                   },
                   "relation": "relatedMatch"
                 }
@@ -115,7 +115,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C9334"
+                    "code": "ncit:C9334"
                   },
                   "relation": "relatedMatch"
                 }
@@ -135,7 +135,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3411"
+                    "code": "ncit:C3411"
                   },
                   "relation": "relatedMatch"
                 }
@@ -154,8 +154,8 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "mondo",
-                    "code": "0850353"
+                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "code": "mondo:0850353"
                   },
                   "relation": "relatedMatch"
                 }
@@ -174,8 +174,8 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "mondo",
-                    "code": "0003060"
+                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "code": "mondo:0003060"
                   },
                   "relation": "relatedMatch"
                 }
@@ -195,7 +195,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3262"
+                    "code": "ncit:C3262"
                   },
                   "relation": "relatedMatch"
                 }
@@ -215,7 +215,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C7606"
+                    "code": "ncit:C7606"
                   },
                   "relation": "relatedMatch"
                 }
@@ -235,7 +235,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C2929"
+                    "code": "ncit:C2929"
                   },
                   "relation": "relatedMatch"
                 }
@@ -255,7 +255,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C4436"
+                    "code": "ncit:C4436"
                   },
                   "relation": "relatedMatch"
                 }
@@ -275,7 +275,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3017"
+                    "code": "ncit:C3017"
                   },
                   "relation": "relatedMatch"
                 }
@@ -295,7 +295,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C7478"
+                    "code": "ncit:C7478"
                   },
                   "relation": "relatedMatch"
                 }
@@ -315,7 +315,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C4917"
+                    "code": "ncit:C4917"
                   },
                   "relation": "relatedMatch"
                 }
@@ -335,7 +335,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C7548"
+                    "code": "ncit:C7548"
                   },
                   "relation": "relatedMatch"
                 }
@@ -355,7 +355,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C2915"
+                    "code": "ncit:C2915"
                   },
                   "relation": "relatedMatch"
                 }
@@ -375,7 +375,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3222"
+                    "code": "ncit:C3222"
                   },
                   "relation": "relatedMatch"
                 }
@@ -395,7 +395,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3032"
+                    "code": "ncit:C3032"
                   },
                   "relation": "relatedMatch"
                 }
@@ -415,7 +415,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3247"
+                    "code": "ncit:C3247"
                   },
                   "relation": "relatedMatch"
                 }
@@ -435,7 +435,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C8851"
+                    "code": "ncit:C8851"
                   },
                   "relation": "relatedMatch"
                 }
@@ -455,7 +455,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3149"
+                    "code": "ncit:C3149"
                   },
                   "relation": "relatedMatch"
                 }
@@ -475,7 +475,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3387"
+                    "code": "ncit:C3387"
                   },
                   "relation": "relatedMatch"
                 }
@@ -506,7 +506,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3619"
+                    "code": "ncit:C3619"
                   },
                   "relation": "relatedMatch"
                 }
@@ -526,7 +526,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3468"
+                    "code": "ncit:C3468"
                   },
                   "relation": "relatedMatch"
                 }
@@ -546,7 +546,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3708"
+                    "code": "ncit:C3708"
                   },
                   "relation": "relatedMatch"
                 }
@@ -566,7 +566,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C2877"
+                    "code": "ncit:C2877"
                   },
                   "relation": "relatedMatch"
                 }
@@ -586,7 +586,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C4962"
+                    "code": "ncit:C4962"
                   },
                   "relation": "relatedMatch"
                 }
@@ -606,7 +606,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3196"
+                    "code": "ncit:C3196"
                   },
                   "relation": "relatedMatch"
                 }
@@ -626,7 +626,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C7502"
+                    "code": "ncit:C7502"
                   },
                   "relation": "relatedMatch"
                 }
@@ -646,7 +646,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C4699"
+                    "code": "ncit:C4699"
                   },
                   "relation": "relatedMatch"
                 }
@@ -666,7 +666,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3048"
+                    "code": "ncit:C3048"
                   },
                   "relation": "relatedMatch"
                 }
@@ -686,7 +686,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C4533"
+                    "code": "ncit:C4533"
                   },
                   "relation": "relatedMatch"
                 }
@@ -706,7 +706,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C7190"
+                    "code": "ncit:C7190"
                   },
                   "relation": "relatedMatch"
                 }
@@ -725,8 +725,8 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "mondo",
-                    "code": "0005086"
+                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "code": "mondo:0005086"
                   },
                   "relation": "relatedMatch"
                 }
@@ -746,7 +746,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3959"
+                    "code": "ncit:C3959"
                   },
                   "relation": "relatedMatch"
                 }
@@ -766,7 +766,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C34803"
+                    "code": "ncit:C34803"
                   },
                   "relation": "relatedMatch"
                 }
@@ -786,7 +786,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C7978"
+                    "code": "ncit:C7978"
                   },
                   "relation": "relatedMatch"
                 }
@@ -806,7 +806,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C4890"
+                    "code": "ncit:C4890"
                   },
                   "relation": "relatedMatch"
                 }
@@ -826,7 +826,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C2956"
+                    "code": "ncit:C2956"
                   },
                   "relation": "relatedMatch"
                 }
@@ -846,7 +846,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3305"
+                    "code": "ncit:C3305"
                   },
                   "relation": "relatedMatch"
                 }
@@ -866,7 +866,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C4013"
+                    "code": "ncit:C4013"
                   },
                   "relation": "relatedMatch"
                 }
@@ -886,7 +886,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3359"
+                    "code": "ncit:C3359"
                   },
                   "relation": "relatedMatch"
                 }
@@ -906,7 +906,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3471"
+                    "code": "ncit:C3471"
                   },
                   "relation": "relatedMatch"
                 }
@@ -926,7 +926,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3568"
+                    "code": "ncit:C3568"
                   },
                   "relation": "relatedMatch"
                 }
@@ -946,7 +946,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C9120"
+                    "code": "ncit:C9120"
                   },
                   "relation": "relatedMatch"
                 }
@@ -966,7 +966,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C2948"
+                    "code": "ncit:C2948"
                   },
                   "relation": "relatedMatch"
                 }
@@ -997,7 +997,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C4001"
+                    "code": "ncit:C4001"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1017,7 +1017,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C9231"
+                    "code": "ncit:C9231"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1037,7 +1037,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C7251"
+                    "code": "ncit:C7251"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1057,7 +1057,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3512"
+                    "code": "ncit:C3512"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1077,7 +1077,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3552"
+                    "code": "ncit:C3552"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1097,7 +1097,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3053"
+                    "code": "ncit:C3053"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1117,7 +1117,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C115965"
+                    "code": "ncit:C115965"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1137,7 +1137,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C9314"
+                    "code": "ncit:C9314"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1157,7 +1157,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3242"
+                    "code": "ncit:C3242"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1177,7 +1177,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C156767"
+                    "code": "ncit:C156767"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1197,7 +1197,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C7398"
+                    "code": "ncit:C7398"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1217,7 +1217,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3270"
+                    "code": "ncit:C3270"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1237,7 +1237,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3161"
+                    "code": "ncit:C3161"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1257,7 +1257,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C7545"
+                    "code": "ncit:C7545"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1277,7 +1277,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3224"
+                    "code": "ncit:C3224"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1297,7 +1297,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C2858"
+                    "code": "ncit:C2858"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1317,7 +1317,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C9357"
+                    "code": "ncit:C9357"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1337,7 +1337,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C9311"
+                    "code": "ncit:C9311"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1357,7 +1357,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C2926"
+                    "code": "ncit:C2926"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1388,7 +1388,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3915"
+                    "code": "ncit:C3915"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1408,7 +1408,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C2852"
+                    "code": "ncit:C2852"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1428,7 +1428,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3780"
+                    "code": "ncit:C3780"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1448,7 +1448,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3011"
+                    "code": "ncit:C3011"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1468,7 +1468,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C2910"
+                    "code": "ncit:C2910"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1499,7 +1499,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C4627"
+                    "code": "ncit:C4627"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1519,7 +1519,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3811"
+                    "code": "ncit:C3811"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1539,7 +1539,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3099"
+                    "code": "ncit:C3099"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1559,7 +1559,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3549"
+                    "code": "ncit:C3549"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1579,7 +1579,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3403"
+                    "code": "ncit:C3403"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1599,7 +1599,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3322"
+                    "code": "ncit:C3322"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1619,7 +1619,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C6014"
+                    "code": "ncit:C6014"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1639,7 +1639,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C36077"
+                    "code": "ncit:C36077"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1659,7 +1659,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C9309"
+                    "code": "ncit:C9309"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1679,7 +1679,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C7431"
+                    "code": "ncit:C7431"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1699,7 +1699,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3209"
+                    "code": "ncit:C3209"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1719,7 +1719,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C4044"
+                    "code": "ncit:C4044"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1739,7 +1739,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3234"
+                    "code": "ncit:C3234"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1759,7 +1759,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3728"
+                    "code": "ncit:C3728"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1779,7 +1779,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3752"
+                    "code": "ncit:C3752"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1799,7 +1799,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3720"
+                    "code": "ncit:C3720"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1819,7 +1819,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C2869"
+                    "code": "ncit:C2869"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1839,7 +1839,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C2916"
+                    "code": "ncit:C2916"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1859,7 +1859,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3317"
+                    "code": "ncit:C3317"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1879,7 +1879,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3372"
+                    "code": "ncit:C3372"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1899,7 +1899,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C7541"
+                    "code": "ncit:C7541"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1919,7 +1919,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C9118"
+                    "code": "ncit:C9118"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1939,7 +1939,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3770"
+                    "code": "ncit:C3770"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1959,7 +1959,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3208"
+                    "code": "ncit:C3208"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1979,7 +1979,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3211"
+                    "code": "ncit:C3211"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1999,7 +1999,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3200"
+                    "code": "ncit:C3200"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2019,7 +2019,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C9334"
+                    "code": "ncit:C9334"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2039,7 +2039,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3184"
+                    "code": "ncit:C3184"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2059,7 +2059,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3222"
+                    "code": "ncit:C3222"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2079,7 +2079,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3012"
+                    "code": "ncit:C3012"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2099,7 +2099,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C26887"
+                    "code": "ncit:C26887"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2119,7 +2119,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C4337"
+                    "code": "ncit:C4337"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2150,7 +2150,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C9145"
+                    "code": "ncit:C9145"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2170,7 +2170,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3794"
+                    "code": "ncit:C3794"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2190,7 +2190,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3257"
+                    "code": "ncit:C3257"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2210,7 +2210,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3059"
+                    "code": "ncit:C3059"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2230,7 +2230,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3790"
+                    "code": "ncit:C3790"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2261,7 +2261,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C8196"
+                    "code": "ncit:C8196"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2281,7 +2281,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3156"
+                    "code": "ncit:C3156"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2301,7 +2301,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C2862"
+                    "code": "ncit:C2862"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2321,7 +2321,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C7528"
+                    "code": "ncit:C7528"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2341,7 +2341,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3773"
+                    "code": "ncit:C3773"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2361,7 +2361,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C34797"
+                    "code": "ncit:C34797"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2381,7 +2381,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C7558"
+                    "code": "ncit:C7558"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2401,7 +2401,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C9345"
+                    "code": "ncit:C9345"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2421,7 +2421,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C7510"
+                    "code": "ncit:C7510"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2441,7 +2441,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3868"
+                    "code": "ncit:C3868"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2461,7 +2461,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C71732"
+                    "code": "ncit:C71732"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2527,7 +2527,7 @@
       },
       {
         "coding": {
-          "code": "drugsatfda.nda:074735",
+          "code": "drugsatfda.anda:074735",
           "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
         },
         "relation": "relatedMatch"
@@ -2667,7 +2667,7 @@
       },
       {
         "coding": {
-          "code": "chebi:27899",
+          "code": "CHEBI:27899",
           "system": "http://purl.obolibrary.org/obo/chebi.owl"
         },
         "relation": "relatedMatch"
@@ -2731,7 +2731,7 @@
       {
         "coding": {
           "code": "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
-          "system": "inchikey"
+          "system": "https://www.chemspider.com"
         },
         "relation": "relatedMatch"
       },
@@ -2745,7 +2745,7 @@
       {
         "coding": {
           "code": "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
-          "system": "inchikey"
+          "system": "https://www.chemspider.com"
         },
         "relation": "relatedMatch"
       },
@@ -2807,7 +2807,7 @@
       },
       {
         "coding": {
-          "code": "pubchem.compound441203",
+          "code": "pubchem.compound:441203",
           "system": "https://pubchem.ncbi.nlm.nih.gov/docs/compounds"
         },
         "relation": "relatedMatch"
@@ -2893,6 +2893,7 @@
   },
   "normalize_phenobarbital": {
     "id": "normalize.therapy.rxcui:8134",
+    "primaryCode": "rxcui:8134",
     "label": "phenobarbital",
     "extensions": [
       {
@@ -2916,8 +2917,8 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "mondo",
-                    "code": "0001627"
+                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "code": "mondo:0001627"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2936,8 +2937,8 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "mondo",
-                    "code": "0001475"
+                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "code": "mondo:0001475"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2956,8 +2957,8 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "mondo",
-                    "code": "0002050"
+                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "code": "mondo:0002050"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2977,7 +2978,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3208"
+                    "code": "ncit:C3208"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2996,8 +2997,8 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "mondo",
-                    "code": "0005090"
+                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "code": "mondo:0005090"
                   },
                   "relation": "relatedMatch"
                 }
@@ -3017,7 +3018,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3020"
+                    "code": "ncit:C3020"
                   },
                   "relation": "relatedMatch"
                 }
@@ -3037,7 +3038,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C85079"
+                    "code": "ncit:C85079"
                   },
                   "relation": "relatedMatch"
                 }
@@ -3057,7 +3058,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C87101"
+                    "code": "ncit:C87101"
                   },
                   "relation": "relatedMatch"
                 }
@@ -3077,7 +3078,7 @@
                 {
                   "coding": {
                     "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "C3980"
+                    "code": "ncit:C3980"
                   },
                   "relation": "relatedMatch"
                 }
@@ -3096,8 +3097,8 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "mondo",
-                    "code": "0011918"
+                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "code": "mondo:0011918"
                   },
                   "relation": "relatedMatch"
                 }
@@ -3164,6 +3165,13 @@
     "mappings": [
       {
         "coding": {
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/index.html",
+          "code": "rxcui:8134"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
           "system": "http://purl.obolibrary.org/obo/ncit.owl",
           "code": "ncit:C739"
         },
@@ -3221,7 +3229,7 @@
       {
         "coding": {
           "system": "http://purl.obolibrary.org/obo/chebi.owl",
-          "code": "chebi:8069"
+          "code": "CHEBI:8069"
         },
         "relation": "relatedMatch"
       },
@@ -3241,7 +3249,7 @@
       },
       {
         "coding": {
-          "system": "inchikey",
+          "system": "https://www.chemspider.com",
           "code": "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N"
         },
         "relation": "relatedMatch"
@@ -3276,7 +3284,7 @@
       },
       {
         "coding": {
-          "system": "drugcentral",
+          "system": "https://drugcentral.org",
           "code": "drugcentral:2134"
         },
         "relation": "relatedMatch"
@@ -3300,8 +3308,16 @@
   },
   "normalize_spiramycin": {
     "id": "normalize.therapy.rxcui:9991",
+    "primaryCode": "rxcui:9991",
     "label": "spiramycin",
     "mappings": [
+      {
+        "coding": {
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/index.html",
+          "code": "rxcui:9991"
+        },
+        "relation": "exactMatch"
+      },
       {
         "coding": {
           "system": "http://purl.obolibrary.org/obo/ncit.owl",
@@ -3353,7 +3369,7 @@
       },
       {
         "coding": {
-          "system": "inchikey",
+          "system": "https://www.chemspider.com",
           "code": "inchikey:ACTOXUHEUCPTEW-CEUOBAOPSA-N"
         },
         "relation": "relatedMatch"
@@ -3402,6 +3418,7 @@
     "label": "Therapeutic Procedure",
     "description": null,
     "id": "normalize.therapy.ncit:C49236",
+    "primaryCode": "ncit:C49236",
     "extensions": [
       {
         "name": "aliases",
@@ -3424,6 +3441,13 @@
       }
     ],
     "mappings": [
+      {
+        "coding": {
+          "system": "http://purl.obolibrary.org/obo/ncit.owl",
+          "code": "ncit:C49236"
+        },
+        "relation": "exactMatch"
+      },
       {
         "coding": {
           "code": "umls:C0087111",

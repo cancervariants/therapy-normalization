@@ -7,6 +7,8 @@ from collections.abc import Callable
 from typing import Any, TypeVar
 
 from botocore.exceptions import ClientError
+from disease.schemas import NAMESPACE_TO_SYSTEM_URI as DISEASE_NAMESPACE_TO_SYSTEM_URI
+from disease.schemas import NamespacePrefix as DiseaseNamespacePrefix
 from ga4gh.core.models import (
     Coding,
     ConceptMapping,
@@ -398,32 +400,38 @@ class QueryHandler:
         """
 
         def _create_concept_mapping(
-            concept_id: str, relation: Relation = Relation.RELATED_MATCH
+            concept_id: str,
+            relation: Relation,
+            ns_to_system_uri: dict[str, str],
+            ns_prefix: NamespacePrefix | DiseaseNamespacePrefix,
         ) -> ConceptMapping:
-            """Create concept mapping for identifier
+            """Create concept mapping for therapy or disease identifier
 
             ``system`` will use OBO Foundry persistent URL (PURL), source homepage, or
             namespace prefix, in that order of preference, if available.
 
             :param concept_id: Concept identifier represented as a curie
             :param relation: SKOS mapping relationship, default is relatedMatch
-            :return: Concept mapping for identifier
+            :param ns_to_system_uri: Dictionary containing mapping from namespace to
+                system URI
+            :param ns_prefix: Namespace prefix enum
+            :return: Concept mapping for therapy or disease identifier
             """
-            source, source_id = concept_id.split(":")
+            source = concept_id.split(":")[0]
 
             try:
-                source = NamespacePrefix(source)
+                source = ns_prefix(source)
             except ValueError:
                 try:
-                    source = NamespacePrefix(source.upper())
+                    source = ns_prefix(source.upper())
                 except ValueError as e:
                     err_msg = f"Namespace prefix not supported: {source}"
                     raise ValueError(err_msg) from e
 
-            system = NAMESPACE_TO_SYSTEM_URI.get(source, source)
+            system = ns_to_system_uri.get(source, source)
 
             return ConceptMapping(
-                coding=Coding(code=code(source_id), system=system), relation=relation
+                coding=Coding(code=code(concept_id), system=system), relation=relation
             )
 
         therapy_obj = MappableConcept(
@@ -435,10 +443,23 @@ class QueryHandler:
 
         # mappings
         mappings = [
-            _create_concept_mapping(record["concept_id"], relation=Relation.EXACT_MATCH)
+            _create_concept_mapping(
+                concept_id=record["concept_id"],
+                relation=Relation.EXACT_MATCH,
+                ns_to_system_uri=NAMESPACE_TO_SYSTEM_URI,
+                ns_prefix=NamespacePrefix,
+            )
         ]
         source_ids = record.get("xrefs", []) + record.get("associated_with", [])
-        mappings.extend(_create_concept_mapping(source_id) for source_id in source_ids)
+        mappings.extend(
+            _create_concept_mapping(
+                concept_id=source_id,
+                relation=Relation.RELATED_MATCH,
+                ns_to_system_uri=NAMESPACE_TO_SYSTEM_URI,
+                ns_prefix=NamespacePrefix,
+            )
+            for source_id in source_ids
+        )
         if mappings:
             therapy_obj.mappings = mappings
 
@@ -469,7 +490,12 @@ class QueryHandler:
 
                 if indication.normalized_disease_id:
                     mappings = [
-                        _create_concept_mapping(indication.normalized_disease_id)
+                        _create_concept_mapping(
+                            concept_id=indication.normalized_disease_id,
+                            relation=Relation.RELATED_MATCH,
+                            ns_to_system_uri=DISEASE_NAMESPACE_TO_SYSTEM_URI,
+                            ns_prefix=DiseaseNamespacePrefix,
+                        )
                     ]
                 else:
                     mappings = []
@@ -500,7 +526,6 @@ class QueryHandler:
             therapy_obj.extensions = extensions
 
         response.match_type = match_type
-        response.normalized_id = record["concept_id"]
         response.therapy = therapy_obj
         return self._add_merged_meta(response)
 

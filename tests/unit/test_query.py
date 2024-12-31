@@ -139,7 +139,7 @@ def compare_ta(response, fixture, query, match_type, warnings=None):
 
     fixture = MappableConcept(**fixture.copy())
     assert (
-        response["therapy"]["primaryCode"] == fixture.id.split("normalize.therapy.")[-1]
+        response.therapy.primaryCode.root == fixture.id.split("normalize.therapy.")[-1]
     )
     actual = response.therapy
     actual_keys = actual.model_dump(exclude_none=True).keys()
