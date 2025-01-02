@@ -39,7 +39,7 @@ etl = [
     "owlready2",
     "rdflib",
     "wikibaseintegrator>=0.12.0",
-    "wags-tails~=0.2.0",
+    "wags-tails~=0.2.2",
     "tqdm",
     "rich",
     "pyyaml"
