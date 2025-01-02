@@ -7,12 +7,23 @@ from collections.abc import Callable
 from typing import Any, TypeVar
 
 from botocore.exceptions import ClientError
-from ga4gh.core import domain_models, entity_models
+from disease.schemas import NAMESPACE_TO_SYSTEM_URI as DISEASE_NAMESPACE_TO_SYSTEM_URI
+from disease.schemas import NamespacePrefix as DiseaseNamespacePrefix
+from ga4gh.core.models import (
+    Coding,
+    ConceptMapping,
+    Extension,
+    MappableConcept,
+    Relation,
+    code,
+)
 from uvicorn.config import logger
 
 from therapy import NAMESPACE_LUIS, PREFIX_LOOKUP, SOURCES
 from therapy.database import AbstractDatabase
 from therapy.schemas import (
+    NAMESPACE_TO_SYSTEM_URI,
+    SYSTEM_URI_TO_NAMESPACE,
     BaseNormalizationService,
     HasIndication,
     MatchesNormalized,
@@ -350,20 +361,17 @@ class QueryHandler:
         :return: completed response object.
         """
         sources_meta = {}
-        therapeutic_agent = response.therapeutic_agent
-        sources = [response.normalized_id.split(":")[0]]  # type: ignore[union-attr]
-        if therapeutic_agent.mappings:  # type: ignore[union-attr]
-            sources += [m.coding.system for m in therapeutic_agent.mappings]  # type: ignore[union-attr]
+        therapy = response.therapy
+
+        sources = []
+        for m in therapy.mappings or []:
+            ns = SYSTEM_URI_TO_NAMESPACE.get(m.coding.system)
+            if ns in PREFIX_LOOKUP:
+                sources.append(PREFIX_LOOKUP[ns])
 
         for src in sources:
-            try:
-                src_name = SourceName(PREFIX_LOOKUP[src])
-            except KeyError:
-                # not an imported source
-                continue
-            else:
-                if src_name not in sources_meta:
-                    sources_meta[src_name] = self.db.get_source_metadata(src_name)
+            if src not in sources_meta:
+                sources_meta[src] = self.db.get_source_metadata(src)
         response.source_meta_ = sources_meta  # type: ignore[assignment]
         return response
 
@@ -377,42 +385,88 @@ class QueryHandler:
         source_rank = SourcePriority[src]
         return source_rank, record["concept_id"]
 
-    def _add_therapeutic_agent(
+    def _add_therapy(
         self,
         response: NormalizationService,
         record: dict,
         match_type: MatchType,
     ) -> NormalizationService:
-        """Format received DB record as therapeutic agent and update response object.
+        """Format received DB record as Mappable Concept and update response object.
         :param NormalizationService response: in-progress response object
         :param Dict record: record as stored in DB
         :param str query: query string from user request
         :param MatchType match_type: type of match achieved
         :return: completed response object ready to return to user
         """
-        therapeutic_agent_obj = domain_models.TherapeuticAgent(
-            id=f"normalize.therapy.{record['concept_id']}", label=record.get("label")
+
+        def _create_concept_mapping(
+            concept_id: str,
+            relation: Relation,
+            ns_to_system_uri: dict[str, str],
+            ns_prefix: NamespacePrefix | DiseaseNamespacePrefix,
+        ) -> ConceptMapping:
+            """Create concept mapping for therapy or disease identifier
+
+            ``system`` will use OBO Foundry persistent URL (PURL), source homepage, or
+            namespace prefix, in that order of preference, if available.
+
+            :param concept_id: Concept identifier represented as a curie
+            :param relation: SKOS mapping relationship, default is relatedMatch
+            :param ns_to_system_uri: Dictionary containing mapping from namespace to
+                system URI
+            :param ns_prefix: Namespace prefix enum
+            :return: Concept mapping for therapy or disease identifier
+            """
+            source = concept_id.split(":")[0]
+
+            try:
+                source = ns_prefix(source)
+            except ValueError:
+                try:
+                    source = ns_prefix(source.upper())
+                except ValueError as e:
+                    err_msg = f"Namespace prefix not supported: {source}"
+                    raise ValueError(err_msg) from e
+
+            system = ns_to_system_uri.get(source, source)
+
+            return ConceptMapping(
+                coding=Coding(code=code(concept_id), system=system), relation=relation
+            )
+
+        therapy_obj = MappableConcept(
+            id=f"normalize.therapy.{record['concept_id']}",
+            primaryCode=code(root=record["concept_id"]),
+            conceptType="Therapy",
+            label=record.get("label"),
         )
 
-        source_ids = record.get("xrefs", []) + record.get("associated_with", [])
-        mappings = []
-        for source_id in source_ids:
-            system, code = source_id.split(":")
-            mappings.append(
-                entity_models.ConceptMapping(
-                    coding=entity_models.Coding(
-                        code=entity_models.Code(code), system=system.lower()
-                    ),
-                    relation=entity_models.Relation.RELATED_MATCH,
-                )
+        # mappings
+        mappings = [
+            _create_concept_mapping(
+                concept_id=record["concept_id"],
+                relation=Relation.EXACT_MATCH,
+                ns_to_system_uri=NAMESPACE_TO_SYSTEM_URI,
+                ns_prefix=NamespacePrefix,
             )
+        ]
+        source_ids = record.get("xrefs", []) + record.get("associated_with", [])
+        mappings.extend(
+            _create_concept_mapping(
+                concept_id=source_id,
+                relation=Relation.RELATED_MATCH,
+                ns_to_system_uri=NAMESPACE_TO_SYSTEM_URI,
+                ns_prefix=NamespacePrefix,
+            )
+            for source_id in source_ids
+        )
         if mappings:
-            therapeutic_agent_obj.mappings = mappings
-
-        if "aliases" in record:
-            therapeutic_agent_obj.alternativeLabels = record["aliases"]
+            therapy_obj.mappings = mappings
 
         extensions = []
+        if "aliases" in record:
+            extensions.append(Extension(name="aliases", value=record["aliases"]))
+
         if any(
             filter(
                 lambda f: f in record,
@@ -435,49 +489,44 @@ class QueryHandler:
                 indication = self._get_indication(ind_db)
 
                 if indication.normalized_disease_id:
-                    system, code = indication.normalized_disease_id.split(":")
                     mappings = [
-                        entity_models.ConceptMapping(
-                            coding=entity_models.Coding(
-                                code=entity_models.Code(code), system=system.lower()
-                            ),
-                            relation=entity_models.Relation.RELATED_MATCH,
+                        _create_concept_mapping(
+                            concept_id=indication.normalized_disease_id,
+                            relation=Relation.RELATED_MATCH,
+                            ns_to_system_uri=DISEASE_NAMESPACE_TO_SYSTEM_URI,
+                            ns_prefix=DiseaseNamespacePrefix,
                         )
                     ]
                 else:
                     mappings = []
-                ind_disease_obj = domain_models.Disease(
+                ind_disease_obj = MappableConcept(
                     id=indication.disease_id,
+                    conceptType="Disease",
                     label=indication.disease_label,
                     mappings=mappings or None,
                 )
 
                 if indication.supplemental_info:
                     ind_disease_obj.extensions = [
-                        entity_models.Extension(name=k, value=v)
+                        Extension(name=k, value=v)
                         for k, v in indication.supplemental_info.items()
                     ]
                 inds_list.append(ind_disease_obj.model_dump(exclude_none=True))
             if inds_list:
                 approv_value["has_indication"] = inds_list
 
-            approv = entity_models.Extension(
-                name="regulatory_approval", value=approv_value
-            )
+            approv = Extension(name="regulatory_approval", value=approv_value)
             extensions.append(approv)
 
         trade_names = record.get("trade_names")
         if trade_names:
-            extensions.append(
-                entity_models.Extension(name="trade_names", value=trade_names)
-            )
+            extensions.append(Extension(name="trade_names", value=trade_names))
 
         if extensions:
-            therapeutic_agent_obj.extensions = extensions
+            therapy_obj.extensions = extensions
 
         response.match_type = match_type
-        response.normalized_id = record["concept_id"]
-        response.therapeutic_agent = therapeutic_agent_obj
+        response.therapy = therapy_obj
         return self._add_merged_meta(response)
 
     def _resolve_merge(
@@ -537,7 +586,7 @@ class QueryHandler:
         response = NormalizationService(**self._prepare_normalized_response(query))
 
         return self._perform_normalized_lookup(
-            response, query, infer, self._add_therapeutic_agent
+            response, query, infer, self._add_therapy
         )
 
     def _construct_drug_match(self, record: dict) -> Therapy:

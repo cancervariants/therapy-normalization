@@ -4,7 +4,7 @@ from datetime import datetime
 from enum import Enum, IntEnum
 from typing import Any, Literal
 
-from ga4gh.core import domain_models
+from ga4gh.core.models import MappableConcept
 from pydantic import BaseModel, ConfigDict, StrictBool, constr
 
 from therapy import __version__
@@ -258,6 +258,44 @@ class NamespacePrefix(Enum):
     WIKIDATA = "wikidata"
 
 
+# Source to URI. Will use OBO Foundry persistent URL (PURL) or source homepage
+NAMESPACE_TO_SYSTEM_URI: dict[NamespacePrefix, str] = {
+    NamespacePrefix.ATC: "https://www.who.int/tools/atc-ddd-toolkit/atc-classification/",
+    NamespacePrefix.CHEBI: "http://purl.obolibrary.org/obo/chebi.owl",
+    NamespacePrefix.CHEMBL: "https://www.ebi.ac.uk/chembl/",
+    NamespacePrefix.CHEMIDPLUS: "https://pubchem.ncbi.nlm.nih.gov/source/ChemIDplus",
+    NamespacePrefix.CASREGISTRY: "https://pubchem.ncbi.nlm.nih.gov/source/ChemIDplus",
+    NamespacePrefix.CVX: "https://www2a.cdc.gov/vaccines/iis/iisstandards/vaccines.asp?rpt=cvx",
+    NamespacePrefix.DRUGBANK: "https://go.drugbank.com",
+    NamespacePrefix.DRUGCENTRAL: "https://drugcentral.org",
+    NamespacePrefix.DRUGSATFDA_ANDA: "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda",
+    NamespacePrefix.DRUGSATFDA_NDA: "https://www.fda.gov/drugs/types-applications/new-drug-application-nda",
+    NamespacePrefix.HEMONC: "https://hemonc.org",
+    NamespacePrefix.INCHIKEY: "https://www.chemspider.com",
+    NamespacePrefix.IUPHAR_LIGAND: "https://www.guidetopharmacology.org/GRAC/LigandListForward",
+    NamespacePrefix.GUIDETOPHARMACOLOGY: "https://www.guidetopharmacology.org/GRAC/LigandListForward",
+    NamespacePrefix.MMSL: "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
+    NamespacePrefix.MSH: "https://id.nlm.nih.gov/mesh/",
+    NamespacePrefix.NCIT: "http://purl.obolibrary.org/obo/ncit.owl",
+    NamespacePrefix.NDC: "https://dps.fda.gov/ndc",
+    NamespacePrefix.PUBCHEMCOMPOUND: "https://pubchem.ncbi.nlm.nih.gov/docs/compounds",
+    NamespacePrefix.PUBCHEMSUBSTANCE: "https://pubchem.ncbi.nlm.nih.gov/docs/substances",
+    NamespacePrefix.RXNORM: "https://www.nlm.nih.gov/research/umls/rxnorm/index.html",
+    NamespacePrefix.SPL: "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+    NamespacePrefix.UMLS: "https://www.nlm.nih.gov/research/umls/index.html",
+    NamespacePrefix.UNII: "https://precision.fda.gov/uniisearch",
+    NamespacePrefix.UNIPROT: "https://www.uniprot.org",
+    NamespacePrefix.USP: "https://www.usp.org/health-quality-safety/compendial-nomenclature",
+    NamespacePrefix.VANDF: "https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/VANDF",
+    NamespacePrefix.WIKIDATA: "https://www.wikidata.org",
+}
+
+# URI to source
+SYSTEM_URI_TO_NAMESPACE = {
+    system_uri: ns.value for ns, system_uri in NAMESPACE_TO_SYSTEM_URI.items()
+}
+
+
 class DataLicenseAttributes(BaseModel):
     """Define constraints for data license attributes."""
 
@@ -484,8 +522,7 @@ class UnmergedNormalizationService(BaseNormalizationService):
 class NormalizationService(BaseNormalizationService):
     """Response containing one or more merged records and source data."""
 
-    normalized_id: str | None = None
-    therapeutic_agent: domain_models.TherapeuticAgent | None = None
+    therapy: MappableConcept | None = None
     source_meta_: dict[SourceName, SourceMeta] | None = None
 
     model_config = ConfigDict(
@@ -494,18 +531,31 @@ class NormalizationService(BaseNormalizationService):
                 "query": "cisplatin",
                 "warnings": None,
                 "match_type": 80,
-                "normalized_id": "rxcui:2555",
-                "therapeutic_agent": {
-                    "type": "TherapeuticAgent",
+                "therapy": {
+                    "conceptType": "Therapy",
+                    "primaryCode": "rxcui:2555",
                     "id": "normalize.therapy.rxcui:2555",
                     "label": "cisplatin",
                     "mappings": [
                         {
-                            "coding": {"code": "C376", "system": "ncit"},
+                            "coding": {
+                                "code": "2555",
+                                "system": "https://www.nlm.nih.gov/research/umls/rxnorm/index.html",
+                            },
+                            "relation": "exactMatch",
+                        },
+                        {
+                            "coding": {
+                                "code": "C376",
+                                "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                            },
                             "relation": "relatedMatch",
                         },
                         {
-                            "coding": {"code": "15663-27-1", "system": "chemidplus"},
+                            "coding": {
+                                "code": "15663-27-1",
+                                "system": "https://pubchem.ncbi.nlm.nih.gov/source/ChemIDplus",
+                            },
                             "relation": "relatedMatch",
                         },
                         {

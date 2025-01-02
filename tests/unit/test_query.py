@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 
 import pytest
-from ga4gh.core import domain_models
+from ga4gh.core.models import MappableConcept
 
 from therapy.database.database import AbstractDatabase
 from therapy.query import InvalidParameterError, QueryHandler
@@ -107,10 +107,10 @@ def unmerged_normalized_spiramycin(fixture_data):
 
 
 def compare_ta(response, fixture, query, match_type, warnings=None):
-    """Verify correctness of returned core therapeutic agent object against test fixture
+    """Verify correctness of returned core therapy object against test fixture
 
     :param Dict response: actual response
-    :param Dict fixture: expected therapeutic agent object
+    :param Dict fixture: expected therapy object
     :param str query: query used in search
     :param MatchType match_type: expected MatchType
     :param List warnings: expected warnings
@@ -137,15 +137,17 @@ def compare_ta(response, fixture, query, match_type, warnings=None):
 
     assert response.match_type == match_type
 
-    fixture = domain_models.TherapeuticAgent(**fixture.copy())
-    assert response.normalized_id == fixture.id.split("normalize.therapy.")[-1]
-    actual = response.therapeutic_agent
+    fixture = MappableConcept(**fixture.copy())
+    assert (
+        response.therapy.primaryCode.root == fixture.id.split("normalize.therapy.")[-1]
+    )
+    actual = response.therapy
     actual_keys = actual.model_dump(exclude_none=True).keys()
     fixture_keys = fixture.model_dump(exclude_none=True).keys()
     assert actual_keys == fixture_keys
 
     assert actual.id == fixture.id
-    assert actual.type == fixture.type
+    assert actual.conceptType == fixture.conceptType
     assert actual.label == fixture.label
 
     assert bool(actual.mappings) == bool(fixture.mappings)
@@ -161,10 +163,6 @@ def compare_ta(response, fixture, query, match_type, warnings=None):
                 no_matches.append(actual_mapping)
         assert no_matches == [], no_matches
         assert len(actual.mappings) == len(fixture.mappings)
-
-    assert bool(actual.alternativeLabels) == bool(fixture.alternativeLabels)
-    if actual.alternativeLabels:
-        assert set(actual.alternativeLabels) == set(fixture.alternativeLabels)
 
     def get_extension(extensions, name):
         matches = [e for e in extensions if e.name == name]

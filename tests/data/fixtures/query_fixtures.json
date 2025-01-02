@@ -1,49 +1,53 @@
 {
   "normalize_cisplatin": {
-    "type": "TherapeuticAgent",
+    "conceptType": "Therapy",
     "label": "cisplatin",
     "description": null,
     "id": "normalize.therapy.rxcui:2555",
-    "alternativeLabels": [
-      "Liplacis",
-      "cis-diamminedichloroplatinum III",
-      "APRD00359",
-      "(sp-4-2)-diamminedichloroplatinum",
-      "cis-Diaminedichloroplatinum",
-      "CDDP",
-      "1,2-Diaminocyclohexaneplatinum II citrate",
-      "Platinol",
-      "Platinol-AQ",
-      "DDP",
-      "cis-platinum",
-      "cisplatino",
-      "PLATINUM, DIAMMINEDICHLORO-, (SP-4-2)-",
-      "Cis-diamminedichloroplatinum ii",
-      "INT230-6 COMPONENT CISPLATIN",
-      "Cis-diamminedichloroplatinum",
-      "DACP",
-      "Cis-DDP",
-      "cisplatinum",
-      "NSC 119875",
-      "cis-diamminedichloroplatinum(II)",
-      "Cis-platin",
-      "(SP-4-2)-DIAMMINEDICHLOROPLATINUM",
-      "NSC119875",
-      "CIS-DIAMMINEDICHLOROPLATINUM",
-      "NSC-119875",
-      "Cisplatinum",
-      "CIS-DIAMMINEDICHLOROPLATINUM II",
-      "INT-230-6 COMPONENT CISPLATIN",
-      "CIS-DDP",
-      "Peyrone's salt",
-      "Cis-platinum ii",
-      "CISplatin",
-      "Fauldiscipla",
-      "CISPLATIN",
-      "Cisplatin",
-      "Mitometh"
-    ],
+    "primaryCode": "rxcui:2555",
     "extensions": [
+      {
+        "name": "aliases",
+        "value": [
+          "Liplacis",
+          "cis-diamminedichloroplatinum III",
+          "APRD00359",
+          "(sp-4-2)-diamminedichloroplatinum",
+          "cis-Diaminedichloroplatinum",
+          "CDDP",
+          "1,2-Diaminocyclohexaneplatinum II citrate",
+          "Platinol",
+          "Platinol-AQ",
+          "DDP",
+          "cis-platinum",
+          "cisplatino",
+          "PLATINUM, DIAMMINEDICHLORO-, (SP-4-2)-",
+          "Cis-diamminedichloroplatinum ii",
+          "INT230-6 COMPONENT CISPLATIN",
+          "Cis-diamminedichloroplatinum",
+          "DACP",
+          "Cis-DDP",
+          "cisplatinum",
+          "NSC 119875",
+          "cis-diamminedichloroplatinum(II)",
+          "Cis-platin",
+          "(SP-4-2)-DIAMMINEDICHLOROPLATINUM",
+          "NSC119875",
+          "CIS-DIAMMINEDICHLOROPLATINUM",
+          "NSC-119875",
+          "Cisplatinum",
+          "CIS-DIAMMINEDICHLOROPLATINUM II",
+          "INT-230-6 COMPONENT CISPLATIN",
+          "CIS-DDP",
+          "Peyrone's salt",
+          "Cis-platinum ii",
+          "CISplatin",
+          "Fauldiscipla",
+          "CISPLATIN",
+          "Cisplatin",
+          "Mitometh"
+        ]
+      },
       {
         "name": "regulatory_approval",
         "value": {
@@ -54,7 +58,9 @@
             "gtopdb_approved",
             "hemonc_approved"
           ],
-          "approval_year": ["1978"],
+          "approval_year": [
+            "1978"
+          ],
           "has_indication": [
             {
               "id": "hemonc:671",
@@ -68,13 +74,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C7251"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C7251"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "hemonc:645",
@@ -88,13 +94,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C7431"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C7431"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "hemonc:569",
@@ -108,13 +114,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C9334"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C9334"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D013945",
@@ -128,13 +134,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3411"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3411"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D064129",
@@ -148,13 +154,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "mondo",
-                    "code": "0850353"
+                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "code": "mondo:0850353"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D001661",
@@ -168,13 +174,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "mondo",
-                    "code": "0003060"
+                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "code": "mondo:0003060"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009369",
@@ -188,13 +194,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3262"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3262"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "EFO:0003868",
@@ -208,13 +214,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C7606"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C7606"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D002294",
@@ -228,13 +234,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C2929"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C2929"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018281",
@@ -248,13 +254,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C4436"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C4436"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D004806",
@@ -268,13 +274,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3017"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3017"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D004938",
@@ -288,13 +294,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C7478"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C7478"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D055752",
@@ -308,13 +314,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C4917"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C4917"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D007680",
@@ -328,13 +334,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C7548"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C7548"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D002276",
@@ -348,13 +354,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C2915"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C2915"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018242",
@@ -368,13 +374,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3222"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3222"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D005185",
@@ -388,13 +394,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3032"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3032"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009190",
@@ -408,13 +414,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3247"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3247"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D016403",
@@ -428,13 +434,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C8851"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C8851"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D007674",
@@ -448,13 +454,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3149"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3149"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D013274",
@@ -468,13 +474,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3387"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3387"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D014565",
@@ -485,7 +491,7 @@
                   "value": "chembl_phase_3"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D014523",
@@ -499,13 +505,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3619"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3619"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D016411",
@@ -519,13 +525,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3468"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3468"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009373",
@@ -539,13 +545,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3708"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3708"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D001005",
@@ -559,13 +565,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C2877"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C2877"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D013953",
@@ -579,13 +585,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C4962"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C4962"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008107",
@@ -599,13 +605,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3196"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3196"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D014846",
@@ -619,13 +625,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C7502"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C7502"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D031901",
@@ -639,13 +645,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C4699"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C4699"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D005706",
@@ -659,13 +665,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3048"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3048"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D016545",
@@ -679,13 +685,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C4533"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C4533"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D007012",
@@ -699,13 +705,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C7190"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C7190"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D002292",
@@ -719,13 +725,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "mondo",
-                    "code": "0005086"
+                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "code": "mondo:0005086"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D004066",
@@ -739,13 +745,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3959"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3959"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008113",
@@ -759,13 +765,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C34803"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C34803"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "EFO:1000043",
@@ -779,13 +785,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C7978"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C7978"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D004067",
@@ -799,13 +805,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C4890"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C4890"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D015179",
@@ -819,13 +825,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C2956"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C2956"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D010190",
@@ -839,13 +845,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3305"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3305"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D006258",
@@ -859,13 +865,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C4013"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C4013"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D012208",
@@ -879,13 +885,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3359"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3359"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D016483",
@@ -899,13 +905,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3471"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3471"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D001932",
@@ -919,13 +925,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3568"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3568"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D021441",
@@ -939,13 +945,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C9120"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C9120"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D002822",
@@ -959,13 +965,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C2948"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C2948"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D020250",
@@ -976,7 +982,7 @@
                   "value": "chembl_phase_3"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D058922",
@@ -990,13 +996,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C4001"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C4001"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D015266",
@@ -1010,13 +1016,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C9231"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C9231"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D013736",
@@ -1030,13 +1036,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C7251"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C7251"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D000077192",
@@ -1050,13 +1056,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3512"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3512"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D014594",
@@ -1070,13 +1076,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3552"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3552"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D005833",
@@ -1090,13 +1096,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3053"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3053"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D052016",
@@ -1110,13 +1116,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C115965"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C115965"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "EFO:0005570",
@@ -1130,13 +1136,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C9314"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C9314"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009101",
@@ -1150,13 +1156,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3242"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3242"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D002280",
@@ -1170,13 +1176,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C156767"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C156767"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009959",
@@ -1190,13 +1196,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C7398"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C7398"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009447",
@@ -1210,13 +1216,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3270"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3270"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D007938",
@@ -1230,13 +1236,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3161"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3161"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D010610",
@@ -1250,13 +1256,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C7545"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C7545"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008545",
@@ -1270,13 +1276,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3224"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3224"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D000306",
@@ -1290,13 +1296,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C2858"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C2858"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D006689",
@@ -1310,13 +1316,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C9357"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C9357"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D002583",
@@ -1330,13 +1336,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C9311"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C9311"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D002289",
@@ -1350,13 +1356,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C2926"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C2926"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009325",
@@ -1367,7 +1373,7 @@
                   "value": "chembl_phase_2"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018288",
@@ -1381,13 +1387,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3915"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3915"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D000230",
@@ -1401,13 +1407,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C2852"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C2852"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018287",
@@ -1421,13 +1427,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3780"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3780"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018240",
@@ -1441,13 +1447,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3011"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3011"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D001943",
@@ -1461,13 +1467,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C2910"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C2910"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D010996",
@@ -1478,7 +1484,7 @@
                   "value": "chembl_phase_3"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D016543",
@@ -1492,13 +1498,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C4627"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C4627"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D012468",
@@ -1512,13 +1518,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3811"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3811"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D006528",
@@ -1532,13 +1538,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3099"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3099"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008479",
@@ -1552,13 +1558,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3549"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3549"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D013724",
@@ -1572,13 +1578,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3403"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3403"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D010534",
@@ -1592,13 +1598,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3322"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3322"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D010255",
@@ -1612,13 +1618,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C6014"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C6014"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018285",
@@ -1632,13 +1638,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C36077"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C36077"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018239",
@@ -1652,13 +1658,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C9309"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C9309"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D010051",
@@ -1672,13 +1678,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C7431"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C7431"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008224",
@@ -1692,13 +1698,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3209"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3209"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D000077195",
@@ -1712,13 +1718,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C4044"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C4044"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008654",
@@ -1732,13 +1738,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3234"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3234"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018197",
@@ -1752,13 +1758,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3728"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3728"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018236",
@@ -1772,13 +1778,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3752"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3752"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D017728",
@@ -1792,13 +1798,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3720"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3720"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D000740",
@@ -1812,13 +1818,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C2869"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C2869"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D002277",
@@ -1832,13 +1838,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C2916"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C2916"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D010412",
@@ -1852,13 +1858,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3317"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3317"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D012878",
@@ -1872,13 +1878,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3372"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3372"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D012175",
@@ -1892,13 +1898,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C7541"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C7541"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D012509",
@@ -1912,13 +1918,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C9118"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C9118"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018273",
@@ -1932,13 +1938,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3770"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3770"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008223",
@@ -1952,13 +1958,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3208"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3208"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008228",
@@ -1972,13 +1978,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3211"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3211"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008175",
@@ -1992,13 +1998,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3200"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3200"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D001749",
@@ -2012,13 +2018,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C9334"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C9334"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D015459",
@@ -2032,13 +2038,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3184"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3184"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008527",
@@ -2052,13 +2058,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3222"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3222"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D016889",
@@ -2072,13 +2078,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3012"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3012"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D013280",
@@ -2092,13 +2098,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C26887"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C26887"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D020522",
@@ -2112,13 +2118,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C4337"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C4337"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D014987",
@@ -2129,7 +2135,7 @@
                   "value": "chembl_phase_1"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D012516",
@@ -2143,13 +2149,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C9145"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C9145"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018312",
@@ -2163,13 +2169,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3794"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3794"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009303",
@@ -2183,13 +2189,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3257"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3257"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D005910",
@@ -2203,13 +2209,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3059"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3059"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018305",
@@ -2223,13 +2229,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3790"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3790"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009362",
@@ -2240,7 +2246,7 @@
                   "value": "chembl_phase_2"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D006103",
@@ -2254,13 +2260,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C8196"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C8196"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D007822",
@@ -2274,13 +2280,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3156"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3156"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D055728",
@@ -2294,13 +2300,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C2862"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C2862"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D007119",
@@ -2314,13 +2320,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C7528"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C7528"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018278",
@@ -2334,13 +2340,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3773"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3773"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008288",
@@ -2354,13 +2360,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C34797"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C34797"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D018269",
@@ -2374,13 +2380,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C7558"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C7558"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D014062",
@@ -2394,13 +2400,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C9345"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C9345"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D013964",
@@ -2414,13 +2420,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C7510"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C7510"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D046152",
@@ -2434,13 +2440,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3868"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3868"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D064726",
@@ -2454,13 +2460,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C71732"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C71732"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             }
           ]
         }
@@ -2479,400 +2485,407 @@
     "mappings": [
       {
         "coding": {
-          "code": "C376",
-          "system": "ncit"
+          "code": "rxcui:2555",
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/index.html"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "code": "ncit:C376",
+          "system": "http://purl.obolibrary.org/obo/ncit.owl"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "105",
-          "system": "hemonc"
+          "code": "hemonc:105",
+          "system": "https://hemonc.org"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "DB00515",
-          "system": "drugbank"
+          "code": "drugbank:DB00515",
+          "system": "https://go.drugbank.com"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "DB12117",
-          "system": "drugbank"
+          "code": "drugbank:DB12117",
+          "system": "https://go.drugbank.com"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "074656",
-          "system": "drugsatfda.anda"
+          "code": "drugsatfda.anda:074656",
+          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "074735",
-          "system": "drugsatfda.anda"
+          "code": "drugsatfda.anda:074735",
+          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "075036",
-          "system": "drugsatfda.anda"
+          "code": "drugsatfda.anda:075036",
+          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "206774",
-          "system": "drugsatfda.anda"
+          "code": "drugsatfda.anda:206774",
+          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "207323",
-          "system": "drugsatfda.anda"
+          "code": "drugsatfda.anda:207323",
+          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "018057",
-          "system": "drugsatfda.nda"
+          "code": "drugsatfda.nda:018057",
+          "system": "https://www.fda.gov/drugs/types-applications/new-drug-application-nda"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "5343",
-          "system": "iuphar.ligand"
+          "code": "iuphar.ligand:5343",
+          "system": "https://www.guidetopharmacology.org/GRAC/LigandListForward"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "CHEMBL11359",
-          "system": "chembl"
+          "code": "chembl:CHEMBL11359",
+          "system": "https://www.ebi.ac.uk/chembl/"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "15663-27-1",
-          "system": "chemidplus"
+          "code": "chemidplus:15663-27-1",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/source/ChemIDplus"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "Q412415",
-          "system": "wikidata"
+          "code": "wikidata:Q412415",
+          "system": "https://www.wikidata.org"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "0703-5748",
-          "system": "ndc"
+          "code": "ndc:0703-5748",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "63323-103",
-          "system": "ndc"
+          "code": "ndc:63323-103",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "70860-206",
-          "system": "ndc"
+          "code": "ndc:70860-206",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "44567-509",
-          "system": "ndc"
+          "code": "ndc:44567-509",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "m17910",
-          "system": "usp"
+          "code": "usp:m17910",
+          "system": "https://www.usp.org/health-quality-safety/compendial-nomenclature"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "44567-530",
-          "system": "ndc"
+          "code": "ndc:44567-530",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "178102005",
-          "system": "pubchem.substance"
+          "code": "pubchem.substance:178102005",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/substances"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "9b008181-ab66-db2f-e053-2995a90aad57",
-          "system": "spl"
+          "code": "spl:9b008181-ab66-db2f-e053-2995a90aad57",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "16729-288",
-          "system": "ndc"
+          "code": "ndc:16729-288",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "a66eda32-1164-439a-ac8e-73138365ec06",
-          "system": "spl"
+          "code": "spl:a66eda32-1164-439a-ac8e-73138365ec06",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
-          "system": "spl"
+          "code": "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "27899",
-          "system": "chebi"
+          "code": "CHEBI:27899",
+          "system": "http://purl.obolibrary.org/obo/chebi.owl"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "44567-511",
-          "system": "ndc"
+          "code": "ndc:44567-511",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "0703-5747",
-          "system": "ndc"
+          "code": "ndc:0703-5747",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "68083-162",
-          "system": "ndc"
+          "code": "ndc:68083-162",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "L01XA01",
-          "system": "atc"
+          "code": "atc:L01XA01",
+          "system": "https://www.who.int/tools/atc-ddd-toolkit/atc-classification/"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "44567-510",
-          "system": "ndc"
+          "code": "ndc:44567-510",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "31747",
-          "system": "mmsl"
+          "code": "mmsl:31747",
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "2c569ef0-588f-4828-8b2d-03a2120c9b4c",
-          "system": "spl"
+          "code": "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "4018139",
-          "system": "vandf"
+          "code": "vandf:4018139",
+          "system": "https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/VANDF"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "LXZZYRPGZAFOLE-UHFFFAOYSA-L",
-          "system": "inchikey"
+          "code": "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
+          "system": "https://www.chemspider.com"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "68083-163",
-          "system": "ndc"
+          "code": "ndc:68083-163",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
-          "system": "inchikey"
+          "code": "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
+          "system": "https://www.chemspider.com"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "adf5773e-9095-4cb4-a90f-72cbf82f4493",
-          "system": "spl"
+          "code": "spl:adf5773e-9095-4cb4-a90f-72cbf82f4493",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "d00195",
-          "system": "mmsl"
+          "code": "mmsl:d00195",
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "01c7a680-ee0d-42da-85e8-8d56c6fe7006",
-          "system": "spl"
+          "code": "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "c43de769-d6d8-3bb9-e053-2995a90a5aa2",
-          "system": "spl"
+          "code": "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "H8MTN7XVC2",
-          "system": "unii"
+          "code": "unii:H8MTN7XVC2",
+          "system": "https://precision.fda.gov/uniisearch"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "68001-283",
-          "system": "ndc"
+          "code": "ndc:68001-283",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "Q20Q21Q62J",
-          "system": "unii"
+          "code": "unii:Q20Q21Q62J",
+          "system": "https://precision.fda.gov/uniisearch"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "5702198",
-          "system": "pubchem.compound"
+          "code": "pubchem.compound:5702198",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/compounds"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "441203",
-          "system": "pubchem.compound"
+          "code": "pubchem.compound:441203",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/compounds"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "0143-9505",
-          "system": "ndc"
+          "code": "ndc:0143-9505",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
-          "system": "spl"
+          "code": "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "4456",
-          "system": "mmsl"
+          "code": "mmsl:4456",
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "C0008838",
-          "system": "umls"
+          "code": "umls:C0008838",
+          "system": "https://www.nlm.nih.gov/research/umls/index.html"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "0219ee77-eb38-b81f-e063-6394a90a5ca4",
-          "system": "spl"
+          "code": "spl:0219ee77-eb38-b81f-e063-6394a90a5ca4",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "89007399-3c34-40d2-8068-a0b8e09cbef8",
-          "system": "spl"
+          "code": "spl:89007399-3c34-40d2-8068-a0b8e09cbef8",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "64bcce1a-6e31-4e73-8da5-11aa9e890da2",
-          "system": "spl"
+          "code": "spl:64bcce1a-6e31-4e73-8da5-11aa9e890da2",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "72266-253",
-          "system": "ndc"
+          "code": "ndc:72266-253",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "25021-253",
-          "system": "ndc"
+          "code": "ndc:25021-253",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "72266-252",
-          "system": "ndc"
+          "code": "ndc:72266-252",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "0143-9504",
-          "system": "ndc"
+          "code": "ndc:0143-9504",
+          "system": "https://dps.fda.gov/ndc"
         },
         "relation": "relatedMatch"
       }
@@ -2880,6 +2893,7 @@
   },
   "normalize_phenobarbital": {
     "id": "normalize.therapy.rxcui:8134",
+    "primaryCode": "rxcui:8134",
     "label": "phenobarbital",
     "extensions": [
       {
@@ -2903,13 +2917,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "mondo",
-                    "code": "0001627"
+                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "code": "mondo:0001627"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009503",
@@ -2923,13 +2937,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "mondo",
-                    "code": "0001475"
+                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "code": "mondo:0001475"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D003866",
@@ -2943,13 +2957,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "mondo",
-                    "code": "0002050"
+                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "code": "mondo:0002050"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D008223",
@@ -2963,13 +2977,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3208"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3208"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D012559",
@@ -2983,13 +2997,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "mondo",
-                    "code": "0005090"
+                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "code": "mondo:0005090"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D004827",
@@ -3003,13 +3017,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3020"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3020"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D013226",
@@ -3023,13 +3037,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C85079"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C85079"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D009357",
@@ -3043,13 +3057,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C87101"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C87101"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D012640",
@@ -3063,13 +3077,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "ncit",
-                    "code": "C3980"
+                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
+                    "code": "ncit:C3980"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             },
             {
               "id": "mesh:D001007",
@@ -3083,13 +3097,13 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "mondo",
-                    "code": "0011918"
+                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "code": "mondo:0011918"
                   },
                   "relation": "relatedMatch"
                 }
               ],
-              "type": "Disease"
+              "conceptType": "Disease"
             }
           ]
         }
@@ -3104,304 +3118,340 @@
           "Solfoton",
           "Phenobarbitone"
         ]
+      },
+      {
+        "name": "aliases",
+        "value": [
+          "PHENOBARBITAL",
+          "Phenemal",
+          "5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+          "phenobarbitone",
+          "Phenobarbitone",
+          "Phenobarbital civ",
+          "Phenylethylbarbituric Acid",
+          "phenobarb",
+          "PHENYLETHYLMALONYLUREA",
+          "Phenylethylbarbitursaeure",
+          "Phenylethylbarbitursäure",
+          "Phenobarbituric Acid",
+          "5-Ethyl-5-phenylbarbituric acid",
+          "PHENO",
+          "NSC-128143-",
+          "phenobarbital sodium",
+          "Phenylethylbarbiturate",
+          "Fenobarbital",
+          "phenobarbital",
+          "Phenobarbital",
+          "5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione",
+          "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
+          "Luminal®",
+          "Phenylaethylbarbitursaeure",
+          "NSC-9848",
+          "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
+          "5-Phenyl-5-ethylbarbituric acid",
+          "fenobarbital",
+          "NSC-128143",
+          "Luminal",
+          "Phenylethylmalonylurea",
+          "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
+          "Phenobarbitol",
+          "PHENobarbital",
+          "APRD00184",
+          "phenylethylbarbiturate",
+          "Phenyläthylbarbitursäure"
+        ]
       }
     ],
     "mappings": [
       {
         "coding": {
-          "system": "ncit",
-          "code": "C739"
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/index.html",
+          "code": "rxcui:8134"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "system": "http://purl.obolibrary.org/obo/ncit.owl",
+          "code": "ncit:C739"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "drugbank",
-          "code": "DB01174"
+          "system": "https://go.drugbank.com",
+          "code": "drugbank:DB01174"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "iuphar.ligand",
-          "code": "2804"
+          "system": "https://www.guidetopharmacology.org/GRAC/LigandListForward",
+          "code": "iuphar.ligand:2804"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "chembl",
-          "code": "CHEMBL40"
+          "system": "https://www.ebi.ac.uk/chembl/",
+          "code": "chembl:CHEMBL40"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "chemidplus",
-          "code": "50-06-6"
+          "system": "https://pubchem.ncbi.nlm.nih.gov/source/ChemIDplus",
+          "code": "chemidplus:50-06-6"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "wikidata",
-          "code": "Q407241"
+          "system": "https://www.wikidata.org",
+          "code": "wikidata:Q407241"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "vandf",
-          "code": "4017422"
+          "system": "https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/VANDF",
+          "code": "vandf:4017422"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "usp",
-          "code": "m63400"
+          "system": "https://www.usp.org/health-quality-safety/compendial-nomenclature",
+          "code": "usp:m63400"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "chebi",
-          "code": "8069"
+          "system": "http://purl.obolibrary.org/obo/chebi.owl",
+          "code": "CHEBI:8069"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "unii",
-          "code": "YQE403BP4D"
+          "system": "https://precision.fda.gov/uniisearch",
+          "code": "unii:YQE403BP4D"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "atc",
-          "code": "N03AA02"
+          "system": "https://www.who.int/tools/atc-ddd-toolkit/atc-classification/",
+          "code": "atc:N03AA02"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "inchikey",
-          "code": "DDBREPKUVSBGFI-UHFFFAOYSA-N"
+          "system": "https://www.chemspider.com",
+          "code": "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "umls",
-          "code": "C0031412"
+          "system": "https://www.nlm.nih.gov/research/umls/index.html",
+          "code": "umls:C0031412"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "pubchem.substance",
-          "code": "135650817"
+          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/substances",
+          "code": "pubchem.substance:135650817"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "mmsl",
-          "code": "d00340"
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
+          "code": "mmsl:d00340"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "mmsl",
-          "code": "2390"
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
+          "code": "mmsl:2390"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "drugcentral",
-          "code": "2134"
+          "system": "https://drugcentral.org",
+          "code": "drugcentral:2134"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "pubchem.compound",
-          "code": "4763"
+          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/compounds",
+          "code": "pubchem.compound:4763"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "mmsl",
-          "code": "5272"
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
+          "code": "mmsl:5272"
         },
         "relation": "relatedMatch"
       }
     ],
-    "type": "TherapeuticAgent",
-    "alternativeLabels": [
-      "PHENOBARBITAL",
-      "Phenemal",
-      "5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
-      "phenobarbitone",
-      "Phenobarbitone",
-      "Phenobarbital civ",
-      "Phenylethylbarbituric Acid",
-      "phenobarb",
-      "PHENYLETHYLMALONYLUREA",
-      "Phenylethylbarbitursaeure",
-      "Phenylethylbarbitursäure",
-      "Phenobarbituric Acid",
-      "5-Ethyl-5-phenylbarbituric acid",
-      "PHENO",
-      "NSC-128143-",
-      "phenobarbital sodium",
-      "Phenylethylbarbiturate",
-      "Fenobarbital",
-      "phenobarbital",
-      "Phenobarbital",
-      "5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione",
-      "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
-      "Luminal®",
-      "Phenylaethylbarbitursaeure",
-      "NSC-9848",
-      "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
-      "5-Phenyl-5-ethylbarbituric acid",
-      "fenobarbital",
-      "NSC-128143",
-      "Luminal",
-      "Phenylethylmalonylurea",
-      "5-Ethyl-5-phenyl-pyrimidine-2,4,6-trione",
-      "Phenobarbitol",
-      "PHENobarbital",
-      "APRD00184",
-      "phenylethylbarbiturate",
-      "Phenyläthylbarbitursäure"
-    ]
+    "conceptType": "Therapy"
   },
   "normalize_spiramycin": {
     "id": "normalize.therapy.rxcui:9991",
+    "primaryCode": "rxcui:9991",
     "label": "spiramycin",
     "mappings": [
       {
         "coding": {
-          "system": "ncit",
-          "code": "C839"
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/index.html",
+          "code": "rxcui:9991"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "system": "http://purl.obolibrary.org/obo/ncit.owl",
+          "code": "ncit:C839"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "drugbank",
-          "code": "DB06145"
+          "system": "https://go.drugbank.com",
+          "code": "drugbank:DB06145"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "chemidplus",
-          "code": "8025-81-8"
+          "system": "https://pubchem.ncbi.nlm.nih.gov/source/ChemIDplus",
+          "code": "chemidplus:8025-81-8"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "wikidata",
-          "code": "Q422265"
+          "system": "https://www.wikidata.org",
+          "code": "wikidata:Q422265"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "unii",
-          "code": "71ODY0V87H"
+          "system": "https://precision.fda.gov/uniisearch",
+          "code": "unii:71ODY0V87H"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "pubchem.compound",
-          "code": "5356392"
+          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/compounds",
+          "code": "pubchem.compound:5356392"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "atc",
-          "code": "J01FA02"
+          "system": "https://www.who.int/tools/atc-ddd-toolkit/atc-classification/",
+          "code": "atc:J01FA02"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "inchikey",
-          "code": "ACTOXUHEUCPTEW-CEUOBAOPSA-N"
+          "system": "https://www.chemspider.com",
+          "code": "inchikey:ACTOXUHEUCPTEW-CEUOBAOPSA-N"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "unii",
-          "code": "033ECH6IFG"
+          "system": "https://precision.fda.gov/uniisearch",
+          "code": "unii:033ECH6IFG"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "umls",
-          "code": "C0037962"
+          "system": "https://www.nlm.nih.gov/research/umls/index.html",
+          "code": "umls:C0037962"
         },
         "relation": "relatedMatch"
       }
     ],
-    "type": "TherapeuticAgent",
-    "alternativeLabels": [
-      "Rovamycin",
-      "Spiramycin 1",
-      "Foromacidin A",
-      "SPIRAMYCIN",
-      "Spiramycin",
-      "Demycarosylturimycin H",
-      "Antibiotic 799",
-      "Rovamycine",
-      "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside",
-      "RP 5337",
-      "Provamycin",
-      "Spiramycin A",
-      "Spiramycin I",
-      "spiramycin I",
-      "Foromacidine A"
+    "conceptType": "Therapy",
+    "extensions": [
+      {
+        "name": "aliases",
+        "value": [
+          "Rovamycin",
+          "Spiramycin 1",
+          "Foromacidin A",
+          "SPIRAMYCIN",
+          "Spiramycin",
+          "Demycarosylturimycin H",
+          "Antibiotic 799",
+          "Rovamycine",
+          "(4R,5S,6R,7R,9R,10R,11E,13E,16R)-10-{[(2R,5S,6R)-5-(dimethylamino)-6-methyltetrahydro-2H-pyran-2-yl]oxy}-9,16-dimethyl-5-methoxy-2-oxo-7-(2-oxoethyl)oxacyclohexadeca-11,13-dien-6-yl 3,6-dideoxy-4-O-(2,6-dideoxy-3-C-methyl-alpha-L-ribo-hexopyranosyl)-3-(dimethylamino)-alpha-D-glucopyranoside",
+          "RP 5337",
+          "Provamycin",
+          "Spiramycin A",
+          "Spiramycin I",
+          "spiramycin I",
+          "Foromacidine A"
+        ]
+      }
     ]
   },
   "normalize_therapeutic_procedure": {
-    "type": "TherapeuticAgent",
+    "conceptType": "Therapy",
     "label": "Therapeutic Procedure",
     "description": null,
     "id": "normalize.therapy.ncit:C49236",
-    "alternativeLabels": [
-      "Therapeutic Interventions",
-      "any therapy",
-      "therapy",
-      "TX",
-      "TREAT",
-      "Therapeutic Method",
-      "Therapeutic",
-      "Treatment",
-      "Therapeutic Technique",
-      "Therapy",
-      "treatment_or_therapy",
-      "treatment or therapy",
-      "any_therapy",
-      "treatment"
+    "primaryCode": "ncit:C49236",
+    "extensions": [
+      {
+        "name": "aliases",
+        "value": [
+          "Therapeutic Interventions",
+          "any therapy",
+          "therapy",
+          "TX",
+          "TREAT",
+          "Therapeutic Method",
+          "Therapeutic",
+          "Treatment",
+          "Therapeutic Technique",
+          "Therapy",
+          "treatment_or_therapy",
+          "treatment or therapy",
+          "any_therapy",
+          "treatment"
+        ]
+      }
     ],
     "mappings": [
       {
         "coding": {
-          "code": "C0087111",
-          "system": "umls"
+          "system": "http://purl.obolibrary.org/obo/ncit.owl",
+          "code": "ncit:C49236"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "code": "umls:C0087111",
+          "system": "https://www.nlm.nih.gov/research/umls/index.html"
         },
         "relation": "relatedMatch"
       }
@@ -3433,7 +3483,9 @@
             ],
             "trade_names": [],
             "xrefs": [],
-            "associated_with": ["umls:C0087111"],
+            "associated_with": [
+              "umls:C0087111"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -3471,8 +3523,12 @@
               "Spiramycin I"
             ],
             "trade_names": [],
-            "xrefs": ["drugbank:DB06145"],
-            "associated_with": ["atc:J01FA02"],
+            "xrefs": [
+              "drugbank:DB06145"
+            ],
+            "associated_with": [
+              "atc:J01FA02"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -3506,8 +3562,13 @@
               "RP 5337"
             ],
             "trade_names": [],
-            "xrefs": ["chemidplus:8025-81-8"],
-            "associated_with": ["umls:C0037962", "unii:71ODY0V87H"],
+            "xrefs": [
+              "chemidplus:8025-81-8"
+            ],
+            "associated_with": [
+              "umls:C0037962",
+              "unii:71ODY0V87H"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -3540,7 +3601,9 @@
               "Demycarosylturimycin H"
             ],
             "trade_names": [],
-            "xrefs": ["chemidplus:24916-50-5"],
+            "xrefs": [
+              "chemidplus:24916-50-5"
+            ],
             "associated_with": [
               "inchikey:ACTOXUHEUCPTEW-CEUOBAOPSA-N",
               "unii:033ECH6IFG"
@@ -3571,7 +3634,9 @@
             "aliases": [],
             "trade_names": [],
             "xrefs": [],
-            "associated_with": ["unii:71ODY0V87H"],
+            "associated_with": [
+              "unii:71ODY0V87H"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -3595,14 +3660,18 @@
           {
             "concept_id": "wikidata:Q422265",
             "label": "spiramycin",
-            "aliases": ["spiramycin I"],
+            "aliases": [
+              "spiramycin I"
+            ],
             "trade_names": [],
             "xrefs": [
               "chemidplus:8025-81-8",
               "rxcui:9991",
               "chembl:CHEMBL1256397"
             ],
-            "associated_with": ["pubchem.compound:5356392"],
+            "associated_with": [
+              "pubchem.compound:5356392"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -3642,8 +3711,14 @@
               "Cis-DDP",
               "PLATINUM, DIAMMINEDICHLORO-, (SP-4-2)-"
             ],
-            "trade_names": ["Platinol", "Cisplatin"],
-            "xrefs": ["drugbank:DB12117", "drugbank:DB00515"],
+            "trade_names": [
+              "Platinol",
+              "Cisplatin"
+            ],
+            "xrefs": [
+              "drugbank:DB12117",
+              "drugbank:DB00515"
+            ],
             "associated_with": [
               "atc:L01XA01",
               "unii:Q20Q21Q62J",
@@ -3653,7 +3728,9 @@
               "vandf:4018139",
               "mmsl:d00195"
             ],
-            "approval_ratings": ["rxnorm_prescribable"],
+            "approval_ratings": [
+              "rxnorm_prescribable"
+            ],
             "approval_year": [],
             "has_indication": []
           }
@@ -3678,7 +3755,9 @@
             "label": "Cisplatin",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["chemidplus:15663-27-1"],
+            "xrefs": [
+              "chemidplus:15663-27-1"
+            ],
             "associated_with": [
               "CHEBI:27899",
               "unii:Q20Q21Q62J",
@@ -3719,10 +3798,16 @@
               "NSC119875"
             ],
             "trade_names": [],
-            "xrefs": ["rxcui:2555"],
+            "xrefs": [
+              "rxcui:2555"
+            ],
             "associated_with": [],
-            "approval_ratings": ["hemonc_approved"],
-            "approval_year": ["1978"],
+            "approval_ratings": [
+              "hemonc_approved"
+            ],
+            "approval_year": [
+              "1978"
+            ],
             "has_indication": [
               {
                 "disease_id": "hemonc:671",
@@ -3744,7 +3829,9 @@
                 "disease_id": "hemonc:645",
                 "disease_label": "Ovarian cancer",
                 "normalized_disease_id": "ncit:C7431",
-                "supplemental_info": { "regulatory_body": "FDA" }
+                "supplemental_info": {
+                  "regulatory_body": "FDA"
+                }
               }
             ]
           }
@@ -3775,7 +3862,9 @@
               "APRD00359"
             ],
             "trade_names": [],
-            "xrefs": ["chemidplus:15663-27-1"],
+            "xrefs": [
+              "chemidplus:15663-27-1"
+            ],
             "associated_with": [
               "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
               "unii:Q20Q21Q62J"
@@ -3787,9 +3876,13 @@
           {
             "concept_id": "drugbank:DB12117",
             "label": "Mitometh",
-            "aliases": ["DDP"],
+            "aliases": [
+              "DDP"
+            ],
             "trade_names": [],
-            "xrefs": ["chemidplus:107465-03-2"],
+            "xrefs": [
+              "chemidplus:107465-03-2"
+            ],
             "associated_with": [
               "unii:H8MTN7XVC2",
               "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N"
@@ -3819,14 +3912,18 @@
             "label": "CISPLATIN",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["rxcui:309311"],
+            "xrefs": [
+              "rxcui:309311"
+            ],
             "associated_with": [
               "spl:adf5773e-9095-4cb4-a90f-72cbf82f4493",
               "ndc:0703-5748",
               "unii:Q20Q21Q62J",
               "ndc:0703-5747"
             ],
-            "approval_ratings": ["fda_prescription"],
+            "approval_ratings": [
+              "fda_prescription"
+            ],
             "approval_year": [],
             "has_indication": []
           },
@@ -3835,13 +3932,17 @@
             "label": "CISPLATIN",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["rxcui:309311"],
+            "xrefs": [
+              "rxcui:309311"
+            ],
             "associated_with": [
               "ndc:63323-103",
               "unii:Q20Q21Q62J",
               "spl:9b008181-ab66-db2f-e053-2995a90aad57"
             ],
-            "approval_ratings": ["fda_prescription"],
+            "approval_ratings": [
+              "fda_prescription"
+            ],
             "approval_year": [],
             "has_indication": []
           },
@@ -3850,14 +3951,18 @@
             "label": "CISPLATIN",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["rxcui:309311"],
+            "xrefs": [
+              "rxcui:309311"
+            ],
             "associated_with": [
               "ndc:0143-9505",
               "unii:Q20Q21Q62J",
               "ndc:0143-9504",
               "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c"
             ],
-            "approval_ratings": ["fda_prescription"],
+            "approval_ratings": [
+              "fda_prescription"
+            ],
             "approval_year": [],
             "has_indication": []
           },
@@ -3866,7 +3971,9 @@
             "label": "CISPLATIN",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["rxcui:309311"],
+            "xrefs": [
+              "rxcui:309311"
+            ],
             "associated_with": [
               "ndc:16729-288",
               "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2",
@@ -3874,7 +3981,9 @@
               "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
               "ndc:68001-283"
             ],
-            "approval_ratings": ["fda_prescription"],
+            "approval_ratings": [
+              "fda_prescription"
+            ],
             "approval_year": [],
             "has_indication": []
           },
@@ -3883,7 +3992,9 @@
             "label": "CISPLATIN",
             "aliases": [],
             "trade_names": [],
-            "xrefs": ["rxcui:309311"],
+            "xrefs": [
+              "rxcui:309311"
+            ],
             "associated_with": [
               "ndc:72266-252",
               "spl:0219ee77-eb38-b81f-e063-6394a90a5ca4",
@@ -3897,7 +4008,9 @@
               "ndc:70860-206",
               "ndc:68083-163"
             ],
-            "approval_ratings": ["fda_prescription"],
+            "approval_ratings": [
+              "fda_prescription"
+            ],
             "approval_year": [],
             "has_indication": []
           },
@@ -3905,8 +4018,14 @@
             "concept_id": "drugsatfda.nda:018057",
             "label": "CISPLATIN",
             "aliases": [],
-            "trade_names": ["PLATINOL-AQ", "PLATINOL"],
-            "xrefs": ["rxcui:309311", "rxcui:1736854"],
+            "trade_names": [
+              "PLATINOL-AQ",
+              "PLATINOL"
+            ],
+            "xrefs": [
+              "rxcui:309311",
+              "rxcui:1736854"
+            ],
             "associated_with": [
               "unii:Q20Q21Q62J",
               "ndc:44567-509",
@@ -3939,7 +4058,9 @@
           {
             "concept_id": "iuphar.ligand:5343",
             "label": "cisplatin",
-            "aliases": ["Platinol"],
+            "aliases": [
+              "Platinol"
+            ],
             "trade_names": [],
             "xrefs": [
               "chemidplus:15663-27-1",
@@ -3951,7 +4072,9 @@
               "pubchem.substance:178102005",
               "CHEBI:27899"
             ],
-            "approval_ratings": ["gtopdb_approved"],
+            "approval_ratings": [
+              "gtopdb_approved"
+            ],
             "approval_year": [],
             "has_indication": []
           }
@@ -3999,7 +4122,9 @@
             ],
             "xrefs": [],
             "associated_with": [],
-            "approval_ratings": ["chembl_phase_4"],
+            "approval_ratings": [
+              "chembl_phase_4"
+            ],
             "approval_year": [],
             "has_indication": [
               {
@@ -4988,8 +5113,12 @@
               "1,2-Diaminocyclohexaneplatinum II citrate"
             ],
             "trade_names": [],
-            "xrefs": ["drugbank:DB00515"],
-            "associated_with": ["unii:Q20Q21Q62J"],
+            "xrefs": [
+              "drugbank:DB00515"
+            ],
+            "associated_with": [
+              "unii:Q20Q21Q62J"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
@@ -5029,7 +5158,9 @@
               "iuphar.ligand:5343",
               "drugbank:DB00515"
             ],
-            "associated_with": ["pubchem.compound:5702198"],
+            "associated_with": [
+              "pubchem.compound:5702198"
+            ],
             "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
