@@ -14,7 +14,7 @@
 
 ## Installation
 
-Install from [PyPI](https://pypi.org/projects/thera-py):
+Install from [PyPI](https://pypi.org/project/thera-py):
 
 ```shell
 python3 -m pip install thera-py
@@ -158,7 +158,7 @@ source venv/bin/activate
 Install development dependencies and `pre-commit`:
 
 ```shell
-python3 -m pip install -e '.[dev,test]'
+python3 -m pip install -e '.[dev,tests]'
 pre-commit install
 ```
 

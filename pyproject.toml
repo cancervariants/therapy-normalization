@@ -29,22 +29,23 @@ dependencies = [
     "uvicorn",
     "click",
     "boto3",
-    "ga4gh.vrs~=2.0.0a8",
+    "ga4gh.vrs==2.0.0a13",
+    "disease-normalizer~=0.7.0",
 ]
 dynamic = ["version"]
 
 [project.optional-dependencies]
 etl = [
-    "disease-normalizer[etl]~=0.5.0",
+    "disease-normalizer[etl]~=0.7.0",
     "owlready2",
     "rdflib",
     "wikibaseintegrator>=0.12.0",
-    "wags-tails~=0.2.0",
+    "wags-tails~=0.2.2",
     "tqdm",
     "rich",
     "pyyaml"
 ]
-test = ["pytest", "pytest-cov", "pytest-mock", "isodate"]
+tests = ["pytest", "pytest-cov", "pytest-mock", "isodate"]
 dev = ["pre-commit>=3.7.1", "ruff==0.8.4", "lxml", "xmlformatter", "types-pyyaml"]
 
 [project.urls]
