@@ -7,7 +7,7 @@ from collections.abc import Callable
 from typing import Any, TypeVar
 
 from botocore.exceptions import ClientError
-from disease.query import create_concept_mapping as create_disease_concept_mapping
+from disease.query import get_concept_mapping as get_disease_concept_mapping
 from ga4gh.core.models import (
     Coding,
     ConceptMapping,
@@ -397,18 +397,20 @@ class QueryHandler:
         :return: completed response object ready to return to user
         """
 
-        def _create_concept_mapping(
+        def _get_concept_mapping(
             concept_id: str,
             relation: Relation,
         ) -> ConceptMapping:
-            """Create concept mapping for therapy or disease identifier
+            """Create concept mapping for identifier
 
             ``system`` will use system prefix URL, OBO Foundry persistent URL (PURL), or
             source homepage, in that order of preference.
 
             :param concept_id: Concept identifier represented as a curie
             :param relation: SKOS mapping relationship, default is relatedMatch
-            :return: Concept mapping for therapy or disease identifier
+            :raises ValueError: If source of concept ID is not a valid
+                ``NamespacePrefix``
+            :return: Concept mapping for identifier
             """
             source, source_code = concept_id.split(":")
 
@@ -440,14 +442,14 @@ class QueryHandler:
 
         # mappings
         mappings = [
-            _create_concept_mapping(
+            _get_concept_mapping(
                 concept_id=record["concept_id"],
                 relation=Relation.EXACT_MATCH,
             )
         ]
         source_ids = record.get("xrefs", []) + record.get("associated_with", [])
         mappings.extend(
-            _create_concept_mapping(
+            _get_concept_mapping(
                 concept_id=source_id,
                 relation=Relation.RELATED_MATCH,
             )
@@ -483,7 +485,7 @@ class QueryHandler:
 
                 if indication.normalized_disease_id:
                     mappings = [
-                        create_disease_concept_mapping(
+                        get_disease_concept_mapping(
                             concept_id=indication.normalized_disease_id,
                             relation=Relation.RELATED_MATCH,
                         )
