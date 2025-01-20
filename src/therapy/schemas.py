@@ -2,6 +2,7 @@
 
 from datetime import datetime
 from enum import Enum, IntEnum
+from types import MappingProxyType
 from typing import Any, Literal
 
 from ga4gh.core.models import MappableConcept
@@ -259,36 +260,38 @@ class NamespacePrefix(Enum):
 
 
 # Source to URI. Will use system prefix URL, OBO Foundry persistent URL (PURL) or source homepage
-NAMESPACE_TO_SYSTEM_URI: dict[NamespacePrefix, str] = {
-    NamespacePrefix.ATC: "https://atcddd.fhi.no/atc_ddd_index/?code=",
-    NamespacePrefix.CHEBI: "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=",
-    NamespacePrefix.CHEMBL: "https://www.ebi.ac.uk/chembl/explore/compound/",
-    NamespacePrefix.CHEMIDPLUS: "https://commonchemistry.cas.org/detail?cas_rn=",
-    NamespacePrefix.CASREGISTRY: "https://commonchemistry.cas.org/detail?cas_rn=",
-    NamespacePrefix.CVX: "https://www2a.cdc.gov/vaccines/iis/iisstandards/vaccines.asp?rpt=cvx",
-    NamespacePrefix.DRUGBANK: "https://go.drugbank.com/drugs/",
-    NamespacePrefix.DRUGCENTRAL: "https://drugcentral.org/drugcard/",
-    NamespacePrefix.DRUGSATFDA_ANDA: "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
-    NamespacePrefix.DRUGSATFDA_NDA: "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
-    NamespacePrefix.HEMONC: "https://hemonc.org",
-    NamespacePrefix.INCHIKEY: "https://www.chemspider.com",
-    NamespacePrefix.IUPHAR_LIGAND: "https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=",
-    NamespacePrefix.GUIDETOPHARMACOLOGY: "https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=",
-    NamespacePrefix.MMSL: "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
-    NamespacePrefix.MSH: "https://id.nlm.nih.gov/mesh/",
-    NamespacePrefix.NCIT: "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
-    NamespacePrefix.NDC: "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
-    NamespacePrefix.PUBCHEMCOMPOUND: "https://pubchem.ncbi.nlm.nih.gov/compound/",
-    NamespacePrefix.PUBCHEMSUBSTANCE: "https://pubchem.ncbi.nlm.nih.gov/substance/",
-    NamespacePrefix.RXNORM: "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=",
-    NamespacePrefix.SPL: "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
-    NamespacePrefix.UMLS: "https://uts.nlm.nih.gov/uts/umls/concept/",
-    NamespacePrefix.UNII: "https://precision.fda.gov/uniisearch/srs/unii/",
-    NamespacePrefix.UNIPROT: "https://www.uniprot.org/uniprotkb/",
-    NamespacePrefix.USP: "https://www.usp.org/health-quality-safety/compendial-nomenclature",
-    NamespacePrefix.VANDF: "https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/VANDF",
-    NamespacePrefix.WIKIDATA: "https://www.wikidata.org/wiki/",
-}
+NAMESPACE_TO_SYSTEM_URI: MappingProxyType[NamespacePrefix, str] = MappingProxyType(
+    {
+        NamespacePrefix.ATC: "https://atcddd.fhi.no/atc_ddd_index/?code=",
+        NamespacePrefix.CHEBI: "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=",
+        NamespacePrefix.CHEMBL: "https://www.ebi.ac.uk/chembl/explore/compound/",
+        NamespacePrefix.CHEMIDPLUS: "https://commonchemistry.cas.org/detail?cas_rn=",
+        NamespacePrefix.CASREGISTRY: "https://commonchemistry.cas.org/detail?cas_rn=",
+        NamespacePrefix.CVX: "https://www2a.cdc.gov/vaccines/iis/iisstandards/vaccines.asp?rpt=cvx",
+        NamespacePrefix.DRUGBANK: "https://go.drugbank.com/drugs/",
+        NamespacePrefix.DRUGCENTRAL: "https://drugcentral.org/drugcard/",
+        NamespacePrefix.DRUGSATFDA_ANDA: "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+        NamespacePrefix.DRUGSATFDA_NDA: "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+        NamespacePrefix.HEMONC: "https://hemonc.org",
+        NamespacePrefix.INCHIKEY: "https://www.chemspider.com",
+        NamespacePrefix.IUPHAR_LIGAND: "https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=",
+        NamespacePrefix.GUIDETOPHARMACOLOGY: "https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=",
+        NamespacePrefix.MMSL: "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
+        NamespacePrefix.MSH: "https://id.nlm.nih.gov/mesh/",
+        NamespacePrefix.NCIT: "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+        NamespacePrefix.NDC: "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+        NamespacePrefix.PUBCHEMCOMPOUND: "https://pubchem.ncbi.nlm.nih.gov/compound/",
+        NamespacePrefix.PUBCHEMSUBSTANCE: "https://pubchem.ncbi.nlm.nih.gov/substance/",
+        NamespacePrefix.RXNORM: "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=",
+        NamespacePrefix.SPL: "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+        NamespacePrefix.UMLS: "https://uts.nlm.nih.gov/uts/umls/concept/",
+        NamespacePrefix.UNII: "https://precision.fda.gov/uniisearch/srs/unii/",
+        NamespacePrefix.UNIPROT: "https://www.uniprot.org/uniprotkb/",
+        NamespacePrefix.USP: "https://www.usp.org/health-quality-safety/compendial-nomenclature",
+        NamespacePrefix.VANDF: "https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/VANDF",
+        NamespacePrefix.WIKIDATA: "https://www.wikidata.org/wiki/",
+    }
+)
 
 # URI to source
 SYSTEM_URI_TO_NAMESPACE = {
