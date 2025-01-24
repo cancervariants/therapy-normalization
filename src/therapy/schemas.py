@@ -286,7 +286,7 @@ NAMESPACE_TO_SYSTEM_URI: MappingProxyType[NamespacePrefix, str] = MappingProxyTy
         NamespacePrefix.SPL: "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
         NamespacePrefix.UMLS: "https://uts.nlm.nih.gov/uts/umls/concept/",
         NamespacePrefix.UNII: "https://precision.fda.gov/uniisearch/srs/unii/",
-        NamespacePrefix.UNIPROT: "https://www.uniprot.org/uniprotkb/",
+        NamespacePrefix.UNIPROT: "http://purl.uniprot.org/uniprot/",
         NamespacePrefix.USP: "https://www.usp.org/health-quality-safety/compendial-nomenclature",
         NamespacePrefix.VANDF: "https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/VANDF",
         NamespacePrefix.WIKIDATA: "https://www.wikidata.org/wiki/",
