@@ -158,8 +158,8 @@
               "mappings": [
                 {
                   "coding": {
-                    "id": "mondo:0850353",
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "id": "MONDO_0850353",
+                    "system": "https://purl.obolibrary.org/obo/",
                     "code": "MONDO:0850353"
                   },
                   "relation": "relatedMatch"
@@ -179,8 +179,8 @@
               "mappings": [
                 {
                   "coding": {
-                    "id": "mondo:0003060",
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "id": "MONDO_0003060",
+                    "system": "https://purl.obolibrary.org/obo/",
                     "code": "MONDO:0003060"
                   },
                   "relation": "relatedMatch"
@@ -757,8 +757,8 @@
               "mappings": [
                 {
                   "coding": {
-                    "id": "mondo:0005086",
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "id": "MONDO_0005086",
+                    "system": "https://purl.obolibrary.org/obo/",
                     "code": "MONDO:0005086"
                   },
                   "relation": "relatedMatch"
@@ -3092,8 +3092,8 @@
               "mappings": [
                 {
                   "coding": {
-                    "id": "mondo:0001627",
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "id": "MONDO_0001627",
+                    "system": "https://purl.obolibrary.org/obo/",
                     "code": "MONDO:0001627"
                   },
                   "relation": "relatedMatch"
@@ -3113,8 +3113,8 @@
               "mappings": [
                 {
                   "coding": {
-                    "id": "mondo:0001475",
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "id": "MONDO_0001475",
+                    "system": "https://purl.obolibrary.org/obo/",
                     "code": "MONDO:0001475"
                   },
                   "relation": "relatedMatch"
@@ -3134,8 +3134,8 @@
               "mappings": [
                 {
                   "coding": {
-                    "id": "mondo:0002050",
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "id": "MONDO_0002050",
+                    "system": "https://purl.obolibrary.org/obo/",
                     "code": "MONDO:0002050"
                   },
                   "relation": "relatedMatch"
@@ -3176,8 +3176,8 @@
               "mappings": [
                 {
                   "coding": {
-                    "id": "mondo:0005090",
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "id": "MONDO_0005090",
+                    "system": "https://purl.obolibrary.org/obo/",
                     "code": "MONDO:0005090"
                   },
                   "relation": "relatedMatch"
@@ -3281,8 +3281,8 @@
               "mappings": [
                 {
                   "coding": {
-                    "id": "mondo:0011918",
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
+                    "id": "MONDO_0011918",
+                    "system": "https://purl.obolibrary.org/obo/",
                     "code": "MONDO:0011918"
                   },
                   "relation": "relatedMatch"
