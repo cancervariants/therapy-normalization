@@ -74,8 +74,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7251"
+                    "id": "ncit:C7251",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7251"
                   },
                   "relation": "relatedMatch"
                 }
@@ -94,8 +95,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7431"
+                    "id": "ncit:C7431",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7431"
                   },
                   "relation": "relatedMatch"
                 }
@@ -114,8 +116,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9334"
+                    "id": "ncit:C9334",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9334"
                   },
                   "relation": "relatedMatch"
                 }
@@ -134,8 +137,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3411"
+                    "id": "ncit:C3411",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3411"
                   },
                   "relation": "relatedMatch"
                 }
@@ -154,8 +158,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
-                    "code": "mondo:0850353"
+                    "id": "MONDO_0850353",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0850353"
                   },
                   "relation": "relatedMatch"
                 }
@@ -174,8 +179,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
-                    "code": "mondo:0003060"
+                    "id": "MONDO_0003060",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0003060"
                   },
                   "relation": "relatedMatch"
                 }
@@ -194,8 +200,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3262"
+                    "id": "ncit:C3262",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3262"
                   },
                   "relation": "relatedMatch"
                 }
@@ -214,8 +221,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7606"
+                    "id": "ncit:C7606",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7606"
                   },
                   "relation": "relatedMatch"
                 }
@@ -234,8 +242,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2929"
+                    "id": "ncit:C2929",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2929"
                   },
                   "relation": "relatedMatch"
                 }
@@ -254,8 +263,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4436"
+                    "id": "ncit:C4436",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4436"
                   },
                   "relation": "relatedMatch"
                 }
@@ -274,8 +284,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3017"
+                    "id": "ncit:C3017",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3017"
                   },
                   "relation": "relatedMatch"
                 }
@@ -294,8 +305,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7478"
+                    "id": "ncit:C7478",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7478"
                   },
                   "relation": "relatedMatch"
                 }
@@ -314,8 +326,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4917"
+                    "id": "ncit:C4917",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4917"
                   },
                   "relation": "relatedMatch"
                 }
@@ -334,8 +347,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7548"
+                    "id": "ncit:C7548",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7548"
                   },
                   "relation": "relatedMatch"
                 }
@@ -354,8 +368,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2915"
+                    "id": "ncit:C2915",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2915"
                   },
                   "relation": "relatedMatch"
                 }
@@ -374,8 +389,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3222"
+                    "id": "ncit:C3222",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3222"
                   },
                   "relation": "relatedMatch"
                 }
@@ -394,8 +410,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3032"
+                    "id": "ncit:C3032",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3032"
                   },
                   "relation": "relatedMatch"
                 }
@@ -414,8 +431,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3247"
+                    "id": "ncit:C3247",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3247"
                   },
                   "relation": "relatedMatch"
                 }
@@ -434,8 +452,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C8851"
+                    "id": "ncit:C8851",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C8851"
                   },
                   "relation": "relatedMatch"
                 }
@@ -454,8 +473,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3149"
+                    "id": "ncit:C3149",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3149"
                   },
                   "relation": "relatedMatch"
                 }
@@ -474,8 +494,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3387"
+                    "id": "ncit:C3387",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3387"
                   },
                   "relation": "relatedMatch"
                 }
@@ -505,8 +526,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3619"
+                    "id": "ncit:C3619",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3619"
                   },
                   "relation": "relatedMatch"
                 }
@@ -525,8 +547,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3468"
+                    "id": "ncit:C3468",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3468"
                   },
                   "relation": "relatedMatch"
                 }
@@ -545,8 +568,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3708"
+                    "id": "ncit:C3708",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3708"
                   },
                   "relation": "relatedMatch"
                 }
@@ -565,8 +589,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2877"
+                    "id": "ncit:C2877",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2877"
                   },
                   "relation": "relatedMatch"
                 }
@@ -585,8 +610,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4962"
+                    "id": "ncit:C4962",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4962"
                   },
                   "relation": "relatedMatch"
                 }
@@ -605,8 +631,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3196"
+                    "id": "ncit:C3196",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3196"
                   },
                   "relation": "relatedMatch"
                 }
@@ -625,8 +652,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7502"
+                    "id": "ncit:C7502",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7502"
                   },
                   "relation": "relatedMatch"
                 }
@@ -645,8 +673,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4699"
+                    "id": "ncit:C4699",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4699"
                   },
                   "relation": "relatedMatch"
                 }
@@ -665,8 +694,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3048"
+                    "id": "ncit:C3048",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3048"
                   },
                   "relation": "relatedMatch"
                 }
@@ -685,8 +715,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4533"
+                    "id": "ncit:C4533",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4533"
                   },
                   "relation": "relatedMatch"
                 }
@@ -705,8 +736,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7190"
+                    "id": "ncit:C7190",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7190"
                   },
                   "relation": "relatedMatch"
                 }
@@ -725,8 +757,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
-                    "code": "mondo:0005086"
+                    "id": "MONDO_0005086",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0005086"
                   },
                   "relation": "relatedMatch"
                 }
@@ -745,8 +778,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3959"
+                    "id": "ncit:C3959",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3959"
                   },
                   "relation": "relatedMatch"
                 }
@@ -765,8 +799,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C34803"
+                    "id": "ncit:C34803",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C34803"
                   },
                   "relation": "relatedMatch"
                 }
@@ -785,8 +820,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7978"
+                    "id": "ncit:C7978",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7978"
                   },
                   "relation": "relatedMatch"
                 }
@@ -805,8 +841,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4890"
+                    "id": "ncit:C4890",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4890"
                   },
                   "relation": "relatedMatch"
                 }
@@ -825,8 +862,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2956"
+                    "id": "ncit:C2956",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2956"
                   },
                   "relation": "relatedMatch"
                 }
@@ -845,8 +883,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3305"
+                    "id": "ncit:C3305",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3305"
                   },
                   "relation": "relatedMatch"
                 }
@@ -865,8 +904,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4013"
+                    "id": "ncit:C4013",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4013"
                   },
                   "relation": "relatedMatch"
                 }
@@ -885,8 +925,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3359"
+                    "id": "ncit:C3359",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3359"
                   },
                   "relation": "relatedMatch"
                 }
@@ -905,8 +946,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3471"
+                    "id": "ncit:C3471",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3471"
                   },
                   "relation": "relatedMatch"
                 }
@@ -925,8 +967,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3568"
+                    "id": "ncit:C3568",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3568"
                   },
                   "relation": "relatedMatch"
                 }
@@ -945,8 +988,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9120"
+                    "id": "ncit:C9120",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9120"
                   },
                   "relation": "relatedMatch"
                 }
@@ -965,8 +1009,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2948"
+                    "id": "ncit:C2948",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2948"
                   },
                   "relation": "relatedMatch"
                 }
@@ -996,8 +1041,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4001"
+                    "id": "ncit:C4001",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4001"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1016,8 +1062,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9231"
+                    "id": "ncit:C9231",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9231"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1036,8 +1083,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7251"
+                    "id": "ncit:C7251",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7251"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1056,8 +1104,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3512"
+                    "id": "ncit:C3512",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3512"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1076,8 +1125,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3552"
+                    "id": "ncit:C3552",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3552"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1096,8 +1146,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3053"
+                    "id": "ncit:C3053",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3053"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1116,8 +1167,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C115965"
+                    "id": "ncit:C115965",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C115965"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1136,8 +1188,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9314"
+                    "id": "ncit:C9314",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9314"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1156,8 +1209,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3242"
+                    "id": "ncit:C3242",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3242"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1176,8 +1230,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C156767"
+                    "id": "ncit:C156767",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C156767"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1196,8 +1251,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7398"
+                    "id": "ncit:C7398",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7398"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1216,8 +1272,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3270"
+                    "id": "ncit:C3270",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3270"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1236,8 +1293,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3161"
+                    "id": "ncit:C3161",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3161"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1256,8 +1314,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7545"
+                    "id": "ncit:C7545",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7545"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1276,8 +1335,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3224"
+                    "id": "ncit:C3224",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3224"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1296,8 +1356,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2858"
+                    "id": "ncit:C2858",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2858"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1316,8 +1377,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9357"
+                    "id": "ncit:C9357",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9357"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1336,8 +1398,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9311"
+                    "id": "ncit:C9311",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9311"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1356,8 +1419,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2926"
+                    "id": "ncit:C2926",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2926"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1387,8 +1451,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3915"
+                    "id": "ncit:C3915",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3915"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1407,8 +1472,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2852"
+                    "id": "ncit:C2852",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2852"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1427,8 +1493,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3780"
+                    "id": "ncit:C3780",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3780"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1447,8 +1514,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3011"
+                    "id": "ncit:C3011",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3011"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1467,8 +1535,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2910"
+                    "id": "ncit:C2910",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2910"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1498,8 +1567,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4627"
+                    "id": "ncit:C4627",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4627"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1518,8 +1588,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3811"
+                    "id": "ncit:C3811",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3811"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1538,8 +1609,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3099"
+                    "id": "ncit:C3099",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3099"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1558,8 +1630,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3549"
+                    "id": "ncit:C3549",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3549"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1578,8 +1651,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3403"
+                    "id": "ncit:C3403",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3403"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1598,8 +1672,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3322"
+                    "id": "ncit:C3322",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3322"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1618,8 +1693,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C6014"
+                    "id": "ncit:C6014",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C6014"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1638,8 +1714,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C36077"
+                    "id": "ncit:C36077",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C36077"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1658,8 +1735,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9309"
+                    "id": "ncit:C9309",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9309"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1678,8 +1756,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7431"
+                    "id": "ncit:C7431",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7431"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1698,8 +1777,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3209"
+                    "id": "ncit:C3209",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3209"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1718,8 +1798,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4044"
+                    "id": "ncit:C4044",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4044"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1738,8 +1819,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3234"
+                    "id": "ncit:C3234",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3234"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1758,8 +1840,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3728"
+                    "id": "ncit:C3728",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3728"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1778,8 +1861,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3752"
+                    "id": "ncit:C3752",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3752"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1798,8 +1882,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3720"
+                    "id": "ncit:C3720",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3720"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1818,8 +1903,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2869"
+                    "id": "ncit:C2869",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2869"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1838,8 +1924,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2916"
+                    "id": "ncit:C2916",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2916"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1858,8 +1945,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3317"
+                    "id": "ncit:C3317",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3317"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1878,8 +1966,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3372"
+                    "id": "ncit:C3372",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3372"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1898,8 +1987,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7541"
+                    "id": "ncit:C7541",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7541"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1918,8 +2008,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9118"
+                    "id": "ncit:C9118",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9118"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1938,8 +2029,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3770"
+                    "id": "ncit:C3770",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3770"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1958,8 +2050,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3208"
+                    "id": "ncit:C3208",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3208"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1978,8 +2071,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3211"
+                    "id": "ncit:C3211",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3211"
                   },
                   "relation": "relatedMatch"
                 }
@@ -1998,8 +2092,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3200"
+                    "id": "ncit:C3200",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3200"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2018,8 +2113,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9334"
+                    "id": "ncit:C9334",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9334"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2038,8 +2134,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3184"
+                    "id": "ncit:C3184",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3184"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2058,8 +2155,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3222"
+                    "id": "ncit:C3222",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3222"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2078,8 +2176,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3012"
+                    "id": "ncit:C3012",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3012"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2098,8 +2197,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C26887"
+                    "id": "ncit:C26887",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C26887"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2118,8 +2218,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4337"
+                    "id": "ncit:C4337",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4337"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2149,8 +2250,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9145"
+                    "id": "ncit:C9145",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9145"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2169,8 +2271,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3794"
+                    "id": "ncit:C3794",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3794"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2189,8 +2292,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3257"
+                    "id": "ncit:C3257",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3257"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2209,8 +2313,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3059"
+                    "id": "ncit:C3059",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3059"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2229,8 +2334,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3790"
+                    "id": "ncit:C3790",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3790"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2260,8 +2366,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C8196"
+                    "id": "ncit:C8196",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C8196"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2280,8 +2387,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3156"
+                    "id": "ncit:C3156",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3156"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2300,8 +2408,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2862"
+                    "id": "ncit:C2862",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2862"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2320,8 +2429,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7528"
+                    "id": "ncit:C7528",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7528"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2340,8 +2450,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3773"
+                    "id": "ncit:C3773",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3773"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2360,8 +2471,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C34797"
+                    "id": "ncit:C34797",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C34797"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2380,8 +2492,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7558"
+                    "id": "ncit:C7558",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7558"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2400,8 +2513,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9345"
+                    "id": "ncit:C9345",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9345"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2420,8 +2534,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7510"
+                    "id": "ncit:C7510",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7510"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2440,8 +2555,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3868"
+                    "id": "ncit:C3868",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3868"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2460,8 +2576,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C71732"
+                    "id": "ncit:C71732",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C71732"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2485,407 +2602,465 @@
     "mappings": [
       {
         "coding": {
-          "code": "rxcui:2555",
-          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/index.html"
+          "id": "rxcui:2555",
+          "system": "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=",
+          "code": "2555"
         },
         "relation": "exactMatch"
       },
       {
         "coding": {
-          "code": "ncit:C376",
-          "system": "http://purl.obolibrary.org/obo/ncit.owl"
+          "id": "ncit:C376",
+          "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+          "code": "C376"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "hemonc:105",
-          "system": "https://hemonc.org"
+          "id": "hemonc:105",
+          "system": "https://hemonc.org",
+          "code": "105"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "drugbank:DB00515",
-          "system": "https://go.drugbank.com"
+          "id": "drugbank:DB00515",
+          "system": "https://go.drugbank.com/drugs/",
+          "code": "DB00515"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "drugbank:DB12117",
-          "system": "https://go.drugbank.com"
+          "id": "drugbank:DB12117",
+          "system": "https://go.drugbank.com/drugs/",
+          "code": "DB12117"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "drugsatfda.anda:074656",
-          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
+          "id": "drugsatfda.anda:074656",
+          "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+          "code": "074656"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "drugsatfda.anda:074735",
-          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
+          "id": "drugsatfda.anda:074735",
+          "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+          "code": "074735"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "drugsatfda.anda:075036",
-          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
+          "id": "drugsatfda.anda:075036",
+          "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+          "code": "075036"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "drugsatfda.anda:206774",
-          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
+          "id": "drugsatfda.anda:206774",
+          "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+          "code": "206774"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "drugsatfda.anda:207323",
-          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
+          "id": "drugsatfda.anda:207323",
+          "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+          "code": "207323"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "drugsatfda.nda:018057",
-          "system": "https://www.fda.gov/drugs/types-applications/new-drug-application-nda"
+          "id": "drugsatfda.nda:018057",
+          "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+          "code": "018057"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "iuphar.ligand:5343",
-          "system": "https://www.guidetopharmacology.org/GRAC/LigandListForward"
+          "id": "iuphar.ligand:5343",
+          "system": "https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=",
+          "code": "5343"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "chembl:CHEMBL11359",
-          "system": "https://www.ebi.ac.uk/chembl/"
+          "id": "chembl:CHEMBL11359",
+          "system": "https://www.ebi.ac.uk/chembl/explore/compound/",
+          "code": "CHEMBL11359"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "chemidplus:15663-27-1",
-          "system": "https://pubchem.ncbi.nlm.nih.gov/source/ChemIDplus"
+          "id": "chemidplus:15663-27-1",
+          "system": "https://commonchemistry.cas.org/detail?cas_rn=",
+          "code": "15663-27-1"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "wikidata:Q412415",
-          "system": "https://www.wikidata.org"
+          "id": "wikidata:Q412415",
+          "system": "https://www.wikidata.org/wiki/",
+          "code": "Q412415"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:0703-5748",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:0703-5748",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "0703-5748"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:63323-103",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:63323-103",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "63323-103"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:70860-206",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:70860-206",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "70860-206"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:44567-509",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:44567-509",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "44567-509"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "usp:m17910",
-          "system": "https://www.usp.org/health-quality-safety/compendial-nomenclature"
+          "id": "usp:m17910",
+          "system": "https://www.usp.org/health-quality-safety/compendial-nomenclature",
+          "code": "m17910"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:44567-530",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:44567-530",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "44567-530"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "pubchem.substance:178102005",
-          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/substances"
+          "id": "pubchem.substance:178102005",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/substance/",
+          "code": "178102005"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:9b008181-ab66-db2f-e053-2995a90aad57",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "spl:9b008181-ab66-db2f-e053-2995a90aad57",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "9b008181-ab66-db2f-e053-2995a90aad57"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:16729-288",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:16729-288",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "16729-288"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:a66eda32-1164-439a-ac8e-73138365ec06",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "spl:a66eda32-1164-439a-ac8e-73138365ec06",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "a66eda32-1164-439a-ac8e-73138365ec06"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "dd45d777-d4c1-40ee-b4f0-c9e001a15a8c"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "CHEBI:27899",
-          "system": "http://purl.obolibrary.org/obo/chebi.owl"
+          "id": "CHEBI:27899",
+          "system": "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=",
+          "code": "CHEBI:27899"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:44567-511",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:44567-511",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "44567-511"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:0703-5747",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:0703-5747",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "0703-5747"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:68083-162",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:68083-162",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "68083-162"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "atc:L01XA01",
-          "system": "https://www.who.int/tools/atc-ddd-toolkit/atc-classification/"
+          "id": "atc:L01XA01",
+          "system": "https://atcddd.fhi.no/atc_ddd_index/?code=",
+          "code": "L01XA01"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:44567-510",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:44567-510",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "44567-510"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "mmsl:31747",
-          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html"
+          "id": "mmsl:31747",
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
+          "code": "31747"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "2c569ef0-588f-4828-8b2d-03a2120c9b4c"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "vandf:4018139",
-          "system": "https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/VANDF"
+          "id": "vandf:4018139",
+          "system": "https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/VANDF",
+          "code": "4018139"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
-          "system": "https://www.chemspider.com"
+          "id": "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
+          "system": "https://www.chemspider.com",
+          "code": "LXZZYRPGZAFOLE-UHFFFAOYSA-L"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:68083-163",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:68083-163",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "68083-163"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
-          "system": "https://www.chemspider.com"
+          "id": "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
+          "system": "https://www.chemspider.com",
+          "code": "MOTIYCLHZZLHHQ-UHFFFAOYSA-N"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:adf5773e-9095-4cb4-a90f-72cbf82f4493",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "spl:adf5773e-9095-4cb4-a90f-72cbf82f4493",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "adf5773e-9095-4cb4-a90f-72cbf82f4493"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "mmsl:d00195",
-          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html"
+          "id": "mmsl:d00195",
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
+          "code": "d00195"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "01c7a680-ee0d-42da-85e8-8d56c6fe7006"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "c43de769-d6d8-3bb9-e053-2995a90a5aa2"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "unii:H8MTN7XVC2",
-          "system": "https://precision.fda.gov/uniisearch"
+          "id": "unii:H8MTN7XVC2",
+          "system": "https://precision.fda.gov/uniisearch/srs/unii/",
+          "code": "H8MTN7XVC2"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:68001-283",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:68001-283",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "68001-283"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "unii:Q20Q21Q62J",
-          "system": "https://precision.fda.gov/uniisearch"
+          "id": "unii:Q20Q21Q62J",
+          "system": "https://precision.fda.gov/uniisearch/srs/unii/",
+          "code": "Q20Q21Q62J"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "pubchem.compound:5702198",
-          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/compounds"
+          "id": "pubchem.compound:5702198",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/compound/",
+          "code": "5702198"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "pubchem.compound:441203",
-          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/compounds"
+          "id": "pubchem.compound:441203",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/compound/",
+          "code": "441203"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:0143-9505",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:0143-9505",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "0143-9505"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "mmsl:4456",
-          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html"
+          "id": "mmsl:4456",
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
+          "code": "4456"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "umls:C0008838",
-          "system": "https://www.nlm.nih.gov/research/umls/index.html"
+          "id": "umls:C0008838",
+          "system": "https://uts.nlm.nih.gov/uts/umls/concept/",
+          "code": "C0008838"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:0219ee77-eb38-b81f-e063-6394a90a5ca4",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "spl:0219ee77-eb38-b81f-e063-6394a90a5ca4",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "0219ee77-eb38-b81f-e063-6394a90a5ca4"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:89007399-3c34-40d2-8068-a0b8e09cbef8",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "spl:89007399-3c34-40d2-8068-a0b8e09cbef8",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "89007399-3c34-40d2-8068-a0b8e09cbef8"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:64bcce1a-6e31-4e73-8da5-11aa9e890da2",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "spl:64bcce1a-6e31-4e73-8da5-11aa9e890da2",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "64bcce1a-6e31-4e73-8da5-11aa9e890da2"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:72266-253",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:72266-253",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "72266-253"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:25021-253",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:25021-253",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "25021-253"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:72266-252",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:72266-252",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "72266-252"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:0143-9504",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:0143-9504",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "0143-9504"
         },
         "relation": "relatedMatch"
       }
@@ -2917,8 +3092,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
-                    "code": "mondo:0001627"
+                    "id": "MONDO_0001627",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0001627"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2937,8 +3113,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
-                    "code": "mondo:0001475"
+                    "id": "MONDO_0001475",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0001475"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2957,8 +3134,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
-                    "code": "mondo:0002050"
+                    "id": "MONDO_0002050",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0002050"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2977,8 +3155,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3208"
+                    "id": "ncit:C3208",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3208"
                   },
                   "relation": "relatedMatch"
                 }
@@ -2997,8 +3176,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
-                    "code": "mondo:0005090"
+                    "id": "MONDO_0005090",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0005090"
                   },
                   "relation": "relatedMatch"
                 }
@@ -3017,8 +3197,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3020"
+                    "id": "ncit:C3020",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3020"
                   },
                   "relation": "relatedMatch"
                 }
@@ -3037,8 +3218,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C85079"
+                    "id": "ncit:C85079",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C85079"
                   },
                   "relation": "relatedMatch"
                 }
@@ -3057,8 +3239,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C87101"
+                    "id": "ncit:C87101",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C87101"
                   },
                   "relation": "relatedMatch"
                 }
@@ -3077,8 +3260,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3980"
+                    "id": "ncit:C3980",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3980"
                   },
                   "relation": "relatedMatch"
                 }
@@ -3097,8 +3281,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
-                    "code": "mondo:0011918"
+                    "id": "MONDO_0011918",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0011918"
                   },
                   "relation": "relatedMatch"
                 }
@@ -3132,7 +3317,7 @@
           "phenobarb",
           "PHENYLETHYLMALONYLUREA",
           "Phenylethylbarbitursaeure",
-          "Phenylethylbarbitursäure",
+          "Phenylethylbarbiturs\u00e4ure",
           "Phenobarbituric Acid",
           "5-Ethyl-5-phenylbarbituric acid",
           "PHENO",
@@ -3144,7 +3329,7 @@
           "Phenobarbital",
           "5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione",
           "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
-          "Luminal®",
+          "Luminal\u00ae",
           "Phenylaethylbarbitursaeure",
           "NSC-9848",
           "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
@@ -3158,148 +3343,168 @@
           "PHENobarbital",
           "APRD00184",
           "phenylethylbarbiturate",
-          "Phenyläthylbarbitursäure"
+          "Phenyl\u00e4thylbarbiturs\u00e4ure"
         ]
       }
     ],
     "mappings": [
       {
         "coding": {
-          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/index.html",
-          "code": "rxcui:8134"
+          "id": "rxcui:8134",
+          "system": "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=",
+          "code": "8134"
         },
         "relation": "exactMatch"
       },
       {
         "coding": {
-          "system": "http://purl.obolibrary.org/obo/ncit.owl",
-          "code": "ncit:C739"
+          "id": "ncit:C739",
+          "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+          "code": "C739"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://go.drugbank.com",
-          "code": "drugbank:DB01174"
+          "id": "drugbank:DB01174",
+          "system": "https://go.drugbank.com/drugs/",
+          "code": "DB01174"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://www.guidetopharmacology.org/GRAC/LigandListForward",
-          "code": "iuphar.ligand:2804"
+          "id": "iuphar.ligand:2804",
+          "system": "https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=",
+          "code": "2804"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://www.ebi.ac.uk/chembl/",
-          "code": "chembl:CHEMBL40"
+          "id": "chembl:CHEMBL40",
+          "system": "https://www.ebi.ac.uk/chembl/explore/compound/",
+          "code": "CHEMBL40"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://pubchem.ncbi.nlm.nih.gov/source/ChemIDplus",
-          "code": "chemidplus:50-06-6"
+          "id": "chemidplus:50-06-6",
+          "system": "https://commonchemistry.cas.org/detail?cas_rn=",
+          "code": "50-06-6"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://www.wikidata.org",
-          "code": "wikidata:Q407241"
+          "id": "wikidata:Q407241",
+          "system": "https://www.wikidata.org/wiki/",
+          "code": "Q407241"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
+          "id": "vandf:4017422",
           "system": "https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/VANDF",
-          "code": "vandf:4017422"
+          "code": "4017422"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
+          "id": "usp:m63400",
           "system": "https://www.usp.org/health-quality-safety/compendial-nomenclature",
-          "code": "usp:m63400"
+          "code": "m63400"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "http://purl.obolibrary.org/obo/chebi.owl",
+          "id": "CHEBI:8069",
+          "system": "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=",
           "code": "CHEBI:8069"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://precision.fda.gov/uniisearch",
-          "code": "unii:YQE403BP4D"
+          "id": "unii:YQE403BP4D",
+          "system": "https://precision.fda.gov/uniisearch/srs/unii/",
+          "code": "YQE403BP4D"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://www.who.int/tools/atc-ddd-toolkit/atc-classification/",
-          "code": "atc:N03AA02"
+          "id": "atc:N03AA02",
+          "system": "https://atcddd.fhi.no/atc_ddd_index/?code=",
+          "code": "N03AA02"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
+          "id": "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N",
           "system": "https://www.chemspider.com",
-          "code": "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N"
+          "code": "DDBREPKUVSBGFI-UHFFFAOYSA-N"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://www.nlm.nih.gov/research/umls/index.html",
-          "code": "umls:C0031412"
+          "id": "umls:C0031412",
+          "system": "https://uts.nlm.nih.gov/uts/umls/concept/",
+          "code": "C0031412"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/substances",
-          "code": "pubchem.substance:135650817"
+          "id": "pubchem.substance:135650817",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/substance/",
+          "code": "135650817"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
+          "id": "mmsl:d00340",
           "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
-          "code": "mmsl:d00340"
+          "code": "d00340"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
+          "id": "mmsl:2390",
           "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
-          "code": "mmsl:2390"
+          "code": "2390"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://drugcentral.org",
-          "code": "drugcentral:2134"
+          "id": "drugcentral:2134",
+          "system": "https://drugcentral.org/drugcard/",
+          "code": "2134"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/compounds",
-          "code": "pubchem.compound:4763"
+          "id": "pubchem.compound:4763",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/compound/",
+          "code": "4763"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
+          "id": "mmsl:5272",
           "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
-          "code": "mmsl:5272"
+          "code": "5272"
         },
         "relation": "relatedMatch"
       }
@@ -3313,78 +3518,89 @@
     "mappings": [
       {
         "coding": {
-          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/index.html",
-          "code": "rxcui:9991"
+          "id": "rxcui:9991",
+          "system": "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=",
+          "code": "9991"
         },
         "relation": "exactMatch"
       },
       {
         "coding": {
-          "system": "http://purl.obolibrary.org/obo/ncit.owl",
-          "code": "ncit:C839"
+          "id": "ncit:C839",
+          "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+          "code": "C839"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://go.drugbank.com",
-          "code": "drugbank:DB06145"
+          "id": "drugbank:DB06145",
+          "system": "https://go.drugbank.com/drugs/",
+          "code": "DB06145"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://pubchem.ncbi.nlm.nih.gov/source/ChemIDplus",
-          "code": "chemidplus:8025-81-8"
+          "id": "chemidplus:8025-81-8",
+          "system": "https://commonchemistry.cas.org/detail?cas_rn=",
+          "code": "8025-81-8"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://www.wikidata.org",
-          "code": "wikidata:Q422265"
+          "id": "wikidata:Q422265",
+          "system": "https://www.wikidata.org/wiki/",
+          "code": "Q422265"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://precision.fda.gov/uniisearch",
-          "code": "unii:71ODY0V87H"
+          "id": "unii:71ODY0V87H",
+          "system": "https://precision.fda.gov/uniisearch/srs/unii/",
+          "code": "71ODY0V87H"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/compounds",
-          "code": "pubchem.compound:5356392"
+          "id": "pubchem.compound:5356392",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/compound/",
+          "code": "5356392"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://www.who.int/tools/atc-ddd-toolkit/atc-classification/",
-          "code": "atc:J01FA02"
+          "id": "atc:J01FA02",
+          "system": "https://atcddd.fhi.no/atc_ddd_index/?code=",
+          "code": "J01FA02"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
+          "id": "inchikey:ACTOXUHEUCPTEW-CEUOBAOPSA-N",
           "system": "https://www.chemspider.com",
-          "code": "inchikey:ACTOXUHEUCPTEW-CEUOBAOPSA-N"
+          "code": "ACTOXUHEUCPTEW-CEUOBAOPSA-N"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://precision.fda.gov/uniisearch",
-          "code": "unii:033ECH6IFG"
+          "id": "unii:033ECH6IFG",
+          "system": "https://precision.fda.gov/uniisearch/srs/unii/",
+          "code": "033ECH6IFG"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://www.nlm.nih.gov/research/umls/index.html",
-          "code": "umls:C0037962"
+          "id": "umls:C0037962",
+          "system": "https://uts.nlm.nih.gov/uts/umls/concept/",
+          "code": "C0037962"
         },
         "relation": "relatedMatch"
       }
@@ -3443,15 +3659,17 @@
     "mappings": [
       {
         "coding": {
-          "system": "http://purl.obolibrary.org/obo/ncit.owl",
-          "code": "ncit:C49236"
+          "id": "ncit:C49236",
+          "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+          "code": "C49236"
         },
         "relation": "exactMatch"
       },
       {
         "coding": {
-          "code": "umls:C0087111",
-          "system": "https://www.nlm.nih.gov/research/umls/index.html"
+          "id": "umls:C0087111",
+          "system": "https://uts.nlm.nih.gov/uts/umls/concept/",
+          "code": "C0087111"
         },
         "relation": "relatedMatch"
       }
