@@ -78,7 +78,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C7251"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -99,7 +99,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C7431"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -120,7 +120,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C9334"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -141,7 +141,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3411"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -162,7 +162,7 @@
                     "system": "https://purl.obolibrary.org/obo/",
                     "code": "MONDO:0850353"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -183,7 +183,7 @@
                     "system": "https://purl.obolibrary.org/obo/",
                     "code": "MONDO:0003060"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -204,7 +204,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3262"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -225,7 +225,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C7606"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -246,7 +246,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C2929"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -267,7 +267,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C4436"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -288,7 +288,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3017"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -309,7 +309,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C7478"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -330,7 +330,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C4917"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -351,7 +351,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C7548"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -372,7 +372,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C2915"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -393,7 +393,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3222"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -414,7 +414,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3032"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -435,7 +435,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3247"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -456,7 +456,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C8851"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -477,7 +477,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3149"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -498,7 +498,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3387"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -530,7 +530,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3619"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -551,7 +551,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3468"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -572,7 +572,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3708"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -593,7 +593,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C2877"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -614,7 +614,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C4962"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -635,7 +635,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3196"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -656,7 +656,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C7502"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -677,7 +677,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C4699"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -698,7 +698,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3048"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -719,7 +719,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C4533"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -740,7 +740,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C7190"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -761,7 +761,7 @@
                     "system": "https://purl.obolibrary.org/obo/",
                     "code": "MONDO:0005086"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -782,7 +782,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3959"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -803,7 +803,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C34803"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -824,7 +824,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C7978"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -845,7 +845,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C4890"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -866,7 +866,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C2956"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -887,7 +887,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3305"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -908,7 +908,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C4013"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -929,7 +929,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3359"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -950,7 +950,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3471"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -971,7 +971,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3568"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -992,7 +992,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C9120"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1013,7 +1013,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C2948"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1045,7 +1045,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C4001"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1066,7 +1066,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C9231"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1087,7 +1087,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C7251"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1108,7 +1108,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3512"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1129,7 +1129,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3552"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1150,7 +1150,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3053"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1171,7 +1171,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C115965"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1192,7 +1192,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C9314"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1213,7 +1213,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3242"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1234,7 +1234,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C156767"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1255,7 +1255,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C7398"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1276,7 +1276,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3270"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1297,7 +1297,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3161"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1318,7 +1318,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C7545"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1339,7 +1339,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3224"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1360,7 +1360,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C2858"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1381,7 +1381,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C9357"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1402,7 +1402,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C9311"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1423,7 +1423,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C2926"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1455,7 +1455,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3915"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1476,7 +1476,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C2852"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1497,7 +1497,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3780"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1518,7 +1518,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3011"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1539,7 +1539,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C2910"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1571,7 +1571,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C4627"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1592,7 +1592,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3811"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1613,7 +1613,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3099"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1634,7 +1634,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3549"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1655,7 +1655,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3403"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1676,7 +1676,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3322"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1697,7 +1697,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C6014"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1718,7 +1718,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C36077"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1739,7 +1739,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C9309"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1760,7 +1760,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C7431"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1781,7 +1781,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3209"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1802,7 +1802,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C4044"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1823,7 +1823,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3234"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1844,7 +1844,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3728"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1865,7 +1865,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3752"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1886,7 +1886,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3720"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1907,7 +1907,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C2869"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1928,7 +1928,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C2916"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1949,7 +1949,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3317"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1970,7 +1970,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3372"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -1991,7 +1991,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C7541"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2012,7 +2012,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C9118"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2033,7 +2033,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3770"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2054,7 +2054,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3208"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2075,7 +2075,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3211"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2096,7 +2096,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3200"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2117,7 +2117,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C9334"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2138,7 +2138,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3184"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2159,7 +2159,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3222"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2180,7 +2180,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3012"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2201,7 +2201,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C26887"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2222,7 +2222,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C4337"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2254,7 +2254,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C9145"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2275,7 +2275,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3794"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2296,7 +2296,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3257"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2317,7 +2317,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3059"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2338,7 +2338,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3790"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2370,7 +2370,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C8196"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2391,7 +2391,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3156"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2412,7 +2412,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C2862"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2433,7 +2433,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C7528"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2454,7 +2454,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3773"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2475,7 +2475,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C34797"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2496,7 +2496,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C7558"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2517,7 +2517,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C9345"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2538,7 +2538,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C7510"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2559,7 +2559,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3868"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2580,7 +2580,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C71732"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2614,7 +2614,7 @@
           "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
           "code": "C376"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -2622,7 +2622,7 @@
           "system": "https://hemonc.org",
           "code": "105"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -2630,7 +2630,7 @@
           "system": "https://go.drugbank.com/drugs/",
           "code": "DB00515"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -2638,7 +2638,7 @@
           "system": "https://go.drugbank.com/drugs/",
           "code": "DB12117"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -2646,7 +2646,7 @@
           "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
           "code": "074656"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -2654,7 +2654,7 @@
           "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
           "code": "074735"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -2662,7 +2662,7 @@
           "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
           "code": "075036"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -2670,7 +2670,7 @@
           "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
           "code": "206774"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -2678,7 +2678,7 @@
           "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
           "code": "207323"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -2686,7 +2686,7 @@
           "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
           "code": "018057"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -2694,7 +2694,7 @@
           "system": "https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=",
           "code": "5343"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -2702,7 +2702,7 @@
           "system": "https://www.ebi.ac.uk/chembl/explore/compound/",
           "code": "CHEMBL11359"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -2710,7 +2710,7 @@
           "system": "https://commonchemistry.cas.org/detail?cas_rn=",
           "code": "15663-27-1"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -2718,7 +2718,7 @@
           "system": "https://www.wikidata.org/wiki/",
           "code": "Q412415"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -3096,7 +3096,7 @@
                     "system": "https://purl.obolibrary.org/obo/",
                     "code": "MONDO:0001627"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -3117,7 +3117,7 @@
                     "system": "https://purl.obolibrary.org/obo/",
                     "code": "MONDO:0001475"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -3138,7 +3138,7 @@
                     "system": "https://purl.obolibrary.org/obo/",
                     "code": "MONDO:0002050"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -3159,7 +3159,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3208"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -3180,7 +3180,7 @@
                     "system": "https://purl.obolibrary.org/obo/",
                     "code": "MONDO:0005090"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -3201,7 +3201,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3020"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -3222,7 +3222,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C85079"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -3243,7 +3243,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C87101"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -3264,7 +3264,7 @@
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                     "code": "C3980"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -3285,7 +3285,7 @@
                     "system": "https://purl.obolibrary.org/obo/",
                     "code": "MONDO:0011918"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -3362,7 +3362,7 @@
           "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
           "code": "C739"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -3370,7 +3370,7 @@
           "system": "https://go.drugbank.com/drugs/",
           "code": "DB01174"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -3378,7 +3378,7 @@
           "system": "https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=",
           "code": "2804"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -3386,7 +3386,7 @@
           "system": "https://www.ebi.ac.uk/chembl/explore/compound/",
           "code": "CHEMBL40"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -3394,7 +3394,7 @@
           "system": "https://commonchemistry.cas.org/detail?cas_rn=",
           "code": "50-06-6"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -3402,7 +3402,7 @@
           "system": "https://www.wikidata.org/wiki/",
           "code": "Q407241"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -3530,7 +3530,7 @@
           "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
           "code": "C839"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -3538,7 +3538,7 @@
           "system": "https://go.drugbank.com/drugs/",
           "code": "DB06145"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -3546,7 +3546,7 @@
           "system": "https://commonchemistry.cas.org/detail?cas_rn=",
           "code": "8025-81-8"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
@@ -3554,7 +3554,7 @@
           "system": "https://www.wikidata.org/wiki/",
           "code": "Q422265"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {

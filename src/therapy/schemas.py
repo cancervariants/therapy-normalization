@@ -552,18 +552,18 @@ class NormalizationService(BaseNormalizationService):
                                 "code": "C376",
                                 "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
                             },
-                            "relation": "relatedMatch",
+                            "relation": "exactMatch",
                         },
                         {
                             "coding": {
                                 "code": "15663-27-1",
                                 "system": "https://commonchemistry.cas.org/detail?cas_rn=",
                             },
-                            "relation": "relatedMatch",
+                            "relation": "exactMatch",
                         },
                         {
                             "coding": {"code": "Q412415", "system": "wikidata"},
-                            "relation": "relatedMatch",
+                            "relation": "exactMatch",
                         },
                         {
                             "coding": {"code": "L01XA01", "system": "atc"},
