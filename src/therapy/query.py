@@ -369,7 +369,7 @@ class QueryHandler:
 
         for src in sources:
             if src not in sources_meta:
-                sources_meta[src] = self.db.get_source_metadata(src)
+                sources_meta[SourceName[src.upper()]] = self.db.get_source_metadata(src)
         response.source_meta_ = sources_meta  # type: ignore[assignment]
         return response
 
