@@ -439,7 +439,7 @@ class QueryHandler:
             id=f"normalize.therapy.{record['concept_id']}",
             primaryCode=code(root=record["concept_id"]),
             conceptType="Therapy",
-            label=record.get("label"),
+            name=record.get("label"),
         )
 
         xrefs = [record["concept_id"], *record.get("xrefs", [])]
@@ -491,7 +491,7 @@ class QueryHandler:
                 ind_disease_obj = MappableConcept(
                     id=indication.disease_id,
                     conceptType="Disease",
-                    label=indication.disease_label,
+                    name=indication.disease_label,
                     mappings=mappings or None,
                 )
 

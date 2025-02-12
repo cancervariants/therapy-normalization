@@ -538,7 +538,7 @@ class NormalizationService(BaseNormalizationService):
                     "conceptType": "Therapy",
                     "primaryCode": "rxcui:2555",
                     "id": "normalize.therapy.rxcui:2555",
-                    "label": "cisplatin",
+                    "name": "cisplatin",
                     "mappings": [
                         {
                             "coding": {

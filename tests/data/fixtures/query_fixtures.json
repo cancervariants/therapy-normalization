@@ -1,8 +1,7 @@
 {
   "normalize_cisplatin": {
     "conceptType": "Therapy",
-    "label": "cisplatin",
-    "description": null,
+    "name": "cisplatin",
     "id": "normalize.therapy.rxcui:2555",
     "primaryCode": "rxcui:2555",
     "extensions": [
@@ -64,7 +63,7 @@
           "has_indication": [
             {
               "id": "hemonc:671",
-              "label": "Testicular cancer",
+              "name": "Testicular cancer",
               "extensions": [
                 {
                   "name": "regulatory_body",
@@ -85,7 +84,7 @@
             },
             {
               "id": "hemonc:645",
-              "label": "Ovarian cancer",
+              "name": "Ovarian cancer",
               "extensions": [
                 {
                   "name": "regulatory_body",
@@ -106,7 +105,7 @@
             },
             {
               "id": "hemonc:569",
-              "label": "Bladder cancer",
+              "name": "Bladder cancer",
               "extensions": [
                 {
                   "name": "regulatory_body",
@@ -127,7 +126,7 @@
             },
             {
               "id": "mesh:D013945",
-              "label": "Thymoma",
+              "name": "Thymoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -148,7 +147,7 @@
             },
             {
               "id": "mesh:D064129",
-              "label": "Prostatic Neoplasms, Castration-Resistant",
+              "name": "Prostatic Neoplasms, Castration-Resistant",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -169,7 +168,7 @@
             },
             {
               "id": "mesh:D001661",
-              "label": "Biliary Tract Neoplasms",
+              "name": "Biliary Tract Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -190,7 +189,7 @@
             },
             {
               "id": "mesh:D009369",
-              "label": "Neoplasms",
+              "name": "Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -211,7 +210,7 @@
             },
             {
               "id": "EFO:0003868",
-              "label": "mouth neoplasm",
+              "name": "mouth neoplasm",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -232,7 +231,7 @@
             },
             {
               "id": "mesh:D002294",
-              "label": "Carcinoma, Squamous Cell",
+              "name": "Carcinoma, Squamous Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -253,7 +252,7 @@
             },
             {
               "id": "mesh:D018281",
-              "label": "Cholangiocarcinoma",
+              "name": "Cholangiocarcinoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -274,7 +273,7 @@
             },
             {
               "id": "mesh:D004806",
-              "label": "Ependymoma",
+              "name": "Ependymoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -295,7 +294,7 @@
             },
             {
               "id": "mesh:D004938",
-              "label": "Esophageal Neoplasms",
+              "name": "Esophageal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -316,7 +315,7 @@
             },
             {
               "id": "mesh:D055752",
-              "label": "Small Cell Lung Carcinoma",
+              "name": "Small Cell Lung Carcinoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -337,7 +336,7 @@
             },
             {
               "id": "mesh:D007680",
-              "label": "Kidney Neoplasms",
+              "name": "Kidney Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -358,7 +357,7 @@
             },
             {
               "id": "mesh:D002276",
-              "label": "Carcinoid Tumor",
+              "name": "Carcinoid Tumor",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -379,7 +378,7 @@
             },
             {
               "id": "mesh:D018242",
-              "label": "Neuroectodermal Tumors, Primitive",
+              "name": "Neuroectodermal Tumors, Primitive",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -400,7 +399,7 @@
             },
             {
               "id": "mesh:D005185",
-              "label": "Fallopian Tube Neoplasms",
+              "name": "Fallopian Tube Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -421,7 +420,7 @@
             },
             {
               "id": "mesh:D009190",
-              "label": "Myelodysplastic Syndromes",
+              "name": "Myelodysplastic Syndromes",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -442,7 +441,7 @@
             },
             {
               "id": "mesh:D016403",
-              "label": "Lymphoma, Large B-Cell, Diffuse",
+              "name": "Lymphoma, Large B-Cell, Diffuse",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -463,7 +462,7 @@
             },
             {
               "id": "mesh:D007674",
-              "label": "Kidney Diseases",
+              "name": "Kidney Diseases",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -484,7 +483,7 @@
             },
             {
               "id": "mesh:D013274",
-              "label": "Stomach Neoplasms",
+              "name": "Stomach Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -505,7 +504,7 @@
             },
             {
               "id": "mesh:D014565",
-              "label": "Urogenital Neoplasms",
+              "name": "Urogenital Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -516,7 +515,7 @@
             },
             {
               "id": "mesh:D014523",
-              "label": "Urethral Neoplasms",
+              "name": "Urethral Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -537,7 +536,7 @@
             },
             {
               "id": "mesh:D016411",
-              "label": "Lymphoma, T-Cell, Peripheral",
+              "name": "Lymphoma, T-Cell, Peripheral",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -558,7 +557,7 @@
             },
             {
               "id": "mesh:D009373",
-              "label": "Neoplasms, Germ Cell and Embryonal",
+              "name": "Neoplasms, Germ Cell and Embryonal",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -579,7 +578,7 @@
             },
             {
               "id": "mesh:D001005",
-              "label": "Anus Neoplasms",
+              "name": "Anus Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -600,7 +599,7 @@
             },
             {
               "id": "mesh:D013953",
-              "label": "Thymus Neoplasms",
+              "name": "Thymus Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -621,7 +620,7 @@
             },
             {
               "id": "mesh:D008107",
-              "label": "Liver Diseases",
+              "name": "Liver Diseases",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -642,7 +641,7 @@
             },
             {
               "id": "mesh:D014846",
-              "label": "Vulvar Neoplasms",
+              "name": "Vulvar Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -663,7 +662,7 @@
             },
             {
               "id": "mesh:D031901",
-              "label": "Gestational Trophoblastic Disease",
+              "name": "Gestational Trophoblastic Disease",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -684,7 +683,7 @@
             },
             {
               "id": "mesh:D005706",
-              "label": "Gallbladder Neoplasms",
+              "name": "Gallbladder Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -705,7 +704,7 @@
             },
             {
               "id": "mesh:D016545",
-              "label": "Choroid Plexus Neoplasms",
+              "name": "Choroid Plexus Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -726,7 +725,7 @@
             },
             {
               "id": "mesh:D007012",
-              "label": "Hypopharyngeal Neoplasms",
+              "name": "Hypopharyngeal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -747,7 +746,7 @@
             },
             {
               "id": "mesh:D002292",
-              "label": "Carcinoma, Renal Cell",
+              "name": "Carcinoma, Renal Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -768,7 +767,7 @@
             },
             {
               "id": "mesh:D004066",
-              "label": "Digestive System Diseases",
+              "name": "Digestive System Diseases",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -789,7 +788,7 @@
             },
             {
               "id": "mesh:D008113",
-              "label": "Liver Neoplasms",
+              "name": "Liver Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -810,7 +809,7 @@
             },
             {
               "id": "EFO:1000043",
-              "label": "ovarian serous cystadenocarcinoma",
+              "name": "ovarian serous cystadenocarcinoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -831,7 +830,7 @@
             },
             {
               "id": "mesh:D004067",
-              "label": "Digestive System Neoplasms",
+              "name": "Digestive System Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -852,7 +851,7 @@
             },
             {
               "id": "mesh:D015179",
-              "label": "Colorectal Neoplasms",
+              "name": "Colorectal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -873,7 +872,7 @@
             },
             {
               "id": "mesh:D010190",
-              "label": "Pancreatic Neoplasms",
+              "name": "Pancreatic Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -894,7 +893,7 @@
             },
             {
               "id": "mesh:D006258",
-              "label": "Head and Neck Neoplasms",
+              "name": "Head and Neck Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -915,7 +914,7 @@
             },
             {
               "id": "mesh:D012208",
-              "label": "Rhabdomyosarcoma",
+              "name": "Rhabdomyosarcoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -936,7 +935,7 @@
             },
             {
               "id": "mesh:D016483",
-              "label": "Lymphoma, AIDS-Related",
+              "name": "Lymphoma, AIDS-Related",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -957,7 +956,7 @@
             },
             {
               "id": "mesh:D001932",
-              "label": "Brain Neoplasms",
+              "name": "Brain Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -978,7 +977,7 @@
             },
             {
               "id": "mesh:D021441",
-              "label": "Carcinoma, Pancreatic Ductal",
+              "name": "Carcinoma, Pancreatic Ductal",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -999,7 +998,7 @@
             },
             {
               "id": "mesh:D002822",
-              "label": "Choriocarcinoma",
+              "name": "Choriocarcinoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1020,7 +1019,7 @@
             },
             {
               "id": "mesh:D020250",
-              "label": "Postoperative Nausea and Vomiting",
+              "name": "Postoperative Nausea and Vomiting",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1031,7 +1030,7 @@
             },
             {
               "id": "mesh:D058922",
-              "label": "Inflammatory Breast Neoplasms",
+              "name": "Inflammatory Breast Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1052,7 +1051,7 @@
             },
             {
               "id": "mesh:D015266",
-              "label": "Carcinoma, Merkel Cell",
+              "name": "Carcinoma, Merkel Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1073,7 +1072,7 @@
             },
             {
               "id": "mesh:D013736",
-              "label": "Testicular Neoplasms",
+              "name": "Testicular Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1094,7 +1093,7 @@
             },
             {
               "id": "mesh:D000077192",
-              "label": "Adenocarcinoma of Lung",
+              "name": "Adenocarcinoma of Lung",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1115,7 +1114,7 @@
             },
             {
               "id": "mesh:D014594",
-              "label": "Uterine Neoplasms",
+              "name": "Uterine Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1136,7 +1135,7 @@
             },
             {
               "id": "mesh:D005833",
-              "label": "Genital Neoplasms, Female",
+              "name": "Genital Neoplasms, Female",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1157,7 +1156,7 @@
             },
             {
               "id": "mesh:D052016",
-              "label": "Mucositis",
+              "name": "Mucositis",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1178,7 +1177,7 @@
             },
             {
               "id": "EFO:0005570",
-              "label": "oral cavity cancer",
+              "name": "oral cavity cancer",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1199,7 +1198,7 @@
             },
             {
               "id": "mesh:D009101",
-              "label": "Multiple Myeloma",
+              "name": "Multiple Myeloma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1220,7 +1219,7 @@
             },
             {
               "id": "mesh:D002280",
-              "label": "Carcinoma, Basal Cell",
+              "name": "Carcinoma, Basal Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1241,7 +1240,7 @@
             },
             {
               "id": "mesh:D009959",
-              "label": "Oropharyngeal Neoplasms",
+              "name": "Oropharyngeal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1262,7 +1261,7 @@
             },
             {
               "id": "mesh:D009447",
-              "label": "Neuroblastoma",
+              "name": "Neuroblastoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1283,7 +1282,7 @@
             },
             {
               "id": "mesh:D007938",
-              "label": "Leukemia",
+              "name": "Leukemia",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1304,7 +1303,7 @@
             },
             {
               "id": "mesh:D010610",
-              "label": "Pharyngeal Neoplasms",
+              "name": "Pharyngeal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1325,7 +1324,7 @@
             },
             {
               "id": "mesh:D008545",
-              "label": "Melanoma",
+              "name": "Melanoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1346,7 +1345,7 @@
             },
             {
               "id": "mesh:D000306",
-              "label": "Adrenal Cortex Neoplasms",
+              "name": "Adrenal Cortex Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1367,7 +1366,7 @@
             },
             {
               "id": "mesh:D006689",
-              "label": "Hodgkin Disease",
+              "name": "Hodgkin Disease",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1388,7 +1387,7 @@
             },
             {
               "id": "mesh:D002583",
-              "label": "Uterine Cervical Neoplasms",
+              "name": "Uterine Cervical Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1409,7 +1408,7 @@
             },
             {
               "id": "mesh:D002289",
-              "label": "Carcinoma, Non-Small-Cell Lung",
+              "name": "Carcinoma, Non-Small-Cell Lung",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1430,7 +1429,7 @@
             },
             {
               "id": "mesh:D009325",
-              "label": "Nausea",
+              "name": "Nausea",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1441,7 +1440,7 @@
             },
             {
               "id": "mesh:D018288",
-              "label": "Carcinoma, Small Cell",
+              "name": "Carcinoma, Small Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1462,7 +1461,7 @@
             },
             {
               "id": "mesh:D000230",
-              "label": "Adenocarcinoma",
+              "name": "Adenocarcinoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1483,7 +1482,7 @@
             },
             {
               "id": "mesh:D018287",
-              "label": "Carcinoma, Large Cell",
+              "name": "Carcinoma, Large Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1504,7 +1503,7 @@
             },
             {
               "id": "mesh:D018240",
-              "label": "Endodermal Sinus Tumor",
+              "name": "Endodermal Sinus Tumor",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1525,7 +1524,7 @@
             },
             {
               "id": "mesh:D001943",
-              "label": "Breast Neoplasms",
+              "name": "Breast Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1546,7 +1545,7 @@
             },
             {
               "id": "mesh:D010996",
-              "label": "Pleural Effusion",
+              "name": "Pleural Effusion",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1557,7 +1556,7 @@
             },
             {
               "id": "mesh:D016543",
-              "label": "Central Nervous System Neoplasms",
+              "name": "Central Nervous System Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1578,7 +1577,7 @@
             },
             {
               "id": "mesh:D012468",
-              "label": "Salivary Gland Neoplasms",
+              "name": "Salivary Gland Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1599,7 +1598,7 @@
             },
             {
               "id": "mesh:D006528",
-              "label": "Carcinoma, Hepatocellular",
+              "name": "Carcinoma, Hepatocellular",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1620,7 +1619,7 @@
             },
             {
               "id": "mesh:D008479",
-              "label": "Mediastinal Neoplasms",
+              "name": "Mediastinal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1641,7 +1640,7 @@
             },
             {
               "id": "mesh:D013724",
-              "label": "Teratoma",
+              "name": "Teratoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1662,7 +1661,7 @@
             },
             {
               "id": "mesh:D010534",
-              "label": "Peritoneal Neoplasms",
+              "name": "Peritoneal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1683,7 +1682,7 @@
             },
             {
               "id": "mesh:D010255",
-              "label": "Paranasal Sinus Neoplasms",
+              "name": "Paranasal Sinus Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1704,7 +1703,7 @@
             },
             {
               "id": "mesh:D018285",
-              "label": "Klatskin Tumor",
+              "name": "Klatskin Tumor",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1725,7 +1724,7 @@
             },
             {
               "id": "mesh:D018239",
-              "label": "Seminoma",
+              "name": "Seminoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1746,7 +1745,7 @@
             },
             {
               "id": "mesh:D010051",
-              "label": "Ovarian Neoplasms",
+              "name": "Ovarian Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1767,7 +1766,7 @@
             },
             {
               "id": "mesh:D008224",
-              "label": "Lymphoma, Follicular",
+              "name": "Lymphoma, Follicular",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1788,7 +1787,7 @@
             },
             {
               "id": "mesh:D000077195",
-              "label": "Squamous Cell Carcinoma of Head and Neck",
+              "name": "Squamous Cell Carcinoma of Head and Neck",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1809,7 +1808,7 @@
             },
             {
               "id": "mesh:D008654",
-              "label": "Mesothelioma",
+              "name": "Mesothelioma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1830,7 +1829,7 @@
             },
             {
               "id": "mesh:D018197",
-              "label": "Hepatoblastoma",
+              "name": "Hepatoblastoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1851,7 +1850,7 @@
             },
             {
               "id": "mesh:D018236",
-              "label": "Carcinoma, Embryonal",
+              "name": "Carcinoma, Embryonal",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1872,7 +1871,7 @@
             },
             {
               "id": "mesh:D017728",
-              "label": "Lymphoma, Large-Cell, Anaplastic",
+              "name": "Lymphoma, Large-Cell, Anaplastic",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1893,7 +1892,7 @@
             },
             {
               "id": "mesh:D000740",
-              "label": "Anemia",
+              "name": "Anemia",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1914,7 +1913,7 @@
             },
             {
               "id": "mesh:D002277",
-              "label": "Carcinoma",
+              "name": "Carcinoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1935,7 +1934,7 @@
             },
             {
               "id": "mesh:D010412",
-              "label": "Penile Neoplasms",
+              "name": "Penile Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1956,7 +1955,7 @@
             },
             {
               "id": "mesh:D012878",
-              "label": "Skin Neoplasms",
+              "name": "Skin Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1977,7 +1976,7 @@
             },
             {
               "id": "mesh:D012175",
-              "label": "Retinoblastoma",
+              "name": "Retinoblastoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1998,7 +1997,7 @@
             },
             {
               "id": "mesh:D012509",
-              "label": "Sarcoma",
+              "name": "Sarcoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2019,7 +2018,7 @@
             },
             {
               "id": "mesh:D018273",
-              "label": "Carcinoma, Islet Cell",
+              "name": "Carcinoma, Islet Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2040,7 +2039,7 @@
             },
             {
               "id": "mesh:D008223",
-              "label": "Lymphoma",
+              "name": "Lymphoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2061,7 +2060,7 @@
             },
             {
               "id": "mesh:D008228",
-              "label": "Lymphoma, Non-Hodgkin",
+              "name": "Lymphoma, Non-Hodgkin",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2082,7 +2081,7 @@
             },
             {
               "id": "mesh:D008175",
-              "label": "Lung Neoplasms",
+              "name": "Lung Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2103,7 +2102,7 @@
             },
             {
               "id": "mesh:D001749",
-              "label": "Urinary Bladder Neoplasms",
+              "name": "Urinary Bladder Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2124,7 +2123,7 @@
             },
             {
               "id": "mesh:D015459",
-              "label": "Leukemia-Lymphoma, Adult T-Cell",
+              "name": "Leukemia-Lymphoma, Adult T-Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2145,7 +2144,7 @@
             },
             {
               "id": "mesh:D008527",
-              "label": "Medulloblastoma",
+              "name": "Medulloblastoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2166,7 +2165,7 @@
             },
             {
               "id": "mesh:D016889",
-              "label": "Endometrial Neoplasms",
+              "name": "Endometrial Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2187,7 +2186,7 @@
             },
             {
               "id": "mesh:D013280",
-              "label": "Stomatitis",
+              "name": "Stomatitis",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2208,7 +2207,7 @@
             },
             {
               "id": "mesh:D020522",
-              "label": "Lymphoma, Mantle-Cell",
+              "name": "Lymphoma, Mantle-Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2229,7 +2228,7 @@
             },
             {
               "id": "mesh:D014987",
-              "label": "Xerostomia",
+              "name": "Xerostomia",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2240,7 +2239,7 @@
             },
             {
               "id": "mesh:D012516",
-              "label": "Osteosarcoma",
+              "name": "Osteosarcoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2261,7 +2260,7 @@
             },
             {
               "id": "mesh:D018312",
-              "label": "Sex Cord-Gonadal Stromal Tumors",
+              "name": "Sex Cord-Gonadal Stromal Tumors",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2282,7 +2281,7 @@
             },
             {
               "id": "mesh:D009303",
-              "label": "Nasopharyngeal Neoplasms",
+              "name": "Nasopharyngeal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2303,7 +2302,7 @@
             },
             {
               "id": "mesh:D005910",
-              "label": "Glioma",
+              "name": "Glioma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2324,7 +2323,7 @@
             },
             {
               "id": "mesh:D018305",
-              "label": "Ganglioneuroblastoma",
+              "name": "Ganglioneuroblastoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2345,7 +2344,7 @@
             },
             {
               "id": "mesh:D009362",
-              "label": "Neoplasm Metastasis",
+              "name": "Neoplasm Metastasis",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2356,7 +2355,7 @@
             },
             {
               "id": "mesh:D006103",
-              "label": "Granuloma, Lethal Midline",
+              "name": "Granuloma, Lethal Midline",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2377,7 +2376,7 @@
             },
             {
               "id": "mesh:D007822",
-              "label": "Laryngeal Neoplasms",
+              "name": "Laryngeal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2398,7 +2397,7 @@
             },
             {
               "id": "mesh:D055728",
-              "label": "Primary Myelofibrosis",
+              "name": "Primary Myelofibrosis",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2419,7 +2418,7 @@
             },
             {
               "id": "mesh:D007119",
-              "label": "Immunoblastic Lymphadenopathy",
+              "name": "Immunoblastic Lymphadenopathy",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2440,7 +2439,7 @@
             },
             {
               "id": "mesh:D018278",
-              "label": "Carcinoma, Neuroendocrine",
+              "name": "Carcinoma, Neuroendocrine",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2461,7 +2460,7 @@
             },
             {
               "id": "mesh:D008288",
-              "label": "Malaria",
+              "name": "Malaria",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2482,7 +2481,7 @@
             },
             {
               "id": "mesh:D018269",
-              "label": "Carcinoma, Endometrioid",
+              "name": "Carcinoma, Endometrioid",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2503,7 +2502,7 @@
             },
             {
               "id": "mesh:D014062",
-              "label": "Tongue Neoplasms",
+              "name": "Tongue Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2524,7 +2523,7 @@
             },
             {
               "id": "mesh:D013964",
-              "label": "Thyroid Neoplasms",
+              "name": "Thyroid Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2545,7 +2544,7 @@
             },
             {
               "id": "mesh:D046152",
-              "label": "Gastrointestinal Stromal Tumors",
+              "name": "Gastrointestinal Stromal Tumors",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2566,7 +2565,7 @@
             },
             {
               "id": "mesh:D064726",
-              "label": "Triple Negative Breast Neoplasms",
+              "name": "Triple Negative Breast Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -3069,7 +3068,7 @@
   "normalize_phenobarbital": {
     "id": "normalize.therapy.rxcui:8134",
     "primaryCode": "rxcui:8134",
-    "label": "phenobarbital",
+    "name": "phenobarbital",
     "extensions": [
       {
         "name": "regulatory_approval",
@@ -3082,7 +3081,7 @@
           "has_indication": [
             {
               "id": "mesh:D003704",
-              "label": "Dementia",
+              "name": "Dementia",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -3103,7 +3102,7 @@
             },
             {
               "id": "mesh:D009503",
-              "label": "Neutropenia",
+              "name": "Neutropenia",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -3124,7 +3123,7 @@
             },
             {
               "id": "mesh:D003866",
-              "label": "Depressive Disorder",
+              "name": "Depressive Disorder",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -3145,7 +3144,7 @@
             },
             {
               "id": "mesh:D008223",
-              "label": "Lymphoma",
+              "name": "Lymphoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -3166,7 +3165,7 @@
             },
             {
               "id": "mesh:D012559",
-              "label": "Schizophrenia",
+              "name": "Schizophrenia",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -3187,7 +3186,7 @@
             },
             {
               "id": "mesh:D004827",
-              "label": "Epilepsy",
+              "name": "Epilepsy",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -3208,7 +3207,7 @@
             },
             {
               "id": "mesh:D013226",
-              "label": "Status Epilepticus",
+              "name": "Status Epilepticus",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -3229,7 +3228,7 @@
             },
             {
               "id": "mesh:D009357",
-              "label": "Neonatal Abstinence Syndrome",
+              "name": "Neonatal Abstinence Syndrome",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -3250,7 +3249,7 @@
             },
             {
               "id": "mesh:D012640",
-              "label": "Seizures",
+              "name": "Seizures",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -3271,7 +3270,7 @@
             },
             {
               "id": "mesh:D001007",
-              "label": "Anxiety",
+              "name": "Anxiety",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -3514,7 +3513,7 @@
   "normalize_spiramycin": {
     "id": "normalize.therapy.rxcui:9991",
     "primaryCode": "rxcui:9991",
-    "label": "spiramycin",
+    "name": "spiramycin",
     "mappings": [
       {
         "coding": {
@@ -3631,8 +3630,7 @@
   },
   "normalize_therapeutic_procedure": {
     "conceptType": "Therapy",
-    "label": "Therapeutic Procedure",
-    "description": null,
+    "name": "Therapeutic Procedure",
     "id": "normalize.therapy.ncit:C49236",
     "primaryCode": "ncit:C49236",
     "extensions": [
