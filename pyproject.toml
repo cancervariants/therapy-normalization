@@ -29,7 +29,7 @@ dependencies = [
     "uvicorn",
     "click",
     "boto3",
-    "ga4gh.vrs==0.2.0a14",
+    "ga4gh.vrs==2.0.0a14",
     "disease-normalizer @ git+https://github.com/cancervariants/disease-normalization.git@update-vrs-python",
 ]
 dynamic = ["version"]
