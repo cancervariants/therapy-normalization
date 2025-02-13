@@ -29,14 +29,14 @@ dependencies = [
     "uvicorn",
     "click",
     "boto3",
-    "ga4gh.vrs==2.0.0a13",
-    "disease-normalizer~=0.8.0",
+    "ga4gh.vrs==2.0.0a14",
+    "disease-normalizer~=0.9.0",
 ]
 dynamic = ["version"]
 
 [project.optional-dependencies]
 etl = [
-    #"disease-normalizer[etl]~=0.7.0",
+    "disease-normalizer[etl]~=0.9.0",
     "owlready2",
     "rdflib",
     "wikibaseintegrator>=0.12.0",

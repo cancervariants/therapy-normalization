@@ -148,7 +148,7 @@ def compare_ta(response, fixture, query, match_type, warnings=None):
 
     assert actual.id == fixture.id
     assert actual.conceptType == fixture.conceptType
-    assert actual.label == fixture.label
+    assert actual.name == fixture.name
 
     assert bool(actual.mappings) == bool(fixture.mappings)
     if actual.mappings:
