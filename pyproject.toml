@@ -30,13 +30,13 @@ dependencies = [
     "click",
     "boto3",
     "ga4gh.vrs==2.0.0a14",
-    "disease-normalizer @ git+https://github.com/cancervariants/disease-normalization.git@update-vrs-python",
+    "disease-normalizer~=0.9.0",
 ]
 dynamic = ["version"]
 
 [project.optional-dependencies]
 etl = [
-    "disease-normalizer[etl] @ git+https://github.com/cancervariants/disease-normalization.git@update-vrs-python",
+    "disease-normalizer[etl]~=0.9.0",
     "owlready2",
     "rdflib",
     "wikibaseintegrator>=0.12.0",
