@@ -36,7 +36,7 @@ dynamic = ["version"]
 
 [project.optional-dependencies]
 etl = [
-    #"disease-normalizer[etl]~=0.7.0",
+    "disease-normalizer[etl] @ git+https://github.com/cancervariants/disease-normalization.git@update-vrs-python",
     "owlready2",
     "rdflib",
     "wikibaseintegrator>=0.12.0",
