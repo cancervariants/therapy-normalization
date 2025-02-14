@@ -46,7 +46,13 @@ etl = [
     "pyyaml"
 ]
 tests = ["pytest", "pytest-cov", "pytest-mock", "isodate"]
-dev = ["pre-commit>=3.7.1", "ruff==0.8.4", "lxml", "xmlformatter", "types-pyyaml"]
+dev = [
+    "pre-commit>=3.7.1",
+    "ruff==0.8.6",
+    "lxml",
+    "xmlformatter",
+    "types-pyyaml",
+]
 
 [project.urls]
 Homepage = "https://github.com/cancervariants/therapy-normalization"
@@ -80,7 +86,7 @@ branch = true
 
 [tool.ruff]
 src = ["src"]
-exclude = ["analysis"]
+exclude = ["analysis", "scripts"]
 
 [tool.ruff.lint]
 select = [
@@ -114,6 +120,7 @@ select = [
     "ARG",  # https://docs.astral.sh/ruff/rules/#flake8-unused-arguments-arg
     "PTH",  # https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
     "PGH",  # https://docs.astral.sh/ruff/rules/#pygrep-hooks-pgh
+    "FAST",  # https://docs.astral.sh/ruff/rules/#fastapi-fast
     "PLC",  # https://docs.astral.sh/ruff/rules/#convention-c
     "PLE",  # https://docs.astral.sh/ruff/rules/#error-e_1
     "TRY",  # https://docs.astral.sh/ruff/rules/#tryceratops-try
@@ -135,6 +142,7 @@ fixable = [
     "PT",
     "RSE",
     "SIM",
+    "FAST",
     "PLC",
     "PLE",
     "TRY",
