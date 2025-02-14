@@ -7,8 +7,7 @@ from collections.abc import Callable
 from typing import Any, TypeVar
 
 from botocore.exceptions import ClientError
-from disease.schemas import NAMESPACE_TO_SYSTEM_URI as DISEASE_NAMESPACE_TO_SYSTEM_URI
-from disease.schemas import NamespacePrefix as DiseaseNamespacePrefix
+from disease.schemas import get_concept_mapping as get_disease_concept_mapping
 from ga4gh.core.models import (
     Coding,
     ConceptMapping,
@@ -23,7 +22,6 @@ from therapy import NAMESPACE_LUIS, PREFIX_LOOKUP, SOURCES
 from therapy.database import AbstractDatabase
 from therapy.schemas import (
     NAMESPACE_TO_SYSTEM_URI,
-    SYSTEM_URI_TO_NAMESPACE,
     BaseNormalizationService,
     HasIndication,
     MatchesNormalized,
@@ -365,13 +363,13 @@ class QueryHandler:
 
         sources = []
         for m in therapy.mappings or []:
-            ns = SYSTEM_URI_TO_NAMESPACE.get(m.coding.system)
+            ns = m.coding.id.split(":")[0]
             if ns in PREFIX_LOOKUP:
                 sources.append(PREFIX_LOOKUP[ns])
 
         for src in sources:
             if src not in sources_meta:
-                sources_meta[src] = self.db.get_source_metadata(src)
+                sources_meta[SourceName[src.upper()]] = self.db.get_source_metadata(src)
         response.source_meta_ = sources_meta  # type: ignore[assignment]
         return response
 
@@ -399,69 +397,62 @@ class QueryHandler:
         :return: completed response object ready to return to user
         """
 
-        def _create_concept_mapping(
+        def _get_concept_mapping(
             concept_id: str,
             relation: Relation,
-            ns_to_system_uri: dict[str, str],
-            ns_prefix: NamespacePrefix | DiseaseNamespacePrefix,
         ) -> ConceptMapping:
-            """Create concept mapping for therapy or disease identifier
+            """Create concept mapping for identifier
 
-            ``system`` will use OBO Foundry persistent URL (PURL), source homepage, or
-            namespace prefix, in that order of preference, if available.
+            ``system`` will use system prefix URL, OBO Foundry persistent URL (PURL), or
+            source homepage, in that order of preference.
 
             :param concept_id: Concept identifier represented as a curie
             :param relation: SKOS mapping relationship, default is relatedMatch
-            :param ns_to_system_uri: Dictionary containing mapping from namespace to
-                system URI
-            :param ns_prefix: Namespace prefix enum
-            :return: Concept mapping for therapy or disease identifier
+            :raises ValueError: If source of concept ID is not a valid
+                ``NamespacePrefix``
+            :return: Concept mapping for identifier
             """
-            source = concept_id.split(":")[0]
+            source, source_code = concept_id.split(":")
 
             try:
-                source = ns_prefix(source)
+                source = NamespacePrefix(source)
             except ValueError:
                 try:
-                    source = ns_prefix(source.upper())
+                    source = NamespacePrefix(source.upper())
                 except ValueError as e:
                     err_msg = f"Namespace prefix not supported: {source}"
                     raise ValueError(err_msg) from e
 
-            system = ns_to_system_uri.get(source, source)
+            if source == NamespacePrefix.CHEBI:
+                source_code = concept_id
 
             return ConceptMapping(
-                coding=Coding(code=code(concept_id), system=system), relation=relation
+                coding=Coding(
+                    id=concept_id,
+                    code=code(source_code),
+                    system=NAMESPACE_TO_SYSTEM_URI[source],
+                ),
+                relation=relation,
             )
 
         therapy_obj = MappableConcept(
             id=f"normalize.therapy.{record['concept_id']}",
             primaryCode=code(root=record["concept_id"]),
             conceptType="Therapy",
-            label=record.get("label"),
+            name=record.get("label"),
         )
 
-        # mappings
-        mappings = [
-            _create_concept_mapping(
-                concept_id=record["concept_id"],
-                relation=Relation.EXACT_MATCH,
-                ns_to_system_uri=NAMESPACE_TO_SYSTEM_URI,
-                ns_prefix=NamespacePrefix,
-            )
+        xrefs = [record["concept_id"], *record.get("xrefs", [])]
+        therapy_obj.mappings = [
+            _get_concept_mapping(xref_id, relation=Relation.EXACT_MATCH)
+            for xref_id in xrefs
         ]
-        source_ids = record.get("xrefs", []) + record.get("associated_with", [])
-        mappings.extend(
-            _create_concept_mapping(
-                concept_id=source_id,
-                relation=Relation.RELATED_MATCH,
-                ns_to_system_uri=NAMESPACE_TO_SYSTEM_URI,
-                ns_prefix=NamespacePrefix,
-            )
-            for source_id in source_ids
+
+        associated_with = record.get("associated_with", [])
+        therapy_obj.mappings.extend(
+            _get_concept_mapping(associated_with_id, relation=Relation.RELATED_MATCH)
+            for associated_with_id in associated_with
         )
-        if mappings:
-            therapy_obj.mappings = mappings
 
         extensions = []
         if "aliases" in record:
@@ -490,11 +481,9 @@ class QueryHandler:
 
                 if indication.normalized_disease_id:
                     mappings = [
-                        _create_concept_mapping(
+                        get_disease_concept_mapping(
                             concept_id=indication.normalized_disease_id,
-                            relation=Relation.RELATED_MATCH,
-                            ns_to_system_uri=DISEASE_NAMESPACE_TO_SYSTEM_URI,
-                            ns_prefix=DiseaseNamespacePrefix,
+                            relation=Relation.EXACT_MATCH,
                         )
                     ]
                 else:
@@ -502,7 +491,7 @@ class QueryHandler:
                 ind_disease_obj = MappableConcept(
                     id=indication.disease_id,
                     conceptType="Disease",
-                    label=indication.disease_label,
+                    name=indication.disease_label,
                     mappings=mappings or None,
                 )
 

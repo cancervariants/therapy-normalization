@@ -21,6 +21,7 @@ def pytest_collection_modifyitems(items):
     When creating new test modules, be sure to add them here.
     """
     MODULE_ORDER = [  # noqa: N806
+        "test_schemas",
         "test_chembl",
         "test_chemidplus",
         "test_drugbank",

@@ -1,8 +1,7 @@
 {
   "normalize_cisplatin": {
     "conceptType": "Therapy",
-    "label": "cisplatin",
-    "description": null,
+    "name": "cisplatin",
     "id": "normalize.therapy.rxcui:2555",
     "primaryCode": "rxcui:2555",
     "extensions": [
@@ -64,7 +63,7 @@
           "has_indication": [
             {
               "id": "hemonc:671",
-              "label": "Testicular cancer",
+              "name": "Testicular cancer",
               "extensions": [
                 {
                   "name": "regulatory_body",
@@ -74,17 +73,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7251"
+                    "id": "ncit:C7251",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7251"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "hemonc:645",
-              "label": "Ovarian cancer",
+              "name": "Ovarian cancer",
               "extensions": [
                 {
                   "name": "regulatory_body",
@@ -94,17 +94,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7431"
+                    "id": "ncit:C7431",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7431"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "hemonc:569",
-              "label": "Bladder cancer",
+              "name": "Bladder cancer",
               "extensions": [
                 {
                   "name": "regulatory_body",
@@ -114,17 +115,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9334"
+                    "id": "ncit:C9334",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9334"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D013945",
-              "label": "Thymoma",
+              "name": "Thymoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -134,17 +136,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3411"
+                    "id": "ncit:C3411",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3411"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D064129",
-              "label": "Prostatic Neoplasms, Castration-Resistant",
+              "name": "Prostatic Neoplasms, Castration-Resistant",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -154,17 +157,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
-                    "code": "mondo:0850353"
+                    "id": "MONDO_0850353",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0850353"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D001661",
-              "label": "Biliary Tract Neoplasms",
+              "name": "Biliary Tract Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -174,17 +178,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
-                    "code": "mondo:0003060"
+                    "id": "MONDO_0003060",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0003060"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D009369",
-              "label": "Neoplasms",
+              "name": "Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -194,17 +199,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3262"
+                    "id": "ncit:C3262",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3262"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "EFO:0003868",
-              "label": "mouth neoplasm",
+              "name": "mouth neoplasm",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -214,17 +220,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7606"
+                    "id": "ncit:C7606",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7606"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D002294",
-              "label": "Carcinoma, Squamous Cell",
+              "name": "Carcinoma, Squamous Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -234,17 +241,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2929"
+                    "id": "ncit:C2929",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2929"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D018281",
-              "label": "Cholangiocarcinoma",
+              "name": "Cholangiocarcinoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -254,17 +262,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4436"
+                    "id": "ncit:C4436",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4436"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D004806",
-              "label": "Ependymoma",
+              "name": "Ependymoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -274,17 +283,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3017"
+                    "id": "ncit:C3017",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3017"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D004938",
-              "label": "Esophageal Neoplasms",
+              "name": "Esophageal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -294,17 +304,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7478"
+                    "id": "ncit:C7478",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7478"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D055752",
-              "label": "Small Cell Lung Carcinoma",
+              "name": "Small Cell Lung Carcinoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -314,17 +325,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4917"
+                    "id": "ncit:C4917",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4917"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D007680",
-              "label": "Kidney Neoplasms",
+              "name": "Kidney Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -334,17 +346,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7548"
+                    "id": "ncit:C7548",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7548"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D002276",
-              "label": "Carcinoid Tumor",
+              "name": "Carcinoid Tumor",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -354,17 +367,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2915"
+                    "id": "ncit:C2915",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2915"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D018242",
-              "label": "Neuroectodermal Tumors, Primitive",
+              "name": "Neuroectodermal Tumors, Primitive",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -374,17 +388,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3222"
+                    "id": "ncit:C3222",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3222"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D005185",
-              "label": "Fallopian Tube Neoplasms",
+              "name": "Fallopian Tube Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -394,17 +409,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3032"
+                    "id": "ncit:C3032",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3032"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D009190",
-              "label": "Myelodysplastic Syndromes",
+              "name": "Myelodysplastic Syndromes",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -414,17 +430,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3247"
+                    "id": "ncit:C3247",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3247"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D016403",
-              "label": "Lymphoma, Large B-Cell, Diffuse",
+              "name": "Lymphoma, Large B-Cell, Diffuse",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -434,17 +451,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C8851"
+                    "id": "ncit:C8851",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C8851"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D007674",
-              "label": "Kidney Diseases",
+              "name": "Kidney Diseases",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -454,17 +472,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3149"
+                    "id": "ncit:C3149",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3149"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D013274",
-              "label": "Stomach Neoplasms",
+              "name": "Stomach Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -474,17 +493,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3387"
+                    "id": "ncit:C3387",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3387"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D014565",
-              "label": "Urogenital Neoplasms",
+              "name": "Urogenital Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -495,7 +515,7 @@
             },
             {
               "id": "mesh:D014523",
-              "label": "Urethral Neoplasms",
+              "name": "Urethral Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -505,17 +525,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3619"
+                    "id": "ncit:C3619",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3619"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D016411",
-              "label": "Lymphoma, T-Cell, Peripheral",
+              "name": "Lymphoma, T-Cell, Peripheral",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -525,17 +546,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3468"
+                    "id": "ncit:C3468",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3468"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D009373",
-              "label": "Neoplasms, Germ Cell and Embryonal",
+              "name": "Neoplasms, Germ Cell and Embryonal",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -545,17 +567,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3708"
+                    "id": "ncit:C3708",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3708"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D001005",
-              "label": "Anus Neoplasms",
+              "name": "Anus Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -565,17 +588,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2877"
+                    "id": "ncit:C2877",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2877"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D013953",
-              "label": "Thymus Neoplasms",
+              "name": "Thymus Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -585,17 +609,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4962"
+                    "id": "ncit:C4962",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4962"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D008107",
-              "label": "Liver Diseases",
+              "name": "Liver Diseases",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -605,17 +630,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3196"
+                    "id": "ncit:C3196",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3196"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D014846",
-              "label": "Vulvar Neoplasms",
+              "name": "Vulvar Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -625,17 +651,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7502"
+                    "id": "ncit:C7502",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7502"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D031901",
-              "label": "Gestational Trophoblastic Disease",
+              "name": "Gestational Trophoblastic Disease",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -645,17 +672,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4699"
+                    "id": "ncit:C4699",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4699"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D005706",
-              "label": "Gallbladder Neoplasms",
+              "name": "Gallbladder Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -665,17 +693,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3048"
+                    "id": "ncit:C3048",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3048"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D016545",
-              "label": "Choroid Plexus Neoplasms",
+              "name": "Choroid Plexus Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -685,17 +714,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4533"
+                    "id": "ncit:C4533",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4533"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D007012",
-              "label": "Hypopharyngeal Neoplasms",
+              "name": "Hypopharyngeal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -705,17 +735,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7190"
+                    "id": "ncit:C7190",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7190"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D002292",
-              "label": "Carcinoma, Renal Cell",
+              "name": "Carcinoma, Renal Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -725,17 +756,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
-                    "code": "mondo:0005086"
+                    "id": "MONDO_0005086",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0005086"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D004066",
-              "label": "Digestive System Diseases",
+              "name": "Digestive System Diseases",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -745,17 +777,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3959"
+                    "id": "ncit:C3959",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3959"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D008113",
-              "label": "Liver Neoplasms",
+              "name": "Liver Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -765,17 +798,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C34803"
+                    "id": "ncit:C34803",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C34803"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "EFO:1000043",
-              "label": "ovarian serous cystadenocarcinoma",
+              "name": "ovarian serous cystadenocarcinoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -785,17 +819,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7978"
+                    "id": "ncit:C7978",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7978"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D004067",
-              "label": "Digestive System Neoplasms",
+              "name": "Digestive System Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -805,17 +840,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4890"
+                    "id": "ncit:C4890",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4890"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D015179",
-              "label": "Colorectal Neoplasms",
+              "name": "Colorectal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -825,17 +861,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2956"
+                    "id": "ncit:C2956",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2956"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D010190",
-              "label": "Pancreatic Neoplasms",
+              "name": "Pancreatic Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -845,17 +882,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3305"
+                    "id": "ncit:C3305",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3305"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D006258",
-              "label": "Head and Neck Neoplasms",
+              "name": "Head and Neck Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -865,17 +903,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4013"
+                    "id": "ncit:C4013",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4013"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D012208",
-              "label": "Rhabdomyosarcoma",
+              "name": "Rhabdomyosarcoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -885,17 +924,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3359"
+                    "id": "ncit:C3359",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3359"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D016483",
-              "label": "Lymphoma, AIDS-Related",
+              "name": "Lymphoma, AIDS-Related",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -905,17 +945,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3471"
+                    "id": "ncit:C3471",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3471"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D001932",
-              "label": "Brain Neoplasms",
+              "name": "Brain Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -925,17 +966,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3568"
+                    "id": "ncit:C3568",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3568"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D021441",
-              "label": "Carcinoma, Pancreatic Ductal",
+              "name": "Carcinoma, Pancreatic Ductal",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -945,17 +987,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9120"
+                    "id": "ncit:C9120",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9120"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D002822",
-              "label": "Choriocarcinoma",
+              "name": "Choriocarcinoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -965,17 +1008,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2948"
+                    "id": "ncit:C2948",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2948"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D020250",
-              "label": "Postoperative Nausea and Vomiting",
+              "name": "Postoperative Nausea and Vomiting",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -986,7 +1030,7 @@
             },
             {
               "id": "mesh:D058922",
-              "label": "Inflammatory Breast Neoplasms",
+              "name": "Inflammatory Breast Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -996,17 +1040,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4001"
+                    "id": "ncit:C4001",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4001"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D015266",
-              "label": "Carcinoma, Merkel Cell",
+              "name": "Carcinoma, Merkel Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1016,17 +1061,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9231"
+                    "id": "ncit:C9231",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9231"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D013736",
-              "label": "Testicular Neoplasms",
+              "name": "Testicular Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1036,17 +1082,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7251"
+                    "id": "ncit:C7251",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7251"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D000077192",
-              "label": "Adenocarcinoma of Lung",
+              "name": "Adenocarcinoma of Lung",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1056,17 +1103,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3512"
+                    "id": "ncit:C3512",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3512"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D014594",
-              "label": "Uterine Neoplasms",
+              "name": "Uterine Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1076,17 +1124,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3552"
+                    "id": "ncit:C3552",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3552"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D005833",
-              "label": "Genital Neoplasms, Female",
+              "name": "Genital Neoplasms, Female",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1096,17 +1145,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3053"
+                    "id": "ncit:C3053",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3053"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D052016",
-              "label": "Mucositis",
+              "name": "Mucositis",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1116,17 +1166,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C115965"
+                    "id": "ncit:C115965",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C115965"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "EFO:0005570",
-              "label": "oral cavity cancer",
+              "name": "oral cavity cancer",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1136,17 +1187,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9314"
+                    "id": "ncit:C9314",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9314"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D009101",
-              "label": "Multiple Myeloma",
+              "name": "Multiple Myeloma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1156,17 +1208,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3242"
+                    "id": "ncit:C3242",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3242"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D002280",
-              "label": "Carcinoma, Basal Cell",
+              "name": "Carcinoma, Basal Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1176,17 +1229,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C156767"
+                    "id": "ncit:C156767",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C156767"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D009959",
-              "label": "Oropharyngeal Neoplasms",
+              "name": "Oropharyngeal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1196,17 +1250,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7398"
+                    "id": "ncit:C7398",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7398"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D009447",
-              "label": "Neuroblastoma",
+              "name": "Neuroblastoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1216,17 +1271,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3270"
+                    "id": "ncit:C3270",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3270"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D007938",
-              "label": "Leukemia",
+              "name": "Leukemia",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1236,17 +1292,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3161"
+                    "id": "ncit:C3161",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3161"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D010610",
-              "label": "Pharyngeal Neoplasms",
+              "name": "Pharyngeal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1256,17 +1313,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7545"
+                    "id": "ncit:C7545",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7545"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D008545",
-              "label": "Melanoma",
+              "name": "Melanoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1276,17 +1334,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3224"
+                    "id": "ncit:C3224",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3224"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D000306",
-              "label": "Adrenal Cortex Neoplasms",
+              "name": "Adrenal Cortex Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1296,17 +1355,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2858"
+                    "id": "ncit:C2858",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2858"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D006689",
-              "label": "Hodgkin Disease",
+              "name": "Hodgkin Disease",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1316,17 +1376,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9357"
+                    "id": "ncit:C9357",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9357"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D002583",
-              "label": "Uterine Cervical Neoplasms",
+              "name": "Uterine Cervical Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1336,17 +1397,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9311"
+                    "id": "ncit:C9311",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9311"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D002289",
-              "label": "Carcinoma, Non-Small-Cell Lung",
+              "name": "Carcinoma, Non-Small-Cell Lung",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1356,17 +1418,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2926"
+                    "id": "ncit:C2926",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2926"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D009325",
-              "label": "Nausea",
+              "name": "Nausea",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1377,7 +1440,7 @@
             },
             {
               "id": "mesh:D018288",
-              "label": "Carcinoma, Small Cell",
+              "name": "Carcinoma, Small Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1387,17 +1450,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3915"
+                    "id": "ncit:C3915",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3915"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D000230",
-              "label": "Adenocarcinoma",
+              "name": "Adenocarcinoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1407,17 +1471,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2852"
+                    "id": "ncit:C2852",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2852"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D018287",
-              "label": "Carcinoma, Large Cell",
+              "name": "Carcinoma, Large Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1427,17 +1492,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3780"
+                    "id": "ncit:C3780",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3780"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D018240",
-              "label": "Endodermal Sinus Tumor",
+              "name": "Endodermal Sinus Tumor",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1447,17 +1513,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3011"
+                    "id": "ncit:C3011",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3011"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D001943",
-              "label": "Breast Neoplasms",
+              "name": "Breast Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1467,17 +1534,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2910"
+                    "id": "ncit:C2910",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2910"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D010996",
-              "label": "Pleural Effusion",
+              "name": "Pleural Effusion",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1488,7 +1556,7 @@
             },
             {
               "id": "mesh:D016543",
-              "label": "Central Nervous System Neoplasms",
+              "name": "Central Nervous System Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1498,17 +1566,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4627"
+                    "id": "ncit:C4627",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4627"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D012468",
-              "label": "Salivary Gland Neoplasms",
+              "name": "Salivary Gland Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1518,17 +1587,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3811"
+                    "id": "ncit:C3811",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3811"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D006528",
-              "label": "Carcinoma, Hepatocellular",
+              "name": "Carcinoma, Hepatocellular",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1538,17 +1608,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3099"
+                    "id": "ncit:C3099",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3099"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D008479",
-              "label": "Mediastinal Neoplasms",
+              "name": "Mediastinal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1558,17 +1629,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3549"
+                    "id": "ncit:C3549",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3549"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D013724",
-              "label": "Teratoma",
+              "name": "Teratoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1578,17 +1650,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3403"
+                    "id": "ncit:C3403",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3403"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D010534",
-              "label": "Peritoneal Neoplasms",
+              "name": "Peritoneal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1598,17 +1671,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3322"
+                    "id": "ncit:C3322",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3322"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D010255",
-              "label": "Paranasal Sinus Neoplasms",
+              "name": "Paranasal Sinus Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1618,17 +1692,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C6014"
+                    "id": "ncit:C6014",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C6014"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D018285",
-              "label": "Klatskin Tumor",
+              "name": "Klatskin Tumor",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1638,17 +1713,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C36077"
+                    "id": "ncit:C36077",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C36077"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D018239",
-              "label": "Seminoma",
+              "name": "Seminoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1658,17 +1734,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9309"
+                    "id": "ncit:C9309",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9309"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D010051",
-              "label": "Ovarian Neoplasms",
+              "name": "Ovarian Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1678,17 +1755,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7431"
+                    "id": "ncit:C7431",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7431"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D008224",
-              "label": "Lymphoma, Follicular",
+              "name": "Lymphoma, Follicular",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1698,17 +1776,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3209"
+                    "id": "ncit:C3209",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3209"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D000077195",
-              "label": "Squamous Cell Carcinoma of Head and Neck",
+              "name": "Squamous Cell Carcinoma of Head and Neck",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1718,17 +1797,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4044"
+                    "id": "ncit:C4044",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4044"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D008654",
-              "label": "Mesothelioma",
+              "name": "Mesothelioma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1738,17 +1818,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3234"
+                    "id": "ncit:C3234",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3234"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D018197",
-              "label": "Hepatoblastoma",
+              "name": "Hepatoblastoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1758,17 +1839,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3728"
+                    "id": "ncit:C3728",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3728"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D018236",
-              "label": "Carcinoma, Embryonal",
+              "name": "Carcinoma, Embryonal",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1778,17 +1860,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3752"
+                    "id": "ncit:C3752",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3752"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D017728",
-              "label": "Lymphoma, Large-Cell, Anaplastic",
+              "name": "Lymphoma, Large-Cell, Anaplastic",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1798,17 +1881,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3720"
+                    "id": "ncit:C3720",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3720"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D000740",
-              "label": "Anemia",
+              "name": "Anemia",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1818,17 +1902,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2869"
+                    "id": "ncit:C2869",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2869"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D002277",
-              "label": "Carcinoma",
+              "name": "Carcinoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1838,17 +1923,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2916"
+                    "id": "ncit:C2916",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2916"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D010412",
-              "label": "Penile Neoplasms",
+              "name": "Penile Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1858,17 +1944,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3317"
+                    "id": "ncit:C3317",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3317"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D012878",
-              "label": "Skin Neoplasms",
+              "name": "Skin Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1878,17 +1965,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3372"
+                    "id": "ncit:C3372",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3372"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D012175",
-              "label": "Retinoblastoma",
+              "name": "Retinoblastoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1898,17 +1986,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7541"
+                    "id": "ncit:C7541",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7541"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D012509",
-              "label": "Sarcoma",
+              "name": "Sarcoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1918,17 +2007,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9118"
+                    "id": "ncit:C9118",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9118"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D018273",
-              "label": "Carcinoma, Islet Cell",
+              "name": "Carcinoma, Islet Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1938,17 +2028,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3770"
+                    "id": "ncit:C3770",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3770"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D008223",
-              "label": "Lymphoma",
+              "name": "Lymphoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1958,17 +2049,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3208"
+                    "id": "ncit:C3208",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3208"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D008228",
-              "label": "Lymphoma, Non-Hodgkin",
+              "name": "Lymphoma, Non-Hodgkin",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1978,17 +2070,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3211"
+                    "id": "ncit:C3211",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3211"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D008175",
-              "label": "Lung Neoplasms",
+              "name": "Lung Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -1998,17 +2091,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3200"
+                    "id": "ncit:C3200",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3200"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D001749",
-              "label": "Urinary Bladder Neoplasms",
+              "name": "Urinary Bladder Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2018,17 +2112,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9334"
+                    "id": "ncit:C9334",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9334"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D015459",
-              "label": "Leukemia-Lymphoma, Adult T-Cell",
+              "name": "Leukemia-Lymphoma, Adult T-Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2038,17 +2133,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3184"
+                    "id": "ncit:C3184",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3184"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D008527",
-              "label": "Medulloblastoma",
+              "name": "Medulloblastoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2058,17 +2154,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3222"
+                    "id": "ncit:C3222",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3222"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D016889",
-              "label": "Endometrial Neoplasms",
+              "name": "Endometrial Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2078,17 +2175,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3012"
+                    "id": "ncit:C3012",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3012"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D013280",
-              "label": "Stomatitis",
+              "name": "Stomatitis",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2098,17 +2196,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C26887"
+                    "id": "ncit:C26887",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C26887"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D020522",
-              "label": "Lymphoma, Mantle-Cell",
+              "name": "Lymphoma, Mantle-Cell",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2118,17 +2217,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C4337"
+                    "id": "ncit:C4337",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4337"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D014987",
-              "label": "Xerostomia",
+              "name": "Xerostomia",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2139,7 +2239,7 @@
             },
             {
               "id": "mesh:D012516",
-              "label": "Osteosarcoma",
+              "name": "Osteosarcoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2149,17 +2249,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9145"
+                    "id": "ncit:C9145",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9145"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D018312",
-              "label": "Sex Cord-Gonadal Stromal Tumors",
+              "name": "Sex Cord-Gonadal Stromal Tumors",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2169,17 +2270,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3794"
+                    "id": "ncit:C3794",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3794"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D009303",
-              "label": "Nasopharyngeal Neoplasms",
+              "name": "Nasopharyngeal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2189,17 +2291,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3257"
+                    "id": "ncit:C3257",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3257"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D005910",
-              "label": "Glioma",
+              "name": "Glioma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2209,17 +2312,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3059"
+                    "id": "ncit:C3059",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3059"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D018305",
-              "label": "Ganglioneuroblastoma",
+              "name": "Ganglioneuroblastoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2229,17 +2333,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3790"
+                    "id": "ncit:C3790",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3790"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D009362",
-              "label": "Neoplasm Metastasis",
+              "name": "Neoplasm Metastasis",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2250,7 +2355,7 @@
             },
             {
               "id": "mesh:D006103",
-              "label": "Granuloma, Lethal Midline",
+              "name": "Granuloma, Lethal Midline",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2260,17 +2365,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C8196"
+                    "id": "ncit:C8196",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C8196"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D007822",
-              "label": "Laryngeal Neoplasms",
+              "name": "Laryngeal Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2280,17 +2386,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3156"
+                    "id": "ncit:C3156",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3156"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D055728",
-              "label": "Primary Myelofibrosis",
+              "name": "Primary Myelofibrosis",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2300,17 +2407,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C2862"
+                    "id": "ncit:C2862",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2862"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D007119",
-              "label": "Immunoblastic Lymphadenopathy",
+              "name": "Immunoblastic Lymphadenopathy",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2320,17 +2428,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7528"
+                    "id": "ncit:C7528",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7528"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D018278",
-              "label": "Carcinoma, Neuroendocrine",
+              "name": "Carcinoma, Neuroendocrine",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2340,17 +2449,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3773"
+                    "id": "ncit:C3773",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3773"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D008288",
-              "label": "Malaria",
+              "name": "Malaria",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2360,17 +2470,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C34797"
+                    "id": "ncit:C34797",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C34797"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D018269",
-              "label": "Carcinoma, Endometrioid",
+              "name": "Carcinoma, Endometrioid",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2380,17 +2491,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7558"
+                    "id": "ncit:C7558",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7558"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D014062",
-              "label": "Tongue Neoplasms",
+              "name": "Tongue Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2400,17 +2512,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C9345"
+                    "id": "ncit:C9345",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C9345"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D013964",
-              "label": "Thyroid Neoplasms",
+              "name": "Thyroid Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2420,17 +2533,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C7510"
+                    "id": "ncit:C7510",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7510"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D046152",
-              "label": "Gastrointestinal Stromal Tumors",
+              "name": "Gastrointestinal Stromal Tumors",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2440,17 +2554,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3868"
+                    "id": "ncit:C3868",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3868"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D064726",
-              "label": "Triple Negative Breast Neoplasms",
+              "name": "Triple Negative Breast Neoplasms",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2460,10 +2575,11 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C71732"
+                    "id": "ncit:C71732",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C71732"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -2485,407 +2601,465 @@
     "mappings": [
       {
         "coding": {
-          "code": "rxcui:2555",
-          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/index.html"
+          "id": "rxcui:2555",
+          "system": "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=",
+          "code": "2555"
         },
         "relation": "exactMatch"
       },
       {
         "coding": {
-          "code": "ncit:C376",
-          "system": "http://purl.obolibrary.org/obo/ncit.owl"
+          "id": "ncit:C376",
+          "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+          "code": "C376"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "hemonc:105",
+          "system": "https://hemonc.org",
+          "code": "105"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "drugbank:DB00515",
+          "system": "https://go.drugbank.com/drugs/",
+          "code": "DB00515"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "drugbank:DB12117",
+          "system": "https://go.drugbank.com/drugs/",
+          "code": "DB12117"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "drugsatfda.anda:074656",
+          "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+          "code": "074656"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "drugsatfda.anda:074735",
+          "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+          "code": "074735"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "drugsatfda.anda:075036",
+          "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+          "code": "075036"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "drugsatfda.anda:206774",
+          "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+          "code": "206774"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "drugsatfda.anda:207323",
+          "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+          "code": "207323"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "drugsatfda.nda:018057",
+          "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+          "code": "018057"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "iuphar.ligand:5343",
+          "system": "https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=",
+          "code": "5343"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "chembl:CHEMBL11359",
+          "system": "https://www.ebi.ac.uk/chembl/explore/compound/",
+          "code": "CHEMBL11359"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "chemidplus:15663-27-1",
+          "system": "https://commonchemistry.cas.org/detail?cas_rn=",
+          "code": "15663-27-1"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "wikidata:Q412415",
+          "system": "https://www.wikidata.org/wiki/",
+          "code": "Q412415"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "ndc:0703-5748",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "0703-5748"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "hemonc:105",
-          "system": "https://hemonc.org"
+          "id": "ndc:63323-103",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "63323-103"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "drugbank:DB00515",
-          "system": "https://go.drugbank.com"
+          "id": "ndc:70860-206",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "70860-206"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "drugbank:DB12117",
-          "system": "https://go.drugbank.com"
+          "id": "ndc:44567-509",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "44567-509"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "drugsatfda.anda:074656",
-          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
+          "id": "usp:m17910",
+          "system": "https://www.usp.org/health-quality-safety/compendial-nomenclature",
+          "code": "m17910"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "drugsatfda.anda:074735",
-          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
+          "id": "ndc:44567-530",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "44567-530"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "drugsatfda.anda:075036",
-          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
+          "id": "pubchem.substance:178102005",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/substance/",
+          "code": "178102005"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "drugsatfda.anda:206774",
-          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
+          "id": "spl:9b008181-ab66-db2f-e053-2995a90aad57",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "9b008181-ab66-db2f-e053-2995a90aad57"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "drugsatfda.anda:207323",
-          "system": "https://www.fda.gov/drugs/types-applications/abbreviated-new-drug-application-anda"
+          "id": "ndc:16729-288",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "16729-288"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "drugsatfda.nda:018057",
-          "system": "https://www.fda.gov/drugs/types-applications/new-drug-application-nda"
+          "id": "spl:a66eda32-1164-439a-ac8e-73138365ec06",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "a66eda32-1164-439a-ac8e-73138365ec06"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "iuphar.ligand:5343",
-          "system": "https://www.guidetopharmacology.org/GRAC/LigandListForward"
+          "id": "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "dd45d777-d4c1-40ee-b4f0-c9e001a15a8c"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "chembl:CHEMBL11359",
-          "system": "https://www.ebi.ac.uk/chembl/"
+          "id": "CHEBI:27899",
+          "system": "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=",
+          "code": "CHEBI:27899"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "chemidplus:15663-27-1",
-          "system": "https://pubchem.ncbi.nlm.nih.gov/source/ChemIDplus"
+          "id": "ndc:44567-511",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "44567-511"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "wikidata:Q412415",
-          "system": "https://www.wikidata.org"
+          "id": "ndc:0703-5747",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "0703-5747"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:0703-5748",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:68083-162",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "68083-162"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:63323-103",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "atc:L01XA01",
+          "system": "https://atcddd.fhi.no/atc_ddd_index/?code=",
+          "code": "L01XA01"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:70860-206",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:44567-510",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "44567-510"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:44567-509",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "mmsl:31747",
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
+          "code": "31747"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "usp:m17910",
-          "system": "https://www.usp.org/health-quality-safety/compendial-nomenclature"
+          "id": "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "2c569ef0-588f-4828-8b2d-03a2120c9b4c"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:44567-530",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "vandf:4018139",
+          "system": "https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/VANDF",
+          "code": "4018139"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "pubchem.substance:178102005",
-          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/substances"
+          "id": "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
+          "system": "https://www.chemspider.com",
+          "code": "LXZZYRPGZAFOLE-UHFFFAOYSA-L"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:9b008181-ab66-db2f-e053-2995a90aad57",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "ndc:68083-163",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "68083-163"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:16729-288",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
+          "system": "https://www.chemspider.com",
+          "code": "MOTIYCLHZZLHHQ-UHFFFAOYSA-N"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:a66eda32-1164-439a-ac8e-73138365ec06",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "spl:adf5773e-9095-4cb4-a90f-72cbf82f4493",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "adf5773e-9095-4cb4-a90f-72cbf82f4493"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "mmsl:d00195",
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
+          "code": "d00195"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "CHEBI:27899",
-          "system": "http://purl.obolibrary.org/obo/chebi.owl"
+          "id": "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "01c7a680-ee0d-42da-85e8-8d56c6fe7006"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:44567-511",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "c43de769-d6d8-3bb9-e053-2995a90a5aa2"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:0703-5747",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "unii:H8MTN7XVC2",
+          "system": "https://precision.fda.gov/uniisearch/srs/unii/",
+          "code": "H8MTN7XVC2"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:68083-162",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:68001-283",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "68001-283"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "atc:L01XA01",
-          "system": "https://www.who.int/tools/atc-ddd-toolkit/atc-classification/"
+          "id": "unii:Q20Q21Q62J",
+          "system": "https://precision.fda.gov/uniisearch/srs/unii/",
+          "code": "Q20Q21Q62J"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:44567-510",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "pubchem.compound:5702198",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/compound/",
+          "code": "5702198"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "mmsl:31747",
-          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html"
+          "id": "pubchem.compound:441203",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/compound/",
+          "code": "441203"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "ndc:0143-9505",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "0143-9505"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "vandf:4018139",
-          "system": "https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/VANDF"
+          "id": "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
-          "system": "https://www.chemspider.com"
+          "id": "mmsl:4456",
+          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
+          "code": "4456"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:68083-163",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "umls:C0008838",
+          "system": "https://uts.nlm.nih.gov/uts/umls/concept/",
+          "code": "C0008838"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
-          "system": "https://www.chemspider.com"
+          "id": "spl:0219ee77-eb38-b81f-e063-6394a90a5ca4",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "0219ee77-eb38-b81f-e063-6394a90a5ca4"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:adf5773e-9095-4cb4-a90f-72cbf82f4493",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "spl:89007399-3c34-40d2-8068-a0b8e09cbef8",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "89007399-3c34-40d2-8068-a0b8e09cbef8"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "mmsl:d00195",
-          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html"
+          "id": "spl:64bcce1a-6e31-4e73-8da5-11aa9e890da2",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "64bcce1a-6e31-4e73-8da5-11aa9e890da2"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "ndc:72266-253",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "72266-253"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
+          "id": "ndc:25021-253",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "25021-253"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "unii:H8MTN7XVC2",
-          "system": "https://precision.fda.gov/uniisearch"
+          "id": "ndc:72266-252",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "72266-252"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "code": "ndc:68001-283",
-          "system": "https://dps.fda.gov/ndc"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "code": "unii:Q20Q21Q62J",
-          "system": "https://precision.fda.gov/uniisearch"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "code": "pubchem.compound:5702198",
-          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/compounds"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "code": "pubchem.compound:441203",
-          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/compounds"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "code": "ndc:0143-9505",
-          "system": "https://dps.fda.gov/ndc"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "code": "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "code": "mmsl:4456",
-          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "code": "umls:C0008838",
-          "system": "https://www.nlm.nih.gov/research/umls/index.html"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "code": "spl:0219ee77-eb38-b81f-e063-6394a90a5ca4",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "code": "spl:89007399-3c34-40d2-8068-a0b8e09cbef8",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "code": "spl:64bcce1a-6e31-4e73-8da5-11aa9e890da2",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "code": "ndc:72266-253",
-          "system": "https://dps.fda.gov/ndc"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "code": "ndc:25021-253",
-          "system": "https://dps.fda.gov/ndc"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "code": "ndc:72266-252",
-          "system": "https://dps.fda.gov/ndc"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "code": "ndc:0143-9504",
-          "system": "https://dps.fda.gov/ndc"
+          "id": "ndc:0143-9504",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "0143-9504"
         },
         "relation": "relatedMatch"
       }
@@ -2894,7 +3068,7 @@
   "normalize_phenobarbital": {
     "id": "normalize.therapy.rxcui:8134",
     "primaryCode": "rxcui:8134",
-    "label": "phenobarbital",
+    "name": "phenobarbital",
     "extensions": [
       {
         "name": "regulatory_approval",
@@ -2907,7 +3081,7 @@
           "has_indication": [
             {
               "id": "mesh:D003704",
-              "label": "Dementia",
+              "name": "Dementia",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2917,17 +3091,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
-                    "code": "mondo:0001627"
+                    "id": "MONDO_0001627",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0001627"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D009503",
-              "label": "Neutropenia",
+              "name": "Neutropenia",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2937,17 +3112,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
-                    "code": "mondo:0001475"
+                    "id": "MONDO_0001475",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0001475"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D003866",
-              "label": "Depressive Disorder",
+              "name": "Depressive Disorder",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2957,17 +3133,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
-                    "code": "mondo:0002050"
+                    "id": "MONDO_0002050",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0002050"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D008223",
-              "label": "Lymphoma",
+              "name": "Lymphoma",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2977,17 +3154,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3208"
+                    "id": "ncit:C3208",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3208"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D012559",
-              "label": "Schizophrenia",
+              "name": "Schizophrenia",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -2997,17 +3175,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
-                    "code": "mondo:0005090"
+                    "id": "MONDO_0005090",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0005090"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D004827",
-              "label": "Epilepsy",
+              "name": "Epilepsy",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -3017,17 +3196,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3020"
+                    "id": "ncit:C3020",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3020"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D013226",
-              "label": "Status Epilepticus",
+              "name": "Status Epilepticus",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -3037,17 +3217,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C85079"
+                    "id": "ncit:C85079",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C85079"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D009357",
-              "label": "Neonatal Abstinence Syndrome",
+              "name": "Neonatal Abstinence Syndrome",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -3057,17 +3238,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C87101"
+                    "id": "ncit:C87101",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C87101"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D012640",
-              "label": "Seizures",
+              "name": "Seizures",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -3077,17 +3259,18 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/ncit.owl",
-                    "code": "ncit:C3980"
+                    "id": "ncit:C3980",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3980"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
             },
             {
               "id": "mesh:D001007",
-              "label": "Anxiety",
+              "name": "Anxiety",
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
@@ -3097,10 +3280,11 @@
               "mappings": [
                 {
                   "coding": {
-                    "system": "http://purl.obolibrary.org/obo/mondo.owl",
-                    "code": "mondo:0011918"
+                    "id": "MONDO_0011918",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0011918"
                   },
-                  "relation": "relatedMatch"
+                  "relation": "exactMatch"
                 }
               ],
               "conceptType": "Disease"
@@ -3132,7 +3316,7 @@
           "phenobarb",
           "PHENYLETHYLMALONYLUREA",
           "Phenylethylbarbitursaeure",
-          "Phenylethylbarbitursäure",
+          "Phenylethylbarbiturs\u00e4ure",
           "Phenobarbituric Acid",
           "5-Ethyl-5-phenylbarbituric acid",
           "PHENO",
@@ -3144,7 +3328,7 @@
           "Phenobarbital",
           "5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione",
           "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
-          "Luminal®",
+          "Luminal\u00ae",
           "Phenylaethylbarbitursaeure",
           "NSC-9848",
           "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
@@ -3158,148 +3342,168 @@
           "PHENobarbital",
           "APRD00184",
           "phenylethylbarbiturate",
-          "Phenyläthylbarbitursäure"
+          "Phenyl\u00e4thylbarbiturs\u00e4ure"
         ]
       }
     ],
     "mappings": [
       {
         "coding": {
-          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/index.html",
-          "code": "rxcui:8134"
+          "id": "rxcui:8134",
+          "system": "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=",
+          "code": "8134"
         },
         "relation": "exactMatch"
       },
       {
         "coding": {
-          "system": "http://purl.obolibrary.org/obo/ncit.owl",
-          "code": "ncit:C739"
+          "id": "ncit:C739",
+          "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+          "code": "C739"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
-          "system": "https://go.drugbank.com",
-          "code": "drugbank:DB01174"
+          "id": "drugbank:DB01174",
+          "system": "https://go.drugbank.com/drugs/",
+          "code": "DB01174"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
-          "system": "https://www.guidetopharmacology.org/GRAC/LigandListForward",
-          "code": "iuphar.ligand:2804"
+          "id": "iuphar.ligand:2804",
+          "system": "https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=",
+          "code": "2804"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
-          "system": "https://www.ebi.ac.uk/chembl/",
-          "code": "chembl:CHEMBL40"
+          "id": "chembl:CHEMBL40",
+          "system": "https://www.ebi.ac.uk/chembl/explore/compound/",
+          "code": "CHEMBL40"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
-          "system": "https://pubchem.ncbi.nlm.nih.gov/source/ChemIDplus",
-          "code": "chemidplus:50-06-6"
+          "id": "chemidplus:50-06-6",
+          "system": "https://commonchemistry.cas.org/detail?cas_rn=",
+          "code": "50-06-6"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
-          "system": "https://www.wikidata.org",
-          "code": "wikidata:Q407241"
+          "id": "wikidata:Q407241",
+          "system": "https://www.wikidata.org/wiki/",
+          "code": "Q407241"
         },
-        "relation": "relatedMatch"
+        "relation": "exactMatch"
       },
       {
         "coding": {
+          "id": "vandf:4017422",
           "system": "https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/VANDF",
-          "code": "vandf:4017422"
+          "code": "4017422"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
+          "id": "usp:m63400",
           "system": "https://www.usp.org/health-quality-safety/compendial-nomenclature",
-          "code": "usp:m63400"
+          "code": "m63400"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "http://purl.obolibrary.org/obo/chebi.owl",
+          "id": "CHEBI:8069",
+          "system": "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=",
           "code": "CHEBI:8069"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://precision.fda.gov/uniisearch",
-          "code": "unii:YQE403BP4D"
+          "id": "unii:YQE403BP4D",
+          "system": "https://precision.fda.gov/uniisearch/srs/unii/",
+          "code": "YQE403BP4D"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://www.who.int/tools/atc-ddd-toolkit/atc-classification/",
-          "code": "atc:N03AA02"
+          "id": "atc:N03AA02",
+          "system": "https://atcddd.fhi.no/atc_ddd_index/?code=",
+          "code": "N03AA02"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
+          "id": "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N",
           "system": "https://www.chemspider.com",
-          "code": "inchikey:DDBREPKUVSBGFI-UHFFFAOYSA-N"
+          "code": "DDBREPKUVSBGFI-UHFFFAOYSA-N"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://www.nlm.nih.gov/research/umls/index.html",
-          "code": "umls:C0031412"
+          "id": "umls:C0031412",
+          "system": "https://uts.nlm.nih.gov/uts/umls/concept/",
+          "code": "C0031412"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/substances",
-          "code": "pubchem.substance:135650817"
+          "id": "pubchem.substance:135650817",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/substance/",
+          "code": "135650817"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
+          "id": "mmsl:d00340",
           "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
-          "code": "mmsl:d00340"
+          "code": "d00340"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
+          "id": "mmsl:2390",
           "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
-          "code": "mmsl:2390"
+          "code": "2390"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://drugcentral.org",
-          "code": "drugcentral:2134"
+          "id": "drugcentral:2134",
+          "system": "https://drugcentral.org/drugcard/",
+          "code": "2134"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/compounds",
-          "code": "pubchem.compound:4763"
+          "id": "pubchem.compound:4763",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/compound/",
+          "code": "4763"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
+          "id": "mmsl:5272",
           "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
-          "code": "mmsl:5272"
+          "code": "5272"
         },
         "relation": "relatedMatch"
       }
@@ -3309,82 +3513,93 @@
   "normalize_spiramycin": {
     "id": "normalize.therapy.rxcui:9991",
     "primaryCode": "rxcui:9991",
-    "label": "spiramycin",
+    "name": "spiramycin",
     "mappings": [
       {
         "coding": {
-          "system": "https://www.nlm.nih.gov/research/umls/rxnorm/index.html",
-          "code": "rxcui:9991"
+          "id": "rxcui:9991",
+          "system": "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=",
+          "code": "9991"
         },
         "relation": "exactMatch"
       },
       {
         "coding": {
-          "system": "http://purl.obolibrary.org/obo/ncit.owl",
-          "code": "ncit:C839"
+          "id": "ncit:C839",
+          "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+          "code": "C839"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "drugbank:DB06145",
+          "system": "https://go.drugbank.com/drugs/",
+          "code": "DB06145"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "chemidplus:8025-81-8",
+          "system": "https://commonchemistry.cas.org/detail?cas_rn=",
+          "code": "8025-81-8"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "wikidata:Q422265",
+          "system": "https://www.wikidata.org/wiki/",
+          "code": "Q422265"
+        },
+        "relation": "exactMatch"
+      },
+      {
+        "coding": {
+          "id": "unii:71ODY0V87H",
+          "system": "https://precision.fda.gov/uniisearch/srs/unii/",
+          "code": "71ODY0V87H"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://go.drugbank.com",
-          "code": "drugbank:DB06145"
+          "id": "pubchem.compound:5356392",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/compound/",
+          "code": "5356392"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://pubchem.ncbi.nlm.nih.gov/source/ChemIDplus",
-          "code": "chemidplus:8025-81-8"
+          "id": "atc:J01FA02",
+          "system": "https://atcddd.fhi.no/atc_ddd_index/?code=",
+          "code": "J01FA02"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://www.wikidata.org",
-          "code": "wikidata:Q422265"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "system": "https://precision.fda.gov/uniisearch",
-          "code": "unii:71ODY0V87H"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "system": "https://pubchem.ncbi.nlm.nih.gov/docs/compounds",
-          "code": "pubchem.compound:5356392"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "system": "https://www.who.int/tools/atc-ddd-toolkit/atc-classification/",
-          "code": "atc:J01FA02"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
+          "id": "inchikey:ACTOXUHEUCPTEW-CEUOBAOPSA-N",
           "system": "https://www.chemspider.com",
-          "code": "inchikey:ACTOXUHEUCPTEW-CEUOBAOPSA-N"
+          "code": "ACTOXUHEUCPTEW-CEUOBAOPSA-N"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://precision.fda.gov/uniisearch",
-          "code": "unii:033ECH6IFG"
+          "id": "unii:033ECH6IFG",
+          "system": "https://precision.fda.gov/uniisearch/srs/unii/",
+          "code": "033ECH6IFG"
         },
         "relation": "relatedMatch"
       },
       {
         "coding": {
-          "system": "https://www.nlm.nih.gov/research/umls/index.html",
-          "code": "umls:C0037962"
+          "id": "umls:C0037962",
+          "system": "https://uts.nlm.nih.gov/uts/umls/concept/",
+          "code": "C0037962"
         },
         "relation": "relatedMatch"
       }
@@ -3415,8 +3630,7 @@
   },
   "normalize_therapeutic_procedure": {
     "conceptType": "Therapy",
-    "label": "Therapeutic Procedure",
-    "description": null,
+    "name": "Therapeutic Procedure",
     "id": "normalize.therapy.ncit:C49236",
     "primaryCode": "ncit:C49236",
     "extensions": [
@@ -3443,15 +3657,17 @@
     "mappings": [
       {
         "coding": {
-          "system": "http://purl.obolibrary.org/obo/ncit.owl",
-          "code": "ncit:C49236"
+          "id": "ncit:C49236",
+          "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+          "code": "C49236"
         },
         "relation": "exactMatch"
       },
       {
         "coding": {
-          "code": "umls:C0087111",
-          "system": "https://www.nlm.nih.gov/research/umls/index.html"
+          "id": "umls:C0087111",
+          "system": "https://uts.nlm.nih.gov/uts/umls/concept/",
+          "code": "C0087111"
         },
         "relation": "relatedMatch"
       }
