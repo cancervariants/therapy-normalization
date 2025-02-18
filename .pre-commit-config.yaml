@@ -17,4 +17,4 @@ repos:
       - id: ruff-format
       - id: ruff
         args: [ --fix, --exit-non-zero-on-fix ]
-minimum_pre_commit_version: 3.7.1
+minimum_pre_commit_version: 4.0.1
