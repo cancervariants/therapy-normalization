@@ -217,14 +217,14 @@ class HemOnc(DiseaseIndicationBase):
                     therapy["label"],
                 )
                 continue
-            if " and " in therapy["label"]:
+            if " and " in therapy["label"].lower():
                 _logger.info(
                     "%s appears to be a combo therapy given presence of ` and ` in label",
                     therapy["label"],
                 )
                 continue
             output_therapies[key] = therapy
-        return therapies
+        return output_therapies
 
     def _transform_data(self) -> None:
         """Prepare dataset for loading into normalizer database."""
