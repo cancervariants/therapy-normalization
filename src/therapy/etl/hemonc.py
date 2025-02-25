@@ -112,15 +112,11 @@ class HemOnc(DiseaseIndicationBase):
                     continue  # skip non-drug items
 
                 if rel_type == "Maps to":
-                    if " and " in record.get("label", ""):
-                        # xref from the HemOnc combo treatment to individual drugs
-                        # see https://github.com/cancervariants/therapy-normalization/issues/417
-                        continue
                     src_raw = row[3]
                     if src_raw == "RxNorm Extension":
                         continue  # skip
                     try:
-                        prefix = NamespacePrefix[row[3].upper()]
+                        prefix = NamespacePrefix[row[3].upper()].value
                     except KeyError:
                         _logger.warning("Unrecognized `Maps To` source: %s", src_raw)
                         continue
@@ -201,11 +197,42 @@ class HemOnc(DiseaseIndicationBase):
                         therapies[therapy_code]["aliases"].append(row[0])
             return therapies
 
+    def _perform_qc(self, therapies: dict[str, dict]) -> dict[str, dict]:
+        """Perform HemOnc-specific QC checks on therapy records.
+
+        Drop if a combo therapy:
+        * has multiple RxNorm xrefs
+        * has " and " in label
+
+        :param therapies: collection of records from HemOnc
+        :return: collection w/o failing records
+        """
+        output_therapies = {}
+
+        for key, therapy in therapies.items():
+            xrefs = therapy.get("xrefs")
+            if xrefs and len([x for x in xrefs if x.startswith("rxcui")]) > 1:
+                _logger.info(
+                    "%s appears to be a combo therapy given >1 RxNorm xrefs",
+                    therapy["label"],
+                )
+                continue
+            if " and " in therapy["label"]:
+                _logger.info(
+                    "%s appears to be a combo therapy given presence of ` and ` in label",
+                    therapy["label"],
+                )
+                continue
+            output_therapies[key] = therapy
+        return therapies
+
     def _transform_data(self) -> None:
         """Prepare dataset for loading into normalizer database."""
         therapies, brand_names, conditions, years = self._get_concepts()
         therapies = self._get_rels(therapies, brand_names, conditions, years)
         therapies = self._get_synonyms(therapies)
+
+        therapies = self._perform_qc(therapies)
 
         for therapy in tqdm(therapies.values(), ncols=80, disable=self._silent):
             self._load_therapy(therapy)
