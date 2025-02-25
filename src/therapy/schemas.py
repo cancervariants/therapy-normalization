@@ -239,6 +239,7 @@ class NamespacePrefix(Enum):
     DRUGCENTRAL = "drugcentral"
     DRUGSATFDA_ANDA = "drugsatfda.anda"
     DRUGSATFDA_NDA = "drugsatfda.nda"
+    HCPCS = "hcpcs"  # Healthcare Common Procedure Coding System
     HEMONC = "hemonc"
     INCHIKEY = "inchikey"
     IUPHAR_LIGAND = "iuphar.ligand"
