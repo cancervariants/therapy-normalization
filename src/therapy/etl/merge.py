@@ -77,13 +77,13 @@ class Merge:
                     self.database.update_merge_ref(concept_id, merge_ref)
                 except DatabaseWriteError as dw:
                     if str(dw).startswith("No such record exists"):
-                        logger.error(
+                        logger.exception(
                             "Updating nonexistent record: %s for merge ref to %s",
                             concept_id,
                             merge_ref,
                         )
                     else:
-                        logger.error(str(dw))
+                        logger.exception("Failed to write for %s", concept_id)
             uploaded_ids |= group
         self.database.complete_write_transaction()
         logger.info("Merged concept generation successful.")

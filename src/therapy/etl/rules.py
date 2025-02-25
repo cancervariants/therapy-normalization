@@ -59,7 +59,7 @@ class Rules:
         """
         if field not in {"aliases", "trade_names", "xrefs", "associated_with"}:
             msg = "Non-scalar fields currently not implemented"
-            raise Exception(msg)
+            raise ValueError(msg)
         field_data = set(therapy.get(field, []))
         if value in field_data:
             field_data.remove(value)
