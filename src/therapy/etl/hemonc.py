@@ -200,7 +200,7 @@ class HemOnc(DiseaseIndicationBase):
     def _perform_qc(self, therapies: dict[str, dict]) -> dict[str, dict]:
         """Perform HemOnc-specific QC checks on therapy records.
 
-        Drop if a combo therapy:
+        Indications that a record is a combo therapy:
         * has multiple RxNorm xrefs
         * has " and " in label
 
@@ -212,13 +212,13 @@ class HemOnc(DiseaseIndicationBase):
         for key, therapy in therapies.items():
             xrefs = therapy.get("xrefs")
             if xrefs and len([x for x in xrefs if x.startswith("rxcui")]) > 1:
-                _logger.info(
+                _logger.debug(
                     "%s appears to be a combo therapy given >1 RxNorm xrefs",
                     therapy["label"],
                 )
                 continue
             if " and " in therapy["label"].lower():
-                _logger.info(
+                _logger.debug(
                     "%s appears to be a combo therapy given presence of ` and ` in label",
                     therapy["label"],
                 )
