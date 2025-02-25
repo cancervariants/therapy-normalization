@@ -24,10 +24,10 @@ from wags_tails import (
     RxNormData,
 )
 
-from therapy import ITEM_TYPES
+from therapy import ITEM_TYPES, PREFIX_LOOKUP
 from therapy.database import AbstractDatabase
 from therapy.etl.rules import Rules
-from therapy.schemas import SourceName, Therapy
+from therapy.schemas import RefType, SourceName, Therapy
 
 _logger = logging.getLogger(__name__)
 
@@ -42,6 +42,11 @@ DATA_DISPATCH = {
     SourceName.NCIT: NcitData,
     SourceName.RXNORM: RxNormData,
 }
+
+# max length of an array field in an individual record
+# chosen pragmatically to avoid hitting dynamodb size constraints;
+# reevaluate/test down the road
+ARRAY_LEN_LIMIT = 20
 
 
 class EtlError(Exception):
@@ -135,7 +140,11 @@ class Base(ABC):
         raise NotImplementedError
 
     @staticmethod
-    def _process_searchable_attributes(therapy: dict) -> dict:
+    def _prune_xrefs(xrefs: list[str]) -> list[str]:
+        """TODO"""
+        return [xref for xref in xrefs if xref.split(":")[0] in PREFIX_LOOKUP]
+
+    def _process_searchable_attributes(self, therapy: dict) -> dict:
         """Apply standardization to searchable therapy fields, e.g. ``label``,
         ``trade_names`` etc
 
@@ -170,9 +179,15 @@ class Base(ABC):
                         value.remove(therapy["label"])
 
                 if len(value) > 20:
-                    _logger.debug("%s has > 20 %s.", therapy["concept_id"], attr_type)
-                    del therapy[attr_type]
-                    continue
+                    if ITEM_TYPES[attr_type] == RefType.XREFS:
+                        # TODO
+                        therapy[attr_type] = self._prune_xrefs(therapy[attr_type])
+                    else:
+                        _logger.debug(
+                            "%s has > 20 %s.", therapy["concept_id"], attr_type
+                        )
+                        del therapy[attr_type]
+                        continue
 
                 value.sort()
                 therapy[attr_type] = value

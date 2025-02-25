@@ -103,7 +103,7 @@ def _load_source(
             f"Encountered ModuleNotFoundError attempting to import {e.name}. Are ETL dependencies installed?"
         )
         click.get_current_context().exit()
-    SourceClass = eval(name.value)  # noqa: N806 PGH001 S307
+    SourceClass = eval(name.value)  # noqa: N806, S307
 
     source = SourceClass(database=db, silent=False)
     try:
