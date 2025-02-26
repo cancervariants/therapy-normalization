@@ -141,7 +141,11 @@ class Base(ABC):
 
     @staticmethod
     def _prune_xrefs(xrefs: list[str]) -> list[str]:
-        """TODO"""
+        """Drop xrefs that are external to primary Thera-Py drug sources
+
+        For technical reasons we may need to limit the length of arraylike fields.
+
+        """
         return [xref for xref in xrefs if xref.split(":")[0] in PREFIX_LOOKUP]
 
     def _process_searchable_attributes(self, therapy: dict) -> dict:
@@ -150,7 +154,7 @@ class Base(ABC):
 
         * delete redundant values
         * sort
-        * trim if field has > 20 values
+        * trim if field has > ``therapy.etl.base.ARRAY_LEN_LIMIT`` values
         * remove empty fields
 
         :param therapy: in-progress therapy object
@@ -178,7 +182,7 @@ class Base(ABC):
                     with contextlib.suppress(ValueError):
                         value.remove(therapy["label"])
 
-                if len(value) > 20:
+                if len(value) > ARRAY_LEN_LIMIT:
                     if ITEM_TYPES[attr_type] == RefType.XREFS:
                         # TODO
                         therapy[attr_type] = self._prune_xrefs(therapy[attr_type])
