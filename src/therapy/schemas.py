@@ -274,6 +274,7 @@ NAMESPACE_TO_SYSTEM_URI: MappingProxyType[NamespacePrefix, str] = MappingProxyTy
         NamespacePrefix.DRUGSATFDA_ANDA: "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
         NamespacePrefix.DRUGSATFDA_NDA: "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
         NamespacePrefix.HEMONC: "https://hemonc.org",
+        NamespacePrefix.HCPCS: "https://www.cms.gov/medicare/coding-billing/healthcare-common-procedure-system",
         NamespacePrefix.INCHIKEY: "https://www.chemspider.com",
         NamespacePrefix.IUPHAR_LIGAND: "https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=",
         NamespacePrefix.GUIDETOPHARMACOLOGY: "https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=",
