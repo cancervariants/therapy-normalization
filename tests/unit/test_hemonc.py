@@ -6,7 +6,7 @@ import isodate
 import pytest
 
 from therapy.etl.hemonc import HemOnc
-from therapy.schemas import MatchType, Therapy
+from therapy.schemas import ApprovalRating, MatchType, Therapy
 
 
 @pytest.fixture(scope="module")
@@ -33,9 +33,28 @@ def cisplatin():
             "CDDP",
         ],
         trade_names=[],
-        xrefs=["rxcui:2555"],
+        xrefs=[
+            "hcpcs:C9418",
+            "hcpcs:J9060",
+            "hcpcs:J9062",
+            "ndc:0143-9504",
+            "ndc:0143-9505",
+            "ndc:0703-5747",
+            "ndc:0703-5748",
+            "ndc:16729-288",
+            "ndc:44567-509",
+            "ndc:44567-510",
+            "ndc:44567-511",
+            "ndc:44567-530",
+            "ndc:63323-103",
+            "ndc:68001-283",
+            "ndc:68083-162",
+            "ndc:68083-163",
+            "ndc:70860-206",
+            "rxcui:2555",
+        ],
         associated_with=[],
-        approval_ratings=["hemonc_approved"],
+        approval_ratings=[ApprovalRating.HEMONC_APPROVED],
         approval_year=["1978"],
         has_indication=[
             {
@@ -78,27 +97,24 @@ def bendamustine():
             "bendamustine hydrochloride",
             "bendamustin hydrochloride",
         ],
-        xrefs=["rxcui:134547"],
-        associated_with=[],
-        trade_names=[
-            "Belrapzo",
-            "Bendamax",
-            "Bendawel",
-            "Bendeka",
-            "Bendit",
-            "Innomustine",
-            "Leuben",
-            "Levact",
-            "Maxtorin",
-            "MyMust",
-            "Purplz",
-            "Ribomustin",
-            "Treakisym",
-            "Treanda",
-            "Vivimusta",
-            "Xyotin",
+        xrefs=[
+            "hcpcs:C9042",
+            "hcpcs:C9243",
+            "hcpcs:J9033",
+            "hcpcs:J9034",
+            "hcpcs:J9036",
+            "hcpcs:J9056",
+            "hcpcs:J9058",
+            "hcpcs:J9059",
+            "ndc:42367-521",
+            "ndc:63459-348",
+            "ndc:63459-390",
+            "ndc:63459-391",
+            "rxcui:134547",
         ],
-        approval_ratings=["hemonc_approved"],
+        associated_with=[],
+        trade_names=[],
+        approval_ratings=[ApprovalRating.HEMONC_APPROVED],
         approval_year=["2008"],
         has_indication=[
             {
@@ -132,10 +148,20 @@ def degarelix():
             "FE 200486",
             "FE-200486",
         ],
-        xrefs=["rxcui:475230"],
+        xrefs=["hcpcs:J9155", "ndc:55566-8303", "ndc:55566-8403", "rxcui:475230"],
         associated_with=[],
-        trade_names=["Firmagon", "Gonax"],
-        approval_ratings=["hemonc_approved"],
+        trade_names=[
+            "Degafelix",
+            "Degalyn",
+            "Degapride",
+            "Degatide",
+            "Deghor",
+            "Degrinta",
+            "Firmagon",
+            "Gonax",
+            "Segarelix",
+        ],
+        approval_ratings=[ApprovalRating.HEMONC_APPROVED],
         approval_year=["2008"],
         has_indication=[
             {
@@ -155,26 +181,17 @@ def filgrastim():
         label="Filgrastim-aafi",
         concept_id="hemonc:66258",
         aliases=[],
-        xrefs=["rxcui:68442"],
-        trade_names=["Nivestym"],
-        approval_ratings=["hemonc_approved"],
+        xrefs=[
+            "hcpcs:Q5110",
+            "ndc:0069-0291",
+            "ndc:0069-0292",
+            "ndc:0069-0293",
+            "ndc:0069-0294",
+            "rxcui:2057198",
+        ],
+        trade_names=["Nivestym", "Nivestim"],
+        approval_ratings=[ApprovalRating.HEMONC_APPROVED],
         approval_year=["2018"],
-    )
-
-
-@pytest.fixture(scope="module")
-def combo_drug():
-    """Create fixture for `aspirin and dipyridamole`, a combo drug. Ensure that xref
-    to rxcui:226716 isn't added.
-    """
-    return Therapy(
-        label="Aspirin and dipyridamole",
-        concept_id="hemonc:48",
-        aliases=[],
-        xrefs=[],
-        trade_names=["Aggrenox"],
-        approval_ratings=["hemonc_approved"],
-        approval_year=["1999"],
     )
 
 
@@ -233,14 +250,8 @@ def test_alias_match(hemonc, compare_response, cisplatin, bendamustine, degareli
     compare_response(response, MatchType.ALIAS, degarelix)
 
 
-def test_trade_name(hemonc, compare_response, bendamustine, degarelix):
+def test_trade_name(hemonc, compare_response, degarelix):
     """Test that trade name queries resolve to correct record."""
-    response = hemonc.search("bendamax")
-    compare_response(response, MatchType.TRADE_NAME, bendamustine)
-
-    response = hemonc.search("purplz")
-    compare_response(response, MatchType.TRADE_NAME, bendamustine)
-
     response = hemonc.search("firmagon")
     compare_response(response, MatchType.TRADE_NAME, degarelix)
 
@@ -261,15 +272,18 @@ def test_xref_match(hemonc, compare_response, cisplatin, bendamustine, degarelix
     compare_response(response, MatchType.XREF, degarelix)
 
 
-def test_combo_drug_xref(hemonc, compare_response, combo_drug):
-    """Ensure that xrefs in combo treatments aren't included.
+def test_qc(hemonc):
+    """Test that QC checks are restricting unsupported records from being imported.
 
     See https://github.com/cancervariants/therapy-normalization/issues/417
     """
     response = hemonc.search("aspirin and dipyridamole")
-    compare_response(response, MatchType.LABEL, combo_drug)
+    assert response.match_type == MatchType.NO_MATCH
 
     response = hemonc.search("rxcui:226716")
+    assert response.match_type == MatchType.NO_MATCH
+
+    response = hemonc.search("hemonc:517")
     assert response.match_type == MatchType.NO_MATCH
 
 
