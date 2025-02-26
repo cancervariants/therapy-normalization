@@ -6,7 +6,16 @@ from pathlib import Path
 from therapy.database import create_db
 from therapy.etl import HemOnc
 
-TEST_IDS = ["65", "105", "151", "26", "66258", "48"]
+TEST_IDS = [
+    "65",
+    "105",
+    "151",
+    "26",
+    "66258",
+    "48",
+    "517",
+    "447",
+]
 
 ho = HemOnc(create_db())  # don't need to write any data
 ho._extract_data(False)

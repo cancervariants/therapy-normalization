@@ -47,13 +47,15 @@ class HemOnc(DiseaseIndicationBase):
         }
         self.database.add_source_metadata(self._name, SourceMeta(**meta))
 
-    def _get_concepts(self) -> tuple[dict, dict, dict]:
+    def _get_concepts(self) -> tuple[dict, dict, dict, dict]:
         """Get therapy, brand name, and disease concepts from concepts file.
+
         :return: Tuple of dicts mapping ID to object for each type of concept
         """
         therapies: RecordParams = {}  # hemonc id -> record
         brand_names: dict[str, str] = {}  # hemonc id -> brand name
         conditions: dict[str, str] = {}  # hemonc id -> condition name
+        years: dict[str, str] = {}  # hemonc ID -> year
 
         with self._data_files.concepts.open() as concepts_file:
             concepts_reader = csv.reader(concepts_file)
@@ -76,34 +78,25 @@ class HemOnc(DiseaseIndicationBase):
                     brand_names[row[3]] = row[0]
                 elif row_type == "Condition":
                     conditions[row[3]] = row[0]
+                elif row_type == "Year":
+                    years[row[3]] = row[0]
 
-        return therapies, brand_names, conditions
+        return therapies, brand_names, conditions, years
 
-    @staticmethod
-    def _id_to_yr(hemonc_id: str) -> str:
-        """Get year from HemOnc ID corresponding to year concept.
-        :param str hemonc_id: HemOnc ID to get year for
-        :return: str representing year. Raises TypeError if HemOnc ID not valid.
-        """
-        id_int = int(hemonc_id)
-        if id_int == 780:
-            return "9999"
-        if id_int == 48349:
-            return "2020"
-        if id_int == 5963:
-            return "2021"
-        if id_int < 699 or id_int > 780:
-            msg = "ID not a valid HemOnc year concept"
-            raise TypeError(msg)
-        return str(id_int + 1240)
-
-    def _get_rels(self, therapies: dict, brand_names: dict, conditions: dict) -> dict:
+    def _get_rels(
+        self,
+        therapies: dict,
+        brand_names: dict,
+        conditions: dict,
+        years: dict[str, str],
+    ) -> dict:
         """Gather relations to provide associations between therapies, brand names,
         and conditions.
 
-        :param dict therapies: mapping from IDs to therapy concepts
-        :param dict brand_names: mapping from IDs to therapy brand names
-        :param dict conditions: mapping from IDs to disease conditions
+        :param therapies: mapping from IDs to therapy concepts
+        :param brand_names: mapping from IDs to therapy brand names
+        :param conditions: mapping from IDs to disease conditions
+        :param years: mapping IDs to year values
         :return: therapies dict updated with brand names and conditions
         """
         with self._data_files.rels.open() as rels_file:
@@ -119,18 +112,16 @@ class HemOnc(DiseaseIndicationBase):
                     continue  # skip non-drug items
 
                 if rel_type == "Maps to":
-                    if " and " in record.get("label", ""):
-                        # xref from the HemOnc combo treatment to individual drugs
-                        # see https://github.com/cancervariants/therapy-normalization/issues/417
-                        continue
                     src_raw = row[3]
-                    if src_raw == "RxNorm":
-                        xref = f"{NamespacePrefix.RXNORM.value}:{row[1]}"
-                        record["xrefs"].append(xref)
-                    elif src_raw == "RxNorm Extension":
+                    if src_raw == "RxNorm Extension":
                         continue  # skip
-                    else:
+                    try:
+                        prefix = NamespacePrefix[row[3].upper()].value
+                    except KeyError:
                         _logger.warning("Unrecognized `Maps To` source: %s", src_raw)
+                        continue
+                    xref = f"{prefix}:{row[1]}"
+                    record["xrefs"].append(xref)
 
                 elif rel_type == "Has brand name":
                     try:
@@ -145,8 +136,8 @@ class HemOnc(DiseaseIndicationBase):
 
                 elif rel_type == "Was FDA approved yr":
                     try:
-                        year = self._id_to_yr(row[1])
-                    except TypeError:
+                        year = years[row[1]]
+                    except KeyError:
                         _logger.error(
                             "Failed parse of FDA approval year ID %s for HemOnc ID %s",
                             row[1],
@@ -206,11 +197,42 @@ class HemOnc(DiseaseIndicationBase):
                         therapies[therapy_code]["aliases"].append(row[0])
             return therapies
 
+    def _perform_qc(self, therapies: dict[str, dict]) -> dict[str, dict]:
+        """Perform HemOnc-specific QC checks on therapy records.
+
+        Indications that a record is a combo therapy:
+        * has multiple RxNorm xrefs
+        * has " and " in label
+
+        :param therapies: collection of records from HemOnc
+        :return: collection w/o failing records
+        """
+        output_therapies = {}
+
+        for key, therapy in therapies.items():
+            xrefs = therapy.get("xrefs")
+            if xrefs and len([x for x in xrefs if x.startswith("rxcui")]) > 1:
+                _logger.debug(
+                    "%s appears to be a combo therapy given >1 RxNorm xrefs",
+                    therapy["label"],
+                )
+                continue
+            if " and " in therapy["label"].lower():
+                _logger.debug(
+                    "%s appears to be a combo therapy given presence of ` and ` in label",
+                    therapy["label"],
+                )
+                continue
+            output_therapies[key] = therapy
+        return output_therapies
+
     def _transform_data(self) -> None:
         """Prepare dataset for loading into normalizer database."""
-        therapies, brand_names, conditions = self._get_concepts()
-        therapies = self._get_rels(therapies, brand_names, conditions)
+        therapies, brand_names, conditions, years = self._get_concepts()
+        therapies = self._get_rels(therapies, brand_names, conditions, years)
         therapies = self._get_synonyms(therapies)
+
+        therapies = self._perform_qc(therapies)
 
         for therapy in tqdm(therapies.values(), ncols=80, disable=self._silent):
             self._load_therapy(therapy)
