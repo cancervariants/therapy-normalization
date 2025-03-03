@@ -107,11 +107,8 @@ class DynamoDatabase(AbstractDatabase):
         :raise DatabaseWriteError: if called in a protected setting with confirmation
             silenced.
         """
-        try:
-            if not self._check_delete_okay():
-                return
-        except DatabaseWriteError as e:
-            raise e
+        if not self._check_delete_okay():
+            return
 
         if self.therapy_table in self.list_tables():
             self.dynamodb.Table(self.therapy_table).delete()
@@ -253,9 +250,8 @@ class DynamoDatabase(AbstractDatabase):
             response = self.therapies.query(KeyConditionExpression=exp)
             record = response["Items"][0]
             del record["label_and_type"]
-            return record
         except ClientError as e:
-            _logger.error(
+            _logger.exception(
                 "boto3 client error on get_records_by_id for search term %s: %s",
                 concept_id,
                 e.response["Error"]["Message"],
@@ -263,6 +259,8 @@ class DynamoDatabase(AbstractDatabase):
             return None
         except (KeyError, IndexError):  # record doesn't exist
             return None
+        else:
+            return record
 
     def get_refs_by_type(self, search_term: str, ref_type: RefType) -> list[str]:
         """Retrieve concept IDs for records matching the user's query. Other methods
@@ -278,7 +276,7 @@ class DynamoDatabase(AbstractDatabase):
             matches = self.therapies.query(KeyConditionExpression=filter_exp)
             return [m["concept_id"] for m in matches.get("Items", None)]
         except ClientError as e:
-            _logger.error(
+            _logger.exception(
                 "boto3 client error on get_refs_by_type for search term %s: %s",
                 search_term,
                 e.response["Error"]["Message"],
@@ -296,8 +294,8 @@ class DynamoDatabase(AbstractDatabase):
         try:
             matches = self.therapies.query(KeyConditionExpression=filter_exp)
         except ClientError as e:
-            _logger.error(
-                "boto3 client error on rx_brand fetch for brand ID {brand_id}: {e.response['Error']['Message']}",
+            _logger.exception(
+                "boto3 client error on rx_brand fetch for brand ID %s: %s",
                 brand_id,
                 e.response["Error"]["Message"],
             )
@@ -428,7 +426,7 @@ class DynamoDatabase(AbstractDatabase):
         try:
             self.batch.put_item(Item=item)
         except ClientError as e:
-            _logger.error(
+            _logger.exception(
                 "boto3 client error on add_rxnorm_brand for %s -> %s: %s",
                 brand_id,
                 record_id,
@@ -449,7 +447,7 @@ class DynamoDatabase(AbstractDatabase):
         try:
             self.batch.put_item(Item=record)
         except ClientError as e:
-            _logger.error(
+            _logger.exception(
                 "boto3 client error on add_record for %s: %s",
                 concept_id,
                 e.response["Error"]["Message"],
@@ -482,7 +480,7 @@ class DynamoDatabase(AbstractDatabase):
         try:
             self.batch.put_item(Item=record)
         except ClientError as e:
-            _logger.error(
+            _logger.exception(
                 "boto3 client error on add_record for %s: %s",
                 concept_id,
                 e.response["Error"]["Message"],
@@ -509,7 +507,7 @@ class DynamoDatabase(AbstractDatabase):
         try:
             self.batch.put_item(Item=record)
         except ClientError as e:
-            _logger.error(
+            _logger.exception(
                 "boto3 client error adding reference %s for %s with match type %s: %s",
                 term,
                 concept_id,
@@ -541,7 +539,7 @@ class DynamoDatabase(AbstractDatabase):
             if code == "ConditionalCheckFailedException":
                 msg = f"No such record exists for keys {label_and_type}, {concept_id}"
                 raise DatabaseWriteError(msg) from e
-            _logger.error(
+            _logger.exception(
                 "boto3 client error in `database.update_record()`: %s",
                 e.response["Error"]["Message"],
             )
