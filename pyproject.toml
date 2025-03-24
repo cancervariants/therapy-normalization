@@ -30,7 +30,7 @@ dependencies = [
     "click",
     "boto3",
     "ga4gh.vrs==2.0.0a14",
-    "disease-normalizer~=0.9.0",
+    "disease-normalizer~=0.10.0",
 ]
 dynamic = ["version"]
 
