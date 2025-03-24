@@ -36,7 +36,7 @@ dynamic = ["version"]
 
 [project.optional-dependencies]
 etl = [
-    "disease-normalizer[etl]~=0.9.0",
+    "disease-normalizer[etl]~=0.10.0",
     "owlready2",
     "rdflib",
     "wikibaseintegrator>=0.12.0",
