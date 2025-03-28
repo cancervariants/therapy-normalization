@@ -35,6 +35,7 @@ dependencies = [
 dynamic = ["version"]
 
 [project.optional-dependencies]
+pg = ["psycopg[binary]"]
 etl = [
     "disease-normalizer[etl]~=0.10.0",
     "owlready2",
