@@ -32,6 +32,7 @@ from therapy.schemas import (
     RefType,
     SourceMeta,
     SourceName,
+    Therapy,
 )
 
 _logger = logging.getLogger(__name__)
@@ -100,11 +101,9 @@ class PostgresDatabase(AbstractDatabase):
     _drop_db_query = b"""
     DROP MATERIALIZED VIEW IF EXISTS record_lookup_view;
     DROP TABLE IF EXISTS
-    # TODO
-        therapy_associations,
-        therapy_symbols,
-        therapy_aliases,
+        therapy_trade_names,
         therapy_xrefs,
+        therapy_aliases,
         therapy_concepts,
         therapy_merged,
         therapy_sources;
@@ -275,10 +274,11 @@ class PostgresDatabase(AbstractDatabase):
             cur.execute(tables_query)
             self.conn.commit()
 
-    def get_source_metadata(self, src_name: SourceName) -> dict:
+    def get_source_metadata(self, src_name: str | SourceName) -> SourceMeta | None:
         """Get license, versioning, data lookup, etc information for a source.
 
         :param src_name: name of the source to get data for
+        :raise DatabaseReadError: if unable to fetch source metadata
         """
         if isinstance(src_name, SourceName):
             src_name = src_name.value
@@ -292,20 +292,19 @@ class PostgresDatabase(AbstractDatabase):
             metadata_result = cur.fetchone()
             if not metadata_result:
                 err_msg = f"{src_name} metadata lookup failed"
-                raise DatabaseReadException(err_msg)
-            metadata = {
-                "data_license": metadata_result[1],
-                "data_license_url": metadata_result[2],
-                "version": metadata_result[3],
-                "data_url": metadata_result[4],
-                "rdp_url": metadata_result[5],
-                "data_license_attributes": DataLicenseAttributes(
+                raise DatabaseReadError(err_msg)
+            metadata = SourceMeta(
+                data_license=metadata_result[1],
+                data_license_url=metadata_result[2],
+                version= metadata_result[3],
+                data_url= metadata_result[4],
+                rdp_url= metadata_result[5],
+                data_license_attributes= DataLicenseAttributes(
                     non_commercial=metadata_result[6],
                     attribution=metadata_result[7],
                     share_alike=metadata_result[8],
-                ),
-                "genome_assemblies": metadata_result[9],
-            }
+                )
+            )
             self._cached_sources[src_name] = metadata
             return metadata
 
@@ -314,29 +313,22 @@ class PostgresDatabase(AbstractDatabase):
     )
 
     def _format_source_record(self, source_row: tuple) -> dict:
-        """Restructure row from therapy_concepts table as source record result object.
+        """Restructure row from record lookup view as source record result object.
 
         :param source_row: result tuple from psycopg
-        :return: reformatted dictionary keying therapy properties to row values
+        :return: therapy record as dict
         """
-        therapy_record = {
+        return {
             "concept_id": source_row[0],
-            "symbol_status": source_row[1],
-            "label": source_row[2],
-            "strand": source_row[3],
-            "location_annotations": source_row[4],
-            "locations": source_row[5],
-            "therapy_type": source_row[6],
-            "aliases": source_row[7],
+            "label": source_row[1],
+            "aliases": source_row[5],
+            "trade_names": source_row[6],
+            "xrefs": source_row[7],
             "associated_with": source_row[8],
-            "previous_symbols": source_row[9],
-            "symbol": source_row[10],
-            "xrefs": source_row[11],
-            "src_name": source_row[12],
-            "merge_ref": source_row[13],
-            "item_type": RecordType.IDENTITY.value,
+            "approval_ratings": source_row[2],
+            "approval_year": source_row[3],
+            "has_indication": source_row[4],
         }
-        return {k: v for k, v in therapy_record.items() if v}
 
     def _get_record(self, concept_id: str) -> dict | None:
         """Retrieve non-merged record. The query is pretty different, so this method
@@ -411,8 +403,8 @@ class PostgresDatabase(AbstractDatabase):
         return self._get_record(concept_id)
 
     _ref_types_query: ClassVar[dict] = {
-        RefType.SYMBOL: b"SELECT concept_id FROM therapy_symbols WHERE lower(symbol) = %s;",
-        RefType.PREVIOUS_SYMBOLS: b"SELECT concept_id FROM therapy_previous_symbols WHERE lower(prev_symbol) = %s;",
+        RefType.LABEL: b"SELECT concept_id FROM therapy_concepts WHERE lower(name) = %s;",
+        RefType.TRADE_NAMES: b"SELECT concept_id FROM therapy_trade_names WHERE lower(trade_name) = %s;",
         RefType.ALIASES: b"SELECT concept_id FROM therapy_aliases WHERE lower(alias) = %s;",
         RefType.XREFS: b"SELECT concept_id FROM therapy_xrefs WHERE lower(xref) = %s;",
         RefType.ASSOCIATED_WITH: b"SELECT concept_id FROM therapy_associations WHERE lower(associated_with) = %s;",
@@ -438,6 +430,24 @@ class PostgresDatabase(AbstractDatabase):
             return [i[0] for i in concept_ids]
 
         return []
+
+
+    def get_rxnorm_id_by_brand(self, brand_id: str) -> str | None:
+        """Given RxNorm brand ID, retrieve associated drug concept ID.
+
+        :param brand_id: rxcui brand identifier to dereference
+        :return: RxNorm therapy concept ID if successful, None otherwise
+        """
+        raise NotImplementedError
+
+    def get_drugsatfda_from_unii(self, unii: str) -> set[str]:
+        """Get Drugs@FDA IDs associated with a single UNII, given that UNII. Used
+        in merged concept generation.
+
+        :param unii: UNII to find associations for
+        :return: set of directly associated Drugs@FDA concept IDs.
+        """
+        raise NotImplementedError
 
     _ids_query = b"SELECT concept_id FROM therapy_concepts;"
 
@@ -504,15 +514,23 @@ class PostgresDatabase(AbstractDatabase):
                         yield self._format_source_record(result)
                     fetched = results.fetchmany(batch_size)
 
+    def add_rxnorm_brand(self, brand_id: str, record_id: str) -> None:
+        """Add RxNorm brand association to an existing RxNorm concept.
+
+        :param brand_id: ID of RxNorm brand concept
+        :param record_id: ID of RxNorm drug concept
+        """
+        raise NotImplementedError
+
     _add_source_metadata_query = b"""
         INSERT INTO therapy_sources(
             name, data_license, data_license_url, version, data_url, rdp_url,
-            data_license_nc, data_license_attr, data_license_sa,
+            data_license_nc, data_license_attr, data_license_sa
         )
         VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s );
     """
 
-    def add_source_metadata(self, src_name: SourceName, meta: SourceMeta) -> None:
+    def add_source_metadata(self, src_name: SourceName, data: SourceMeta) -> None:
         """Add new source metadata entry.
 
         :param src_name: name of source
@@ -524,60 +542,52 @@ class PostgresDatabase(AbstractDatabase):
                 self._add_source_metadata_query,
                 [
                     src_name.value,
-                    meta.data_license,
-                    meta.data_license_url,
-                    meta.version,
-                    json.dumps(meta.data_url),
-                    meta.rdp_url,
-                    meta.data_license_attributes.non_commercial,
-                    meta.data_license_attributes.attribution,
-                    meta.data_license_attributes.share_alike,
+                    data.data_license,
+                    data.data_license_url,
+                    data.version,
+                    json.dumps(data.data_url),
+                    data.rdp_url,
+                    data.data_license_attributes.non_commercial,
+                    data.data_license_attributes.attribution,
+                    data.data_license_attributes.share_alike,
                 ],
             )
         self.conn.commit()
 
     _add_record_query = b"""
     INSERT INTO therapy_concepts (
-        concept_id, source, symbol_status, label,
-        strand, location_annotations, locations, therapy_type
+        concept_id, source, name, approval_ratings, approval_years, indications
     )
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
+    VALUES (%s, %s, %s, %s, %s, %s);
     """
-    _ins_symbol_query = (
-        b"INSERT INTO therapy_symbols (symbol, concept_id) VALUES (%s, %s);"
-    )
-    _ins_prev_symbol_query = (
-        b"INSERT INTO therapy_previous_symbols (prev_symbol, concept_id) VALUES (%s, %s);"
-    )
     _ins_alias_query = b"INSERT INTO therapy_aliases (alias, concept_id) VALUES (%s, %s);"
     _ins_xref_query = b"INSERT INTO therapy_xrefs (xref, concept_id) VALUES (%s, %s);"
     _ins_assoc_query = (
         b"INSERT INTO therapy_associations (associated_with, concept_id) VALUES (%s, %s);"
     )
+    _ins_trade_name_query = (
+        b"INSERT INTO therapy_trade_names (trade_name, concept_id) VALUES (%s, %s);"
+    )
 
-    def add_record(self, record: dict, src_name: SourceName) -> None:  # noqa: ARG002
+    def add_record(self, record: dict, src_name: SourceName) -> None:
         """Add new record to database.
 
         :param record: record to upload
-        :param src_name: name of source for record. Not used by PostgreSQL instance.
+        :param src_name: name of source for record.
         """
         concept_id = record["concept_id"]
-        locations = [json.dumps(loc) for loc in record.get("locations", [])]
-        if not locations:
-            locations = None
+        indications = [json.dumps(ind) for ind in record.get("indications", [])] or None
         with self.conn.cursor() as cur:
             try:
                 cur.execute(
                     self._add_record_query,
                     [
-                        # TODO fix up
                         concept_id,
-                        record["src_name"],
-                        record.get("symbol_status"),
+                        src_name.value,
                         record.get("label"),
-                        record.get("strand"),
-                        record.get("location_annotations"),
-                        locations,
+                        record.get("approval_ratings"),
+                        record.get("approval_years"),
+                        indications,
                     ],
                 )
                 for a in record.get("aliases", []):
@@ -586,26 +596,22 @@ class PostgresDatabase(AbstractDatabase):
                     cur.execute(self._ins_xref_query, [x, concept_id])
                 for a in record.get("associated_with", []):
                     cur.execute(self._ins_assoc_query, [a, concept_id])
-                for p in record.get("previous_symbols", []):
-                    cur.execute(self._ins_prev_symbol_query, [p, concept_id])
-                if record.get("symbol"):
-                    cur.execute(self._ins_symbol_query, [record["symbol"], concept_id])
+                for a in record.get("trade_names", []):
+                    cur.execute(self._ins_trade_name_query, [a, concept_id])
                 self.conn.commit()
             except UniqueViolation:
                 _logger.exception("Record with ID %s already exists", concept_id)
                 self.conn.rollback()
 
-    # TODO fix
     _add_merged_record_query = b"""
-    INSERT INTO gene_merged (
-        concept_id, symbol, symbol_status, previous_symbols, label, strand,
-        location_annotations, ensembl_locations, hgnc_locations, ncbi_locations,
-        hgnc_locus_type, ensembl_biotype, ncbi_gene_type, aliases, associated_with,
-        xrefs
+    INSERT INTO therapy_merged (
+        concept_id, name, xrefs, aliases, trade_names, approval_ratings,
+        approval_years, indications
     )
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s);
     """
 
+    # TODO gene to therapy
     def add_merged_record(self, record: dict) -> None:
         """Add merged record to database.
 
@@ -668,7 +674,7 @@ class PostgresDatabase(AbstractDatabase):
         # UPDATE will fail silently unless we check the # of affected rows
         if row_count < 1:
             err_msg = f"No such record exists for primary key {concept_id}"
-            raise DatabaseWriteException(err_msg)
+            raise DatabaseWriteError(err_msg)
 
     def delete_normalized_concepts(self) -> None:
         """Remove merged records from the database. Use when performing a new update
@@ -773,7 +779,7 @@ class PostgresDatabase(AbstractDatabase):
             self.conn.commit()
             self.conn.close()
 
-    def load_from_remote(self, url: str | None) -> None:
+    def load_from_remote(self, url: str | None = None) -> None:
         """Load DB from remote dump. Warning: Deletes all existing data. If not
         passed as an argument, will try to grab latest release from VICC S3 bucket.
 
@@ -791,7 +797,7 @@ class PostgresDatabase(AbstractDatabase):
                     r.raise_for_status()
                 except requests.HTTPError as e:
                     err_msg = f"Unable to retrieve PostgreSQL dump file from {url}"
-                    raise DatabaseException(err_msg) from e
+                    raise DatabaseError(err_msg) from e
                 with temp_tarfile.open("wb") as h:
                     for chunk in r.iter_content(chunk_size=8192):
                         if chunk:
@@ -810,9 +816,9 @@ class PostgresDatabase(AbstractDatabase):
             err_msg = (
                 f"System call '{system_call}' returned failing exit code {result}."
             )
-            raise DatabaseException(err_msg)
+            raise DatabaseError(err_msg)
 
-    def export_db(self, output_directory: Path) -> None:
+    def export_db(self, export_location: Path) -> None:
         """Dump DB to specified location.
 
         :param export_location: path to directory to save DB dump in
@@ -821,17 +827,17 @@ class PostgresDatabase(AbstractDatabase):
         :raise ValueError: if output directory isn't a directory or doesn't exist
         :raise DatabaseException: if psql call fails
         """
-        if not output_directory.is_dir() or not output_directory.exists():
+        if not export_location.is_dir() or not export_location.exists():
             err_msg = (
-                f"Output location {output_directory} isn't a directory or doesn't exist"
+                f"Output location {export_location} isn't a directory or doesn't exist"
             )
             raise ValueError(err_msg)
         now = datetime.datetime.now(tz=datetime.UTC).strftime("%Y%m%d%H%M%S")
-        output_location = output_directory / f"gene_norm_{now}.sql"
+        output_location = export_location / f"gene_norm_{now}.sql"
         system_call = f"pg_dump {self.conninfo} -E UTF8 -f {output_location}"
         result = os.system(system_call)  # noqa: S605
         if result != 0:
             err_msg = (
                 f"System call '{system_call}' returned failing exit code {result}."
             )
-            raise DatabaseException(err_msg)
+            raise DatabaseError(err_msg)

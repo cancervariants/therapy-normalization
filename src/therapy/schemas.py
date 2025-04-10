@@ -328,7 +328,7 @@ class SourceMeta(BaseModel):
     version: str
     data_url: str | None = None
     rdp_url: str | None = None
-    data_license_attributes: dict[str, StrictBool]
+    data_license_attributes: DataLicenseAttributes
 
     model_config = ConfigDict(
         json_schema_extra={

@@ -348,7 +348,12 @@ def create_db(
         else:
             endpoint_url = "http://localhost:8000"
 
-        from therapy.database.dynamodb import DynamoDatabase
+        if endpoint_url.startswith("postgres"):
+            from therapy.database.postgresql import PostgresDatabase
 
-        db = DynamoDatabase(endpoint_url)
+            db = PostgresDatabase(endpoint_url)
+        else:
+            from therapy.database.dynamodb import DynamoDatabase
+
+            db = DynamoDatabase(endpoint_url)
     return db
