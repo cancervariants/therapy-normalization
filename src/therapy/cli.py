@@ -5,9 +5,8 @@ from collections.abc import Collection
 from timeit import default_timer as timer
 
 import click
-from disease.cli import _update_sources as update_disease_sources
 from disease.database import create_db as create_disease_db
-from disease.schemas import SourceName as DiseaseSourceName
+from disease.etl.update import update_all_sources as update_disease_sources
 
 from therapy import SOURCES
 from therapy.database.database import (
@@ -200,7 +199,7 @@ def _ensure_diseases_updated(from_local: bool) -> None:
         not disease_db.check_schema_initialized()
         or not disease_db.check_tables_populated()
     ):
-        update_disease_sources(list(DiseaseSourceName), disease_db, True, from_local)
+        update_disease_sources(disease_db, use_existing=from_local, silent=True)
 
 
 @click.command()

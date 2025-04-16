@@ -3,10 +3,11 @@
 import csv
 import logging
 
+import requests.exceptions
 from tqdm import tqdm
 from wags_tails.hemonc import HemOncPaths
 
-from therapy.etl.base import DiseaseIndicationBase
+from therapy.etl.base import DiseaseIndicationBase, EtlError
 from therapy.schemas import (
     ApprovalRating,
     NamespacePrefix,
@@ -26,9 +27,20 @@ class HemOnc(DiseaseIndicationBase):
         This method is responsible for initializing an instance of a data handler and
         setting ``self._data_files`` and ``self._version``.
         """
-        data_files, self._version = self._data_source.get_latest(
-            from_local=use_existing
-        )
+        try:
+            data_files, self._version = self._data_source.get_latest(
+                from_local=use_existing
+            )
+        except requests.exceptions.HTTPError as e:
+            if e.response.status_code == 401:
+                msg = "401 Unauthorized response for HemOnc Dataverse API -- are credentials (under env var `HARVARD_DATAVERSE_API_KEY`) up to date?"
+            else:
+                msg = str(e.args)
+            _logger.exception(msg)
+            if not self._silent:
+                print(msg)  # noqa: T201
+            raise EtlError(e) from e
+
         self._data_files: HemOncPaths = data_files  # type: ignore
 
     def _load_meta(self) -> None:
