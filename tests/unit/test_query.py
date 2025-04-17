@@ -5,6 +5,7 @@ from datetime import datetime
 from pathlib import Path
 
 import pytest
+from deepdiff import DeepDiff
 from ga4gh.core.models import MappableConcept
 
 from therapy.database.database import AbstractDatabase
@@ -139,90 +140,11 @@ def compare_ta(response, fixture, query, match_type, warnings=None):
 
     fixture = MappableConcept(**fixture.copy())
     assert (
-        response.therapy.primaryCode.root == fixture.id.split("normalize.therapy.")[-1]
+        response.therapy.primaryCoding.id == fixture.id.split("normalize.therapy.")[-1]
     )
     actual = response.therapy
-    actual_keys = actual.model_dump(exclude_none=True).keys()
-    fixture_keys = fixture.model_dump(exclude_none=True).keys()
-    assert actual_keys == fixture_keys
-
-    assert actual.id == fixture.id
-    assert actual.conceptType == fixture.conceptType
-    assert actual.name == fixture.name
-
-    assert bool(actual.mappings) == bool(fixture.mappings)
-    if actual.mappings:
-        no_matches = []
-        for actual_mapping in actual.mappings:
-            match = None
-            for fixture_mapping in fixture.mappings:
-                if actual_mapping == fixture_mapping:
-                    match = actual_mapping
-                    break
-            if not match:
-                no_matches.append(actual_mapping)
-        assert no_matches == [], no_matches
-        assert len(actual.mappings) == len(fixture.mappings)
-
-    def get_extension(extensions, name):
-        matches = [e for e in extensions if e.name == name]
-        if len(matches) > 1:
-            pytest.fail(f"Multiple extensions named {name}")
-        elif len(matches) == 1:
-            return matches[0]
-        else:
-            return None
-
-    assert bool(actual.extensions) == bool(fixture.extensions)
-    if actual.extensions:
-        ext_actual = actual.extensions
-        ext_fixture = fixture.extensions
-
-        approv_actual = get_extension(ext_actual, "regulatory_approval")
-        approv_fixture = get_extension(ext_fixture, "regulatory_approval")
-        assert (approv_actual is None) == (
-            approv_fixture is None
-        ), "regulatory_approval"
-        if approv_actual and approv_fixture:
-            ratings_actual = approv_actual.value.get("approval_ratings")
-            ratings_fixture = approv_fixture.value.get("approval_ratings")
-            if ratings_actual or ratings_fixture:
-                assert set(ratings_actual) == set(ratings_fixture)
-            assert set(approv_actual.value.get("approval_year", [])) == set(
-                approv_fixture.value.get("approval_year", [])
-            )
-            approv_inds = [
-                json.dumps(ind, sort_keys=True)
-                for ind in approv_actual.value.get("has_indication", [])
-            ]
-            fixture_inds = [
-                json.dumps(ind, sort_keys=True)
-                for ind in approv_fixture.value.get("has_indication", [])
-            ]
-            assert set(approv_inds) == set(fixture_inds)
-
-        tn_actual = get_extension(ext_actual, "trade_names")
-        tn_fixture = get_extension(ext_fixture, "trade_names")
-        assert (tn_actual is None) == (tn_fixture is None)
-        if tn_fixture:
-            assert tn_actual
-            assert tn_actual.value
-            assert set(tn_actual.value) == set(tn_fixture.value)
-
-        fda_actual = get_extension(ext_actual, "fda_approval")
-        fda_fixture = get_extension(ext_fixture, "fda_approval")
-        assert (fda_actual is None) == (fda_fixture is None)
-        if fda_fixture:
-            assert fda_actual
-            assert fda_actual.value.get("approval_status") == fda_fixture.value.get(
-                "approval_status"
-            )
-            assert set(fda_actual.value.get("approval_year", [])) == set(
-                fda_fixture.value.get("approval_year", [])
-            )
-            assert set(fda_actual.value.get("has_indication", [])) == set(
-                fda_fixture.value.get("has_indication", [])
-            )
+    diff = DeepDiff(fixture, actual, ignore_order=True)
+    assert diff == {}, fixture.id
 
 
 def compare_unmerged_response(

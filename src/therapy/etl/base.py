@@ -286,7 +286,11 @@ class DiseaseIndicationBase(Base):
         if term in self._disease_cache:
             return self._disease_cache[term]
         response = self.disease_normalizer.normalize(term)
-        normalized_id = response.disease.primaryCode.root if response.disease else None
+        normalized_id = (
+            response.disease.id.split("normalize.disease.")[-1]
+            if response.disease
+            else None
+        )
         self._disease_cache[term] = normalized_id
         if normalized_id is None:
             _logger.warning("Failed to normalize disease term: %s", query)

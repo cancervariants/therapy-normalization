@@ -538,81 +538,468 @@ class NormalizationService(BaseNormalizationService):
                 "match_type": 80,
                 "therapy": {
                     "conceptType": "Therapy",
-                    "primaryCode": "rxcui:2555",
+                    "primaryCoding": {
+                        "id": "rxcui:2555",
+                        "code": "2555",
+                        "system": "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=",
+                    },
                     "id": "normalize.therapy.rxcui:2555",
                     "name": "cisplatin",
                     "mappings": [
                         {
                             "coding": {
-                                "code": "2555",
-                                "system": "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=",
-                            },
-                            "relation": "exactMatch",
-                        },
-                        {
-                            "coding": {
-                                "code": "C376",
+                                "id": "ncit:C376",
                                 "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                                "code": "C376",
                             },
                             "relation": "exactMatch",
                         },
                         {
                             "coding": {
-                                "code": "15663-27-1",
-                                "system": "https://commonchemistry.cas.org/detail?cas_rn=",
+                                "id": "hemonc:105",
+                                "system": "https://hemonc.org",
+                                "code": "105",
                             },
                             "relation": "exactMatch",
                         },
                         {
-                            "coding": {"code": "Q412415", "system": "wikidata"},
+                            "coding": {
+                                "id": "drugbank:DB00515",
+                                "system": "https://go.drugbank.com/drugs/",
+                                "code": "DB00515",
+                            },
                             "relation": "exactMatch",
                         },
                         {
-                            "coding": {"code": "L01XA01", "system": "atc"},
+                            "coding": {
+                                "id": "drugbank:DB12117",
+                                "system": "https://go.drugbank.com/drugs/",
+                                "code": "DB12117",
+                            },
+                            "relation": "exactMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "drugsatfda.anda:074656",
+                                "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+                                "code": "074656",
+                            },
+                            "relation": "exactMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "drugsatfda.anda:074735",
+                                "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+                                "code": "074735",
+                            },
+                            "relation": "exactMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "drugsatfda.anda:075036",
+                                "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+                                "code": "075036",
+                            },
+                            "relation": "exactMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "drugsatfda.anda:206774",
+                                "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+                                "code": "206774",
+                            },
+                            "relation": "exactMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "drugsatfda.anda:207323",
+                                "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+                                "code": "207323",
+                            },
+                            "relation": "exactMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "drugsatfda.nda:018057",
+                                "system": "https://www.accessdata.fda.gov/scripts/cder/daf/index.cfm?event=overview.process&ApplNo=",
+                                "code": "018057",
+                            },
+                            "relation": "exactMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "iuphar.ligand:5343",
+                                "system": "https://www.guidetopharmacology.org/GRAC/LigandDisplayForward?ligandId=",
+                                "code": "5343",
+                            },
+                            "relation": "exactMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "chembl:CHEMBL11359",
+                                "system": "https://www.ebi.ac.uk/chembl/explore/compound/",
+                                "code": "CHEMBL11359",
+                            },
+                            "relation": "exactMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "chemidplus:15663-27-1",
+                                "system": "https://commonchemistry.cas.org/detail?cas_rn=",
+                                "code": "15663-27-1",
+                            },
+                            "relation": "exactMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "wikidata:Q412415",
+                                "system": "https://www.wikidata.org/wiki/",
+                                "code": "Q412415",
+                            },
+                            "relation": "exactMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "ndc:0703-5748",
+                                "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+                                "code": "0703-5748",
+                            },
                             "relation": "relatedMatch",
                         },
                         {
-                            "coding": {"code": "4456", "system": "mmsl"},
+                            "coding": {
+                                "id": "ndc:63323-103",
+                                "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+                                "code": "63323-103",
+                            },
                             "relation": "relatedMatch",
                         },
                         {
-                            "coding": {"code": "27899", "system": "chebi"},
+                            "coding": {
+                                "id": "ndc:70860-206",
+                                "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+                                "code": "70860-206",
+                            },
                             "relation": "relatedMatch",
                         },
                         {
-                            "coding": {"code": "5702198", "system": "pubchem.compound"},
+                            "coding": {
+                                "id": "ndc:44567-509",
+                                "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+                                "code": "44567-509",
+                            },
                             "relation": "relatedMatch",
                         },
                         {
-                            "coding": {"code": "C0008838", "system": "umls"},
+                            "coding": {
+                                "id": "usp:m17910",
+                                "system": "https://www.usp.org/health-quality-safety/compendial-nomenclature",
+                                "code": "m17910",
+                            },
                             "relation": "relatedMatch",
                         },
                         {
-                            "coding": {"code": "m17910", "system": "usp"},
+                            "coding": {
+                                "id": "ndc:44567-530",
+                                "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+                                "code": "44567-530",
+                            },
                             "relation": "relatedMatch",
                         },
                         {
-                            "coding": {"code": "Q20Q21Q62J", "system": "fda"},
+                            "coding": {
+                                "id": "pubchem.substance:178102005",
+                                "system": "https://pubchem.ncbi.nlm.nih.gov/substance/",
+                                "code": "178102005",
+                            },
                             "relation": "relatedMatch",
                         },
                         {
-                            "coding": {"code": "d00195", "system": "mmsl"},
+                            "coding": {
+                                "id": "spl:9b008181-ab66-db2f-e053-2995a90aad57",
+                                "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+                                "code": "9b008181-ab66-db2f-e053-2995a90aad57",
+                            },
                             "relation": "relatedMatch",
                         },
                         {
-                            "coding": {"code": "Q20Q21Q62J", "system": "mthspl"},
+                            "coding": {
+                                "id": "ndc:16729-288",
+                                "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+                                "code": "16729-288",
+                            },
                             "relation": "relatedMatch",
                         },
                         {
-                            "coding": {"code": "31747", "system": "mmsl"},
+                            "coding": {
+                                "id": "spl:a66eda32-1164-439a-ac8e-73138365ec06",
+                                "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+                                "code": "a66eda32-1164-439a-ac8e-73138365ec06",
+                            },
                             "relation": "relatedMatch",
                         },
                         {
-                            "coding": {"code": "D002945", "system": "mesh"},
+                            "coding": {
+                                "id": "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
+                                "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+                                "code": "dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
+                            },
                             "relation": "relatedMatch",
                         },
                         {
-                            "coding": {"code": "4018139", "system": "vandf"},
+                            "coding": {
+                                "id": "CHEBI:27899",
+                                "system": "https://www.ebi.ac.uk/chebi/searchId.do?chebiId=",
+                                "code": "CHEBI:27899",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "ndc:44567-511",
+                                "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+                                "code": "44567-511",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "ndc:0703-5747",
+                                "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+                                "code": "0703-5747",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "ndc:68083-162",
+                                "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+                                "code": "68083-162",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "atc:L01XA01",
+                                "system": "https://atcddd.fhi.no/atc_ddd_index/?code=",
+                                "code": "L01XA01",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "ndc:44567-510",
+                                "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+                                "code": "44567-510",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "mmsl:31747",
+                                "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
+                                "code": "31747",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c",
+                                "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+                                "code": "2c569ef0-588f-4828-8b2d-03a2120c9b4c",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "vandf:4018139",
+                                "system": "https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/VANDF",
+                                "code": "4018139",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
+                                "system": "https://www.chemspider.com",
+                                "code": "LXZZYRPGZAFOLE-UHFFFAOYSA-L",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "ndc:68083-163",
+                                "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+                                "code": "68083-163",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
+                                "system": "https://www.chemspider.com",
+                                "code": "MOTIYCLHZZLHHQ-UHFFFAOYSA-N",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "spl:adf5773e-9095-4cb4-a90f-72cbf82f4493",
+                                "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+                                "code": "adf5773e-9095-4cb4-a90f-72cbf82f4493",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "mmsl:d00195",
+                                "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
+                                "code": "d00195",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
+                                "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+                                "code": "01c7a680-ee0d-42da-85e8-8d56c6fe7006",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2",
+                                "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+                                "code": "c43de769-d6d8-3bb9-e053-2995a90a5aa2",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "unii:H8MTN7XVC2",
+                                "system": "https://precision.fda.gov/uniisearch/srs/unii/",
+                                "code": "H8MTN7XVC2",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "ndc:68001-283",
+                                "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+                                "code": "68001-283",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "unii:Q20Q21Q62J",
+                                "system": "https://precision.fda.gov/uniisearch/srs/unii/",
+                                "code": "Q20Q21Q62J",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "pubchem.compound:5702198",
+                                "system": "https://pubchem.ncbi.nlm.nih.gov/compound/",
+                                "code": "5702198",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "pubchem.compound:441203",
+                                "system": "https://pubchem.ncbi.nlm.nih.gov/compound/",
+                                "code": "441203",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "ndc:0143-9505",
+                                "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+                                "code": "0143-9505",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
+                                "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+                                "code": "c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "mmsl:4456",
+                                "system": "https://www.nlm.nih.gov/research/umls/rxnorm/sourcereleasedocs/mmsl.html",
+                                "code": "4456",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "umls:C0008838",
+                                "system": "https://uts.nlm.nih.gov/uts/umls/concept/",
+                                "code": "C0008838",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "spl:0219ee77-eb38-b81f-e063-6394a90a5ca4",
+                                "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+                                "code": "0219ee77-eb38-b81f-e063-6394a90a5ca4",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "spl:89007399-3c34-40d2-8068-a0b8e09cbef8",
+                                "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+                                "code": "89007399-3c34-40d2-8068-a0b8e09cbef8",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "spl:64bcce1a-6e31-4e73-8da5-11aa9e890da2",
+                                "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+                                "code": "64bcce1a-6e31-4e73-8da5-11aa9e890da2",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "ndc:72266-253",
+                                "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+                                "code": "72266-253",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "ndc:25021-253",
+                                "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+                                "code": "25021-253",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "ndc:72266-252",
+                                "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+                                "code": "72266-252",
+                            },
+                            "relation": "relatedMatch",
+                        },
+                        {
+                            "coding": {
+                                "id": "ndc:0143-9504",
+                                "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+                                "code": "0143-9504",
+                            },
                             "relation": "relatedMatch",
                         },
                     ],
@@ -639,8 +1026,56 @@ class NormalizationService(BaseNormalizationService):
                     ],
                     "extensions": [
                         {
+                            "name": "aliases",
+                            "value": [
+                                "Liplacis",
+                                "cis-diamminedichloroplatinum III",
+                                "APRD00359",
+                                "(sp-4-2)-diamminedichloroplatinum",
+                                "cis-Diaminedichloroplatinum",
+                                "CDDP",
+                                "1,2-Diaminocyclohexaneplatinum II citrate",
+                                "Platinol",
+                                "Platinol-AQ",
+                                "DDP",
+                                "cis-platinum",
+                                "cisplatino",
+                                "PLATINUM, DIAMMINEDICHLORO-, (SP-4-2)-",
+                                "Cis-diamminedichloroplatinum ii",
+                                "INT230-6 COMPONENT CISPLATIN",
+                                "Cis-diamminedichloroplatinum",
+                                "DACP",
+                                "Cis-DDP",
+                                "cisplatinum",
+                                "NSC 119875",
+                                "cis-diamminedichloroplatinum(II)",
+                                "Cis-platin",
+                                "(SP-4-2)-DIAMMINEDICHLOROPLATINUM",
+                                "NSC119875",
+                                "CIS-DIAMMINEDICHLOROPLATINUM",
+                                "NSC-119875",
+                                "Cisplatinum",
+                                "CIS-DIAMMINEDICHLOROPLATINUM II",
+                                "INT-230-6 COMPONENT CISPLATIN",
+                                "CIS-DDP",
+                                "Peyrone's salt",
+                                "Cis-platinum ii",
+                                "CISplatin",
+                                "Fauldiscipla",
+                                "CISPLATIN",
+                                "Cisplatin",
+                                "Mitometh",
+                            ],
+                        },
+                        {
                             "name": "trade_names",
-                            "value": ["Platinol", "Cisplatin"],
+                            "value": [
+                                "Platinol",
+                                "PLATINOL",
+                                "Platinol-aq",
+                                "Cisplatin",
+                                "PLATINOL-AQ",
+                            ],
                         },
                     ],
                 },

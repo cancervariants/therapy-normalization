@@ -3,7 +3,11 @@
     "conceptType": "Therapy",
     "name": "cisplatin",
     "id": "normalize.therapy.rxcui:2555",
-    "primaryCode": "rxcui:2555",
+    "primaryCoding": {
+      "id": "rxcui:2555",
+      "system": "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=",
+      "code": "2555"
+    },
     "extensions": [
       {
         "name": "aliases",
@@ -2601,14 +2605,6 @@
     "mappings": [
       {
         "coding": {
-          "id": "rxcui:2555",
-          "system": "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=",
-          "code": "2555"
-        },
-        "relation": "exactMatch"
-      },
-      {
-        "coding": {
           "id": "ncit:C376",
           "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
           "code": "C376"
@@ -3067,7 +3063,11 @@
   },
   "normalize_phenobarbital": {
     "id": "normalize.therapy.rxcui:8134",
-    "primaryCode": "rxcui:8134",
+    "primaryCoding": {
+      "id": "rxcui:8134",
+      "system": "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=",
+      "code": "8134"
+    },
     "name": "phenobarbital",
     "extensions": [
       {
@@ -3349,14 +3349,6 @@
     "mappings": [
       {
         "coding": {
-          "id": "rxcui:8134",
-          "system": "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=",
-          "code": "8134"
-        },
-        "relation": "exactMatch"
-      },
-      {
-        "coding": {
           "id": "ncit:C739",
           "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
           "code": "C739"
@@ -3512,17 +3504,13 @@
   },
   "normalize_spiramycin": {
     "id": "normalize.therapy.rxcui:9991",
-    "primaryCode": "rxcui:9991",
+    "primaryCoding": {
+      "id": "rxcui:9991",
+      "system": "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=",
+      "code": "9991"
+    },
     "name": "spiramycin",
     "mappings": [
-      {
-        "coding": {
-          "id": "rxcui:9991",
-          "system": "https://mor.nlm.nih.gov/RxNav/search?searchBy=RXCUI&searchTerm=",
-          "code": "9991"
-        },
-        "relation": "exactMatch"
-      },
       {
         "coding": {
           "id": "ncit:C839",
@@ -3632,7 +3620,11 @@
     "conceptType": "Therapy",
     "name": "Therapeutic Procedure",
     "id": "normalize.therapy.ncit:C49236",
-    "primaryCode": "ncit:C49236",
+    "primaryCoding": {
+      "id": "ncit:C49236",
+      "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+      "code": "C49236"
+    },
     "extensions": [
       {
         "name": "aliases",
@@ -3655,14 +3647,6 @@
       }
     ],
     "mappings": [
-      {
-        "coding": {
-          "id": "ncit:C49236",
-          "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
-          "code": "C49236"
-        },
-        "relation": "exactMatch"
-      },
       {
         "coding": {
           "id": "umls:C0087111",
