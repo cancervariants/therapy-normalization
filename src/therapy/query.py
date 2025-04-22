@@ -358,14 +358,24 @@ class QueryHandler:
         :param NormalizationService response: in-progress response object
         :return: completed response object.
         """
+
+        def _get_src_prefix(identifier: str) -> str | None:
+            """Get source name prefix for an identifier
+
+            :param identifier: Identifier for a given system
+            :return: Source name prefix, if it's a source we ingest (in `PREFIX_LOOKUP`)
+            """
+            ns = identifier.split(":")[0]
+            return PREFIX_LOOKUP.get(ns)
+
         sources_meta = {}
         therapy = response.therapy
 
-        sources = []
+        sources = [_get_src_prefix(therapy.primaryCoding.id)]
         for m in therapy.mappings or []:
-            ns = m.coding.id.split(":")[0]
-            if ns in PREFIX_LOOKUP:
-                sources.append(PREFIX_LOOKUP[ns])
+            m_src = _get_src_prefix(m.coding.id)
+            if m_src:
+                sources.append(m_src)
 
         for src in sources:
             if src not in sources_meta:
@@ -397,20 +407,15 @@ class QueryHandler:
         :return: completed response object ready to return to user
         """
 
-        def _get_concept_mapping(
-            concept_id: str,
-            relation: Relation,
-        ) -> ConceptMapping:
-            """Create concept mapping for identifier
+        def _get_coding_object(concept_id: str) -> Coding:
+            """Get coding object for CURIE identifier
 
             ``system`` will use system prefix URL, OBO Foundry persistent URL (PURL), or
             source homepage, in that order of preference.
 
-            :param concept_id: Concept identifier represented as a curie
-            :param relation: SKOS mapping relationship, default is relatedMatch
-            :raises ValueError: If source of concept ID is not a valid
-                ``NamespacePrefix``
-            :return: Concept mapping for identifier
+            :param concept_id: A lowercase concept identifier represented as a curie
+            :raises ValueError: If source of concept ID is not a valid ``NamespacePrefix``
+            :return: Coding object for identifier
             """
             source, source_code = concept_id.split(":")
 
@@ -426,33 +431,52 @@ class QueryHandler:
             if source == NamespacePrefix.CHEBI:
                 source_code = concept_id
 
+            return Coding(
+                id=concept_id,
+                code=code(source_code),
+                system=NAMESPACE_TO_SYSTEM_URI[source],
+            )
+
+        def _get_concept_mapping(
+            concept_id: str,
+            relation: Relation,
+        ) -> ConceptMapping:
+            """Create concept mapping for identifier
+
+            ``system`` will use system prefix URL, OBO Foundry persistent URL (PURL), or
+            source homepage, in that order of preference.
+
+            :param concept_id: A lowercase concept identifier represented as a curie
+            :param relation: SKOS mapping relationship, default is relatedMatch
+            :raises ValueError: If source of concept ID is not a valid
+                ``NamespacePrefix``
+            :return: Concept mapping for identifier
+            """
             return ConceptMapping(
-                coding=Coding(
-                    id=concept_id,
-                    code=code(source_code),
-                    system=NAMESPACE_TO_SYSTEM_URI[source],
-                ),
+                coding=_get_coding_object(concept_id),
                 relation=relation,
             )
 
         therapy_obj = MappableConcept(
             id=f"normalize.therapy.{record['concept_id']}",
-            primaryCode=code(root=record["concept_id"]),
+            primaryCoding=_get_coding_object(record["concept_id"]),
             conceptType="Therapy",
             name=record.get("label"),
         )
 
-        xrefs = [record["concept_id"], *record.get("xrefs", [])]
-        therapy_obj.mappings = [
+        xrefs = record.get("xrefs", [])
+        mappings = [
             _get_concept_mapping(xref_id, relation=Relation.EXACT_MATCH)
             for xref_id in xrefs
         ]
 
         associated_with = record.get("associated_with", [])
-        therapy_obj.mappings.extend(
+        mappings.extend(
             _get_concept_mapping(associated_with_id, relation=Relation.RELATED_MATCH)
             for associated_with_id in associated_with
         )
+
+        therapy_obj.mappings = mappings or None
 
         extensions = []
         if "aliases" in record:
