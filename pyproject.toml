@@ -62,8 +62,7 @@ Source = "https://github.com/cancervariants/therapy-normalization"
 "Bug Tracker" = "https://github.com/cancervariants/therapy-normalization/issues"
 
 [project.scripts]
-therapy_norm_update = "therapy.cli:update_normalizer_db"
-therapy_norm_check_db = "therapy.cli:check_db"
+thera-py = "therapy.cli:cli"
 
 [build-system]
 requires = ["setuptools>=64", "setuptools_scm>=8"]

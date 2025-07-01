@@ -269,7 +269,7 @@ class QueryHandler:
         response: dict[str, None | str | list[dict] | dict] = {
             "query": query,
             "warnings": self._emit_char_warnings(query),
-            "source_matches": {source: None for source in sources},
+            "source_matches": dict.fromkeys(sources),
         }
         if query == "":
             return self._fill_no_matches(response)

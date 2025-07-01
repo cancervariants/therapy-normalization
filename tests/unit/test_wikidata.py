@@ -111,7 +111,7 @@ def atropine():
             "(3-Endo)-8-methyl-8-azabicyclo[3.2.1]oct-3-yl tropate",
             "[(1S,5R)-8-Methyl-8-azabicyclo[3.2.1]oct-3-yl] "
             "3-hydroxy-2-phenyl-propanoate",
-            "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl " "3-hydroxy-2-phenylpropanoate",
+            "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl 3-hydroxy-2-phenylpropanoate",
             "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate",
         ],
         "approval_ratings": [],

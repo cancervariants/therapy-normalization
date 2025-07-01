@@ -101,15 +101,13 @@ class NCIt(Base):
             associated_with = []
             if node.P207:
                 associated_with.append(
-                    f"{NamespacePrefix.UMLS.value}:" f"{node.P207.first()}"
+                    f"{NamespacePrefix.UMLS.value}:{node.P207.first()}"
                 )
             if node.P210:
-                xrefs.append(
-                    f"{NamespacePrefix.CASREGISTRY.value}:" f"{node.P210.first()}"
-                )
+                xrefs.append(f"{NamespacePrefix.CASREGISTRY.value}:{node.P210.first()}")
             if node.P319:
                 associated_with.append(
-                    f"{NamespacePrefix.UNII.value}:" f"{node.P319.first()}"
+                    f"{NamespacePrefix.UNII.value}:{node.P319.first()}"
                 )
             if node.P368:
                 iri = node.P368.first()
