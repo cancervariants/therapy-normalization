@@ -220,7 +220,7 @@ def _compare_response(
     if not fixture and not fixture_list:
         pytest.fail("Must pass 1 of {fixture, fixture_list}")
     if fixture and num_records:
-        pytest.fail("`num_records` should only be given with " "`fixture_list`.")
+        pytest.fail("`num_records` should only be given with `fixture_list`.")
 
     assert response.match_type == match_type
     if fixture:

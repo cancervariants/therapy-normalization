@@ -85,7 +85,7 @@ def _load_source(
 
     # used to get source class name from string
     try:
-        from therapy.etl import (  # noqa: F401
+        from therapy.etl import (  # noqa: F401 PLC0415
             ChEMBL,
             ChemIDplus,
             DrugBank,
@@ -149,7 +149,7 @@ def _load_merge(db: AbstractDatabase, processed_ids: set[str]) -> None:
     if not processed_ids:
         processed_ids = db.get_all_concept_ids()
     try:
-        from therapy.etl.merge import Merge
+        from therapy.etl.merge import Merge  # noqa: PLC0415
     except ModuleNotFoundError as e:
         click.echo(
             f"Encountered ModuleNotFoundError attempting to import {e.name}. Are ETL dependencies installed?"
@@ -160,9 +160,7 @@ def _load_merge(db: AbstractDatabase, processed_ids: set[str]) -> None:
     click.echo("Constructing normalized records...")
     merge.create_merged_concepts(processed_ids)
     end = timer()
-    click.echo(
-        f"Merged concept generation completed in " f"{(end - start):.5f} seconds"
-    )
+    click.echo(f"Merged concept generation completed in {(end - start):.5f} seconds")
 
 
 def _update_normalizer(

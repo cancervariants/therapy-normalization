@@ -67,11 +67,10 @@ infer_descr = (
     "Local Unique Identifier patterns."
 )
 search_description = (
-    "For each source, return strongest-match concepts for query "
-    "string provided by user"
+    "For each source, return strongest-match concepts for query string provided by user"
 )
 normalize_description = (
-    "Return merged strongest-match concept for query string " "provided by user."
+    "Return merged strongest-match concept for query string provided by user."
 )
 merged_matches_summary = (
     "Given query, provide merged normalized record as a Therapy Mappable Concept."
@@ -79,10 +78,10 @@ merged_matches_summary = (
 merged_response_descr = "A response to a validly-formed query."
 normalize_q_descr = "Therapy to normalize."
 unmerged_matches_summary = (
-    "Given query, provide source records corresponding to " "normalized concept."
+    "Given query, provide source records corresponding to normalized concept."
 )
 unmerged_response_descr = (
-    "Response containing source records contained within " "normalized concept."
+    "Response containing source records contained within normalized concept."
 )
 unmerged_normalize_description = (
     "Return unmerged records associated with the "

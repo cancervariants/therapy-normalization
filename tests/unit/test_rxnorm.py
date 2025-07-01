@@ -318,7 +318,7 @@ def fluoxetine():
         "concept_id": "rxcui:4493",
         "aliases": [
             "FLUoxetine",
-            "(+-)-N-Methyl-gamma-(4-(trifluoromethyl)phenoxy)" "benzenepropanamine",
+            "(+-)-N-Methyl-gamma-(4-(trifluoromethyl)phenoxy)benzenepropanamine",
             "(+-)-N-Methyl-3-phenyl-3-((alpha,alpha,alpha-trifluoro-"
             "P-tolyl)oxy)propylamine",
         ],
@@ -519,7 +519,7 @@ def test_amiloride(amiloride, rxnorm, compare_records):
     compare_records(response.records[0], amiloride)
 
     response = rxnorm.search(
-        "3,5-diamino-N-carbamimidoyl-6-" "chloropyrazine-2-carboxamide"
+        "3,5-diamino-N-carbamimidoyl-6-chloropyrazine-2-carboxamide"
     )
     assert response.match_type == MatchType.ALIAS
     assert len(response.records) == 1
@@ -566,7 +566,7 @@ def test_lymphocyte(lymphocyte, rxnorm, compare_records):
     compare_records(response.records[0], lymphocyte)
 
     # Label Match
-    response = rxnorm.search("lymphocyte immune globulin, " "anti-thymocyte globulin")
+    response = rxnorm.search("lymphocyte immune globulin, anti-thymocyte globulin")
     assert response.match_type == MatchType.LABEL
     assert len(response.records) == 1
     compare_records(response.records[0], lymphocyte)
