@@ -45,7 +45,13 @@ etl = [
     "rich",
     "pyyaml"
 ]
-tests = ["pytest", "pytest-cov", "pytest-mock", "isodate", "deepdiff"]
+tests = [
+    "pytest>=6.0",
+    "pytest-cov",
+    "httpx>=0.27.0",
+    "asgi_lifespan",
+    "pytest_asyncio",
+]
 dev = [
     "pre-commit>=4.0.1",
     "ruff==0.8.6",
@@ -121,6 +127,7 @@ select = [
     "ARG",  # https://docs.astral.sh/ruff/rules/#flake8-unused-arguments-arg
     "PTH",  # https://docs.astral.sh/ruff/rules/#flake8-use-pathlib-pth
     "PGH",  # https://docs.astral.sh/ruff/rules/#pygrep-hooks-pgh
+    "FAST",  # https://docs.astral.sh/ruff/rules/#fastapi-fast
     "PLC",  # https://docs.astral.sh/ruff/rules/#convention-c
     "PLE",  # https://docs.astral.sh/ruff/rules/#error-e_1
     "TRY",  # https://docs.astral.sh/ruff/rules/#tryceratops-try
@@ -142,6 +149,7 @@ fixable = [
     "PT",
     "RSE",
     "SIM",
+    "FAST",
     "PLC",
     "PLE",
     "TRY",
