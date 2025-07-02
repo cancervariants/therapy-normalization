@@ -11,7 +11,7 @@ jobs:
       AWS_DEFAULT_OUTPUT: text
       DISEASE_NORM_DB_URL: http://localhost:8002
       THERAPY_NORM_DB_URL: http://localhost:8002
-      THERAPY_NORM_ENV: test
+      THERAPY_NORMALIZER_ENV: test
     strategy:
       matrix:
         python-version: ["3.11", "3.12", "3.13"]
