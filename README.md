@@ -53,6 +53,12 @@ The Therapy Normalizer currently aggregates therapy data from:
 * [RxNorm](https://www.nlm.nih.gov/research/umls/rxnorm/index.html)
 * [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page)
 
+Direct data management requires installation of the `etl` dependency group:
+
+```shell
+python3 -m pip install 'thera-py[etl]'
+```
+
 To update source(s), pass them as arguments to the command `thera-py update`. For example, the following command updates ChEMBL and Wikidata:
 
 ```commandline
