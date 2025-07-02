@@ -108,7 +108,7 @@ def update(
     use_existing: bool,
     silent: bool,
 ) -> None:
-    """Update provided normalizer SOURCES in the gene database.
+    """Update provided normalizer SOURCES in the therapy database.
 
     Valid SOURCES are "ChEMBL", "ChemIdPlus", "DrugBank", "DrugsAtFDA",
     "GuideToPharmacology", "HemOnc", "NCIt", "RxNorm", and "Wikidata" (case is irrelevant).
