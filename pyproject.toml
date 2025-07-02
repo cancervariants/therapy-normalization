@@ -52,6 +52,7 @@ tests = [
     "asgi_lifespan",
     "pytest_asyncio",
     "isodate",
+    "deepdiff",
 ]
 dev = [
     "pre-commit>=4.0.1",
