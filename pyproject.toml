@@ -51,6 +51,7 @@ tests = [
     "httpx>=0.27.0",
     "asgi_lifespan",
     "pytest_asyncio",
+    "isodate",
 ]
 dev = [
     "pre-commit>=4.0.1",
