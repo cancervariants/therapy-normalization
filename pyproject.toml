@@ -48,6 +48,7 @@ etl = [
 tests = [
     "pytest>=6.0",
     "pytest-cov",
+    "pytest-mock",
     "httpx>=0.27.0",
     "asgi_lifespan",
     "pytest_asyncio",
