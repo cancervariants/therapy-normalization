@@ -70,7 +70,7 @@ _CONFIG_MAP = {
 
 
 def _set_config() -> Config:
-    """Set configs based on environment variable `DISEASE_NORMALIZER_ENV`.
+    """Set configs based on environment variable `THERAPY_NORMALIZER_ENV`.
 
     :return: complete config object with environment-specific parameters
     """
