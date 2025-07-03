@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pytest
 
+from therapy.config import config as therapy_config
 from therapy.database.database import AWS_ENV_VAR_NAME, AbstractDatabase, create_db
 from therapy.etl.base import Base
 from therapy.query import QueryHandler
@@ -18,9 +19,10 @@ _logger = logging.getLogger(__name__)
 
 def pytest_collection_modifyitems(items):
     """Modify test items in place to ensure test modules run in a given order.
+
     When creating new test modules, be sure to add them here.
     """
-    MODULE_ORDER = [  # noqa: N806
+    module_order = [
         "test_schemas",
         "test_chembl",
         "test_chemidplus",
@@ -34,10 +36,11 @@ def pytest_collection_modifyitems(items):
         "test_merge",
         "test_database",
         "test_query",
+        "test_api",
         "test_emit_warnings",
         "test_disease_indication",
     ]
-    items.sort(key=lambda i: MODULE_ORDER.index(i.module.__name__))
+    items.sort(key=lambda i: module_order.index(i.module.__name__))
 
 
 def pytest_addoption(parser):
@@ -64,14 +67,13 @@ def pytest_configure(config):
 
 TEST_ROOT = Path(__file__).resolve().parents[1]
 TEST_DATA_DIRECTORY = TEST_ROOT / "tests" / "data"
-IS_TEST_ENV = os.environ.get("THERAPY_TEST", "").lower() == "true"
 
 
 def pytest_sessionstart():
     """Wipe DB before testing if in test environment."""
-    if IS_TEST_ENV:
+    if therapy_config.test:
         if os.environ.get(AWS_ENV_VAR_NAME):
-            pytest.fail(f"Cannot have both THERAPY_TEST and {AWS_ENV_VAR_NAME} set.")
+            pytest.fail(f"Cannot have {AWS_ENV_VAR_NAME} set in test env.")
         db = create_db()
         db.drop_db()
         db.initialize_db()
@@ -84,7 +86,7 @@ def is_test_env():
 
     Provided here to be accessible directly within test modules.
     """
-    return IS_TEST_ENV
+    return therapy_config.test
 
 
 @pytest.fixture(scope="session")
@@ -220,7 +222,7 @@ def _compare_response(
     if not fixture and not fixture_list:
         pytest.fail("Must pass 1 of {fixture, fixture_list}")
     if fixture and num_records:
-        pytest.fail("`num_records` should only be given with " "`fixture_list`.")
+        pytest.fail("`num_records` should only be given with `fixture_list`.")
 
     assert response.match_type == match_type
     if fixture:

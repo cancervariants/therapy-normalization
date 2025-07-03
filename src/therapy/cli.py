@@ -1,192 +1,76 @@
 """Provides a CLI util to make updates to normalizer database."""
 
 import logging
-from collections.abc import Collection
-from timeit import default_timer as timer
 
 import click
 from disease.database import create_db as create_disease_db
 from disease.etl.update import update_all_sources as update_disease_sources
 
-from therapy import SOURCES
-from therapy.database.database import (
-    AbstractDatabase,
-    DatabaseReadError,
-    DatabaseWriteError,
-    create_db,
-)
+from therapy import __version__
+from therapy.config import config
+from therapy.database import create_db
+from therapy.etl.update import update_all_sources, update_normalized, update_source
 from therapy.log import configure_logs
 from therapy.schemas import SourceName
 
 _logger = logging.getLogger(__name__)
 
+URL_DESCRIPTION = 'URL endpoint for the application database. Must be a URL to a local DynamoDB server (e.g. "http://localhost:8001").'
+SILENT_MODE_DESCRIPTION = "Suppress output to console."
 
-@click.command()
-@click.option("--db_url", help="URL endpoint for the application database.")
-@click.option("--verbose", "-v", is_flag=True, help="Print result to console if set.")
-def check_db(db_url: str, verbose: bool = False) -> None:
+
+def _initialize_app() -> None:
+    if config.debug:
+        configure_logs(log_level=logging.DEBUG)
+    else:
+        configure_logs()
+
+
+@click.group()
+@click.version_option(__version__)
+def cli() -> None:
+    """Manage Thera-Py data."""
+
+
+@cli.command()
+@click.option("--db_url", help=URL_DESCRIPTION)
+@click.option("--silent", is_flag=True, default=False, help=SILENT_MODE_DESCRIPTION)
+def check_db(db_url: str, silent: bool) -> None:
     """Perform basic checks on DB health and population. Exits with status code 1
     if DB schema is uninitialized or if critical tables appear to be empty.
 
+        $ thera-py check-db
+        $ echo $?
+        1  # indicates failure
+
+    This command is equivalent to the combination of the database classes'
+    ``check_schema_initialized()`` and ``check_tables_populated()`` methods:
+
+    >>> from therapy.database import create_db
+    >>> db = create_db()
+    >>> db.check_schema_initialized() and db.check_tables_populated()
+    True  # DB passes checks
+
     \f
     :param db_url: URL to normalizer database
-    :param verbose: if true, print result to console
+    :param silent: if true, suppress console output
     """  # noqa: D301
-    configure_logs()
-    db = create_db(db_url, False)
+    _initialize_app()
+    db = create_db(db_url, aws_instance=False)
     if not db.check_schema_initialized():
-        if verbose:
+        if not silent:
             click.echo("Health check failed: DB schema uninitialized.")
         click.get_current_context().exit(1)
-    if verbose:
-        click.echo("DB health check successful: tables appear complete.")
 
+    if not db.check_tables_populated():
+        if not silent:
+            click.echo("Health check failed: DB is incompletely populated.")
+        click.get_current_context().exit(1)
 
-def _delete_source(n: SourceName, db: AbstractDatabase) -> float:
-    """Delete individual source data.
-
-    :param n: name of source to delete
-    :param db: database instance
-    :return: time taken (in seconds) to delete
-    """
-    msg = f"Deleting {n.value}..."
-    click.echo(f"\n{msg}")
-    _logger.info(msg)
-    start_delete = timer()
-    db.delete_source(n)
-    end_delete = timer()
-    delete_time = end_delete - start_delete
-    msg = f"Deleted {n.value} in {delete_time:.5f} seconds."
-    click.echo(f"{msg}\n")
-    _logger.info(msg)
-    return delete_time
-
-
-def _load_source(
-    name: SourceName,
-    db: AbstractDatabase,
-    delete_time: float,
-    processed_ids: list[str],
-    use_existing: bool,
-) -> None:
-    """Load individual source data.
-
-    :param n: name of source
-    :param db: database instance
-    :param delete_time: time taken (in seconds) to run deletion
-    :param processed_ids: in-progress list of processed therapy IDs
-    :param use_existing: if True, use most recent local data files instead of
-        fetching from remote
-    """
-    msg = f"Loading {name.value}..."
-    click.echo(msg)
-    _logger.info(msg)
-    start_load = timer()
-
-    # used to get source class name from string
-    try:
-        from therapy.etl import (  # noqa: F401
-            ChEMBL,
-            ChemIDplus,
-            DrugBank,
-            DrugsAtFDA,
-            EtlError,
-            GuideToPHARMACOLOGY,
-            HemOnc,
-            NCIt,
-            RxNorm,
-            Wikidata,
-        )
-    except ModuleNotFoundError as e:
-        click.echo(
-            f"Encountered ModuleNotFoundError attempting to import {e.name}. Are ETL dependencies installed?"
-        )
-        click.get_current_context().exit()
-    SourceClass = eval(name.value)  # noqa: N806, S307
-
-    source = SourceClass(database=db, silent=False)
-    try:
-        processed_ids += source.perform_etl(use_existing)
-    except EtlError as e:
-        msg = f"Encountered error while loading {name}: {e}."
-        _logger.exception(msg)
+    msg = "DB health check successful: tables appear complete."
+    if not silent:
         click.echo(msg)
-        click.get_current_context().exit()
-    end_load = timer()
-    load_time = end_load - start_load
-    msg = f"Loaded {name.value} in {load_time:.5f} seconds."
-    click.echo(msg)
     _logger.info(msg)
-    msg = f"Total time for {name.value}: {(delete_time + load_time):.5f} seconds."
-    click.echo(msg)
-    _logger.info(msg)
-
-
-def _delete_normalized_data(database: AbstractDatabase) -> None:
-    """Delete normalized concepts
-
-    :param database: DB instance
-    """
-    click.echo("\nDeleting normalized records...")
-    start_delete = timer()
-    try:
-        database.delete_normalized_concepts()
-    except (DatabaseReadError, DatabaseWriteError) as e:
-        click.echo(f"Encountered exception during normalized data deletion: {e}")
-    end_delete = timer()
-    delete_time = end_delete - start_delete
-    click.echo(f"Deleted normalized records in {delete_time:.5f} seconds.")
-
-
-def _load_merge(db: AbstractDatabase, processed_ids: set[str]) -> None:
-    """Load merged concepts
-
-    :param db: database instance
-    :param processed_ids: in-progress list of processed therapy IDs
-    """
-    start = timer()
-    _delete_normalized_data(db)
-    if not processed_ids:
-        processed_ids = db.get_all_concept_ids()
-    try:
-        from therapy.etl.merge import Merge
-    except ModuleNotFoundError as e:
-        click.echo(
-            f"Encountered ModuleNotFoundError attempting to import {e.name}. Are ETL dependencies installed?"
-        )
-        click.get_current_context().exit()
-
-    merge = Merge(database=db, silent=False)
-    click.echo("Constructing normalized records...")
-    merge.create_merged_concepts(processed_ids)
-    end = timer()
-    click.echo(
-        f"Merged concept generation completed in " f"{(end - start):.5f} seconds"
-    )
-
-
-def _update_normalizer(
-    sources: Collection[SourceName],
-    db: AbstractDatabase,
-    update_merged: bool,
-    use_existing: bool,
-) -> None:
-    """Update selected normalizer sources.
-
-    :param sources: names of sources to update
-    :param db: database instance
-    :param update_merged: if true, retain processed records to use in updating merged
-        records
-    :param use_existing: if True, use most recent local version of source data instead of
-        fetching from remote
-    """
-    processed_ids: list[str] = []
-    for n in sources:
-        delete_time = _delete_source(n, db)
-        _load_source(n, db, delete_time, processed_ids, use_existing)
-
-    if update_merged:
-        _load_merge(db, set(processed_ids))
 
 
 def _ensure_diseases_updated(from_local: bool) -> None:
@@ -202,80 +86,100 @@ def _ensure_diseases_updated(from_local: bool) -> None:
         update_disease_sources(disease_db, use_existing=from_local, silent=True)
 
 
-@click.command()
-@click.option("--sources", help="The source(s) you wish to update separated by spaces.")
-@click.option("--aws_instance", is_flag=True, help="Using AWS DynamodDB instance.")
-@click.option("--db_url", help="URL endpoint for the application database.")
-@click.option("--update_all", is_flag=True, help="Update all normalizer sources.")
-@click.option(
-    "--update_merged",
-    is_flag=True,
-    help="Update concepts for normalize endpoint from accepted sources.",
-)
+@cli.command()
+@click.argument("sources", nargs=-1)
+@click.option("--all", "all_", is_flag=True, help="Update records for all sources.")
+@click.option("--normalize", is_flag=True, help="Create normalized records.")
+@click.option("--db_url", help=URL_DESCRIPTION)
+@click.option("--aws_instance", is_flag=True, help="Use cloud DynamodDB instance.")
 @click.option(
     "--use_existing",
     is_flag=True,
     default=False,
-    help="Use most recent local source data instead of fetching latest version",
+    help="Use most recent locally-available source data instead of fetching latest version",
 )
-def update_normalizer_db(
-    sources: str,
+@click.option("--silent", is_flag=True, default=False, help=SILENT_MODE_DESCRIPTION)
+def update(
+    sources: tuple[str, ...],
     aws_instance: bool,
     db_url: str,
-    update_all: bool,
-    update_merged: bool,
+    all_: bool,
+    normalize: bool,
     use_existing: bool,
+    silent: bool,
 ) -> None:
-    """Update selected normalizer source(s) in the therapy database. For example, the
-    following command will update RxNorm and Wikidata data, using a database connection at port 8001:
+    """Update provided normalizer SOURCES in the therapy database.
 
-    % therapy_norm_update --sources="rxnorm wikidata" --db_url=http://localhost:8001
+    Valid SOURCES are "ChEMBL", "ChemIdPlus", "DrugBank", "DrugsAtFDA",
+    "GuideToPharmacology", "HemOnc", "NCIt", "RxNorm", and "Wikidata" (case is irrelevant).
+
+    SOURCES are optional, but if not provided, either --all or --normalize must be used.
+
+    For example, the following command will update NCIt and ChEMBL source records:
+
+        $ thera-py update ncit chembl
+
+    To completely reload all source records and construct normalized concepts, use the
+    --all and --normalize options:
+
+        $ thera-py update --all --normalize
+
+    Thera-Py will fetch the latest available data from all sources if local
+    data is out-of-date. To suppress this and force usage of local files only, use the
+    --use_existing flag:
+
+        $ thera-py update --all --use_existing
 
     \f
-    :param sources: names of sources to update, comma-separated
+    :param sources: tuple of raw names of sources to update
     :param aws_instance: if true, use cloud instance
     :param db_url: URI pointing to database
-    :param update_all: if true, update all sources (ignore `normalizer` parameter)
-    :param update_merged: if true, update normalized records
+    :param all_: if True, update all sources (ignore ``sources``)
+    :param normalize: if True, update normalized records
     :param use_existing: if True, use most recent local data instead of fetching latest version
+    :param silent: if True, suppress console output
     """  # noqa: D301
-    configure_logs()
+    _initialize_app()
+    if len(sources) == 0 and (not all_) and (not normalize):
+        click.echo(
+            "Error: must provide SOURCES or at least one of --all, --normalize\n"
+        )
+        ctx = click.get_current_context()
+        click.echo(ctx.get_help())
+        ctx.exit(1)
+
     db = create_db(db_url, aws_instance)
 
-    if update_all:
+    processed_ids = None
+    if all_:
         _ensure_diseases_updated(use_existing)
-        _update_normalizer(list(SourceName), db, update_merged, use_existing)
-    elif not sources:
-        if update_merged:
-            _load_merge(db, set())
-        else:
-            ctx = click.get_current_context()
-            click.echo(
-                "Must either enter 1 or more sources, or use `--update_all` parameter"
-            )
-            click.echo(ctx.get_help())
-            ctx.exit()
-    else:
-        sources_split = sources.lower().split()
+        processed_ids = update_all_sources(db, use_existing, silent=silent)
+    elif sources:
+        parsed_sources = set()
+        failed_source_names = []
+        for source in sources:
+            try:
+                parsed_sources.add(SourceName[source.upper()])
+            except KeyError:
+                failed_source_names.append(source)
+        if len(failed_source_names) != 0:
+            click.echo(f"Error: unrecognized sources: {failed_source_names}")
+            click.echo(f"Valid source options are {list(SourceName)}")
+            click.get_current_context().exit(1)
 
-        if len(sources_split) == 0:
-            msg = "Must enter 1 or more source names to update"
-            raise ValueError(msg)
-
-        non_sources = set(sources_split) - set(SOURCES)
-
-        if len(non_sources) != 0:
-            msg = f"Not valid source(s): {non_sources}"
-            raise ValueError(msg)
-
-        parsed_source_names = {SourceName(SOURCES[s]) for s in sources_split}
-        if (
-            SourceName.CHEMBL in parsed_source_names
-            or SourceName.HEMONC in parsed_source_names
-        ):
+        if SourceName.CHEMBL in parsed_sources or SourceName.HEMONC in parsed_sources:
             _ensure_diseases_updated(use_existing)
-        _update_normalizer(parsed_source_names, db, update_merged, use_existing)
+        working_processed_ids = set()
+        for source_name in parsed_sources:
+            working_processed_ids |= update_source(
+                source_name, db, use_existing=use_existing, silent=silent
+            )
+        if len(sources) == len(SourceName):
+            processed_ids = working_processed_ids
+
+    if normalize:
+        update_normalized(db, processed_ids, silent=silent)
 
 
 if __name__ == "__main__":
-    update_normalizer_db()
+    cli()

@@ -47,6 +47,7 @@ class DynamoDatabase(AbstractDatabase):
         :raise DatabaseInitializationError: if initial setup fails
         """
         self.therapy_table = environ.get("THERAPY_DYNAMO_TABLE", "therapy_normalizer")
+
         region_name = db_args.get("region_name", "us-east-2")
 
         if AWS_ENV_VAR_NAME in environ:
