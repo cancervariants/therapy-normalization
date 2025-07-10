@@ -29,7 +29,7 @@ dependencies = [
     "uvicorn",
     "click",
     "boto3",
-    "ga4gh.vrs==2.*",
+    "ga4gh.vrs>=2.1.3,<3.0",
     "disease-normalizer~=0.11.0",
 ]
 dynamic = ["version"]
