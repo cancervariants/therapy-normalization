@@ -11,7 +11,7 @@ jobs:
       AWS_DEFAULT_OUTPUT: text
       DISEASE_NORM_DB_URL: http://localhost:8002
       THERAPY_NORM_DB_URL: http://localhost:8002
-      THERAPY_TEST: true
+      THERAPY_NORMALIZER_ENV: test
     strategy:
       matrix:
         python-version: ["3.11", "3.12", "3.13"]
@@ -35,7 +35,7 @@ jobs:
       - name: Run tests
         run: python3 -m pytest
   lint:
-    name: lint py${{ matrix.python-version }}
+    name: lint
     runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.DUMMY_AWS_ACCESS_KEY_ID }}

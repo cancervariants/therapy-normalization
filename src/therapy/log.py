@@ -15,7 +15,7 @@ def _quiet_upstream_libs() -> None:
 
 def configure_logs(
     log_file: str | None = None,
-    log_level: int = logging.DEBUG,
+    log_level: int = logging.INFO,
     quiet_upstream: bool = True,
 ) -> None:
     """Configure logging.
@@ -25,7 +25,7 @@ def configure_logs(
     :param quiet_upstream: if True, turn off debug logging for a selection of libraries
     """
     if log_file is None:
-        log_file = "therapy.log"
+        log_file = f"{__package__}.log"
     if quiet_upstream:
         _quiet_upstream_libs()
     logging.basicConfig(

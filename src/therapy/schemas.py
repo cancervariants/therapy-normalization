@@ -1383,3 +1383,51 @@ class SearchService(BaseModel):
             }
         }
     )
+
+
+class ServiceEnvironment(str, Enum):
+    """Define current runtime environment."""
+
+    DEV = "dev"  # local dev
+    TEST = "test"  # local/CI testing
+    PROD = "prod"  # main production env on cloud
+    STAGING = "staging"  # staging env on cloud
+
+
+LAB_EMAIL = "Alex.Wagner@nationwidechildrens.org"
+LAB_WEBPAGE_URL = "https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine/research-labs/wagner-lab"
+DOCS_URL = "https://github.com/cancervariants/therapy-normalization"
+APP_DESCRIPTION = "Resolve ambiguous references and descriptions of drugs and therapies to consistently-structured, normalized terms"
+
+
+class ServiceType(BaseModel):
+    """Define service_info response for type field"""
+
+    group: Literal["org.genomicmedlab"] = "org.genomicmedlab"
+    artifact: Literal["Thera-Py API"] = "Thera-Py API"
+    version: Literal[__version__] = __version__
+
+
+class ServiceOrganization(BaseModel):
+    """Define service_info response for organization field"""
+
+    name: Literal["Genomic Medicine Lab at Nationwide Children's Hospital"] = (
+        "Genomic Medicine Lab at Nationwide Children's Hospital"
+    )
+    url: Literal[LAB_WEBPAGE_URL] = LAB_WEBPAGE_URL
+
+
+class ServiceInfo(BaseModel):
+    """Define response structure for GA4GH /service_info endpoint."""
+
+    id: Literal["org.genomicmedlab.thera_py"] = "org.genomicmedlab.thera_py"
+    name: Literal["thera_py"] = "thera_py"
+    type: ServiceType
+    description: Literal[APP_DESCRIPTION] = APP_DESCRIPTION
+    organization: ServiceOrganization
+    contactUrl: Literal[LAB_EMAIL] = LAB_EMAIL  # noqa: N815
+    documentationUrl: Literal[DOCS_URL] = DOCS_URL  # noqa: N815
+    createdAt: Literal["2021-01-01T00:00:00+00:00"] = "2021-01-01T00:00:00+00:00"  # noqa: N815
+    updatedAt: str | None = None  # noqa: N815
+    environment: ServiceEnvironment
+    version: Literal[__version__] = __version__

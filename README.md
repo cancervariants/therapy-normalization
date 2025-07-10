@@ -53,16 +53,22 @@ The Therapy Normalizer currently aggregates therapy data from:
 * [RxNorm](https://www.nlm.nih.gov/research/umls/rxnorm/index.html)
 * [Wikidata](https://www.wikidata.org/wiki/Wikidata:Main_Page)
 
-To update source(s), simply set `--sources` to the source(s) you wish to update separated by spaces. For example, the following command updates ChEMBL and Wikidata:
+Direct data management requires installation of the `etl` dependency group:
 
-```commandline
-python3 -m therapy.cli --sources="chembl wikidata"
+```shell
+python3 -m pip install 'thera-py[etl]'
 ```
 
-You can update all sources at once with the `--update_all` flag:
+To update source(s), pass them as arguments to the command `thera-py update`. For example, the following command updates ChEMBL and Wikidata:
 
 ```commandline
-python3 -m therapy.cli --update_all
+thera-py update chembl wikidata
+```
+
+You can update all sources at once with the `--all` flag:
+
+```commandline
+thera-py update --all
 ```
 
 Thera-Py can retrieve all required data itself, using the [wags-tails](https://github.com/GenomicMedLab/wags-tails) library. By default, data will be housed under `~/.local/share/wags_tails/` in a format like the following:
@@ -94,10 +100,10 @@ Thera-Py can retrieve all required data itself, using the [wags-tails](https://g
 Updates to the HemOnc source depend on the [Disease Normalizer](https://github.com/cancervariants/disease-normalization) service. If the Disease Normalizer database appears to be empty or incomplete, updates to HemOnc will also trigger a refresh of the Disease Normalizer database. See its README for additional data requirements.
 
 ### Create Merged Concept Groups
-The `/normalize` endpoint relies on merged concept groups.  The `--update_merged` flag generates these groups:
+The `/normalize` endpoint relies on merged concept groups.  The `--normalize` flag generates these groups:
 
 ```commandline
-python3 -m therapy.cli --update_merged
+thera-py update --normalize
 ```
 
 #### Specifying the database URL endpoint
@@ -107,13 +113,13 @@ There are two different ways to specify the database URL endpoint.
 
 The first way is to set the `--db_url` flag to the URL endpoint.
 ```commandline
-python3 -m therapy.cli --update_all --db_url="http://localhost:8001"
+thera-py update --all --db_url=http://localhost:8001
 ```
 
 The second way is to set the environment variable `THERAPY_NORM_DB_URL` to the URL endpoint.
 ```commandline
 export THERAPY_NORM_DB_URL="http://localhost:8001"
-python3 -m therapy.cli --update_all
+thera-py update --all
 ```
 
 ### Starting the therapy normalization service
