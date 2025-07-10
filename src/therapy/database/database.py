@@ -337,7 +337,7 @@ def create_db(
     aws_env_var_set = AWS_ENV_VAR_NAME in environ
 
     if aws_env_var_set or aws_instance:
-        from therapy.database.dynamodb import DynamoDatabase
+        from therapy.database.dynamodb import DynamoDatabase  # noqa: PLC0415
 
         db = DynamoDatabase()
     else:
@@ -348,7 +348,7 @@ def create_db(
         else:
             endpoint_url = "http://localhost:8000"
 
-        from therapy.database.dynamodb import DynamoDatabase
+        from therapy.database.dynamodb import DynamoDatabase  # noqa: PLC0415
 
         db = DynamoDatabase(endpoint_url)
     return db
