@@ -4,12 +4,10 @@ import logging
 
 import click
 from disease.database import create_db as create_disease_db
-from disease.etl.update import update_all_sources as update_disease_sources
 
 from therapy import __version__
 from therapy.config import config
 from therapy.database import create_db
-from therapy.etl.update import update_all_sources, update_normalized, update_source
 from therapy.log import configure_logs
 from therapy.schemas import SourceName
 
@@ -83,6 +81,15 @@ def _ensure_diseases_updated(from_local: bool) -> None:
         not disease_db.check_schema_initialized()
         or not disease_db.check_tables_populated()
     ):
+        try:
+            from disease.etl.update import (  # noqa: PLC0415
+                update_all_sources as update_disease_sources,
+            )
+        except ImportError as e:
+            click.echo(
+                f"Encountered ImportError: {e.msg}. Updating source data requires the optional [etl] dependency group. See the data update instructions in the README."
+            )
+            click.get_current_context().exit(1)
         update_disease_sources(disease_db, use_existing=from_local, silent=True)
 
 
@@ -151,6 +158,17 @@ def update(
     db = create_db(db_url, aws_instance)
 
     processed_ids = None
+    try:
+        from therapy.etl.update import (  # noqa: PLC0415
+            update_all_sources,
+            update_normalized,
+            update_source,
+        )
+    except ImportError as e:
+        click.echo(
+            f"Encountered ImportError: {e.msg}. Updating source data requires the optional [etl] dependency group. See the data update instructions in the README."
+        )
+        click.get_current_context().exit(1)
     if all_:
         _ensure_diseases_updated(use_existing)
         processed_ids = update_all_sources(db, use_existing, silent=silent)
