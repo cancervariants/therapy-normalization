@@ -24,10 +24,10 @@ from wags_tails import (
     RxNormData,
 )
 
-from therapy import ITEM_TYPES
+from therapy import ITEM_TYPES, PREFIX_LOOKUP
 from therapy.database import AbstractDatabase
 from therapy.etl.rules import Rules
-from therapy.schemas import SourceName, Therapy
+from therapy.schemas import RefType, SourceName, Therapy
 
 _logger = logging.getLogger(__name__)
 
@@ -135,7 +135,16 @@ class Base(ABC):
         raise NotImplementedError
 
     @staticmethod
-    def _process_searchable_attributes(therapy: dict) -> dict:
+    def _process_excess_xrefs(xrefs: list[str]) -> list[str]:
+        """If there are too many xrefs, drop the ones that we don't need for
+        normalized grouping.
+
+        :param xrefs: xrefs
+        :return: hopefully fewer xrefs
+        """
+        return [xref for xref in xrefs if xref.startswith(tuple(PREFIX_LOOKUP))]
+
+    def _process_searchable_attributes(self, therapy: dict) -> dict:
         """Apply standardization to searchable therapy fields, e.g. ``label``,
         ``trade_names`` etc
 
@@ -171,8 +180,18 @@ class Base(ABC):
 
                 if len(value) > 20:
                     _logger.debug("%s has > 20 %s.", therapy["concept_id"], attr_type)
-                    del therapy[attr_type]
-                    continue
+                    if attr_type == RefType.XREFS.name.lower():
+                        value = self._process_excess_xrefs(value)
+                        if len(value) > 20:
+                            _logger.debug(
+                                "%s still has > 20 xrefs after pruning.",
+                                therapy["concept_id"],
+                            )
+                            del therapy[attr_type]
+                            continue
+                    else:
+                        del therapy[attr_type]
+                        continue
 
                 value.sort()
                 therapy[attr_type] = value
