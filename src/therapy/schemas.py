@@ -1428,6 +1428,6 @@ class ServiceInfo(BaseModel):
     contactUrl: Literal[LAB_EMAIL] = LAB_EMAIL  # noqa: N815
     documentationUrl: Literal[DOCS_URL] = DOCS_URL  # noqa: N815
     createdAt: Literal["2021-01-01T00:00:00+00:00"] = "2021-01-01T00:00:00+00:00"  # noqa: N815
-    updatedAt: str | None = None  # noqa: N815
+    updatedAt: Literal["2021-01-01T00:00:00+00:00"] = "2021-01-01T00:00:00+00:00"  # noqa: N815
     environment: ServiceEnvironment
     version: Literal[__version__] = __version__
