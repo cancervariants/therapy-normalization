@@ -10,9 +10,8 @@ from typing import Annotated
 from fastapi import FastAPI, HTTPException, Query, Request
 
 from therapy import __version__
-from therapy.config import config
+from therapy.config import get_config
 from therapy.database.database import create_db
-from therapy.log import configure_logs
 from therapy.query import InvalidParameterError, QueryHandler
 from therapy.schemas import (
     APP_DESCRIPTION,
@@ -25,6 +24,7 @@ from therapy.schemas import (
     ServiceType,
     UnmergedNormalizationService,
 )
+from therapy.utils import initialize_logs
 
 
 @asynccontextmanager
@@ -35,10 +35,9 @@ async def lifespan(app: FastAPI) -> AsyncGenerator:
 
     :param app: FastAPI instance
     """
-    if config.debug:
-        configure_logs(log_level=logging.DEBUG)
-    else:
-        configure_logs(log_level=logging.INFO)
+    log_level = logging.DEBUG if get_config().debug else logging.INFO
+
+    initialize_logs(log_level=log_level)
     db = create_db()
     query_handler = QueryHandler(db)
     app.state.query_handler = query_handler
@@ -132,17 +131,7 @@ def search(
     excl: Annotated[str | None, Query(description=excl_descr)] = "",
     infer_namespace: Annotated[bool, Query(description=infer_descr)] = True,
 ) -> SearchService:
-    """For each source, return strongest-match concepts for query string
-    provided by user.
-
-    :param q: therapy search term
-    :param str incl: comma-separated list of sources to include, with all others
-        excluded. Raises HTTPException if both `incl` and `excl` are given.
-    :param str excl: comma-separated list of sources exclude, with all others included.
-        Raises HTTPException if both `incl` and `excl` are given.
-    :param bool infer_namespace: if True, try to infer namespace from query term.
-    :returns: JSON response with matched records and source metadata
-    """
+    """For each source, return strongest-match concepts for query string provided by user."""
     query_handler = request.app.state.query_handler
     try:
         response = query_handler.search(
@@ -170,14 +159,7 @@ def normalize(
     q: Annotated[str, Query(description=normalize_q_descr)],
     infer_namespace: Annotated[bool, Query(description=infer_descr)] = True,
 ) -> NormalizationService:
-    """Return merged strongest-match concept for query string provided by
-    user.
-
-    :param q: therapy search term
-    :param bool infer_namespace: if True, try to infer namespace from query term.
-    :returns: JSON response with matching normalized record provided as a
-    Therapy Mappable Concept, and source metadata
-    """
+    """Return merged strongest-match concept for query string provided by user."""
     query_handler = request.app.state.query_handler
     try:
         response = query_handler.normalize(html.unescape(q), infer_namespace)
@@ -199,12 +181,7 @@ def normalize_unmerged(
     q: Annotated[str, Query(description=normalize_q_descr)],
     infer_namespace: Annotated[bool, Query(description=infer_descr)] = True,
 ) -> UnmergedNormalizationService:
-    """Return all individual records associated with a normalized concept.
-
-    :param q: therapy search term
-    :param bool infer_namespace: if True, try to infer namespace from query term.
-    :returns: JSON response with matching normalized record and source metadata
-    """
+    """Return all individual records associated with a normalized concept."""
     query_handler = request.app.state.query_handler
     try:
         response = query_handler.normalize_unmerged(html.unescape(q), infer_namespace)
@@ -220,9 +197,9 @@ def normalize_unmerged(
     tags=[_Tag.META],
 )
 def service_info() -> ServiceInfo:
-    """Provide service info per GA4GH Service Info spec
-    :return: conformant service info description
-    """
+    """Provide service info per GA4GH Service Info spec"""
     return ServiceInfo(
-        organization=ServiceOrganization(), type=ServiceType(), environment=config.env
+        organization=ServiceOrganization(),
+        type=ServiceType(),
+        environment=get_config().env,
     )

@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from therapy.config import config as therapy_config
+from therapy.config import get_config as get_therapy_config
 from therapy.database.database import AWS_ENV_VAR_NAME, AbstractDatabase, create_db
 from therapy.etl.base import Base
 from therapy.query import QueryHandler
@@ -65,13 +65,9 @@ def pytest_configure(config):
         logging.getLogger("urllib3.connectionpool").setLevel(logging.ERROR)
 
 
-TEST_ROOT = Path(__file__).resolve().parents[1]
-TEST_DATA_DIRECTORY = TEST_ROOT / "tests" / "data"
-
-
 def pytest_sessionstart():
     """Wipe DB before testing if in test environment."""
-    if therapy_config.test:
+    if get_therapy_config().test:
         if os.environ.get(AWS_ENV_VAR_NAME):
             pytest.fail(f"Cannot have {AWS_ENV_VAR_NAME} set in test env.")
         db = create_db()
@@ -86,13 +82,13 @@ def is_test_env():
 
     Provided here to be accessible directly within test modules.
     """
-    return therapy_config.test
+    return get_therapy_config().test
 
 
 @pytest.fixture(scope="session")
 def test_data():
     """Provide test data location to test modules"""
-    return TEST_DATA_DIRECTORY
+    return Path(__file__).resolve().parent / "data"
 
 
 @pytest.fixture(scope="module")
@@ -104,9 +100,9 @@ def database():
 
 
 @pytest.fixture(scope="session")
-def disease_normalizer():
+def disease_normalizer(test_data: Path):
     """Provide mock disease normalizer."""
-    with (TEST_DATA_DIRECTORY / "disease_normalization.json").open() as f:
+    with (test_data / "disease_normalization.json").open() as f:
         disease_data = json.load(f)
 
         def _normalize_disease(query: str):
