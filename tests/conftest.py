@@ -261,6 +261,7 @@ def compare_response():
 @pytest.fixture(scope="session")
 def null_database_class():
     """Quote-unquote 'in-memory database' used like a mock for testing.
+
     Parameters for specific methods enabled as needed. See `tests/unit/test_utils.py`
     for example usage.
     """
