@@ -3,8 +3,9 @@
 import json
 import logging
 import os
-from collections.abc import Callable
+from collections.abc import Callable, Generator
 from pathlib import Path
+from typing import Any
 
 import pytest
 
@@ -12,7 +13,15 @@ from therapy.config import config as therapy_config
 from therapy.database.database import AWS_ENV_VAR_NAME, AbstractDatabase, create_db
 from therapy.etl.base import Base
 from therapy.query import QueryHandler
-from therapy.schemas import MatchType, SourceSearchMatches, Therapy
+from therapy.schemas import (
+    MatchType,
+    RecordType,
+    RefType,
+    SourceMeta,
+    SourceName,
+    SourceSearchMatches,
+    Therapy,
+)
 
 _logger = logging.getLogger(__name__)
 
@@ -39,6 +48,7 @@ def pytest_collection_modifyitems(items):
         "test_api",
         "test_emit_warnings",
         "test_disease_indication",
+        "test_utils",
     ]
     items.sort(key=lambda i: module_order.index(i.module.__name__))
 
@@ -246,3 +256,90 @@ def _compare_response(
 def compare_response():
     """Provide response comparison function"""
     return _compare_response
+
+
+@pytest.fixture(scope="session")
+def null_database_class():
+    """Quote-unquote 'in-memory database' used like a mock for testing.
+    Parameters for specific methods enabled as needed. See `tests/unit/test_utils.py`
+    for example usage.
+    """
+
+    class _Database(AbstractDatabase):
+        def __init__(self, db_url: str | None = None, **db_args) -> None:  # noqa: ARG002
+            self._get_all_records_values = db_args.get("get_all_records", {})
+
+        def list_tables(self) -> list[str]:
+            raise NotImplementedError
+
+        def drop_db(self) -> None:
+            raise NotImplementedError
+
+        def check_schema_initialized(self) -> bool:
+            raise NotImplementedError
+
+        def check_tables_populated(self) -> bool:
+            raise NotImplementedError
+
+        def initialize_db(self) -> None:
+            raise NotImplementedError
+
+        def get_source_metadata(self, src_name: str | SourceName) -> SourceMeta:
+            raise NotImplementedError
+
+        def get_record_by_id(
+            self, concept_id: str, case_sensitive: bool = True, merge: bool = False
+        ) -> dict | None:
+            raise NotImplementedError
+
+        def get_refs_by_type(self, search_term: str, ref_type: RefType) -> list[str]:
+            raise NotImplementedError
+
+        def get_all_concept_ids(self, source: SourceName | None = None) -> set[str]:
+            raise NotImplementedError
+
+        def get_all_records(
+            self, record_type: RecordType
+        ) -> Generator[dict, None, None]:
+            yield from self._get_all_records_values[record_type]
+
+        def add_source_metadata(self, src_name: SourceName, data: SourceMeta) -> None:
+            raise NotImplementedError
+
+        def add_rxnorm_brand(self, brand_id: str, record_id: str) -> None:
+            raise NotImplementedError
+
+        def get_drugsatfda_from_unii(self, unii: str) -> set[str]:
+            raise NotImplementedError
+
+        def get_rxnorm_id_by_brand(self, brand_id: str) -> str | None:
+            raise NotImplementedError
+
+        def add_record(self, record: dict, src_name: SourceName) -> None:
+            raise NotImplementedError
+
+        def add_merged_record(self, record: dict) -> None:
+            raise NotImplementedError
+
+        def update_merge_ref(self, concept_id: str, merge_ref: Any) -> None:  # noqa: ANN401
+            raise NotImplementedError
+
+        def delete_normalized_concepts(self) -> None:
+            raise NotImplementedError
+
+        def delete_source(self, src_name: SourceName) -> None:
+            raise NotImplementedError
+
+        def complete_write_transaction(self) -> None:
+            raise NotImplementedError
+
+        def close_connection(self) -> None:
+            raise NotImplementedError
+
+        def load_from_remote(self, url: str | None = None) -> None:
+            raise NotImplementedError
+
+        def export_db(self, export_location: Path) -> None:
+            raise NotImplementedError
+
+    return _Database
