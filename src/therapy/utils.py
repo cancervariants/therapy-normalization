@@ -9,7 +9,7 @@ from therapy.schemas import RecordType, SourceName
 def get_term_mappings(
     database: AbstractDatabase, scope: RecordType | SourceName
 ) -> Generator[dict, None, None]:
-    """Produce dict objects for known concepts (name + ID) plus other possible referents
+    """Produce dict objects for known concepts (name + ID) plus other possible relevant terms
 
     Use in downstream applications such as autocompletion.
 

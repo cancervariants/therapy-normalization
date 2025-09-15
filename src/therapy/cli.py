@@ -191,7 +191,7 @@ def update(
     type=click.Choice(list(RecordType) + list(SourceName), case_sensitive=False),
     nargs=1,
     default=RecordType.MERGER,
-    help="Scope of mappings -- either an item type (merged/normalized vs base source records), or base records of an individaul source",
+    help="Scope of mappings -- either an item type (merged/normalized vs base source records), or base records of an individual source",
 )
 @click.option(
     "--outfile",
@@ -202,9 +202,9 @@ def update(
 def dump_mappings(
     db_url: str, scope: RecordType | SourceName, outfile: Path | None
 ) -> None:
-    """Produce JSON Lines file dump of concept referents (e.g. name/label, alias, xrefs) and the associated concept.
+    """Produce JSON Lines file dump of concept terms (e.g. name/label, alias, xrefs) and the associated concept.
 
-    By default, produces output for all known referents to a normalized ID. The --scope
+    By default, produces output for all known terms to a normalized ID. The --scope
     option can be used to constrain this either to all non-merged identity records:
 
         $ thera-py dump-mappings --scope identity
