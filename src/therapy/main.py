@@ -191,7 +191,7 @@ def normalize_unmerged(
 
 
 @app.get(
-    "/service_info",
+    "/therapy/service-info",
     summary="Get basic service information",
     description="Retrieve service metadata, such as versioning and contact info. Structured in conformance with the [GA4GH service info API specification](https://www.ga4gh.org/product/service-info/)",
     tags=[_Tag.META],
