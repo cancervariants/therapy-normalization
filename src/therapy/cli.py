@@ -1,6 +1,8 @@
 """Provides a CLI util to make updates to normalizer database."""
 
+import json
 import logging
+from pathlib import Path
 
 import click
 from disease.database import create_db as create_disease_db
@@ -9,7 +11,8 @@ from therapy import __version__
 from therapy.config import config
 from therapy.database import create_db
 from therapy.log import configure_logs
-from therapy.schemas import SourceName
+from therapy.schemas import RecordType, SourceName
+from therapy.utils import get_term_mappings
 
 _logger = logging.getLogger(__name__)
 
@@ -197,6 +200,44 @@ def update(
 
     if normalize:
         update_normalized(db, processed_ids, silent=silent)
+
+
+@cli.command()
+@click.option("--db_url", help=URL_DESCRIPTION)
+@click.option(
+    "--scope",
+    type=click.Choice(list(RecordType) + list(SourceName), case_sensitive=False),
+    nargs=1,
+    default=RecordType.MERGER,
+    help="Scope of mappings -- either an item type (merged/normalized vs base source records), or base records of an individual source",
+)
+@click.option(
+    "--outfile",
+    "-o",
+    help="Output location to write to",
+    type=click.Path(path_type=Path),
+)
+def dump_mappings(
+    db_url: str, scope: RecordType | SourceName, outfile: Path | None
+) -> None:
+    """Produce JSON Lines file dump of concept terms (e.g. name/label, alias, xrefs) and the associated concept.
+
+    By default, produces output for all known terms to a normalized ID. The --scope
+    option can be used to constrain this either to all non-merged identity records:
+
+        $ thera-py dump-mappings --scope identity
+
+    Or to the identity records of a specific source:
+
+        $ thera-py dump-mappings --scope ncit
+    """
+    db = create_db(db_url, False)
+    if outfile is None:
+        outfile = Path() / "thera_py_mappings.jsonl"
+    with outfile.open("w") as f:
+        for mapping in get_term_mappings(db, scope):
+            f.write(json.dumps(mapping))
+            f.write("\n")
 
 
 if __name__ == "__main__":
