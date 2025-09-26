@@ -1,9 +1,29 @@
 """Provide useful utilities."""
 
+import logging
 from collections.abc import Generator
+from logging.handlers import RotatingFileHandler
 
 from therapy.database import AbstractDatabase
 from therapy.schemas import RecordType, SourceName
+
+
+def initialize_logs(log_level: int = logging.INFO) -> None:
+    """Configure logging.
+
+    :param log_level: app log level to set
+    """
+    root = logging.getLogger()
+    if root.handlers:
+        return
+
+    root.setLevel(log_level)
+    formatter = logging.Formatter(
+        "[%(asctime)s] - %(name)s - %(levelname)s : %(message)s"
+    )
+    fh = RotatingFileHandler(f"{__package__}.log", maxBytes=5_000_000, backupCount=3)
+    fh.setFormatter(formatter)
+    root.addHandler(fh)
 
 
 def get_term_mappings(

@@ -8,11 +8,10 @@ import click
 from disease.database import create_db as create_disease_db
 
 from therapy import __version__
-from therapy.config import config
+from therapy.config import get_config
 from therapy.database import create_db
-from therapy.log import configure_logs
 from therapy.schemas import RecordType, SourceName
-from therapy.utils import get_term_mappings
+from therapy.utils import get_term_mappings, initialize_logs
 
 _logger = logging.getLogger(__name__)
 
@@ -21,10 +20,8 @@ SILENT_MODE_DESCRIPTION = "Suppress output to console."
 
 
 def _initialize_app() -> None:
-    if config.debug:
-        configure_logs(log_level=logging.DEBUG)
-    else:
-        configure_logs()
+    log_level = logging.DEBUG if get_config().debug else logging.INFO
+    initialize_logs(log_level)
 
 
 @click.group()
@@ -51,11 +48,7 @@ def check_db(db_url: str, silent: bool) -> None:
     >>> db = create_db()
     >>> db.check_schema_initialized() and db.check_tables_populated()
     True  # DB passes checks
-
-    \f
-    :param db_url: URL to normalizer database
-    :param silent: if true, suppress console output
-    """  # noqa: D301
+    """
     _initialize_app()
     db = create_db(db_url, aws_instance=False)
     if not db.check_schema_initialized():
@@ -139,16 +132,7 @@ def update(
     --use_existing flag:
 
         $ thera-py update --all --use_existing
-
-    \f
-    :param sources: tuple of raw names of sources to update
-    :param aws_instance: if true, use cloud instance
-    :param db_url: URI pointing to database
-    :param all_: if True, update all sources (ignore ``sources``)
-    :param normalize: if True, update normalized records
-    :param use_existing: if True, use most recent local data instead of fetching latest version
-    :param silent: if True, suppress console output
-    """  # noqa: D301
+    """
     _initialize_app()
     if len(sources) == 0 and (not all_) and (not normalize):
         click.echo(

@@ -5,16 +5,16 @@ response objects -- here, we're checking for bad branch logic and for basic assu
 that routes integrate correctly with query methods.
 """
 
-import re
-from datetime import datetime
+from pathlib import Path
 
+import jsonschema
 import pytest
 import pytest_asyncio
+import yaml
 from asgi_lifespan import LifespanManager
 from httpx import ASGITransport, AsyncClient
 
 from therapy.main import app
-from therapy.schemas import ServiceEnvironment
 
 
 @pytest_asyncio.fixture
@@ -64,31 +64,17 @@ async def test_normalize(api_client: AsyncClient):
 
 
 @pytest.mark.asyncio
-async def test_service_info(api_client: AsyncClient):
-    response = await api_client.get("/service_info")
-    assert response.status_code == 200
-    expected_version_pattern = (
-        r"\d+\.\d+\.?"  # at minimum, should be something like "0.1"
-    )
-    response_json = response.json()
-    assert response_json["id"] == "org.genomicmedlab.thera_py"
-    assert response_json["name"] == "thera_py"
-    assert response_json["type"]["group"] == "org.genomicmedlab"
-    assert response_json["type"]["artifact"] == "Thera-Py API"
-    assert re.match(expected_version_pattern, response_json["type"]["version"])
-    assert (
-        response_json["description"]
-        == "Resolve ambiguous references and descriptions of drugs and therapies to consistently-structured, normalized terms"
-    )
-    assert response_json["organization"] == {
-        "name": "Genomic Medicine Lab at Nationwide Children's Hospital",
-        "url": "https://www.nationwidechildrens.org/specialties/institute-for-genomic-medicine/research-labs/wagner-lab",
-    }
-    assert response_json["contactUrl"] == "Alex.Wagner@nationwidechildrens.org"
-    assert (
-        response_json["documentationUrl"]
-        == "https://github.com/cancervariants/therapy-normalization"
-    )
-    assert datetime.fromisoformat(response_json["createdAt"])
-    assert ServiceEnvironment(response_json["environment"])
-    assert re.match(expected_version_pattern, response_json["version"])
+async def test_service_info(api_client: AsyncClient, test_data: Path):
+    response = await api_client.get("/therapy/service-info")
+    response.raise_for_status()
+
+    with (test_data / "service_info_openapi.yaml").open() as f:
+        spec = yaml.safe_load(f)
+
+    resp_schema = spec["paths"]["/service-info"]["get"]["responses"]["200"]["content"][
+        "application/json"
+    ]["schema"]
+
+    resolver = jsonschema.RefResolver.from_schema(spec)
+    data = response.json()
+    jsonschema.validate(instance=data, schema=resp_schema, resolver=resolver)
