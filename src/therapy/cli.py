@@ -1,5 +1,6 @@
 """Provides a CLI util to make updates to normalizer database."""
 
+import datetime
 import json
 import logging
 from pathlib import Path
@@ -230,11 +231,21 @@ def dump_mappings(
     Or to the identity records of a specific source:
 
         $ thera-py dump-mappings --scope ncit
+
+    The first object in the .jsonl file will include metadata about the parameters used to
+    create the document.
     """
     db = create_db(db_url, False)
     if outfile is None:
         outfile = Path() / "thera_py_mappings.jsonl"
     with outfile.open("w") as f:
+        meta = {
+            "type": "meta",
+            "created_at": datetime.datetime.now(tz=datetime.UTC).isoformat(),
+            "scope": scope,
+        }
+        f.write(json.dumps(meta))
+        f.write("\n")
         for mapping in get_term_mappings(db, scope):
             f.write(json.dumps(mapping))
             f.write("\n")
