@@ -319,7 +319,7 @@ def create_db(
     >>> os.environ["THERAPY_NORM_DB_URL"] = "http://localhost:8001"
     >>> local_db = create_db()  # creates DynamoDB connection on port 8001
     >>>
-    >>> os.environ["THERAPY_NORM_ENV"] = "Prod"
+    >>> os.environ["THERAPY_NORM_ENV"] = "prod"
     >>> prod_db = create_db()  # creates connection to AWS cloud DynamoDB instance, overruling `THERAPY_NORM_DB_URL` variable setting
 
     Precedence is handled for connection settings like so:
