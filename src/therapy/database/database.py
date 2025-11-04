@@ -9,7 +9,13 @@ from pathlib import Path
 
 import click
 
-from therapy.schemas import RecordType, RefType, SourceMeta, SourceName
+from therapy.schemas import (
+    RecordType,
+    RefType,
+    ServiceEnvironment,
+    SourceMeta,
+    SourceName,
+)
 
 
 class DatabaseError(Exception):
@@ -277,9 +283,9 @@ SKIP_AWS_DB_ENV_NAME = "SKIP_AWS_CONFIRMATION"
 class AwsEnvName(str, Enum):
     """AWS environment name that is being used"""
 
-    DEVELOPMENT = "Dev"
-    STAGING = "Staging"
-    PRODUCTION = "Prod"
+    DEVELOPMENT = ServiceEnvironment.DEV.value
+    STAGING = ServiceEnvironment.STAGING.value
+    PRODUCTION = ServiceEnvironment.PROD.value
 
 
 VALID_AWS_ENV_NAMES = {v.value for v in AwsEnvName.__members__.values()}
@@ -313,7 +319,7 @@ def create_db(
     >>> os.environ["THERAPY_NORM_DB_URL"] = "http://localhost:8001"
     >>> local_db = create_db()  # creates DynamoDB connection on port 8001
     >>>
-    >>> os.environ["THERAPY_NORM_ENV"] = "Prod"
+    >>> os.environ["THERAPY_NORM_ENV"] = "prod"
     >>> prod_db = create_db()  # creates connection to AWS cloud DynamoDB instance, overruling `THERAPY_NORM_DB_URL` variable setting
 
     Precedence is handled for connection settings like so:
