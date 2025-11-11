@@ -9,6 +9,7 @@ from pathlib import Path
 
 import click
 
+from therapy.config import get_config
 from therapy.schemas import (
     RecordType,
     RefType,
@@ -328,11 +329,9 @@ def create_db(
        ``aws_instance`` method argument is True, try to create a cloud DynamoDB
        connection
     2) if the ``db_url`` method argument is given a non-None value, try to create a DB
-       connection to that address (if it looks like a PostgreSQL URL, create a
-       PostgreSQL connection, but otherwise try DynamoDB)
+       connection to that address
     3) if the ``THERAPY_NORM_DB_URL`` environment variable is set, try to create a DB
-       connection to that address (if it looks like a PostgreSQL URL, create a
-       PostgreSQL connection, but otherwise try DynamoDB)
+       connection to that address
     4) otherwise, attempt a DynamoDB connection to the default URL,
        ``http://localhost:8000``
 
@@ -347,12 +346,7 @@ def create_db(
 
         db = DynamoDatabase()
     else:
-        if db_url:
-            endpoint_url = db_url
-        elif "THERAPY_NORM_DB_URL" in environ:
-            endpoint_url = environ["THERAPY_NORM_DB_URL"]
-        else:
-            endpoint_url = "http://localhost:8000"
+        endpoint_url = db_url if db_url else get_config().db_url
 
         from therapy.database.dynamodb import DynamoDatabase  # noqa: PLC0415
 
