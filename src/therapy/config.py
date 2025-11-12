@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     env: ServiceEnvironment = ServiceEnvironment.DEV
     debug: bool = False
     test: bool = False
-    db_url: str = "http://localhost:8001"
+    db_url: str = "http://localhost:8000"
 
 
 @cache
