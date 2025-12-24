@@ -4,13 +4,15 @@ import csv
 import html
 import logging
 import re
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from tqdm import tqdm
-from wags_tails.guide_to_pharmacology import GtoPLigandPaths
 
 from therapy.etl.base import Base, SourceFormatError
 from therapy.schemas import ApprovalRating, NamespacePrefix, SourceMeta, SourceName
+
+if TYPE_CHECKING:
+    from wags_tails.guide_to_pharmacology import GtoPLigandPaths
 
 _logger = logging.getLogger(__name__)
 
@@ -32,7 +34,7 @@ class GuideToPHARMACOLOGY(Base):
         data_files, self._version = self._data_source.get_latest(
             from_local=use_existing
         )
-        self._data_files: GtoPLigandPaths = data_files  # type: ignore
+        self._data_files: GtoPLigandPaths = data_files
 
     def _transform_data(self) -> None:
         """Transform Guide To PHARMACOLOGY data."""
@@ -128,8 +130,8 @@ class GuideToPHARMACOLOGY(Base):
                             name_code = s[s.index("&") : s.index(";") + 1]
                             if name_code.lower() in ["&reg;", "&trade;"]:
                                 # Remove trademark symbols to allow for search
-                                s = s.replace(name_code, "")
-                            s = html.unescape(s)
+                                s = s.replace(name_code, "")  # noqa: PLW2901
+                            s = html.unescape(s)  # noqa: PLW2901
                         aliases.append(self._process_name(s))
                 if row[21]:
                     associated_with.append(

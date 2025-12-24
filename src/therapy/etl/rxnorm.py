@@ -92,7 +92,7 @@ class RxNorm(Base):
             latest_version_cb=lambda: self._version,
             download_cb=lambda version, file: self._create_drug_form_yaml(  # noqa: ARG005
                 file,
-                self._data_file,  # type: ignore
+                self._data_file,
             ),
             data_dir=self._data_source.data_dir,
             file_name="rxnorm_drug_forms",
@@ -104,7 +104,7 @@ class RxNorm(Base):
         with self._drug_forms_file.open() as file:
             drug_forms = yaml.safe_load(file)
 
-        with self._data_file.open() as f:  # type: ignore
+        with self._data_file.open() as f:
             rff_data = csv.reader(f, delimiter="|")
             # Link ingredient to brand
             ingredient_brands: dict[str, str] = {}
@@ -124,22 +124,21 @@ class RxNorm(Base):
                     if row[12] == "SBDC" and row[11] == "RXNORM":
                         # Semantic Branded Drug Component
                         self._get_brands(row, ingredient_brands)
+                    elif concept_id not in data:
+                        params: RecordParams = {}
+                        params["concept_id"] = concept_id
+                        self._add_str_field(
+                            params, row, precise_ingredient, drug_forms, sbdfs
+                        )
+                        self._add_xref_assoc(params, row)
+                        data[concept_id] = params
                     else:
-                        if concept_id not in data:
-                            params: RecordParams = {}
-                            params["concept_id"] = concept_id
-                            self._add_str_field(
-                                params, row, precise_ingredient, drug_forms, sbdfs
-                            )
-                            self._add_xref_assoc(params, row)
-                            data[concept_id] = params
-                        else:
-                            # Concept already created
-                            params = data[concept_id]
-                            self._add_str_field(
-                                params, row, precise_ingredient, drug_forms, sbdfs
-                            )
-                            self._add_xref_assoc(params, row)
+                        # Concept already created
+                        params = data[concept_id]
+                        self._add_str_field(
+                            params, row, precise_ingredient, drug_forms, sbdfs
+                        )
+                        self._add_xref_assoc(params, row)
 
             for value in tqdm(data.values(), ncols=80, disable=self._silent):
                 if "label" in value:
@@ -241,7 +240,7 @@ class RxNorm(Base):
         term_type = row[12]
         source = row[11]
 
-        if (term_type == "IN" or term_type == "PIN") and source == "RXNORM":
+        if (term_type in {"IN", "PIN"}) and source == "RXNORM":
             params["label"] = term
             if row[17] == "4096":
                 params["approval_ratings"] = [ApprovalRating.RXNORM_PRESCRIBABLE.value]

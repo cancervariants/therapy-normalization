@@ -380,12 +380,11 @@ class DynamoDatabase(AbstractDatabase):
                 if record_type == RecordType.IDENTITY:
                     if incoming_record_type == record_type:
                         yield record
-                else:
-                    if (
-                        incoming_record_type == RecordType.IDENTITY
-                        and not record.get("merge_ref")
-                    ) or incoming_record_type == RecordType.MERGER:
-                        yield record
+                elif (
+                    incoming_record_type == RecordType.IDENTITY
+                    and not record.get("merge_ref")
+                ) or incoming_record_type == RecordType.MERGER:
+                    yield record
             last_evaluated_key = response.get("LastEvaluatedKey")
             if not last_evaluated_key:
                 break

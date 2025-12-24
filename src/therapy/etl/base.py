@@ -82,7 +82,7 @@ class Base(ABC):
             | NcitData
             | RxNormData
             | CustomData
-        ) = self._get_data_handler(data_path)  # type: ignore
+        ) = self._get_data_handler(data_path)
         self.database = database
         self._added_ids: list[str] = []
         self._rules = Rules(self._name)
@@ -178,11 +178,11 @@ class Base(ABC):
                     with contextlib.suppress(ValueError):
                         value.remove(therapy["label"])
 
-                if len(value) > 20:
+                if len(value) > 20:  # noqa: PLR2004
                     _logger.debug("%s has > 20 %s.", therapy["concept_id"], attr_type)
                     if attr_type == RefType.XREFS.name.lower():
                         value = self._process_excess_xrefs(value)
-                        if len(value) > 20:
+                        if len(value) > 20:  # noqa: PLR2004
                             _logger.debug(
                                 "%s still has > 20 xrefs after pruning.",
                                 therapy["concept_id"],

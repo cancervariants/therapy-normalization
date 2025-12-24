@@ -81,7 +81,7 @@ class NCIt(Base):
 
     def _transform_data(self) -> None:
         """Get data from file and construct objects for loading"""
-        ncit = owl.get_ontology(self._data_file.absolute().as_uri())  # type: ignore
+        ncit = owl.get_ontology(self._data_file.absolute().as_uri())
         ncit.load()
         uq_nodes = {ncit.C49236}  # add Therapeutic Procedure
         uq_nodes = self._get_desc_nodes(ncit.C1909, uq_nodes)
@@ -114,7 +114,7 @@ class NCIt(Base):
                 if ":" in iri:
                     iri = iri.split(":")[1]
                 associated_with.append(f"{NamespacePrefix.CHEBI.value}:{iri}")
-            params: RecordParams = {  # type: ignore
+            params: RecordParams = {
                 "concept_id": concept_id,
                 "label": label,
                 "aliases": aliases,
