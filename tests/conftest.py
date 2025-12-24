@@ -141,14 +141,14 @@ def test_source(
     def test_source_factory(EtlClass: Base):  # noqa: N803
         if is_test_env:
             _logger.debug("Reloading DB with data from %s", test_data)
-            test_class = EtlClass(database, test_data / EtlClass.__name__.lower())  # type: ignore
-            test_class._normalize_disease = disease_normalizer  # type: ignore
+            test_class = EtlClass(database, test_data / EtlClass.__name__.lower())
+            test_class._normalize_disease = disease_normalizer
             test_class.perform_etl(use_existing=True)
 
         class QueryGetter:
             def __init__(self):
                 self._query_handler = QueryHandler(database)
-                self._src_name = EtlClass.__name__  # type: ignore
+                self._src_name = EtlClass.__name__
 
             def search(self, query_str: str):
                 resp = self._query_handler.search(query_str, incl=self._src_name)

@@ -62,7 +62,7 @@ class DrugsAtFDA(Base):
 
     def _transform_data(self) -> None:
         """Prepare source data for loading into DB."""
-        with self._data_file.open() as f:  # type: ignore
+        with self._data_file.open() as f:
             data = json.load(f)["results"]
 
         for result in tqdm(data, ncols=80, disable=self._silent):
@@ -122,15 +122,15 @@ class DrugsAtFDA(Base):
                 unii = openfda.get("unii")
                 if unii:
                     unii_items = [f"{NamespacePrefix.UNII.value}:{u}" for u in unii]
-                    therapy["associated_with"] += unii_items  # type: ignore
+                    therapy["associated_with"] += unii_items
                 spl = openfda.get("spl_id")
                 if spl:
                     spl_items = [f"{NamespacePrefix.SPL.value}:{s}" for s in spl]
-                    therapy["associated_with"] += spl_items  # type: ignore
+                    therapy["associated_with"] += spl_items
                 ndc = openfda.get("product_ndc")
                 if ndc:
                     ndc_items = [f"{NamespacePrefix.NDC.value}:{n}" for n in ndc]
-                    therapy["associated_with"] += ndc_items  # type: ignore
+                    therapy["associated_with"] += ndc_items
 
                 rxcui = openfda.get("rxcui")
                 if rxcui:

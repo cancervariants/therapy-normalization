@@ -161,11 +161,11 @@ python3 -m virtualenv venv
 source venv/bin/activate
 ```
 
-Install development dependencies and `pre-commit`:
+Install development dependencies and `prek`:
 
 ```shell
 python3 -m pip install -e '.[dev,tests]'
-pre-commit install
+prek install
 ```
 
 Check style with `ruff`:

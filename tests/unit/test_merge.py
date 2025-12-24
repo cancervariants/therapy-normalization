@@ -192,7 +192,7 @@ def test_id_sets(merge_instance: Merge, record_id_groups: dict[str, set[str]]):
     orders = [random.sample(order0, key_len) for _ in range(5)]
     for order in [order0, *orders]:
         ordered_keys = [keys[i] for i in order]
-        merge_instance._create_record_id_sets(ordered_keys)  # type: ignore
+        merge_instance._create_record_id_sets(ordered_keys)
         groups = merge_instance._groups
 
         # perform checks

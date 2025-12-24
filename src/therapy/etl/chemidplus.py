@@ -4,7 +4,7 @@ Courtesy of the U.S. National Library of Medicine.
 """
 
 import re
-import xml.etree.ElementTree as ElTree
+import xml.etree.ElementTree as ET
 from collections.abc import Generator
 from pathlib import Path
 
@@ -32,7 +32,7 @@ class ChemIDplus(Base):
         :param str tag: XML tag
         :return: generator yielding elements of corresponding tag
         """
-        context = iter(ElTree.iterparse(path, events=("start", "end")))  # noqa: S314
+        context = iter(ET.iterparse(path, events=("start", "end")))  # noqa: S314
         _, root = next(context)
         for event, elem in context:
             if event == "end" and elem.tag == tag:
@@ -41,13 +41,13 @@ class ChemIDplus(Base):
 
     def _transform_data(self) -> None:
         """Open dataset and prepare for loading into database."""
-        parser = self.parse_xml(self._data_file, "Chemical")  # type: ignore
+        parser = self.parse_xml(self._data_file, "Chemical")
         # there's no elegant way to get a row total in advance from parsed XML --
         # use a rich Console to provide a static spinner instead
         with Console(color_system=None).status(
             "Loading ChemIDplus records...", spinner="dots"
         ):
-            for chemical in parser:  # type: ignore
+            for chemical in parser:
                 if "displayName" not in chemical.attrib:
                     continue
 
@@ -88,13 +88,13 @@ class ChemIDplus(Base):
                                 f"{NamespacePrefix.DRUGBANK.value}:"
                                 f"{loc.attrib['url'].split('/')[-1]}"
                             )
-                            params["xrefs"].append(db)  # type: ignore
+                            params["xrefs"].append(db)
                         elif loc.text == "FDA SRS":
                             unii = (
                                 f"{NamespacePrefix.UNII.value}:"
                                 f"{loc.attrib['url'].split('/')[-1]}"
                             )
-                            params["associated_with"].append(unii)  # type: ignore
+                            params["associated_with"].append(unii)
 
                 self._load_therapy(params)
 

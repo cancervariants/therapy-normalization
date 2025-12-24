@@ -1,6 +1,6 @@
 """Construct test data for NCIt source."""
 
-import xml.etree.ElementTree as XETree
+import xml.etree.ElementTree as ET
 from collections.abc import Generator
 from pathlib import Path
 
@@ -66,7 +66,7 @@ while element.tag != ANNOTATION_PROPERTY_TAG:
 while element.tag != DESCRIPTION_TAG:
     new_root.append(element)
     element = next(parser)
-    while element.tag != ANNOTATION_PROPERTY_TAG and element.tag != DESCRIPTION_TAG:
+    while element.tag not in {ANNOTATION_PROPERTY_TAG, DESCRIPTION_TAG}:
         if element.tag == AXIOM_TAG:
             new_root.append(element)
         element = next(parser)
@@ -76,7 +76,7 @@ descriptions = {}
 while element.tag != DATATYPE_TAG:
     new_root.append(element)
     element = next(parser)
-    while element.tag != DESCRIPTION_TAG and element.tag != DATATYPE_TAG:
+    while element.tag not in {DESCRIPTION_TAG, DATATYPE_TAG}:
         if element.tag == AXIOM_TAG:
             new_root.append(element)
         element = next(parser)
@@ -96,7 +96,7 @@ while element.tag != OBJECT_PROPERTY_TAG:
 while element.tag != CLASS_TAG:
     new_root.append(element)
     element = next(parser)
-    while element.tag != OBJECT_PROPERTY_TAG and element.tag != CLASS_TAG:
+    while element.tag not in {OBJECT_PROPERTY_TAG, CLASS_TAG}:
         if element.tag == AXIOM_TAG:
             new_root.append(element)
         element = next(parser)
@@ -120,7 +120,7 @@ test_classes = {
 
 parent_concepts = set()
 for c in test_classes:
-    parent_concepts |= c.ancestors()  # type: ignore
+    parent_concepts |= c.ancestors()
 parent_concepts.remove(owl.Thing)
 parent_concept_iris = {p.iri for p in parent_concepts}
 
@@ -158,10 +158,10 @@ while not EOF:
 
 etr.ElementTree(new_root).write(outfile_path, pretty_print=True)
 
-pi = XETree.ProcessingInstruction(  # TODO get encoding attrib out
+pi = ET.ProcessingInstruction(  # TODO get encoding attrib out
     target='xml version="1.0"'
 )
-pi_string = XETree.tostring(pi).decode("ASCII")
+pi_string = ET.tostring(pi).decode("ASCII")
 with outfile_path.open("r+") as f:
     content = f.read()
     f.seek(0, 0)

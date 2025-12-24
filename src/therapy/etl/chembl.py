@@ -35,15 +35,15 @@ class ChEMBL(DiseaseIndicationBase):
             return ApprovalRating.CHEMBL_NULL
         if value == -1:
             return None
-        if value == 0.5:
+        if value == 0.5:  # noqa: PLR2004
             return ApprovalRating.CHEMBL_0_5
         if value == 1:
             return ApprovalRating.CHEMBL_1
-        if value == 2:
+        if value == 2:  # noqa: PLR2004
             return ApprovalRating.CHEMBL_2
-        if value == 3:
+        if value == 3:  # noqa: PLR2004
             return ApprovalRating.CHEMBL_3
-        if value == 4:
+        if value == 4:  # noqa: PLR2004
             return ApprovalRating.CHEMBL_4
         msg = f"Unrecognized approval rating: {value}"
         raise ValueError(msg)
@@ -91,7 +91,7 @@ class ChEMBL(DiseaseIndicationBase):
 
     def _transform_data(self) -> None:
         """Transform SQLite data and load to DB."""
-        conn = sqlite3.connect(self._data_file)  # type: ignore
+        conn = sqlite3.connect(self._data_file)
         conn.row_factory = sqlite3.Row
         self._conn = conn
         self._cursor = conn.cursor()

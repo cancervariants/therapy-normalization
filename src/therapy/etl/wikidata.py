@@ -181,7 +181,7 @@ class Wikidata(Base):
                             ref = record[key]
 
                             if key.upper() == "CASREGISTRY":
-                                key = SourceName.CHEMIDPLUS.value
+                                key = SourceName.CHEMIDPLUS.value  # noqa: PLW2901
 
                             if key.upper() in XREF_SOURCES:
                                 if key != "chembl":

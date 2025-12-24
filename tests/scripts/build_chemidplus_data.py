@@ -2,7 +2,7 @@
 
 from collections.abc import Generator
 from pathlib import Path
-from xml.etree import ElementTree
+from xml.etree import ElementTree as ET
 
 from therapy.database import create_db
 from therapy.etl import ChemIDplus
@@ -24,7 +24,7 @@ ch._extract_data(False)
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "chemidplus"
 outfile_path = TEST_DATA_DIR / ch._data_file.name
 
-root = ElementTree.Element("file")
+root = ET.Element("file")
 root.set("name", ch._data_file.name)
 root.set("date", ch._data_file.stem.split("chemidplus_")[1])
 
@@ -35,7 +35,7 @@ def parse_xml(path: Path) -> Generator:
     :param str tag: XML tag
     :return: generator yielding elements of corresponding tag
     """
-    context = iter(ElementTree.iterparse(path, events=("start", "end")))  # noqa: S314
+    context = iter(ET.iterparse(path, events=("start", "end")))  # noqa: S314
     _, root = next(context)
     for event, elem in context:
         if event == "end" and elem.tag == "Chemical":
@@ -53,12 +53,12 @@ for chemical in parser:
         root.append(chemical)
 
 with outfile_path.open("w") as f:
-    ElementTree.ElementTree(root).write(f, encoding="unicode")
+    ET.ElementTree(root).write(f, encoding="unicode")
 
-pi = ElementTree.ProcessingInstruction(
+pi = ET.ProcessingInstruction(
     target='xml version="1.0" encoding="UTF-8" standalone="yes"'
 )
-pi_string = ElementTree.tostring(pi).decode("UTF8")
+pi_string = ET.tostring(pi).decode("UTF8")
 with outfile_path.open("r+") as f:
     content = f.read()
     f.seek(0, 0)

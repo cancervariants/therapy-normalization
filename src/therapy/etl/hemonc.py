@@ -2,10 +2,11 @@
 
 import csv
 import logging
+from http import HTTPStatus
+from typing import TYPE_CHECKING
 
 import requests.exceptions
 from tqdm import tqdm
-from wags_tails.hemonc import HemOncPaths
 
 from therapy.etl.base import DiseaseIndicationBase, EtlError
 from therapy.schemas import (
@@ -14,6 +15,9 @@ from therapy.schemas import (
     RecordParams,
     SourceMeta,
 )
+
+if TYPE_CHECKING:
+    from wags_tails.hemonc import HemOncPaths
 
 _logger = logging.getLogger(__name__)
 
@@ -32,7 +36,7 @@ class HemOnc(DiseaseIndicationBase):
                 from_local=use_existing
             )
         except requests.exceptions.HTTPError as e:
-            if e.response.status_code == 401:
+            if e.response.status_code == HTTPStatus.UNAUTHORIZED:
                 msg = "401 Unauthorized response for HemOnc Dataverse API -- are credentials (under env var `HARVARD_DATAVERSE_API_KEY`) up to date?"
             else:
                 msg = str(e.args)
@@ -41,7 +45,7 @@ class HemOnc(DiseaseIndicationBase):
                 print(msg)  # noqa: T201
             raise EtlError(e) from e
 
-        self._data_files: HemOncPaths = data_files  # type: ignore
+        self._data_files: HemOncPaths = data_files
 
     def _load_meta(self) -> None:
         """Add HemOnc metadata."""
