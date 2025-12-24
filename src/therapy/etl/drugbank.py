@@ -30,7 +30,7 @@ class DrugBank(Base):
 
     def _transform_data(self) -> None:
         """Transform the DrugBank source."""
-        with self._data_file.open() as file:  # type: ignore
+        with self._data_file.open() as file:
             reader = list(csv.reader(file))
             for row in tqdm(reader[1:], ncols=80, disable=self._silent):
                 # get concept ID
@@ -55,7 +55,7 @@ class DrugBank(Base):
 
                 params["associated_with"] = []
                 # get inchi key
-                if len(row) >= 7:
+                if len(row) >= 7:  # noqa: PLR2004
                     inchi_key = row[6]
                     if inchi_key:
                         inchi_id = f"{NamespacePrefix.INCHIKEY.value}:{inchi_key}"

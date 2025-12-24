@@ -23,7 +23,7 @@ ch = ChEMBL(create_db())
 ch._extract_data(False)
 
 TEST_DATA_DIR = Path(__file__).resolve().parents[1] / "data" / "chembl"
-out_db_path = TEST_DATA_DIR / ch._data_file.name  # type: ignore
+out_db_path = TEST_DATA_DIR / ch._data_file.name
 
 with contextlib.suppress(FileNotFoundError):
     out_db_path.unlink()
