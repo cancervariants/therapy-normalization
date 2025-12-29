@@ -25,6 +25,6 @@ services:
       - /tmp
 
   therapy-dynamodb-local:
-    image: cancervariants/therapy-normalizer-ddb:2025-12-26
+    image: cancervariants/therapy-normalizer-ddb:2025-12-29
     ports:
      - 127.0.0.1:8000:8000

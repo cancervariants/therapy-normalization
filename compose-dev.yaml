@@ -2,10 +2,10 @@
 # export DATE=$(date +%F)
 # export UMLS_API_KEY=YOUR-API-KEY
 # export HARVARD_DATAVERSE_API_KEY=YOUR-API-KEY
-# docker volume rm disease_norm_ddb_vol
+# docker volume rm therapy_norm_ddb_vol
 # rm -rf dynamodb_local_latest
 # mkdir dynamodb_local_latest
-# docker volume create --driver local --opt type=none --opt device="$(pwd)/dynamodb_local_latest" --opt o=bind disease_norm_ddb_vol
+# docker volume create --driver local --opt type=none --opt device="$(pwd)/dynamodb_local_latest" --opt o=bind therapy_norm_ddb_vol
 # docker compose -f compose-dev.yaml up --build
 services:
   api:
@@ -43,7 +43,7 @@ services:
     working_dir: /home/dynamodblocal
 
   disease-dynamodb-local:
-    image: cancervariants/disease-normalizer-ddb:2025-12-26
+    image: cancervariants/disease-normalizer-ddb:2025-12-29
     ports:
      - 127.0.0.1:8002:8000
 
