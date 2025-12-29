@@ -153,3 +153,6 @@ tests/scripts/dynamodb_local/*
 .idea/
 .vim/
 *.swp
+
+# Archives
+*.gz
