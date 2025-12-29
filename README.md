@@ -20,6 +20,22 @@ Install from [PyPI](https://pypi.org/project/thera-py):
 python3 -m pip install thera-py
 ```
 
+## Docker Installation (Preferred)
+
+We recommend installing the Therapy Normalizer using Docker.
+
+### Requirements
+
+* [Docker](https://docs.docker.com/get-started/get-docker/)
+
+### Build, (re)create, and start containers
+
+```shell
+docker compose up
+```
+
+Point your browser to <http://localhost:8001/therapy/>.
+
 ## Usage
 
 ### Deploying DynamoDB Locally
