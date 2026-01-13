@@ -1,11 +1,15 @@
 """Provide DynamoDB client."""
 
 import atexit
+import datetime
+import gzip
+import json
 import logging
 import sys
 from collections.abc import Generator
 from os import environ
 from pathlib import Path
+from timeit import default_timer as timer
 
 import boto3
 import click
@@ -621,9 +625,49 @@ class DynamoDatabase(AbstractDatabase):
         """
         raise NotImplementedError
 
-    def export_db(self, export_location: Path) -> None:
-        """Dump DB to specified location. Not available for DynamoDB database backend.
+    def export_db(self, output_directory: Path) -> None:
+        """Dump DB to specified location.
 
-        :param export_location: path to save DB dump at
+        :param output_directory: path to directory to save DB dump in
+        :return: Nothing, but saves dump to gzip file named
+            `therapy_norm_<date and time>.ndjson.gz`
+        :raise ValueError: if output directory isn't a directory or doesn't exist
         """
-        raise NotImplementedError
+        if not output_directory.is_dir() or not output_directory.exists():
+            err_msg = (
+                f"Output location {output_directory} isn't a directory or doesn't exist"
+            )
+            raise ValueError(err_msg)
+
+        now = datetime.datetime.now(tz=datetime.UTC).strftime("%Y%m%d%H%M%S")
+        output_location = output_directory / f"therapy_norm_{now}.ndjson.gz"
+
+        last_key = None
+        _logger.info("Exporting DynamoDB...")
+        n_items = 0
+        start = timer()
+
+        with gzip.open(output_location, "wt", encoding="utf-8") as f:
+            while True:
+                kwargs = {
+                    "TableName": self.therapy_table,
+                    "Limit": 1000,
+                }
+                if last_key:
+                    kwargs["ExclusiveStartKey"] = last_key
+
+                resp = self.dynamodb_client.scan(**kwargs)
+
+                for item in resp.get("Items", []):
+                    f.write(json.dumps({"Item": item}) + "\n")
+                    n_items += 1
+
+                last_key = resp.get("LastEvaluatedKey")
+                if not last_key:
+                    break
+
+        end = timer()
+        _logger.debug(
+            "Exported %i items in %.2f seconds to %s", n_items, end - start, f.name
+        )
+        _logger.info("Export to DynamoDB successful.")

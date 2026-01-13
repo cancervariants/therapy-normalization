@@ -11,6 +11,7 @@ from disease.database import create_db as create_disease_db
 from therapy import __version__
 from therapy.config import get_config
 from therapy.database import create_db
+from therapy.database.database import DatabaseError
 from therapy.schemas import RecordType, SourceName
 from therapy.utils import get_term_mappings, initialize_logs
 
@@ -88,6 +89,52 @@ def _ensure_diseases_updated(from_local: bool) -> None:
             )
             click.get_current_context().exit(1)
         update_disease_sources(disease_db, use_existing=from_local, silent=True)
+
+
+@cli.command()
+@click.option(
+    "--output_directory",
+    "-o",
+    help="Output location to write to",
+    type=click.Path(exists=True, file_okay=False, dir_okay=True, path_type=Path),
+)
+@click.option("--db_url", help=URL_DESCRIPTION)
+@click.option("--silent", is_flag=True, default=False, help=SILENT_MODE_DESCRIPTION)
+def dump_database(output_directory: Path, db_url: str, silent: bool) -> None:
+    """Dump data from database into file.
+
+    DynamoDB export to existing `dynamodb_local_latest` directory:
+
+        $ thera-py dump-database -o dynamodb_local_latest --db_url http://localhost:8001
+
+    \f
+    :param output_directory: path to existing directory
+    :param db_url: URL to normalizer database
+    :param silent: if True, suppress output to console
+    """  # noqa: D301
+    _initialize_app()
+    if not output_directory:
+        output_directory = Path()
+
+    db = create_db(db_url, False)
+    try:
+        db.export_db(output_directory)
+    except NotImplementedError:
+        msg = f"Error: Dumping data to file not supported for {db.__class__.__name__}"
+        if not silent:
+            click.echo(msg)
+        _logger.exception(msg)
+        click.get_current_context().exit(1)
+    except DatabaseError as e:
+        if not silent:
+            click.echo(f"Encountered exception during update: {e!s}")
+        _logger.exception(
+            "Encountered exception. `data_url`=%s, `db_url`=%s",
+            output_directory,
+            db_url,
+        )
+        click.get_current_context().exit(1)
+    _logger.info("Database dump successful.")
 
 
 @cli.command()

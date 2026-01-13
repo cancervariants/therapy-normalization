@@ -264,10 +264,10 @@ class AbstractDatabase(abc.ABC):
         """
 
     @abc.abstractmethod
-    def export_db(self, export_location: Path) -> None:
+    def export_db(self, output_directory: Path) -> None:
         """Dump DB to specified location.
 
-        :param export_location: path to save DB dump at
+        :param output_directory: path to directory to save DB dump in
         :raise: NotImplementedError if not supported by DB
         """
 
