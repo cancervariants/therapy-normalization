@@ -1,0 +1,30 @@
+services:
+  api:
+    image: cancervariants/therapy-normalizer-api:0.13.0
+    environment:
+      # Dummy AWS credentials, don't need to use real ones
+      AWS_ACCESS_KEY_ID: dummy
+      AWS_SECRET_ACCESS_KEY: dummy
+      AWS_DEFAULT_REGION: us-east-2
+      THERAPY_NORM_DB_URL: http://therapy-dynamodb-local:8000
+
+    ports:
+      - 127.0.0.1:8001:80
+
+    depends_on:
+      therapy-dynamodb-local:
+        condition: service_started
+
+    working_dir: /tmp
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp
+
+  therapy-dynamodb-local:
+    image: cancervariants/therapy-normalizer-ddb:2025-12-29
+    ports:
+     - 127.0.0.1:8000:8000

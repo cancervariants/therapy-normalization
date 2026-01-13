@@ -1,0 +1,12 @@
+FROM alpine:3.23 AS extract
+WORKDIR /data
+COPY therapy_norm_ddb.tar.gz .
+RUN tar xzf therapy_norm_ddb.tar.gz \
+    && rm therapy_norm_ddb.tar.gz
+
+FROM amazon/dynamodb-local:3.1.0
+COPY --from=extract \
+  --chown=dynamodblocal:dynamodblocal \
+  /data /home/dynamodblocal/dynamodb_local_latest
+EXPOSE 8000
+CMD ["-jar", "DynamoDBLocal.jar", "-sharedDb", "-dbPath", "/home/dynamodblocal/dynamodb_local_latest"]
