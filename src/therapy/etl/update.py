@@ -201,7 +201,7 @@ def update_normalized(
         _logger.exception(msg)
         click.get_current_context().exit()
 
-    merge = Merge(database=db)
+    merge = Merge(database=db, silent=silent)
     if not silent:
         click.echo("Constructing normalized records...")
     merge.create_merged_concepts(processed_ids)
