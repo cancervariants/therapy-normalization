@@ -54,7 +54,7 @@ app = FastAPI(
         "email": LAB_EMAIL,
         "url": LAB_WEBPAGE_URL,
     },
-    license={
+    license_info={
         "name": "MIT",
         "url": "https://github.com/cancervariants/therapy_normalization/blob/main/LICENSE",
     },
