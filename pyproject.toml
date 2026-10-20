@@ -26,7 +26,7 @@ license-files = ["LICENSE"]
 dependencies = [
     "pydantic~=2.1",
     "pydantic-settings",
-    "fastapi",
+    "fastapi>=0.105.0,<1.0",
     "uvicorn",
     "click",
     "boto3",
