@@ -1,12 +1,4 @@
-# export VERSION=$(git describe --tags --abbrev=0)
-# export DATE=$(date +%F)
-# export UMLS_API_KEY=YOUR-API-KEY
-# export HARVARD_DATAVERSE_API_KEY=YOUR-API-KEY
-# docker volume rm therapy_norm_ddb_vol
-# rm -rf dynamodb_local_latest
-# mkdir dynamodb_local_latest
-# docker volume create --driver local --opt type=none --opt device="$(pwd)/dynamodb_local_latest" --opt o=bind therapy_norm_ddb_vol
-# docker compose -f compose-dev.yaml up --build
+# See README.md, "Development data updates", for setup and usage.
 services:
   api:
     build:
@@ -23,6 +15,13 @@ services:
       DISEASE_NORM_DB_URL: http://disease-dynamodb-local:8000
       UMLS_API_KEY: ${UMLS_API_KEY:?set UMLS_API_KEY}
       HARVARD_DATAVERSE_API_KEY: ${HARVARD_DATAVERSE_API_KEY:?set HARVARD_DATAVERSE_API_KEY}
+      WAGS_TAILS_DIR: /home/appuser/.local/share/wags_tails
+    volumes:
+      - type: bind
+        source: ${WAGS_TAILS_DIR:?set WAGS_TAILS_DIR to an existing absolute host data directory}
+        target: /home/appuser/.local/share/wags_tails
+        bind:
+          create_host_path: false
     ports:
       - 127.0.0.1:8001:80
 
@@ -37,15 +36,15 @@ services:
     command: -jar DynamoDBLocal.jar -sharedDb -dbPath /home/dynamodblocal/dynamodb_local_latest
     image: amazon/dynamodb-local:3.1.0
     ports:
-     - 127.0.0.1:8000:8000
+      - 127.0.0.1:8000:8000
     volumes:
       - therapy_norm_ddb_vol:/home/dynamodblocal/dynamodb_local_latest
     working_dir: /home/dynamodblocal
 
   disease-dynamodb-local:
-    image: cancervariants/disease-normalizer-ddb:2025-12-29
+    image: ghcr.io/cancervariants/disease-normalizer-ddb:2026-10-20
     ports:
-     - 127.0.0.1:8002:8000
+      - 127.0.0.1:8002:8000
 
 volumes:
   therapy_norm_ddb_vol:
