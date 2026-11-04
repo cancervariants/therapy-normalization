@@ -22,6 +22,9 @@ drugbank)
     echo "DrugBank update requires a readable, nonempty drugbank_<version>.csv in $WAGS_TAILS_DIR/drugbank." >&2
     exit 1
   fi
+
+  drugbank_file=$(wags-tails get-latest drugbank --from_local --silent)
+  echo "Using DrugBank file: $drugbank_file"
   exec thera-py update drugbank --use_existing
   ;;
 "") ;;
@@ -36,6 +39,8 @@ if thera-py check-db; then
 else
   echo "Database status check failed. Running ETL..."
   if [ "$HAS_DRUGBANK_DATA" = true ]; then
+    drugbank_file=$(wags-tails get-latest drugbank --from_local --silent)
+    echo "Using DrugBank file: $drugbank_file"
     thera-py update drugbank --use_existing
   else
     echo "Skipping DrugBank: no local drugbank_<version>.csv provided."
@@ -44,6 +49,7 @@ else
   for source in wikidata ncit chemidplus rxnorm hemonc drugsatfda guidetopharmacology chembl; do
     thera-py update "$source"
   done
+
   thera-py update --normalize
   echo "ETL completed."
 fi
