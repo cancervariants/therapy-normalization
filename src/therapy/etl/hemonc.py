@@ -74,28 +74,29 @@ class HemOnc(DiseaseIndicationBase):
         years: dict[str, str] = {}  # hemonc ID -> year
 
         with self._data_files.concepts.open() as concepts_file:
-            concepts_reader = csv.reader(concepts_file, delimiter="\t")
-            next(concepts_reader)  # skip header
+            concepts_reader = csv.DictReader(concepts_file, delimiter="\t")
             for row in concepts_reader:
-                if row[6]:
+                if row["invalid_reason"]:
                     continue  # skip if deprecated/invalid
 
-                row_type = row[2]
+                row_type = row["concept_class_id"]
+                concept_code = row["concept_code"]
+                concept_name = row["concept_name"]
                 if row_type == "Component":
-                    concept_id = f"{NamespacePrefix.HEMONC.value}:{row[3]}"
-                    therapies[row[3]] = {
+                    concept_id = f"{NamespacePrefix.HEMONC.value}:{concept_code}"
+                    therapies[concept_code] = {
                         "concept_id": concept_id,
-                        "label": row[0],
+                        "label": concept_name,
                         "trade_names": [],
                         "aliases": [],
                         "xrefs": [],
                     }
                 elif row_type == "Brand Name":
-                    brand_names[row[3]] = row[0]
+                    brand_names[concept_code] = concept_name
                 elif row_type == "Condition":
-                    conditions[row[3]] = row[0]
+                    conditions[concept_code] = concept_name
                 elif row_type == "Year":
-                    years[row[3]] = row[0]
+                    years[concept_code] = concept_name
 
         return therapies, brand_names, conditions, years
 
