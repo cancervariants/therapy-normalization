@@ -74,7 +74,7 @@ class HemOnc(DiseaseIndicationBase):
         years: dict[str, str] = {}  # hemonc ID -> year
 
         with self._data_files.concepts.open() as concepts_file:
-            concepts_reader = csv.reader(concepts_file)
+            concepts_reader = csv.reader(concepts_file, delimiter="\t")
             next(concepts_reader)  # skip header
             for row in concepts_reader:
                 if row[6]:
@@ -116,7 +116,7 @@ class HemOnc(DiseaseIndicationBase):
         :return: therapies dict updated with brand names and conditions
         """
         with self._data_files.rels.open() as rels_file:
-            rels_reader = csv.reader(rels_file)
+            rels_reader = csv.reader(rels_file, delimiter="\t")
             next(rels_reader)  # skip header
 
             for row in rels_reader:
@@ -202,7 +202,7 @@ class HemOnc(DiseaseIndicationBase):
         :return: therapies dict with synonyms added as aliases
         """
         with self._data_files.synonyms.open() as synonyms_file:
-            synonyms_reader = csv.reader(synonyms_file)
+            synonyms_reader = csv.reader(synonyms_file, delimiter="\t")
             next(synonyms_reader)
             for row in synonyms_reader:
                 therapy_code = row[1]
