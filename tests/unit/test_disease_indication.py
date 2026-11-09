@@ -3,10 +3,11 @@ disease-normalizer introduced breaking changes.
 """
 
 import pytest
-from disease.schemas import SourceMeta
 from disease.schemas import (
     SourceName as DiseaseSourceName,
 )
+from ga4gh.core.models import Coding, Extension, MappableConcept
+from ga4gh.va_spec.base import DataSet
 
 from therapy.database.database import AbstractDatabase
 from therapy.etl import ChEMBL
@@ -26,17 +27,34 @@ def test_normalize_disease(is_test_env: bool, database: AbstractDatabase, monkey
     chembl.disease_normalizer.db.initialize_db()
     chembl.disease_normalizer.db.add_source_metadata(
         DiseaseSourceName.MONDO,
-        SourceMeta(
+        DataSet(
+            name=DiseaseSourceName.MONDO.value,
             version="2022-10-11",
-            data_license="CC BY 4.0",
-            data_license_url="https://creativecommons.org/licenses/by/4.0/legalcode",
-            data_license_attributes={
-                "non_commercial": False,
-                "attribution": True,
-                "share_alike": False,
-            },
-            data_url="https://mondo.monarchinitiative.org/pages/download/",
-            rdp_url="http://reusabledata.org/monarch.html",
+            license=MappableConcept(
+                name="CC BY 4.0",
+                primaryCoding=Coding(
+                    code="CC-BY-4.0",
+                    system="https://spdx.org/licenses/",
+                    iris=["https://creativecommons.org/licenses/by/4.0/legalcode"],
+                ),
+                extensions=[
+                    Extension(
+                        name="license_attributes",
+                        value={
+                            "non_commercial": False,
+                            "attribution": True,
+                            "share_alike": False,
+                        },
+                    ),
+                ],
+            ),
+            extensions=[
+                Extension(
+                    name="data_url",
+                    value="https://mondo.monarchinitiative.org/pages/download/",
+                ),
+                Extension(name="rdp_url", value="http://reusabledata.org/monarch.html"),
+            ],
         ),
     )
     chembl.disease_normalizer.db.add_record(
