@@ -36,7 +36,7 @@ def cisplatin():
             "chemidplus:15663-27-1",
             "iuphar.ligand:5343",
         ],
-        "associated_with": ["pubchem.compound:5702198"],
+        "associated_with": ["pubchem.compound:84691"],
     }
     return Therapy(**params)
 
@@ -76,7 +76,7 @@ def d_methamphetamine():
         "label": "D-methamphetamine",
         "concept_id": "wikidata:Q191924",
         "aliases": [],
-        "approval_ratings": [],
+        "approval_ratings": None,
         "xrefs": [
             "chembl:CHEMBL1201201",
             "drugbank:DB01577",
@@ -114,7 +114,7 @@ def atropine():
             "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl 3-hydroxy-2-phenylpropanoate",
             "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate",
         ],
-        "approval_ratings": [],
+        "approval_ratings": None,
         "xrefs": [
             "drugbank:DB00572",
             "chemidplus:51-55-8",

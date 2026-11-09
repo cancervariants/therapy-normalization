@@ -83,21 +83,13 @@ def test_cisplatin_label(cisplatin, chembl, compare_records):
     """
     response = chembl.search("CISPLATIN")
     assert response.match_type == MatchType.LABEL
-    assert len(response.records) == 2
-    if len(response.records[0].aliases) > len(response.records[1].aliases):
-        ind = 0
-    else:
-        ind = 1
-    compare_records(response.records[ind], cisplatin)
+    assert len(response.records) == 1
+    compare_records(response.records[0], cisplatin)
 
     response = chembl.search("cisplatin")
     assert response.match_type == MatchType.LABEL
-    assert len(response.records) == 2
-    if len(response.records[0].aliases) > len(response.records[1].aliases):
-        ind = 0
-    else:
-        ind = 1
-    compare_records(response.records[ind], cisplatin)
+    assert len(response.records) == 1
+    compare_records(response.records[0], cisplatin)
 
 
 def test_cisplatin_alias(cisplatin, chembl, compare_records):
@@ -109,7 +101,7 @@ def test_cisplatin_alias(cisplatin, chembl, compare_records):
     assert len(response.records) == 1
     compare_records(response.records[0], cisplatin)
 
-    response = chembl.search("INT230-6 COMPONENT CISPLATIn")
+    response = chembl.search("CISPLATIN COMPONENT OF INT230-6")
     assert response.match_type == MatchType.ALIAS
     assert len(response.records) == 1
     compare_records(response.records[0], cisplatin)
@@ -237,7 +229,7 @@ def test_meta_info(chembl):
         response.source_meta_.data_license_url
         == "https://creativecommons.org/licenses/by-sa/3.0/"
     )
-    assert response.source_meta_.version == "33"
+    assert response.source_meta_.version == "37"
     assert response.source_meta_.data_url.startswith(
         "ftp.ebi.ac.uk/pub/databases/chembl/ChEMBLdb"
     )
