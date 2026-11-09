@@ -34,6 +34,7 @@ def cisplatin():
         ],
         trade_names=[],
         xrefs=[
+            "atc:L01XA01",
             "hcpcs:C9418",
             "hcpcs:J9060",
             "hcpcs:J9062",
@@ -98,6 +99,7 @@ def bendamustine():
             "bendamustin hydrochloride",
         ],
         xrefs=[
+            "atc:L01AA09",
             "hcpcs:C9042",
             "hcpcs:C9243",
             "hcpcs:J9033",
@@ -148,7 +150,13 @@ def degarelix():
             "FE 200486",
             "FE-200486",
         ],
-        xrefs=["hcpcs:J9155", "ndc:55566-8303", "ndc:55566-8403", "rxcui:475230"],
+        xrefs=[
+            "atc:L02BX02",
+            "hcpcs:J9155",
+            "ndc:55566-8303",
+            "ndc:55566-8403",
+            "rxcui:475230",
+        ],
         associated_with=[],
         trade_names=[
             "Degafelix",
@@ -182,6 +190,7 @@ def filgrastim():
         concept_id="hemonc:66258",
         aliases=[],
         xrefs=[
+            "atc:L03AA02",
             "hcpcs:Q5110",
             "ndc:0069-0291",
             "ndc:0069-0292",
