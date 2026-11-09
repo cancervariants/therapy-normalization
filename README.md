@@ -36,6 +36,35 @@ docker compose up
 
 Point your browser to <http://localhost:8001/therapy/>.
 
+### Development data updates
+
+For a fresh start, run the following from the project root. This deletes the
+existing therapy database and preserves downloaded source files.
+
+Set your API keys, HemOnc Guestbook details, and
+[`WAGS_TAILS_DIR`](https://wags-tails.readthedocs.io/stable/usage.html#configuration).
+Use an absolute host directory writable by the container user:
+
+```shell
+export VERSION=$(git describe --tags --abbrev=0)
+export DATE=$(date +%F)
+export UMLS_API_KEY=YOUR-API-KEY
+export HARVARD_DATAVERSE_API_KEY=YOUR-API-KEY
+export HEMONC_GUESTBOOK_PROJECT_NAME=YOUR-PROJECT-NAME
+export HEMONC_GUESTBOOK_EMAIL=YOUR-EMAIL
+export HEMONC_GUESTBOOK_USAGE_DESCRIPTION=YOUR-USAGE-DESCRIPTION
+export WAGS_TAILS_DIR="$HOME/.local/share/wags_tails"
+mkdir -p "$WAGS_TAILS_DIR/drugbank"
+
+docker compose -f compose-dev.yaml down
+docker volume rm therapy_norm_ddb_vol
+rm -rf dynamodb_local_latest
+mkdir dynamodb_local_latest
+docker volume create --driver local --opt type=none --opt device="$(pwd)/dynamodb_local_latest" --opt o=bind therapy_norm_ddb_vol
+
+docker compose -f compose-dev.yaml up --build
+```
+
 ## Usage
 
 ### Deploying DynamoDB Locally
@@ -43,6 +72,7 @@ Point your browser to <http://localhost:8001/therapy/>.
 We use Amazon DynamoDB for data storage. To deploy locally, follow [these instructions](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html).
 
 ### Setting Environment Variables
+
 RxNorm requires a UMLS license, which you can register for one [here](https://www.nlm.nih.gov/research/umls/index.html).
 You must set the `UMLS_API_KEY` environment variable to your API key. This can be found in the [UTS 'My Profile' area](https://uts.nlm.nih.gov/uts/profile) after singing in.
 
@@ -59,6 +89,7 @@ export HARVARD_DATAVERSE_API_KEY=12345-6789-abcdefgh-hijklmnop  # make sure to r
 #### Update source(s)
 
 The Therapy Normalizer currently aggregates therapy data from:
+
 * [ChEMBL](https://www.ebi.ac.uk/chembl/)
 * [ChemIDPlus](https://chem.nlm.nih.gov/chemidplus/)
 * [DrugBank](https://go.drugbank.com/) (using CC0 data only)
@@ -116,6 +147,7 @@ Thera-Py can retrieve all required data itself, using the [wags-tails](https://g
 Updates to the HemOnc source depend on the [Disease Normalizer](https://github.com/cancervariants/disease-normalization) service. If the Disease Normalizer database appears to be empty or incomplete, updates to HemOnc will also trigger a refresh of the Disease Normalizer database. See its README for additional data requirements.
 
 ### Create Merged Concept Groups
+
 The `/normalize` endpoint relies on merged concept groups.  The `--normalize` flag generates these groups:
 
 ```commandline
@@ -128,11 +160,13 @@ The default URL endpoint is `http://localhost:8000`.
 There are two different ways to specify the database URL endpoint.
 
 The first way is to set the `--db_url` flag to the URL endpoint.
+
 ```commandline
 thera-py update --all --db_url=http://localhost:8001
 ```
 
 The second way is to set the environment variable `THERAPY_NORM_DB_URL` to the URL endpoint.
+
 ```commandline
 export THERAPY_NORM_DB_URL="http://localhost:8001"
 thera-py update --all
@@ -148,8 +182,7 @@ uvicorn therapy.main:app --reload
 
 Next, view the OpenAPI docs on your local machine:
 
-http://127.0.0.1:8000/therapy
-
+<http://127.0.0.1:8000/therapy>
 
 ### FAQ
 
@@ -158,7 +191,6 @@ http://127.0.0.1:8000/therapy
 TheraPy will automatically try to acquire the latest version of data for each source, but sometimes, sources alter the structure of their data (e.g. adding or removing CSV columns). If you encounter a SourceFormatException while importing data, please notify us by creating a new [issue](https://github.com/cancervariants/therapy-normalization/issues) if one doesn't already exist, and we will attempt to resolve it.
 
 In the meantime, you can force TheraPy to use an older data release by removing the incompatible version from the source data folder, manually downloading and replacing it with an older version of the data per the structure described above, and calling the CLI with the `--use_existing` argument.
-
 
 ## Citation
 
