@@ -5686,7 +5686,7 @@
               "chembl:CHEMBL11359",
               "rxcui:2555",
               "iuphar.ligand:5343",
-              "drugbank:DB00515"
+              "drugbank:DBDB00515"
             ],
             "associated_with": [
               "pubchem.compound:84691"
