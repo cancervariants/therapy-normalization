@@ -48,7 +48,16 @@
           "Fauldiscipla",
           "CISPLATIN",
           "Cisplatin",
-          "Mitometh"
+          "Mitometh",
+          "CISPLATIN COMPONENT OF INT-230-6",
+          "CISPLATIN COMPONENT OF INT230-6",
+          "Cis-diamminedichloroplatinum(ii)",
+          "Cis-platinum",
+          "Cisplantin",
+          "Cisplatine",
+          "Cisplatino",
+          "Peyrone's Chloride",
+          "Peyrone's Salt"
         ]
       },
       {
@@ -161,9 +170,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "id": "MONDO_0850353",
-                    "system": "https://purl.obolibrary.org/obo/",
-                    "code": "MONDO:0850353"
+                    "id": "ncit:C130234",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C130234"
                   },
                   "relation": "exactMatch"
                 }
@@ -371,9 +380,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "id": "ncit:C2915",
-                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
-                    "code": "C2915"
+                    "id": "MONDO_0005369",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0005369"
                   },
                   "relation": "exactMatch"
                 }
@@ -1059,7 +1068,7 @@
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
-                  "value": "chembl_phase_1"
+                  "value": "chembl_phase_2"
                 }
               ],
               "mappings": [
@@ -1443,27 +1452,6 @@
               "conceptType": "Disease"
             },
             {
-              "id": "mesh:D018288",
-              "name": "Carcinoma, Small Cell",
-              "extensions": [
-                {
-                  "name": "chembl_max_phase_for_ind",
-                  "value": "chembl_phase_2"
-                }
-              ],
-              "mappings": [
-                {
-                  "coding": {
-                    "id": "ncit:C3915",
-                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
-                    "code": "C3915"
-                  },
-                  "relation": "exactMatch"
-                }
-              ],
-              "conceptType": "Disease"
-            },
-            {
               "id": "mesh:D000230",
               "name": "Adenocarcinoma",
               "extensions": [
@@ -1774,7 +1762,7 @@
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
-                  "value": "chembl_phase_2"
+                  "value": "chembl_phase_3"
                 }
               ],
               "mappings": [
@@ -1801,9 +1789,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "id": "ncit:C4044",
+                    "id": "ncit:C8181",
                     "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
-                    "code": "C4044"
+                    "code": "C8181"
                   },
                   "relation": "exactMatch"
                 }
@@ -1822,9 +1810,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "id": "ncit:C3234",
-                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
-                    "code": "C3234"
+                    "id": "MONDO_0005065",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0005065"
                   },
                   "relation": "exactMatch"
                 }
@@ -2331,7 +2319,7 @@
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
-                  "value": "chembl_phase_2"
+                  "value": "chembl_phase_3"
                 }
               ],
               "mappings": [
@@ -2573,7 +2561,7 @@
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
-                  "value": "chembl_phase_2"
+                  "value": "chembl_phase_3"
                 }
               ],
               "mappings": [
@@ -2587,6 +2575,237 @@
                 }
               ],
               "conceptType": "Disease"
+            },
+            {
+              "id": "mesh:D018289",
+              "extensions": [
+                {
+                  "name": "chembl_max_phase_for_ind",
+                  "value": "chembl_phase_2"
+                }
+              ],
+              "conceptType": "Disease",
+              "name": "Carcinoma, Verrucous",
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "ncit:C3781",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3781"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            },
+            {
+              "id": "mesh:D000077274",
+              "extensions": [
+                {
+                  "name": "chembl_max_phase_for_ind",
+                  "value": "chembl_phase_3"
+                }
+              ],
+              "conceptType": "Disease",
+              "name": "Nasopharyngeal Carcinoma",
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "ncit:C3871",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3871"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            },
+            {
+              "id": "mesh:D018358",
+              "extensions": [
+                {
+                  "name": "chembl_max_phase_for_ind",
+                  "value": "chembl_phase_1"
+                }
+              ],
+              "conceptType": "Disease",
+              "name": "Neuroendocrine Tumors",
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "ncit:C188218",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C188218"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            },
+            {
+              "id": "mesh:D000098943",
+              "extensions": [
+                {
+                  "name": "chembl_max_phase_for_ind",
+                  "value": "chembl_phase_2"
+                }
+              ],
+              "conceptType": "Disease",
+              "name": "Uveal Melanoma",
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "ncit:C7712",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7712"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            },
+            {
+              "id": "mesh:D018304",
+              "extensions": [
+                {
+                  "name": "chembl_max_phase_for_ind",
+                  "value": "chembl_phase_2"
+                }
+              ],
+              "conceptType": "Disease",
+              "name": "Esthesioneuroblastoma, Olfactory",
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "ncit:C3789",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3789"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            },
+            {
+              "id": "mesh:D010235",
+              "extensions": [
+                {
+                  "name": "chembl_max_phase_for_ind",
+                  "value": "chembl_phase_2"
+                }
+              ],
+              "conceptType": "Disease",
+              "name": "Paraganglioma",
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "ncit:C3308",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3308"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            },
+            {
+              "id": "mesh:D005909",
+              "extensions": [
+                {
+                  "name": "chembl_max_phase_for_ind",
+                  "value": "chembl_phase_2"
+                }
+              ],
+              "conceptType": "Disease",
+              "name": "Glioblastoma",
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "ncit:C3058",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C3058"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            },
+            {
+              "id": "mesh:D001650",
+              "extensions": [
+                {
+                  "name": "chembl_max_phase_for_ind",
+                  "value": "chembl_phase_2"
+                }
+              ],
+              "conceptType": "Disease",
+              "name": "Bile Duct Neoplasms",
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "ncit:C2898",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C2898"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            },
+            {
+              "id": "mesh:D000086002",
+              "extensions": [
+                {
+                  "name": "chembl_max_phase_for_ind",
+                  "value": "chembl_phase_2"
+                }
+              ],
+              "conceptType": "Disease",
+              "name": "Mesothelioma, Malignant",
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "ncit:C4456",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C4456"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            },
+            {
+              "id": "mesh:D011471",
+              "extensions": [
+                {
+                  "name": "chembl_max_phase_for_ind",
+                  "value": "chembl_phase_2"
+                }
+              ],
+              "conceptType": "Disease",
+              "name": "Prostatic Neoplasms",
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "ncit:C7378",
+                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
+                    "code": "C7378"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
+            },
+            {
+              "id": "mesh:D018297",
+              "extensions": [
+                {
+                  "name": "chembl_max_phase_for_ind",
+                  "value": "chembl_phase_1"
+                }
+              ],
+              "conceptType": "Disease",
+              "name": "Neoplasms, Cystic, Mucinous, and Serous",
+              "mappings": [
+                {
+                  "coding": {
+                    "id": "MONDO_0006720",
+                    "system": "https://purl.obolibrary.org/obo/",
+                    "code": "MONDO:0006720"
+                  },
+                  "relation": "exactMatch"
+                }
+              ]
             }
           ]
         }
@@ -2733,14 +2952,6 @@
       },
       {
         "coding": {
-          "id": "ndc:70860-206",
-          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
-          "code": "70860-206"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
           "id": "ndc:44567-509",
           "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
           "code": "44567-509"
@@ -2773,25 +2984,9 @@
       },
       {
         "coding": {
-          "id": "spl:9b008181-ab66-db2f-e053-2995a90aad57",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
-          "code": "9b008181-ab66-db2f-e053-2995a90aad57"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
           "id": "ndc:16729-288",
           "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
           "code": "16729-288"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "id": "spl:a66eda32-1164-439a-ac8e-73138365ec06",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
-          "code": "a66eda32-1164-439a-ac8e-73138365ec06"
         },
         "relation": "relatedMatch"
       },
@@ -2861,14 +3056,6 @@
       },
       {
         "coding": {
-          "id": "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
-          "code": "2c569ef0-588f-4828-8b2d-03a2120c9b4c"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
           "id": "vandf:4018139",
           "system": "https://www.nlm.nih.gov/research/umls/sourcereleasedocs/current/VANDF",
           "code": "4018139"
@@ -2917,22 +3104,6 @@
       },
       {
         "coding": {
-          "id": "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
-          "code": "01c7a680-ee0d-42da-85e8-8d56c6fe7006"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "id": "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
-          "code": "c43de769-d6d8-3bb9-e053-2995a90a5aa2"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
           "id": "unii:H8MTN7XVC2",
           "system": "https://precision.fda.gov/uniisearch/srs/unii/",
           "code": "H8MTN7XVC2"
@@ -2957,14 +3128,6 @@
       },
       {
         "coding": {
-          "id": "pubchem.compound:5702198",
-          "system": "https://pubchem.ncbi.nlm.nih.gov/compound/",
-          "code": "5702198"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
           "id": "pubchem.compound:441203",
           "system": "https://pubchem.ncbi.nlm.nih.gov/compound/",
           "code": "441203"
@@ -2976,14 +3139,6 @@
           "id": "ndc:0143-9505",
           "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
           "code": "0143-9505"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "id": "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
-          "code": "c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265"
         },
         "relation": "relatedMatch"
       },
@@ -3005,25 +3160,9 @@
       },
       {
         "coding": {
-          "id": "spl:0219ee77-eb38-b81f-e063-6394a90a5ca4",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
-          "code": "0219ee77-eb38-b81f-e063-6394a90a5ca4"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
           "id": "spl:89007399-3c34-40d2-8068-a0b8e09cbef8",
           "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
           "code": "89007399-3c34-40d2-8068-a0b8e09cbef8"
-        },
-        "relation": "relatedMatch"
-      },
-      {
-        "coding": {
-          "id": "spl:64bcce1a-6e31-4e73-8da5-11aa9e890da2",
-          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
-          "code": "64bcce1a-6e31-4e73-8da5-11aa9e890da2"
         },
         "relation": "relatedMatch"
       },
@@ -3058,6 +3197,94 @@
           "code": "0143-9504"
         },
         "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "id": "ndc:68001-608",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "68001-608"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "id": "ndc:68001-609",
+          "system": "https://dps.fda.gov/ndc/searchresult?selection=finished_product&content=PRODUCTNDC&type=",
+          "code": "68001-609"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "id": "pubchem.compound:84691",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/compound/",
+          "code": "84691"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "id": "spl:0c3ef530-de61-73f7-e063-6294a90a9973",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "0c3ef530-de61-73f7-e063-6294a90a9973"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "id": "spl:11314cd7-5167-4699-e063-6394a90a93b8",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "11314cd7-5167-4699-e063-6394a90a93b8"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "id": "spl:189a1ee6-231d-7e56-e063-6394a90abc01",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "189a1ee6-231d-7e56-e063-6394a90abc01"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "id": "spl:24604fc6-875c-4f70-973a-9cca93f9a7a7",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "24604fc6-875c-4f70-973a-9cca93f9a7a7"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "id": "spl:2860827e-1817-2b85-e063-6394a90a127e",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "2860827e-1817-2b85-e063-6394a90a127e"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "id": "spl:b463892e-6ca3-4c57-ae72-bdd3a7370a08",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "b463892e-6ca3-4c57-ae72-bdd3a7370a08"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "id": "spl:bf273433-d76e-4071-99a9-a71caf064734",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "bf273433-d76e-4071-99a9-a71caf064734"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "id": "spl:bf489cd3-17a3-4398-ba7e-2cb9e87b9c13",
+          "system": "https://www.fda.gov/industry/fda-data-standards-advisory-board/structured-product-labeling-resources",
+          "code": "bf489cd3-17a3-4398-ba7e-2cb9e87b9c13"
+        },
+        "relation": "relatedMatch"
       }
     ]
   },
@@ -3076,7 +3303,8 @@
           "approval_ratings": [
             "rxnorm_prescribable",
             "gtopdb_approved",
-            "chembl_phase_4"
+            "chembl_phase_4",
+            "chembl_withdrawn"
           ],
           "has_indication": [
             {
@@ -3217,9 +3445,9 @@
               "mappings": [
                 {
                   "coding": {
-                    "id": "ncit:C85079",
-                    "system": "https://ncit.nci.nih.gov/ncitbrowser/ConceptReport.jsp?dictionary=NCI_Thesaurus&code=",
-                    "code": "C85079"
+                    "id": "DOID:1824",
+                    "system": "https://disease-ontology.org/?id=",
+                    "code": "DOID:1824"
                   },
                   "relation": "exactMatch"
                 }
@@ -3253,7 +3481,7 @@
               "extensions": [
                 {
                   "name": "chembl_max_phase_for_ind",
-                  "value": "chembl_phase_3"
+                  "value": "chembl_phase_1"
                 }
               ],
               "mappings": [
@@ -3297,26 +3525,21 @@
         "value": [
           "Luminal",
           "Noptil",
-          "Talpheno",
-          "Eskabarb",
-          "Solfoton",
-          "Phenobarbitone"
+          "Phenobarbitone",
+          "Gardenal"
         ]
       },
       {
         "name": "aliases",
         "value": [
           "PHENOBARBITAL",
-          "Phenemal",
           "5-Ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
           "phenobarbitone",
           "Phenobarbitone",
           "Phenobarbital civ",
           "Phenylethylbarbituric Acid",
           "phenobarb",
-          "PHENYLETHYLMALONYLUREA",
-          "Phenylethylbarbitursaeure",
-          "Phenylethylbarbiturs\u00e4ure",
+          "Phenylethylbarbitursäure",
           "Phenobarbituric Acid",
           "5-Ethyl-5-phenylbarbituric acid",
           "PHENO",
@@ -3328,8 +3551,6 @@
           "Phenobarbital",
           "5-ethyl-5-phenyl-1,3-diazinane-2,4,6-trione",
           "5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione",
-          "Luminal\u00ae",
-          "Phenylaethylbarbitursaeure",
           "NSC-9848",
           "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione",
           "5-Phenyl-5-ethylbarbituric acid",
@@ -3342,7 +3563,15 @@
           "PHENobarbital",
           "APRD00184",
           "phenylethylbarbiturate",
-          "Phenyl\u00e4thylbarbiturs\u00e4ure"
+          "Phenyläthylbarbitursäure",
+          "5-ethyl-5-phenyl-pyrimidine-2,4,6-trione",
+          "5-ethyl-5-phenylbarbituric acid",
+          "5-phenyl-5-ethylbarbituric acid",
+          "luminal",
+          "phenobarbitol",
+          "phenobarbituric acid",
+          "phenylethylbarbituric acid",
+          "phenylethylmalonylurea"
         ]
       }
     ],
@@ -3686,7 +3915,6 @@
             "associated_with": [
               "umls:C0087111"
             ],
-            "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
           }
@@ -3729,7 +3957,6 @@
             "associated_with": [
               "atc:J01FA02"
             ],
-            "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
           }
@@ -3769,7 +3996,6 @@
               "umls:C0037962",
               "unii:71ODY0V87H"
             ],
-            "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
           }
@@ -3808,7 +4034,6 @@
               "inchikey:ACTOXUHEUCPTEW-CEUOBAOPSA-N",
               "unii:033ECH6IFG"
             ],
-            "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
           }
@@ -3837,7 +4062,6 @@
             "associated_with": [
               "unii:71ODY0V87H"
             ],
-            "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
           }
@@ -3872,7 +4096,6 @@
             "associated_with": [
               "pubchem.compound:5356392"
             ],
-            "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
           }
@@ -3909,7 +4132,12 @@
               "(SP-4-2)-DIAMMINEDICHLOROPLATINUM",
               "CIS-DIAMMINEDICHLOROPLATINUM",
               "Cis-DDP",
-              "PLATINUM, DIAMMINEDICHLORO-, (SP-4-2)-"
+              "PLATINUM, DIAMMINEDICHLORO-, (SP-4-2)-",
+              "Cis-platinum",
+              "Cisplantin",
+              "Cisplatinum",
+              "Peyrone's Chloride",
+              "Peyrone's Salt"
             ],
             "trade_names": [
               "Platinol",
@@ -3963,7 +4191,6 @@
               "unii:Q20Q21Q62J",
               "umls:C0008838"
             ],
-            "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
           }
@@ -4077,7 +4304,19 @@
               "cis-diamminedichloroplatinum(II)",
               "CDDP",
               "Cis-DDP",
-              "APRD00359"
+              "APRD00359",
+              "(SP-4-2)-DIAMMINEDICHLOROPLATINUM",
+              "CIS-DIAMMINEDICHLOROPLATINUM",
+              "CIS-DIAMMINEDICHLOROPLATINUM II",
+              "Cis-platinum",
+              "Cisplantin",
+              "Cisplatine",
+              "Cisplatinum",
+              "INT-230-6 COMPONENT CISPLATIN",
+              "INT230-6 COMPONENT CISPLATIN",
+              "PLATINUM, DIAMMINEDICHLORO-, (SP-4-2)-",
+              "Peyrone's Chloride",
+              "Peyrone's Salt"
             ],
             "trade_names": [],
             "xrefs": [
@@ -4087,7 +4326,6 @@
               "inchikey:LXZZYRPGZAFOLE-UHFFFAOYSA-L",
               "unii:Q20Q21Q62J"
             ],
-            "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
           },
@@ -4105,7 +4343,6 @@
               "unii:H8MTN7XVC2",
               "inchikey:MOTIYCLHZZLHHQ-UHFFFAOYSA-N"
             ],
-            "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
           }
@@ -4156,7 +4393,7 @@
             "associated_with": [
               "ndc:63323-103",
               "unii:Q20Q21Q62J",
-              "spl:9b008181-ab66-db2f-e053-2995a90aad57"
+              "spl:24604fc6-875c-4f70-973a-9cca93f9a7a7"
             ],
             "approval_ratings": [
               "fda_prescription"
@@ -4176,7 +4413,7 @@
               "ndc:0143-9505",
               "unii:Q20Q21Q62J",
               "ndc:0143-9504",
-              "spl:2c569ef0-588f-4828-8b2d-03a2120c9b4c"
+              "spl:b463892e-6ca3-4c57-ae72-bdd3a7370a08"
             ],
             "approval_ratings": [
               "fda_prescription"
@@ -4194,10 +4431,10 @@
             ],
             "associated_with": [
               "ndc:16729-288",
-              "spl:c43de769-d6d8-3bb9-e053-2995a90a5aa2",
               "unii:Q20Q21Q62J",
-              "spl:c3ddc4a5-9f1b-a8ee-e053-2a95a90a2265",
-              "ndc:68001-283"
+              "ndc:68001-283",
+              "spl:11314cd7-5167-4699-e063-6394a90a93b8",
+              "spl:2860827e-1817-2b85-e063-6394a90a127e"
             ],
             "approval_ratings": [
               "fda_prescription"
@@ -4215,16 +4452,17 @@
             ],
             "associated_with": [
               "ndc:72266-252",
-              "spl:0219ee77-eb38-b81f-e063-6394a90a5ca4",
               "unii:Q20Q21Q62J",
-              "spl:64bcce1a-6e31-4e73-8da5-11aa9e890da2",
               "ndc:68083-162",
               "ndc:72266-253",
-              "spl:01c7a680-ee0d-42da-85e8-8d56c6fe7006",
               "ndc:25021-253",
               "spl:89007399-3c34-40d2-8068-a0b8e09cbef8",
-              "ndc:70860-206",
-              "ndc:68083-163"
+              "ndc:68083-163",
+              "ndc:68001-608",
+              "ndc:68001-609",
+              "spl:0c3ef530-de61-73f7-e063-6294a90a9973",
+              "spl:189a1ee6-231d-7e56-e063-6394a90abc01",
+              "spl:bf489cd3-17a3-4398-ba7e-2cb9e87b9c13"
             ],
             "approval_ratings": [
               "fda_prescription"
@@ -4247,13 +4485,12 @@
             "associated_with": [
               "unii:Q20Q21Q62J",
               "ndc:44567-509",
-              "spl:a66eda32-1164-439a-ac8e-73138365ec06",
               "ndc:44567-510",
               "ndc:44567-530",
               "ndc:44567-511",
-              "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c"
+              "spl:dd45d777-d4c1-40ee-b4f0-c9e001a15a8c",
+              "spl:bf273433-d76e-4071-99a9-a71caf064734"
             ],
-            "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
           }
@@ -4322,14 +4559,16 @@
               "(sp-4-2)-diamminedichloroplatinum",
               "Cis-diamminedichloroplatinum ii",
               "NSC-119875",
-              "cis-diamminedichloroplatinum(II)",
               "Fauldiscipla",
               "Cis-platin",
               "Cis-platinum ii",
               "Liplacis",
               "Cisplatinum",
-              "INT-230-6 COMPONENT CISPLATIN",
-              "INT230-6 COMPONENT CISPLATIN"
+              "CISPLATIN COMPONENT OF INT-230-6",
+              "CISPLATIN COMPONENT OF INT230-6",
+              "Cis-diamminedichloroplatinum(ii)",
+              "Cisplatine",
+              "Cisplatino"
             ],
             "trade_names": [
               "Cisplatin",
@@ -4476,7 +4715,6 @@
               {
                 "disease_id": "mesh:D014987",
                 "disease_label": "Xerostomia",
-                "normalized_disease_id": null,
                 "supplemental_info": {
                   "chembl_max_phase_for_ind": "chembl_phase_1"
                 }
@@ -4516,7 +4754,6 @@
               {
                 "disease_id": "mesh:D010996",
                 "disease_label": "Pleural Effusion",
-                "normalized_disease_id": null,
                 "supplemental_info": {
                   "chembl_max_phase_for_ind": "chembl_phase_3"
                 }
@@ -4542,7 +4779,7 @@
                 "disease_label": "Lymphoma, Follicular",
                 "normalized_disease_id": "ncit:C3209",
                 "supplemental_info": {
-                  "chembl_max_phase_for_ind": "chembl_phase_2"
+                  "chembl_max_phase_for_ind": "chembl_phase_3"
                 }
               },
               {
@@ -4582,7 +4819,7 @@
                 "disease_label": "Carcinoma, Merkel Cell",
                 "normalized_disease_id": "ncit:C9231",
                 "supplemental_info": {
-                  "chembl_max_phase_for_ind": "chembl_phase_1"
+                  "chembl_max_phase_for_ind": "chembl_phase_2"
                 }
               },
               {
@@ -4796,7 +5033,6 @@
               {
                 "disease_id": "mesh:D020250",
                 "disease_label": "Postoperative Nausea and Vomiting",
-                "normalized_disease_id": null,
                 "supplemental_info": {
                   "chembl_max_phase_for_ind": "chembl_phase_3"
                 }
@@ -4804,7 +5040,7 @@
               {
                 "disease_id": "mesh:D064129",
                 "disease_label": "Prostatic Neoplasms, Castration-Resistant",
-                "normalized_disease_id": "mondo:0850353",
+                "normalized_disease_id": "ncit:C130234",
                 "supplemental_info": {
                   "chembl_max_phase_for_ind": "chembl_phase_2"
                 }
@@ -4822,7 +5058,7 @@
                 "disease_label": "Triple Negative Breast Neoplasms",
                 "normalized_disease_id": "ncit:C71732",
                 "supplemental_info": {
-                  "chembl_max_phase_for_ind": "chembl_phase_2"
+                  "chembl_max_phase_for_ind": "chembl_phase_3"
                 }
               },
               {
@@ -4836,7 +5072,6 @@
               {
                 "disease_id": "mesh:D009325",
                 "disease_label": "Nausea",
-                "normalized_disease_id": null,
                 "supplemental_info": {
                   "chembl_max_phase_for_ind": "chembl_phase_2"
                 }
@@ -4860,7 +5095,7 @@
               {
                 "disease_id": "mesh:D000077195",
                 "disease_label": "Squamous Cell Carcinoma of Head and Neck",
-                "normalized_disease_id": "ncit:C4044",
+                "normalized_disease_id": "ncit:C8181",
                 "supplemental_info": {
                   "chembl_max_phase_for_ind": "chembl_phase_3"
                 }
@@ -5044,7 +5279,7 @@
               {
                 "disease_id": "mesh:D002276",
                 "disease_label": "Carcinoid Tumor",
-                "normalized_disease_id": "ncit:C2915",
+                "normalized_disease_id": "mondo:0005369",
                 "supplemental_info": {
                   "chembl_max_phase_for_ind": "chembl_phase_2"
                 }
@@ -5052,7 +5287,6 @@
               {
                 "disease_id": "mesh:D014565",
                 "disease_label": "Urogenital Neoplasms",
-                "normalized_disease_id": null,
                 "supplemental_info": {
                   "chembl_max_phase_for_ind": "chembl_phase_3"
                 }
@@ -5084,7 +5318,7 @@
               {
                 "disease_id": "mesh:D008654",
                 "disease_label": "Mesothelioma",
-                "normalized_disease_id": "ncit:C3234",
+                "normalized_disease_id": "mondo:0005065",
                 "supplemental_info": {
                   "chembl_max_phase_for_ind": "chembl_phase_3"
                 }
@@ -5095,14 +5329,6 @@
                 "normalized_disease_id": "ncit:C8851",
                 "supplemental_info": {
                   "chembl_max_phase_for_ind": "chembl_phase_3"
-                }
-              },
-              {
-                "disease_id": "mesh:D018288",
-                "disease_label": "Carcinoma, Small Cell",
-                "normalized_disease_id": "ncit:C3915",
-                "supplemental_info": {
-                  "chembl_max_phase_for_ind": "chembl_phase_2"
                 }
               },
               {
@@ -5140,7 +5366,6 @@
               {
                 "disease_id": "mesh:D009362",
                 "disease_label": "Neoplasm Metastasis",
-                "normalized_disease_id": null,
                 "supplemental_info": {
                   "chembl_max_phase_for_ind": "chembl_phase_2"
                 }
@@ -5278,7 +5503,7 @@
                 "disease_label": "Ganglioneuroblastoma",
                 "normalized_disease_id": "ncit:C3790",
                 "supplemental_info": {
-                  "chembl_max_phase_for_ind": "chembl_phase_2"
+                  "chembl_max_phase_for_ind": "chembl_phase_3"
                 }
               },
               {
@@ -5303,6 +5528,94 @@
                 "normalized_disease_id": "ncit:C3512",
                 "supplemental_info": {
                   "chembl_max_phase_for_ind": "chembl_phase_3"
+                }
+              },
+              {
+                "disease_id": "mesh:D000077274",
+                "disease_label": "Nasopharyngeal Carcinoma",
+                "normalized_disease_id": "ncit:C3871",
+                "supplemental_info": {
+                  "chembl_max_phase_for_ind": "chembl_phase_3"
+                }
+              },
+              {
+                "disease_id": "mesh:D000086002",
+                "disease_label": "Mesothelioma, Malignant",
+                "normalized_disease_id": "ncit:C4456",
+                "supplemental_info": {
+                  "chembl_max_phase_for_ind": "chembl_phase_2"
+                }
+              },
+              {
+                "disease_id": "mesh:D000098943",
+                "disease_label": "Uveal Melanoma",
+                "normalized_disease_id": "ncit:C7712",
+                "supplemental_info": {
+                  "chembl_max_phase_for_ind": "chembl_phase_2"
+                }
+              },
+              {
+                "disease_id": "mesh:D001650",
+                "disease_label": "Bile Duct Neoplasms",
+                "normalized_disease_id": "ncit:C2898",
+                "supplemental_info": {
+                  "chembl_max_phase_for_ind": "chembl_phase_2"
+                }
+              },
+              {
+                "disease_id": "mesh:D005909",
+                "disease_label": "Glioblastoma",
+                "normalized_disease_id": "ncit:C3058",
+                "supplemental_info": {
+                  "chembl_max_phase_for_ind": "chembl_phase_2"
+                }
+              },
+              {
+                "disease_id": "mesh:D010235",
+                "disease_label": "Paraganglioma",
+                "normalized_disease_id": "ncit:C3308",
+                "supplemental_info": {
+                  "chembl_max_phase_for_ind": "chembl_phase_2"
+                }
+              },
+              {
+                "disease_id": "mesh:D011471",
+                "disease_label": "Prostatic Neoplasms",
+                "normalized_disease_id": "ncit:C7378",
+                "supplemental_info": {
+                  "chembl_max_phase_for_ind": "chembl_phase_2"
+                }
+              },
+              {
+                "disease_id": "mesh:D018289",
+                "disease_label": "Carcinoma, Verrucous",
+                "normalized_disease_id": "ncit:C3781",
+                "supplemental_info": {
+                  "chembl_max_phase_for_ind": "chembl_phase_2"
+                }
+              },
+              {
+                "disease_id": "mesh:D018297",
+                "disease_label": "Neoplasms, Cystic, Mucinous, and Serous",
+                "normalized_disease_id": "mondo:0006720",
+                "supplemental_info": {
+                  "chembl_max_phase_for_ind": "chembl_phase_1"
+                }
+              },
+              {
+                "disease_id": "mesh:D018304",
+                "disease_label": "Esthesioneuroblastoma, Olfactory",
+                "normalized_disease_id": "ncit:C3789",
+                "supplemental_info": {
+                  "chembl_max_phase_for_ind": "chembl_phase_2"
+                }
+              },
+              {
+                "disease_id": "mesh:D018358",
+                "disease_label": "Neuroendocrine Tumors",
+                "normalized_disease_id": "ncit:C188218",
+                "supplemental_info": {
+                  "chembl_max_phase_for_ind": "chembl_phase_1"
                 }
               }
             ]
@@ -5337,7 +5650,6 @@
             "associated_with": [
               "unii:Q20Q21Q62J"
             ],
-            "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
           }
@@ -5377,9 +5689,8 @@
               "drugbank:DB00515"
             ],
             "associated_with": [
-              "pubchem.compound:5702198"
+              "pubchem.compound:84691"
             ],
-            "approval_ratings": null,
             "approval_year": [],
             "has_indication": []
           }

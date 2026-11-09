@@ -53,6 +53,11 @@ def cisplatin():
             "DDP",
             "PLATINUM, DIAMMINEDICHLORO-, (SP-4-2)-",
             "cis-diamminedichloroplatinum(II)",
+            "Cis-platinum",
+            "Cisplantin",
+            "Cisplatinum",
+            "Peyrone's Chloride",
+            "Peyrone's Salt",
         ],
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": ["drugbank:DB00515", "drugbank:DB12117"],
@@ -149,7 +154,6 @@ def timolol():
             "atc:S01ED01",
         ],
         "trade_names": [
-            "Betimol",
             "Timoptic",
             "Istalol",
             "Combigan",
@@ -205,6 +209,8 @@ def aspirin():
             "2-Acetoxybenzoic acid",
             "o-acetoxybenzoic acid",
             "o-carboxyphenyl acetate",
+            "acetyl salicylic acid",
+            "acetyl-salicylic acid",
         ],
         "approval_ratings": ["rxnorm_prescribable"],
         "xrefs": ["drugbank:DB00945"],
@@ -255,9 +261,15 @@ def beta_alanine():
     params = {
         "label": "beta-alanine",
         "concept_id": "rxcui:61",
-        "aliases": [],
+        "aliases": [
+            "3-aminopropanoic acid",
+            "3-aminopropionic acid",
+            "β-alanine",
+            "β-aminopropionic acid",
+            "ω-aminopropionic acid",
+        ],
         "approval_ratings": ["rxnorm_prescribable"],
-        "xrefs": [],
+        "xrefs": ["drugbank:DB03107"],
         "associated_with": ["vandf:4028377", "unii:11P2JDE17B"],
         "trade_names": [],
     }
@@ -271,7 +283,7 @@ def algestone():
         "label": "algestone",
         "concept_id": "rxcui:595",
         "aliases": [],
-        "approval_ratings": [],
+        "approval_ratings": None,
         "xrefs": [],
         "associated_with": [],
         "trade_names": [],
@@ -551,7 +563,7 @@ def test_timolol(timolol, rxnorm, compare_records):
     compare_records(response.records[0], timolol)
 
     # Trade Name Match
-    response = rxnorm.search("Betimol")
+    response = rxnorm.search("Timoptic")
     assert response.match_type == MatchType.TRADE_NAME
     assert len(response.records) == 1
     compare_records(response.records[0], timolol)
