@@ -2,11 +2,46 @@
 Wikidata source.
 """
 
+import json
+from pathlib import Path
+from unittest.mock import Mock
+
 import isodate
 import pytest
 
 from therapy.etl.wikidata import Wikidata
-from therapy.schemas import MatchType, Therapy
+from therapy.schemas import MatchType, SourceName, Therapy
+
+
+@pytest.mark.parametrize("drugbank_id", ["00069", "DB00069"])
+def test_drugbank_prefix(drugbank_id: str, tmp_path: Path) -> None:
+    """Load legacy and current DrugBank identifiers with exactly one DB prefix."""
+    data_file = tmp_path / "wikidata_2026-11-09.json"
+    data_file.write_text(
+        json.dumps(
+            [
+                {
+                    "item": "http://www.wikidata.org/entity/Q15353101",
+                    "itemLabel": "interferon alfacon-1",
+                    "drugbank": drugbank_id,
+                }
+            ]
+        )
+    )
+    database = Mock()
+    etl = Wikidata(database, tmp_path)
+
+    added_ids = etl.perform_etl(use_existing=True)
+
+    assert added_ids == ["wikidata:Q15353101"]
+    database.add_record.assert_called_once_with(
+        {
+            "concept_id": "wikidata:Q15353101",
+            "label": "interferon alfacon-1",
+            "xrefs": ["drugbank:DB00069"],
+        },
+        SourceName.WIKIDATA,
+    )
 
 
 @pytest.fixture(scope="module")
