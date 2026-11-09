@@ -31,7 +31,7 @@ def cisplatin():
         ],
         "xrefs": [
             "chembl:CHEMBL11359",
-            "drugbank:DB00515",
+            "drugbank:DBDB00515",
             "rxcui:2555",
             "chemidplus:15663-27-1",
             "iuphar.ligand:5343",
@@ -60,7 +60,7 @@ def interferon_alfacon_1():
         ],
         "xrefs": [
             "chembl:CHEMBL1201557",
-            "drugbank:DB00069",
+            "drugbank:DBDB00069",
             "rxcui:59744",
             "chemidplus:118390-30-0",
         ],
@@ -79,7 +79,7 @@ def d_methamphetamine():
         "approval_ratings": None,
         "xrefs": [
             "chembl:CHEMBL1201201",
-            "drugbank:DB01577",
+            "drugbank:DBDB01577",
             "rxcui:6816",
             "chemidplus:537-46-2",
         ],
@@ -116,7 +116,7 @@ def atropine():
         ],
         "approval_ratings": None,
         "xrefs": [
-            "drugbank:DB00572",
+            "drugbank:DBDB00572",
             "chemidplus:51-55-8",
             "rxcui:1223",
             "chembl:CHEMBL517712",
@@ -138,7 +138,7 @@ def basiliximab():
         concept_id="wikidata:Q418702",
         aliases=["SDZ-CHI-621", "CHI-621", "CHI621", "chimeric mouse-human antiCD25"],
         xrefs=[
-            "drugbank:DB00074",
+            "drugbank:DBDB00074",
             "rxcui:196102",
             "chembl:CHEMBL1201439",
             "chemidplus:179045-86-4",
@@ -189,7 +189,7 @@ def test_cisplatin(cisplatin, wikidata, compare_records):
     assert len(response.records) == 1
     compare_records(response.records[0], cisplatin)
 
-    response = wikidata.search("drugbank:DB00515")
+    response = wikidata.search("drugbank:DBDB00515")
     assert response.match_type == MatchType.XREF
     assert len(response.records) == 1
     compare_records(response.records[0], cisplatin)
