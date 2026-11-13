@@ -1,0 +1,138 @@
+[
+  {
+    "item": "http://www.wikidata.org/entity/Q191924",
+    "itemLabel": "D-methamphetamine",
+    "casRegistry": "537-46-2",
+    "pubchemCompound": "10836",
+    "chembl": "CHEMBL1201201",
+    "rxnorm": "6816",
+    "drugbank": "DB01577",
+    "aliases": "Dextromethamphetamine;;meth;;(+)-(S)-N-alpha-dimethylphenethylamine;;(+)-(S)-P-\u03b1-dimethylphenethylamine;;(alphaS)-N,alpha-dimethylbenzeneethanamine;;(S)-N,alpha-dimethylbenzeneethanamine;;(S)-N,\u03b1-dimethylbenzeneethanamine;;(\u03b1S)-N,\u03b1-dimethylbenzeneethanamine;;crystal meth;;d-1-phenyl-2-methylaminopropane;;d-deoxyephedrine;;d-desoxyephedrine;;d-meth;;d-N-methylamphetamine;;d-phenylisopropylmethylamine;;desoxyephedrine;;dextromethamphetamine;;metamfetamine;;methyl-beta-phenylisopropylamine;;methyl-\u03b2-phenylisopropylamine;;methylamphetamine;;N-methylamphetamine pito-1342;;S-methamphetamine;;methamphetamine;;chalk;;crank;;ice;;fast;;pure;;crystal;;glass;;base;;wax;;speed;;tee;;whiz;;tweak;;crypto"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "itemLabel": "amifostine",
+    "casRegistry": "20537-88-6",
+    "pubchemCompound": "2141",
+    "chembl": "CHEMBL1006",
+    "rxnorm": "1545987",
+    "drugbank": "DB01143",
+    "aliases": "Amifostine;;amifostine anhydrous;;Amifostina;;Amifostine anhydrous;;Amifostinum;;Aminopropylaminoethyl thiophosphate;;Aminopropylaminoethyl Thiophosphate;;Apaetp;;Ethiofos;;Ethyol;;Gammaphos;;SAPEP;;WR-2721"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q251698",
+    "itemLabel": "amifostine",
+    "casRegistry": "20537-88-6",
+    "pubchemCompound": "29927142",
+    "chembl": "CHEMBL1006",
+    "rxnorm": "1545987",
+    "drugbank": "DB01143",
+    "aliases": "Amifostine;;amifostine anhydrous;;Amifostina;;Amifostine anhydrous;;Amifostinum;;Aminopropylaminoethyl thiophosphate;;Aminopropylaminoethyl Thiophosphate;;Apaetp;;Ethiofos;;Ethyol;;Gammaphos;;SAPEP;;WR-2721"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q407241",
+    "itemLabel": "phenobarbital",
+    "casRegistry": "50-06-6",
+    "pubchemCompound": "4763",
+    "chembl": "CHEMBL40",
+    "rxnorm": "8134",
+    "drugbank": "DB01174",
+    "aliases": "5-ethyl-5-phenyl-2,4,6(1H,3H,5H)-pyrimidinetrione;;5-ethyl-5-phenylpyrimidine-2,4,6(1H,3H,5H)-trione;;phenylethylbarbiturate;;luminal;;5-ethyl-5-phenyl-pyrimidine-2,4,6-trione;;5-ethyl-5-phenylbarbituric acid;;5-phenyl-5-ethylbarbituric acid;;phenobarbitol;;phenobarbitone;;phenobarbituric acid;;phenylethylbarbituric acid;;phenylethylmalonylurea",
+    "guideToPharmacology": "2804"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q412415",
+    "itemLabel": "cisplatin",
+    "casRegistry": "15663-27-1",
+    "pubchemCompound": "5460033",
+    "chembl": "CHEMBL11359",
+    "rxnorm": "2555",
+    "drugbank": "DB00515",
+    "aliases": "CDDP;;Cis-DDP;;CIS-DDP;;cis-diamminedichloroplatinum(II);;Platinol;;Platinol-AQ",
+    "guideToPharmacology": "5343"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q26272",
+    "itemLabel": "atropine",
+    "rxnorm": "1223",
+    "drugbank": "DB00572",
+    "aliases": "8-Methyl-8-azabicyclo[3.2.1]oct-3-yl tropate;;(+-)-Atropine;;(+-)-Hyoscyamine;;(+,-)-Tropyl tropate;;(\u00b1)-atropine;;(\u00b1)-hyoscyamine;;(3-Endo)-8-methyl-8-azabicyclo[3.2.1]oct-3-yl tropate;;[(1S,5R)-8-Methyl-8-azabicyclo[3.2.1]oct-3-yl] 3-hydroxy-2-phenyl-propanoate;;8-Methyl-8-azabicyclo[3.2.1]oct-3-yl 3-hydroxy-2-phenylpropanoate;;dl-Hyoscyamine;;dl-tropyltropate;;Mydriasine;;Tropine tropate",
+    "guideToPharmacology": "320"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q45044",
+    "itemLabel": "magnesium citrate",
+    "casRegistry": "144-23-0",
+    "pubchemCompound": "8949",
+    "aliases": "citric acid magnesium salt;;magnesium 2-hydroxypropane-1,2,3-tricarboxylate;;magnesium citrate anhydrous"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q418702",
+    "itemLabel": "basiliximab",
+    "casRegistry": "179045-86-4",
+    "chembl": "CHEMBL1201439",
+    "rxnorm": "196102",
+    "drugbank": "DB00074",
+    "aliases": "Ig gamma-1 chain C region;;CHI-621;;CHI621;;chimeric mouse-human antiCD25;;SDZ-CHI-621",
+    "guideToPharmacology": "6879"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q422265",
+    "itemLabel": "spiramycin",
+    "casRegistry": "8025-81-8",
+    "pubchemCompound": "5356392",
+    "chembl": "CHEMBL1256397",
+    "rxnorm": "9991",
+    "aliases": "spiramycin I"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q422265",
+    "itemLabel": "spiramycin",
+    "casRegistry": "8025-81-8",
+    "pubchemCompound": "6440717",
+    "chembl": "CHEMBL1256397",
+    "rxnorm": "9991",
+    "aliases": "spiramycin I"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q15353101",
+    "itemLabel": "interferon alfacon-1",
+    "casRegistry": "118390-30-0",
+    "chembl": "CHEMBL1201557",
+    "rxnorm": "59744",
+    "drugbank": "DB00069",
+    "aliases": "CIFN;;consensus interferon;;IFN Alfacon-1;;Interferon Consensus, Methionyl;;methionyl interferon consensus;;methionyl-interferon-consensus;;rCon-IFN;;Recombinant Consensus Interferon;;Recombinant methionyl human consensus interferon"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q27287118",
+    "itemLabel": "ro-5045337",
+    "casRegistry": "939981-39-2",
+    "pubchemCompound": "57406853",
+    "chembl": "CHEMBL2386346",
+    "drugbank": "DB14793",
+    "aliases": "RG7112;;RO 5045337",
+    "guideToPharmacology": "9599"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q1041804",
+    "itemLabel": "imidapril",
+    "casRegistry": "89371-37-9",
+    "pubchemCompound": "5464343",
+    "chembl": "CHEMBL317094",
+    "rxnorm": "60245",
+    "drugbank": "DB11783",
+    "aliases": "",
+    "guideToPharmacology": "6377"
+  },
+  {
+    "item": "http://www.wikidata.org/entity/Q1041804",
+    "itemLabel": "imidapril",
+    "casRegistry": "89371-37-9",
+    "pubchemCompound": "40466903",
+    "chembl": "CHEMBL317094",
+    "rxnorm": "60245",
+    "drugbank": "DB11783",
+    "aliases": "",
+    "guideToPharmacology": "6377"
+  }
+]
