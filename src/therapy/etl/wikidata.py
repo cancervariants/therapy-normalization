@@ -186,6 +186,8 @@ class Wikidata(Base):
                             if key.upper() in XREF_SOURCES:
                                 if key != "chembl":
                                     prefix = ID_PREFIXES.get(key.lower(), "")
+                                    if key == "drugbank" and ref.startswith(prefix):
+                                        prefix = ""
                                     fmted_xref = f"{NAMESPACES[key]}:{prefix}{ref}"
                                 else:
                                     fmted_xref = f"{NAMESPACES[key]}:{ref}"
