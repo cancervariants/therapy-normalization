@@ -30,21 +30,37 @@ disease_normalizer_table = {}
 class SaveQueryHandler(DiseaseQueryHandler):
     """Disease query class which saves lookups and results"""
 
+    def _add_merged_meta(self, response: dict) -> dict:
+        """Skip source metadata because fixtures only store disease IDs.
+
+        :param response: normalization response being assembled
+        :return: response without source metadata lookups
+        """
+        return response
+
     def normalize(self, query: str) -> DiseaseNormalizationService:
-        """Normalize query term"""
+        """Normalize a query and save its disease ID for the fixture.
+
+        :param query: disease term or identifier
+        :return: normalization response
+        """
         response = super().normalize(query)
-        result = response.normalized_id
+        result = (
+            response.disease.id.removeprefix("normalize.disease.")
+            if response.disease
+            else None
+        )
         disease_normalizer_table[query.lower()] = result
         return response
 
 
 disease_query_handler = SaveQueryHandler(create_disease_db())
 
-ch = ChEMBL(database=db, data_path=TEST_DATA_DIRECTORY)
+ch = ChEMBL(database=db, data_path=TEST_DATA_DIRECTORY / "chembl")
 ch.disease_normalizer = disease_query_handler
 ch.perform_etl(use_existing=True)
 
-h = HemOnc(database=db, data_path=TEST_DATA_DIRECTORY)
+h = HemOnc(database=db, data_path=TEST_DATA_DIRECTORY / "hemonc")
 h.disease_normalizer = disease_query_handler
 h.perform_etl(use_existing=True)
 

@@ -2,8 +2,6 @@
 disease-normalizer introduced breaking changes.
 """
 
-import os
-
 import pytest
 from disease.schemas import (
     SourceName as DiseaseSourceName,
@@ -15,7 +13,7 @@ from therapy.database.database import AbstractDatabase
 from therapy.etl import ChEMBL
 
 
-def test_normalize_disease(is_test_env: bool, database: AbstractDatabase):
+def test_normalize_disease(is_test_env: bool, database: AbstractDatabase, monkeypatch):
     """Test that DiseaseIndicationBase works correctly when normalizing diseases"""
     if not is_test_env:
         pytest.skip(
@@ -23,7 +21,7 @@ def test_normalize_disease(is_test_env: bool, database: AbstractDatabase):
         )
 
     # set up normalizer
-    os.environ["DISEASE_DYNAMO_TABLE"] = "disease_normalizer_therapy_test"
+    monkeypatch.setenv("DISEASE_DYNAMO_TABLE", "disease_normalizer_therapy_test")
     chembl = ChEMBL(database)
     chembl.disease_normalizer.db.drop_db()
     chembl.disease_normalizer.db.initialize_db()
