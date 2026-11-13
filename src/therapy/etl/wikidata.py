@@ -42,6 +42,7 @@ ID_PREFIXES = {
     "ncit": "C",
 }
 
+# Direct properties select all best-rank values and exclude deprecated statements.
 SPARQL_QUERY = """
 SELECT
   ?item ?itemLabel ?casRegistry ?pubchemCompound ?pubchemSubstance ?chembl ?rxnorm
@@ -60,32 +61,25 @@ WHERE {
     FILTER((LANG(?alias)) = "en")
   }
   OPTIONAL {
-    ?item p:P231 ?wds1.
-    ?wds1 ps:P231 ?casRegistry.
+    ?item wdt:P231 ?casRegistry.
   }
   OPTIONAL {
-    ?item p:P662 ?wds2.
-    ?wds2 ps:P662 ?pubchemCompound.
+    ?item wdt:P662 ?pubchemCompound.
   }
   OPTIONAL {
-    ?item p:P2153 ?wds3.
-    ?wds3 ps:P2153 ?pubchemSubstance.
+    ?item wdt:P2153 ?pubchemSubstance.
   }
   OPTIONAL {
-    ?item p:P592 ?wds4.
-    ?wds4 ps:P592 ?chembl.
+    ?item wdt:P592 ?chembl.
   }
   OPTIONAL {
-    ?item p:P3345 ?wds5.
-    ?wds5 ps:P3345 ?rxnorm.
+    ?item wdt:P3345 ?rxnorm.
   }
   OPTIONAL {
-    ?item p:P715 ?wds6.
-    ?wds6 ps:P715 ?drugbank.
+    ?item wdt:P715 ?drugbank.
   }
   OPTIONAL {
-      ?item p:P595 ?wds7.
-      ?wds7 ps:P595 ?guideToPharmacology
+    ?item wdt:P595 ?guideToPharmacology.
   }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
 }
@@ -174,32 +168,32 @@ class Wikidata(Base):
                 if concept_id not in items:
                     item: dict[str, Any] = {"concept_id": concept_id}
 
-                    xrefs = []
-                    associated_with = []
-                    for key in NAMESPACES:
-                        if key in record:
-                            ref = record[key]
-
-                            if key.upper() == "CASREGISTRY":
-                                key = SourceName.CHEMIDPLUS.value  # noqa: PLW2901
-
-                            if key.upper() in XREF_SOURCES:
-                                if key != "chembl":
-                                    prefix = ID_PREFIXES.get(key.lower(), "")
-                                    if key == "drugbank" and ref.startswith(prefix):
-                                        prefix = ""
-                                    fmted_xref = f"{NAMESPACES[key]}:{prefix}{ref}"
-                                else:
-                                    fmted_xref = f"{NAMESPACES[key]}:{ref}"
-                                xrefs.append(fmted_xref)
-                            else:
-                                fmted_assoc = f"{NAMESPACES[key]}:{ref}"
-                                associated_with.append(fmted_assoc)
-                    item["xrefs"] = xrefs
-                    item["associated_with"] = associated_with
+                    items[concept_id] = item
                     if "itemLabel" in record:
                         item["label"] = record["itemLabel"]
-                    items[concept_id] = item
+
+                item = items[concept_id]
+                xrefs = item.setdefault("xrefs", [])
+                associated_with = item.setdefault("associated_with", [])
+                for key in NAMESPACES:
+                    if key in record:
+                        ref = record[key]
+
+                        if key.upper() == "CASREGISTRY":
+                            key = SourceName.CHEMIDPLUS.value  # noqa: PLW2901
+
+                        if key.upper() in XREF_SOURCES:
+                            if key != "chembl":
+                                prefix = ID_PREFIXES.get(key.lower(), "")
+                                if key == "drugbank" and ref.startswith(prefix):
+                                    prefix = ""
+                                fmted_xref = f"{NAMESPACES[key]}:{prefix}{ref}"
+                            else:
+                                fmted_xref = f"{NAMESPACES[key]}:{ref}"
+                            xrefs.append(fmted_xref)
+                        else:
+                            fmted_assoc = f"{NAMESPACES[key]}:{ref}"
+                            associated_with.append(fmted_assoc)
                 if "aliases" in record:
                     if "aliases" in items[concept_id]:
                         items[concept_id]["aliases"] += record["aliases"].split(";;")

@@ -3216,9 +3216,9 @@
       },
       {
         "coding": {
-          "id": "pubchem.compound:84691",
+          "id": "pubchem.compound:5460033",
           "system": "https://pubchem.ncbi.nlm.nih.gov/compound/",
-          "code": "84691"
+          "code": "5460033"
         },
         "relation": "relatedMatch"
       },
@@ -3539,7 +3539,7 @@
           "Phenobarbital civ",
           "Phenylethylbarbituric Acid",
           "phenobarb",
-          "Phenylethylbarbitursäure",
+          "Phenylethylbarbiturs\u00e4ure",
           "Phenobarbituric Acid",
           "5-Ethyl-5-phenylbarbituric acid",
           "PHENO",
@@ -3563,7 +3563,7 @@
           "PHENobarbital",
           "APRD00184",
           "phenylethylbarbiturate",
-          "Phenyläthylbarbitursäure",
+          "Phenyl\u00e4thylbarbiturs\u00e4ure",
           "5-ethyl-5-phenyl-pyrimidine-2,4,6-trione",
           "5-ethyl-5-phenylbarbituric acid",
           "5-phenyl-5-ethylbarbituric acid",
@@ -3817,6 +3817,14 @@
           "id": "umls:C0037962",
           "system": "https://uts.nlm.nih.gov/uts/umls/concept/",
           "code": "C0037962"
+        },
+        "relation": "relatedMatch"
+      },
+      {
+        "coding": {
+          "id": "pubchem.compound:6440717",
+          "system": "https://pubchem.ncbi.nlm.nih.gov/compound/",
+          "code": "6440717"
         },
         "relation": "relatedMatch"
       }
@@ -4094,7 +4102,8 @@
               "chembl:CHEMBL1256397"
             ],
             "associated_with": [
-              "pubchem.compound:5356392"
+              "pubchem.compound:5356392",
+              "pubchem.compound:6440717"
             ],
             "approval_year": [],
             "has_indication": []
@@ -5689,7 +5698,7 @@
               "drugbank:DB00515"
             ],
             "associated_with": [
-              "pubchem.compound:84691"
+              "pubchem.compound:5460033"
             ],
             "approval_year": [],
             "has_indication": []

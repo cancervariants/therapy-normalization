@@ -71,7 +71,9 @@ def cisplatin():
             "chemidplus:15663-27-1",
             "iuphar.ligand:5343",
         ],
-        "associated_with": ["pubchem.compound:84691"],
+        "associated_with": [
+            "pubchem.compound:5460033",
+        ],
     }
     return Therapy(**params)
 
@@ -152,13 +154,8 @@ def atropine():
         "approval_ratings": None,
         "xrefs": [
             "drugbank:DB00572",
-            "chemidplus:51-55-8",
             "rxcui:1223",
-            "chembl:CHEMBL517712",
             "iuphar.ligand:320",
-        ],
-        "associated_with": [
-            "pubchem.compound:174174",
         ],
         "trade_names": [],
     }
@@ -239,10 +236,14 @@ def test_cisplatin(cisplatin, wikidata, compare_records):
     assert len(response.records) == 1
     compare_records(response.records[0], cisplatin)
 
-    response = wikidata.search("pubchem.compound:84691")
+    response = wikidata.search("pubchem.compound:5460033")
     assert response.match_type == MatchType.XREF
     assert len(response.records) == 1
     compare_records(response.records[0], cisplatin)
+
+    for identifier in ("5702198", "84691"):
+        response = wikidata.search(f"pubchem.compound:{identifier}")
+        assert response.match_type == MatchType.NO_MATCH
 
 
 def test_atropine(atropine, wikidata, compare_records):
@@ -283,14 +284,10 @@ def test_atropine(atropine, wikidata, compare_records):
     compare_records(response.records[0], atropine)
 
     response = wikidata.search("chemidplus:51-55-8")
-    assert response.match_type == MatchType.XREF
-    assert len(response.records) == 1
-    compare_records(response.records[0], atropine)
+    assert response.match_type == MatchType.NO_MATCH
 
     response = wikidata.search("pubchem.compound:174174")
-    assert response.match_type == MatchType.ASSOCIATED_WITH
-    assert len(response.records) == 1
-    compare_records(response.records[0], atropine)
+    assert response.match_type == MatchType.NO_MATCH
 
 
 def test_interferon_alfacon_1(interferon_alfacon_1, wikidata, compare_records):
